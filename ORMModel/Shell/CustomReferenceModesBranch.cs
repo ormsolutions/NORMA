@@ -336,82 +336,91 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						return VirtualTreeLabelEditData.Invalid;
 					}
-
+					private static AutomatedElementDirective FilterAllElements(ModelElement element)
+					{
+						// Ignore all elements
+						return AutomatedElementDirective.Ignore;
+					}
 					LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 					{
 						newText = newText.Trim();
-						if (row < myCustomReferenceModesList.Count)
+						IORMToolServices toolServices = (IORMToolServices)myStore;
+						toolServices.AutomatedElementFilter += FilterAllElements;
+						try
 						{
-							switch ((Columns)column)
+							if (row < myCustomReferenceModesList.Count)
 							{
-								case Columns.Name:
-									string changeNameTransaction = ResourceStrings.ModelReferenceModeEditorChangeNameTransaction;
-									using (Transaction t = myStore.TransactionManager.BeginTransaction(changeNameTransaction))
-									{
-										if (newText.Length != 0)
-										{
-											myCustomReferenceModesList[row].Name = newText;
-										}
-										else
-										{
-											myCustomReferenceModesList[row].Delete();
-										}
-										if (t.HasPendingChanges)
-										{
-											t.Commit();
-										}
-									}
-									break;
-								case Columns.FormatString:
-									using (Transaction t = myStore.TransactionManager.BeginTransaction(ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction))
-									{
-										myCustomReferenceModesList[row].CustomFormatString = UglyFormatString(newText);
-										if (t.HasPendingChanges)
-										{
-											t.Commit();
-										}
-									}
-									break;
-								case Columns.ReferenceModeKind:
-									Debug.WriteLine("New text on Kind mode: " + newText);
-									break;
-							}
-						}
-						else
-						{
-							Transaction t = null;
-							bool success = false;
-
-							string addCustomReferenceModeTransaction = ResourceStrings.ModelReferenceModeEditorAddCustomReferenceModeTransaction;
-							using (t = myStore.TransactionManager.BeginTransaction(addCustomReferenceModeTransaction))
-							{
-								new CustomReferenceMode(this.myStore, new PropertyAssignment(CustomReferenceMode.NameDomainPropertyId, newText)).Model = this.myModel;
-								// Note that the Kind is automatically set to General on Commit
-
-								if (t.HasPendingChanges)
+								switch ((Columns)column)
 								{
-									try
-									{
-										myIDidIt = true;
-										t.Commit();
-										success = true;
-									}
-									finally
-									{
-										myIDidIt = false;
-									}
+									case Columns.Name:
+										string changeNameTransaction = ResourceStrings.ModelReferenceModeEditorChangeNameTransaction;
+										using (Transaction t = myStore.TransactionManager.BeginTransaction(changeNameTransaction))
+										{
+											if (newText.Length != 0)
+											{
+												myCustomReferenceModesList[row].Name = newText;
+											}
+											else
+											{
+												myCustomReferenceModesList[row].Delete();
+											}
+											if (t.HasPendingChanges)
+											{
+												t.Commit();
+											}
+										}
+										break;
+									case Columns.FormatString:
+										using (Transaction t = myStore.TransactionManager.BeginTransaction(ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction))
+										{
+											myCustomReferenceModesList[row].CustomFormatString = UglyFormatString(newText);
+											if (t.HasPendingChanges)
+											{
+												t.Commit();
+											}
+										}
+										break;
+									case Columns.ReferenceModeKind:
+										break;
 								}
 							}
-							if (success)
+							else
 							{
-								// We want to activate the kind dropdown for the new row.
-								// However, if we begin a label edit now before the current
-								// one is finished, then the control gets really confused, so
-								// we wait until the control is officially done--it will tell us
-								// via an event--so we can open the new dropdown.
-								VirtualTreeControl control = ORMDesignerPackage.ReferenceModeEditorWindow.TreeControl;
-								control.LabelEditControlChanged += new EventHandler(DelayActivateKindDropdown);
+								bool success = false;
+								using (Transaction t = myStore.TransactionManager.BeginTransaction(ResourceStrings.ModelReferenceModeEditorAddCustomReferenceModeTransaction))
+								{
+									new CustomReferenceMode(this.myStore, new PropertyAssignment(CustomReferenceMode.NameDomainPropertyId, newText)).Model = this.myModel;
+									// Note that the Kind is automatically set to General on Commit
+
+									if (t.HasPendingChanges)
+									{
+										try
+										{
+											myIDidIt = true;
+											t.Commit();
+											success = true;
+										}
+										finally
+										{
+											myIDidIt = false;
+										}
+									}
+								}
+								if (success)
+								{
+									// We want to activate the kind dropdown for the new row.
+									// However, if we begin a label edit now before the current
+									// one is finished, then the control gets really confused, so
+									// we wait until the control is officially done--it will tell us
+									// via an event--so we can open the new dropdown.
+									VirtualTreeControl control = ORMDesignerPackage.ReferenceModeEditorWindow.TreeControl;
+									control.LabelEditControlChanged += new EventHandler(DelayActivateKindDropdown);
+								}
 							}
+						}
+						finally
+						{
+							toolServices.AutomatedElementFilter -= FilterAllElements;
 						}
 						return LabelEditResult.AcceptEdit;
 					}

@@ -358,6 +358,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
+			/// Implements <see cref="IORMToolServices.VerbalizationOptions"/>
+			/// </summary>
+			protected IDictionary<string, object> VerbalizationOptions
+			{
+				get
+				{
+					return myServices.VerbalizationOptions;
+				}
+			}
+			IDictionary<string, object> IORMToolServices.VerbalizationOptions
+			{
+				get
+				{
+					return VerbalizationOptions;
+				}
+			}
+			/// <summary>
 			/// Defer to VerbalizationTargets on the document. Implements
 			/// <see cref="IORMToolServices.VerbalizationTargets"/>
 			/// </summary>
@@ -1340,6 +1357,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private static uint myVerbalizationChangeCookie;
 		private IDictionary<string, VerbalizationTargetData> myVerbalizationTargets;
 		private IExtensionVerbalizerService myExtensionVerbalizerService;
+		private IDictionary<string, object> myDefaultVerbalizationOptions;
+		private IDictionary<string, object> myVerbalizationOptions;
 		private IDictionary<Type, LayoutEngineData> myLayoutEngines;
 		private int myCustomBlockCanAddTransactionCount;
 		private int myCustomProcessingVisibleTransactionItemEventsCount;
@@ -1602,6 +1621,76 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			get
 			{
 				return ExtensionVerbalizerService;
+			}
+		}
+		// UNDONE: Integrate dynamically loaded verbalization options into options page so we can
+		// extend this beyond the core model.
+		private bool myVerbOptionCombineMandatoryUnique = true;
+		private bool myVerbOptionDefaultConstraint = true;
+		private bool myVerbOptionFactTypesWithObjectType = true;
+		private ObjectTypeNameVerbalizationStyle myVerbOptionObjectTypeNameDisplay = ObjectTypeNameVerbalizationStyle.AsIs;
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.VerbalizationOptions"/>
+		/// </summary>
+		protected IDictionary<string, object> VerbalizationOptions
+		{
+			get
+			{
+				IDictionary<string, object> defaultOptions = myDefaultVerbalizationOptions;
+				if (defaultOptions == null)
+				{
+					myDefaultVerbalizationOptions = defaultOptions = new Dictionary<string, object>();
+					foreach (DomainModel domainModel in Store.DomainModels)
+					{
+						Type domainModelType = domainModel.GetType();
+						object[] providers = domainModelType.GetCustomAttributes(typeof(VerbalizationOptionProviderAttribute), false);
+						if (providers.Length != 0) // Single use non-inheritable attribute, there will only be one
+						{
+							IVerbalizationOptionProvider provider = ((VerbalizationOptionProviderAttribute)providers[0]).CreateOptionProvider(domainModelType);
+							if (provider != null)
+							{
+								VerbalizationOptionData[] data = provider.ProvideVerbalizationOptions();
+								if (data != null)
+								{
+									for (int i = 0; i < data.Length; ++i)
+									{
+										VerbalizationOptionData item = data[i];
+										defaultOptions[item.Name] = item.DefaultValue;
+									}
+								}
+							}
+						}
+					}
+				}
+				bool combineMandatoryUnique = OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization;
+				bool defaultConstraint = OptionsPage.CurrentShowDefaultConstraintVerbalization;
+				bool factTypesWithObjectType = OptionsPage.CurrentVerbalizeFactTypesWithObjectType;
+				ObjectTypeNameVerbalizationStyle nameStyle = OptionsPage.CurrentVerbalizationObjectTypeNameDisplay;
+				IDictionary<string, object> options = myVerbalizationOptions;
+				if (options == null ||
+					combineMandatoryUnique != myVerbOptionCombineMandatoryUnique ||
+					defaultConstraint != myVerbOptionDefaultConstraint ||
+					factTypesWithObjectType != myVerbOptionFactTypesWithObjectType ||
+					nameStyle != myVerbOptionObjectTypeNameDisplay)
+				{
+					myVerbalizationOptions = options = new Dictionary<string, object>(defaultOptions);
+					options[CoreVerbalizationOption.CombineSimpleMandatoryAndUniqueness] = combineMandatoryUnique;
+					options[CoreVerbalizationOption.ShowDefaultConstraint] = defaultConstraint;
+					options[CoreVerbalizationOption.FactTypesWithObjectType] = factTypesWithObjectType;
+					options[CoreVerbalizationOption.ObjectTypeNameDisplay] = nameStyle;
+					myVerbOptionCombineMandatoryUnique = combineMandatoryUnique;
+					myVerbOptionDefaultConstraint = defaultConstraint;
+					myVerbOptionFactTypesWithObjectType = factTypesWithObjectType;
+					myVerbOptionObjectTypeNameDisplay = nameStyle;
+				}
+				return options;
+			}
+		}
+		IDictionary<string, object> IORMToolServices.VerbalizationOptions
+		{
+			get
+			{
+				return VerbalizationOptions;
 			}
 		}
 		/// <summary>

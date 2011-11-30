@@ -17,8 +17,9 @@
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:ve="http://schemas.neumont.edu/ORM/SDK/Verbalization"
 	xmlns:exsl="http://exslt.org/common"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	extension-element-prefixes="exsl"
-	exclude-result-prefixes="ve">
+	exclude-result-prefixes="ve xs">
 
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
 
@@ -51,6 +52,21 @@
 			</xsl:copy>
 		</xsl:for-each>
 	</xsl:template>
+	<!-- Template to extract documentation from a schema file. The resulting fragment
+	has elements with @type attributes and text for the documentation -->
+	<xsl:template name="GenerateSnippetAnnotationsFragment">
+		<xsl:param name="SnippetsSchemaLocation"/>
+		<xsl:if test="$SnippetsSchemaLocation">
+			<xsl:for-each select="document($SnippetsSchemaLocation)/xs:schema/xs:redefine/xs:simpleType[@name='SnippetTypeEnum']/xs:restriction/xs:enumeration">
+				<xsl:variable name="doc" select="string(xs:annotation/xs:documentation)"/>
+				<xsl:if test="$doc">
+					<snippetDoc type="{@value}">
+						<xsl:value-of select="$doc"/>
+					</snippetDoc>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
 	<!-- Template to get a list of <Snippet type="" text=""/> elements for the
 	     specified Modality and Sign. If the exact modality and sign is not specified, then
 		 match as many values as possible. Go ahead and include strings without a perfect match
@@ -64,11 +80,11 @@
 		<xsl:param name="Modality" select="'alethic'"/>
 		<xsl:param name="Sign" select="'positive'"/>
 		<xsl:for-each select="$SortedSnippets">
-			<xsl:if test="position()=1">
+			<xsl:if test="not(preceding-sibling::*[1]/@type=@type)">
 				<xsl:call-template name="MatchSnippetSet2">
 					<xsl:with-param name="Modality" select="$Modality"/>
 					<xsl:with-param name="Sign" select="$Sign"/>
-					<xsl:with-param name="MatchType" select="@type"/>
+					<xsl:with-param name="MatchType" select="string(@type)"/>
 				</xsl:call-template>
 			</xsl:if>
 		</xsl:for-each>
@@ -149,17 +165,12 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- Move on to a different type, but first record the last -->
+				<!-- Let the outer loop move on to a different type, but first record the last -->
 				<xsl:if test="$Match">
 					<xsl:for-each select="$Match">
 						<Snippet type="{@type}" text="{text()}"/>
 					</xsl:for-each>
 				</xsl:if>
-				<xsl:call-template name="MatchSnippetSet2">
-					<xsl:with-param name="Modality" select="$Modality"/>
-					<xsl:with-param name="Sign" select="$Sign"/>
-					<xsl:with-param name="MatchType" select="@type"/>
-				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -168,6 +179,7 @@
 		<xsl:param name="SnippetEnumTypeName"/>
 		<xsl:param name="VerbalizationSetName"/>
 		<xsl:param name="SnippetsLocation"/>
+		<xsl:param name="SnippetsSchemaLocation"/>
 		<xsl:variable name="SortedSnippetsFragment">
 			<xsl:call-template name="GenerateSortedSnippetsFragment">
 				<xsl:with-param name="SnippetsLocation" select="$SnippetsLocation"/>
@@ -184,6 +196,13 @@
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="alethicPositive" select="exsl:node-set($alethicPositiveFragment)/child::*"/>
+
+		<xsl:variable name="SnippetAnnotationsFragment">
+			<xsl:call-template name="GenerateSnippetAnnotationsFragment">
+				<xsl:with-param name="SnippetsSchemaLocation" select="$SnippetsSchemaLocation"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="SnippetAnnotations" select="exsl:node-set($SnippetAnnotationsFragment)/*"/>
 
 		<!-- Spit an enum of all snippet types -->
 		<plx:enum visibility="public" name="{$SnippetEnumTypeName}">
@@ -229,9 +248,30 @@
 									</xsl:otherwise>
 								</xsl:choose>
 							</summary>
+							<remark>
+								<xsl:variable name="desc" select="string($SnippetAnnotations[@type=current()/@type])"/>
+								<xsl:if test="$desc">
+									<xsl:copy-of select="$desc"/>
+								</xsl:if>
+							</remark>
 						</plx:docComment>
 					</plx:leadingInfo>
 				</plx:enumItem>
+				<xsl:if test="position()=last()">
+					<plx:enumItem name="Last">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>
+									<xsl:text>The last item in </xsl:text>
+									<xsl:value-of select="$SnippetEnumTypeName"/>
+								</summary>
+							</plx:docComment>
+						</plx:leadingInfo>
+						<plx:initialize>
+							<plx:callStatic dataTypeName="{$SnippetEnumTypeName}" name="{@type}" type="field"/>
+						</plx:initialize>
+					</plx:enumItem>
+				</xsl:if>
 			</xsl:for-each>
 		</plx:enum>
 		<plx:class name="{$VerbalizationSetName}" visibility="public">

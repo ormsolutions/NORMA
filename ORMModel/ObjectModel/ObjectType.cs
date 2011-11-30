@@ -726,7 +726,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ObjectType valueType = FindValueType(valueTypeName, model);
 			Role constrainedRole = constraintRoles[0];
 			ObjectType identifyingValueType;
-			bool valueTypeNotShared = !IsValueTypeShared(preferredConstraint, out identifyingValueType);
+			bool valueTypeNotShared = !IsValueTypeShared(preferredConstraint, true, out identifyingValueType);
 			if (valueTypeNotShared && valueType == null)
 			{
 				valueType = constrainedRole.RolePlayer;
@@ -870,7 +870,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					ObjectType valueType = constrainedRole.RolePlayer;
 					if (valueType.IsValueType)
 					{
-						if (!IsValueTypeShared(preferredConstraint) && aggressivelyKillValueType)
+						ObjectType dummy;
+						if (aggressivelyKillValueType && !IsValueTypeShared(preferredConstraint, false, out dummy))
 						{
 							valueType.Delete();
 						}
@@ -880,62 +881,76 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Returns true if the reference mode pattern is sharing a value
-		/// type with another object type
+		/// Returns true if the reference mode pattern uses a value type
+		/// that is also by a fact type that is not part of a reference
+		/// mode pattern.
 		/// </summary>
-		public bool ReferenceModeSharesValueType
+		public bool ReferenceModeValueTypeAlsoUsedNormally
 		{
 			get
 			{
-				UniquenessConstraint preferredConstraint = PreferredIdentifier;
-				return (preferredConstraint != null && preferredConstraint.IsInternal) ? IsValueTypeShared(preferredConstraint) : false;
+				ObjectType dummy;
+				return IsValueTypeShared(PreferredIdentifier, true, out dummy);
 			}
 		}
-		private static bool IsValueTypeShared(UniquenessConstraint preferredConstraint)
-		{
-			ObjectType dummy;
-			return IsValueTypeShared(preferredConstraint, out dummy);
-		}
-		private static bool IsValueTypeShared(UniquenessConstraint preferredConstraint, out ObjectType identifyingValueType)
+		/// <summary>
+		/// Test if a value type used in a verified single-role preferred identifier pattern
+		/// is used more than once.
+		/// </summary>
+		/// <param name="preferredConstraint">A uniqueness constraint. Verified as internal
+		/// and single role.</param>
+		/// <param name="notAsOtherThanReferenceMode">Check if the other use is something other
+		/// than a reference mode pattern.</param>
+		/// <param name="identifyingValueType">Provides the identifying value type.</param>
+		/// <returns><see langword="true"/> if shared.</returns>
+		private static bool IsValueTypeShared(UniquenessConstraint preferredConstraint, bool notAsOtherThanReferenceMode, out ObjectType identifyingValueType)
 		{
 			identifyingValueType = null;
 			if (preferredConstraint != null && preferredConstraint.IsInternal)
 			{
 				LinkedElementCollection<Role> constraintRoles = preferredConstraint.RoleCollection;
 				ObjectType valueType;
-				if (constraintRoles.Count == 1 && (valueType = constraintRoles[0].RolePlayer).IsValueType)
+				Role knownRole;
+				if (constraintRoles.Count == 1 && (valueType = (knownRole = constraintRoles[0]).RolePlayer).IsValueType)
 				{
 					identifyingValueType = valueType;
-					ReadOnlyCollection<ElementLink> links = DomainRoleInfo.GetAllElementLinks(valueType);
-					int linkCount = links.Count;
-					if (linkCount > 3) // Easy initial check
+					// Consider a value type to be shared if it participates in more than
+					// one ObjectTypePlaysRole relationship. Note that this was previously
+					// much more complicated, with explicit checks required for known core
+					// and ignored external links, but this was slow, error prone, difficult
+					// to maintain, and often gave the wrong answer.
+					LinkedElementCollection<Role> playedRoles = valueType.PlayedRoleCollection;
+					if (playedRoles.Count > 1)
 					{
-						int count = 0;
-						DomainModelInfo nativeModel = preferredConstraint.GetDomainClass().DomainModel;
-						for (int i = 0; i < linkCount; ++i)
+						if (notAsOtherThanReferenceMode)
 						{
-							ElementLink link = links[i];
-							if (!link.IsDeleting &&
-								link.GetDomainClass().DomainModel == nativeModel &&
-								!(link is ORMModelElementHasExtensionElement) &&
-								!(link is ObjectTypeImpliesMandatoryConstraint) &&
-								!(link is ElementAssociatedWithModelError) &&
-								!(link is ValueTypeHasValueTypeInstance))
+							foreach (Role role in playedRoles)
 							{
-								++count;
-								// We're expecting a ValueTypeHasDataType,
-								// ObjectTypePlaysRole, and ModelHasObjectType from our
-								// object model, plus an arbitrary number of links from
-								// outside our model. Any other links (except
-								// ORMExtendableElementHasExtensionElement-derived links,
-								// ElementAssociatedWithModeLError-derived links,
-								// and ValueTypeHasValueTypeInstance links)
-								// indicate a shared value type.
-								if (count > 3)
+								if (role != knownRole)
 								{
-									return true;
+									bool inRefModeUniqueness = false;
+									foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+									{
+										UniquenessConstraint uniqueness;
+										if (null != (uniqueness = sequence as UniquenessConstraint) &&
+											uniqueness.IsInternal &&
+											null != uniqueness.PreferredIdentifierFor &&
+											uniqueness.RoleCollection.Count == 1)
+										{
+											inRefModeUniqueness = true;
+											break;
+										}
+									}
+									if (!inRefModeUniqueness)
+									{
+										return true;
+									}
 								}
 							}
+						}
+						else
+						{
+							return true;
 						}
 					}
 				}
@@ -4800,7 +4815,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
 		/// for instance verbalizations
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 		{
 			ValueConstraint valueConstraint;
 			if (!IsValueType && null != (valueConstraint = NearestValueConstraint))
@@ -4830,9 +4845,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return CustomChildVerbalizer.VerbalizeInstance(derivationNote, false);
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, sign);
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
 		}
 
 		#endregion

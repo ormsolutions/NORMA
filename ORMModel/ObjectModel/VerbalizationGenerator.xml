@@ -3,7 +3,8 @@
 	xmlns="http://schemas.neumont.edu/ORM/SDK/CoreVerbalizationGenerator"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://schemas.neumont.edu/ORM/SDK/CoreVerbalizationGenerator VerbalizationGenerator.xsd"
-	snippetsLocation="VerbalizationCoreSnippets/VerbalizationCoreSnippets.xml">
+	snippetsLocation="VerbalizationCoreSnippets/VerbalizationCoreSnippets.xml"
+	snippetsSchemaLocation="VerbalizationCoreSnippets/VerbalizationCoreSnippets.xsd">
 	<Copyright name="Common Public License Copyright Notice">
 		<CopyrightLine>/**************************************************************************\</CopyrightLine>
 		<CopyrightLine>* Natural Object-Role Modeling Architect for Visual Studio                 *</CopyrightLine>

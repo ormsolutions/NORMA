@@ -28,6 +28,7 @@ using System.Text;
 using System.Xml;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -184,7 +185,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	#endregion // VerbalizationTargetData structure
 	#region IVerbalizationTargetProvider interface
 	/// <summary>
-	/// The IVerbalizationTargetsProvider
+	/// Provide a verbalization target. Verbalization targets
+	/// represent a form of verbalization display, and verbalization
+	/// snippets can be adjusted based on the target.
 	/// </summary>
 	public interface IVerbalizationTargetProvider
 	{
@@ -214,7 +217,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			myProviderType = providerType;
 		}
 		/// <summary>
-		/// Associate an IVerbalizationtargetProvider implementation with a DomainModel-derived class
+		/// Associate an IVerbalizationTargetProvider implementation with a DomainModel-derived class
 		/// </summary>
 		/// <param name="nestedTypeName">The name of a nested class in the DomainModel that implements
 		/// the IVerbalizationTargetProvider interface.</param>
@@ -223,7 +226,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			myNestedProviderName = nestedTypeName;
 		}
 		/// <summary>
-		/// Create an instance of the associated snippets provider
+		/// Create an instance of the associated target provider
 		/// </summary>
 		/// <param name="domainModelType">The type of the associated domain model</param>
 		/// <returns>IVerbalizationTargetProvider implementation</returns>
@@ -243,6 +246,175 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // VerbalizationTargetProviderAttribute class
+	#region VerbalizationOptionData structure
+	/// <summary>
+	/// Provide data for a verbalization option
+	/// </summary>
+	public struct VerbalizationOptionData
+	{
+		#region Member variables
+		private string myName;
+		private Type myType;
+		private object myDefaultValue;
+		#endregion // Member variables
+		#region Constructors
+		/// <summary>
+		/// Create new <see cref="VerbalizationOptionData"/>
+		/// </summary>
+		/// <param name="name">The lookup name for this option.</param>
+		/// <param name="type">The data type for this option.</param>
+		/// <param name="defaultValue">The default value for this option.</param>
+		public VerbalizationOptionData(string name, Type type, object defaultValue)
+		{
+			myName = name;
+			myType = type;
+			myDefaultValue = defaultValue;
+		}
+		#endregion // Constructors
+		#region Accessor properties
+		/// <summary>
+		/// The lookup name for this option.
+		/// </summary>
+		public string Name
+		{
+			get
+			{
+				return myName;
+			}
+		}
+		/// <summary>
+		/// The type of data used for this option
+		/// </summary>
+		public Type Type
+		{
+			get
+			{
+				return myType;
+			}
+		}
+		/// <summary>
+		/// The default value for this option.
+		/// </summary>
+		public object DefaultValue
+		{
+			get
+			{
+				return myDefaultValue;
+			}
+		}
+		#endregion // Accessor properties
+		#region Equality overrides
+		/// <summary>
+		/// Equals operator override
+		/// </summary>
+		public static bool operator ==(VerbalizationOptionData data1, VerbalizationOptionData data2)
+		{
+			return data1.Equals(data2);
+		}
+		/// <summary>
+		/// Not equals operator override
+		/// </summary>
+		public static bool operator !=(VerbalizationOptionData data1, VerbalizationOptionData data2)
+		{
+			return !(data1.Equals(data2));
+		}
+		/// <summary>
+		/// Standard Equals override
+		/// </summary>
+		public override bool Equals(object obj)
+		{
+			return (obj is VerbalizationOptionData) ? Equals((VerbalizationOptionData)obj) : false;
+		}
+		/// <summary>
+		/// Typed Equals method
+		/// </summary>
+		public bool Equals(VerbalizationOptionData obj)
+		{
+			return myName == obj.myName && myType == obj.myType && myDefaultValue == obj.myDefaultValue;
+		}
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override int GetHashCode()
+		{
+			string name;
+			Type type;
+			object value;
+			if ((name = myName) == null || (type = myType) == null)
+			{
+				return 0;
+			}
+			return Utility.GetCombinedHashCode(
+				name.GetHashCode(),
+				type.GetHashCode(),
+				((value = myDefaultValue) != null) ? value.GetHashCode() : 0);
+		}
+		#endregion // Equality overrides
+	}
+	#endregion // VerbalizationOptionData structure
+	#region IVerbalizationOptionProvider interface
+	/// <summary>
+	/// Provide a verbalization options. Loaded options are provided
+	/// to all verbalization implementations and can be used to modify
+	/// verbalization content.
+	/// </summary>
+	public interface IVerbalizationOptionProvider
+	{
+		/// <summary>
+		/// Return an array of recognized verbalization options.
+		/// </summary>
+		/// <returns><see cref="VerbalizationOptionData"/> array</returns>
+		VerbalizationOptionData[] ProvideVerbalizationOptions();
+	}
+	#endregion // IVerbalizationOptionProvider interface
+	#region VerbalizationTargetProviderAttribute class
+	/// <summary>
+	/// Provide an IVerbalizationOptionProvider implementation for a DomainModel
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+	public sealed class VerbalizationOptionProviderAttribute : Attribute
+	{
+		private Type myProviderType;
+		private string myNestedProviderName;
+		/// <summary>
+		/// Associate an IVerbalizationOptionProvider implementation with a DomainModel-derived class
+		/// </summary>
+		/// <param name="providerType">A type that implements IVerbalizationOptionProvider
+		/// and has a parameterless constructor</param>
+		public VerbalizationOptionProviderAttribute(Type providerType)
+		{
+			myProviderType = providerType;
+		}
+		/// <summary>
+		/// Associate an IVerbalizationOptionProvider implementation with a DomainModel-derived class
+		/// </summary>
+		/// <param name="nestedTypeName">The name of a nested class in the DomainModel that implements
+		/// the IVerbalizationTargetProvider interface.</param>
+		public VerbalizationOptionProviderAttribute(string nestedTypeName)
+		{
+			myNestedProviderName = nestedTypeName;
+		}
+		/// <summary>
+		/// Create an instance of the associated option provider
+		/// </summary>
+		/// <param name="domainModelType">The type of the associated domain model</param>
+		/// <returns>IVerbalizationOptionProvider implementation</returns>
+		public IVerbalizationOptionProvider CreateOptionProvider(Type domainModelType)
+		{
+			Type createType = myProviderType;
+			if (createType == null)
+			{
+				string[] nestedTypeNames = myNestedProviderName.Split(new char[] { '.', '+' }, StringSplitOptions.RemoveEmptyEntries);
+				createType = domainModelType;
+				for (int i = 0; i < nestedTypeNames.Length; ++i)
+				{
+					createType = createType.GetNestedType(nestedTypeNames[i], BindingFlags.NonPublic | BindingFlags.Public);
+				}
+			}
+			return (IVerbalizationOptionProvider)Activator.CreateInstance(createType, true);
+		}
+	}
+	#endregion // VerbalizationOptionProviderAttribute class
 	#region VerbalizationSnippetsData struct
 	/// <summary>
 	/// Data returned for each set of verbalization snippets supported.
@@ -1048,10 +1220,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="store">The store to load</param>
 		/// <param name="target">The verbalization target to load.</param>
 		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>
-		/// <param name="customIdentifiers">An array of preferred custom identifiers
+		/// <param name="customIdentifiers">A list of preferred custom identifiers
 		/// for the preferred verbalization sets. Can be null if no customizations are in place.</param>
 		/// <returns>Snippets dictionary</returns>
-		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(Store store, string target, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
+		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(Store store, string target, string customSnippetsDirectory, IList<VerbalizationSnippetsIdentifier> customIdentifiers)
 		{
 			if (store == null)
 			{
@@ -1136,10 +1308,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="providers">The snippet providers</param>
 		/// <param name="target">The verbalization target to load.</param>
 		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>
-		/// <param name="customIdentifiers">An array of preferred custom identifiers
+		/// <param name="customIdentifiers">A list of preferred custom identifiers
 		/// for the preferred verbalization sets. Can be null if no customizations are in place.</param>
 		/// <returns>Snippets dictionary</returns>
-		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(IEnumerable<IVerbalizationSnippetsProvider> providers, string target, string customSnippetsDirectory, VerbalizationSnippetsIdentifier[] customIdentifiers)
+		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(IEnumerable<IVerbalizationSnippetsProvider> providers, string target, string customSnippetsDirectory, IList<VerbalizationSnippetsIdentifier> customIdentifiers)
 		{
 			// UNDONE: The API here should change to load the full dictionary regardless of target and
 			// return a dictionary keyed off a targeted identifier. A wrapper can then be placed on
@@ -1151,7 +1323,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			Dictionary<Type, IVerbalizationSets> retVal = new Dictionary<Type, IVerbalizationSets>();
 			Type[] typeArgs = new Type[1];
-			int customIdentifiersCount = (customIdentifiers != null) ? customIdentifiers.Length : 0;
+			int customIdentifiersCount = (customIdentifiers != null) ? customIdentifiers.Count : 0;
 			Dictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> allSets = null;
 			foreach (IVerbalizationSnippetsProvider provideSnippets in providers)
 			{

@@ -41,6 +41,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 	{
 		#region Member Variables
 		private ExtensionLoader myExtensionLoader;
+		private VerbalizationManager myVerbalizationManager;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -50,6 +51,16 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		public ModelLoader(ExtensionLoader extensionLoader)
 		{
 			myExtensionLoader = extensionLoader;
+		}
+		/// <summary>
+		/// Create a new model loader with support for extension models and verbalization
+		/// </summary>
+		/// <param name="extensionLoader">The <see cref="ExtensionLoader"/> to use with this model load.</param>
+		/// <param name="verbalizationManager">Create a loader with verbalization support.</param>
+		public ModelLoader(ExtensionLoader extensionLoader, VerbalizationManager verbalizationManager)
+		{
+			myExtensionLoader = extensionLoader;
+			myVerbalizationManager = verbalizationManager;
 		}
 		#endregion // Constructor
 		#region Virtual methods
@@ -61,7 +72,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <returns>A default <see cref="ORMStandaloneStore"/> instance.</returns>
 		protected virtual Store CreateStore()
 		{
-			return new ORMStandaloneStore(null);
+			return new ORMStandaloneStore(null, myVerbalizationManager);
 		}
 		#endregion // Virtual methods
 		#region Load methods
@@ -238,9 +249,12 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// Create a new <see cref="ORMStandaloneStore"/>
 		/// </summary>
 		/// <param name="serviceProvider">The <see cref="IServiceProvider"/>. Can be <see langword="null"/>.</param>
-		public ORMStandaloneStore(IServiceProvider serviceProvider)
+		/// <param name="verbalizationManager">The <see cref="VerbalizationManager"/> used to support verbalization
+		/// methods on the <see cref="IORMToolServices"/> interface supported by this store.</param>
+		public ORMStandaloneStore(IServiceProvider serviceProvider, VerbalizationManager verbalizationManager)
 			: base(serviceProvider)
 		{
+			myVerbalizationManager = verbalizationManager;
 		}
 		#endregion // Constructor
 		#region IORMToolServices Implementation
@@ -479,14 +493,49 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				return ServiceProvider;
 			}
 		}
+		private VerbalizationManager myVerbalizationManager;
+		private IDictionary<string, VerbalizationTargetData> myVerbalizationTargets;
+		private IDictionary<string, object> myVerbalizationOptions;
+		private IExtensionVerbalizerService myExtensionVerbalizerService;
+		private IDictionary<string, IDictionary<Type, IVerbalizationSets>> myTargetedVerbalizationSnippets;
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.VerbalizationTargets"/>
 		/// </summary>
-		protected static IDictionary<string, VerbalizationTargetData> VerbalizationTargets
+		protected IDictionary<string, VerbalizationTargetData> VerbalizationTargets
 		{
 			get
 			{
-				return null;
+				if (myVerbalizationManager == null)
+				{
+					return null;
+				}
+				IDictionary<string, VerbalizationTargetData> retVal = myVerbalizationTargets;
+				if (null == retVal)
+				{
+					retVal = new Dictionary<string, VerbalizationTargetData>();
+					foreach (DomainModel domainModel in this.DomainModels)
+					{
+						Type domainModelType = domainModel.GetType();
+						object[] providers = domainModelType.GetCustomAttributes(typeof(VerbalizationTargetProviderAttribute), false);
+						if (providers.Length != 0) // Single use non-inheritable attribute, there will only be one
+						{
+							IVerbalizationTargetProvider provider = ((VerbalizationTargetProviderAttribute)providers[0]).CreateTargetProvider(domainModelType);
+							if (provider != null)
+							{
+								VerbalizationTargetData[] targets = provider.ProvideVerbalizationTargets();
+								if (targets != null)
+								{
+									for (int i = 0; i < targets.Length; ++i)
+									{
+										retVal[targets[i].KeyName] = targets[i];
+									}
+								}
+							}
+						}
+					}
+					myVerbalizationTargets = retVal;
+				}
+				return retVal;
 			}
 		}
 		IDictionary<string, VerbalizationTargetData> IORMToolServices.VerbalizationTargets
@@ -499,9 +548,35 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.GetVerbalizationSnippetsDictionary"/>
 		/// </summary>
-		protected static IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(string target)
+		protected IDictionary<Type, IVerbalizationSets> GetVerbalizationSnippetsDictionary(string target)
 		{
-			return null;
+			VerbalizationManager mgr = myVerbalizationManager;
+			if (mgr == null)
+			{
+				return null;
+			}
+			IDictionary<Type, IVerbalizationSets> retVal = null;
+			IDictionary<string, IDictionary<Type, IVerbalizationSets>> targetedSnippets = myTargetedVerbalizationSnippets;
+			bool loadTarget = false;
+			if (targetedSnippets == null)
+			{
+				loadTarget = true;
+				myTargetedVerbalizationSnippets = targetedSnippets = new Dictionary<string, IDictionary<Type, IVerbalizationSets>>();
+			}
+			else if (targetedSnippets != null)
+			{
+				loadTarget = !targetedSnippets.TryGetValue(target, out retVal);
+			}
+			if (loadTarget)
+			{
+				IList<VerbalizationSnippetsIdentifier> identifiers = mgr.CustomSnippetsIdentifiers;
+				targetedSnippets[target] = retVal = VerbalizationSnippetSetsManager.LoadSnippetsDictionary(
+					this,
+					target,
+					mgr.SnippetsDirectory,
+					(identifiers != null && identifiers.Count != 0) ? identifiers : null);
+			}
+			return retVal;
 		}
 		IDictionary<Type, IVerbalizationSets> IORMToolServices.GetVerbalizationSnippetsDictionary(string target)
 		{
@@ -510,11 +585,16 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.ExtensionVerbalizerService"/>
 		/// </summary>
-		protected static IExtensionVerbalizerService ExtensionVerbalizerService
+		protected IExtensionVerbalizerService ExtensionVerbalizerService
 		{
 			get
 			{
-				return null;
+				if (myVerbalizationManager == null)
+				{
+					return null;
+				}
+				IExtensionVerbalizerService retVal = myExtensionVerbalizerService;
+				return retVal ?? (myExtensionVerbalizerService = new ExtensionVerbalizerService(this));
 			}
 		}
 		IExtensionVerbalizerService IORMToolServices.ExtensionVerbalizerService
@@ -522,6 +602,62 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			get
 			{
 				return ExtensionVerbalizerService;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.VerbalizationOptions"/>
+		/// </summary>
+		protected IDictionary<string, object> VerbalizationOptions
+		{
+			get
+			{
+				VerbalizationManager mgr = myVerbalizationManager;
+				if (mgr == null)
+				{
+					return null;
+				}
+				IDictionary<string, object> options = myVerbalizationOptions;
+				if (options == null)
+				{
+					myVerbalizationOptions = options = new Dictionary<string, object>();
+					foreach (DomainModel domainModel in this.DomainModels)
+					{
+						Type domainModelType = domainModel.GetType();
+						object[] providers = domainModelType.GetCustomAttributes(typeof(VerbalizationOptionProviderAttribute), false);
+						if (providers.Length != 0) // Single use non-inheritable attribute, there will only be one
+						{
+							IVerbalizationOptionProvider provider = ((VerbalizationOptionProviderAttribute)providers[0]).CreateOptionProvider(domainModelType);
+							if (provider != null)
+							{
+								VerbalizationOptionData[] data = provider.ProvideVerbalizationOptions();
+								if (data != null)
+								{
+									for (int i = 0; i < data.Length; ++i)
+									{
+										VerbalizationOptionData item = data[i];
+										options[item.Name] = item.DefaultValue;
+									}
+								}
+							}
+						}
+					}
+					IDictionary<string, object> customOptions = mgr.CustomOptions;
+					if (customOptions != null)
+					{
+						foreach (KeyValuePair<string, object> pair in customOptions)
+						{
+							options[pair.Key] = pair.Value;
+						}
+					}
+				}
+				return options;
+			}
+		}
+		IDictionary<string, object> IORMToolServices.VerbalizationOptions
+		{
+			get
+			{
+				return VerbalizationOptions;
 			}
 		}
 		/// <summary>
@@ -657,7 +793,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// </summary>
 		protected static Color GetBackColor(ORMDesignerColor colorIndex)
 		{
-			return Color.Black;
+			return Color.White;
 		}
 		Color IORMFontAndColorService.GetBackColor(ORMDesignerColor colorIndex)
 		{
@@ -666,8 +802,14 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <summary>
 		/// Implements <see cref="IORMFontAndColorService.GetFont"/>
 		/// </summary>
-		protected static Font GetFont(ORMDesignerColorCategory fontCategory)
+		protected Font GetFont(ORMDesignerColorCategory fontCategory)
 		{
+			VerbalizationManager mgr;
+			if (fontCategory == ORMDesignerColorCategory.Verbalizer &&
+				null != (mgr = myVerbalizationManager))
+			{
+				return new Font(mgr.FontFamilyName, mgr.FontSize / 72, FontStyle.Regular);
+			}
 			return new Font(new FontFamily("Times New Roman"), 10, FontStyle.Regular);
 		}
 		Font IORMFontAndColorService.GetFont(ORMDesignerColorCategory fontCategory)
@@ -677,8 +819,16 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <summary>
 		/// Implements <see cref="IORMFontAndColorService.GetFontStyle"/>
 		/// </summary>
-		protected static FontStyle GetFontStyle(ORMDesignerColor colorIndex)
+		protected FontStyle GetFontStyle(ORMDesignerColor colorIndex)
 		{
+			VerbalizationManager mgr;
+			int index = (int)colorIndex;
+			if (index >= (int)ORMDesignerColor.FirstVerbalizerColor &&
+				index <= (int)ORMDesignerColor.LastVerbalizerColor &&
+				null != (mgr = myVerbalizationManager))
+			{
+				return mgr.GetIsBold(colorIndex) ? FontStyle.Bold : FontStyle.Regular;
+			}
 			return FontStyle.Bold;
 		}
 		FontStyle IORMFontAndColorService.GetFontStyle(ORMDesignerColor colorIndex)
@@ -688,9 +838,17 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <summary>
 		/// Implements <see cref="IORMFontAndColorService.GetForeColor"/>
 		/// </summary>
-		protected static Color GetForeColor(ORMDesignerColor colorIndex)
+		protected Color GetForeColor(ORMDesignerColor colorIndex)
 		{
-			return Color.White;
+			VerbalizationManager mgr;
+			int index = (int)colorIndex;
+			if (index >= (int)ORMDesignerColor.FirstVerbalizerColor &&
+				index <= (int)ORMDesignerColor.LastVerbalizerColor &&
+				null != (mgr = myVerbalizationManager))
+			{
+				return mgr.GetColor(colorIndex);
+			}
+			return Color.Black;
 		}
 		Color IORMFontAndColorService.GetForeColor(ORMDesignerColor colorIndex)
 		{

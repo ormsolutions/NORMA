@@ -2698,7 +2698,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
 		/// for internal constraints, combinations of internals, and defaults
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 		{
 			if (ReadingRequiredError != null)
 			{
@@ -2711,8 +2711,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// All internal constraints (and combinations) are non-aggregated, so they
 				// are verbalized as custom children.
 				bool isNegative = 0 != (sign & VerbalizationSign.Negative);
-				bool lookForDefault = Shell.OptionsPage.CurrentShowDefaultConstraintVerbalization;
-				bool lookForCombined = !isNegative && Shell.OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization;
+				bool lookForDefault = (bool)verbalizationOptions[CoreVerbalizationOption.ShowDefaultConstraint];
+				bool lookForCombined = !isNegative && (bool)verbalizationOptions[CoreVerbalizationOption.CombineSimpleMandatoryAndUniqueness];
 
 				LinkedElementCollection<RoleBase> factRoles = RoleCollection;
 				int? unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -3006,9 +3006,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return CustomChildVerbalizer.VerbalizeInstance(derivationNote, false);
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, sign);
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region DefaultBinaryMissingUniquenessVerbalizer

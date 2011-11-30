@@ -95,6 +95,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		IExtensionVerbalizerService ExtensionVerbalizerService { get;}
 		/// <summary>
+		/// Get a dictionary with named values for verbalization options supported
+		/// by loaded domain models.
+		/// </summary>
+		IDictionary<string, object> VerbalizationOptions { get;}
+		/// <summary>
 		/// Retrieve the LayoutEngines dictionary for this store
 		/// </summary>
 		LayoutEngine GetLayoutEngine(Type engineType);

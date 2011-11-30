@@ -147,7 +147,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						return VirtualTreeLabelEditData.Invalid;
 					}
-
+					private static AutomatedElementDirective FilterAllElements(ModelElement element)
+					{
+						// Ignore all elements
+						return AutomatedElementDirective.Ignore;
+					}
 					LabelEditResult IBranch.CommitLabelEdit(int row, int column, string newText)
 					{
 						newText = newText.Trim();
@@ -160,14 +164,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									return LabelEditResult.CancelEdit;
 								}
-
-								using (Transaction t = myStore.TransactionManager.BeginTransaction(ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction))
+								IORMToolServices toolServices = (IORMToolServices)myStore;
+								toolServices.AutomatedElementFilter += FilterAllElements;
+								try
 								{
-									myReferenceModeKindsList[row].FormatString = UglyFormatString(newText);
-									if (t.HasPendingChanges)
+									using (Transaction t = myStore.TransactionManager.BeginTransaction(ResourceStrings.ModelReferenceModeEditorChangeFormatStringTransaction))
 									{
-										t.Commit();
+										myReferenceModeKindsList[row].FormatString = UglyFormatString(newText);
+										if (t.HasPendingChanges)
+										{
+											t.Commit();
+										}
 									}
+								}
+								finally
+								{
+									toolServices.AutomatedElementFilter -= FilterAllElements;
 								}
 								break;
 							case Columns.ReferenceModeKind:

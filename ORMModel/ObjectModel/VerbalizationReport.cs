@@ -193,6 +193,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			IDictionary<Type, IVerbalizationSets> snippetsDictionary = toolServices.GetVerbalizationSnippetsDictionary(HtmlReport.HtmlReportTargetName);
 			IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
 			IExtensionVerbalizerService extensionVerbalizer = toolServices.ExtensionVerbalizerService;
+			IDictionary<string, object> verbalizationOptions = toolServices.VerbalizationOptions;
 			Dictionary<IVerbalize, IVerbalize> alreadyVerbalized;
 			Dictionary<object, object> locallyVerbalized = new Dictionary<object, object>();
 			Stream fileStream;
@@ -218,10 +219,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 
 					IVerbalizeCustomChildren objectTypeListReport = new ObjectTypeListReport(model, objectTypeList, snippets, ReportVerbalizationSnippetType.ObjectTypeListHeader, ReportVerbalizationSnippetType.ObjectTypeListFooter, reportContent);
 					VerbalizationHelper.VerbalizeChildren(
-						objectTypeListReport.GetCustomChildVerbalizations(null, sign),
+						objectTypeListReport.GetCustomChildVerbalizations(null, verbalizationOptions, sign),
 						null,
 						snippetsDictionary,
 						extensionVerbalizer,
+						verbalizationOptions,
 						HtmlReport.HtmlReportTargetName,
 						alreadyVerbalized,
 						locallyVerbalized,
@@ -256,10 +258,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 
 						ObjectTypePageReport objectTypePageReport = new ObjectTypePageReport(objectType, reportContent, snippets);
 						VerbalizationHelper.VerbalizeChildren(
-							((IVerbalizeCustomChildren)objectTypePageReport).GetCustomChildVerbalizations(objectTypePageReport, sign),
+							((IVerbalizeCustomChildren)objectTypePageReport).GetCustomChildVerbalizations(objectTypePageReport, verbalizationOptions, sign),
 							null,
 							snippetsDictionary,
 							extensionVerbalizer,
+							verbalizationOptions,
 							HtmlReport.HtmlReportTargetName,
 							alreadyVerbalized,
 							locallyVerbalized,
@@ -307,10 +310,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 
 						FactTypePageReport factTypePageReport = new FactTypePageReport(factTypeList[i], reportContent, snippets);
 						VerbalizationHelper.VerbalizeChildren(
-							((IVerbalizeCustomChildren)factTypePageReport).GetCustomChildVerbalizations(factTypePageReport, sign),
+							((IVerbalizeCustomChildren)factTypePageReport).GetCustomChildVerbalizations(factTypePageReport, verbalizationOptions, sign),
 							null,
 							snippetsDictionary,
 							extensionVerbalizer,
+							verbalizationOptions,
 							HtmlReport.HtmlReportTargetName,
 							alreadyVerbalized,
 							locallyVerbalized,
@@ -348,10 +352,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 
 					FactTypeConstraintValidationListReport factTypeConstraintValidationReport = new FactTypeConstraintValidationListReport(model, factTypeList, reportContent, snippets);
 					VerbalizationHelper.VerbalizeChildren(
-						((IVerbalizeCustomChildren)factTypeConstraintValidationReport).GetCustomChildVerbalizations(factTypeConstraintValidationReport, sign),
+						((IVerbalizeCustomChildren)factTypeConstraintValidationReport).GetCustomChildVerbalizations(factTypeConstraintValidationReport, verbalizationOptions, sign),
 						null,
 						snippetsDictionary,
 						extensionVerbalizer,
+						verbalizationOptions,
 						HtmlReport.HtmlReportTargetName,
 						alreadyVerbalized,
 						null,
@@ -595,14 +600,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalizeCustomChildren Implementation
-			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 			{
-				return GetCustomChildVerbalizations(filter, sign);
+				return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
 			}
 			/// <summary>
 			/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
 			/// </summary>
-			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(new ObjectTypePageHeaderSummary(myObjectType, filter));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new ObjectTypePageFactTypeSection(myObjectType));
@@ -675,9 +680,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalizeCustomChildren Implementation
-			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 			{
-				return GetCustomChildVerbalizations(filter, sign);
+				return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
 			}
 			/// <summary>
 			/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
@@ -686,11 +691,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			/// If the <see cref="IVerbalizeFilterChildren.FilterChildVerbalizer">FilterChildVerbalizer</see> method returns
 			/// <see cref="CustomChildVerbalizer.Block"/> for any constituent components used to create a <see cref="CustomChildVerbalizer"/>,
 			/// then that custom child should not be created</param>
+			/// <param name="verbalizationOptions">Verbalization options</param>
 			/// <param name="sign">The preferred verbalization sign</param>
 			/// <returns>
 			/// IEnumerable of CustomChildVerbalizer structures
 			/// </returns>
-			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(new VerbalizationReportTableOfContentsWrapper(myReportContent, mySnippets));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new ModelContextWrapper(myModel, ReportVerbalizationSnippetType.ContextModelDescriptionOpen, ReportVerbalizationSnippetType.ContextModelDescriptionClose));
@@ -1047,14 +1053,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalizeCustomChildren Implementation
-			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 			{
-				return GetCustomChildVerbalizations(filter, sign);
+				return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
 			}
 			/// <summary>
 			/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
 			/// </summary>
-			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageHeaderSummary(myFactType, filter));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageObjectTypeSection(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, myFactType));
@@ -1661,14 +1667,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			}
 			#endregion // Constructor
 			#region IVerbalizeCustomChildren Implementation
-			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+			IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 			{
-				return GetCustomChildVerbalizations(filter, sign);
+				return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
 			}
 			/// <summary>
 			/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations
 			/// </summary>
-			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(new VerbalizationReportTableOfContentsWrapper(myReportContent, mySnippets));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new ModelContextWrapper(myModel, ReportVerbalizationSnippetType.ContextModelDescriptionOpen, ReportVerbalizationSnippetType.ContextModelDescriptionClose));

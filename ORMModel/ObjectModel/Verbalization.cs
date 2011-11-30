@@ -21,6 +21,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -142,6 +143,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns><see langword="true"/> if an element has been marked
 		/// as verbalized.</returns>
 		bool TestVerbalizedLocally(object target);
+		/// <summary>
+		/// Get the current verbalization options
+		/// </summary>
+		IDictionary<string, object> VerbalizationOptions { get;}
 	}
 	/// <summary>
 	/// Interface for verbalization
@@ -429,9 +434,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// If the <see cref="IVerbalizeFilterChildren.FilterChildVerbalizer">FilterChildVerbalizer</see> method returns
 		/// <see cref="CustomChildVerbalizer.Block"/> for any constituent components used to create a <see cref="CustomChildVerbalizer"/>,
 		/// then that custom child should not be created</param>
+		/// <param name="verbalizationOptions">Current verbalization options</param>
 		/// <param name="sign">The preferred verbalization sign</param>
 		/// <returns>IEnumerable of CustomChildVerbalizer structures</returns>
-		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign);
+		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign);
 	}
 	#endregion // IVerbalizeCustomChildren interface
 	#region IVerbalizeExtensionChildren interface
@@ -1947,6 +1953,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // VerbalizationCallbackWriter class
+	#region ObjectTypeNameVerbalizationStyle enum
+	/// <summary>
+	/// Provide options controlling the display of object type names
+	/// in fact readings
+	/// </summary>
+	public enum ObjectTypeNameVerbalizationStyle
+	{
+		/// <summary>
+		/// Present the name exactly as entered by the user
+		/// </summary>
+		AsIs,
+		/// <summary>
+		/// If the entered name has embedded capitalization,
+		/// extractmultiple words based on the capitalization
+		/// and display as lower case.
+		/// </summary>
+		SeparateCombinedNames,
+		/// <summary>
+		/// If a name has multiple words, combine them into a
+		/// single word with interior capitalization separating
+		/// the words. Lead with an upper case letter (PascalStyle)
+		/// </summary>
+		CombineNamesLeadWithUpper,
+		/// <summary>
+		/// If a name has multiple words, combine them into a
+		/// single word with interior capitalization separating
+		/// the words. Lead with a lower case letter (camelStyle)
+		/// </summary>
+		CombineNamesLeadWithLower,
+	}
+	#endregion // ObjectTypeNameVerbalizationStyle enum
+	#region CoreVerbalizationOption class
+	/// <summary>
+	/// A list of names for verbalization options.
+	/// </summary>
+	public static class CoreVerbalizationOption
+	{
+		/// <summary>
+		/// The option name for determining if a single-role uniqueness and
+		/// simple mandatory constraint on the same role verbalize as a single constraint.
+		/// </summary>
+		public const string CombineSimpleMandatoryAndUniqueness = "CombineSimpleMandatoryAndUniqueness";
+		/// <summary>
+		/// The option name for determining if verbalization is included for the lack of a uniqueness constraint.
+		/// </summary>
+		public const string ShowDefaultConstraint = "ShowDefaultConstraint";
+		/// <summary>
+		/// The option name for determining if fact types are listed with an object type verbalization
+		/// </summary>
+		public const string FactTypesWithObjectType = "FactTypesWithObjectType";
+		/// <summary>
+		/// The option name to determine how object type names are displayed.
+		/// </summary>
+		public const string ObjectTypeNameDisplay = "ObjectTypeNameDisplay";
+	}
+	#endregion // CoreVerbalizationOption class
 	#region VerbalizationHelper class
 	/// <summary>
 	/// Provides helper methods for Verbalizations
@@ -1977,7 +2039,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Callback for child verbalizations
 		/// </summary>
-		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
+		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
 		#endregion // VerbalizationHandler Delegate
 		#region VerbalizationContextImpl class
 		private sealed class VerbalizationContextImpl : IVerbalizationContext
@@ -1998,13 +2060,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			private NotifyAlreadyVerbalized myAlreadyVerbalizedCallback;
 			private NotifyAlreadyVerbalized myVerbalizedLocallyCallback;
 			private string myVerbalizationTarget;
-			public VerbalizationContextImpl(NotifyBeginVerbalization beginCallback, NotifyDeferVerbalization deferCallback, NotifyAlreadyVerbalized alreadyVerbalizedCallback, NotifyAlreadyVerbalized locallyVerbalizedCallback, string verbalizationTarget)
+			private IDictionary<string, object> myVerbalizationOptions;
+			public VerbalizationContextImpl(NotifyBeginVerbalization beginCallback, NotifyDeferVerbalization deferCallback, NotifyAlreadyVerbalized alreadyVerbalizedCallback, NotifyAlreadyVerbalized locallyVerbalizedCallback, string verbalizationTarget, IDictionary<string, object> verbalizationOptions)
 			{
 				myBeginCallback = beginCallback;
 				myDeferCallback = deferCallback;
 				myAlreadyVerbalizedCallback = alreadyVerbalizedCallback;
 				myVerbalizedLocallyCallback = locallyVerbalizedCallback;
 				myVerbalizationTarget = verbalizationTarget;
+				myVerbalizationOptions = verbalizationOptions;
 			}
 			#region IVerbalizationContext Implementation
 			void IVerbalizationContext.BeginVerbalization(VerbalizationContent content)
@@ -2041,6 +2105,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				return false;
 			}
+			IDictionary<string, object> IVerbalizationContext.VerbalizationOptions
+			{
+				get
+				{
+					return myVerbalizationOptions;
+				}
+			}
 			#endregion // IVerbalizationContext Implementation
 		}
 		#endregion // VerbalizationContextImpl class
@@ -2051,6 +2122,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="writer">The VerbalizationCallbackWriter object used to write target specific snippets</param>
 		/// <param name="snippetsDictionary"></param>
 		/// <param name="extensionVerbalizer"></param>
+		/// <param name="verbalizationOptions"></param>
 		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
 		/// <param name="locallyVerbalized"></param>
@@ -2063,7 +2135,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
 		/// <returns></returns>
-		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			if (indentationLevel == 0 &&
 				alreadyVerbalized != null &&
@@ -2128,6 +2200,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						target,
 						snippetsDictionary,
 						extensionVerbalizer,
+						verbalizationOptions,
 						verbalizationTarget,
 						(0 == (options & DeferVerbalizationOptions.MultipleVerbalizations)) ? alreadyVerbalized : null,
 						locallyVerbalized,
@@ -2171,7 +2244,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					return retValLoc;
 				},
-				verbalizationTarget),
+				verbalizationTarget,
+				verbalizationOptions),
 				sign);
 			lastLevel = localLastLevel;
 			firstWrite = localFirstWrite;
@@ -2196,6 +2270,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="element">The element to verbalize</param>
 		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
 		/// <param name="extensionVerbalizer">The service to retrieve additional child verbalizations from extension elements</param>
+		/// <param name="verbalizationOptions">The current verbalization options.</param>
 		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
 		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
 		/// <param name="locallyVerbalized">A dictionary of elements verbalized during the current top level verbalization.</param>
@@ -2203,7 +2278,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
 			int lastLevel = 0;
 			bool firstWrite = true;
@@ -2212,6 +2287,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				element,
 				snippetsDictionary,
 				extensionVerbalizer,
+				verbalizationOptions,
 				verbalizationTarget,
 				alreadyVerbalized,
 				locallyVerbalized,
@@ -2244,6 +2320,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="extensionChildren">The enumeration of extension children to verbalize</param>
 		/// <param name="snippetsDictionary">The default or loaded verbalization sets. Passed through all verbalization calls.</param>
 		/// <param name="extensionVerbalizer">The service to retrieve additional child verbalizations from extension elements</param>
+		/// <param name="verbalizationOptions">A dictionary of named verbalization options</param>
 		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
 		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
 		/// <param name="locallyVerbalized">A dictionary of elements verbalized during the current top level verbalization.</param>
@@ -2251,7 +2328,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeChildren(IEnumerable<CustomChildVerbalizer> customChildren, IEnumerable<CustomChildVerbalizer> extensionChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeChildren(IEnumerable<CustomChildVerbalizer> customChildren, IEnumerable<CustomChildVerbalizer> extensionChildren, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
 			if (customChildren == null && extensionChildren == null)
 			{
@@ -2269,6 +2346,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					handler,
 					snippetsDictionary,
 					extensionVerbalizer,
+					verbalizationOptions,
 					verbalizationTarget,
 					alreadyVerbalized,
 					locallyVerbalized,
@@ -2287,6 +2365,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					handler,
 					snippetsDictionary,
 					extensionVerbalizer,
+					verbalizationOptions,
 					verbalizationTarget,
 					alreadyVerbalized,
 					locallyVerbalized,
@@ -2315,6 +2394,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="element"></param>
 		/// <param name="snippetsDictionary"></param>
 		/// <param name="extensionVerbalizer"></param>
+		/// <param name="verbalizationOptions"></param>
 		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
 		/// <param name="locallyVerbalized"></param>
@@ -2327,7 +2407,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, VerbalizationSign sign, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, VerbalizationSign sign, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			IVerbalize parentVerbalize = null;
 			IRedirectVerbalization surrogateRedirect;
@@ -2350,7 +2430,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			try
 			{
-				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, locallyVerbalized, parentVerbalize, callback, indentLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
+				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, parentVerbalize, callback, indentLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
 				if (result == VerbalizationResult.AlreadyVerbalized)
 				{
 					return;
@@ -2394,7 +2474,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								int childCount = children.Count;
 								for (int j = 0; j < childCount; ++j)
 								{
-									VerbalizeElement(children[j], snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, locallyVerbalized, filter, writer, callback, sign, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+									VerbalizeElement(children[j], snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, filter, writer, callback, sign, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
 								}
 							}
 						}
@@ -2403,11 +2483,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (customChildren != null)
 					{
 						VerbalizeCustomChildren(
-							customChildren.GetCustomChildVerbalizations(filter, sign),
+							customChildren.GetCustomChildVerbalizations(filter, verbalizationOptions, sign),
 							writer,
 							callback,
 							snippetsDictionary,
 							extensionVerbalizer,
+							verbalizationOptions,
 							ORMCoreDomainModel.VerbalizationTargetName,
 							alreadyVerbalized,
 							locallyVerbalized,
@@ -2426,6 +2507,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							callback,
 							snippetsDictionary,
 							extensionVerbalizer,
+							verbalizationOptions,
 							ORMCoreDomainModel.VerbalizationTargetName,
 							alreadyVerbalized,
 							locallyVerbalized,
@@ -2447,12 +2529,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (0 != (options & SurveyNodeReferenceOptions.SelectReferenceReason) &&
 							null != (deferToElement = surveyReference.SurveyNodeReferenceReason))
 						{
-							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, locallyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
+							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
 							return;
 						}
 						if (null != (deferToElement = surveyReference.ReferencedElement))
 						{
-							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, locallyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
+							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
 						}
 					}
 				}
@@ -2511,6 +2593,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="callback">The delegate used to handle the verbalization</param>
 		/// <param name="snippetsDictionary"></param>
 		/// <param name="extensionVerbalizer"></param>
+		/// <param name="verbalizationOptions"></param>
 		/// <param name="verbalizationTarget"></param>
 		/// <param name="alreadyVerbalized"></param>
 		/// <param name="locallyVerbalized"></param>
@@ -2520,7 +2603,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeCustomChildren(IEnumerable<CustomChildVerbalizer> customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeCustomChildren(IEnumerable<CustomChildVerbalizer> customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			if (customChildren == null)
 			{
@@ -2533,7 +2616,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					try
 					{
-						callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationTarget, alreadyVerbalized, locallyVerbalized, childVerbalize, callback, indentationLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+						callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, childVerbalize, callback, indentationLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
 					}
 					finally
 					{
@@ -2550,15 +2633,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // VerbalizeElement methods
-		#region NormalizeObjectTypeName methods
+		#region NormalizeObjectTypeName method
 		/// <summary>
 		/// Get an object type name based on the current user settings
 		/// </summary>
 		/// <param name="originalName">The namd as entered in the model.</param>
+		/// <param name="verbalizationOptions">The context verbalization options</param>
 		/// <returns>The name adjusted according to the current user settings.</returns>
-		public static string NormalizeObjectTypeName(string originalName)
+		public static string NormalizeObjectTypeName(string originalName, IDictionary<string, object> verbalizationOptions)
 		{
-			ObjectTypeNameVerbalizationStyle style = OptionsPage.CurrentVerbalizationObjectTypeNameDisplay;
+			ObjectTypeNameVerbalizationStyle style = (ObjectTypeNameVerbalizationStyle)verbalizationOptions[CoreVerbalizationOption.ObjectTypeNameDisplay];
 			switch (style)
 			{
 				case ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithLower:
@@ -2631,7 +2715,54 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return originalName;
 			}
 		}
-		#endregion // NormalizeObjectTypeName methods
+		#endregion // NormalizeObjectTypeName method
+		#region GetDocumentHeaderReplacementFields method
+		/// <summary>
+		/// Get the 8 document header replacement fields from the current font and color settings.
+		/// Colors are returned in HTML format.
+		/// </summary>
+		public static string[] GetDocumentHeaderReplacementFields(Store store, IVerbalizationSets<CoreVerbalizationSnippetType> snippets)
+		{
+			// The replacement fields, pulled from VerbalizationGenerator.xsd
+			//{0} font-family
+			//{1} font-size
+			//{2} predicate text color
+			//{3} predicate text bold
+			//{4} object name color
+			//{5} object name bold
+			//{6} formal item color
+			//{7} formal item bold
+			//{8} notes item color
+			//{9} notes item bold
+			//{10} refmode item color
+			//{11} refmode item bold
+			//{12} instance value item color
+			//{13} instance value item bold
+			string boldWeight = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerFontWeightBold);
+			string normalWeight = snippets.GetSnippet(CoreVerbalizationSnippetType.VerbalizerFontWeightNormal);
+			string[] retVal = new string[] { "Tahoma", "8", "darkgreen", normalWeight, "purple", normalWeight, "mediumblue", boldWeight, "black", normalWeight, "brown", normalWeight, "brown", normalWeight };
+			IORMFontAndColorService colorService = ((IORMToolServices)store).FontAndColorService;
+			using (Font font = colorService.GetFont(ORMDesignerColorCategory.Verbalizer))
+			{
+				retVal[0] = font.FontFamily.Name;
+				retVal[1] = (font.Size * 72f).ToString(CultureInfo.InvariantCulture);
+				retVal[2] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerPredicateText));
+				retVal[3] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerPredicateText) & FontStyle.Bold)) ? boldWeight : normalWeight;
+				retVal[4] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerObjectName));
+				retVal[5] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerObjectName) & FontStyle.Bold)) ? boldWeight : normalWeight;
+				retVal[6] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerFormalItem));
+				retVal[7] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerFormalItem) & FontStyle.Bold)) ? boldWeight : normalWeight;
+				retVal[8] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerNotesItem));
+				retVal[9] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerNotesItem) & FontStyle.Bold)) ? boldWeight : normalWeight;
+				retVal[10] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerRefMode));
+				retVal[11] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerRefMode) & FontStyle.Bold)) ? boldWeight : normalWeight;
+				retVal[12] = ColorTranslator.ToHtml(colorService.GetForeColor(ORMDesignerColor.VerbalizerInstanceValue));
+				retVal[13] = (0 != (colorService.GetFontStyle(ORMDesignerColor.VerbalizerInstanceValue) & FontStyle.Bold)) ? boldWeight : normalWeight;
+				// Changes here need to be synchronized with corresponding changes in Core.Load.VerbalizationManager.GetFontColor and GetFontBold
+			}
+			return retVal;
+		}
+		#endregion // GetDocumentHeaderReplacementFields method
 	}
 	#endregion // VerbalizationHelper class
 	#region ExtensionVerbalizerService class
@@ -2871,442 +3002,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // ExtensionVerbalizerService class
 	#region RolePathVerbalizer class
-	#region RolePathVerbalizerSnippetType enum
-	/// <summary>
-	/// Enumeration for text snippets and format strings
-	/// used by <see cref="RolePathVerbalizer"/>. The actual
-	/// strings are provided by an implementation of
-	/// <see cref="IRolePathRenderer"/>
-	/// </summary>
-	public enum RolePathVerbalizerSnippetType
-	{
-		/// <summary>
-		/// Specify a space-separated list of items to determine
-		/// if split lists are rendered as integrated or separate
-		/// blocks. Allowed values are {And, Or, Xor, !And, !Or, !Xor}
-		/// </summary>
-		HeaderListDirective,
-		/// <summary>
-		/// Specify a space-separated list of items to determine
-		/// if a list style supports collapsing a repeated lead
-		/// role. Allowed values are {Chain, And, Or, Xor, !And,
-		/// !Or, !Xor, !Chain}. The !Chain directive here applies
-		/// to the long form of negation, not the inlined form
-		/// where the verbose negation constructs are not used.
-		/// A collapsed lead completely eliminates a lead role
-		/// player. For example, '... Person has FirstName and
-		/// has LastName', with Person eliminated from the second
-		/// fact type rendering.
-		/// </summary>
-		CollapsibleLeadDirective,
-		/// <summary>
-		/// Specify a space-separated list of items to determine
-		/// if the first item in a list style supports collapsing
-		/// to allow a back reference. The allowed values here
-		/// are the same as the <see cref="CollapsibleLeadDirective"/>
-		/// and should not intersect the values used for the
-		/// <see cref="HeaderListDirective"/>. A back reference uses
-		/// a personal or impersonal pronoun in place of a restatement
-		/// of the lead role player. The back reference must immediately
-		/// follow the preceding noun. This directive allows a backreference
-		/// to be used by replacing the *[Tail|Nested]ListOpen snippets
-		/// with the *[Tail|Nested]ListCollapsedOpen snippets. Lead
-		/// list types do not support back referencing.
-		/// </summary>
-		CollapsibleListOpenForBackReferenceDirective,
-		/// <summary>
-		/// An impersonal pronoun used as a replacement for
-		/// a role player with an immediate back reference: 'that'.
-		/// </summary>
-		ImpersonalPronoun,
-		/// <summary>
-		/// An impersonal pronoun used as a replacement for
-		/// a role player with an immediate back reference: 'who'.
-		/// </summary>
-		PersonalPronoun,
-		/// <summary>
-		/// Get an existential quantifier with a single role replacement: some {0}.
-		/// </summary>
-		ExistentialQuantifier,
-		/// <summary>
-		/// Get a negated existential quantifier with a single role replacmement: no {0}.
-		/// </summary>
-		NegatedExistentialQuantifier,
-		/// <summary>
-		/// Get a back reference quantifier with a single role replacement: that {0}.
-		/// </summary>
-		BackReferenceQuantifier,
-		/// <summary>
-		/// Relate two variables of different types that represent the same instance
-		/// where the first variable is an impersonal object type: {0} that is {1}.
-		/// </summary>
-		ImpersonalIdentityCorrelation,
-		/// <summary>
-		/// A form of ImpersonalIdentityCorrelation for lead role scenarios. Relate two
-		/// variables of different types that represent the same instance where the
-		/// first variable is an impersonal object type: {1} is {0} that.
-		/// </summary>
-		ImpersonalLeadIdentityCorrelation,
-		/// <summary>
-		/// Relate two variable names of different types that represent the same instance
-		/// where the first variable is a personal object type: {0} who is {1}.
-		/// </summary>
-		PersonalIdentityCorrelation,
-		/// <summary>
-		/// A form of PersonalIdentityCorrelation for lead role scenarios. Relate two
-		/// variables of different types that represent the same instance where the
-		/// first variable is an personal object type: {1} is {0} who.
-		/// </summary>
-		PersonalLeadIdentityCorrelation,
-		/// <summary>
-		/// Combine different hyphen-bound predicate parts around a central replacement
-		/// field occupied by the role player: {0}{{0}}{1}
-		/// </summary>
-		HyphenBoundPredicatePart,
-		/// <summary>
-		/// Project a calculation or constant value onto a head variable: {0} = {1}
-		/// </summary>
-		HeadVariableProjection,
-		/// <summary>
-		/// Decorate a single or complex aggregation context: {0} of {1}
-		/// </summary>
-		AggregateParameterDecorator,
-		/// <summary>
-		/// Provide a description of a single aggregation context: each {0}
-		/// </summary>
-		AggregateParameterSimpleAggregationContext,
-		/// <summary>
-		/// The opening of a composite aggregation list: each
-		/// </summary>
-		AggregateParameterComplexAggregationContextListOpen,
-		/// <summary>
-		/// The separator of a composite aggregation list: ,
-		/// </summary>
-		AggregateParameterComplexAggregationContextListSeparator,
-		/// <summary>
-		/// The closing of a composite aggregation list: combination
-		/// </summary>
-		AggregateParameterComplexAggregationContextListClose,
-		/// <summary>
-		/// Leave aggregate parameter inputs as a bag of values: each {0}
-		/// </summary>
-		AggregateBagProjection,
-		/// <summary>
-		/// Limit values from an aggregate parameter input to distinct values: each distinct {0}
-		/// </summary>
-		AggregateSetProjection,
-		/// <summary>
-		/// Introduce variables inline in the verbalization phrase. The replacement
-		/// is either a single value or a list, and the quantifiers (some, no, that) are
-		/// already included in the replacement list: for {0},
-		/// </summary>
-		VariableIntroductionClause,
-		/// <summary>
-		/// The list separator for introducing multiple variables in a single clause.
-		/// </summary>
-		VariableIntroductionSeparator,
-		/// <summary>
-		/// Assert variable existence as a complete statement, as opposed to the
-		/// <see cref="VariableIntroductionClause"/> used to introduce a variable
-		/// using a prefix: {0} exists.
-		/// </summary>
-		VariableExistence,
-		/// <summary>
-		/// Assert variable non-existence for an a previous declared variable in
-		/// an existence statement. Note that <see cref="VariableExistence"/> can
-		/// be used with a negated quantifier if the negated variable has not been
-		/// previously introduced: {0} does not exist.
-		/// </summary>
-		NegatedVariableExistence,
-		/// <summary>
-		/// A space separated list of list closure snippet names from this
-		/// enum that reverse an indentation. Trailing outdents can be tracked
-		/// specially during formatting so that external text or outer list
-		/// separator and close elements on the same line as the outdent keeps
-		/// the same indentation level.
-		/// </summary>
-		ListCloseOutdentSnippets,
-		/// <summary>
-		/// A space separated list of list separators and close elements that
-		/// must be placed before any active trailing outdent snippets.
-		/// </summary>
-		OutdentAwareTrailingListSnippets,
-		/// <summary>
-		/// </summary>
-		ChainedListOpen,
-		/// <summary>
-		/// A separator for a chained list where the chained restriction
-		/// applies only to elements contained in the preceding fact statement.
-		/// </summary>
-		ChainedListLocalRestrictionSeparator,
-		/// <summary>
-		/// A separator for a chained list where the chained restriction
-		/// applies only to elements contained in the preceding fact statement
-		/// and the start of the next statement is a back reference.
-		/// </summary>
-		ChainedListLocalRestrictionBackReferenceSeparator,
-		/// <summary>
-		/// A separator for a chained list where the chained restriction
-		/// introduces additional fact statements. Note that the complex
-		/// restriction separator is not used before a TailListOpen of
-		/// an operator separated list, which is any split list not specific
-		/// in the HeaderListDirective snippet.
-		/// </summary>
-		ChainedListComplexRestrictionSeparator,
-		/// <summary>
-		/// The same as <see cref="ChainedListComplexRestrictionSeparator"/>,
-		/// except used for a top-level restriction. If the non-top-level
-		/// separator includes an indentation, then should separator should
-		/// omit the indent.
-		/// </summary>
-		ChainedListTopLevelComplexRestrictionSeparator,
-		/// <summary>
-		/// A separator for a chained list where the chained restriction
-		/// introduces additional fact statements and the start of the
-		/// next statement is a back reference.
-		/// See <see cref="ChainedListComplexRestrictionSeparator"/>
-		/// for additional comments.
-		/// </summary>
-		ChainedListComplexRestrictionBackReferenceSeparator,
-		/// <summary>
-		/// The same as <see cref="ChainedListComplexRestrictionBackReferenceSeparator"/>,
-		/// except used for a top-level restriction. If the non-top-level
-		/// separator includes an indentation, then should separator should
-		/// omit the indent.
-		/// </summary>
-		ChainedListTopLevelComplexRestrictionBackReferenceSeparator,
-		/// <summary>
-		/// Used in place of the <see cref="ChainedListComplexRestrictionSeparator"/> if the
-		/// lead role player of a chained list is the same as the previous statement.
-		/// Chained lists can collapse the lead role if the list type is listed
-		/// in the CollapsibleLeadDirective snippet.
-		/// </summary>
-		ChainedListComplexRestrictionCollapsedLeadSeparator,
-		/// <summary>
-		/// The same as <see cref="ChainedListComplexRestrictionCollapsedLeadSeparator"/>,
-		/// except used for a top-level restriction. If the non-top-level
-		/// separator includes an indentation, then should separator should
-		/// omit the indent.
-		/// </summary>
-		ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator,
-		/// <summary>
-		/// The text for a collapsed separator in a chained list. Generally
-		/// just a space.
-		/// </summary>
-		ChainedListCollapsedSeparator,
-		/// <summary>
-		/// </summary>
-		ChainedListClose,
-		/// <summary>
-		/// </summary>
-		NegatedChainedListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedChainedListClose,
-		/// <summary>
-		/// </summary>
-		AndLeadListOpen,
-		/// <summary>
-		/// </summary>
-		AndLeadListSeparator,
-		/// <summary>
-		/// </summary>
-		AndLeadListClose,
-		/// <summary>
-		/// </summary>
-		AndTailListOpen,
-		/// <summary>
-		/// </summary>
-		AndTailListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		AndTailListSeparator,
-		/// <summary>
-		/// </summary>
-		AndTailListClose,
-		/// <summary>
-		/// </summary>
-		AndNestedListOpen,
-		/// <summary>
-		/// </summary>
-		AndNestedListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		AndNestedListSeparator,
-		/// <summary>
-		/// </summary>
-		AndNestedListClose,
-		/// <summary>
-		/// </summary>
-		NegatedAndLeadListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedAndLeadListSeparator,
-		/// <summary>
-		/// </summary>
-		NegatedAndLeadListClose,
-		/// <summary>
-		/// </summary>
-		NegatedAndTailListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedAndTailListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		NegatedAndTailListSeparator,
-		/// <summary>
-		/// </summary>
-		NegatedAndTailListClose,
-		/// <summary>
-		/// </summary>
-		NegatedAndNestedListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedAndNestedListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		NegatedAndNestedListSeparator,
-		/// <summary>
-		/// </summary>
-		NegatedAndNestedListClose,
-		/// <summary>
-		/// </summary>
-		OrLeadListOpen,
-		/// <summary>
-		/// </summary>
-		OrLeadListSeparator,
-		/// <summary>
-		/// </summary>
-		OrLeadListClose,
-		/// <summary>
-		/// </summary>
-		OrTailListOpen,
-		/// <summary>
-		/// </summary>
-		OrTailListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		OrTailListSeparator,
-		/// <summary>
-		/// </summary>
-		OrTailListClose,
-		/// <summary>
-		/// </summary>
-		OrNestedListOpen,
-		/// <summary>
-		/// </summary>
-		OrNestedListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		OrNestedListSeparator,
-		/// <summary>
-		/// </summary>
-		OrNestedListClose,
-		/// <summary>
-		/// </summary>
-		NegatedOrLeadListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedOrLeadListSeparator,
-		/// <summary>
-		/// </summary>
-		NegatedOrLeadListClose,
-		/// <summary>
-		/// </summary>
-		NegatedOrTailListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedOrTailListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		NegatedOrTailListSeparator,
-		/// <summary>
-		/// </summary>
-		NegatedOrTailListClose,
-		/// <summary>
-		/// </summary>
-		NegatedOrNestedListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedOrNestedListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		NegatedOrNestedListSeparator,
-		/// <summary>
-		/// </summary>
-		NegatedOrNestedListClose,
-		/// <summary>
-		/// </summary>
-		XorLeadListOpen,
-		/// <summary>
-		/// </summary>
-		XorLeadListSeparator,
-		/// <summary>
-		/// </summary>
-		XorLeadListClose,
-		/// <summary>
-		/// </summary>
-		XorTailListOpen,
-		/// <summary>
-		/// </summary>
-		XorTailListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		XorTailListSeparator,
-		/// <summary>
-		/// </summary>
-		XorTailListClose,
-		/// <summary>
-		/// </summary>
-		XorNestedListOpen,
-		/// <summary>
-		/// </summary>
-		XorNestedListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		XorNestedListSeparator,
-		/// <summary>
-		/// </summary>
-		XorNestedListClose,
-		/// <summary>
-		/// </summary>
-		NegatedXorLeadListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedXorLeadListSeparator,
-		/// <summary>
-		/// </summary>
-		NegatedXorLeadListClose,
-		/// <summary>
-		/// </summary>
-		NegatedXorTailListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedXorTailListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		NegatedXorTailListSeparator,
-		/// <summary>
-		/// </summary>
-		NegatedXorTailListClose,
-		/// <summary>
-		/// </summary>
-		NegatedXorNestedListOpen,
-		/// <summary>
-		/// </summary>
-		NegatedXorNestedListCollapsedOpen,
-		/// <summary>
-		/// </summary>
-		NegatedXorNestedListSeparator,
-		/// <summary>
-		/// </summary>
-		NegatedXorNestedListClose,
-		/// <summary>
-		/// Duplicate value for the last item in this enum
-		/// </summary>
-		Last = NegatedXorNestedListClose,
-	}
-	#endregion // RolePathVerbalizerSnippetType enum
 	#region RolePathRolePlayerRenderingOptions enum
 	/// <summary>
 	/// Options used with the <see cref="IRolePathRendererContext.RenderAssociatedRolePlayer"/> method.
@@ -3365,14 +3060,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// <summary>
 	/// Rendering interface for the <see cref="RolePathVerbalizer"/> class
 	/// </summary>
-	public interface IRolePathRenderer
+	public interface IRolePathRenderer : IVerbalizationSets<CoreVerbalizationSnippetType>
 	{
-		/// <summary>
-		/// Resolve a <see cref="RolePathVerbalizerSnippetType"/> into a string.
-		/// </summary>
-		/// <param name="snippet">The <see cref="RolePathVerbalizerSnippetType"/> to resolve.</param>
-		/// <returns>The corresponding string.</returns>
-		string ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType snippet);
 		/// <summary>
 		/// Get the <see cref="IFormatProvider"/> for this rendering.
 		/// </summary>
@@ -3432,6 +3121,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		// class and create with VerbalizationGenerator. Move all snippets into the core snippets.
 		#region Member Variables
 		private IVerbalizationSets<CoreVerbalizationSnippetType> myCoreSnippets;
+		private IDictionary<string, object> myVerbalizationOptions;
 		private IFormatProvider myFormatProvider;
 		#endregion // Member Variables
 		#region Constructor
@@ -3439,234 +3129,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Create a new <see cref="StandardRolePathRenderer"/>
 		/// </summary>
 		/// <param name="coreSnippets">Core verbalization snippets</param>
+		/// <param name="verbalizationContext">The current verbalization context</param>
 		/// <param name="formatProvider">Context format provider</param>
-		public StandardRolePathRenderer(IVerbalizationSets<CoreVerbalizationSnippetType> coreSnippets, IFormatProvider formatProvider)
+		public StandardRolePathRenderer(IVerbalizationSets<CoreVerbalizationSnippetType> coreSnippets, IVerbalizationContext verbalizationContext, IFormatProvider formatProvider)
 		{
 			myCoreSnippets = coreSnippets;
 			myFormatProvider = formatProvider;
+			myVerbalizationOptions = verbalizationContext.VerbalizationOptions;
 		}
 		#endregion // Constructor
 		#region IRolePathRenderer Implementation
 		/// <summary>
-		/// Implements <see cref="IRolePathRenderer.ResolveVerbalizerSnippet"/>
+		/// Implements <see cref="IVerbalizationSets{CoreVerbalizationSnippetType}.GetSnippet(CoreVerbalizationSnippetType,System.Boolean,System.Boolean)"/>
 		/// </summary>
-		protected string ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType snippet)
+		protected string GetSnippet(CoreVerbalizationSnippetType snippetType, bool isDeontic, bool isNegative)
 		{
-			string retVal = null;
-			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = myCoreSnippets;
-			switch (snippet)
-			{
-				case RolePathVerbalizerSnippetType.HeaderListDirective:
-					return "!And !Or Xor !Xor";
-				case RolePathVerbalizerSnippetType.CollapsibleLeadDirective:
-					return "And Or Chain";
-				case RolePathVerbalizerSnippetType.CollapsibleListOpenForBackReferenceDirective:
-					return "And Or Chain";
-				case RolePathVerbalizerSnippetType.ImpersonalPronoun:
-					return snippets.GetSnippet(CoreVerbalizationSnippetType.ImpersonalPronoun);
-				case RolePathVerbalizerSnippetType.PersonalPronoun:
-					return snippets.GetSnippet(CoreVerbalizationSnippetType.PersonalPronoun);
-				case RolePathVerbalizerSnippetType.ExistentialQuantifier:
-					return snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, false, false);
-				case RolePathVerbalizerSnippetType.NegatedExistentialQuantifier:
-					return snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, false, true);
-				case RolePathVerbalizerSnippetType.BackReferenceQuantifier:
-					return snippets.GetSnippet(CoreVerbalizationSnippetType.DefiniteArticle, false, false);
-				case RolePathVerbalizerSnippetType.ImpersonalIdentityCorrelation:
-					return @"{0} <span class=""quantifier""/>that is</span> {1}";
-				case RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation:
-					return @"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that</span>";
-				case RolePathVerbalizerSnippetType.PersonalIdentityCorrelation:
-					return @"{0} <span class=""quantifier""/>who is</span> {1}";
-				case RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation:
-					return @"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>";
-				case RolePathVerbalizerSnippetType.HyphenBoundPredicatePart:
-					return snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart);
-				case RolePathVerbalizerSnippetType.HeadVariableProjection:
-					return @"{0} <span class=""logicalOperator"">=</span> {1}";
-				case RolePathVerbalizerSnippetType.AggregateParameterDecorator:
-					return @"{0} <span class=""quantifier"">for </span> {1}";
-				case RolePathVerbalizerSnippetType.AggregateParameterSimpleAggregationContext:
-					return @"<span class=""quantifier"">that</span> {0}";
-				case RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListOpen:
-					return @"<span class=""quantifier"">each unique </span>";
-				case RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListSeparator:
-					return @"<span class=""listSeparator"">, </span>";
-				case RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListClose:
-					return @"<span class=""quantifier""> combination</span>";
-				case RolePathVerbalizerSnippetType.AggregateBagProjection:
-					return @"<span class=""quantifier"">each</span> {0}";
-				case RolePathVerbalizerSnippetType.AggregateSetProjection:
-					return @"<span class=""quantifier"">each distinct</span> {0}";
-				case RolePathVerbalizerSnippetType.VariableIntroductionClause:
-					return @"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>";
-				case RolePathVerbalizerSnippetType.VariableIntroductionSeparator:
-					return @"<span class=""logicalOperator""> and </span>";
-				case RolePathVerbalizerSnippetType.VariableExistence:
-					return @"{0} <span class=""quantifier"">exists</span>";
-				case RolePathVerbalizerSnippetType.NegatedVariableExistence:
-					return @"{0} <span class=""quantifier"">does not exist</span>";
-
-				// List management
-				case RolePathVerbalizerSnippetType.ListCloseOutdentSnippets:
-					return @"ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose";
-				case RolePathVerbalizerSnippetType.OutdentAwareTrailingListSnippets:
-					return @"NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator";
-				case RolePathVerbalizerSnippetType.ChainedListOpen:
-					return "<span>";
-				case RolePathVerbalizerSnippetType.ChainedListLocalRestrictionSeparator:
-					return @" <span class=""quantifier"">where</span> ";
-				case RolePathVerbalizerSnippetType.ChainedListLocalRestrictionBackReferenceSeparator:
-					return @" ";
-				case RolePathVerbalizerSnippetType.ChainedListComplexRestrictionSeparator:
-					return @"<br/></span><span class=""smallIndent""><span class=""quantifier"">where</span> ";
-				case RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionSeparator:
-					return @"<br/><span class=""quantifier"">where</span> ";
-				case RolePathVerbalizerSnippetType.ChainedListComplexRestrictionBackReferenceSeparator:
-					return @"<br/></span><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionBackReferenceSeparator:
-					return @"<br/>";
-				case RolePathVerbalizerSnippetType.ChainedListComplexRestrictionCollapsedLeadSeparator:
-					return @"<br/></span><span class=""smallIndent""><span class=""quantifier"">and</span> ";
-				case RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator:
-					return @"<br/><span class=""quantifier"">and</span> ";
-				case RolePathVerbalizerSnippetType.ChainedListCollapsedSeparator:
-					return @" ";
-				case RolePathVerbalizerSnippetType.ChainedListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedChainedListOpen:
-					return @"<span class=""quantifier"">it is not true that </span>";
-				case RolePathVerbalizerSnippetType.NegatedChainedListClose:
-					return @"";
-				case RolePathVerbalizerSnippetType.AndLeadListOpen:
-					return @"";
-				case RolePathVerbalizerSnippetType.AndLeadListSeparator:
-					return @"<br/><span class=""quantifier"">and</span> ";
-				case RolePathVerbalizerSnippetType.AndLeadListClose:
-					return @"";
-				case RolePathVerbalizerSnippetType.AndTailListOpen:
-					return @"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ";
-				case RolePathVerbalizerSnippetType.AndTailListCollapsedOpen:
-					return @"<br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.AndTailListSeparator:
-					return @"<br/><span class=""quantifier"">and</span> ";
-				case RolePathVerbalizerSnippetType.AndTailListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.AndNestedListOpen:
-				case RolePathVerbalizerSnippetType.AndNestedListCollapsedOpen:
-					return @"<span>";
-				case RolePathVerbalizerSnippetType.AndNestedListSeparator:
-					return @"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ";
-				case RolePathVerbalizerSnippetType.AndNestedListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedAndLeadListOpen:
-					return @"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.NegatedAndLeadListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.NegatedAndLeadListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedAndTailListOpen:
-				case RolePathVerbalizerSnippetType.NegatedAndTailListCollapsedOpen:
-					return @"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.NegatedAndTailListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.NegatedAndTailListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedAndNestedListOpen:
-				case RolePathVerbalizerSnippetType.NegatedAndNestedListCollapsedOpen:
-					return @"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.NegatedAndNestedListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.NegatedAndNestedListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.OrLeadListOpen:
-					return @"";
-				case RolePathVerbalizerSnippetType.OrLeadListSeparator:
-					return @"<br/><span class=""quantifier"">or</span> ";
-				case RolePathVerbalizerSnippetType.OrLeadListClose:
-					return @"";
-				case RolePathVerbalizerSnippetType.OrTailListOpen:
-					return @"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ";
-				case RolePathVerbalizerSnippetType.OrTailListCollapsedOpen:
-					return @"<br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.OrTailListSeparator:
-					return @"<br/><span class=""quantifier"">or</span> ";
-				case RolePathVerbalizerSnippetType.OrTailListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.OrNestedListOpen:
-				case RolePathVerbalizerSnippetType.OrNestedListCollapsedOpen:
-					return @"<span>";
-				case RolePathVerbalizerSnippetType.OrNestedListSeparator:
-					return @"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ";
-				case RolePathVerbalizerSnippetType.OrNestedListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedOrLeadListOpen:
-					return @"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.NegatedOrLeadListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.NegatedOrLeadListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedOrTailListOpen:
-				case RolePathVerbalizerSnippetType.NegatedOrTailListCollapsedOpen:
-					return @"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.NegatedOrTailListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.NegatedOrTailListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedOrNestedListOpen:
-				case RolePathVerbalizerSnippetType.NegatedOrNestedListCollapsedOpen:
-					return @"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.NegatedOrNestedListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.NegatedOrNestedListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.XorLeadListOpen:
-					return @"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.XorLeadListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.XorLeadListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.XorTailListOpen:
-				case RolePathVerbalizerSnippetType.XorTailListCollapsedOpen:
-					return @"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.XorTailListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.XorTailListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.XorNestedListOpen:
-				case RolePathVerbalizerSnippetType.XorNestedListCollapsedOpen:
-					return @"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.XorNestedListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.XorNestedListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedXorLeadListOpen:
-					return @"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.NegatedXorLeadListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.NegatedXorLeadListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedXorTailListOpen:
-				case RolePathVerbalizerSnippetType.NegatedXorTailListCollapsedOpen:
-					return @"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.NegatedXorTailListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.NegatedXorTailListClose:
-					return @"</span>";
-				case RolePathVerbalizerSnippetType.NegatedXorNestedListOpen:
-				case RolePathVerbalizerSnippetType.NegatedXorNestedListCollapsedOpen:
-					return @"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">";
-				case RolePathVerbalizerSnippetType.NegatedXorNestedListSeparator:
-					return @"<span class=""listSeparator"">;</span><br/>";
-				case RolePathVerbalizerSnippetType.NegatedXorNestedListClose:
-					return @"</span>";
-			}
-			Debug.Assert(retVal != null);
-			return retVal;
+			return myCoreSnippets.GetSnippet(snippetType, isDeontic, isNegative);
 		}
-		string IRolePathRenderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType snippetType)
+		string IVerbalizationSets<CoreVerbalizationSnippetType>.GetSnippet(CoreVerbalizationSnippetType snippetType, bool isDeontic, bool isNegative)
 		{
-			return ResolveVerbalizerSnippet(snippetType);
+			return GetSnippet(snippetType, isDeontic, isNegative);
+		}
+		/// <summary>
+		/// Implements <see cref="IVerbalizationSets{CoreVerbalizationSnippetType}.GetSnippet(CoreVerbalizationSnippetType)"/>
+		/// </summary>
+		protected string GetSnippet(CoreVerbalizationSnippetType snippetType)
+		{
+			return myCoreSnippets.GetSnippet(snippetType);
+		}
+		string IVerbalizationSets<CoreVerbalizationSnippetType>.GetSnippet(CoreVerbalizationSnippetType snippetType)
+		{
+			return GetSnippet(snippetType);
 		}
 		/// <summary>
 		/// Implements <see cref="IRolePathRenderer.FormatProvider"/>
@@ -3704,9 +3197,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string idString = rolePlayer.Id.ToString("D");
 				if (subscript == 0)
 				{
-					return string.Format(myFormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), idString);
+					return string.Format(myFormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, myVerbalizationOptions), idString);
 				}
-				return string.Format(myFormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), idString, subscript);
+				return string.Format(myFormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, myVerbalizationOptions), idString, subscript);
 			}
 		}
 		string IRolePathRenderer.RenderRolePlayer(ObjectType rolePlayer, int subscript, bool fullyExistential)
@@ -4022,7 +3515,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						scopeVariable = rendererContext.RenderAssociatedRolePlayer((object)pathNode.PathRoot ?? pathNode.PathedRole, null, RolePathRolePlayerRenderingOptions.None);
 						if (!string.IsNullOrEmpty(scopeVariable))
 						{
-							result = string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterDecorator), result, string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterSimpleAggregationContext), scopeVariable));
+							result = string.Format(myFormatProvider, GetSnippet(CoreVerbalizationSnippetType.AggregateParameterDecorator), result, string.Format(myFormatProvider, GetSnippet(CoreVerbalizationSnippetType.AggregateParameterSimpleAggregationContext), scopeVariable));
 						}
 					}
 					else
@@ -4042,11 +3535,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										++processed;
 										break;
 									case 1:
-										builder.Append(ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListOpen));
+										builder.Append(GetSnippet(CoreVerbalizationSnippetType.AggregateParameterComplexAggregationContextListOpen));
 										builder.Append(firstScopeVariable);
 										goto default;
 									default:
-										builder.Append(ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListSeparator));
+										builder.Append(GetSnippet(CoreVerbalizationSnippetType.AggregateParameterComplexAggregationContextListSeparator));
 										builder.Append(scopeVariable);
 										++processed;
 										break;
@@ -4058,19 +3551,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							string aggregationDescription;
 							if (processed == 1)
 							{
-								aggregationDescription = string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterSimpleAggregationContext), firstScopeVariable);
+								aggregationDescription = string.Format(myFormatProvider, GetSnippet(CoreVerbalizationSnippetType.AggregateParameterSimpleAggregationContext), firstScopeVariable);
 							}
 							else
 							{
-								builder.Append(ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterComplexAggregationContextListClose));
+								builder.Append(GetSnippet(CoreVerbalizationSnippetType.AggregateParameterComplexAggregationContextListClose));
 								aggregationDescription = builder.ToString(restoreBuilder, builder.Length - restoreBuilder);
 								builder.Length = restoreBuilder;
 							}
-							result = string.Format(myFormatProvider, ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.AggregateParameterDecorator), result, aggregationDescription);
+							result = string.Format(myFormatProvider, GetSnippet(CoreVerbalizationSnippetType.AggregateParameterDecorator), result, aggregationDescription);
 						}
 					}
 				}
-				result = string.Format(myFormatProvider, ResolveVerbalizerSnippet(calculatedValueInput.DistinctValues ? RolePathVerbalizerSnippetType.AggregateSetProjection : RolePathVerbalizerSnippetType.AggregateBagProjection), result);
+				result = string.Format(myFormatProvider, GetSnippet(calculatedValueInput.DistinctValues ? CoreVerbalizationSnippetType.AggregateSetProjection : CoreVerbalizationSnippetType.AggregateBagProjection), result);
 			}
 			return result;
 		}
@@ -6678,7 +6171,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int headerListBits = myHeaderListBranchingBits;
 			if (headerListBits == -1)
 			{
-				myHeaderListBranchingBits = headerListBits = TranslateBranchTypeDirective(RolePathVerbalizerSnippetType.HeaderListDirective);
+				myHeaderListBranchingBits = headerListBits = TranslateBranchTypeDirective(CoreVerbalizationSnippetType.RolePathHeaderListDirective);
 			}
 			return (0 != (headerListBits & (1 << ((int)branchType - 1)))) ? VerbalizationPlanBranchRenderingStyle.HeaderList : VerbalizationPlanBranchRenderingStyle.OperatorSeparated;
 		}
@@ -6695,7 +6188,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int collapsibleLeadBits = myCollapsibleLeadBranchingBits;
 			if (collapsibleLeadBits == -1)
 			{
-				myCollapsibleLeadBranchingBits = collapsibleLeadBits = TranslateBranchTypeDirective(RolePathVerbalizerSnippetType.CollapsibleLeadDirective);
+				myCollapsibleLeadBranchingBits = collapsibleLeadBits = TranslateBranchTypeDirective(CoreVerbalizationSnippetType.RolePathCollapsibleLeadDirective);
 			}
 			return 0 != (collapsibleLeadBits & (1 << ((int)branchType - 1)));
 		}
@@ -6712,7 +6205,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int collapsibleLeadBits = myCollapsibleListOpenForBackReferenceBranchingBits;
 			if (collapsibleLeadBits == -1)
 			{
-				myCollapsibleListOpenForBackReferenceBranchingBits = collapsibleLeadBits = TranslateBranchTypeDirective(RolePathVerbalizerSnippetType.CollapsibleListOpenForBackReferenceDirective);
+				myCollapsibleListOpenForBackReferenceBranchingBits = collapsibleLeadBits = TranslateBranchTypeDirective(CoreVerbalizationSnippetType.RolePathCollapsibleListOpenForBackReferenceDirective);
 			}
 			return 0 != (collapsibleLeadBits & (1 << ((int)branchType - 1)));
 		}
@@ -6721,10 +6214,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// of branch type directives into bits, with bits corresponding to the
 		/// numeric values of <see cref="VerbalizationPlanBranchType"/>
 		/// </summary>
-		private int TranslateBranchTypeDirective(RolePathVerbalizerSnippetType branchDirectiveSnippet)
+		private int TranslateBranchTypeDirective(CoreVerbalizationSnippetType branchDirectiveSnippet)
 		{
 			int directiveBits = 0;
-			string[] directiveStrings = myRenderer.ResolveVerbalizerSnippet(branchDirectiveSnippet).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+			string[] directiveStrings = myRenderer.GetSnippet(branchDirectiveSnippet).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
 			if (directiveStrings != null)
 			{
 				Type enumType = typeof(VerbalizationPlanBranchType);
@@ -6780,30 +6273,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return true;
 		}
 		/// <summary>
-		/// Determine if a specific <see cref="RolePathVerbalizerSnippetType"/>
-		/// value is marked as an outdent snippet by the dyamic
-		/// <see cref="RolePathVerbalizerSnippetType.ListCloseOutdentSnippets"/> snippet.
+		/// Determine if a specific <see cref="CoreVerbalizationSnippetType"/>
+		/// value is marked as an outdent snippet by the dynamic
+		/// <see cref="CoreVerbalizationSnippetType.RolePathListCloseOutdentSnippets"/> snippet.
 		/// </summary>
-		private bool IsOutdentSnippet(RolePathVerbalizerSnippetType snippetType)
+		private bool IsOutdentSnippet(CoreVerbalizationSnippetType snippetType)
 		{
 			BitTracker tracker = myOutdentSnippetBits;
 			if (tracker.Count == 0)
 			{
-				myOutdentSnippetBits = tracker = TranslateSnippetTypeDirective(RolePathVerbalizerSnippetType.ListCloseOutdentSnippets);
+				myOutdentSnippetBits = tracker = TranslateSnippetTypeDirective(CoreVerbalizationSnippetType.RolePathListCloseOutdentSnippets);
 			}
 			return tracker[(int)snippetType];
 		}
 		/// <summary>
-		/// Determine if a specific <see cref="RolePathVerbalizerSnippetType"/>
-		/// value is marked as an outdent aware snippet by the dyamic
-		/// <see cref="RolePathVerbalizerSnippetType.OutdentAwareTrailingListSnippets"/> snippet.
+		/// Determine if a specific <see cref="CoreVerbalizationSnippetType"/>
+		/// value is marked as an outdent aware snippet by the dynamic
+		/// <see cref="CoreVerbalizationSnippetType.RolePathOutdentAwareTrailingListSnippets"/> snippet.
 		/// </summary>
-		private bool IsOutdentAwareSnippet(RolePathVerbalizerSnippetType snippetType)
+		private bool IsOutdentAwareSnippet(CoreVerbalizationSnippetType snippetType)
 		{
 			BitTracker tracker = myOutdentAwareSnippetBits;
 			if (tracker.Count == 0)
 			{
-				myOutdentAwareSnippetBits = tracker = TranslateSnippetTypeDirective(RolePathVerbalizerSnippetType.OutdentAwareTrailingListSnippets);
+				myOutdentAwareSnippetBits = tracker = TranslateSnippetTypeDirective(CoreVerbalizationSnippetType.RolePathOutdentAwareTrailingListSnippets);
 			}
 			return tracker[(int)snippetType];
 		}
@@ -6811,13 +6304,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Helper method to return a bit tracker with true values for
 		/// any snippet type in the space separated string.
 		/// </summary>
-		private BitTracker TranslateSnippetTypeDirective(RolePathVerbalizerSnippetType snippetType)
+		private BitTracker TranslateSnippetTypeDirective(CoreVerbalizationSnippetType snippetType)
 		{
-			BitTracker retVal = new BitTracker((int)RolePathVerbalizerSnippetType.Last + 1);
-			string[] outdentSnippets = myRenderer.ResolveVerbalizerSnippet(snippetType).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+			BitTracker retVal = new BitTracker((int)CoreVerbalizationSnippetType.Last + 1);
+			string[] outdentSnippets = myRenderer.GetSnippet(snippetType).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
 			if (outdentSnippets != null)
 			{
-				Type enumType = typeof(RolePathVerbalizerSnippetType);
+				Type enumType = typeof(CoreVerbalizationSnippetType);
 				for (int i = 0; i < outdentSnippets.Length; ++i)
 				{
 					string outdentSnippetName = outdentSnippets[i];
@@ -6832,7 +6325,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (result != null)
 					{
-						retVal[(int)(RolePathVerbalizerSnippetType)result] = true;
+						retVal[(int)(CoreVerbalizationSnippetType)result] = true;
 					}
 				}
 			}
@@ -8753,7 +8246,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					PathedRole[] pathedRoles = new PathedRole[factRoleCount];
 					int replacedRoleCount = 0;
 					string predicatePartDecorator = renderer.GetPredicatePartDecorator(factType);
-					VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(reading, renderer.FormatProvider, factRoles, null, renderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.HyphenBoundPredicatePart), predicatePartDecorator);
+					VerbalizationHyphenBinder hyphenBinder = new VerbalizationHyphenBinder(reading, renderer.FormatProvider, factRoles, null, renderer.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart), predicatePartDecorator);
 					bool negateExitRole = 0 != (readingOptions & VerbalizationPlanReadingOptions.NegatedExitRole);
 					int negatedExitRoleIndex = -1;
 
@@ -8809,7 +8302,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 											// We'll use the lead (im)personal pronoun regardless, get it first
 											rolePlayer = backReferenceVariable.RolePlayer;
-											replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
+											replacement = renderer.GetSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? CoreVerbalizationSnippetType.PersonalPronoun : CoreVerbalizationSnippetType.ImpersonalPronoun);
 
 											// Figure out if we need to the variables as well
 											Dictionary<CorrelatedVariablePairing, int> pairings = myCorrelatedVariablePairing;
@@ -8823,7 +8316,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												rolePlayer = pathedRole.Role.RolePlayer;
 												replacement = string.Format(
 													renderer.FormatProvider,
-													renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation),
+													renderer.GetSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? CoreVerbalizationSnippetType.PersonalLeadIdentityCorrelation : CoreVerbalizationSnippetType.ImpersonalLeadIdentityCorrelation),
 													QuantifyRolePlayerName(GetSubscriptedRolePlayerName(primaryVariable), primaryVariable.Use(CurrentQuantificationUsePhase, true), false),
 													replacement);
 												if (pairings == null)
@@ -8836,7 +8329,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										else
 										{
 											rolePlayer = pathedRole.Role.RolePlayer;
-											replacement = renderer.ResolveVerbalizerSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? RolePathVerbalizerSnippetType.PersonalPronoun : RolePathVerbalizerSnippetType.ImpersonalPronoun);
+											replacement = renderer.GetSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? CoreVerbalizationSnippetType.PersonalPronoun : CoreVerbalizationSnippetType.ImpersonalPronoun);
 										}
 									}
 									else if (VerbalizationPlanReadingOptions.FullyCollapseFirstRole == (readingOptions & (VerbalizationPlanReadingOptions.FullyCollapseFirstRole | VerbalizationPlanReadingOptions.BlockFullyCollapseFirstRole)))
@@ -8903,13 +8396,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool isTailBranch = false;
 					bool inlineNegatedChain = false;
 					int nestedOutdent = -1;
-					RolePathVerbalizerSnippetType snippet;
+					CoreVerbalizationSnippetType snippet;
 					VerbalizationPlanBranchType childBranchType;
 					VerbalizationPlanNodeType previousChildNodeType = (VerbalizationPlanNodeType)(-1);
 					VerbalizationPlanNode previousChildNode = null;
 					while (childNodeLink != null)
 					{
-						snippet = (RolePathVerbalizerSnippetType)(-1);
+						snippet = (CoreVerbalizationSnippetType)(-1);
 						childNode = childNodeLink.Value;
 						switch (renderingStyle)
 						{
@@ -8994,13 +8487,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										if (!IsCorrelatedInstanceDeclared(variableUse) &&
 											!NodeStartsWithVariable(childNode, variableUse.PrimaryRolePlayerVariable))
 										{
-											requiredVariableContextPhrase = requiredVariableContextPhrase + renderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.VariableIntroductionSeparator) + QuantifyVariableUse(variableUse, false, false, default(VerbalizationHyphenBinder), -1);
+											requiredVariableContextPhrase = requiredVariableContextPhrase + renderer.GetSnippet(CoreVerbalizationSnippetType.VariableIntroductionSeparator) + QuantifyVariableUse(variableUse, false, false, default(VerbalizationHyphenBinder), -1);
 										}
 										requiredVariableUseKeyLink = requiredVariableUseKeyLink.Next;
 									}
 									requiredVariableContextPhrase = string.Format(
 										renderer.FormatProvider,
-										renderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.VariableIntroductionClause),
+										renderer.GetSnippet(CoreVerbalizationSnippetType.VariableIntroductionClause),
 										requiredVariableContextPhrase);
 									break;
 								}
@@ -9035,48 +8528,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							switch (branchType)
 							{
 								case VerbalizationPlanBranchType.Chain:
-									snippet = RolePathVerbalizerSnippetType.ChainedListOpen;
+									snippet = CoreVerbalizationSnippetType.ChainedListOpen;
 									testForBackReferenceOpen = false;
 									break;
 								case VerbalizationPlanBranchType.AndSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.AndTailListOpen : (isNestedBranch ? RolePathVerbalizerSnippetType.AndNestedListOpen : RolePathVerbalizerSnippetType.AndLeadListOpen);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.AndTailListOpen : (isNestedBranch ? CoreVerbalizationSnippetType.AndNestedListOpen : CoreVerbalizationSnippetType.AndLeadListOpen);
 									break;
 								case VerbalizationPlanBranchType.OrSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.OrTailListOpen : (isNestedBranch ? RolePathVerbalizerSnippetType.OrNestedListOpen : RolePathVerbalizerSnippetType.OrLeadListOpen);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.OrTailListOpen : (isNestedBranch ? CoreVerbalizationSnippetType.OrNestedListOpen : CoreVerbalizationSnippetType.OrLeadListOpen);
 									break;
 								case VerbalizationPlanBranchType.XorSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.XorTailListOpen : (isNestedBranch ? RolePathVerbalizerSnippetType.XorNestedListOpen : RolePathVerbalizerSnippetType.XorLeadListOpen);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.XorTailListOpen : (isNestedBranch ? CoreVerbalizationSnippetType.XorNestedListOpen : CoreVerbalizationSnippetType.XorLeadListOpen);
 									break;
 								case VerbalizationPlanBranchType.NegatedAndSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedAndTailListOpen : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedAndNestedListOpen : RolePathVerbalizerSnippetType.NegatedAndLeadListOpen);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedAndTailListOpen : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedAndNestedListOpen : CoreVerbalizationSnippetType.NegatedAndLeadListOpen);
 									break;
 								case VerbalizationPlanBranchType.NegatedOrSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedOrTailListOpen : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedOrNestedListOpen : RolePathVerbalizerSnippetType.NegatedOrLeadListOpen);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedOrTailListOpen : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedOrNestedListOpen : CoreVerbalizationSnippetType.NegatedOrLeadListOpen);
 									break;
 								case VerbalizationPlanBranchType.NegatedXorSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedXorTailListOpen : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedXorNestedListOpen : RolePathVerbalizerSnippetType.NegatedXorLeadListOpen);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedXorTailListOpen : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedXorNestedListOpen : CoreVerbalizationSnippetType.NegatedXorLeadListOpen);
 									break;
 								case VerbalizationPlanBranchType.NegatedChain:
 									// Check for inline negation
 									readingOptions = ResolveDynamicNegatedExitRole(childNode);
 									if (0 == (readingOptions & VerbalizationPlanReadingOptions.NegatedExitRole))
 									{
-										snippet = RolePathVerbalizerSnippetType.NegatedChainedListOpen;
+										snippet = CoreVerbalizationSnippetType.NegatedChainedListOpen;
 									}
 									else
 									{
 										inlineNegatedChain = true;
-										snippet = RolePathVerbalizerSnippetType.ChainedListOpen;
+										snippet = CoreVerbalizationSnippetType.ChainedListOpen;
 									}
 									testForBackReferenceOpen = false;
 									break;
 							}
 							if (testForBackReferenceOpen &&
-								snippet != (RolePathVerbalizerSnippetType)(-1) &&
+								snippet != (CoreVerbalizationSnippetType)(-1) &&
 								(isTailBranch || isNestedBranch) &&
 								LeadTextIsBackReference(childNode))
 							{
-								snippet = (RolePathVerbalizerSnippetType)((int)snippet + 1);
+								snippet = (CoreVerbalizationSnippetType)((int)snippet + 1);
 							}
 							nestedOutdent = -1; // Ignore previous nested outdents for lead snippets
 						}
@@ -9098,7 +8591,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								case VerbalizationPlanBranchType.NegatedChain:
 									if (VerbalizationPlanReadingOptions.BackReferenceFirstRole == ((readingOptions = childNode.ReadingOptions) & (VerbalizationPlanReadingOptions.BackReferenceFirstRole | VerbalizationPlanReadingOptions.BlockBackReferenceFirstRole)))
 									{
-										snippet = RolePathVerbalizerSnippetType.ChainedListCollapsedSeparator;
+										snippet = CoreVerbalizationSnippetType.ChainedListCollapsedSeparator;
 									}
 									// Check for a 'TailList', which will render its own lead separator in place of the chain separator.
 									else if (!(!childNode.RenderedRequiredContextVariable &&
@@ -9107,38 +8600,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										GetRenderingStyleFromBranchType(childBranchType) == VerbalizationPlanBranchRenderingStyle.OperatorSeparated))
 									{
 										snippet = (0 != (readingOptions & VerbalizationPlanReadingOptions.FullyCollapseFirstRole)) ?
-											((isTailBranch || isNestedBranch) ? RolePathVerbalizerSnippetType.ChainedListComplexRestrictionCollapsedLeadSeparator : RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator) :
+											((isTailBranch || isNestedBranch) ? CoreVerbalizationSnippetType.ChainedListComplexRestrictionCollapsedLeadSeparator : CoreVerbalizationSnippetType.ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator) :
 											((childNode.RestrictsPreviousFactType ||
 											previousChildNodeType == VerbalizationPlanNodeType.ChainedRootVariable) ?
-												(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListLocalRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListLocalRestrictionSeparator) :
+												(LeadTextIsBackReference(childNode) ? CoreVerbalizationSnippetType.ChainedListLocalRestrictionBackReferenceSeparator : CoreVerbalizationSnippetType.ChainedListLocalRestrictionSeparator) :
 												((isTailBranch || isNestedBranch) ?
-													(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListComplexRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListComplexRestrictionSeparator) :
-													(LeadTextIsBackReference(childNode) ? RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionBackReferenceSeparator : RolePathVerbalizerSnippetType.ChainedListTopLevelComplexRestrictionSeparator)));
+													(LeadTextIsBackReference(childNode) ? CoreVerbalizationSnippetType.ChainedListComplexRestrictionBackReferenceSeparator : CoreVerbalizationSnippetType.ChainedListComplexRestrictionSeparator) :
+													(LeadTextIsBackReference(childNode) ? CoreVerbalizationSnippetType.ChainedListTopLevelComplexRestrictionBackReferenceSeparator : CoreVerbalizationSnippetType.ChainedListTopLevelComplexRestrictionSeparator)));
 									}
 									break;
 								case VerbalizationPlanBranchType.AndSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.AndTailListSeparator : (isNestedBranch ? RolePathVerbalizerSnippetType.AndNestedListSeparator : RolePathVerbalizerSnippetType.AndLeadListSeparator);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.AndTailListSeparator : (isNestedBranch ? CoreVerbalizationSnippetType.AndNestedListSeparator : CoreVerbalizationSnippetType.AndLeadListSeparator);
 									break;
 								case VerbalizationPlanBranchType.OrSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.OrTailListSeparator : (isNestedBranch ? RolePathVerbalizerSnippetType.OrNestedListSeparator : RolePathVerbalizerSnippetType.OrLeadListSeparator);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.OrTailListSeparator : (isNestedBranch ? CoreVerbalizationSnippetType.OrNestedListSeparator : CoreVerbalizationSnippetType.OrLeadListSeparator);
 									break;
 								case VerbalizationPlanBranchType.XorSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.XorTailListSeparator : (isNestedBranch ? RolePathVerbalizerSnippetType.XorNestedListSeparator : RolePathVerbalizerSnippetType.XorLeadListSeparator);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.XorTailListSeparator : (isNestedBranch ? CoreVerbalizationSnippetType.XorNestedListSeparator : CoreVerbalizationSnippetType.XorLeadListSeparator);
 									break;
 								case VerbalizationPlanBranchType.NegatedAndSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedAndTailListSeparator : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedAndNestedListSeparator : RolePathVerbalizerSnippetType.NegatedAndLeadListSeparator);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedAndTailListSeparator : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedAndNestedListSeparator : CoreVerbalizationSnippetType.NegatedAndLeadListSeparator);
 									break;
 								case VerbalizationPlanBranchType.NegatedOrSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedOrTailListSeparator : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedOrNestedListSeparator : RolePathVerbalizerSnippetType.NegatedOrLeadListSeparator);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedOrTailListSeparator : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedOrNestedListSeparator : CoreVerbalizationSnippetType.NegatedOrLeadListSeparator);
 									break;
 								case VerbalizationPlanBranchType.NegatedXorSplit:
-									snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedXorTailListSeparator : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedXorNestedListSeparator : RolePathVerbalizerSnippetType.NegatedXorLeadListSeparator);
+									snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedXorTailListSeparator : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedXorNestedListSeparator : CoreVerbalizationSnippetType.NegatedXorLeadListSeparator);
 									break;
 							}
 						}
 						string separatorText;
-						if (snippet != (RolePathVerbalizerSnippetType)(-1) &&
-							!string.IsNullOrEmpty(separatorText = renderer.ResolveVerbalizerSnippet(snippet)))
+						if (snippet != (CoreVerbalizationSnippetType)(-1) &&
+							!string.IsNullOrEmpty(separatorText = renderer.GetSnippet(snippet)))
 						{
 							if (nestedOutdent != -1 &&
 								IsOutdentAwareSnippet(snippet) &&
@@ -9172,39 +8665,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (!first)
 					{
-						snippet = (RolePathVerbalizerSnippetType)(-1);
+						snippet = (CoreVerbalizationSnippetType)(-1);
 						switch (branchType)
 						{
 							case VerbalizationPlanBranchType.Chain:
-								snippet = RolePathVerbalizerSnippetType.ChainedListClose;
+								snippet = CoreVerbalizationSnippetType.ChainedListClose;
 								break;
 							case VerbalizationPlanBranchType.NegatedChain:
 								snippet = inlineNegatedChain ?
-									RolePathVerbalizerSnippetType.ChainedListClose :
-									RolePathVerbalizerSnippetType.NegatedChainedListClose;
+									CoreVerbalizationSnippetType.ChainedListClose :
+									CoreVerbalizationSnippetType.NegatedChainedListClose;
 								break;
 							case VerbalizationPlanBranchType.AndSplit:
-								snippet = isTailBranch ? RolePathVerbalizerSnippetType.AndTailListClose : (isNestedBranch ? RolePathVerbalizerSnippetType.AndNestedListClose : RolePathVerbalizerSnippetType.AndLeadListClose);
+								snippet = isTailBranch ? CoreVerbalizationSnippetType.AndTailListClose : (isNestedBranch ? CoreVerbalizationSnippetType.AndNestedListClose : CoreVerbalizationSnippetType.AndLeadListClose);
 								break;
 							case VerbalizationPlanBranchType.OrSplit:
-								snippet = isTailBranch ? RolePathVerbalizerSnippetType.OrTailListClose : (isNestedBranch ? RolePathVerbalizerSnippetType.OrNestedListClose : RolePathVerbalizerSnippetType.OrLeadListClose);
+								snippet = isTailBranch ? CoreVerbalizationSnippetType.OrTailListClose : (isNestedBranch ? CoreVerbalizationSnippetType.OrNestedListClose : CoreVerbalizationSnippetType.OrLeadListClose);
 								break;
 							case VerbalizationPlanBranchType.XorSplit:
-								snippet = isTailBranch ? RolePathVerbalizerSnippetType.XorTailListClose : (isNestedBranch ? RolePathVerbalizerSnippetType.XorNestedListClose : RolePathVerbalizerSnippetType.XorLeadListClose);
+								snippet = isTailBranch ? CoreVerbalizationSnippetType.XorTailListClose : (isNestedBranch ? CoreVerbalizationSnippetType.XorNestedListClose : CoreVerbalizationSnippetType.XorLeadListClose);
 								break;
 							case VerbalizationPlanBranchType.NegatedAndSplit:
-								snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedAndTailListClose : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedAndNestedListClose : RolePathVerbalizerSnippetType.NegatedAndLeadListClose);
+								snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedAndTailListClose : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedAndNestedListClose : CoreVerbalizationSnippetType.NegatedAndLeadListClose);
 								break;
 							case VerbalizationPlanBranchType.NegatedOrSplit:
-								snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedOrTailListClose : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedOrNestedListClose : RolePathVerbalizerSnippetType.NegatedOrLeadListClose);
+								snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedOrTailListClose : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedOrNestedListClose : CoreVerbalizationSnippetType.NegatedOrLeadListClose);
 								break;
 							case VerbalizationPlanBranchType.NegatedXorSplit:
-								snippet = isTailBranch ? RolePathVerbalizerSnippetType.NegatedXorTailListClose : (isNestedBranch ? RolePathVerbalizerSnippetType.NegatedXorNestedListClose : RolePathVerbalizerSnippetType.NegatedXorLeadListClose);
+								snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedXorTailListClose : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedXorNestedListClose : CoreVerbalizationSnippetType.NegatedXorLeadListClose);
 								break;
 						}
-						if (snippet != (RolePathVerbalizerSnippetType)(-1))
+						if (snippet != (CoreVerbalizationSnippetType)(-1))
 						{
-							string closeSnippet = renderer.ResolveVerbalizerSnippet(snippet);
+							string closeSnippet = renderer.GetSnippet(snippet);
 							if (!string.IsNullOrEmpty(closeSnippet))
 							{
 								if (nestedOutdent != -1 &&
@@ -9252,13 +8745,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case VerbalizationPlanNodeType.HeadCalculatedValueProjection:
 					return string.Format(
 						renderer.FormatProvider,
-						renderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.HeadVariableProjection),
+						renderer.GetSnippet(CoreVerbalizationSnippetType.HeadVariableProjection),
 						RenderAssociatedRolePlayer(node.HeadVariableKey, null, RolePathRolePlayerRenderingOptions.None),
 						renderer.RenderCalculation(node.Calculation, this, builder));
 				case VerbalizationPlanNodeType.HeadConstantProjection:
 					return string.Format(
 						renderer.FormatProvider,
-						renderer.ResolveVerbalizerSnippet(RolePathVerbalizerSnippetType.HeadVariableProjection),
+						renderer.GetSnippet(CoreVerbalizationSnippetType.HeadVariableProjection),
 						RenderAssociatedRolePlayer(node.HeadVariableKey, null, RolePathRolePlayerRenderingOptions.None),
 						renderer.RenderConstant(node.Constant));
 				case VerbalizationPlanNodeType.ChainedRootVariable:
@@ -9269,7 +8762,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool negateExistence = node.NegateExistence;
 					return string.Format(
 						renderer.FormatProvider,
-						renderer.ResolveVerbalizerSnippet((negateExistence && variableUse.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true)) ? RolePathVerbalizerSnippetType.NegatedVariableExistence : RolePathVerbalizerSnippetType.VariableExistence),
+						renderer.GetSnippet((negateExistence && variableUse.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true)) ? CoreVerbalizationSnippetType.NegatedVariableExistence : CoreVerbalizationSnippetType.VariableExistence),
 						QuantifyVariableUse(variableUse, negateExistence, false, default(VerbalizationHyphenBinder), -1));
 				case VerbalizationPlanNodeType.FloatingRootVariableContext:
 					// There will always be exactly one child node link at this point
@@ -9716,7 +9209,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Dictionary<CorrelatedVariablePairing, int> pairings = myCorrelatedVariablePairing;
 			string retVal = string.Format(
 				renderer.FormatProvider,
-				renderer.ResolveVerbalizerSnippet(leftRolePlayer != null && leftRolePlayer.TreatAsPersonal ? (leadRolePattern ? RolePathVerbalizerSnippetType.PersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.PersonalIdentityCorrelation) : (leadRolePattern ? RolePathVerbalizerSnippetType.ImpersonalLeadIdentityCorrelation : RolePathVerbalizerSnippetType.ImpersonalIdentityCorrelation)),
+				renderer.GetSnippet(leftRolePlayer != null && leftRolePlayer.TreatAsPersonal ? (leadRolePattern ? CoreVerbalizationSnippetType.PersonalLeadIdentityCorrelation : CoreVerbalizationSnippetType.PersonalIdentityCorrelation) : (leadRolePattern ? CoreVerbalizationSnippetType.ImpersonalLeadIdentityCorrelation : CoreVerbalizationSnippetType.ImpersonalIdentityCorrelation)),
 				preRenderedPrimary,
 				QuantifyRolePlayerName(preRenderedPartner, partnerWithVariable.Use(CurrentQuantificationUsePhase, true), false));
 			if (pairings == null)
@@ -9736,7 +9229,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private string QuantifyRolePlayerName(string rolePlayerName, bool existentialQuantifier, bool negateExistentialQuantifier)
 		{
 			IRolePathRenderer renderer = myRenderer;
-			string formatString = renderer.ResolveVerbalizerSnippet(existentialQuantifier ? (negateExistentialQuantifier ? RolePathVerbalizerSnippetType.NegatedExistentialQuantifier : RolePathVerbalizerSnippetType.ExistentialQuantifier) : RolePathVerbalizerSnippetType.BackReferenceQuantifier);
+			string formatString = renderer.GetSnippet(existentialQuantifier ? CoreVerbalizationSnippetType.ExistentialQuantifier : CoreVerbalizationSnippetType.DefiniteArticle, false, negateExistentialQuantifier && existentialQuantifier);
 			if (string.IsNullOrEmpty(formatString) || formatString == "{0}")
 			{
 				return rolePlayerName;

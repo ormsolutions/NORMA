@@ -112,6 +112,13 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 					return null;
 				}
 			}
+			IDictionary<string, object> IORMToolServices.VerbalizationOptions
+			{
+				get
+				{
+					return null;
+				}
+			}
 			INotifySurveyElementChanged IFrameworkServices.NotifySurveyElementChanged
 			{
 				get
@@ -140,7 +147,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 				}
 			}
 			private Delegate myAutomedElementFilter;
-			AutomatedElementDirective IORMToolServices.GetAutomatedElementDirective(ModelElement element)
+			AutomatedElementDirective IFrameworkServices.GetAutomatedElementDirective(ModelElement element)
 			{
 				AutomatedElementDirective retVal = AutomatedElementDirective.None;
 				Delegate filterList = myAutomedElementFilter;
@@ -162,7 +169,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 				}
 				return retVal;
 			}
-			event AutomatedElementFilterCallback IORMToolServices.AutomatedElementFilter
+			event AutomatedElementFilterCallback IFrameworkServices.AutomatedElementFilter
 			{
 				add
 				{

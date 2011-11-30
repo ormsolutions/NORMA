@@ -212,7 +212,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						else if (removedFactType)
 						{
-							if (!objectType.ReferenceModeSharesValueType && // Easy check first
+							if (!objectType.ReferenceModeValueTypeAlsoUsedNormally && // Easy check first
 								!parentDiagram.ShouldDisplayObjectType(valueType)) // More involved check second
 							{
 								RemoveShapesFromDiagram(valueType, parentDiagram);

@@ -28,375 +28,983 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	public enum CoreVerbalizationSnippetType
 	{
 		/// <summary>The 'Acyclicity' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize acyclic ring constraint in the majority of cases.
+		/// Format: No {0} may cycle back to itself via one or more traversals through {1}</remark>
 		Acyclicity,
 		/// <summary>The 'AcyclicityWithRoleNumbers' format string snippet. Contains 4 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize acyclic ring constraints where more than two roles have a role player of the constrained type.
+		/// Format: No {0} may cycle back to itself via one or more instances of the role pair: roles {2} and {3} of {1}</remark>
 		AcyclicityWithRoleNumbers,
+		/// <summary>The 'AggregateBagProjection' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Leave aggregate parameter inputs as a bag of values.
+		/// Format: each {0}</remark>
+		AggregateBagProjection,
+		/// <summary>The 'AggregateParameterComplexAggregationContextListClose' simple snippet value.</summary>
+		/// <remark>Description: The closing of a composite aggregation list.
+		/// Format: combination</remark>
+		AggregateParameterComplexAggregationContextListClose,
+		/// <summary>The 'AggregateParameterComplexAggregationContextListOpen' simple snippet value.</summary>
+		/// <remark>Description:The opening of a composite aggregation list.
+		/// Format: each</remark>
+		AggregateParameterComplexAggregationContextListOpen,
+		/// <summary>The 'AggregateParameterComplexAggregationContextListSeparator' simple snippet value.</summary>
+		/// <remark>Description: The separator of a composite aggregation list.
+		/// Format: ,</remark>
+		AggregateParameterComplexAggregationContextListSeparator,
+		/// <summary>The 'AggregateParameterDecorator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Decorate a single or complex aggregation context.
+		/// Format: {0} of {1}</remark>
+		AggregateParameterDecorator,
+		/// <summary>The 'AggregateParameterSimpleAggregationContext' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Provide a description of a single aggregation context.
+		/// Format: each {0}</remark>
+		AggregateParameterSimpleAggregationContext,
+		/// <summary>The 'AggregateSetProjection' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Limit values from an aggregate parameter input to distinct values.
+		/// Format: each distinct {0}</remark>
+		AggregateSetProjection,
+		/// <summary>The 'AndLeadListClose' simple snippet value.</summary>
+		/// <remark/>
+		AndLeadListClose,
+		/// <summary>The 'AndLeadListOpen' simple snippet value.</summary>
+		/// <remark/>
+		AndLeadListOpen,
+		/// <summary>The 'AndLeadListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		AndLeadListSeparator,
+		/// <summary>The 'AndNestedListClose' simple snippet value.</summary>
+		/// <remark/>
+		AndNestedListClose,
+		/// <summary>The 'AndNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		AndNestedListCollapsedOpen,
+		/// <summary>The 'AndNestedListOpen' simple snippet value.</summary>
+		/// <remark/>
+		AndNestedListOpen,
+		/// <summary>The 'AndNestedListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		AndNestedListSeparator,
+		/// <summary>The 'AndTailListClose' simple snippet value.</summary>
+		/// <remark/>
+		AndTailListClose,
+		/// <summary>The 'AndTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		AndTailListCollapsedOpen,
+		/// <summary>The 'AndTailListOpen' simple snippet value.</summary>
+		/// <remark/>
+		AndTailListOpen,
+		/// <summary>The 'AndTailListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		AndTailListSeparator,
 		/// <summary>The 'AtMostOneQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'at most one' before an object name to signify the quantity may only be zero or one.  Format: at most one {0}</remark>
 		AtMostOneQuantifier,
+		/// <summary>The 'ChainedListClose' simple snippet value.</summary>
+		/// <remark/>
+		ChainedListClose,
+		/// <summary>The 'ChainedListCollapsedSeparator' simple snippet value.</summary>
+		/// <remark>Description: The text for a collapsed separator in a chained list. Generally just a space.</remark>
+		ChainedListCollapsedSeparator,
+		/// <summary>The 'ChainedListComplexRestrictionBackReferenceSeparator' simple snippet value.</summary>
+		/// <remark>Description: A separator for a chained list where the chained restriction introduces additional
+		/// fact statements and the start of the next statement is a back reference.
+		/// See ChainedListComplexRestrictionSeparator for additional comments.
+		/// Format: \n </remark>
+		ChainedListComplexRestrictionBackReferenceSeparator,
+		/// <summary>The 'ChainedListComplexRestrictionCollapsedLeadSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used in place of the ChainedListComplexRestrictionSeparator if the lead role player of
+		/// a chained list is the same as the previous statement. Chained lists can collapse the lead role if the list type is
+		/// listed in the RolePathCollapsibleLeadDirective snippet.
+		/// Format: \n\t and</remark>
+		ChainedListComplexRestrictionCollapsedLeadSeparator,
+		/// <summary>The 'ChainedListComplexRestrictionSeparator' simple snippet value.</summary>
+		/// <remark>Description: A separator for a chained list where the chained restriction introduces
+		/// additional fact statements. Note that the complex restriction separator is not used before a TailListOpen of
+		/// an operator separated list, which is any split list not specific in the RolePathHeaderListDirective snippet.
+		/// Format: \n\t where</remark>
+		ChainedListComplexRestrictionSeparator,
+		/// <summary>The 'ChainedListLocalRestrictionBackReferenceSeparator' simple snippet value.</summary>
+		/// <remark>Description: A separator for a chained list where the chained restriction applies only
+		/// to elements contained in the preceding fact statement and the start of the next statement is a back reference.</remark>
+		ChainedListLocalRestrictionBackReferenceSeparator,
+		/// <summary>The 'ChainedListLocalRestrictionSeparator' simple snippet value.</summary>
+		/// <remark>Description: A separator for a chained list where the chained restriction applies only
+		/// to elements contained in the preceding fact statement.
+		/// Format: where</remark>
+		ChainedListLocalRestrictionSeparator,
+		/// <summary>The 'ChainedListOpen' simple snippet value.</summary>
+		/// <remark>Description: The opening text for a chained list.</remark>
+		ChainedListOpen,
+		/// <summary>The 'ChainedListTopLevelComplexRestrictionBackReferenceSeparator' simple snippet value.</summary>
+		/// <remark>Description: The same as ChainedListComplexRestrictionBackReferenceSeparator, except used for a
+		/// top-level restriction. If the non-top-level separator includes an indentation, then this separator should omit the indent.
+		/// Format: \n and</remark>
+		ChainedListTopLevelComplexRestrictionBackReferenceSeparator,
+		/// <summary>The 'ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator' simple snippet value.</summary>
+		/// <remark>Description: The same as ChainedListComplexRestrictionCollapsedLeadSeparator, except used for a
+		/// top-level restriction. If the non-top-level separator includes an indentation, then this separator should omit the indent.
+		/// Format: \n and</remark>
+		ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator,
+		/// <summary>The 'ChainedListTopLevelComplexRestrictionSeparator' simple snippet value.</summary>
+		/// <remark>Description: The same as ChainedListComplexRestrictionSeparator, except used for a top-level
+		/// restriction. If the non-top-level separator includes an indentation, then this separator should omit the indent.
+		/// Format: \n where</remark>
+		ChainedListTopLevelComplexRestrictionSeparator,
 		/// <summary>The 'CloseVerbalizationSentence' simple snippet value.</summary>
+		/// <remark>Description: Text used to close a verbalized sentence.  Format: .</remark>
 		CloseVerbalizationSentence,
 		/// <summary>The 'CombinationAssociation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes an association of combinations.  Format: {0} combination is associated with {1}</remark>
 		CombinationAssociation,
 		/// <summary>The 'CombinationIdentifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes a combination.  Format: {0} combination</remark>
 		CombinationIdentifier,
 		/// <summary>The 'CombinationOccurrence' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes a range of combination occurrences.  Format: {0} combination occurs {1}</remark>
 		CombinationOccurrence,
 		/// <summary>The 'CombinationUniqueness' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes uniqueness of a combination.  Format: {0} combination is unique</remark>
 		CombinationUniqueness,
 		/// <summary>The 'CombinedObjectAndInstance' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to combine an object and an instance. Format: {0} {1}</remark>
 		CombinedObjectAndInstance,
 		/// <summary>The 'CombinedObjectAndInstanceTypeMissing' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to say an object and instance combination is missing. Format: Missing {0}</remark>
 		CombinedObjectAndInstanceTypeMissing,
 		/// <summary>The 'CompactSimpleListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of a compact simple list.</remark>
 		CompactSimpleListClose,
 		/// <summary>The 'CompactSimpleListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in a compact simple list.  Format: ,</remark>
 		CompactSimpleListFinalSeparator,
 		/// <summary>The 'CompactSimpleListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of a compact simple list.</remark>
 		CompactSimpleListOpen,
 		/// <summary>The 'CompactSimpleListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a compact simple list.  Format: ,</remark>
 		CompactSimpleListPairSeparator,
 		/// <summary>The 'CompactSimpleListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a compact simple list.  Format: ,</remark>
 		CompactSimpleListSeparator,
 		/// <summary>The 'CompatibleTypesIdentityInequalityOperator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify that two instances of compatible types are not the same instance.
+		/// Format: that {0} is not that {1}</remark>
 		CompatibleTypesIdentityInequalityOperator,
 		/// <summary>The 'CompoundListClose' simple snippet value.</summary>
+		/// <remark>Description: Text that is at the end of a compound list.</remark>
 		CompoundListClose,
 		/// <summary>The 'CompoundListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used after the last item listed in a compound list.  Format: ;</remark>
 		CompoundListFinalSeparator,
 		/// <summary>The 'CompoundListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text that is at the beginning of a compound list.</remark>
 		CompoundListOpen,
 		/// <summary>The 'CompoundListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a compound list.  Format: ;</remark>
 		CompoundListPairSeparator,
 		/// <summary>The 'CompoundListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a compound list.  Format: ;</remark>
 		CompoundListSeparator,
 		/// <summary>The 'Conditional' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes a simple conditional statement. Format: if {0} then {1}</remark>
 		Conditional,
 		/// <summary>The 'ConditionalMultiLine' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes a conditional statement on two lines.
+		/// Format: if {0}
+		///         then {1}</remark>
 		ConditionalMultiLine,
 		/// <summary>The 'ConstraintProvidesPreferredIdentifier' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes the preferred identifier for an object.
+		/// Format: this association with {0}provides the preferred identification scheme for {1}</remark>
 		ConstraintProvidesPreferredIdentifier,
 		/// <summary>The 'ContextScope' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to define the context in which the object is used.  Format: context: {0}</remark>
 		ContextScope,
 		/// <summary>The 'ContextScopeReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to define the context in which the following object will be in.  Format: in this context, {0}</remark>
 		ContextScopeReference,
 		/// <summary>The 'DefiniteArticle' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'that' before an object name to signify a back reference to a uniquely qualified object type.</remark>
 		DefiniteArticle,
 		/// <summary>The 'DerivationNoteVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes the informal note specified for an element derivation rule. Format: Derivation  Note: {0}</remark>
 		DerivationNoteVerbalization,
 		/// <summary>The 'DescriptionVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes the text specified for an element description. Format: Informal Description: {0}</remark>
 		DescriptionVerbalization,
 		/// <summary>The 'EachInstanceQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes an instance of the specified object may occur at most one time.  Format: each instance of {0} occurs only once</remark>
 		EachInstanceQuantifier,
 		/// <summary>The 'EntityTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes an object as being an entity type. Format: {0} is an entity type</remark>
 		EntityTypeVerbalization,
 		/// <summary>The 'Equality' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a simple equality constraint. Format: {0} if and only if {1}</remark>
 		Equality,
 		/// <summary>The 'EqualsListClose' simple snippet value.</summary>
+		/// <remark>Description: Text that is at the end of an equals list.</remark>
 		EqualsListClose,
 		/// <summary>The 'EqualsListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used between the last two items in an equals list.  Format: =</remark>
 		EqualsListFinalSeparator,
 		/// <summary>The 'EqualsListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text that is at the beginning of an equals list.</remark>
 		EqualsListOpen,
 		/// <summary>The 'EqualsListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an equals list.  Format: =</remark>
 		EqualsListPairSeparator,
 		/// <summary>The 'EqualsListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an equals list.  Format: =</remark>
 		EqualsListSeparator,
 		/// <summary>The 'ErrorClosePrimaryReport' simple snippet value.</summary>
+		/// <remark>Description: Close a primary error report opened with ErrorOpenPrimaryReport</remark>
 		ErrorClosePrimaryReport,
 		/// <summary>The 'ErrorCloseSecondaryReport' simple snippet value.</summary>
+		/// <remark>Description: Close a secondary error report opened with ErrorOpenSecondaryReport.</remark>
 		ErrorCloseSecondaryReport,
 		/// <summary>The 'ErrorOpenPrimaryReport' simple snippet value.</summary>
+		/// <remark>Description: Used to open a primary error report. Primary error reports block further verbalization.</remark>
 		ErrorOpenPrimaryReport,
 		/// <summary>The 'ErrorOpenSecondaryReport' simple snippet value.</summary>
+		/// <remark>Description: Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.
+		/// Replacement: {0}=error text,{1}=error id
+		/// Format: Model Error: {0}</remark>
 		ErrorOpenSecondaryReport,
 		/// <summary>The 'ErrorPrimary' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a single primary error.
+		/// Replacement: {0}=error text,{1}=error id
+		/// Format: Model Error: {0}</remark>
 		ErrorPrimary,
 		/// <summary>The 'ErrorSecondary' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a single secondary error.
+		/// Format: Model Error: {0}</remark>
 		ErrorSecondary,
 		/// <summary>The 'ExactlyOneQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'exactly one' before an object name to signify the quantity may only be one.  Format: exactly one {0}</remark>
 		ExactlyOneQuantifier,
 		/// <summary>The 'ExclusionBinaryLeadReading' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize an exclusion constraint, on a binary lead reading.
+		/// Format: No {0} the same {1}</remark>
 		ExclusionBinaryLeadReading,
 		/// <summary>The 'ExclusionCombined' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to combine the first role player and the roles played for an Exclusion constraint (i.e: No Person authored and reviewed). Format: {0} {1}</remark>
 		ExclusionCombined,
 		/// <summary>The 'ExistentialQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'some' before an object name to signify the context in which the object is being referred to.  Format: some {0}</remark>
 		ExistentialQuantifier,
 		/// <summary>The 'FactTypeInstanceBlockEnd' simple snippet value.</summary>
+		/// <remark>Description: Formatted single snippet used to end a sample population verbalization of fact types block.</remark>
 		FactTypeInstanceBlockEnd,
 		/// <summary>The 'FactTypeInstanceBlockStart' simple snippet value.</summary>
+		/// <remark>Description: Text and formatting to begin a sample population verbalization of fact types block. Format: Examples:</remark>
 		FactTypeInstanceBlockStart,
 		/// <summary>The 'FactTypeInstanceIdentifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: The text describing the identifier for an objectified FactType instance with an external identifier. Format: Identifier:</remark>
 		FactTypeInstanceIdentifier,
 		/// <summary>The 'FactTypeListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used to close the sample population verbalization list.</remark>
 		FactTypeListClose,
 		/// <summary>The 'FactTypeListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate the last two items in a sample population verbalization list. Format: <br/></remark>
 		FactTypeListFinalSeparator,
 		/// <summary>The 'FactTypeListOpen' simple snippet value.</summary>
+		/// <remark>Description:  Text and formatting to begin a sample population verbalization basic predicate text.Format: FactTypes: <br/></remark>
 		FactTypeListOpen,
 		/// <summary>The 'FactTypeListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate items in a sample population verbalization list. Format: <br/></remark>
 		FactTypeListPairSeparator,
 		/// <summary>The 'FactTypeListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate items in a sample population verbalization list. Format: <br/></remark>
 		FactTypeListSeparator,
 		/// <summary>The 'ForEachCompactQuantifier' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes for each instance of an object, some rule applies to those instances.  Format: for each {0}, {1}</remark>
 		ForEachCompactQuantifier,
 		/// <summary>The 'ForEachIndentedQuantifier' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes for each instance of an object then creates a line break where the rules that apply to those instances are listed.  Format: for each {0}, \n{1}</remark>
 		ForEachIndentedQuantifier,
 		/// <summary>The 'FrequencyPopulation' format string snippet. Contains 3 replacement fields.</summary>
+		/// <remark>Description: Used as for the main body text of a frequency constraint on one FactType.
+		/// Format: each {0} in the population of {1} occurs there {2} times</remark>
 		FrequencyPopulation,
 		/// <summary>The 'FrequencyRangeExact' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for a frequency range where both the min and max values the same
+		/// Format: exactly {0}</remark>
 		FrequencyRangeExact,
 		/// <summary>The 'FrequencyRangeMaxUnbounded' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for a frequency range where both the max value is unbounded.
+		/// Format: at least {0}</remark>
 		FrequencyRangeMaxUnbounded,
 		/// <summary>The 'FrequencyRangeMinAndMax' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used for a frequency range where both the min and max values are specified and different.
+		/// Format: at least {0} and at most {1}</remark>
 		FrequencyRangeMinAndMax,
 		/// <summary>The 'FrequencyRangeMinUnbounded' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for a frequency range where the min value is less than 2.
+		/// Format: at most {1}</remark>
 		FrequencyRangeMinUnbounded,
 		/// <summary>The 'FrequencyTypedOccurrences' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify an instance count or range for a specific object type.
+		/// Format: {1} instances of {0}</remark>
 		FrequencyTypedOccurrences,
 		/// <summary>The 'FrequencyUntypedOccurrences' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to specify an instance count or range using an untyped occurrence phrase
+		/// Format: {0} times</remark>
 		FrequencyUntypedOccurrences,
 		/// <summary>The 'FullFactTypeDerivation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify a fully derived fact type with its derivation rule.
+		/// Format: *{0} if and only if {1}</remark>
 		FullFactTypeDerivation,
 		/// <summary>The 'FullSubtypeDerivation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify a fully derived subtype derivation rule.
+		/// Format: each {0} is {1}</remark>
 		FullSubtypeDerivation,
 		/// <summary>The 'GroupEquality' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Assert group equality. Format: all or none of the following hold: {0}</remark>
 		GroupEquality,
 		/// <summary>The 'GroupExclusion' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Assert group exclusion. Format: at most one of the following holds: {0}
+		/// 						</remark>
 		GroupExclusion,
 		/// <summary>The 'GroupExclusiveOr' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Assert group exclusive-or. Format: exactly one of the following holds: {0}</remark>
 		GroupExclusiveOr,
+		/// <summary>The 'HeadVariableProjection' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Project a calculation or constant value onto a head variable.
+		/// Format: {0} = {1}</remark>
+		HeadVariableProjection,
 		/// <summary>The 'HyphenBoundPredicatePart' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Format string to combine predicate text from hyphen binding with the replacement field. Format: {0}{{0}}{1}</remark>
 		HyphenBoundPredicatePart,
 		/// <summary>The 'IdentityEqualityListClose' simple snippet value.</summary>
+		/// <remark>Description: Text that is at the end of an identity equality list.</remark>
 		IdentityEqualityListClose,
 		/// <summary>The 'IdentityEqualityListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used between the last two items in an identity equality list.  Format: that is a</remark>
 		IdentityEqualityListFinalSeparator,
 		/// <summary>The 'IdentityEqualityListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text that is at the beginning of an identity equality list.</remark>
 		IdentityEqualityListOpen,
 		/// <summary>The 'IdentityEqualityListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an identity equality list.  Format: that is a</remark>
 		IdentityEqualityListPairSeparator,
 		/// <summary>The 'IdentityEqualityListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an identity equality list.  Format: that is a</remark>
 		IdentityEqualityListSeparator,
 		/// <summary>The 'IdentityReferenceQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'the same' before an object name to signify exactly which object is being reference.  Format: the same {0}</remark>
 		IdentityReferenceQuantifier,
+		/// <summary>The 'ImpersonalIdentityCorrelation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Relate two variables of different types that represent the same instance where the first
+		/// variable is an impersonal object type.
+		/// Format: {0} that is {1}</remark>
+		ImpersonalIdentityCorrelation,
+		/// <summary>The 'ImpersonalLeadIdentityCorrelation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: A form of ImpersonalIdentityCorrelation for lead role scenarios. Relate two variables of different
+		/// types that represent the same instance where the first variable is an impersonal object type.
+		/// Format:  {1} is {0} that</remark>
+		ImpersonalLeadIdentityCorrelation,
 		/// <summary>The 'ImpersonalPronoun' simple snippet value.</summary>
+		/// <remark>Description: Use in place of a role player name to reference an impersonal object type with a clear antecedent.</remark>
 		ImpersonalPronoun,
 		/// <summary>The 'ImpliedModalNecessityOperator' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to define the strength of the constraint.  Alethic, positive adds nothing before an object name.  Deontic, positive adds 'it is obligatory that' before an object name.  Alethic, negative adds 'it is impossible that' before an object name.  Deontic, negative adds 'it is forbidden that' before an object name.
+		/// Format for alethic and positive: {0}  Format for deontic and positive: it is obligatory that {0}  Format for alethic and negative: it is impossible that {0}  Format for deontic and negative: it is forbidden that {0}</remark>
 		ImpliedModalNecessityOperator,
 		/// <summary>The 'IndentedCompoundListClose' simple snippet value.</summary>
+		/// <remark>Description: Text that is at the end of an indented compound list.</remark>
 		IndentedCompoundListClose,
 		/// <summary>The 'IndentedCompoundListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in an indented compound list.  Format: ;</remark>
 		IndentedCompoundListFinalSeparator,
 		/// <summary>The 'IndentedCompoundListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text that is at the beginning of an indented compound list.  Format: \n</remark>
 		IndentedCompoundListOpen,
 		/// <summary>The 'IndentedCompoundListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented compound list.  Format: ;</remark>
 		IndentedCompoundListPairSeparator,
 		/// <summary>The 'IndentedCompoundListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented compound list.  Format: ;</remark>
 		IndentedCompoundListSeparator,
 		/// <summary>The 'IndentedListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of an indented list.</remark>
 		IndentedListClose,
 		/// <summary>The 'IndentedListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in an indented list.  Format: and</remark>
 		IndentedListFinalSeparator,
 		/// <summary>The 'IndentedListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of an indented list.  Format: \n</remark>
 		IndentedListOpen,
 		/// <summary>The 'IndentedListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented list.  Format: and</remark>
 		IndentedListPairSeparator,
 		/// <summary>The 'IndentedListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented list.  Format: and</remark>
 		IndentedListSeparator,
 		/// <summary>The 'IndentedLogicalAndListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of an indented logical and list.</remark>
 		IndentedLogicalAndListClose,
 		/// <summary>The 'IndentedLogicalAndListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in an indented logical and list.  Format: and that</remark>
 		IndentedLogicalAndListFinalSeparator,
 		/// <summary>The 'IndentedLogicalAndListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of an indented logical and list.  Format: \n</remark>
 		IndentedLogicalAndListOpen,
 		/// <summary>The 'IndentedLogicalAndListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented logical and list.  Format: and that</remark>
 		IndentedLogicalAndListPairSeparator,
 		/// <summary>The 'IndentedLogicalAndListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented logical and list.  Format: and that</remark>
 		IndentedLogicalAndListSeparator,
 		/// <summary>The 'IndentedLogicalOrListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of an indented logical or list.</remark>
 		IndentedLogicalOrListClose,
 		/// <summary>The 'IndentedLogicalOrListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in an indented logical or list.  Format: or</remark>
 		IndentedLogicalOrListFinalSeparator,
 		/// <summary>The 'IndentedLogicalOrListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of an indented logical or list.  Format: \n</remark>
 		IndentedLogicalOrListOpen,
 		/// <summary>The 'IndentedLogicalOrListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented logical or list.  Format: or</remark>
 		IndentedLogicalOrListPairSeparator,
 		/// <summary>The 'IndentedLogicalOrListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented logical or list.  Format: or</remark>
 		IndentedLogicalOrListSeparator,
 		/// <summary>The 'IndependentVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes an object as being independent. Format: {0} is independent (it may have instances that play no other roles)</remark>
 		IndependentVerbalization,
 		/// <summary>The 'InQuantifier' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize [RolePlayer in Fact], e.g. Person in Person has Age.
+		/// Format: {0} in {1}</remark>
 		InQuantifier,
 		/// <summary>The 'LogicalAndOperator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to 'and' together exactly two other snippets.
+		/// Format: {0} and {1}</remark>
 		LogicalAndOperator,
 		/// <summary>The 'MinClosedMaxClosed' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound closed.
+		/// Format: at least {0} to at most {1}</remark>
 		MinClosedMaxClosed,
 		/// <summary>The 'MinClosedMaxOpen' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound open.
+		/// Format: at least {0} to below {1}</remark>
 		MinClosedMaxOpen,
 		/// <summary>The 'MinClosedMaxUnbounded' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum unbounded.
+		/// Format: at least {0}</remark>
 		MinClosedMaxUnbounded,
 		/// <summary>The 'MinOpenMaxClosed' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a range inclusion with the minimum bound open and the maximum bound closed.
+		/// Format: above {0} to at most {1}</remark>
 		MinOpenMaxClosed,
 		/// <summary>The 'MinOpenMaxOpen' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a range inclusion with the minimum bound open and the maximum bound open.
+		/// Format: above {0} to below {1}</remark>
 		MinOpenMaxOpen,
 		/// <summary>The 'MinOpenMaxUnbounded' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to verbalize a range inclusion with the minimum bound open and the maximum unbounded.
+		/// Format: above {0}</remark>
 		MinOpenMaxUnbounded,
 		/// <summary>The 'MinUnboundedMaxClosed' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound closed.
+		/// Format: at most {1}</remark>
 		MinUnboundedMaxClosed,
 		/// <summary>The 'MinUnboundedMaxOpen' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound open.
+		/// Format: below {1}</remark>
 		MinUnboundedMaxOpen,
 		/// <summary>The 'ModalNecessityOperator' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to define the strength of the constraint.  Alethic adds 'it is necessary that' before  an object name.  Deontic adds 'it is obligatory that' before an object name.
+		/// Format for alethic: it is necessary that {0}  Format for deontic: it is obligatory that {0}</remark>
 		ModalNecessityOperator,
 		/// <summary>The 'ModalPossibilityOperator' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to define the strength of the constraint.  Alethic, positive adds 'it is possible that' before an object name.  Deontic, positive adds 'it is permitted that' before an object name.  Alethic, negative adds 'it is impossible that' before an object name.  Deontic, negative adds 'it is forbidden that' before an object name.
+		/// Format for alethic and positive: it is possible that {0}  Format for deontic and positive: it is permitted that {0}  Format for alethic and negative: it is impossible that {0}  Format for deontic and negative: it is forbidden that {0}</remark>
 		ModalPossibilityOperator,
 		/// <summary>The 'ModelVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Format string to verbalize the model element. Replacement field {0} is the Model name, and {1} is the guid id for the model.</remark>
 		ModelVerbalization,
 		/// <summary>The 'MoreThanOneQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'more than one' before an object name to define quantity as more than one.  Format: more than one {0}</remark>
 		MoreThanOneQuantifier,
 		/// <summary>The 'MultilineIndentedCompoundListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of an indented compound list.  Format:</remark>
 		MultilineIndentedCompoundListClose,
 		/// <summary>The 'MultilineIndentedCompoundListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in an indented compound list.  Format: ;</remark>
 		MultilineIndentedCompoundListFinalSeparator,
 		/// <summary>The 'MultilineIndentedCompoundListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of an indented compound list with one item on each line.</remark>
 		MultilineIndentedCompoundListOpen,
 		/// <summary>The 'MultilineIndentedCompoundListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented compound list.  Format: ;</remark>
 		MultilineIndentedCompoundListPairSeparator,
 		/// <summary>The 'MultilineIndentedCompoundListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in an indented compound list.  Format: ;</remark>
 		MultilineIndentedCompoundListSeparator,
 		/// <summary>The 'MultiValueValueConstraint' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a value range constraint with multiple values.
+		/// Format: the possible values of {0} are {1}</remark>
 		MultiValueValueConstraint,
+		/// <summary>The 'NegatedAndLeadListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndLeadListClose,
+		/// <summary>The 'NegatedAndLeadListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndLeadListOpen,
+		/// <summary>The 'NegatedAndLeadListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndLeadListSeparator,
+		/// <summary>The 'NegatedAndNestedListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndNestedListClose,
+		/// <summary>The 'NegatedAndNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndNestedListCollapsedOpen,
+		/// <summary>The 'NegatedAndNestedListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndNestedListOpen,
+		/// <summary>The 'NegatedAndNestedListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndNestedListSeparator,
+		/// <summary>The 'NegatedAndTailListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndTailListClose,
+		/// <summary>The 'NegatedAndTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndTailListCollapsedOpen,
+		/// <summary>The 'NegatedAndTailListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndTailListOpen,
+		/// <summary>The 'NegatedAndTailListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndTailListSeparator,
+		/// <summary>The 'NegatedChainedListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedChainedListClose,
+		/// <summary>The 'NegatedChainedListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedChainedListOpen,
+		/// <summary>The 'NegatedOrLeadListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrLeadListClose,
+		/// <summary>The 'NegatedOrLeadListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrLeadListOpen,
+		/// <summary>The 'NegatedOrLeadListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrLeadListSeparator,
+		/// <summary>The 'NegatedOrNestedListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrNestedListClose,
+		/// <summary>The 'NegatedOrNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrNestedListCollapsedOpen,
+		/// <summary>The 'NegatedOrNestedListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrNestedListOpen,
+		/// <summary>The 'NegatedOrNestedListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrNestedListSeparator,
+		/// <summary>The 'NegatedOrTailListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrTailListClose,
+		/// <summary>The 'NegatedOrTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrTailListCollapsedOpen,
+		/// <summary>The 'NegatedOrTailListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrTailListOpen,
+		/// <summary>The 'NegatedOrTailListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrTailListSeparator,
+		/// <summary>The 'NegatedVariableExistence' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Assert variable non-existence for an a previous declared variable in an existence statement.
+		/// Note that VariableExistence can be used with a negated quantifier if the negated variable has not been previously introduced.
+		/// Format: {0} does not exist</remark>
+		NegatedVariableExistence,
+		/// <summary>The 'NegatedXorLeadListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorLeadListClose,
+		/// <summary>The 'NegatedXorLeadListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorLeadListOpen,
+		/// <summary>The 'NegatedXorLeadListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorLeadListSeparator,
+		/// <summary>The 'NegatedXorNestedListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorNestedListClose,
+		/// <summary>The 'NegatedXorNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorNestedListCollapsedOpen,
+		/// <summary>The 'NegatedXorNestedListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorNestedListOpen,
+		/// <summary>The 'NegatedXorNestedListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorNestedListSeparator,
+		/// <summary>The 'NegatedXorTailListClose' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorTailListClose,
+		/// <summary>The 'NegatedXorTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorTailListCollapsedOpen,
+		/// <summary>The 'NegatedXorTailListOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorTailListOpen,
+		/// <summary>The 'NegatedXorTailListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorTailListSeparator,
 		/// <summary>The 'NegativeReadingForUnaryOnlyDisjunctiveMandatory' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize that an object is not included in a set.  Format: some {0} participates in none of the following:{1}</remark>
 		NegativeReadingForUnaryOnlyDisjunctiveMandatory,
 		/// <summary>The 'NonTextInstanceValue' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to output a non-text instance value. Format: {0}</remark>
 		NonTextInstanceValue,
 		/// <summary>The 'NotesVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes the text specified for a model note. Format: Notes: {0}</remark>
 		NotesVerbalization,
 		/// <summary>The 'ObjectifiesFactTypeVerbalization' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes the objectification made for a FactType. Format: {0} objectifies "{1}"</remark>
 		ObjectifiesFactTypeVerbalization,
 		/// <summary>The 'ObjectType' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes an object. {0} is the name, {1} is the guid id for the element</remark>
 		ObjectType,
 		/// <summary>The 'ObjectTypeInstanceListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used to close the sample population verbalization list. Format: .</remark>
 		ObjectTypeInstanceListClose,
 		/// <summary>The 'ObjectTypeInstanceListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate the last two items in a sample population verbalization list, or object types. Format: ,</remark>
 		ObjectTypeInstanceListFinalSeparator,
 		/// <summary>The 'ObjectTypeInstanceListOpen' simple snippet value.</summary>
+		/// <remark> Description:  Text and formatting to begin a sample population verbalization of object types block. Format: Examples:</remark>
 		ObjectTypeInstanceListOpen,
 		/// <summary>The 'ObjectTypeInstanceListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate items in a sample population verbalization list. Format: , </remark>
 		ObjectTypeInstanceListPairSeparator,
 		/// <summary>The 'ObjectTypeInstanceListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate items in a sample population verbalization list.	Format: ,</remark>
 		ObjectTypeInstanceListSeparator,
 		/// <summary>The 'ObjectTypeMissing' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes an object type as being missing.</remark>
 		ObjectTypeMissing,
 		/// <summary>The 'ObjectTypeWithSubscript' format string snippet. Contains 3 replacement fields.</summary>
+		/// <remark>Description: Verbalizes an object type with a subscript. {0} is the name, {1} is the guid id for the element, {2} is the subscript</remark>
 		ObjectTypeWithSubscript,
 		/// <summary>The 'OccursInPopulation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes that an object occurs at most once or more than once in a given population.
+		/// Format positive: in each population of {1}, {0} occurs at most once
+		/// Format negative: {0} occurs more than once in the same population of {1}</remark>
 		OccursInPopulation,
 		/// <summary>The 'OneQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'at most one' or 'more than one' before an object.
+		/// Format positive: at most one {0}
+		/// Format negative: more than one {0}
+		/// 						</remark>
 		OneQuantifier,
+		/// <summary>The 'OrLeadListClose' simple snippet value.</summary>
+		/// <remark/>
+		OrLeadListClose,
+		/// <summary>The 'OrLeadListOpen' simple snippet value.</summary>
+		/// <remark/>
+		OrLeadListOpen,
+		/// <summary>The 'OrLeadListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		OrLeadListSeparator,
+		/// <summary>The 'OrNestedListClose' simple snippet value.</summary>
+		/// <remark/>
+		OrNestedListClose,
+		/// <summary>The 'OrNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		OrNestedListCollapsedOpen,
+		/// <summary>The 'OrNestedListOpen' simple snippet value.</summary>
+		/// <remark/>
+		OrNestedListOpen,
+		/// <summary>The 'OrNestedListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		OrNestedListSeparator,
+		/// <summary>The 'OrTailListClose' simple snippet value.</summary>
+		/// <remark/>
+		OrTailListClose,
+		/// <summary>The 'OrTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		OrTailListCollapsedOpen,
+		/// <summary>The 'OrTailListOpen' simple snippet value.</summary>
+		/// <remark/>
+		OrTailListOpen,
+		/// <summary>The 'OrTailListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		OrTailListSeparator,
 		/// <summary>The 'PartialFactTypeDerivation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify a partially derived fact type with its derivation rule.
+		/// Format: +{0} if {1}</remark>
 		PartialFactTypeDerivation,
 		/// <summary>The 'PeriodSeparator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to delimit two snippet replacements by a snippet.
+		/// Format:	{0}.{1}</remark>
 		PeriodSeparator,
+		/// <summary>The 'PersonalIdentityCorrelation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Relate two variable names of different types that represent the same instance where the first
+		/// variable is a personal object type.
+		/// Format:  {0} who is {1}</remark>
+		PersonalIdentityCorrelation,
+		/// <summary>The 'PersonalLeadIdentityCorrelation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: A form of PersonalIdentityCorrelation for lead role scenarios. Relate two variables of
+		/// different types that represent the same instance where the first variable is an personal object type.
+		/// Format: {1} is {0} who</remark>
+		PersonalLeadIdentityCorrelation,
 		/// <summary>The 'PersonalPronoun' simple snippet value.</summary>
+		/// <remark>Description: Use in place of a role player name to reference a personal object type with a clear antecedent.</remark>
 		PersonalPronoun,
 		/// <summary>The 'PortableDataTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes an object's portable data type. Format: Portable data type: {0}</remark>
 		PortableDataTypeVerbalization,
 		/// <summary>The 'PredicatePart' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Format string to decorate predicate text in between replacement fields. Must contain a {{0}}. Replacement field {0} is the FactType name, and {1} is the guid id for the element.</remark>
 		PredicatePart,
 		/// <summary>The 'ReferenceModeVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes the mode in which an object is referenced. Format: Reference Mode: {0}</remark>
 		ReferenceModeVerbalization,
 		/// <summary>The 'ReferenceScheme' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to enclose and format a reference scheme replacement in brackets.
+		/// 							Format:	{0}({1})</remark>
 		ReferenceScheme,
 		/// <summary>The 'ReferenceSchemeVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes the way in which an object is referenced. Format: Reference Scheme: {0}</remark>
 		ReferenceSchemeVerbalization,
 		/// <summary>The 'ReflexivePronoun' simple snippet value.</summary>
+		/// <remark>Description: Use in place of a role player name to refer to an object type with a clear antecedent.</remark>
 		ReflexivePronoun,
 		/// <summary>The 'ReflexiveQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used in place of a reflexive pronoun when an antecedent is not guaranteed.  Format: {0} itself</remark>
 		ReflexiveQuantifier,
+		/// <summary>The 'RolePathCollapsibleLeadDirective' simple snippet value.</summary>
+		/// <remark>Description: Specify a space-separated list of items to determine if a list style supports
+		/// collapsing a repeated lead role. Allowed values are {Chain, And, Or, Xor, !And, !Or, !Xor, !Chain}. The !Chain directive
+		/// here applies to the long form of negation, not the inlined form where the verbose negation constructs are not used.
+		/// A collapsed lead completely eliminates a lead role player. For example, '... Person has FirstName and has LastName',
+		/// with Person eliminated from the second fact type rendering.
+		/// Format: And Or Chain</remark>
+		RolePathCollapsibleLeadDirective,
+		/// <summary>The 'RolePathCollapsibleListOpenForBackReferenceDirective' simple snippet value.</summary>
+		/// <remark>Description: Specify a space-separated list of items to determine if the first item in a list style supports
+		/// collapsing to allow a back reference. The allowed values here are the same as the RolePathCollapsibleLeadDirective and
+		/// should not intersect the values used for the RolePathHeaderListDirective. A back reference uses a personal or impersonal
+		/// pronoun in place of a restatement of the lead role player. The back reference must immediately follow the preceding noun.
+		/// This directive allows a backreference to be used by replacing the *[Tail|Nested]ListOpen snippets with the *[Tail|Nested]ListCollapsedOpen
+		/// snippets. Lead list types do not support back referencing.
+		/// Format: And Or Chain</remark>
+		RolePathCollapsibleListOpenForBackReferenceDirective,
+		/// <summary>The 'RolePathHeaderListDirective' simple snippet value.</summary>
+		/// <remark>Description: Specify a space-separated list of items to determine if split lists are rendered as
+		/// integrated or separate blocks. Allowed values are {And, Or, Xor, !And, !Or, !Xor}.
+		/// Format: !And !Or Xor !Xor</remark>
+		RolePathHeaderListDirective,
+		/// <summary>The 'RolePathListCloseOutdentSnippets' simple snippet value.</summary>
+		/// <remark>Description: A space separated list of list closure snippet names from this enum that reverse an indentation.
+		/// Trailing outdents can be tracked specially during formatting so that external text or outer list separator and close
+		/// elements on the same line as the outdent keeps the same indentation level.
+		/// Format: ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose</remark>
+		RolePathListCloseOutdentSnippets,
+		/// <summary>The 'RolePathOutdentAwareTrailingListSnippets' simple snippet value.</summary>
+		/// <remark>Description: A space separated list of list separators and close elements that must be placed before any
+		/// active trailing outdent snippets.
+		/// Format: NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator</remark>
+		RolePathOutdentAwareTrailingListSnippets,
 		/// <summary>The 'SameTypeIdentityInequalityOperator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify that two instances of the same type are not the same instance.
+		/// Format: {0} is not {1}</remark>
 		SameTypeIdentityInequalityOperator,
 		/// <summary>The 'SelfReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Allows the snippet replacement to verbalize itself. Format: {0}</remark>
 		SelfReference,
 		/// <summary>The 'SimpleListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of a simple list.</remark>
 		SimpleListClose,
 		/// <summary>The 'SimpleListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the final item in simple list. Format: , and</remark>
 		SimpleListFinalSeparator,
 		/// <summary>The 'SimpleListOpen' simple snippet value.</summary>
+		/// <remark>Description:  Text used at the end of a simple list.</remark>
 		SimpleListOpen,
 		/// <summary>The 'SimpleListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in simple list with two items. Format: and</remark>
 		SimpleListPairSeparator,
 		/// <summary>The 'SimpleListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in simple list. Format: ,</remark>
 		SimpleListSeparator,
 		/// <summary>The 'SimpleLogicalAndListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of a simple logical and list.</remark>
 		SimpleLogicalAndListClose,
 		/// <summary>The 'SimpleLogicalAndListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in a simple logical and list.  Format: and</remark>
 		SimpleLogicalAndListFinalSeparator,
 		/// <summary>The 'SimpleLogicalAndListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of a simple logical and list.</remark>
 		SimpleLogicalAndListOpen,
 		/// <summary>The 'SimpleLogicalAndListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a simple logical and list.  Format: and</remark>
 		SimpleLogicalAndListPairSeparator,
 		/// <summary>The 'SimpleLogicalAndListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a simple logical and list.  Format: and</remark>
 		SimpleLogicalAndListSeparator,
 		/// <summary>The 'SimpleLogicalOrListClose' simple snippet value.</summary>
+		/// <remark>Description:  Text used at the end of a simple logical or list.</remark>
 		SimpleLogicalOrListClose,
 		/// <summary>The 'SimpleLogicalOrListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description:  Used to separate the last two items in a simple logical or list.  Format: or</remark>
 		SimpleLogicalOrListFinalSeparator,
 		/// <summary>The 'SimpleLogicalOrListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of a simple logical or list.</remark>
 		SimpleLogicalOrListOpen,
 		/// <summary>The 'SimpleLogicalOrListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a simple logical or list.  Format: or</remark>
 		SimpleLogicalOrListPairSeparator,
 		/// <summary>The 'SimpleLogicalOrListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a simple logical or list.  Format: or</remark>
 		SimpleLogicalOrListSeparator,
 		/// <summary>The 'SingleValueValueConstraint' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a value range constraint with one range, where the min value is equal to the max value.
+		/// Format: the possible value of {0} is {1}</remark>
 		SingleValueValueConstraint,
 		/// <summary>The 'StronglyIntransitiveConsequent' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to verbalize a strongly intransitive ring constraint.
+		/// Format: it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</remark>
 		StronglyIntransitiveConsequent,
 		/// <summary>The 'SubtypeMetaReading' format string snippet. Contains 3 replacement fields.</summary>
+		/// <remark>Description: Used to describe the relationship between a Subtype and its Supertype at the meta level (i.e: Each Man is an instance of Person).
+		/// Format: {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier</remark>
 		SubtypeMetaReading,
 		/// <summary>The 'TextInstanceValue' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used to output a text instance value. Format: '{0}'</remark>
 		TextInstanceValue,
 		/// <summary>The 'TopLevelIndentedLogicalAndListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of a top level indented logical and list.</remark>
 		TopLevelIndentedLogicalAndListClose,
 		/// <summary>The 'TopLevelIndentedLogicalAndListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in a top level indented logical and list.  Format: \n and that</remark>
 		TopLevelIndentedLogicalAndListFinalSeparator,
 		/// <summary>The 'TopLevelIndentedLogicalAndListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of a top level indented logical and list.</remark>
 		TopLevelIndentedLogicalAndListOpen,
 		/// <summary>The 'TopLevelIndentedLogicalAndListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a top level indented logical and list.  Format: \n and that</remark>
 		TopLevelIndentedLogicalAndListPairSeparator,
 		/// <summary>The 'TopLevelIndentedLogicalAndListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a top level indented logical and list.  Format: \n and that</remark>
 		TopLevelIndentedLogicalAndListSeparator,
 		/// <summary>The 'TopLevelIndentedLogicalOrListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of a top level indented logical or list.</remark>
 		TopLevelIndentedLogicalOrListClose,
 		/// <summary>The 'TopLevelIndentedLogicalOrListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in a top level indented logical or list.  Format: \n or</remark>
 		TopLevelIndentedLogicalOrListFinalSeparator,
 		/// <summary>The 'TopLevelIndentedLogicalOrListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of a top level indented logical or list.</remark>
 		TopLevelIndentedLogicalOrListOpen,
 		/// <summary>The 'TopLevelIndentedLogicalOrListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a top level indented logical or list.  Format: \n or</remark>
 		TopLevelIndentedLogicalOrListPairSeparator,
 		/// <summary>The 'TopLevelIndentedLogicalOrListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a top level indented logical or list.  Format: \n or</remark>
 		TopLevelIndentedLogicalOrListSeparator,
 		/// <summary>The 'UniversalQuantifier' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for 'each' before an object name to signify the quantity associated with the object.  Format: each {0}</remark>
 		UniversalQuantifier,
 		/// <summary>The 'ValueTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes an object as being a value type. Format: {0} is a value type</remark>
 		ValueTypeVerbalization,
+		/// <summary>The 'VariableExistence' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Assert variable existence as a complete statement, as opposed to the
+		/// VariableIntroductionClause used to introduce a variable using a prefix.
+		/// Format: {0} exists</remark>
+		VariableExistence,
+		/// <summary>The 'VariableIntroductionClause' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Introduce variables inline in the verbalization phrase. The replacement is either
+		/// a single value or a list, and the quantifiers (some, no, that) are already included in the replacement list.
+		/// Format: for {0},</remark>
+		VariableIntroductionClause,
+		/// <summary>The 'VariableIntroductionSeparator' simple snippet value.</summary>
+		/// <remark>Description: The list separator for introducing multiple variables in a single clause.
+		/// Format: and</remark>
+		VariableIntroductionSeparator,
 		/// <summary>The 'VerbalizerCloseVerbalization' simple snippet value.</summary>
+		/// <remark>Description: Used by the verbalizer to close a verbalization opened by VerbalizerOpenVerbalization</remark>
 		VerbalizerCloseVerbalization,
 		/// <summary>The 'VerbalizerDecreaseIndent' simple snippet value.</summary>
+		/// <remark>Description: Used by the verbalizer to close indent opened by VerbalizerIncreaseIndent</remark>
 		VerbalizerDecreaseIndent,
 		/// <summary>The 'VerbalizerDocumentFooter' simple snippet value.</summary>
+		/// <remark>Description: Used by the verbalizer to close a document</remark>
 		VerbalizerDocumentFooter,
 		/// <summary>The 'VerbalizerDocumentHeader' format string snippet. Contains 14 replacement fields.</summary>
+		/// <remark>Description: Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
+		/// {0} font-family
+		/// {1} font-size
+		/// {2} predicate text color
+		/// {3} predicate text bold
+		/// {4} object name color
+		/// {5} object name bold
+		/// {6} formal item color
+		/// {7} formal item bold
+		/// {8} note color
+		/// {9} note bold
+		/// {10} reference mode color
+		/// {11} reference mode bold
+		/// {12} instance value color
+		/// {13} instance value bold</remark>
 		VerbalizerDocumentHeader,
 		/// <summary>The 'VerbalizerFontWeightBold' simple snippet value.</summary>
+		/// <remark>Description: The text to insert to indicate a bold font.</remark>
 		VerbalizerFontWeightBold,
 		/// <summary>The 'VerbalizerFontWeightNormal' simple snippet value.</summary>
+		/// <remark>Description: The text to insert to indicate a normal font weight.</remark>
 		VerbalizerFontWeightNormal,
 		/// <summary>The 'VerbalizerIncreaseIndent' simple snippet value.</summary>
+		/// <remark>Description: Used by the verbalizer to indent a child verbalization</remark>
 		VerbalizerIncreaseIndent,
 		/// <summary>The 'VerbalizerNewLine' simple snippet value.</summary>
+		/// <remark>Description: Used by the verbalizer to enter a new line. Format: \n</remark>
 		VerbalizerNewLine,
 		/// <summary>The 'VerbalizerOpenVerbalization' simple snippet value.</summary>
+		/// <remark>Description: Used by the verbalizer around a single verbalization</remark>
 		VerbalizerOpenVerbalization,
+		/// <summary>The 'XorLeadListClose' simple snippet value.</summary>
+		/// <remark/>
+		XorLeadListClose,
+		/// <summary>The 'XorLeadListOpen' simple snippet value.</summary>
+		/// <remark/>
+		XorLeadListOpen,
+		/// <summary>The 'XorLeadListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		XorLeadListSeparator,
+		/// <summary>The 'XorNestedListClose' simple snippet value.</summary>
+		/// <remark/>
+		XorNestedListClose,
+		/// <summary>The 'XorNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		XorNestedListCollapsedOpen,
+		/// <summary>The 'XorNestedListOpen' simple snippet value.</summary>
+		/// <remark/>
+		XorNestedListOpen,
+		/// <summary>The 'XorNestedListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		XorNestedListSeparator,
+		/// <summary>The 'XorTailListClose' simple snippet value.</summary>
+		/// <remark/>
+		XorTailListClose,
+		/// <summary>The 'XorTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		XorTailListCollapsedOpen,
+		/// <summary>The 'XorTailListOpen' simple snippet value.</summary>
+		/// <remark/>
+		XorTailListOpen,
+		/// <summary>The 'XorTailListSeparator' simple snippet value.</summary>
+		/// <remark/>
+		XorTailListSeparator,
+		/// <summary>The last item in CoreVerbalizationSnippetType</summary>
+		Last = CoreVerbalizationSnippetType.XorTailListSeparator,
 	}
 	#endregion // CoreVerbalizationSnippetType enum
 	#region CoreVerbalizationSets class
@@ -413,7 +1021,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			sets[0] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more traversals through </span>{1}",
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
+				@"<span class=""quantifier"">each</span> {0}",
+				@"<span class=""quantifier""> combination</span>",
+				@"<span class=""quantifier"">each unique </span>",
+				@"<span class=""listSeparator"">, </span>",
+				@"{0} <span class=""quantifier"">for </span> {1}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">each distinct</span> {0}",
+				"",
+				"",
+				@"<br/><span class=""quantifier"">and</span> ",
+				"</span>",
+				"<span>",
+				"<span>",
+				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				"</span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				"</span>",
+				" ",
+				@"<br/></span><span class=""smallIndent"">",
+				@"<br/></span><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/></span><span class=""smallIndent""><span class=""quantifier"">where</span> ",
+				" ",
+				@" <span class=""quantifier"">where</span> ",
+				"<span>",
+				"<br/>",
+				@"<br/><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">where</span> ",
 				@"<span class=""listSeparator"">.</span>",
 				@"{0} <span class=""quantifier"">combination is associated with</span> {1}",
 				@"{0} <span class=""quantifier"">combination</span>",
@@ -480,6 +1117,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
+				@"{0} <span class=""logicalOperator"">=</span> {1}",
 				"{0}{{0}}{1}",
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
@@ -487,6 +1125,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
+				@"{0} <span class=""quantifier""/>that is</span> {1}",
+				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that",
 				@"<span class=""quantifier"">that</span>",
 				"{0}",
 				"</span>",
@@ -530,6 +1170,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"",
+				@"<span class=""quantifier"">it is not true that </span>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				@"{0} <span class=""quantifier"">does not exist</span>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
@@ -544,8 +1220,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
 				@"<span class=""quantifier"">in each population of</span> {1}<span class=""listSeparator"">, </span>{0} <span class=""quantifier"">occurs at most once</span>",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				"",
+				"",
+				@"<br/><span class=""quantifier"">or</span> ",
+				"</span>",
+				"<span>",
+				"<span>",
+				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ",
+				"</span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">or</span> ",
 				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
+				@"{0} <span class=""quantifier""/>who is</span> {1}",
+				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
@@ -554,6 +1243,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
+				"And Or Chain",
+				"And Or Chain",
+				"!And !Or Xor !Xor",
+				"ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose",
+				"NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator",
 				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				"{0}",
 				"",
@@ -587,6 +1281,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
+				@"{0} <span class=""quantifier"">exists</span>",
+				@"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>",
+				@"<span class=""logicalOperator""> and </span>",
 				"</div>",
 				"</span>",
 				"</body></html>",
@@ -626,11 +1323,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"font-weight: normal;",
 				@"<span class=""indent"">",
 				"<br/>",
-				@"<div class=""verbalization"">"});
+				@"<div class=""verbalization"">",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>"});
 			sets[1] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more traversals through </span>{1}",
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
+				@"<span class=""quantifier"">each</span> {0}",
+				@"<span class=""quantifier""> combination</span>",
+				@"<span class=""quantifier"">each unique </span>",
+				@"<span class=""listSeparator"">, </span>",
+				@"{0} <span class=""quantifier"">for </span> {1}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">each distinct</span> {0}",
+				"",
+				"",
+				@"<br/><span class=""quantifier"">and</span> ",
+				"</span>",
+				"<span>",
+				"<span>",
+				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				"</span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				"</span>",
+				" ",
+				@"<br/></span><span class=""smallIndent"">",
+				@"<br/></span><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/></span><span class=""smallIndent""><span class=""quantifier"">where</span> ",
+				" ",
+				@" <span class=""quantifier"">where</span> ",
+				"<span>",
+				"<br/>",
+				@"<br/><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">where</span> ",
 				@"<span class=""listSeparator"">.</span>",
 				@"{0} <span class=""quantifier"">combination is associated with</span> {1}",
 				@"{0} <span class=""quantifier"">combination</span>",
@@ -697,6 +1434,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
+				@"{0} <span class=""logicalOperator"">=</span> {1}",
 				"{0}{{0}}{1}",
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
@@ -704,6 +1442,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
+				@"{0} <span class=""quantifier""/>that is</span> {1}",
+				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that",
 				@"<span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">it is obligatory that</span> {0}",
 				"</span>",
@@ -747,6 +1487,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"",
+				@"<span class=""quantifier"">it is not true that </span>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				@"{0} <span class=""quantifier"">does not exist</span>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
@@ -761,8 +1537,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
 				@"<span class=""quantifier"">in each population of</span> {1}<span class=""listSeparator"">, </span>{0} <span class=""quantifier"">occurs at most once</span>",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				"",
+				"",
+				@"<br/><span class=""quantifier"">or</span> ",
+				"</span>",
+				"<span>",
+				"<span>",
+				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ",
+				"</span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">or</span> ",
 				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
+				@"{0} <span class=""quantifier""/>who is</span> {1}",
+				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
@@ -771,6 +1560,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
+				"And Or Chain",
+				"And Or Chain",
+				"!And !Or Xor !Xor",
+				"ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose",
+				"NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator",
 				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				"{0}",
 				"",
@@ -804,6 +1598,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
+				@"{0} <span class=""quantifier"">exists</span>",
+				@"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>",
+				@"<span class=""logicalOperator""> and </span>",
 				"</div>",
 				"</span>",
 				"</body></html>",
@@ -843,11 +1640,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"font-weight: normal;",
 				@"<span class=""indent"">",
 				"<br/>",
-				@"<div class=""verbalization"">"});
+				@"<div class=""verbalization"">",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>"});
 			sets[2] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more traversals through </span>{1}",
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
+				@"<span class=""quantifier"">each</span> {0}",
+				@"<span class=""quantifier""> combination</span>",
+				@"<span class=""quantifier"">each unique </span>",
+				@"<span class=""listSeparator"">, </span>",
+				@"{0} <span class=""quantifier"">for </span> {1}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">each distinct</span> {0}",
+				"",
+				"",
+				@"<br/><span class=""quantifier"">and</span> ",
+				"</span>",
+				"<span>",
+				"<span>",
+				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				"</span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				"</span>",
+				" ",
+				@"<br/></span><span class=""smallIndent"">",
+				@"<br/></span><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/></span><span class=""smallIndent""><span class=""quantifier"">where</span> ",
+				" ",
+				@" <span class=""quantifier"">where</span> ",
+				"<span>",
+				"<br/>",
+				@"<br/><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">where</span> ",
 				@"<span class=""listSeparator"">.</span>",
 				@"{0} <span class=""quantifier"">combination is associated with</span> {1}",
 				@"{0} <span class=""quantifier"">combination</span>",
@@ -914,6 +1751,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
+				@"{0} <span class=""logicalOperator"">=</span> {1}",
 				"{0}{{0}}{1}",
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
@@ -921,6 +1759,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
+				@"{0} <span class=""quantifier""/>that is</span> {1}",
+				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that",
 				@"<span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">it is impossible that</span> {0}",
 				"</span>",
@@ -964,6 +1804,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"",
+				@"<span class=""quantifier"">it is not true that </span>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				@"{0} <span class=""quantifier"">does not exist</span>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
@@ -978,8 +1854,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
 				@"{0} <span class=""quantifier"">occurs more than once in the same population of</span> {1}",
 				@"<span class=""quantifier"">more than one</span> {0}",
+				"",
+				"",
+				@"<br/><span class=""quantifier"">or</span> ",
+				"</span>",
+				"<span>",
+				"<span>",
+				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ",
+				"</span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">or</span> ",
 				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
+				@"{0} <span class=""quantifier""/>who is</span> {1}",
+				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
@@ -988,6 +1877,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
+				"And Or Chain",
+				"And Or Chain",
+				"!And !Or Xor !Xor",
+				"ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose",
+				"NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator",
 				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				"{0}",
 				"",
@@ -1021,6 +1915,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""quantifier"">any</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
+				@"{0} <span class=""quantifier"">exists</span>",
+				@"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>",
+				@"<span class=""logicalOperator""> and </span>",
 				"</div>",
 				"</span>",
 				"</body></html>",
@@ -1060,11 +1957,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"font-weight: normal;",
 				@"<span class=""indent"">",
 				"<br/>",
-				@"<div class=""verbalization"">"});
+				@"<div class=""verbalization"">",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>"});
 			sets[3] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more traversals through </span>{1}",
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
+				@"<span class=""quantifier"">each</span> {0}",
+				@"<span class=""quantifier""> combination</span>",
+				@"<span class=""quantifier"">each unique </span>",
+				@"<span class=""listSeparator"">, </span>",
+				@"{0} <span class=""quantifier"">for </span> {1}",
+				@"<span class=""quantifier"">that</span> {0}",
+				@"<span class=""quantifier"">each distinct</span> {0}",
+				"",
+				"",
+				@"<br/><span class=""quantifier"">and</span> ",
+				"</span>",
+				"<span>",
+				"<span>",
+				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				"</span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				"</span>",
+				" ",
+				@"<br/></span><span class=""smallIndent"">",
+				@"<br/></span><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/></span><span class=""smallIndent""><span class=""quantifier"">where</span> ",
+				" ",
+				@" <span class=""quantifier"">where</span> ",
+				"<span>",
+				"<br/>",
+				@"<br/><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">where</span> ",
 				@"<span class=""listSeparator"">.</span>",
 				@"{0} <span class=""quantifier"">combination is associated with</span> {1}",
 				@"{0} <span class=""quantifier"">combination</span>",
@@ -1131,6 +2068,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
+				@"{0} <span class=""logicalOperator"">=</span> {1}",
 				"{0}{{0}}{1}",
 				"",
 				@"<span class=""logicalOperator""> that is a </span>",
@@ -1138,6 +2076,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
+				@"{0} <span class=""quantifier""/>that is</span> {1}",
+				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that",
 				@"<span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">it is forbidden that</span> {0}",
 				"</span>",
@@ -1181,6 +2121,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"",
+				@"<span class=""quantifier"">it is not true that </span>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">all of the following are <em>false:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				@"{0} <span class=""quantifier"">does not exist</span>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">either none or many of the following are <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
@@ -1195,8 +2171,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}<sub style=""font-size:smaller;"">{2}</sub></a>",
 				@"{0} <span class=""quantifier"">occurs more than once in the same population of</span> {1}",
 				@"<span class=""quantifier"">more than one</span> {0}",
+				"",
+				"",
+				@"<br/><span class=""quantifier"">or</span> ",
+				"</span>",
+				"<span>",
+				"<span>",
+				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ",
+				"</span>",
+				@"<br/><span class=""smallIndent"">",
+				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""quantifier"">or</span> ",
 				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
+				@"{0} <span class=""quantifier""/>who is</span> {1}",
+				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
@@ -1205,6 +2194,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
+				"And Or Chain",
+				"And Or Chain",
+				"!And !Or Xor !Xor",
+				"ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose",
+				"NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator",
 				@"{0}<span class=""logicalOperator""> is not </span>{1}",
 				"{0}",
 				"",
@@ -1238,6 +2232,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""quantifier"">any</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
+				@"{0} <span class=""quantifier"">exists</span>",
+				@"<span class=""quantifier"">for</span> {0}<span class=""listSeparator"">, </span>",
+				@"<span class=""logicalOperator""> and </span>",
 				"</div>",
 				"</span>",
 				"</body></html>",
@@ -1277,7 +2274,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"font-weight: normal;",
 				@"<span class=""indent"">",
 				"<br/>",
-				@"<div class=""verbalization"">"});
+				@"<div class=""verbalization"">",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>",
+				"</span>",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""quantifier"">exactly one of the following is <em>true:</em></span><br/><span class=""smallIndent"">",
+				@"<span class=""listSeparator"">;</span><br/>"});
 		}
 		/// <summary>Converts enum value of CoreVerbalizationSnippetType to an integer index value.</summary>
 		protected override int ValueToIndex(CoreVerbalizationSnippetType enumValue)
@@ -1488,7 +2496,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// to the verbalization generator instead of hand-coding derivation rules
 			FactTypeDerivationRule derivationRule;
 			RolePathVerbalizer pathVerbalizer;
-			if ((derivationRule = this.DerivationRule) != null && (pathVerbalizer = RolePathVerbalizer.Create(derivationRule, new StandardRolePathRenderer(snippets, writer.FormatProvider))).HasPathVerbalization(derivationRule))
+			if ((derivationRule = this.DerivationRule) != null && (pathVerbalizer = RolePathVerbalizer.Create(derivationRule, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider))).HasPathVerbalization(derivationRule))
 			{
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, false, isNegative), predicatePartFormatString);
@@ -1508,7 +2516,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -1640,14 +2648,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			string snippet1Replace1Replace1 = null;
 			string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 			string snippet1Replace1Replace1Replace1 = null;
-			snippet1Replace1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(subtype.Name);
+			snippet1Replace1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(subtype.Name, verbalizationContext.VerbalizationOptions);
 			string snippet1Replace1Replace1Replace2 = null;
 			snippet1Replace1Replace1Replace2 = subtype.Id.ToString("D");
 			snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1, snippet1Replace1Replace1Replace2);
 			string snippet1Replace1Replace2 = null;
 			string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 			string snippet1Replace1Replace2Replace1 = null;
-			snippet1Replace1Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(supertype.Name);
+			snippet1Replace1Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(supertype.Name, verbalizationContext.VerbalizationOptions);
 			string snippet1Replace1Replace2Replace2 = null;
 			snippet1Replace1Replace2Replace2 = supertype.Id.ToString("D");
 			snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1, snippet1Replace1Replace2Replace2);
@@ -1785,12 +2793,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			string variableSnippet1Replace1 = null;
 			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 			string variableSnippet1Replace1Replace1 = null;
-			variableSnippet1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.Name);
+			variableSnippet1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.Name, verbalizationContext.VerbalizationOptions);
 			string variableSnippet1Replace1Replace2 = null;
 			variableSnippet1Replace1Replace2 = this.Id.ToString("D");
 			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
 			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
-			if ((derivationRule = this.DerivationRule) != null && (pathVerbalizer = RolePathVerbalizer.Create(derivationRule, new StandardRolePathRenderer(snippets, writer.FormatProvider))).HasPathVerbalization(derivationRule))
+			if ((derivationRule = this.DerivationRule) != null && (pathVerbalizer = RolePathVerbalizer.Create(derivationRule, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider))).HasPathVerbalization(derivationRule))
 			{
 				writer.WriteLine();
 				string snippetFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.FullSubtypeDerivation, isDeontic, isNegative);
@@ -1853,7 +2861,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -1866,7 +2874,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string snippet4Replace1 = null;
 				string snippet4ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 				string snippet4Replace1Replace1 = null;
-				snippet4Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.Name);
+				snippet4Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.Name, verbalizationContext.VerbalizationOptions);
 				string snippet4Replace1Replace2 = null;
 				snippet4Replace1Replace2 = this.Id.ToString("D");
 				snippet4Replace1 = string.Format(writer.FormatProvider, snippet4ReplaceFormat1, snippet4Replace1Replace1, snippet4Replace1Replace2);
@@ -1911,7 +2919,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						string basicReplacement;
 						if (rolePlayer != null)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 						}
 						else
 						{
@@ -1967,7 +2975,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string snippet7Replace1 = null;
 				string snippet7ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 				string snippet7Replace1Replace1 = null;
-				snippet7Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.Name);
+				snippet7Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.Name, verbalizationContext.VerbalizationOptions);
 				string snippet7Replace1Replace2 = null;
 				snippet7Replace1Replace2 = this.Id.ToString("D");
 				snippet7Replace1 = string.Format(writer.FormatProvider, snippet7ReplaceFormat1, snippet7Replace1Replace1, snippet7Replace1Replace2);
@@ -1981,7 +2989,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				snippet8Replace1 = this.DataType.ToString();
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat8, snippet8Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
-			if (ORMSolutions.ORMArchitect.Core.Shell.OptionsPage.CurrentVerbalizeFactTypesWithObjectType && verbalizationContext.VerbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName)
+			if ((bool)verbalizationContext.VerbalizationOptions[CoreVerbalizationOption.FactTypesWithObjectType] && verbalizationContext.VerbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName)
 			{
 				writer.WriteLine();
 				string snippetFormat9 = snippets.GetSnippet(CoreVerbalizationSnippetType.SelfReference, isDeontic, isNegative);
@@ -2034,7 +3042,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						string basicReplacement;
 						if (rolePlayer != null)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 						}
 						else
 						{
@@ -2668,7 +3676,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#endregion // Error report
 				return false;
 			}
-			RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, writer.FormatProvider));
+			RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider));
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -3388,7 +4396,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -3692,7 +4700,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -3882,7 +4890,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -4086,7 +5094,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 					}
 					else
 					{
@@ -4433,7 +5441,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							int compatibleTypesCount = compatibleTypes.Length;
 							if (compatibleTypesCount == 1)
 							{
-								basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(compatibleTypes[0].Name), compatibleTypes[0].Id.ToString("D"));
+								basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(compatibleTypes[0].Name, verbalizationContext.VerbalizationOptions), compatibleTypes[0].Id.ToString("D"));
 							}
 							else
 							{
@@ -4468,7 +5476,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										listSnippet = CoreVerbalizationSnippetType.IdentityEqualityListSeparator;
 									}
 									sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-									sbTemp.Append(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(compatibleTypes[k].Name), compatibleTypes[k].Id.ToString("D")));
+									sbTemp.Append(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(compatibleTypes[k].Name, verbalizationContext.VerbalizationOptions), compatibleTypes[k].Id.ToString("D")));
 									if (k == compatibleTypesCount - 1)
 									{
 										sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.IdentityEqualityListClose, isDeontic, isNegative));
@@ -4479,7 +5487,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						else
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 						}
 					}
 					else
@@ -5633,11 +6641,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						if (useSubscript)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 						}
 						else
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 						}
 					}
 					else
@@ -5755,7 +6763,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet2Replace2Replace2 = null;
 					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
@@ -5842,7 +6850,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet2Replace2Replace2 = null;
 					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
@@ -6021,7 +7029,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet3Replace2 = null;
 					string snippet3ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet3Replace2Replace1 = null;
-					snippet3Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet3Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet3Replace2Replace2 = null;
 					snippet3Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet3Replace2 = string.Format(writer.FormatProvider, snippet3ReplaceFormat2, snippet3Replace2Replace1, snippet3Replace2Replace2);
@@ -6201,7 +7209,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet3Replace2 = null;
 					string snippet3ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet3Replace2Replace1 = null;
-					snippet3Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet3Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet3Replace2Replace2 = null;
 					snippet3Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet3Replace2 = string.Format(writer.FormatProvider, snippet3ReplaceFormat2, snippet3Replace2Replace1, snippet3Replace2Replace2);
@@ -6366,7 +7374,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet2Replace2Replace2 = null;
 					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
@@ -6494,7 +7502,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet2Replace2Replace2 = null;
 					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
@@ -6579,7 +7587,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet2Replace2Replace2 = null;
 					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
@@ -6707,7 +7715,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet2Replace2Replace2 = null;
 					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
@@ -6716,7 +7724,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (isTrivialOppositeRolePath && !isNegative && minFactArity >= 2 && maxFactArity <= 2)
 			{
-				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, writer.FormatProvider));
+				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider));
 				IList<ConstraintRoleSequenceHasRole> includedConstraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(this);
 				bool missingReading1 = false;
 				for (int readingMatchIndex1 = 0; !missingReading1 && readingMatchIndex1 < constraintRoleArity; ++readingMatchIndex1)
@@ -7057,7 +8065,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet2Replace2Replace2 = null;
 					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
@@ -7066,7 +8074,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (isTrivialOppositeRolePath && isNegative && minFactArity >= 2 && maxFactArity <= 2)
 			{
-				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, writer.FormatProvider));
+				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider));
 				IList<ConstraintRoleSequenceHasRole> includedConstraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(this);
 				bool missingReading1 = false;
 				for (int readingMatchIndex1 = 0; !missingReading1 && readingMatchIndex1 < constraintRoleArity; ++readingMatchIndex1)
@@ -7359,7 +8367,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet2Replace2 = null;
 					string snippet2ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet2Replace2Replace1 = null;
-					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet2Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet2Replace2Replace2 = null;
 					snippet2Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet2Replace2 = string.Format(writer.FormatProvider, snippet2ReplaceFormat2, snippet2Replace2Replace1, snippet2Replace2Replace2);
@@ -7368,7 +8376,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (!isNegative)
 			{
-				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, writer.FormatProvider));
+				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider));
 				IList<ConstraintRoleSequenceHasRole> includedConstraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(this);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ContextScope, isDeontic, isNegative);
@@ -7565,7 +8573,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string snippet3Replace2 = null;
 					string snippet3ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 					string snippet3Replace2Replace1 = null;
-					snippet3Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name);
+					snippet3Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
 					string snippet3Replace2Replace2 = null;
 					snippet3Replace2Replace2 = preferredFor.Id.ToString("D");
 					snippet3Replace2 = string.Format(writer.FormatProvider, snippet3ReplaceFormat2, snippet3Replace2Replace1, snippet3Replace2Replace2);
@@ -7814,11 +8822,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						if (useSubscript)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 						}
 						else
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 						}
 					}
 					else
@@ -8076,7 +9084,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (!isNegative && minFactArity >= 2 && maxFactArity <= 2 && isTrivialOppositeRolePath)
 			{
-				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, writer.FormatProvider));
+				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider));
 				IList<ConstraintRoleSequenceHasRole> includedConstraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(this);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ContextScope, isDeontic, isNegative);
@@ -8258,7 +9266,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (!isNegative)
 			{
-				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, writer.FormatProvider));
+				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider));
 				IList<ConstraintRoleSequenceHasRole> includedConstraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(this);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ContextScope, isDeontic, isNegative);
@@ -8601,7 +9609,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string basicReplacement;
 				if (rolePlayer != null)
 				{
-					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 				}
 				else
 				{
@@ -8940,7 +9948,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			string variableSnippet1Replace1 = null;
 			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 			string variableSnippet1Replace1Replace1 = null;
-			variableSnippet1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.ValueType.Name);
+			variableSnippet1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.ValueType.Name, verbalizationContext.VerbalizationOptions);
 			string variableSnippet1Replace1Replace2 = null;
 			variableSnippet1Replace1Replace2 = this.ValueType.Id.ToString("D");
 			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
@@ -9151,7 +10159,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string variableSnippet1Replace1 = null;
 				string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
 				string variableSnippet1Replace1Replace1 = null;
-				variableSnippet1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.Name);
+				variableSnippet1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.Name, verbalizationContext.VerbalizationOptions);
 				string variableSnippet1Replace1Replace2 = null;
 				variableSnippet1Replace1Replace2 = this.Id.ToString("D");
 				variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
@@ -9470,7 +10478,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						string basicReplacement;
 						if (rolePlayer != null)
 						{
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 						}
 						else
 						{
@@ -9703,10 +10711,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 							if (useSubscript)
 							{
-								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 							}
 						}
 						else
@@ -10123,10 +11131,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 							if (useSubscript)
 							{
-								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 							}
 						}
 						else
@@ -10459,10 +11467,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 							if (useSubscript)
 							{
-								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 							}
 						}
 						else
@@ -10779,12 +11787,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 							if (useSubscript)
 							{
-								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 							}
-							basicDynamicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), "{0}");
+							basicDynamicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), "{0}");
 						}
 						else
 						{
@@ -11373,10 +12381,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 							if (useSubscript)
 							{
-								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 							}
 						}
 						else
@@ -11600,10 +12608,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 							if (useSubscript)
 							{
-								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 							}
 						}
 						else
@@ -11936,10 +12944,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 							if (useSubscript)
 							{
-								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 							}
 						}
 						else
@@ -12233,10 +13241,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 							if (useSubscript)
 							{
-								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 							}
 						}
 						else
@@ -12478,12 +13486,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
-							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+							basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 							if (useSubscript)
 							{
-								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), subscript + 1);
+								basicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), subscript + 1);
 							}
-							basicDynamicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"), "{0}");
+							basicDynamicSubscriptedReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"), "{0}");
 						}
 						else
 						{
@@ -13086,7 +14094,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#endregion // Error report
 				return false;
 			}
-			RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, writer.FormatProvider));
+			RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider));
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -13804,7 +14812,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#endregion // Error report
 				return false;
 			}
-			RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, writer.FormatProvider));
+			RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider));
 			int minFactArity = int.MaxValue;
 			int maxFactArity = int.MinValue;
 			for (int iFact = 0; iFact < allFactsCount; ++iFact)
@@ -14975,7 +15983,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string basicReplacement;
 					if (rolePlayer != null)
 					{
-						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name), rolePlayer.Id.ToString("D"));
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer.Name, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
 					}
 					else
 					{

@@ -2,10 +2,8 @@
 <?xml-stylesheet type="text/xsl" href="VerbalizationDocumentationHTML.xslt"?>
 <snippets>
   <snippet name="Acyclicity" replacementCount="2">
-    <statement>
-							Description: Used to verbalize acyclic ring constraint in the majority of cases.
-							Format: No {0} may cycle back to itself via one or more traversals through {1}
-						</statement>
+    <statement>Description: Used to verbalize acyclic ring constraint in the majority of cases.
+Format: No {0} may cycle back to itself via one or more traversals through {1}</statement>
     <unformattedSnippet>no {0} may cycle back to itself via one or more traversals through {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -16,10 +14,8 @@
     </usedBy>
   </snippet>
   <snippet name="AcyclicityWithRoleNumbers" replacementCount="4">
-    <statement>
-							Description: Used to verbalize acyclic ring constraints where more than two roles have a role player of the constrained type.
-							Format: No {0} may cycle back to itself via one or more instances of the role pair: roles {2} and {3} of {1}
-						</statement>
+    <statement>Description: Used to verbalize acyclic ring constraints where more than two roles have a role player of the constrained type.
+Format: No {0} may cycle back to itself via one or more instances of the role pair: roles {2} and {3} of {1}</statement>
     <unformattedSnippet>no {0} may cycle back to itself via one or more instances of the role pair:roles {2} and {3} of {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -29,10 +25,141 @@
       <constraint name="AcyclicRingVerbalizer" />
     </usedBy>
   </snippet>
+  <snippet name="AggregateBagProjection" replacementCount="1">
+    <statement>Description: Leave aggregate parameter inputs as a bag of values.
+Format: each {0}</statement>
+    <unformattedSnippet>each {0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AggregateParameterComplexAggregationContextListClose" replacementCount="0">
+    <statement>Description: The closing of a composite aggregation list.
+Format: combination</statement>
+    <unformattedSnippet> combination</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AggregateParameterComplexAggregationContextListOpen" replacementCount="0">
+    <statement>Description:The opening of a composite aggregation list.
+Format: each</statement>
+    <unformattedSnippet>each unique </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AggregateParameterComplexAggregationContextListSeparator" replacementCount="0">
+    <statement>Description: The separator of a composite aggregation list.
+Format: ,</statement>
+    <unformattedSnippet>, </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AggregateParameterDecorator" replacementCount="2">
+    <statement>Description: Decorate a single or complex aggregation context.
+Format: {0} of {1}</statement>
+    <unformattedSnippet>{0} for  {1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AggregateParameterSimpleAggregationContext" replacementCount="1">
+    <statement>Description: Provide a description of a single aggregation context.
+Format: each {0}</statement>
+    <unformattedSnippet>that {0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AggregateSetProjection" replacementCount="1">
+    <statement>Description: Limit values from an aggregate parameter input to distinct values.
+Format: each distinct {0}</statement>
+    <unformattedSnippet>each distinct {0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndLeadListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndLeadListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndLeadListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>and </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndNestedListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndNestedListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndNestedListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndNestedListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>and </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndTailListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndTailListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndTailListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>and </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="AndTailListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>and </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="AtMostOneQuantifier" replacementCount="1">
-    <statement>
-							Description: Used for 'at most one' before an object name to signify the quantity may only be zero or one.  Format: at most one {0}
-						</statement>
+    <statement>Description: Used for 'at most one' before an object name to signify the quantity may only be zero or one.  Format: at most one {0}</statement>
     <unformattedSnippet>at most one {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -42,19 +169,110 @@
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="ChainedListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListCollapsedSeparator" replacementCount="0">
+    <statement>Description: The text for a collapsed separator in a chained list. Generally just a space.</statement>
+    <unformattedSnippet> </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListComplexRestrictionBackReferenceSeparator" replacementCount="0">
+    <statement>Description: A separator for a chained list where the chained restriction introduces additional
+fact statements and the start of the next statement is a back reference.
+See ChainedListComplexRestrictionSeparator for additional comments.
+Format: \n </statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListComplexRestrictionCollapsedLeadSeparator" replacementCount="0">
+    <statement>Description: Used in place of the ChainedListComplexRestrictionSeparator if the lead role player of
+a chained list is the same as the previous statement. Chained lists can collapse the lead role if the list type is
+listed in the RolePathCollapsibleLeadDirective snippet.
+Format: \n\t and</statement>
+    <unformattedSnippet>and </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListComplexRestrictionSeparator" replacementCount="0">
+    <statement>Description: A separator for a chained list where the chained restriction introduces
+additional fact statements. Note that the complex restriction separator is not used before a TailListOpen of
+an operator separated list, which is any split list not specific in the RolePathHeaderListDirective snippet.
+Format: \n\t where</statement>
+    <unformattedSnippet>where </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListLocalRestrictionBackReferenceSeparator" replacementCount="0">
+    <statement>Description: A separator for a chained list where the chained restriction applies only
+to elements contained in the preceding fact statement and the start of the next statement is a back reference.</statement>
+    <unformattedSnippet> </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListLocalRestrictionSeparator" replacementCount="0">
+    <statement>Description: A separator for a chained list where the chained restriction applies only
+to elements contained in the preceding fact statement.
+Format: where</statement>
+    <unformattedSnippet> where </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListOpen" replacementCount="0">
+    <statement>Description: The opening text for a chained list.</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListTopLevelComplexRestrictionBackReferenceSeparator" replacementCount="0">
+    <statement>Description: The same as ChainedListComplexRestrictionBackReferenceSeparator, except used for a
+top-level restriction. If the non-top-level separator includes an indentation, then this separator should omit the indent.
+Format: \n and</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator" replacementCount="0">
+    <statement>Description: The same as ChainedListComplexRestrictionCollapsedLeadSeparator, except used for a
+top-level restriction. If the non-top-level separator includes an indentation, then this separator should omit the indent.
+Format: \n and</statement>
+    <unformattedSnippet>and </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ChainedListTopLevelComplexRestrictionSeparator" replacementCount="0">
+    <statement>Description: The same as ChainedListComplexRestrictionSeparator, except used for a top-level
+restriction. If the non-top-level separator includes an indentation, then this separator should omit the indent.
+Format: \n where</statement>
+    <unformattedSnippet>where </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="CloseVerbalizationSentence" replacementCount="0">
-    <statement>
-							Description: Text used to close a verbalized sentence.  Format: .
-						</statement>
+    <statement>Description: Text used to close a verbalized sentence.  Format: .</statement>
     <unformattedSnippet>.</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="CombinationAssociation" replacementCount="2">
-    <statement>
-							Description: Verbalizes an association of combinations.  Format: {0} combination is associated with {1}
-						</statement>
+    <statement>Description: Verbalizes an association of combinations.  Format: {0} combination is associated with {1}</statement>
     <unformattedSnippet>{0} combination is associated with {1}</unformattedSnippet>
     <contains>
       <snippet name="FrequencyRangeExact" />
@@ -78,9 +296,7 @@
     </usedBy>
   </snippet>
   <snippet name="CombinationIdentifier" replacementCount="1">
-    <statement>
-							Description: Verbalizes a combination.  Format: {0} combination
-						</statement>
+    <statement>Description: Verbalizes a combination.  Format: {0} combination</statement>
     <unformattedSnippet>{0} combination</unformattedSnippet>
     <contains>
       <snippet name="IdentityReferenceQuantifier" />
@@ -98,9 +314,7 @@
     </usedBy>
   </snippet>
   <snippet name="CombinationOccurrence" replacementCount="2">
-    <statement>
-							Description: Verbalizes a range of combination occurrences.  Form at: {0} combination occurs {1}
-						</statement>
+    <statement>Description: Verbalizes a range of combination occurrences.  Format: {0} combination occurs {1}</statement>
     <unformattedSnippet>{0} combination occurs {1}</unformattedSnippet>
     <contains>
       <snippet name="FrequencyRangeExact" />
@@ -119,9 +333,7 @@
     </usedBy>
   </snippet>
   <snippet name="CombinationUniqueness" replacementCount="1">
-    <statement>
-							Description: Verbalizes uniqueness of a combination.  Format: {0} combination is unique
-						</statement>
+    <statement>Description: Verbalizes uniqueness of a combination.  Format: {0} combination is unique</statement>
     <unformattedSnippet>{0} combination is unique</unformattedSnippet>
     <contains />
     <containedIn>
@@ -134,29 +346,21 @@
     </usedBy>
   </snippet>
   <snippet name="CombinedObjectAndInstance" replacementCount="2">
-    <statement>
-							Description: Used to combine an object and an instance.
-							Format: {0} {1}
-						</statement>
+    <statement>Description: Used to combine an object and an instance. Format: {0} {1}</statement>
     <unformattedSnippet>{0} {1}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="CombinedObjectAndInstanceTypeMissing" replacementCount="1">
-    <statement>
-							Description: Used to say an object and instance combination is missing.
-							Format: Missing {0}
-						</statement>
+    <statement>Description: Used to say an object and instance combination is missing. Format: Missing {0}</statement>
     <unformattedSnippet>Missing {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="CompactSimpleListClose" replacementCount="0">
-    <statement>
-							Description: Text used at the end of a compact simple list.
-						</statement>
+    <statement>Description: Text used at the end of a compact simple list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -170,9 +374,7 @@
     </usedBy>
   </snippet>
   <snippet name="CompactSimpleListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in a compact simple list.  Format: ,
-						</statement>
+    <statement>Description: Used to separate the last two items in a compact simple list.  Format: ,</statement>
     <unformattedSnippet>, </unformattedSnippet>
     <contains />
     <containedIn />
@@ -186,9 +388,7 @@
     </usedBy>
   </snippet>
   <snippet name="CompactSimpleListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of a compact simple list.
-						</statement>
+    <statement>Description: Text used at the beginning of a compact simple list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -202,9 +402,7 @@
     </usedBy>
   </snippet>
   <snippet name="CompactSimpleListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a compact simple list.  Format: ,
-						</statement>
+    <statement>Description: Used to separate items in a compact simple list.  Format: ,</statement>
     <unformattedSnippet>, </unformattedSnippet>
     <contains />
     <containedIn />
@@ -218,9 +416,7 @@
     </usedBy>
   </snippet>
   <snippet name="CompactSimpleListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a compact simple list.  Format: ,
-						</statement>
+    <statement>Description: Used to separate items in a compact simple list.  Format: ,</statement>
     <unformattedSnippet>, </unformattedSnippet>
     <contains />
     <containedIn />
@@ -234,10 +430,8 @@
     </usedBy>
   </snippet>
   <snippet name="CompatibleTypesIdentityInequalityOperator" replacementCount="2">
-    <statement>
-							Description: Used to specify that two instances of compatible types are not the same instance.
-							Format: that {0} is not that {1}
-						</statement>
+    <statement>Description: Used to specify that two instances of compatible types are not the same instance.
+Format: that {0} is not that {1}</statement>
     <unformattedSnippet>that {0} is not that {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -249,9 +443,7 @@
     </usedBy>
   </snippet>
   <snippet name="CompoundListClose" replacementCount="0">
-    <statement>
-							Description: Text that is at the end of a compound list.
-						</statement>
+    <statement>Description: Text that is at the end of a compound list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -262,9 +454,7 @@
     </usedBy>
   </snippet>
   <snippet name="CompoundListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used after the last item listed in a compound list.  Format: ;
-						</statement>
+    <statement>Description: Used after the last item listed in a compound list.  Format: ;</statement>
     <unformattedSnippet>; </unformattedSnippet>
     <contains />
     <containedIn />
@@ -275,9 +465,7 @@
     </usedBy>
   </snippet>
   <snippet name="CompoundListOpen" replacementCount="0">
-    <statement>
-							Description: Text that is at the beginning of a compound list.
-						</statement>
+    <statement>Description: Text that is at the beginning of a compound list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -288,9 +476,7 @@
     </usedBy>
   </snippet>
   <snippet name="CompoundListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a compound list.  Format: ;
-						</statement>
+    <statement>Description: Used to separate items in a compound list.  Format: ;</statement>
     <unformattedSnippet>; </unformattedSnippet>
     <contains />
     <containedIn />
@@ -301,9 +487,7 @@
     </usedBy>
   </snippet>
   <snippet name="CompoundListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a compound list.  Format: ;
-						</statement>
+    <statement>Description: Used to separate items in a compound list.  Format: ;</statement>
     <unformattedSnippet>; </unformattedSnippet>
     <contains />
     <containedIn />
@@ -314,10 +498,7 @@
     </usedBy>
   </snippet>
   <snippet name="Conditional" replacementCount="2">
-    <statement>
-							Description: Verbalizes a simple conditional statement.
-							Format: if {0} then {1}
-						</statement>
+    <statement>Description: Verbalizes a simple conditional statement. Format: if {0} then {1}</statement>
     <unformattedSnippet>if {0} then {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -329,11 +510,9 @@
     </usedBy>
   </snippet>
   <snippet name="ConditionalMultiLine" replacementCount="2">
-    <statement>
-							Description: Verbalizes a conditional statement on two lines.
-							Format: if {0}
-							        then {1}
-						</statement>
+    <statement>Description: Verbalizes a conditional statement on two lines.
+Format: if {0}
+        then {1}</statement>
     <unformattedSnippet>if {0}then {1}</unformattedSnippet>
     <contains>
       <snippet name="CompatibleTypesIdentityInequalityOperator" />
@@ -362,10 +541,8 @@
     </usedBy>
   </snippet>
   <snippet name="ConstraintProvidesPreferredIdentifier" replacementCount="2">
-    <statement>
-							Description: Verbalizes the preferred identifier for an object.
-							Format: this association with {0}provides the preferred identification scheme for {1}
-						</statement>
+    <statement>Description: Verbalizes the preferred identifier for an object.
+Format: this association with {0}provides the preferred identification scheme for {1}</statement>
     <unformattedSnippet>this association with {0} provides the preferred identification scheme for {1}</unformattedSnippet>
     <contains>
       <snippet name="ObjectType" />
@@ -377,9 +554,7 @@
     </usedBy>
   </snippet>
   <snippet name="ContextScope" replacementCount="1">
-    <statement>
-							Description: Used to define the context in which the object is used.  Format: context: {0}
-						</statement>
+    <statement>Description: Used to define the context in which the object is used.  Format: context: {0}</statement>
     <unformattedSnippet>context:&amp;nbsp;{0}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -389,9 +564,7 @@
     </usedBy>
   </snippet>
   <snippet name="ContextScopeReference" replacementCount="1">
-    <statement>
-							Description: Used to define the context in which the following object will be in.  Format: in this context, {0}
-						</statement>
+    <statement>Description: Used to define the context in which the following object will be in.  Format: in this context, {0}</statement>
     <unformattedSnippet>in this context, {0}</unformattedSnippet>
     <contains>
       <snippet name="CombinationAssociation" />
@@ -442,40 +615,35 @@
     </usedBy>
   </snippet>
   <snippet name="DerivationNoteVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes the informal note specified for an element derivation rule.  Format: Derivation  Note: {0}</statement>
+    <statement>Description: Verbalizes the informal note specified for an element derivation rule. Format: Derivation  Note: {0}</statement>
     <unformattedSnippet>Derivation Note: {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="DescriptionVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes the text specified for an element description.  Format: Informal Description: {0}</statement>
+    <statement>Description: Verbalizes the text specified for an element description. Format: Informal Description: {0}</statement>
     <unformattedSnippet>Informal Description: {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="EachInstanceQuantifier" replacementCount="1">
-    <statement>
-							Description: Verbalizes an instance of the specified object may occur at most one time.  Format: each instance of {0} occurs only once
-						</statement>
+    <statement>Description: Verbalizes an instance of the specified object may occur at most one time.  Format: each instance of {0} occurs only once</statement>
     <unformattedSnippet>each instance of {0} occurs only once</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="EntityTypeVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes an object as being an entity type.  Format: {0} is an entity type</statement>
+    <statement>Description: Verbalizes an object as being an entity type. Format: {0} is an entity type</statement>
     <unformattedSnippet>{0} is an entity type</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="Equality" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a simple equality constraint.
-							Format: {0} if and only if {1}
-						</statement>
+    <statement>Description: Used to verbalize a simple equality constraint. Format: {0} if and only if {1}</statement>
     <unformattedSnippet>{0} if and only if {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -487,9 +655,7 @@
     </usedBy>
   </snippet>
   <snippet name="EqualsListClose" replacementCount="0">
-    <statement>
-							Description: Text that is at the end of an equals list.
-						</statement>
+    <statement>Description: Text that is at the end of an equals list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -498,9 +664,7 @@
     </usedBy>
   </snippet>
   <snippet name="EqualsListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used between the last two items in an equals list.  Format: =
-						</statement>
+    <statement>Description: Used between the last two items in an equals list.  Format: =</statement>
     <unformattedSnippet> = </unformattedSnippet>
     <contains />
     <containedIn />
@@ -509,9 +673,7 @@
     </usedBy>
   </snippet>
   <snippet name="EqualsListOpen" replacementCount="0">
-    <statement>
-							Description: Text that is at the beginning of an equals list.
-						</statement>
+    <statement>Description: Text that is at the beginning of an equals list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -520,9 +682,7 @@
     </usedBy>
   </snippet>
   <snippet name="EqualsListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an equals list.  Format: =
-						</statement>
+    <statement>Description: Used to separate items in an equals list.  Format: =</statement>
     <unformattedSnippet> = </unformattedSnippet>
     <contains />
     <containedIn />
@@ -531,9 +691,7 @@
     </usedBy>
   </snippet>
   <snippet name="EqualsListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an equals list.  Format: =
-						</statement>
+    <statement>Description: Used to separate items in an equals list.  Format: =</statement>
     <unformattedSnippet> = </unformattedSnippet>
     <contains />
     <containedIn />
@@ -542,68 +700,54 @@
     </usedBy>
   </snippet>
   <snippet name="ErrorClosePrimaryReport" replacementCount="0">
-    <statement>
-							Description: Close a primary error report opened with ErrorOpenPrimaryReport
-						</statement>
+    <statement>Description: Close a primary error report opened with ErrorOpenPrimaryReport</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ErrorCloseSecondaryReport" replacementCount="0">
-    <statement>
-							Description: Close a secondary error report opened with ErrorOpenSecondaryReport.
-						</statement>
+    <statement>Description: Close a secondary error report opened with ErrorOpenSecondaryReport.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ErrorOpenPrimaryReport" replacementCount="0">
-    <statement>
-							Description: Used to open a primary error report. Primary error reports block further verbalization.
-						</statement>
+    <statement>Description: Used to open a primary error report. Primary error reports block further verbalization.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ErrorOpenSecondaryReport" replacementCount="0">
-    <statement>
-							Description: Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.
-							Replacement: {0}=error text,{1}=error id
-							Format: Model Error: {0}
-						</statement>
+    <statement>Description: Used to open a secondary error report. Secondary reports contain errors that do not block verbalization.
+Replacement: {0}=error text,{1}=error id
+Format: Model Error: {0}</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ErrorPrimary" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a single primary error.
-							Replacement: {0}=error text,{1}=error id
-							Format: Model Error: {0}
-						</statement>
+    <statement>Description: Used to verbalize a single primary error.
+Replacement: {0}=error text,{1}=error id
+Format: Model Error: {0}</statement>
     <unformattedSnippet>Model Error: {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ErrorSecondary" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a single secondary error.
-							Format: Model Error: {0}
-						</statement>
+    <statement>Description: Used to verbalize a single secondary error.
+Format: Model Error: {0}</statement>
     <unformattedSnippet>Model Error: {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ExactlyOneQuantifier" replacementCount="1">
-    <statement>
-							Description: Used for 'exactly one' before an object name to signify the quantity may only be one.  Format: exactly one {0}
-						</statement>
+    <statement>Description: Used for 'exactly one' before an object name to signify the quantity may only be one.  Format: exactly one {0}</statement>
     <unformattedSnippet>exactly one {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -615,10 +759,8 @@
     </usedBy>
   </snippet>
   <snippet name="ExclusionBinaryLeadReading" replacementCount="2">
-    <statement>
-							Description: Used to verbalize an exclusion constraint, on a binary lead reading.
-							Format: No {0} the same {1}
-						</statement>
+    <statement>Description: Used to verbalize an exclusion constraint, on a binary lead reading.
+Format: No {0} the same {1}</statement>
     <unformattedSnippet>no {0} the same {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -629,10 +771,7 @@
     </usedBy>
   </snippet>
   <snippet name="ExclusionCombined" replacementCount="2">
-    <statement>
-							Description: Used to combine the first role player and the roles played for an Exclusion constraint (i.e: No Person authored and reviewed). 
-							Format: {0} {1}
-						</statement>
+    <statement>Description: Used to combine the first role player and the roles played for an Exclusion constraint (i.e: No Person authored and reviewed). Format: {0} {1}</statement>
     <unformattedSnippet>{0} {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -643,9 +782,7 @@
     </usedBy>
   </snippet>
   <snippet name="ExistentialQuantifier" replacementCount="1">
-    <statement>
-							Description: Used for 'some' before an object name to signify the context in which the object is being referred to.  Format: some {0}
-						</statement>
+    <statement>Description: Used for 'some' before an object name to signify the context in which the object is being referred to.  Format: some {0}</statement>
     <unformattedSnippet>some {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -671,85 +808,63 @@
     </usedBy>
   </snippet>
   <snippet name="FactTypeInstanceBlockEnd" replacementCount="0">
-    <statement>
-							Description: Formatted single snippet used to end a sample population verbalization of fact types block.
-						</statement>
+    <statement>Description: Formatted single snippet used to end a sample population verbalization of fact types block.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeInstanceBlockStart" replacementCount="0">
-    <statement>
-							Description: Text and formatting to begin a sample population verbalization of fact types block.
-							Format: Examples:
-						</statement>
+    <statement>Description: Text and formatting to begin a sample population verbalization of fact types block. Format: Examples:</statement>
     <unformattedSnippet>Examples: </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeInstanceIdentifier" replacementCount="1">
-    <statement>
-							Description: The text describing the identifier for an objectified FactType instance with an external identifier.
-							Examples: Identifier:
-						</statement>
+    <statement>Description: The text describing the identifier for an objectified FactType instance with an external identifier. Format: Identifier:</statement>
     <unformattedSnippet>Identifier: {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeListClose" replacementCount="0">
-    <statement>
-							Description: Text used to close the sample population verbalization list.
-							Format:
-						</statement>
+    <statement>Description: Text used to close the sample population verbalization list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Text used to separate the last two items in a sample population verbalization list.
-							Format: &lt;br/&gt;</statement>
+    <statement>Description: Text used to separate the last two items in a sample population verbalization list. Format: &lt;br/&gt;</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeListOpen" replacementCount="0">
-    <statement>
-							Description:  Text and formatting to begin a sample population verbalization basic predicate text.
-							Format: FactTypes: &lt;br/&gt;
-						</statement>
+    <statement>Description:  Text and formatting to begin a sample population verbalization basic predicate text.Format: FactTypes: &lt;br/&gt;</statement>
     <unformattedSnippet>Fact Types:</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Text used to separate items in a sample population verbalization list.
-							Format: &lt;br/&gt;</statement>
+    <statement>Description: Text used to separate items in a sample population verbalization list. Format: &lt;br/&gt;</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeListSeparator" replacementCount="0">
-    <statement>
-							Description: Text used to separate items in a sample population verbalization list.
-							Format: &lt;br/&gt;</statement>
+    <statement>Description: Text used to separate items in a sample population verbalization list. Format: &lt;br/&gt;</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ForEachCompactQuantifier" replacementCount="2">
-    <statement>
-							Description: Verbalizes for each instance of an object, some rule applies to those instances.  Format: for each {0}, {1}
-						</statement>
+    <statement>Description: Verbalizes for each instance of an object, some rule applies to those instances.  Format: for each {0}, {1}</statement>
     <unformattedSnippet>for each {0}, {1}</unformattedSnippet>
     <contains>
       <snippet name="AtMostOneQuantifier" />
@@ -777,9 +892,7 @@
     </usedBy>
   </snippet>
   <snippet name="ForEachIndentedQuantifier" replacementCount="2">
-    <statement>
-							Description: Verbalizes for each instance of an object then creates a line break where the rules that apply to those instances are listed.  Format: for each {0}, \n{1}
-						</statement>
+    <statement>Description: Verbalizes for each instance of an object then creates a line break where the rules that apply to those instances are listed.  Format: for each {0}, \n{1}</statement>
     <unformattedSnippet>for each {0},{1}</unformattedSnippet>
     <contains>
       <snippet name="Conditional" />
@@ -800,10 +913,8 @@
     </usedBy>
   </snippet>
   <snippet name="FrequencyPopulation" replacementCount="3">
-    <statement>
-							Description: Used as for the main body text of a frequency constraint on one FactType.
-							Format: each {0} in the population of {1} occurs there {2} times
-						</statement>
+    <statement>Description: Used as for the main body text of a frequency constraint on one FactType.
+Format: each {0} in the population of {1} occurs there {2} times</statement>
     <unformattedSnippet>each {0} in the population of “{1}” occurs there {2}</unformattedSnippet>
     <contains>
       <snippet name="CombinationIdentifier" />
@@ -821,10 +932,8 @@
     </usedBy>
   </snippet>
   <snippet name="FrequencyRangeExact" replacementCount="1">
-    <statement>
-							Description: Used for a frequency range where both the min and max values the same
-							Format: exactly {0}
-						</statement>
+    <statement>Description: Used for a frequency range where both the min and max values the same
+Format: exactly {0}</statement>
     <unformattedSnippet>exactly {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -842,10 +951,8 @@
     </usedBy>
   </snippet>
   <snippet name="FrequencyRangeMaxUnbounded" replacementCount="1">
-    <statement>
-							Description: Used for a frequency range where both the max value is unbounded.
-							Format: at least {0}
-						</statement>
+    <statement>Description: Used for a frequency range where both the max value is unbounded.
+Format: at least {0}</statement>
     <unformattedSnippet>at least {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -863,10 +970,8 @@
     </usedBy>
   </snippet>
   <snippet name="FrequencyRangeMinAndMax" replacementCount="2">
-    <statement>
-							Description: Used for a frequency range where both the min and max values are specified and different.
-							Format: at least {0} and at most {1}
-						</statement>
+    <statement>Description: Used for a frequency range where both the min and max values are specified and different.
+Format: at least {0} and at most {1}</statement>
     <unformattedSnippet>at least {0} and at most {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -884,10 +989,8 @@
     </usedBy>
   </snippet>
   <snippet name="FrequencyRangeMinUnbounded" replacementCount="1">
-    <statement>
-							Description: Used for a frequency range where the min value is &lt; 2.
-							Format: at most {1}
-						</statement>
+    <statement>Description: Used for a frequency range where the min value is less than 2.
+Format: at most {1}</statement>
     <unformattedSnippet>at most {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -905,10 +1008,8 @@
     </usedBy>
   </snippet>
   <snippet name="FrequencyTypedOccurrences" replacementCount="2">
-    <statement>
-							Description: Used to specify an instance count or range for a specific object type
-							Format: {1} instances of {0}
-						</statement>
+    <statement>Description: Used to specify an instance count or range for a specific object type.
+Format: {1} instances of {0}</statement>
     <unformattedSnippet>{1} instances of {0}</unformattedSnippet>
     <contains>
       <snippet name="FrequencyRangeExact" />
@@ -927,10 +1028,8 @@
     </usedBy>
   </snippet>
   <snippet name="FrequencyUntypedOccurrences" replacementCount="1">
-    <statement>
-							Description: Used to specify an instance count or range using an untyped occurrence phrase
-							Format: {0} times
-						</statement>
+    <statement>Description: Used to specify an instance count or range using an untyped occurrence phrase
+Format: {0} times</statement>
     <unformattedSnippet>{0} times</unformattedSnippet>
     <contains>
       <snippet name="FrequencyRangeExact" />
@@ -950,30 +1049,23 @@
     </usedBy>
   </snippet>
   <snippet name="FullFactTypeDerivation" replacementCount="2">
-    <statement>
-							Description: Used to specify a fully derived fact type with its derivation rule.
-							Format: *{0} if and only if {1}
-						</statement>
+    <statement>Description: Used to specify a fully derived fact type with its derivation rule.
+Format: *{0} if and only if {1}</statement>
     <unformattedSnippet>*{0} if and only if{1}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FullSubtypeDerivation" replacementCount="2">
-    <statement>
-							Description: Used to specify a fully derived subtype derivation rule.
-							Format: each {0} is {1}
-						</statement>
+    <statement>Description: Used to specify a fully derived subtype derivation rule.
+Format: each {0} is {1}</statement>
     <unformattedSnippet>*Each {0} is {1}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="GroupEquality" replacementCount="1">
-    <statement>
-							Description: Assert group equality.
-							Format: all or none of the following hold: {0}
-						</statement>
+    <statement>Description: Assert group equality. Format: all or none of the following hold: {0}</statement>
     <unformattedSnippet>all or none of the following hold: {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -985,9 +1077,7 @@
     </usedBy>
   </snippet>
   <snippet name="GroupExclusion" replacementCount="1">
-    <statement>
-							Description: Assert group exclusion.
-							Format: at most one of the following holds: {0}
+    <statement>Description: Assert group exclusion. Format: at most one of the following holds: {0}
 						</statement>
     <unformattedSnippet>at most one of the following holds: {0}</unformattedSnippet>
     <contains />
@@ -1000,10 +1090,7 @@
     </usedBy>
   </snippet>
   <snippet name="GroupExclusiveOr" replacementCount="1">
-    <statement>
-							Description: Assert group exclusive-or.
-							Format: exactly one of the following holds: {0}
-						</statement>
+    <statement>Description: Assert group exclusive-or. Format: exactly one of the following holds: {0}</statement>
     <unformattedSnippet>exactly one of the following holds: {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1014,6 +1101,14 @@
       <constraint name="ExclusionConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="HeadVariableProjection" replacementCount="2">
+    <statement>Description: Project a calculation or constant value onto a head variable.
+Format: {0} = {1}</statement>
+    <unformattedSnippet>{0} = {1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="HyphenBoundPredicatePart" replacementCount="2">
     <statement>Description: Format string to combine predicate text from hyphen binding with the replacement field. Format: {0}{{0}}{1}</statement>
     <unformattedSnippet>{0}{{0}}{1}</unformattedSnippet>
@@ -1022,54 +1117,42 @@
     <usedBy />
   </snippet>
   <snippet name="IdentityEqualityListClose" replacementCount="0">
-    <statement>
-							Description: Text that is at the end of an identity equality list.
-						</statement>
+    <statement>Description: Text that is at the end of an identity equality list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IdentityEqualityListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used between the last two items in an identity equality list.  Format: that is a
-						</statement>
+    <statement>Description: Used between the last two items in an identity equality list.  Format: that is a</statement>
     <unformattedSnippet> that is a </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IdentityEqualityListOpen" replacementCount="0">
-    <statement>
-							Description: Text that is at the beginning of an identity equality list.
-						</statement>
+    <statement>Description: Text that is at the beginning of an identity equality list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IdentityEqualityListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an identity equality list.  Format: that is a
-						</statement>
+    <statement>Description: Used to separate items in an identity equality list.  Format: that is a</statement>
     <unformattedSnippet> that is a </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IdentityEqualityListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an identity equality list.  Format: that is a
-						</statement>
+    <statement>Description: Used to separate items in an identity equality list.  Format: that is a</statement>
     <unformattedSnippet> that is a </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IdentityReferenceQuantifier" replacementCount="1">
-    <statement>
-							Description: Used for 'the same' before an object name to signify exactly which object is being reference.  Format: the same {0}
-						</statement>
+    <statement>Description: Used for 'the same' before an object name to signify exactly which object is being reference.  Format: the same {0}</statement>
     <unformattedSnippet>the same {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1086,6 +1169,24 @@
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="ImpersonalIdentityCorrelation" replacementCount="2">
+    <statement>Description: Relate two variables of different types that represent the same instance where the first
+variable is an impersonal object type.
+Format: {0} that is {1}</statement>
+    <unformattedSnippet>{0} that is {1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="ImpersonalLeadIdentityCorrelation" replacementCount="2">
+    <statement>Description: A form of ImpersonalIdentityCorrelation for lead role scenarios. Relate two variables of different
+types that represent the same instance where the first variable is an impersonal object type.
+Format:  {1} is {0} that</statement>
+    <unformattedSnippet>{1} is {0} that</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="ImpersonalPronoun" replacementCount="0">
     <statement>Description: Use in place of a role player name to reference an impersonal object type with a clear antecedent.</statement>
     <unformattedSnippet>that</unformattedSnippet>
@@ -1094,10 +1195,8 @@
     <usedBy />
   </snippet>
   <snippet name="ImpliedModalNecessityOperator" replacementCount="1">
-    <statement>
-							Description: Used to define the strength of the constraint.  Alethic, positive adds nothing before an object name.  Deontic, positive adds 'it is obligatory that' before an object name.  Alethic, negative adds 'it is impossible that' before an object name.  Deontic, negative adds 'it is forbidden that' before an object name.
-							Format for alethic and positive: {0}  Format for deontic and positive: it is obligatory that {0}  Format for alethic and negative: it is impossible that {0}  Format for deontic and negative: it is forbidden that {0}
-						</statement>
+    <statement>Description: Used to define the strength of the constraint.  Alethic, positive adds nothing before an object name.  Deontic, positive adds 'it is obligatory that' before an object name.  Alethic, negative adds 'it is impossible that' before an object name.  Deontic, negative adds 'it is forbidden that' before an object name.
+Format for alethic and positive: {0}  Format for deontic and positive: it is obligatory that {0}  Format for alethic and negative: it is impossible that {0}  Format for deontic and negative: it is forbidden that {0}</statement>
     <unformattedSnippet>{0}</unformattedSnippet>
     <contains>
       <snippet name="Acyclicity" />
@@ -1163,9 +1262,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedCompoundListClose" replacementCount="0">
-    <statement>
-							Description: Text that is at the end of an indented compound list.
-						</statement>
+    <statement>Description: Text that is at the end of an indented compound list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1174,9 +1271,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedCompoundListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in an indented compound list.  Format: ;
-						</statement>
+    <statement>Description: Used to separate the last two items in an indented compound list.  Format: ;</statement>
     <unformattedSnippet>; </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1185,9 +1280,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedCompoundListOpen" replacementCount="0">
-    <statement>
-							Description: Text that is at the beginning of an indented compound list.  Format: \n
-						</statement>
+    <statement>Description: Text that is at the beginning of an indented compound list.  Format: \n</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1196,9 +1289,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedCompoundListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented compound list.  Format: ;
-						</statement>
+    <statement>Description: Used to separate items in an indented compound list.  Format: ;</statement>
     <unformattedSnippet>; </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1207,9 +1298,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedCompoundListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented compound list.  Format: ;
-						</statement>
+    <statement>Description: Used to separate items in an indented compound list.  Format: ;</statement>
     <unformattedSnippet>; </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1218,9 +1307,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedListClose" replacementCount="0">
-    <statement>
-							Description: Text used at the end of an indented list.
-						</statement>
+    <statement>Description: Text used at the end of an indented list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1229,9 +1316,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in an indented list.  Format: and
-						</statement>
+    <statement>Description: Used to separate the last two items in an indented list.  Format: and</statement>
     <unformattedSnippet> and </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1240,9 +1325,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of an indented list.  Format: \n
-						</statement>
+    <statement>Description: Text used at the beginning of an indented list.  Format: \n</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1251,9 +1334,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented list.  Format: and
-						</statement>
+    <statement>Description: Used to separate items in an indented list.  Format: and</statement>
     <unformattedSnippet> and </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1262,9 +1343,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented list.  Format: and
-						</statement>
+    <statement>Description: Used to separate items in an indented list.  Format: and</statement>
     <unformattedSnippet> and </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1273,54 +1352,42 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedLogicalAndListClose" replacementCount="0">
-    <statement>
-							Description: Text used at the end of an indented logical and list.
-						</statement>
+    <statement>Description: Text used at the end of an indented logical and list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IndentedLogicalAndListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in an indented logical and list.  Format: and that
-						</statement>
+    <statement>Description: Used to separate the last two items in an indented logical and list.  Format: and that</statement>
     <unformattedSnippet>and that </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IndentedLogicalAndListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of an indented logical and list.  Format: \n
-						</statement>
+    <statement>Description: Text used at the beginning of an indented logical and list.  Format: \n</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IndentedLogicalAndListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented logical and list.  Format: and that
-						</statement>
+    <statement>Description: Used to separate items in an indented logical and list.  Format: and that</statement>
     <unformattedSnippet>and that </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IndentedLogicalAndListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented logical and list.  Format: and that
-						</statement>
+    <statement>Description: Used to separate items in an indented logical and list.  Format: and that</statement>
     <unformattedSnippet>and that </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="IndentedLogicalOrListClose" replacementCount="0">
-    <statement>
-							Description: Text used at the end of an indented logical or list.
-						</statement>
+    <statement>Description: Text used at the end of an indented logical or list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1329,9 +1396,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedLogicalOrListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in an indented logical or list.  Format: or
-						</statement>
+    <statement>Description: Used to separate the last two items in an indented logical or list.  Format: or</statement>
     <unformattedSnippet>or </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1340,9 +1405,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedLogicalOrListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of an indented logical or list.  Format: \n
-						</statement>
+    <statement>Description: Text used at the beginning of an indented logical or list.  Format: \n</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1351,9 +1414,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedLogicalOrListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented logical or list.  Format: or
-						</statement>
+    <statement>Description: Used to separate items in an indented logical or list.  Format: or</statement>
     <unformattedSnippet>or </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1362,9 +1423,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndentedLogicalOrListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented logical or list.  Format: or
-						</statement>
+    <statement>Description: Used to separate items in an indented logical or list.  Format: or</statement>
     <unformattedSnippet>or </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1373,7 +1432,7 @@
     </usedBy>
   </snippet>
   <snippet name="IndependentVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes an object as being independent.  Format: {0} is independent (it may have instances that play no other roles)</statement>
+    <statement>Description: Verbalizes an object as being independent. Format: {0} is independent (it may have instances that play no other roles)</statement>
     <unformattedSnippet>{0} is independent (it may have instances that play no other roles)</unformattedSnippet>
     <contains>
       <snippet name="ObjectType" />
@@ -1382,10 +1441,8 @@
     <usedBy />
   </snippet>
   <snippet name="InQuantifier" replacementCount="2">
-    <statement>
-							Description: Used to verbalize [RolePlayer in Fact], e.g. Person in Person has Age.
-							Format: {0} in {1}
-						</statement>
+    <statement>Description: Used to verbalize [RolePlayer in Fact], e.g. Person in Person has Age.
+Format: {0} in {1}</statement>
     <unformattedSnippet>{0} in {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1394,10 +1451,8 @@
     </usedBy>
   </snippet>
   <snippet name="LogicalAndOperator" replacementCount="2">
-    <statement>
-							Description: Used to 'and' together exactly two other snippets.
-							Format: {0} and {1}
-						</statement>
+    <statement>Description: Used to 'and' together exactly two other snippets.
+Format: {0} and {1}</statement>
     <unformattedSnippet>{0} and {1}</unformattedSnippet>
     <contains>
       <snippet name="CompatibleTypesIdentityInequalityOperator" />
@@ -1417,10 +1472,8 @@
     </usedBy>
   </snippet>
   <snippet name="MinClosedMaxClosed" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound closed.
-							Format: at least {0} to at most {1}
-						</statement>
+    <statement>Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound closed.
+Format: at least {0} to at most {1}</statement>
     <unformattedSnippet>at least {0} to at most {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1431,10 +1484,8 @@
     </usedBy>
   </snippet>
   <snippet name="MinClosedMaxOpen" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound open.
-							Format: at least {0} to below {1}
-						</statement>
+    <statement>Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum bound open.
+Format: at least {0} to below {1}</statement>
     <unformattedSnippet>at least {0} to below {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1445,10 +1496,8 @@
     </usedBy>
   </snippet>
   <snippet name="MinClosedMaxUnbounded" replacementCount="1">
-    <statement>
-							Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum unbounded.
-							Format: at least {0}
-						</statement>
+    <statement>Description: Used to verbalize a range inclusion with the minimum bound closed and the maximum unbounded.
+Format: at least {0}</statement>
     <unformattedSnippet>at least {0}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1459,10 +1508,8 @@
     </usedBy>
   </snippet>
   <snippet name="MinOpenMaxClosed" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a range inclusion with the minimum bound open and the maximum bound closed.
-							Format: above {0} to at most {1}
-						</statement>
+    <statement>Description: Used to verbalize a range inclusion with the minimum bound open and the maximum bound closed.
+Format: above {0} to at most {1}</statement>
     <unformattedSnippet>above {0} to at most {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1473,10 +1520,8 @@
     </usedBy>
   </snippet>
   <snippet name="MinOpenMaxOpen" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a range inclusion with the minimum bound open and the maximum bound open.
-							Format: above {0} to below {1}
-						</statement>
+    <statement>Description: Used to verbalize a range inclusion with the minimum bound open and the maximum bound open.
+Format: above {0} to below {1}</statement>
     <unformattedSnippet>above {0} to below {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1487,10 +1532,8 @@
     </usedBy>
   </snippet>
   <snippet name="MinOpenMaxUnbounded" replacementCount="1">
-    <statement>
-							Description: Used to verbalize a range inclusion with the minimum bound open and the maximum unbounded.
-							Format: above {0}
-						</statement>
+    <statement>Description: Used to verbalize a range inclusion with the minimum bound open and the maximum unbounded.
+Format: above {0}</statement>
     <unformattedSnippet>above {0}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1501,10 +1544,8 @@
     </usedBy>
   </snippet>
   <snippet name="MinUnboundedMaxClosed" replacementCount="1">
-    <statement>
-							Description: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound closed.
-							Format: at most {1}
-						</statement>
+    <statement>Description: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound closed.
+Format: at most {1}</statement>
     <unformattedSnippet>at most {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1515,10 +1556,8 @@
     </usedBy>
   </snippet>
   <snippet name="MinUnboundedMaxOpen" replacementCount="1">
-    <statement>
-							Description: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound open.
-							Format: below {1}
-						</statement>
+    <statement>Description: Used to verbalize a range inclusion with the minimum unbounded and the maximum bound open.
+Format: below {1}</statement>
     <unformattedSnippet>below {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1529,20 +1568,16 @@
     </usedBy>
   </snippet>
   <snippet name="ModalNecessityOperator" replacementCount="1">
-    <statement>
-							Description: Used to define the strength of the constraint.  Alethic adds 'it is necessary that' before  an object name.  Deontic adds 'it is obligatory that' before an object name.
-							Format for alethic: it is necessary that {0}  Format for deontic: it is obligatory that {0}
-						</statement>
+    <statement>Description: Used to define the strength of the constraint.  Alethic adds 'it is necessary that' before  an object name.  Deontic adds 'it is obligatory that' before an object name.
+Format for alethic: it is necessary that {0}  Format for deontic: it is obligatory that {0}</statement>
     <unformattedSnippet>it is necessary that {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ModalPossibilityOperator" replacementCount="1">
-    <statement>
-							Description: Used to define the strength of the constraint.  Alethic, positive adds 'it is possible that' before an object name.  Deontic, positive adds 'it is permitted that' before an object name.  Alethic, negative adds 'it is impossible that' before an object name.  Deontic, negative adds 'it is forbidden that' before an object name.
-							Format for alethic and positive: it is possible that {0}  Format for deontic and positive: it is permitted that {0}  Format for alethic and negative: it is impossible that {0}  Format for deontic and negative: it is forbidden that {0}
-						</statement>
+    <statement>Description: Used to define the strength of the constraint.  Alethic, positive adds 'it is possible that' before an object name.  Deontic, positive adds 'it is permitted that' before an object name.  Alethic, negative adds 'it is impossible that' before an object name.  Deontic, negative adds 'it is forbidden that' before an object name.
+Format for alethic and positive: it is possible that {0}  Format for deontic and positive: it is permitted that {0}  Format for alethic and negative: it is impossible that {0}  Format for deontic and negative: it is forbidden that {0}</statement>
     <unformattedSnippet>it is possible that {0}</unformattedSnippet>
     <contains>
       <snippet name="CombinationAssociation" />
@@ -1579,9 +1614,7 @@
     <usedBy />
   </snippet>
   <snippet name="MoreThanOneQuantifier" replacementCount="1">
-    <statement>
-							Description: Used for 'more than one' before an object name to define quantity as more than one.  Format: more than one {0}
-						</statement>
+    <statement>Description: Used for 'more than one' before an object name to define quantity as more than one.  Format: more than one {0}</statement>
     <unformattedSnippet>more than one {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1595,9 +1628,7 @@
     </usedBy>
   </snippet>
   <snippet name="MultilineIndentedCompoundListClose" replacementCount="0">
-    <statement>
-							Description: Text used at the end of an indented compound list.  Format:
-						</statement>
+    <statement>Description: Text used at the end of an indented compound list.  Format:</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1607,9 +1638,7 @@
     </usedBy>
   </snippet>
   <snippet name="MultilineIndentedCompoundListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in an indented compound list.  Format: ;
-						</statement>
+    <statement>Description: Used to separate the last two items in an indented compound list.  Format: ;</statement>
     <unformattedSnippet>; </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1619,9 +1648,7 @@
     </usedBy>
   </snippet>
   <snippet name="MultilineIndentedCompoundListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of an indented compound list with one item on each line.
-						</statement>
+    <statement>Description: Text used at the beginning of an indented compound list with one item on each line.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1631,9 +1658,7 @@
     </usedBy>
   </snippet>
   <snippet name="MultilineIndentedCompoundListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented compound list.  Format: ;
-						</statement>
+    <statement>Description: Used to separate items in an indented compound list.  Format: ;</statement>
     <unformattedSnippet>; </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1643,9 +1668,7 @@
     </usedBy>
   </snippet>
   <snippet name="MultilineIndentedCompoundListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in an indented compound list.  Format: ;
-						</statement>
+    <statement>Description: Used to separate items in an indented compound list.  Format: ;</statement>
     <unformattedSnippet>; </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1655,10 +1678,8 @@
     </usedBy>
   </snippet>
   <snippet name="MultiValueValueConstraint" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a value range constraint with multiple values.
-							Format: the possible values of {0} are {1}
-						</statement>
+    <statement>Description: Used to verbalize a value range constraint with multiple values.
+Format: the possible values of {0} are {1}</statement>
     <unformattedSnippet>the possible values of {0} are {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1668,10 +1689,262 @@
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="NegatedAndLeadListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndLeadListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>at least one of the following is false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndLeadListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndNestedListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndNestedListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>at least one of the following is false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndNestedListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>at least one of the following is false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndNestedListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndTailListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndTailListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>at least one of the following is false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndTailListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>at least one of the following is false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedAndTailListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedChainedListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedChainedListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>it is not true that </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrLeadListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrLeadListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>all of the following are false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrLeadListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrNestedListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrNestedListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>all of the following are false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrNestedListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>all of the following are false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrNestedListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrTailListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrTailListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>all of the following are false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrTailListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>all of the following are false:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedOrTailListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedVariableExistence" replacementCount="1">
+    <statement>Description: Assert variable non-existence for an a previous declared variable in an existence statement.
+Note that VariableExistence can be used with a negated quantifier if the negated variable has not been previously introduced.
+Format: {0} does not exist</statement>
+    <unformattedSnippet>{0} does not exist</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorLeadListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorLeadListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>either none or many of the following are true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorLeadListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorNestedListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorNestedListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>either none or many of the following are true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorNestedListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>either none or many of the following are true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorNestedListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorTailListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorTailListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>either none or many of the following are true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorTailListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>either none or many of the following are true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="NegatedXorTailListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="NegativeReadingForUnaryOnlyDisjunctiveMandatory" replacementCount="2">
-    <statement>
-							Description: Used to verbalize that an object is not included in a set.  Format: some {0} participates in none of the following:{1}
-						</statement>
+    <statement>Description: Used to verbalize that an object is not included in a set.  Format: some {0} participates in none of the following:{1}</statement>
     <unformattedSnippet>some {0} participates in none of the following:{1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1682,10 +1955,7 @@
     </usedBy>
   </snippet>
   <snippet name="NonTextInstanceValue" replacementCount="1">
-    <statement>
-							Description: Used to output a non-text instance value.
-							Format: {0}
-						</statement>
+    <statement>Description: Used to output a non-text instance value. Format: {0}</statement>
     <unformattedSnippet>{0}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1696,14 +1966,14 @@
     </usedBy>
   </snippet>
   <snippet name="NotesVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes the text specified for a model note.  Format: Notes: {0}</statement>
+    <statement>Description: Verbalizes the text specified for a model note. Format: Notes: {0}</statement>
     <unformattedSnippet>Notes: {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ObjectifiesFactTypeVerbalization" replacementCount="2">
-    <statement>Description: Verbalizes the objectification made for a FactType.  Format: {0} objectifies "{1}"</statement>
+    <statement>Description: Verbalizes the objectification made for a FactType. Format: {0} objectifies "{1}"</statement>
     <unformattedSnippet>{0} objectifies "{1}"</unformattedSnippet>
     <contains>
       <snippet name="ObjectType" />
@@ -1729,49 +1999,35 @@
     </usedBy>
   </snippet>
   <snippet name="ObjectTypeInstanceListClose" replacementCount="0">
-    <statement>
-							Description: Text used to close the sample population verbalization list.
-							Format: .
-						</statement>
+    <statement>Description: Text used to close the sample population verbalization list. Format: .</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ObjectTypeInstanceListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Text used to separate the last two items in a sample population verbalization list, or object types.
-							Format: ,
-						</statement>
+    <statement>Description: Text used to separate the last two items in a sample population verbalization list, or object types. Format: ,</statement>
     <unformattedSnippet>, </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ObjectTypeInstanceListOpen" replacementCount="0">
-    <statement>
-							Description:  Text and formatting to begin a sample population verbalization of object types block.
-							Format: Examples:
-						</statement>
+    <statement> Description:  Text and formatting to begin a sample population verbalization of object types block. Format: Examples:</statement>
     <unformattedSnippet>Examples: </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ObjectTypeInstanceListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Text used to separate items in a sample population verbalization list.
-							Format: , </statement>
+    <statement>Description: Text used to separate items in a sample population verbalization list. Format: , </statement>
     <unformattedSnippet>, </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ObjectTypeInstanceListSeparator" replacementCount="0">
-    <statement>
-							Description: Text used to separate items in a sample population verbalization list.
-							Format: ,
-						</statement>
+    <statement>Description: Text used to separate items in a sample population verbalization list.	Format: ,</statement>
     <unformattedSnippet>, </unformattedSnippet>
     <contains />
     <containedIn />
@@ -1792,11 +2048,9 @@
     <usedBy />
   </snippet>
   <snippet name="OccursInPopulation" replacementCount="2">
-    <statement>
-							Description: Verbalizes that an object occurs at most once or more than once in a given population.
-							Format positive: in each population of {1}, {0} occurs at most once
-							Format negative: {0} occurs more than once in the same population of {1}
-						</statement>
+    <statement>Description: Verbalizes that an object occurs at most once or more than once in a given population.
+Format positive: in each population of {1}, {0} occurs at most once
+Format negative: {0} occurs more than once in the same population of {1}</statement>
     <unformattedSnippet>in each population of {1}, {0} occurs at most once</unformattedSnippet>
     <contains>
       <snippet name="CombinationIdentifier" />
@@ -1812,10 +2066,9 @@
     </usedBy>
   </snippet>
   <snippet name="OneQuantifier" replacementCount="1">
-    <statement>
-							Description: Used for 'at most one' or 'more than one' before an object.
-							Format positive: at most one {0}
-							Format negative: more than one {0}
+    <statement>Description: Used for 'at most one' or 'more than one' before an object.
+Format positive: at most one {0}
+Format negative: more than one {0}
 						</statement>
     <unformattedSnippet>at most one {0}</unformattedSnippet>
     <contains />
@@ -1833,21 +2086,94 @@
       <constraint name="UniquenessConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="OrLeadListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrLeadListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrLeadListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>or </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrNestedListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrNestedListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrNestedListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrNestedListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>or </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrTailListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrTailListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrTailListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>and </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="OrTailListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>or </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="PartialFactTypeDerivation" replacementCount="2">
-    <statement>
-							Description: Used to specify a partially derived fact type with its derivation rule.
-							Format: +{0} if {1}
-						</statement>
+    <statement>Description: Used to specify a partially derived fact type with its derivation rule.
+Format: +{0} if {1}</statement>
     <unformattedSnippet>+{0} if{1}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="PeriodSeparator" replacementCount="2">
-    <statement>
-							Description: Used to delimit two snippet replacements by a snippet.
-							Format:	{0}.{1}
-						</statement>
+    <statement>Description: Used to delimit two snippet replacements by a snippet.
+Format:	{0}.{1}</statement>
     <unformattedSnippet>{0}.{1}</unformattedSnippet>
     <contains>
       <snippet name="ReferenceScheme" />
@@ -1857,6 +2183,24 @@
       <constraint name="RoleValueConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="PersonalIdentityCorrelation" replacementCount="2">
+    <statement>Description: Relate two variable names of different types that represent the same instance where the first
+variable is a personal object type.
+Format:  {0} who is {1}</statement>
+    <unformattedSnippet>{0} who is {1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="PersonalLeadIdentityCorrelation" replacementCount="2">
+    <statement>Description: A form of PersonalIdentityCorrelation for lead role scenarios. Relate two variables of
+different types that represent the same instance where the first variable is an personal object type.
+Format: {1} is {0} who</statement>
+    <unformattedSnippet>{1} is {0} who</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="PersonalPronoun" replacementCount="0">
     <statement>Description: Use in place of a role player name to reference a personal object type with a clear antecedent.</statement>
     <unformattedSnippet>who</unformattedSnippet>
@@ -1865,7 +2209,7 @@
     <usedBy />
   </snippet>
   <snippet name="PortableDataTypeVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes an object's portable data type.  Format: Portable data type: {0}</statement>
+    <statement>Description: Verbalizes an object's portable data type. Format: Portable data type: {0}</statement>
     <unformattedSnippet>Portable data type: {0}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1879,17 +2223,15 @@
     <usedBy />
   </snippet>
   <snippet name="ReferenceModeVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes the mode in which an object is referenced.  Format: Reference Mode: {0}</statement>
+    <statement>Description: Verbalizes the mode in which an object is referenced. Format: Reference Mode: {0}</statement>
     <unformattedSnippet>Reference Mode: {0}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="ReferenceScheme" replacementCount="2">
-    <statement>
-							Description: Used to enclose and format a reference scheme replacement in brackets.
-							Format:	{0}({1})
-						</statement>
+    <statement>Description: Used to enclose and format a reference scheme replacement in brackets.
+							Format:	{0}({1})</statement>
     <unformattedSnippet>{0}({1})</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1900,7 +2242,7 @@
     </usedBy>
   </snippet>
   <snippet name="ReferenceSchemeVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes the way in which an object is referenced.  Format: Reference Scheme: {0}</statement>
+    <statement>Description: Verbalizes the way in which an object is referenced. Format: Reference Scheme: {0}</statement>
     <unformattedSnippet>Reference Scheme: {0}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -1919,9 +2261,7 @@
     </usedBy>
   </snippet>
   <snippet name="ReflexiveQuantifier" replacementCount="1">
-    <statement>
-							Description: Used in place of a reflexive pronoun when an antecedent is not guaranteed.  Format: {0} itself
-						</statement>
+    <statement>Description: Used in place of a reflexive pronoun when an antecedent is not guaranteed.  Format: {0} itself</statement>
     <unformattedSnippet>{0} itself</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1932,11 +2272,62 @@
       <constraint name="ReflexiveRingVerbalizer" />
     </usedBy>
   </snippet>
+  <snippet name="RolePathCollapsibleLeadDirective" replacementCount="0">
+    <statement>Description: Specify a space-separated list of items to determine if a list style supports
+collapsing a repeated lead role. Allowed values are {Chain, And, Or, Xor, !And, !Or, !Xor, !Chain}. The !Chain directive
+here applies to the long form of negation, not the inlined form where the verbose negation constructs are not used.
+A collapsed lead completely eliminates a lead role player. For example, '... Person has FirstName and has LastName',
+with Person eliminated from the second fact type rendering.
+Format: And Or Chain</statement>
+    <unformattedSnippet>And Or Chain</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="RolePathCollapsibleListOpenForBackReferenceDirective" replacementCount="0">
+    <statement>Description: Specify a space-separated list of items to determine if the first item in a list style supports
+collapsing to allow a back reference. The allowed values here are the same as the RolePathCollapsibleLeadDirective and
+should not intersect the values used for the RolePathHeaderListDirective. A back reference uses a personal or impersonal
+pronoun in place of a restatement of the lead role player. The back reference must immediately follow the preceding noun.
+This directive allows a backreference to be used by replacing the *[Tail|Nested]ListOpen snippets with the *[Tail|Nested]ListCollapsedOpen
+snippets. Lead list types do not support back referencing.
+Format: And Or Chain</statement>
+    <unformattedSnippet>And Or Chain</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="RolePathHeaderListDirective" replacementCount="0">
+    <statement>Description: Specify a space-separated list of items to determine if split lists are rendered as
+integrated or separate blocks. Allowed values are {And, Or, Xor, !And, !Or, !Xor}.
+Format: !And !Or Xor !Xor</statement>
+    <unformattedSnippet>!And !Or Xor !Xor</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="RolePathListCloseOutdentSnippets" replacementCount="0">
+    <statement>Description: A space separated list of list closure snippet names from this enum that reverse an indentation.
+Trailing outdents can be tracked specially during formatting so that external text or outer list separator and close
+elements on the same line as the outdent keeps the same indentation level.
+Format: ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose</statement>
+    <unformattedSnippet>ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="RolePathOutdentAwareTrailingListSnippets" replacementCount="0">
+    <statement>Description: A space separated list of list separators and close elements that must be placed before any
+active trailing outdent snippets.
+Format: NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator</statement>
+    <unformattedSnippet>NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="SameTypeIdentityInequalityOperator" replacementCount="2">
-    <statement>
-							Description: Used to specify that two instances of the same type are not the same instance.
-							Format: {0} is not {1}
-						</statement>
+    <statement>Description: Used to specify that two instances of the same type are not the same instance.
+Format: {0} is not {1}</statement>
     <unformattedSnippet>{0} is not {1}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1948,10 +2339,7 @@
     </usedBy>
   </snippet>
   <snippet name="SelfReference" replacementCount="1">
-    <statement>
-							Description: Allows the snippet replacement to verbalize itself.
-							Format: {0}
-						</statement>
+    <statement>Description: Allows the snippet replacement to verbalize itself. Format: {0}</statement>
     <unformattedSnippet>{0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -1973,9 +2361,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleListClose" replacementCount="0">
-    <statement>
-
-						</statement>
+    <statement>Description: Text used at the end of a simple list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1988,9 +2374,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleListFinalSeparator" replacementCount="0">
-    <statement>
-
-						</statement>
+    <statement>Description: Used to separate the final item in simple list. Format: , and</statement>
     <unformattedSnippet>, and </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2003,9 +2387,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleListOpen" replacementCount="0">
-    <statement>
-							
-						</statement>
+    <statement>Description:  Text used at the end of a simple list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -2018,9 +2400,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleListPairSeparator" replacementCount="0">
-    <statement>
-							
-						</statement>
+    <statement>Description: Used to separate items in simple list with two items. Format: and</statement>
     <unformattedSnippet> and </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2033,9 +2413,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleListSeparator" replacementCount="0">
-    <statement>
-
-						</statement>
+    <statement>Description: Used to separate items in simple list. Format: ,</statement>
     <unformattedSnippet>, </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2048,9 +2426,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalAndListClose" replacementCount="0">
-    <statement>
-							Description: Text used at the end of a simple logical and list.
-						</statement>
+    <statement>Description: Text used at the end of a simple logical and list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -2060,9 +2436,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalAndListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in a simple logical and list.  Format: and
-						</statement>
+    <statement>Description: Used to separate the last two items in a simple logical and list.  Format: and</statement>
     <unformattedSnippet> and </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2072,9 +2446,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalAndListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of a simple logical and list.
-						</statement>
+    <statement>Description: Text used at the beginning of a simple logical and list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -2084,9 +2456,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalAndListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a simple logical and list.  Format: and
-						</statement>
+    <statement>Description: Used to separate items in a simple logical and list.  Format: and</statement>
     <unformattedSnippet> and </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2096,9 +2466,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalAndListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a simple logical and list.  Format: and
-						</statement>
+    <statement>Description: Used to separate items in a simple logical and list.  Format: and</statement>
     <unformattedSnippet> and </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2108,9 +2476,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalOrListClose" replacementCount="0">
-    <statement>
-							Description:  Text used at the end of a simple logical or list.
-						</statement>
+    <statement>Description:  Text used at the end of a simple logical or list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -2119,9 +2485,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalOrListFinalSeparator" replacementCount="0">
-    <statement>
-							Description:  Used to separate the last two items in a simple logical or list.  Format: or
-						</statement>
+    <statement>Description:  Used to separate the last two items in a simple logical or list.  Format: or</statement>
     <unformattedSnippet> or </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2130,9 +2494,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalOrListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of a simple logical or list.
-						</statement>
+    <statement>Description: Text used at the beginning of a simple logical or list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -2141,9 +2503,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalOrListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a simple logical or list.  Format: or
-						</statement>
+    <statement>Description: Used to separate items in a simple logical or list.  Format: or</statement>
     <unformattedSnippet> or </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2152,9 +2512,7 @@
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalOrListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a simple logical or list.  Format: or
-						</statement>
+    <statement>Description: Used to separate items in a simple logical or list.  Format: or</statement>
     <unformattedSnippet> or </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2163,10 +2521,8 @@
     </usedBy>
   </snippet>
   <snippet name="SingleValueValueConstraint" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a value range constraint with one range, where the min value is equal to the max value.
-							Format: the possible value of {0} is {1}
-						</statement>
+    <statement>Description: Used to verbalize a value range constraint with one range, where the min value is equal to the max value.
+Format: the possible value of {0} is {1}</statement>
     <unformattedSnippet>the possible value of {0} is {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -2177,10 +2533,8 @@
     </usedBy>
   </snippet>
   <snippet name="StronglyIntransitiveConsequent" replacementCount="2">
-    <statement>
-							Description: Used to verbalize a strongly intransitive ring constraint.
-							Format: it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type
-						</statement>
+    <statement>Description: Used to verbalize a strongly intransitive ring constraint.
+Format: it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</statement>
     <unformattedSnippet>it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</unformattedSnippet>
     <contains />
     <containedIn>
@@ -2192,10 +2546,8 @@
     </usedBy>
   </snippet>
   <snippet name="SubtypeMetaReading" replacementCount="3">
-    <statement>
-							Description: Used to describe the relationship between a Subtype and its Supertype at the meta level (i.e: Each Man is an instance of Person). 
-							Format: {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier
-						</statement>
+    <statement>Description: Used to describe the relationship between a Subtype and its Supertype at the meta level (i.e: Each Man is an instance of Person).
+Format: {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier</statement>
     <unformattedSnippet>each {0} is an instance of {1}</unformattedSnippet>
     <contains>
       <snippet name="ObjectType" />
@@ -2206,10 +2558,7 @@
     <usedBy />
   </snippet>
   <snippet name="TextInstanceValue" replacementCount="1">
-    <statement>
-							Description: Used to output a text instance value.
-							Format: '{0}'
-						</statement>
+    <statement>Description: Used to output a text instance value. Format: '{0}'</statement>
     <unformattedSnippet>'{0}'</unformattedSnippet>
     <contains />
     <containedIn />
@@ -2220,9 +2569,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalAndListClose" replacementCount="0">
-    <statement>
-							Description: Text used at the end of a top level indented logical and list.
-						</statement>
+    <statement>Description: Text used at the end of a top level indented logical and list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -2231,9 +2578,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalAndListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in a top level indented logical and list.  Format: \n and that
-						</statement>
+    <statement>Description: Used to separate the last two items in a top level indented logical and list.  Format: \n and that</statement>
     <unformattedSnippet>and that </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2242,9 +2587,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalAndListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of a top level indented logical and list.
-						</statement>
+    <statement>Description: Text used at the beginning of a top level indented logical and list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -2253,9 +2596,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalAndListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a top level indented logical and list.  Format: \n and that
-						</statement>
+    <statement>Description: Used to separate items in a top level indented logical and list.  Format: \n and that</statement>
     <unformattedSnippet>and that </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2264,9 +2605,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalAndListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a top level indented logical and list.  Format: \n and that
-						</statement>
+    <statement>Description: Used to separate items in a top level indented logical and list.  Format: \n and that</statement>
     <unformattedSnippet>and that </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2275,9 +2614,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalOrListClose" replacementCount="0">
-    <statement>
-							Description: Text used at the end of a top level indented logical or list.
-						</statement>
+    <statement>Description: Text used at the end of a top level indented logical or list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -2286,9 +2623,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalOrListFinalSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate the last two items in a top level indented logical or list.  Format: \n or
-						</statement>
+    <statement>Description: Used to separate the last two items in a top level indented logical or list.  Format: \n or</statement>
     <unformattedSnippet>or </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2297,9 +2632,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalOrListOpen" replacementCount="0">
-    <statement>
-							Description: Text used at the beginning of a top level indented logical or list.
-						</statement>
+    <statement>Description: Text used at the beginning of a top level indented logical or list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -2308,9 +2641,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalOrListPairSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a top level indented logical or list.  Format: \n or
-						</statement>
+    <statement>Description: Used to separate items in a top level indented logical or list.  Format: \n or</statement>
     <unformattedSnippet>or </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2319,9 +2650,7 @@
     </usedBy>
   </snippet>
   <snippet name="TopLevelIndentedLogicalOrListSeparator" replacementCount="0">
-    <statement>
-							Description: Used to separate items in a top level indented logical or list.  Format: \n or
-						</statement>
+    <statement>Description: Used to separate items in a top level indented logical or list.  Format: \n or</statement>
     <unformattedSnippet>or </unformattedSnippet>
     <contains />
     <containedIn />
@@ -2330,9 +2659,7 @@
     </usedBy>
   </snippet>
   <snippet name="UniversalQuantifier" replacementCount="1">
-    <statement>
-							Description: Used for 'each' before an object name to signify the quantity associated with the object.  Format: each {0}
-						</statement>
+    <statement>Description: Used for 'each' before an object name to signify the quantity associated with the object.  Format: each {0}</statement>
     <unformattedSnippet>each {0}</unformattedSnippet>
     <contains>
       <snippet name="CombinationAssociation" />
@@ -2362,57 +2689,75 @@
     </usedBy>
   </snippet>
   <snippet name="ValueTypeVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes an object as being a value type.  Format: {0} is a value type</statement>
+    <statement>Description: Verbalizes an object as being a value type. Format: {0} is a value type</statement>
     <unformattedSnippet>{0} is a value type</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
+  <snippet name="VariableExistence" replacementCount="1">
+    <statement>Description: Assert variable existence as a complete statement, as opposed to the
+VariableIntroductionClause used to introduce a variable using a prefix.
+Format: {0} exists</statement>
+    <unformattedSnippet>{0} exists</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="VariableIntroductionClause" replacementCount="1">
+    <statement>Description: Introduce variables inline in the verbalization phrase. The replacement is either
+a single value or a list, and the quantifiers (some, no, that) are already included in the replacement list.
+Format: for {0},</statement>
+    <unformattedSnippet>for {0}, </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="VariableIntroductionSeparator" replacementCount="0">
+    <statement>Description: The list separator for introducing multiple variables in a single clause.
+Format: and</statement>
+    <unformattedSnippet> and </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="VerbalizerCloseVerbalization" replacementCount="0">
-    <statement>
-							Description: Used by the verbalizer to close a verbalization opened by VerbalizerOpenVerbalization
-						</statement>
+    <statement>Description: Used by the verbalizer to close a verbalization opened by VerbalizerOpenVerbalization</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="VerbalizerDecreaseIndent" replacementCount="0">
-    <statement>
-							Description: Used by the verbalizer to close indent opened by VerbalizerIncreaseIndent
-						</statement>
+    <statement>Description: Used by the verbalizer to close indent opened by VerbalizerIncreaseIndent</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="VerbalizerDocumentFooter" replacementCount="0">
-    <statement>
-							Description: Used by the verbalizer to close a document
-						</statement>
+    <statement>Description: Used by the verbalizer to close a document</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="VerbalizerDocumentHeader" replacementCount="14">
-    <statement>
-							Description: Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
-							{0} font-family
-							{1} font-size
-							{2} predicate text color
-							{3} predicate text bold
-							{4} object name color
-							{5} object name bold
-							{6} formal item color
-							{7} formal item bold
-							{8} note color
-							{9} note bold
-							{10} reference mode color
-							{11} reference mode bold
-							{12} instance value color
-							{13} instance value bold
-						</statement>
+    <statement>Description: Used by the verbalizer to open a document. The document header gets replacement fields in the following order:
+{0} font-family
+{1} font-size
+{2} predicate text color
+{3} predicate text bold
+{4} object name color
+{5} object name bold
+{6} formal item color
+{7} formal item bold
+{8} note color
+{9} note bold
+{10} reference mode color
+{11} reference mode bold
+{12} instance value color
+{13} instance value bold</statement>
     <unformattedSnippet>
 			
 
@@ -2450,47 +2795,113 @@
     <usedBy />
   </snippet>
   <snippet name="VerbalizerFontWeightBold" replacementCount="0">
-    <statement>
-							Description: The text to insert to indicate a bold font.
-						</statement>
+    <statement>Description: The text to insert to indicate a bold font.</statement>
     <unformattedSnippet>font-weight: bold;</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="VerbalizerFontWeightNormal" replacementCount="0">
-    <statement>
-							Description: The text to insert to indicate a normal font weight.
-						</statement>
+    <statement>Description: The text to insert to indicate a normal font weight.</statement>
     <unformattedSnippet>font-weight: normal;</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="VerbalizerIncreaseIndent" replacementCount="0">
-    <statement>
-							Description: Used by the verbalizer to indent a child verbalization
-						</statement>
+    <statement>Description: Used by the verbalizer to indent a child verbalization</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="VerbalizerNewLine" replacementCount="0">
-    <statement>
-							Description: Used by the verbalizer to enter a new line.
-							Format: \n
-						</statement>
+    <statement>Description: Used by the verbalizer to enter a new line. Format: \n</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="VerbalizerOpenVerbalization" replacementCount="0">
-    <statement>
-							Description: Used by the verbalizer around a single verbalization
-						</statement>
+    <statement>Description: Used by the verbalizer around a single verbalization</statement>
     <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorLeadListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorLeadListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>exactly one of the following is true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorLeadListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorNestedListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorNestedListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>exactly one of the following is true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorNestedListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>exactly one of the following is true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorNestedListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorTailListClose" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorTailListCollapsedOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>exactly one of the following is true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorTailListOpen" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>exactly one of the following is true:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="XorTailListSeparator" replacementCount="0">
+    <statement></statement>
+    <unformattedSnippet>;</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />

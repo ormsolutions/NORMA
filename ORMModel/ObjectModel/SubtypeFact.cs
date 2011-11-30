@@ -897,13 +897,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Hides
 		/// implementation in <see cref="FactType"/>
 		/// </summary>
-		protected static new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+		protected static new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 		{
 			yield break;
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, VerbalizationSign sign)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, sign);
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation

@@ -278,36 +278,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		DiagramSpyWindow,
 	}
-	/// <summary>
-	/// Provide options controlling the display of object type names
-	/// in fact readings
-	/// </summary>
-	public enum ObjectTypeNameVerbalizationStyle
-	{
-		/// <summary>
-		/// Present the name exactly as entered by the user
-		/// </summary>
-		AsIs,
-		/// <summary>
-		/// If the entered name has embedded capitalization,
-		/// extractmultiple words based on the capitalization
-		/// and display as lower case.
-		/// </summary>
-		SeparateCombinedNames,
-		/// <summary>
-		/// If a name has multiple words, combine them into a
-		/// single word with interior capitalization separating
-		/// the words. Lead with an upper case letter (PascalStyle)
-		/// </summary>
-		CombineNamesLeadWithUpper,
-		/// <summary>
-		/// If a name has multiple words, combine them into a
-		/// single word with interior capitalization separating
-		/// the words. Lead with a lower case letter (camelStyle)
-		/// </summary>
-		CombineNamesLeadWithLower,
-	}
-
 	#endregion
 	#region NotifyDocument Delegate
 	/// <summary>

@@ -32,6 +32,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
+	[VerbalizationOptionProvider("VerbalizationOptions")]
 	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener, IPermanentAutomatedElementFilterProvider
 	{
 		#region Static Survey Data
@@ -261,6 +262,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // IVerbalizationTargetProvider implementation
 		}
 		#endregion // IVerbalizationTargetProvider implementation
+		#region IVerbalizationOptionProvider implementation
+		private sealed class VerbalizationOptions : IVerbalizationOptionProvider
+		{
+			#region IVerbalizationOptionProvider implementation
+			VerbalizationOptionData[] IVerbalizationOptionProvider.ProvideVerbalizationOptions()
+			{
+				return new VerbalizationOptionData[] {
+					new VerbalizationOptionData(CoreVerbalizationOption.CombineSimpleMandatoryAndUniqueness, typeof(bool), true),
+					new VerbalizationOptionData(CoreVerbalizationOption.ShowDefaultConstraint, typeof(bool), true),
+					new VerbalizationOptionData(CoreVerbalizationOption.FactTypesWithObjectType, typeof(bool), true),
+					new VerbalizationOptionData(CoreVerbalizationOption.ObjectTypeNameDisplay, typeof(ObjectTypeNameVerbalizationStyle), ObjectTypeNameVerbalizationStyle.AsIs),
+				};
+			}
+			#endregion // IVerbalizationOptionProvider implementation
+		}
+		#endregion // IVerbalizationOptionProvider implementation
 		#region IVerbalizationSnippetsProvider Implementation
 		private class VerbalizationSnippets : IVerbalizationSnippetsProvider
 		{

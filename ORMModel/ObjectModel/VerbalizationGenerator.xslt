@@ -75,6 +75,7 @@
 					<xsl:with-param name="SnippetEnumTypeName" select="$VerbalizationTextSnippetType"/>
 					<xsl:with-param name="VerbalizationSetName" select="$CoreVerbalizationSets"/>
 					<xsl:with-param name="SnippetsLocation" select="@snippetsLocation"/>
+					<xsl:with-param name="SnippetsSchemaLocation" select="@snippetsSchemaLocation"/>
 				</xsl:call-template>
 				<!-- Generate verbalization implementations for all constructs -->
 				<xsl:call-template name="GenerateVerbalizationClasses"/>
@@ -592,6 +593,9 @@
 															<plx:callNew dataTypeName="StandardRolePathRenderer">
 																<plx:passParam>
 																	<plx:nameRef name="snippets"/>
+																</plx:passParam>
+																<plx:passParam>
+																	<plx:nameRef name="verbalizationContext" type="parameter"/>
 																</plx:passParam>
 																<plx:passParam>
 																	<plx:callInstance name="FormatProvider" type="property">
@@ -1699,6 +1703,9 @@
 															<plx:nameRef name="snippets"/>
 														</plx:passParam>
 														<plx:passParam>
+															<plx:nameRef name="verbalizationContext" type="parameter"/>
+														</plx:passParam>
+														<plx:passParam>
 															<plx:callInstance name="FormatProvider" type="property">
 																<plx:callObject>
 																	<plx:nameRef name="writer"/>
@@ -2280,7 +2287,7 @@
 								<plx:nameRef name="snippetsDictionary"/>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:nameRef name="verbalizationContext"/>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
 							</plx:passParam>
 							<plx:passParam>
 								<plx:nameRef name="sign"/>
@@ -3201,6 +3208,9 @@
 								<plx:nameRef name="snippets"/>
 							</plx:passParam>
 							<plx:passParam>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
+							</plx:passParam>
+							<plx:passParam>
 								<plx:callInstance name="FormatProvider" type="property">
 									<plx:callObject>
 										<plx:nameRef name="writer" type="parameter"/>
@@ -3403,6 +3413,13 @@
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:passParam>
+					<plx:passParam>
+						<plx:callInstance name="VerbalizationOptions" type="property">
+							<plx:callObject>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
 				</plx:callStatic>
 			</plx:passParam>
 			<plx:passParam>
@@ -3443,6 +3460,13 @@
 						<plx:callInstance name="Name" type="property">
 							<plx:callObject>
 								<xsl:copy-of select="$ObjectTypeExpression"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callInstance name="VerbalizationOptions" type="property">
+							<plx:callObject>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:passParam>
@@ -5556,6 +5580,13 @@
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:passParam>
+					<plx:passParam>
+						<plx:callInstance name="VerbalizationOptions" type="property">
+							<plx:callObject>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
 				</plx:callStatic>
 			</plx:right>
 		</plx:assign>
@@ -5632,6 +5663,13 @@
 							<plx:passParam>
 								<plx:callThis name="Name" type="property"/>
 							</plx:passParam>
+							<plx:passParam>
+								<plx:callInstance name="VerbalizationOptions" type="property">
+									<plx:callObject>
+										<plx:nameRef name="verbalizationContext" type="parameter"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
 						</plx:callStatic>
 					</xsl:when>
 					<xsl:otherwise>
@@ -5673,6 +5711,13 @@
 						<plx:callInstance name="Name" type="property">
 							<plx:callObject>
 								<plx:nameRef name="preferredFor"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callInstance name="VerbalizationOptions" type="property">
+							<plx:callObject>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:passParam>
@@ -5719,6 +5764,13 @@
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:passParam>
+					<plx:passParam>
+						<plx:callInstance name="VerbalizationOptions" type="property">
+							<plx:callObject>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
 				</plx:callStatic>
 			</plx:right>
 		</plx:assign>
@@ -5736,6 +5788,13 @@
 						<plx:callInstance name="Name" type="property">
 							<plx:callObject>
 								<plx:nameRef name="supertype"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callInstance name="VerbalizationOptions" type="property">
+							<plx:callObject>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:passParam>
@@ -6105,6 +6164,13 @@
 						<plx:callInstance name="Name" type="property">
 							<plx:callObject>
 								<plx:callThis name="ValueType" type="property"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callInstance name="VerbalizationOptions" type="property">
+							<plx:callObject>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:passParam>
@@ -7701,6 +7767,9 @@
 																<plx:nameRef name="snippets"/>
 															</plx:passParam>
 															<plx:passParam>
+																<plx:nameRef name="verbalizationContext" type="parameter"/>
+															</plx:passParam>
+															<plx:passParam>
 																<plx:callInstance name="FormatProvider" type="property">
 																	<plx:callObject>
 																		<plx:nameRef name="writer"/>
@@ -8252,7 +8321,20 @@
 				<xsl:when test="$ConditionalMatch='VerbalizeFactTypesWithBrowserObjectType'">
 					<plx:binaryOperator type="booleanAnd">
 						<plx:left>
-							<plx:callStatic name="CurrentVerbalizeFactTypesWithObjectType" dataTypeName="OptionsPage" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.Shell" type="property"/>
+							<plx:cast type="exceptionCast" dataTypeName=".boolean">
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:callInstance name="VerbalizationOptions" type="property">
+											<plx:callObject>
+												<plx:nameRef name="verbalizationContext" type="parameter"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:callStatic dataTypeName="CoreVerbalizationOption" name="FactTypesWithObjectType" type="property"/>
+									</plx:passParam>
+								</plx:callInstance>
+							</plx:cast>
 						</plx:left>
 						<plx:right>
 							<plx:binaryOperator type="equality">

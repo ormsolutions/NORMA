@@ -1824,6 +1824,11 @@
 					<xs:documentation>The relative location of the file containing the snippets</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="snippetsSchemaLocation" type="xs:string" use="optional">
+				<xs:annotation>
+					<xs:documentation>The relative location of the file containing the snippets schema, which is expected to redefine the SnippetTypeEnum from VerbalizationUntypedSnippets.xsd</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>

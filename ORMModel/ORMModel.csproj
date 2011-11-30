@@ -475,6 +475,7 @@
     <Compile Include="Load\ExtensionLoader.cs" />
     <Compile Include="Load\ModelLoader.cs" />
     <Compile Include="Load\ORMSerializationEngine.cs" />
+    <Compile Include="Load\VerbalizationManager.cs" />
     <Compile Include="ObjectModel\Design\Editors\RingConstraintTypePicker.cs" />
     <Compile Include="ObjectModel\ORMCore.ElementEquivalence.cs" />
     <Compile Include="ObjectModel\Design\SubtypeDerivationRuleTypeDescriptor.cs" />
