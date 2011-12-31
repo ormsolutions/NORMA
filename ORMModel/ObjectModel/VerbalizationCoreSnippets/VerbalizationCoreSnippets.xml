@@ -87,7 +87,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="CombinationUniqueness"><![CDATA[{0} <span class="quantifier">combination is unique</span>]]></Snippet>
 
 			<!-- Snippets related to derivation rules and join paths -->
-			<Snippet type="FullFactTypeDerivation"><![CDATA[<span class="quantifier">*</span>{0} <span class="quantifier">if and only if</span></br>{1}<br/>]]></Snippet>
+			<Snippet type="FullFactTypeDerivation"><![CDATA[<span class="quantifier">*</span>{0} <span class="quantifier">if and only if</span><br/>{1}<br/>]]></Snippet>
 			<Snippet type="PartialFactTypeDerivation"><![CDATA[<span class="quantifier">+</span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
 			<Snippet type="FullSubtypeDerivation"><![CDATA[<span class="quantifier">*Each</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
 
@@ -266,17 +266,17 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="SameTypeIdentityInequalityOperator"><![CDATA[{0}<span class="logicalOperator"> is not </span>{1}]]></Snippet>
 			<Snippet type="CompatibleTypesIdentityInequalityOperator"><![CDATA[<span class="logicalOperator">that </span>{0}<span class="logicalOperator"> is not that </span>{1}]]></Snippet>
 			<Snippet type="Acyclicity"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more traversals through </span>{1}]]></Snippet>
-			<Snippet type="AcyclicityWithRoleNumbers"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class="smallIndent"><span class="quantifier">roles <span class="objectType">{2}</span> and <span class="objectType">{3}</span> of </span>{1}</span>]]></Snippet>
+			<Snippet type="AcyclicityWithRoleNumbers"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more instances of the role pair:</span><br/><span class="smallIndent"><span class="quantifier">roles <span class="objectType">{2}</span> and <span class="objectType">{3}</span> of </span>{1}</span>]]></Snippet>
 			<Snippet type="StronglyIntransitiveConsequent"><![CDATA[<span class="quantifier">it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</span>]]></Snippet>
 
 			<!-- Role path snippets -->
 			<Snippet type="RolePathHeaderListDirective"><![CDATA[!And !Or Xor !Xor]]></Snippet>
 			<Snippet type="RolePathCollapsibleLeadDirective"><![CDATA[And Or Chain]]></Snippet>
 			<Snippet type="RolePathCollapsibleListOpenForBackReferenceDirective"><![CDATA[And Or Chain]]></Snippet>
-			<Snippet type="ImpersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier"/>that is</span> {1}]]></Snippet>
-			<Snippet type="ImpersonalLeadIdentityCorrelation"><![CDATA[{1} <span class="quantifier"/>is</span> {0} <span class="quantifier"/>that]]></Snippet>
-			<Snippet type="PersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier"/>who is</span> {1}]]></Snippet>
-			<Snippet type="PersonalLeadIdentityCorrelation"><![CDATA[{1} <span class="quantifier"/>is</span> {0} <span class="quantifier"/>who</span>]]></Snippet>
+			<Snippet type="ImpersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier">that is</span> {1}]]></Snippet>
+			<Snippet type="ImpersonalLeadIdentityCorrelation"><![CDATA[{1} <span class="quantifier">is</span> {0} <span class="quantifier">that</span>]]></Snippet>
+			<Snippet type="PersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier">who is</span> {1}]]></Snippet>
+			<Snippet type="PersonalLeadIdentityCorrelation"><![CDATA[{1} <span class="quantifier">is</span> {0} <span class="quantifier">who</span>]]></Snippet>
 			<Snippet type="HeadVariableProjection"><![CDATA[{0} <span class="logicalOperator">=</span> {1}]]></Snippet>
 			<Snippet type="AggregateParameterDecorator"><![CDATA[{0} <span class="quantifier">for </span> {1}]]></Snippet>
 			<Snippet type="AggregateParameterSimpleAggregationContext"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
@@ -310,66 +310,66 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="AndLeadListSeparator"><![CDATA[<br/><span class="quantifier">and</span> ]]></Snippet>
 			<Snippet type="AndLeadListClose"><![CDATA[]]></Snippet>
 			<Snippet type="AndTailListOpen"><![CDATA[<br/><span class="smallIndent"><span class="quantifier">and</span> ]]></Snippet>
-			<Snippet type="AndTailListCollapsedOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="AndTailListCollapsedOpen" groupWith="AndTailListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="AndTailListSeparator"><![CDATA[<br/><span class="quantifier">and</span> ]]></Snippet>
 			<Snippet type="AndTailListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="AndNestedListOpen"><![CDATA[<span>]]></Snippet>
-			<Snippet type="AndNestedListCollapsedOpen"><![CDATA[<span>]]></Snippet>
+			<Snippet type="AndNestedListCollapsedOpen" groupWith="AndNestedListOpen"><![CDATA[<span>]]></Snippet>
 			<Snippet type="AndNestedListSeparator"><![CDATA[</span><br/><span class="smallIndent"><span class="quantifier">and</span> ]]></Snippet>
 			<Snippet type="AndNestedListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="NegatedAndLeadListOpen"><![CDATA[<span class="quantifier">at least one of the following is <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="NegatedAndLeadListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="NegatedAndLeadListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="NegatedAndTailListOpen"><![CDATA[<span class="quantifier">at least one of the following is <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="NegatedAndTailListCollapsedOpen"><![CDATA[<span class="quantifier">at least one of the following is <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="NegatedAndTailListCollapsedOpen" groupWith="NegatedAndTailListOpen"><![CDATA[<span class="quantifier">at least one of the following is <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="NegatedAndTailListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="NegatedAndTailListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="NegatedAndNestedListOpen"><![CDATA[<span class="quantifier">at least one of the following is <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="NegatedAndNestedListCollapsedOpen"><![CDATA[<span class="quantifier">at least one of the following is <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="NegatedAndNestedListCollapsedOpen" groupWith="NegatedAndNestedListOpen"><![CDATA[<span class="quantifier">at least one of the following is <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="NegatedAndNestedListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="NegatedAndNestedListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="OrLeadListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="OrLeadListSeparator"><![CDATA[<br/><span class="quantifier">or</span> ]]></Snippet>
 			<Snippet type="OrLeadListClose"><![CDATA[]]></Snippet>
 			<Snippet type="OrTailListOpen"><![CDATA[<br/><span class="smallIndent"><span class="quantifier">and</span> ]]></Snippet>
-			<Snippet type="OrTailListCollapsedOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="OrTailListCollapsedOpen" groupWith="OrTailListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="OrTailListSeparator"><![CDATA[<br/><span class="quantifier">or</span> ]]></Snippet>
 			<Snippet type="OrTailListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="OrNestedListOpen"><![CDATA[<span>]]></Snippet>
-			<Snippet type="OrNestedListCollapsedOpen"><![CDATA[<span>]]></Snippet>
+			<Snippet type="OrNestedListCollapsedOpen" groupWith="OrNestedListOpen"><![CDATA[<span>]]></Snippet>
 			<Snippet type="OrNestedListSeparator"><![CDATA[</span><br/><span class="smallIndent"><span class="quantifier">or</span> ]]></Snippet>
 			<Snippet type="OrNestedListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="NegatedOrLeadListOpen"><![CDATA[<span class="quantifier">all of the following are <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="NegatedOrLeadListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="NegatedOrLeadListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="NegatedOrTailListOpen"><![CDATA[<span class="quantifier">all of the following are <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="NegatedOrTailListCollapsedOpen"><![CDATA[<span class="quantifier">all of the following are <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="NegatedOrTailListCollapsedOpen" groupWith="NegatedOrTailListOpen"><![CDATA[<span class="quantifier">all of the following are <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="NegatedOrTailListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="NegatedOrTailListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="NegatedOrNestedListOpen"><![CDATA[<span class="quantifier">all of the following are <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="NegatedOrNestedListCollapsedOpen"><![CDATA[<span class="quantifier">all of the following are <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="NegatedOrNestedListCollapsedOpen" groupWith="NegatedOrNestedListOpen"><![CDATA[<span class="quantifier">all of the following are <em>false:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="NegatedOrNestedListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="NegatedOrNestedListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="XorLeadListOpen"><![CDATA[<span class="quantifier">exactly one of the following is <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="XorLeadListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="XorLeadListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="XorTailListOpen"><![CDATA[<span class="quantifier">exactly one of the following is <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="XorTailListCollapsedOpen"><![CDATA[<span class="quantifier">exactly one of the following is <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="XorTailListCollapsedOpen" groupWith="XorTailListOpen"><![CDATA[<span class="quantifier">exactly one of the following is <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="XorTailListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="XorTailListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="XorNestedListOpen"><![CDATA[<span class="quantifier">exactly one of the following is <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="XorNestedListCollapsedOpen"><![CDATA[<span class="quantifier">exactly one of the following is <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="XorNestedListCollapsedOpen" groupWith="XorNestedListOpen"><![CDATA[<span class="quantifier">exactly one of the following is <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="XorNestedListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="XorNestedListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="NegatedXorLeadListOpen"><![CDATA[<span class="quantifier">either none or many of the following are <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="NegatedXorLeadListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="NegatedXorLeadListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="NegatedXorTailListOpen"><![CDATA[<span class="quantifier">either none or many of the following are <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="NegatedXorTailListCollapsedOpen"><![CDATA[<span class="quantifier">either none or many of the following are <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="NegatedXorTailListCollapsedOpen" groupWith="NegatedXorTailListOpen"><![CDATA[<span class="quantifier">either none or many of the following are <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="NegatedXorTailListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="NegatedXorTailListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="NegatedXorNestedListOpen"><![CDATA[<span class="quantifier">either none or many of the following are <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
-			<Snippet type="NegatedXorNestedListCollapsedOpen"><![CDATA[<span class="quantifier">either none or many of the following are <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
+			<Snippet type="NegatedXorNestedListCollapsedOpen" groupWith="NegatedXorNestedListOpen"><![CDATA[<span class="quantifier">either none or many of the following are <em>true:</em></span><br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="NegatedXorNestedListSeparator"><![CDATA[<span class="listSeparator">;</span><br/>]]></Snippet>
 			<Snippet type="NegatedXorNestedListClose"><![CDATA[</span>]]></Snippet>
 		</Snippets>

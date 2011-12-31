@@ -75,24 +75,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'AndNestedListClose' simple snippet value.</summary>
 		/// <remark/>
 		AndNestedListClose,
-		/// <summary>The 'AndNestedListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		AndNestedListCollapsedOpen,
 		/// <summary>The 'AndNestedListOpen' simple snippet value.</summary>
 		/// <remark/>
 		AndNestedListOpen,
+		/// <summary>The 'AndNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		AndNestedListCollapsedOpen,
 		/// <summary>The 'AndNestedListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		AndNestedListSeparator,
 		/// <summary>The 'AndTailListClose' simple snippet value.</summary>
 		/// <remark/>
 		AndTailListClose,
-		/// <summary>The 'AndTailListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		AndTailListCollapsedOpen,
 		/// <summary>The 'AndTailListOpen' simple snippet value.</summary>
 		/// <remark/>
 		AndTailListOpen,
+		/// <summary>The 'AndTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		AndTailListCollapsedOpen,
 		/// <summary>The 'AndTailListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		AndTailListSeparator,
@@ -558,24 +558,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'NegatedAndNestedListClose' simple snippet value.</summary>
 		/// <remark/>
 		NegatedAndNestedListClose,
-		/// <summary>The 'NegatedAndNestedListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		NegatedAndNestedListCollapsedOpen,
 		/// <summary>The 'NegatedAndNestedListOpen' simple snippet value.</summary>
 		/// <remark/>
 		NegatedAndNestedListOpen,
+		/// <summary>The 'NegatedAndNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndNestedListCollapsedOpen,
 		/// <summary>The 'NegatedAndNestedListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		NegatedAndNestedListSeparator,
 		/// <summary>The 'NegatedAndTailListClose' simple snippet value.</summary>
 		/// <remark/>
 		NegatedAndTailListClose,
-		/// <summary>The 'NegatedAndTailListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		NegatedAndTailListCollapsedOpen,
 		/// <summary>The 'NegatedAndTailListOpen' simple snippet value.</summary>
 		/// <remark/>
 		NegatedAndTailListOpen,
+		/// <summary>The 'NegatedAndTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedAndTailListCollapsedOpen,
 		/// <summary>The 'NegatedAndTailListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		NegatedAndTailListSeparator,
@@ -597,24 +597,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'NegatedOrNestedListClose' simple snippet value.</summary>
 		/// <remark/>
 		NegatedOrNestedListClose,
-		/// <summary>The 'NegatedOrNestedListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		NegatedOrNestedListCollapsedOpen,
 		/// <summary>The 'NegatedOrNestedListOpen' simple snippet value.</summary>
 		/// <remark/>
 		NegatedOrNestedListOpen,
+		/// <summary>The 'NegatedOrNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrNestedListCollapsedOpen,
 		/// <summary>The 'NegatedOrNestedListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		NegatedOrNestedListSeparator,
 		/// <summary>The 'NegatedOrTailListClose' simple snippet value.</summary>
 		/// <remark/>
 		NegatedOrTailListClose,
-		/// <summary>The 'NegatedOrTailListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		NegatedOrTailListCollapsedOpen,
 		/// <summary>The 'NegatedOrTailListOpen' simple snippet value.</summary>
 		/// <remark/>
 		NegatedOrTailListOpen,
+		/// <summary>The 'NegatedOrTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedOrTailListCollapsedOpen,
 		/// <summary>The 'NegatedOrTailListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		NegatedOrTailListSeparator,
@@ -635,24 +635,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'NegatedXorNestedListClose' simple snippet value.</summary>
 		/// <remark/>
 		NegatedXorNestedListClose,
-		/// <summary>The 'NegatedXorNestedListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		NegatedXorNestedListCollapsedOpen,
 		/// <summary>The 'NegatedXorNestedListOpen' simple snippet value.</summary>
 		/// <remark/>
 		NegatedXorNestedListOpen,
+		/// <summary>The 'NegatedXorNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorNestedListCollapsedOpen,
 		/// <summary>The 'NegatedXorNestedListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		NegatedXorNestedListSeparator,
 		/// <summary>The 'NegatedXorTailListClose' simple snippet value.</summary>
 		/// <remark/>
 		NegatedXorTailListClose,
-		/// <summary>The 'NegatedXorTailListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		NegatedXorTailListCollapsedOpen,
 		/// <summary>The 'NegatedXorTailListOpen' simple snippet value.</summary>
 		/// <remark/>
 		NegatedXorTailListOpen,
+		/// <summary>The 'NegatedXorTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		NegatedXorTailListCollapsedOpen,
 		/// <summary>The 'NegatedXorTailListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		NegatedXorTailListSeparator,
@@ -715,24 +715,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'OrNestedListClose' simple snippet value.</summary>
 		/// <remark/>
 		OrNestedListClose,
-		/// <summary>The 'OrNestedListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		OrNestedListCollapsedOpen,
 		/// <summary>The 'OrNestedListOpen' simple snippet value.</summary>
 		/// <remark/>
 		OrNestedListOpen,
+		/// <summary>The 'OrNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		OrNestedListCollapsedOpen,
 		/// <summary>The 'OrNestedListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		OrNestedListSeparator,
 		/// <summary>The 'OrTailListClose' simple snippet value.</summary>
 		/// <remark/>
 		OrTailListClose,
-		/// <summary>The 'OrTailListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		OrTailListCollapsedOpen,
 		/// <summary>The 'OrTailListOpen' simple snippet value.</summary>
 		/// <remark/>
 		OrTailListOpen,
+		/// <summary>The 'OrTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		OrTailListCollapsedOpen,
 		/// <summary>The 'OrTailListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		OrTailListSeparator,
@@ -982,24 +982,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'XorNestedListClose' simple snippet value.</summary>
 		/// <remark/>
 		XorNestedListClose,
-		/// <summary>The 'XorNestedListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		XorNestedListCollapsedOpen,
 		/// <summary>The 'XorNestedListOpen' simple snippet value.</summary>
 		/// <remark/>
 		XorNestedListOpen,
+		/// <summary>The 'XorNestedListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		XorNestedListCollapsedOpen,
 		/// <summary>The 'XorNestedListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		XorNestedListSeparator,
 		/// <summary>The 'XorTailListClose' simple snippet value.</summary>
 		/// <remark/>
 		XorTailListClose,
-		/// <summary>The 'XorTailListCollapsedOpen' simple snippet value.</summary>
-		/// <remark/>
-		XorTailListCollapsedOpen,
 		/// <summary>The 'XorTailListOpen' simple snippet value.</summary>
 		/// <remark/>
 		XorTailListOpen,
+		/// <summary>The 'XorTailListCollapsedOpen' simple snippet value.</summary>
+		/// <remark/>
+		XorTailListCollapsedOpen,
 		/// <summary>The 'XorTailListSeparator' simple snippet value.</summary>
 		/// <remark/>
 		XorTailListSeparator,
@@ -1020,7 +1020,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			sets[0] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more traversals through </span>{1}",
-				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
+				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span><br/><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"<span class=""quantifier""> combination</span>",
 				@"<span class=""quantifier"">each unique </span>",
@@ -1036,8 +1036,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
 				"</span>",
-				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				"</span>",
@@ -1112,7 +1112,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"at most <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
-				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span></br>{1}<br/>",
+				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
@@ -1125,8 +1125,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
-				@"{0} <span class=""quantifier""/>that is</span> {1}",
-				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that",
+				@"{0} <span class=""quantifier"">that is</span> {1}",
+				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">that</span>",
 				"{0}",
 				"</span>",
@@ -1228,13 +1228,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ",
 				"</span>",
-				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">or</span> ",
 				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
-				@"{0} <span class=""quantifier""/>who is</span> {1}",
-				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>",
+				@"{0} <span class=""quantifier"">who is</span> {1}",
+				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
@@ -1337,7 +1337,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">;</span><br/>"});
 			sets[1] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more traversals through </span>{1}",
-				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
+				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span><br/><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"<span class=""quantifier""> combination</span>",
 				@"<span class=""quantifier"">each unique </span>",
@@ -1353,8 +1353,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
 				"</span>",
-				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				"</span>",
@@ -1429,7 +1429,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"at most <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
-				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span></br>{1}<br/>",
+				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
@@ -1442,8 +1442,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
-				@"{0} <span class=""quantifier""/>that is</span> {1}",
-				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that",
+				@"{0} <span class=""quantifier"">that is</span> {1}",
+				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">it is obligatory that</span> {0}",
 				"</span>",
@@ -1545,13 +1545,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ",
 				"</span>",
-				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">or</span> ",
 				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
-				@"{0} <span class=""quantifier""/>who is</span> {1}",
-				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>",
+				@"{0} <span class=""quantifier"">who is</span> {1}",
+				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
@@ -1654,7 +1654,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">;</span><br/>"});
 			sets[2] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more traversals through </span>{1}",
-				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
+				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span><br/><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"<span class=""quantifier""> combination</span>",
 				@"<span class=""quantifier"">each unique </span>",
@@ -1670,8 +1670,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
 				"</span>",
-				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				"</span>",
@@ -1746,7 +1746,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"at most <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
-				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span></br>{1}<br/>",
+				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
@@ -1759,8 +1759,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
-				@"{0} <span class=""quantifier""/>that is</span> {1}",
-				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that",
+				@"{0} <span class=""quantifier"">that is</span> {1}",
+				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">it is impossible that</span> {0}",
 				"</span>",
@@ -1862,13 +1862,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ",
 				"</span>",
-				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">or</span> ",
 				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
-				@"{0} <span class=""quantifier""/>who is</span> {1}",
-				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>",
+				@"{0} <span class=""quantifier"">who is</span> {1}",
+				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
@@ -1971,7 +1971,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">;</span><br/>"});
 			sets[3] = new ArrayVerbalizationSet(new string[]{
 				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more traversals through </span>{1}",
-				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span></br><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
+				@"<span class=""quantifier"">no {0} may cycle back to itself via one or more instances of the role pair:</span><br/><span class=""smallIndent""><span class=""quantifier"">roles <span class=""objectType"">{2}</span> and <span class=""objectType"">{3}</span> of </span>{1}</span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"<span class=""quantifier""> combination</span>",
 				@"<span class=""quantifier"">each unique </span>",
@@ -1987,8 +1987,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
 				"</span>",
-				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				"</span>",
@@ -2063,7 +2063,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"at most <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
-				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span></br>{1}<br/>",
+				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
@@ -2076,8 +2076,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""logicalOperator""> that is a </span>",
 				@"<span class=""quantifier"">the same</span> {0}",
-				@"{0} <span class=""quantifier""/>that is</span> {1}",
-				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>that",
+				@"{0} <span class=""quantifier"">that is</span> {1}",
+				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">that</span>",
 				@"<span class=""quantifier"">it is forbidden that</span> {0}",
 				"</span>",
@@ -2179,13 +2179,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><br/><span class=""smallIndent""><span class=""quantifier"">or</span> ",
 				"</span>",
-				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
+				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">or</span> ",
 				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
-				@"{0} <span class=""quantifier""/>who is</span> {1}",
-				@"{1} <span class=""quantifier""/>is</span> {0} <span class=""quantifier""/>who</span>",
+				@"{0} <span class=""quantifier"">who is</span> {1}",
+				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",

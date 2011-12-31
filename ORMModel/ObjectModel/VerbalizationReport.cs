@@ -1062,7 +1062,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			/// </summary>
 			protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 			{
-				yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageHeaderSummary(myFactType, filter));
+				yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageHeaderSummary(myFactType, filter, false));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageObjectTypeSection(ReportVerbalizationSnippetType.ObjectTypeRelationshipValueLink, myFactType));
 				yield return CustomChildVerbalizer.VerbalizeInstance(new GenericConstraintSection(myReportContent, GetConstraintsFromFactType(myFactType, myReportContent)));
 				if (myFactType.Objectification != null)
@@ -1108,6 +1108,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			#region Member Variables
 			private IVerbalize myVerbalizationObject;
 			private IVerbalizeFilterChildren myFilter;
+			private bool myTopLevelSection;
 			#endregion // Member Variables
 			#region Constructor
 			/// <summary>
@@ -1115,10 +1116,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			/// </summary>
 			/// <param name="verbalizationObject">The verbalization object.</param>
 			/// <param name="filter">The <see cref="IVerbalizeFilterChildren"/> you want to use to filter aggregates.</param>
-			public FactTypePageHeaderSummary(IVerbalize verbalizationObject, IVerbalizeFilterChildren filter)
+			/// <param name="topLevelSection">Set to <see langword="true"/> if the head is used as a section in a top-level page.</param>
+			public FactTypePageHeaderSummary(IVerbalize verbalizationObject, IVerbalizeFilterChildren filter, bool topLevelSection)
 			{
 				myVerbalizationObject = verbalizationObject;
 				myFilter = filter;
+				myTopLevelSection = topLevelSection;
 			}
 			#endregion // Constructor
 			#region IVerbalize Implementation
@@ -1133,7 +1136,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			{
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 				IVerbalizationSets<ReportVerbalizationSnippetType> snippets = (IVerbalizationSets<ReportVerbalizationSnippetType>)snippetsDictionary[typeof(ReportVerbalizationSnippetType)];
-				writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(ReportVerbalizationSnippetType.FactTypePageHeader), (myVerbalizationObject as FactType).Name));
+				writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(myTopLevelSection ? ReportVerbalizationSnippetType.FactTypeSectionHeader : ReportVerbalizationSnippetType.FactTypePageHeader), (myVerbalizationObject as FactType).Name));
 				writer.Write(snippets.GetSnippet(ReportVerbalizationSnippetType.GenericSummaryOpen));
 				verbalizationContext.DeferVerbalization(myVerbalizationObject, DeferVerbalizationOptions.AlwaysWriteLine, myFilter);
 				// This must be called before additional calls to the writer or an increased indentation will not decrease before
@@ -1682,7 +1685,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 				int factTypeCount = myFactTypeList.Count;
 				for (int i = 0; i < factTypeCount; ++i)
 				{
-					yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageHeaderSummary(myFactTypeList[i], filter));
+					yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageHeaderSummary(myFactTypeList[i], filter, true));
 					yield return CustomChildVerbalizer.VerbalizeInstance(new FactTypePageObjectTypeSection(ReportVerbalizationSnippetType.ObjectTypeListObjectTypeValueLink, myFactTypeList[i]));
 					yield return CustomChildVerbalizer.VerbalizeInstance(new ConstraintValidationSection(myReportContent, GetConstraintsFromFactType(myFactTypeList[i], myReportContent)));
 				}

@@ -27,95 +27,145 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	public enum ReportVerbalizationSnippetType
 	{
 		/// <summary>The 'ContextModelDescriptionClose' simple snippet value.</summary>
+		/// <remark/>
 		ContextModelDescriptionClose,
 		/// <summary>The 'ContextModelDescriptionOpen' simple snippet value.</summary>
+		/// <remark/>
 		ContextModelDescriptionOpen,
 		/// <summary>The 'EmptyContentListItemSnippet' simple snippet value.</summary>
+		/// <remark/>
 		EmptyContentListItemSnippet,
 		/// <summary>The 'FactTypeConstraintValidationHeader' simple snippet value.</summary>
+		/// <remark/>
 		FactTypeConstraintValidationHeader,
 		/// <summary>The 'FactTypeConstraintValidationListItemClose' simple snippet value.</summary>
+		/// <remark/>
 		FactTypeConstraintValidationListItemClose,
 		/// <summary>The 'FactTypeConstraintValidationListItemOpen' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark/>
 		FactTypeConstraintValidationListItemOpen,
 		/// <summary>The 'FactTypeConstraintValidationListSpacer' simple snippet value.</summary>
+		/// <remark/>
 		FactTypeConstraintValidationListSpacer,
 		/// <summary>The 'FactTypeConstraintValidationSignature' simple snippet value.</summary>
+		/// <remark/>
 		FactTypeConstraintValidationSignature,
 		/// <summary>The 'FactTypeListFooter' simple snippet value.</summary>
+		/// <remark/>
 		FactTypeListFooter,
 		/// <summary>The 'FactTypeListHeader' simple snippet value.</summary>
+		/// <remark/>
 		FactTypeListHeader,
 		/// <summary>The 'FactTypePageHeader' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark/>
 		FactTypePageHeader,
 		/// <summary>The 'FactTypePageObjectTypeListClose' simple snippet value.</summary>
+		/// <remark/>
 		FactTypePageObjectTypeListClose,
 		/// <summary>The 'FactTypePageObjectTypeListOpen' simple snippet value.</summary>
+		/// <remark/>
 		FactTypePageObjectTypeListOpen,
 		/// <summary>The 'FactTypeRelationshipLinkClose' simple snippet value.</summary>
+		/// <remark/>
 		FactTypeRelationshipLinkClose,
 		/// <summary>The 'FactTypeRelationshipLinkOpen' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark/>
 		FactTypeRelationshipLinkOpen,
+		/// <summary>The 'FactTypeSectionHeader' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark/>
+		FactTypeSectionHeader,
 		/// <summary>The 'GenericConstraintHeader' simple snippet value.</summary>
+		/// <remark/>
 		GenericConstraintHeader,
 		/// <summary>The 'GenericConstraintListClose' simple snippet value.</summary>
+		/// <remark/>
 		GenericConstraintListClose,
 		/// <summary>The 'GenericConstraintListItemClose' simple snippet value.</summary>
+		/// <remark/>
 		GenericConstraintListItemClose,
 		/// <summary>The 'GenericConstraintListItemOpen' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark/>
 		GenericConstraintListItemOpen,
 		/// <summary>The 'GenericConstraintListOpen' simple snippet value.</summary>
+		/// <remark/>
 		GenericConstraintListOpen,
 		/// <summary>The 'GenericListItemClose' simple snippet value.</summary>
+		/// <remark/>
 		GenericListItemClose,
 		/// <summary>The 'GenericListItemOpen' simple snippet value.</summary>
+		/// <remark/>
 		GenericListItemOpen,
 		/// <summary>The 'GenericRelationshipsListClose' simple snippet value.</summary>
+		/// <remark/>
 		GenericRelationshipsListClose,
 		/// <summary>The 'GenericRelationshipsListOpen' simple snippet value.</summary>
+		/// <remark/>
 		GenericRelationshipsListOpen,
 		/// <summary>The 'GenericSubTypeListClose' simple snippet value.</summary>
+		/// <remark/>
 		GenericSubTypeListClose,
 		/// <summary>The 'GenericSubTypeListOpen' simple snippet value.</summary>
+		/// <remark/>
 		GenericSubTypeListOpen,
 		/// <summary>The 'GenericSummaryClose' simple snippet value.</summary>
+		/// <remark/>
 		GenericSummaryClose,
 		/// <summary>The 'GenericSummaryOpen' simple snippet value.</summary>
+		/// <remark/>
 		GenericSummaryOpen,
 		/// <summary>The 'GenericSuperTypeListClose' simple snippet value.</summary>
+		/// <remark/>
 		GenericSuperTypeListClose,
 		/// <summary>The 'GenericSuperTypeListOpen' simple snippet value.</summary>
+		/// <remark/>
 		GenericSuperTypeListOpen,
 		/// <summary>The 'ObjectTypeListFooter' simple snippet value.</summary>
+		/// <remark/>
 		ObjectTypeListFooter,
 		/// <summary>The 'ObjectTypeListHeader' simple snippet value.</summary>
+		/// <remark/>
 		ObjectTypeListHeader,
 		/// <summary>The 'ObjectTypeListObjectTypeValueLink' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark/>
 		ObjectTypeListObjectTypeValueLink,
 		/// <summary>The 'ObjectTypePageFactTypeListClose' simple snippet value.</summary>
+		/// <remark/>
 		ObjectTypePageFactTypeListClose,
 		/// <summary>The 'ObjectTypePageFactTypeListOpen' simple snippet value.</summary>
+		/// <remark/>
 		ObjectTypePageFactTypeListOpen,
 		/// <summary>The 'ObjectTypePageHeader' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark/>
 		ObjectTypePageHeader,
 		/// <summary>The 'ObjectTypeRelationshipValueLink' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark/>
 		ObjectTypeRelationshipValueLink,
 		/// <summary>The 'ObjectTypeValueLink' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark/>
 		ObjectTypeValueLink,
 		/// <summary>The 'ReportDocumentContents' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark/>
 		ReportDocumentContents,
 		/// <summary>The 'ReportDocumentContentsReplacementAll' simple snippet value.</summary>
+		/// <remark/>
 		ReportDocumentContentsReplacementAll,
 		/// <summary>The 'ReportDocumentContentsReplacementObject' simple snippet value.</summary>
+		/// <remark/>
 		ReportDocumentContentsReplacementObject,
 		/// <summary>The 'ReportDocumentContentsReplacementValidation' simple snippet value.</summary>
+		/// <remark/>
 		ReportDocumentContentsReplacementValidation,
 		/// <summary>The 'ReportDocumentFooter' simple snippet value.</summary>
+		/// <remark/>
 		ReportDocumentFooter,
 		/// <summary>The 'ReportDocumentHeader' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark/>
 		ReportDocumentHeader,
 		/// <summary>The 'VerbalizerNewLine' simple snippet value.</summary>
+		/// <remark/>
 		VerbalizerNewLine,
+		/// <summary>The last item in ReportVerbalizationSnippetType</summary>
+		Last = ReportVerbalizationSnippetType.VerbalizerNewLine,
 	}
 	#endregion // ReportVerbalizationSnippetType enum
 	#region ReportVerbalizationSets class
@@ -145,7 +195,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			",
 				@"
 				
-					</span>
+					</div>
 				</div>
 				
 			",
@@ -156,7 +206,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				<div class=""constraintType"">{1}</div>
 				<div class=""constraintHeaderNoWrap"">Verbalization:</div>
 				<div class=""constraintVerbalization"">
-					<span class=""verbalization"">
+					<div class=""verbalization"">
 					
 			",
 				@"
@@ -209,6 +259,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"</a>",
 				@"<a href=""../FactTypes/{0}.html"">",
 				@"
+				
+				<div class=""topHeader"">
+					<div class=""objectTypeName"">&quot;{0}&quot;</div>
+					<div class=""typeName"">Fact Type<a href=""./ObjectTypeList.html"">&#xA0;&#x2191;</a></div>
+				</div>
+				
+			",
+				@"
 				Constraints
 			",
 				@"
@@ -218,7 +276,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			",
 				@"
 				
-				</span>
+				</div>
 				</div>
 				
 			",
@@ -229,7 +287,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				<div class=""constraintType"">{1}</div>
 				<div class=""constraintHeaderNoWrap"">Verbalization:</div>
 				<div class=""constraintVerbalization"">
-				<span class=""verbalization"">
+				<span div=""verbalization"">
 				
 			",
 				@"
@@ -266,12 +324,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					<ul>
 				
 			",
-				"</span></div>",
+				"</div></div>",
 				@"
 				
 					<div class=""header"">Summary</div>
 					<div class=""body"">
-					<span class=""verbalization"">
+					<div class=""verbalization"">
 				
 			",
 				@"
@@ -329,7 +387,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"
 				
 				<div id=""navBar"">
-					<div class=""content"">
 					<div style=""width:250px;"">
 					 <b class=""roundTop1_b"">
 					  <b class=""roundTop1_1"" style=""background:#9DCEFF; color: inherit;""></b>
@@ -351,8 +408,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				  <b class=""roundTop1_2"" style=""background:#DDEEFF;border-color: #9DCEFF; color: inherit;""></b>
 				  <b class=""roundTop1_1"" style=""background:#9DCEFF; color: inherit;""></b>
 				 </b>
-				</div>
-				<div class=""clearfix""></div>
 				</div>
 				</div>
 			",
@@ -378,6 +433,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						<html xmlns=""http://www.w3.org/1999/xhtml"">
 						<head>
 							<title>NORMA Verbalization Report</title>
+							<meta http-equiv=""X-UA-Compatible"" content=""IE=9"" />
 							<style type=""text/css"">
 								/*******************************************************
 								* Global Page Styles								   *
@@ -416,6 +472,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									border-bottom: 2px solid #FFCE84;
 									font-size:18px;
 									margin-top: 8px;
+									overflow: hidden;
 								}
 								div.container
 								{

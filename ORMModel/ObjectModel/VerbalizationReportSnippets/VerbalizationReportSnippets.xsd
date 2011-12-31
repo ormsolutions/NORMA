@@ -65,6 +65,11 @@
 						<xs:documentation>Description: Header for the individual Fact Type Page</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="FactTypeSectionHeader">
+					<xs:annotation>
+						<xs:documentation>Description: Header for a Fact Type section in a top-level page</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="FactTypePageObjectTypeListOpen">
 					<xs:annotation>
 						<xs:documentation>Description: Opening snippet for the list of role players for a given fact on an individual Fact Type page</xs:documentation>

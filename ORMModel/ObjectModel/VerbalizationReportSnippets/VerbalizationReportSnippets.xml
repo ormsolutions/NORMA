@@ -108,6 +108,14 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="FactTypeConstraintValidationHeader">
 				<![CDATA[<div class="topHeader">Constraint Validation Report</div>]]>
 			</Snippet>
+			<Snippet type="FactTypeSectionHeader">
+				<![CDATA[
+				<div class="topHeader">
+					<div class="objectTypeName">&quot;{0}&quot;</div>
+					<div class="typeName">Fact Type<a href="./ObjectTypeList.html">&#xA0;&#x2191;</a></div>
+				</div>
+				]]>
+			</Snippet>
 			<Snippet type="FactTypeConstraintValidationListItemOpen">
 				<![CDATA[
 				<div class="constraintName"><input type="checkbox" name="chkConstraint" value="1"/>&#xA0;<span class="constraintName">{0}</span></div>
@@ -115,12 +123,12 @@ You must not remove this notice, or any other, from this software.
 				<div class="constraintType">{1}</div>
 				<div class="constraintHeaderNoWrap">Verbalization:</div>
 				<div class="constraintVerbalization">
-					<span class="verbalization">
+					<div class="verbalization">
 					]]>
 			</Snippet>
 			<Snippet type="FactTypeConstraintValidationListItemClose">
 				<![CDATA[
-					</span>
+					</div>
 				</div>
 				]]>
 			</Snippet>
@@ -141,10 +149,10 @@ You must not remove this notice, or any other, from this software.
 				<![CDATA[
 					<div class="header">Summary</div>
 					<div class="body">
-					<span class="verbalization">
+					<div class="verbalization">
 				]]>
 			</Snippet>
-			<Snippet type="GenericSummaryClose"><![CDATA[</span></div>]]></Snippet>
+			<Snippet type="GenericSummaryClose"><![CDATA[</div></div>]]></Snippet>
 			<Snippet type="GenericConstraintListOpen">
 				<![CDATA[
 				<div class="header">Constraints</div>
@@ -169,12 +177,12 @@ You must not remove this notice, or any other, from this software.
 				<div class="constraintType">{1}</div>
 				<div class="constraintHeaderNoWrap">Verbalization:</div>
 				<div class="constraintVerbalization">
-				<span class="verbalization">
+				<span div="verbalization">
 				]]>
 			</Snippet>
 			<Snippet type="GenericConstraintListItemClose">
 				<![CDATA[
-				</span>
+				</div>
 				</div>
 				]]>
 			</Snippet>
@@ -231,6 +239,7 @@ You must not remove this notice, or any other, from this software.
 						<html xmlns="http://www.w3.org/1999/xhtml">
 						<head>
 							<title>NORMA Verbalization Report</title>
+							<meta http-equiv="X-UA-Compatible" content="IE=9" />
 							<style type="text/css">
 								/*******************************************************
 								* Global Page Styles								   *
@@ -269,6 +278,7 @@ You must not remove this notice, or any other, from this software.
 									border-bottom: 2px solid #FFCE84;
 									font-size:18px;
 									margin-top: 8px;
+									overflow: hidden;
 								}
 								div.container
 								{
@@ -394,7 +404,6 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ReportDocumentContents">
 				<![CDATA[
 				<div id="navBar">
-					<div class="content">
 					<div style="width:250px;">
 					 <b class="roundTop1_b">
 					  <b class="roundTop1_1" style="background:#9DCEFF; color: inherit;"></b>
@@ -416,8 +425,6 @@ You must not remove this notice, or any other, from this software.
 				  <b class="roundTop1_2" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;"></b>
 				  <b class="roundTop1_1" style="background:#9DCEFF; color: inherit;"></b>
 				 </b>
-				</div>
-				<div class="clearfix"></div>
 				</div>
 				</div>]]>
 			</Snippet>

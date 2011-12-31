@@ -49,6 +49,16 @@
 										<xs:attribute name="type" type="SnippetTypeEnum" use="required"/>
 										<xs:attribute name="modality" type="ModalityEnum" use="optional"/>
 										<xs:attribute name="sign" type="SignEnum" use="optional"/>
+										<xs:attribute name="groupWith" type="SnippetTypeEnum" use="optional">
+											<xs:annotation>
+												<xs:documentation>The name of another enum item used to group this item immediately after the other in the generated code, allowing numeric manipulation of the enum. Use a unique groupOffset to specify more than one grouped item.</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
+										<xs:attribute name="groupOffset" type="xs:positiveInteger" use="optional">
+											<xs:annotation>
+												<xs:documentation>A numeric offset used to group multiple items.</xs:documentation>
+											</xs:annotation>
+										</xs:attribute>
 									</xs:extension>
 								</xs:simpleContent>
 							</xs:complexType>

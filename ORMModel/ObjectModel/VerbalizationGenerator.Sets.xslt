@@ -31,26 +31,78 @@
 	     the ve:VerbalizationRoot node.-->
 	<xsl:template name="GenerateSortedSnippetsFragment">
 		<xsl:param name="SnippetsLocation"/>
-		<xsl:for-each select="exsl:node-set(document($SnippetsLocation))/ve:Languages/ve:Language[@xml:lang='en-US']/ve:Snippets/ve:Snippet">
-			<xsl:sort select="@type" data-type="text" order="ascending"/>
-			<xsl:sort select="@modality" data-type="text" order="ascending"/>
-			<!-- We want positive before negative so that we don't have to resort after explicitly adding the default values -->
-			<xsl:sort select="@sign" data-type="text" order="descending"/>
-			<xsl:copy>
-				<xsl:copy-of select="@*"/>
-				<xsl:if test="0=string-length(@modality)">
-					<xsl:attribute name="modality">
-						<xsl:text>alethic</xsl:text>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:if test="0=string-length(@sign)">
-					<xsl:attribute name="sign">
-						<xsl:text>positive</xsl:text>
-					</xsl:attribute>
-				</xsl:if>
-				<xsl:copy-of select="text()"/>
-			</xsl:copy>
-		</xsl:for-each>
+		<xsl:variable name="allSnippets" select="exsl:node-set(document($SnippetsLocation))/ve:Languages/ve:Language[@xml:lang='en-US']/ve:Snippets/ve:Snippet"/>
+		<xsl:choose>
+			<xsl:when test="$allSnippets[@groupWith]">
+				<xsl:variable name="customSortFragment">
+					<xsl:for-each select="$allSnippets">
+						<ve:Snippet sortType="{@type}" sortOffset="0">
+							<xsl:if test="@groupWith">
+								<xsl:attribute name="sortType">
+									<xsl:value-of select="@groupWith"/>
+								</xsl:attribute>
+								<xsl:attribute name="sortOffset">
+									<xsl:choose>
+										<xsl:when test="@groupOffset">
+											<xsl:value-of select="@groupOffset"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="1"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+							</xsl:if>
+							<xsl:copy-of select="@*|text()"/>
+						</ve:Snippet>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:for-each select="exsl:node-set($customSortFragment)/*">
+					<xsl:sort select="@sortType" data-type="text" order="ascending"/>
+					<xsl:sort select="@sortOffset" data-type="number" order="ascending"/>
+					<xsl:sort select="@type" data-type="text" order="ascending"/>
+					<xsl:sort select="@modality" data-type="text" order="ascending"/>
+					<!-- We want positive before negative so that we don't have to resort after explicitly adding the default values -->
+					<xsl:sort select="@sign" data-type="text" order="descending"/>
+					<!-- Rest is the same as below -->
+					<xsl:copy>
+						<xsl:copy-of select="@*"/>
+						<xsl:if test="0=string-length(@modality)">
+							<xsl:attribute name="modality">
+								<xsl:text>alethic</xsl:text>
+							</xsl:attribute>
+						</xsl:if>
+						<xsl:if test="0=string-length(@sign)">
+							<xsl:attribute name="sign">
+								<xsl:text>positive</xsl:text>
+							</xsl:attribute>
+						</xsl:if>
+						<xsl:copy-of select="text()"/>
+					</xsl:copy>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:for-each select="$allSnippets">
+					<xsl:sort select="@type" data-type="text" order="ascending"/>
+					<xsl:sort select="@modality" data-type="text" order="ascending"/>
+					<!-- We want positive before negative so that we don't have to resort after explicitly adding the default values -->
+					<xsl:sort select="@sign" data-type="text" order="descending"/>
+					<xsl:copy>
+						<xsl:copy-of select="@*"/>
+						<xsl:if test="0=string-length(@modality)">
+							<xsl:attribute name="modality">
+								<xsl:text>alethic</xsl:text>
+							</xsl:attribute>
+						</xsl:if>
+						<xsl:if test="0=string-length(@sign)">
+							<xsl:attribute name="sign">
+								<xsl:text>positive</xsl:text>
+							</xsl:attribute>
+						</xsl:if>
+						<xsl:copy-of select="text()"/>
+					</xsl:copy>
+				</xsl:for-each>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<!-- Template to extract documentation from a schema file. The resulting fragment
 	has elements with @type attributes and text for the documentation -->
