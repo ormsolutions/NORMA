@@ -32,7 +32,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 	/// <see cref="PresentationElementTypeDescriptor"/> for <see cref="ORMBaseBinaryLinkShape"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ORMBaseBinaryLinkShapeTypeDescriptor<TPresentationElement, TModelElement> : ORMPresentationElementTypeDescriptor<TPresentationElement, TModelElement>
+	public class ORMBaseBinaryLinkShapeTypeDescriptor<TPresentationElement, TModelElement> : PresentationElementTypeDescriptor<TPresentationElement, TModelElement>
 		where TPresentationElement : ORMBaseBinaryLinkShape
 		where TModelElement : ModelElement
 	{

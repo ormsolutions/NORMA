@@ -131,7 +131,6 @@
     <Compile Include="ShapeModel\Design\ObjectifiedFactTypeNameShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseBinaryLinkShapeTypeDescriptor.cs" />
-    <Compile Include="ShapeModel\Design\ORMPresentationElementTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\FactTypeShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\ModelNoteLink.cs" />
     <Compile Include="ShapeModel\ModelNoteConnectAction.cs" />

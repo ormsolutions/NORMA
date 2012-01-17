@@ -75,7 +75,7 @@
 		<Attributes>
 			<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 				<Parameters>
-					<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;RelationalDiagram, global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptor&lt;RelationalDiagram&gt;&gt;)"/>
+					<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;RelationalDiagram, Design.RelationalDiagramTypeDescriptor&gt;)"/>
 				</Parameters>
 			</ClrAttribute>
 		</Attributes>

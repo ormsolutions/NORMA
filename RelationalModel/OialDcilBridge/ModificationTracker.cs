@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -194,9 +195,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					Schema schema = SchemaIsForAbstractionModel.GetSchema(model);
 					if (schema != null)
 					{
+						// Clear any customizations to stop rules and events from modifying
+						// the customizations during rebuild.
+						SchemaCustomization initialCustomization = SchemaCustomization.SetCustomization(schema, null);
 						schema.TableCollection.Clear();
 						schema.DomainCollection.Clear();
-						FullyGenerateConceptualDatabaseModel(schema, model, null);
+						FullyGenerateConceptualDatabaseModel(schema, model, initialCustomization, null);
+						SchemaCustomization.SetCustomization(schema, new SchemaCustomization(schema));
 					}
 				}
 			}
@@ -237,6 +242,119 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			}
 			#endregion // Bridge element modification rules
 			#region Name modification rules
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column)
+			/// </summary>
+			private static void ColumnChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				Guid propertyId = e.DomainProperty.Id;
+				Column column;
+				Table table;
+				Schema schema;
+				SchemaCustomization customization;
+				if (propertyId == Column.IsNullableDomainPropertyId)
+				{
+					column = (Column)e.ModelElement;
+					if (null != (table = column.Table) &&
+						table.ColumnOrder != ColumnOrdering.Custom)
+					{
+						ValidateTableNameChanged(table);
+					}
+				}
+				else if (propertyId == Column.CustomNameDomainPropertyId)
+				{
+					column = (Column)e.ModelElement;
+					if (null != (table = column.Table) &&
+						null != (schema = table.Schema) &&
+						null != (customization = SchemaCustomization.GetCustomization(schema)))
+					{
+						customization.CustomizeColumnName(column, (bool)e.NewValue ? column.Name : null);
+						ValidateSchemaNamesChanged(schema);
+					}
+				}
+				else if (propertyId == Column.NameDomainPropertyId)
+				{
+					column = (Column)e.ModelElement;
+					if (column.CustomName &&
+						null != (table = column.Table) &&
+						null != (schema = table.Schema) &&
+						null != (customization = SchemaCustomization.GetCustomization(schema)))
+					{
+						customization.CustomizeColumnName(column, (string)e.NewValue);
+						ValidateSchemaNamesChanged(schema);
+					}
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table)
+			/// </summary>
+			private static void TableChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				Guid propertyId = e.DomainProperty.Id;
+				Table table;
+				Schema schema;
+				SchemaCustomization customization;
+				if (propertyId == Table.CustomNameDomainPropertyId)
+				{
+					table = (Table)e.ModelElement;
+					if (null != (schema = table.Schema) &&
+						null != (customization = SchemaCustomization.GetCustomization(schema)))
+					{
+						customization.CustomizeTableName(table, (bool)e.NewValue ? table.Name : null);
+						ValidateSchemaNamesChanged(schema);
+					}
+				}
+				else if (propertyId == Table.NameDomainPropertyId)
+				{
+					table = (Table)e.ModelElement;
+					if (table.CustomName &&
+						null != (schema = table.Schema) &&
+						null != (customization = SchemaCustomization.GetCustomization(schema)))
+					{
+						customization.CustomizeTableName(table, (string)e.NewValue);
+						ValidateSchemaNamesChanged(schema);
+					}
+				}
+				else if (propertyId == Table.ColumnOrderDomainPropertyId)
+				{
+					table = (Table)e.ModelElement;
+					if (null != (schema = table.Schema) &&
+						null != (customization = SchemaCustomization.GetCustomization(schema)))
+					{
+						if (((ColumnOrdering)e.NewValue == ColumnOrdering.Custom) ^ ((ColumnOrdering)e.OldValue == ColumnOrdering.Custom))
+						{
+							FrameworkDomainModel.DelayValidateElement(table, DelayValidateCustomizeColumnPositions);
+						}
+						ValidateSchemaNamesChanged(schema);
+					}
+				}
+			}
+			/// <summary>
+			/// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TableContainsColumn)
+			/// </summary>
+			private static void ColumnOrderChangedRule(RolePlayerOrderChangedEventArgs e)
+			{
+				if (e.SourceDomainRole.Id == TableContainsColumn.TableDomainRoleId)
+				{
+					Table table = (Table)e.SourceElement;
+					if (table.ColumnOrder == ColumnOrdering.Custom)
+					{
+						FrameworkDomainModel.DelayValidateElement(table, DelayValidateCustomizeColumnPositions);
+					}
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema)
+			/// </summary>
+			private static void SchemaChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == Schema.DefaultColumnOrderDomainPropertyId)
+				{
+					// Note that this does not affect custom ordering, so there is nothing to
+					// record in the schema customizations
+					ValidateSchemaNamesChanged((Schema)e.ModelElement);
+				}
+			}
 			/// <summary>
 			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)
 			/// </summary>
@@ -520,12 +638,32 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					FrameworkDomainModel.DelayValidateElement(schema, DelayValidateSchemaNamesChanged);
 				}
 			}
+			[DelayValidatePriority(0, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.BeforeDomainModel)]
+			private static void DelayValidateCustomizeColumnPositions(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					Table table = (Table)element;
+					Schema schema;
+					SchemaCustomization customization;
+					if (null != (schema = table.Schema) &&
+						null != (customization = SchemaCustomization.GetCustomization(schema)))
+					{
+						customization.CustomizeColumnPositions(table, table.ColumnOrder == ColumnOrdering.Custom);
+					}
+				}
+			}
 			[DelayValidatePriority(30, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void DelayValidateSchemaNamesChanged(ModelElement element)
 			{
 				if (!element.IsDeleted)
 				{
-					NameGeneration.GenerateAllNames((Schema)element);
+					Schema schema = (Schema)element;
+					// Disable customization tracking during name generation, and
+					// reset customizations on completion.
+					SchemaCustomization customization = SchemaCustomization.SetCustomization(schema, null);
+					NameGeneration.GenerateAllNames(schema, customization);
+					SchemaCustomization.SetCustomization(schema, new SchemaCustomization(schema));
 				}
 			}
 			#endregion // Name modification rules

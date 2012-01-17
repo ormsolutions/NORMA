@@ -122,6 +122,7 @@
 			Natural Object-Role Modeling Architect for Visual Studio
 
 			Copyright © Neumont University. All rights reserved.
+			Copyright © ORM Solutions, LLC. All rights reserved.
 
 			The use and distribution terms for this software are covered by the
 			Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -132,9 +133,49 @@
 			You must not remove this notice, or any other, from this software.
 		</value>
   </metadata>
+  <data name="AutomaticColumnOrdering.ByColumnName" xml:space="preserve">
+    <value>Column Name Only</value>
+  </data>
+  <data name="AutomaticColumnOrdering.MandatoryOther" xml:space="preserve">
+    <value>Mandatory/Other</value>
+  </data>
+  <data name="AutomaticColumnOrdering.PrimaryMandatoryOther" xml:space="preserve">
+    <value>Primary/Mandatory/Other</value>
+  </data>
+  <data name="AutomaticColumnOrdering.PrimaryMandatoryUniqueOther" xml:space="preserve">
+    <value>Primary/Mandatory/Unique/Other</value>
+  </data>
+  <data name="AutomaticColumnOrdering.PrimaryOther" xml:space="preserve">
+    <value>Primary/Other</value>
+  </data>
+  <data name="ColumnOrdering.AutoSchemaDefault" xml:space="preserve">
+    <value>&lt;Schema Default&gt;</value>
+  </data>
+  <data name="ColumnOrdering.AutoByColumnName" xml:space="preserve">
+    <value>Column Name Only</value>
+  </data>
+  <data name="ColumnOrdering.AutoMandatoryOther" xml:space="preserve">
+    <value>Mandatory/Other</value>
+  </data>
+  <data name="ColumnOrdering.AutoPrimaryMandatoryOther" xml:space="preserve">
+    <value>Primary/Mandatory/Other</value>
+  </data>
+  <data name="ColumnOrdering.AutoPrimaryMandatoryUniqueOther" xml:space="preserve">
+    <value>Primary/Mandatory/Unique/Other</value>
+  </data>
+  <data name="ColumnOrdering.AutoPrimaryOther" xml:space="preserve">
+    <value>Primary/Other</value>
+  </data>
+  <data name="ColumnOrdering.Custom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
   <data name="ColumnReference.DisplayFormatString" xml:space="preserve">
     <value>{0} = {1}</value>
     <comment>The format string used to display a column reference in the ORM Model Browser. {0}=name of the source column, {1}=name of the target column</comment>
+  </data>
+  <data name="ColumnReorder.TransactionNameFormatString" xml:space="preserve">
+    <value>Move Columns in Table '{0}'</value>
+    <comment>The format string used to provide a transaction for a column move operation. {0}=name of the parent table</comment>
   </data>
   <data name="PredefinedType.BigInt" xml:space="preserve">
     <value>BIGINT</value>

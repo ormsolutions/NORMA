@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA October 2011 CTP Readme</title>
+<title>NORMA January 2012 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,11 +12,10 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA October 2011 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA January 2012 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The October 2011 release is a bug fix release. Refer to June 2011 for newer features.<br/><br/>
-The June 2011 release includes new display features (display objectified fact types as object types, display link fact types), additional ring types with an improved editor for choosing ring types, visible zoom commands, and a number of bug fixes. See detailed change notes below for specifics. 
-<br/><br/></p>
+The January 2012 release adds the ability to remember customized relational column names and control column order, verbalization options to standardize the verbalized display of object type names, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
+</p>
 <h2>Contents</h2>
 <ul>
   <li><a href="#Setup">Installing NORMA</a></li>
@@ -42,6 +41,31 @@ The June 2011 release includes new display features (display objectified fact ty
 <ul>
 <li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Build ####)</li>
 </ul>-->
+
+<hr/>
+<h2>January 2012 CTP Changes</h2>
+<div>The January 2012 CTP release includes all modifications through changeset 1481.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#SchemaCustomization 2012-01">Custom relational names and column ordering</a>&nbsp;</li>
+<li><a href="#VerbalizedObjectTypeNameDisplay 2012-01">Verbalized object type name options</a>&nbsp;</li>
+<li>Other Features:
+<ol>
+<li>Enable programmatic access to the verbalization APIs from outside the Visual Studio environment.</li>
+<li>Move all text snippets used for derivation rule and join path verbalization to externally customizable locations.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Fix HTML report display issues associated with Chrome, FireFox, and IE9 browsers, fix some invalid generated HTML, and fix the 'return to object type list' hyperlinks on the constraint verbalization report page.</li>
+<li>Derived fact types with front text were verbalized without automatically capitalizing the first letter in the sentence.</li>
+<li>IsIndependent could be incorrectly removed on load if the object type played a mandatory role on a formally derived fact type.</li>
+<li>Tables with a single 'value' column were incorrectly created for ValueTypes that participated only in formally derived fact types.</li>
+<li>The Length property was available with a column selection for the Picture and OleObject data types, which do not support this facet.</li>
+<li>The data type for a column associated with a unary fact type is now read-only to avoid unwanted side-effects caused by modifying this data type.</li>
+<li>Fix issues with excessive model churn and extra shapes appearing when a reference mode format string is modified.</li>
+</ol>
+</li>
+</ul>
 
 <hr/>
 <h2>October 2011 CTP Changes</h2>
@@ -473,6 +497,38 @@ Join paths for set comparison constraints (subset, equality, exclusion) are corr
 <a id="Uniqueness Frequency Join Path Verbalization 2010-07" class="new" title="July 2010 CTP: Uniqueness and frequency constraint join path verbalization">2010-07</a>&nbsp;
 Join paths for uniqueness and frequency constraints verbalized correctly, leaving joined ring constraints as the only non-verbalized constraint types (adjustment to previous item). Verbalization is correct for common uniqueness patterns such as using objectified and non-objectified roles in the same constraint.
 </li>
+<li>
+<a id="VerbalizedObjectTypeNameDisplay 2012-01" class="new" title="January 2012 CTP: Verbalized object type name options">2012-01</a>&nbsp;
+The <strong>Object Type Name Display</strong> option in the <em>Verbalization</em> section of the <em>ORM Designer</em> tab on the <em>Options</em> page (available on the <em>Tools</em> menu) modifies the form of verbalized object type names. A multi part name (as indicated by spaces and/or internalCapitalization) is first split into its component parts using the same rules as the <a href="#RelationalNameSplittingCapitalization 2010-12">relational name generator</a>, then the names are recombined according to the specified option. Examples of three name patterns and their standardized forms are shown below:
+<br />
+<br />
+<table>
+    <tr>
+        <td style="padding-right:10px"><em style="text-decoration:underline">AsIs</em></td>
+        <td style="padding-right:10px"><em style="text-decoration:underline">SeparateCombinedNames</em></td>
+        <td style="padding-right:10px"><em style="text-decoration:underline">CombineNamesLeadWithUpper</em></td>
+        <td><em style="text-decoration:underline">CombineNamesLeadWithLower</em></td>
+    </tr>
+    <tr>
+        <td style="padding-right:10px"><strong>FirstName</strong></td>
+        <td style="padding-right:10px">first name</td>
+        <td style="padding-right:10px">FirstName</td>
+        <td>firstName</td>
+    </tr>
+    <tr>
+        <td style="padding-right:10px"><strong>Second name</strong></td>
+        <td style="padding-right:10px">second name</td>
+        <td style="padding-right:10px">SecondName</td>
+        <td>secondName</td>
+    </tr>
+    <tr>
+        <td style="padding-right:10px"><strong>thirdName</strong></td>
+        <td style="padding-right:10px">third name</td>
+        <td style="padding-right:10px">ThirdName</td>
+        <td>thirdName</td>
+    </tr>
+</table>
+</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -616,6 +672,21 @@ Name collapsing (showing only one of two equivalent adjacent names) is performed
 Analysis of chained 1-1 fact types has been enhanced to provide an experience more consistent with non-chained 1-1 fact types in two ways:<ul><li>If there are multiple 1-1 fact types that can fully absorb an object type (similar to a subtype absorption) towards different object types, then consider the choice arbitrary and do not allow either absorption option.</li><li>Prioritize otherwise equivalent 1-1 chains based on mandatory patterns.</li></ul></li>
 <li><a id="RelationalNameSplittingCapitalization 2010-12" class="new" title="December 2010 CTP: Relational Name Splitting and Capital Letters">2010-12</a>&nbsp;
 Generated relational names treat adjacent capital letters as a single word with a fixed case. If lower case letters occur after multiple capital letters, then the last capital is considered part of the following word. Numbers are also treated as word breaks. A lower case letter following a number is treated as part of the number. For example, 'ORMModel' is split into {ORM,Model} and 'NameCasing1aDetails' is split into {Name,Casing,1a,Details}. This change extends the prior <a href="#Relational compound name interpretation 2009-06">compound name interpretation</a> by breaking apart names with adjacent capital letters.</li>
+<li><a id="SchemaCustomization 2012-01" class="new" title="January 2012 CTP: Custom relational names and column ordering">2012-01</a>&nbsp;
+Prior to this release, regenerating the relational schema (a frequent occurrence when the ORM model is changing) results in the loss of any name customizations in the relational schema. In addition, the column order shown in NORMA (sorted by primary key columns, then by column name) differed significantly from the column ordering in the generated DDL (sorted by columns in the mandatory key, non-nullable columns, columns in other uniqueness constraints, and remaining unordered columns). This release provides some relief for these issues.
+<br /><br /><ul>
+<li><strong>Table and column names</strong> can be customized by changing the name in the Relational View or ORM Model Browser (press F2 to activate in-place editing for column names in the relational view, or for any name in the model browser), or by setting the Name property in the Properties Window. The Properties Window displays a customized name with bold text. The name can be restored to the generated value by setting it to an empty string, or by  using the <em>Reset</em> item in the context menu for the Name property in the Properties Window.</li>
+<li><strong>Automatic column sort order</strong> can be customized using the <em>ColumnOrder</em> property with a Table selection in either the Relational View or ORM Model Browser. This property provides common grouping options for sorting columns. Columns are also ordered by name inside each of the groups. The <em>ColumnOrder</em> property defaults to &lt;Schema Default&gt;, and the default setting can be modified with the <em>DefaultColumnOrder</em> property on a Schema node in the model browser, or with a background didagram selection in the Relational View.</li>
+<li><strong>Column order</strong> can be customized by dragging a column onto another column in the same table in the model browser and relational view.
+    <ul>
+    <li>Custom-ordering columns will set the Table.ColumnOrder property to <em>Custom</em>, and the ordering can be reset by modifying this property.</li>
+    <li>Columns added to custom-ordered tables will add new columns to the end of the table using the schema-default column order.</li>
+    <li>An attempt is made to recognize column ordering (and names) when columns switch tables due to model changes, including separating and partitioning subtypes in table. The column order in a newly separated table will be marked as custom ordered if more than one custom ordered column is moved from another table, and will have the schema default order otherwise. Reabsorbing a partitioned table will likely lose column customizations (both names and positions) on re-absorbed columns.</li>
+    </ul>
+</li>
+</ul>
+<br />Opening and saving files with the relational extensions enabled will automatically update to use the new column orders. Generated DDL will also be updated when the file is saved.
+</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>

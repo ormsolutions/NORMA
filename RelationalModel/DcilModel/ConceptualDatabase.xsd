@@ -141,6 +141,40 @@
 					<xs:documentation>The name of the schema.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="DefaultOrder" default="PrimaryMandatoryUniqueOther">
+				<xs:annotation>
+					<xs:documentation>Choose the default algorithm for automatically sorting columns in this schema.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="PrimaryMandatoryUniqueOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then remaining mandatory columns, then other columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="PrimaryMandatoryOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="PrimaryOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="MandatoryOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="ByColumnName">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns by column name only.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
 		</xs:complexType>
 		<xs:key name="tableKey">
 			<xs:selector xpath="rcd:Tables/rcd:Table"/>
@@ -191,6 +225,55 @@
 				<xs:annotation>
 					<xs:documentation>The name of the table.</xs:documentation>
 				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="CustomName" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True if the table name is user-customized. Affects future schema modifications.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="ColumnOrder" default="AutoSchemaDefault">
+				<xs:annotation>
+					<xs:documentation>Choose an Auto* algorithm for automatically sorting columns, or set to Custom for full control over the column order. Affects future schema modifications.</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="AutoSchemaDefault">
+							<xs:annotation>
+								<xs:documentation>The column order is based on the default algorithm specified with the schema.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="Custom">
+							<xs:annotation>
+								<xs:documentation>The column order is customized by the user.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="AutoPrimaryMandatoryUniqueOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then remaining mandatory columns, then other columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="AutoPrimaryMandatoryOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="AutoPrimaryOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="AutoMandatoryOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="AutoByColumnName">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns by column name only.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:attribute>
 		</xs:complexType>
 		<xs:key name="tableConstraintKey">
@@ -261,6 +344,11 @@
 			<xs:attribute name="Name" use="required" type="rcd:NamedIdentifier">
 				<xs:annotation>
 					<xs:documentation>The name of the column.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="CustomName" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True if the column name is user-customized. Affects future schema modifications.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 			<xs:attribute name="IsNullable" default="false" type="xs:boolean">

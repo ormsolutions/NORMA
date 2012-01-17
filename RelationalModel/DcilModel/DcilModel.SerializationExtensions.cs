@@ -320,7 +320,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo;
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -366,7 +366,15 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			throw new NotSupportedException();
+			if (domainPropertyInfo.Id == Schema.DefaultColumnOrderDomainPropertyId)
+			{
+				if (this.DefaultColumnOrder == AutomaticColumnOrdering.PrimaryMandatoryUniqueOther)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return CustomSerializedPropertyInfo.Default;
 		}
 		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
@@ -419,10 +427,25 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
 		protected Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
-			return default(Guid);
+			Dictionary<string, Guid> customSerializedAttributes = Schema.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("DefaultColumnOrder", Schema.DefaultColumnOrderDomainPropertyId);
+				Schema.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
 		}
 		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
@@ -551,7 +574,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		{
 			get
 			{
-				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
+				return CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -597,7 +620,23 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			throw new NotSupportedException();
+			if (domainPropertyInfo.Id == Table.CustomNameDomainPropertyId)
+			{
+				if (!this.CustomName)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == Table.ColumnOrderDomainPropertyId)
+			{
+				if (this.ColumnOrder == ColumnOrdering.AutoSchemaDefault)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return CustomSerializedPropertyInfo.Default;
 		}
 		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
@@ -697,10 +736,26 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
 		protected Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
-			return default(Guid);
+			Dictionary<string, Guid> customSerializedAttributes = Table.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("CustomName", Table.CustomNameDomainPropertyId);
+				customSerializedAttributes.Add("ColumnOrder", Table.ColumnOrderDomainPropertyId);
+				Table.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
 		}
 		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
@@ -778,6 +833,14 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == Column.CustomNameDomainPropertyId)
+			{
+				if (!this.CustomName)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			return CustomSerializedPropertyInfo.Default;
 		}
 		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
@@ -840,6 +903,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				customSerializedAttributes = new Dictionary<string, Guid>();
 				customSerializedAttributes.Add("IsIdentity", Column.IsIdentityDomainPropertyId);
 				customSerializedAttributes.Add("IsNullable", Column.IsNullableDomainPropertyId);
+				customSerializedAttributes.Add("CustomName", Column.CustomNameDomainPropertyId);
 				Column.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;

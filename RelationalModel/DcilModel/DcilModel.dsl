@@ -42,13 +42,6 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Id="AEDFA9D8-02DE-47EC-ABD0-B78399C7F9EB" Name="Name" IsElementName="true" Description="The name of the catalog.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -61,34 +54,42 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Id="DDEE5918-35B9-476C-BB21-31E9E132FA6F" Name="Name" IsElementName="true" Description="The name of the schema.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Id="7DC89632-AF5F-44FA-8F30-03B1D053886B" Name="DefaultColumnOrder" DisplayName="DefaultColumnOrder" DefaultValue="PrimaryMandatoryUniqueOther" Description="Determine the default column sort order for tables in this schema.">
+					<Type>
+						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/AutomaticColumnOrdering"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
 		<DomainClass Id="99E0B931-A6B9-4248-B6DE-5AFD95BBB21A" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Table" Description="Equivalent to a 'TABLE' in the SQL Standard.">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;Table, Design.TableTypeDescriptor&lt;Table&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
 			<Properties>
 				<DomainProperty Id="0A14B5D9-1988-4736-A243-D7147DCC74E9" Name="Name" IsElementName="true" Description="The name of the table.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Id="46EADFDA-F440-46FD-8D54-892EA598626B" Name="CustomName" IsBrowsable="false" Description="The generated table name is modified by the user.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Id="9C49935A-631F-434B-93A3-A093F741B572" Name="ColumnOrder" DisplayName="ColumnOrder" DefaultValue="AutoSchemaDefault" Description="Determine how columns are sorted in this table.">
+					<Type>
+						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/ColumnOrdering"/>
 					</Type>
 				</DomainProperty>
 			</Properties>
@@ -106,38 +107,22 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Id="3F8B881E-244C-4B4E-96E9-05147D4C6471" Name="Name" IsElementName="true" Description="The name of the column.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Id="ADAAEA18-1EC3-48E5-B05E-F76DCAE397F0" Name="CustomName" IsBrowsable="false" Description="The generated table name is modified by the user.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Id="2FD3C751-BD3D-44EA-94E1-6F318FE25A07" Name="IsNullable" DisplayName="IsNullable" Description="Is NULL a valid value for this column?">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;isNullable&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Id="BEAD460A-E2BA-417D-B36E-182833217F9A" Name="IsIdentity" DisplayName="IsIdentity" Description="Is this an IDENTITY column?">
 					<Notes>If 'true' is specified for this attribute, the generationCode element must not be present.</Notes>
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;isIdentity&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -180,13 +165,6 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Id="E5B7177F-C2C6-4777-B917-7847930E34EC" Name="Name" IsElementName="true" Description="The name of the constraint.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -201,13 +179,6 @@
 				<!-- Note that IsPrimary is readonly because the model browser and relational view are unprepared to respond
 				to direct changes to this property. -->
 				<DomainProperty Id="F09AC57C-454B-48D7-BE68-53A5CE64B8F9" Name="IsPrimary" DisplayName="IsPrimary" IsUIReadOnly="true" Description="Is this uniqueness constraint a PRIMARY KEY?">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;isPrimary&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
@@ -238,13 +209,6 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Id="B0681A83-3DBE-4520-BF28-E039927BC184" Name="Name" IsElementName="true" Description="The name of the data domain.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -257,13 +221,6 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Id="9F52CE66-BB82-42F3-811F-0ECAFAB205B5" Name="Name" Description="The name of the predefined type.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition/PredefinedType"/>
 					</Type>
@@ -272,13 +229,6 @@
 					<Notes>
 						If this is any other data type, a value for this attribute must not be specified.
 					</Notes>
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;length&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
@@ -287,13 +237,6 @@
 					<Notes>
 						If this is any other data type, a value for this attribute must not be specified.
 					</Notes>
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;precision&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
@@ -302,13 +245,6 @@
 					<Notes>
 						If this is any other data type, a value for this attribute must not be specified.
 					</Notes>
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;scale&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
@@ -321,13 +257,6 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Id="35E9F3CC-97EA-41E7-A43B-D20BBC7E61F1" Name="Name" IsElementName="true" Description="The name of the trigger.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -375,25 +304,11 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Id="EECE03DD-D3BF-41B0-850E-34B916E463FA" Name="Name" IsElementName="true" Description="The name of the procedure.">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;name&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Id="857A2E6F-AB9C-4CB5-8F48-F1991E477F2C" Name="SqlDataAccessIndication">
-					<Attributes>
-						<ClrAttribute Name="global::System.Xml.Serialization.XmlAttribute">
-							<Parameters>
-								<AttributeParameter Value="&quot;sqlDataAccessIndication&quot;"/>
-							</Parameters>
-						</ClrAttribute>
-					</Attributes>
 					<Type>
 						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition/SqlDataAccessIndication"/>
 					</Type>
@@ -918,6 +833,40 @@
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
 						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;TriggerForEach, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ColumnOrdering">
+			<Literals>
+				<EnumerationLiteral Name="AutoSchemaDefault" Value="0" Description="Sort columns using the default column ordering specific with schema."/>
+				<EnumerationLiteral Name="Custom" Value="1" Description="Lock the current column order and place new columns at the end of the table. Remember user-specified column order."/>
+				<EnumerationLiteral Name="AutoPrimaryMandatoryUniqueOther" Value="2" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then other columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="AutoPrimaryMandatoryOther" Value="3" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="AutoPrimaryOther" Value="4" Description="Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="AutoMandatoryOther" Value="5" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="AutoByColumnName" Value="6" Description="Automatically order columns by column name only."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;ColumnOrdering, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="AutomaticColumnOrdering">
+			<Literals>
+				<EnumerationLiteral Name="PrimaryMandatoryUniqueOther" Value="0" Description="(Default) Automatically order columns with primary columns first, then remaining mandatory columns, then other columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="PrimaryMandatoryOther" Value="1" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="PrimaryOther" Value="2" Description="Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="MandatoryOther" Value="3" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="ByColumnName" Value="4" Description="Automatically order columns by column name only."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;AutomaticColumnOrdering, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

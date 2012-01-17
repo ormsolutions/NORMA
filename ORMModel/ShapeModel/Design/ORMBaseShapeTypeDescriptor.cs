@@ -32,7 +32,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 	/// <see cref="PresentationElementTypeDescriptor"/> for <see cref="ORMBaseShape"/>s.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class ORMBaseShapeTypeDescriptor<TPresentationElement, TModelElement> : ORMPresentationElementTypeDescriptor<TPresentationElement, TModelElement>
+	public class ORMBaseShapeTypeDescriptor<TPresentationElement, TModelElement> : PresentationElementTypeDescriptor<TPresentationElement, TModelElement>
 		where TPresentationElement : ORMBaseShape
 		where TModelElement : ORMModelElement
 	{

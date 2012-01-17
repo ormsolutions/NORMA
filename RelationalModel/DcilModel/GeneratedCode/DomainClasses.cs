@@ -112,7 +112,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of Name domain property.
 		/// The name of the catalog.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("name")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog/Name.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::ElementName]
@@ -257,7 +256,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of Name domain property.
 		/// The name of the schema.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("name")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/Name.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::ElementName]
@@ -330,6 +328,94 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		}
 		
 		#endregion
+		#region DefaultColumnOrder domain property code
+		
+		/// <summary>
+		/// DefaultColumnOrder domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultColumnOrderDomainPropertyId = new global::System.Guid(0x7dc89632, 0xaf5f, 0x44fa, 0x8f, 0x30, 0x03, 0xb1, 0xd0, 0x53, 0x88, 0x6b);
+		
+		/// <summary>
+		/// Storage for DefaultColumnOrder
+		/// </summary>
+		private AutomaticColumnOrdering defaultColumnOrderPropertyStorage = ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering.PrimaryMandatoryUniqueOther;
+		
+		/// <summary>
+		/// Gets or sets the value of DefaultColumnOrder domain property.
+		/// Determine the default column sort order for tables in this schema.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/DefaultColumnOrder.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/DefaultColumnOrder.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering.PrimaryMandatoryUniqueOther)]
+		[DslModeling::DomainObjectId("7dc89632-af5f-44fa-8f30-03b1d053886b")]
+		public AutomaticColumnOrdering DefaultColumnOrder
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return defaultColumnOrderPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefaultColumnOrderPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Schema.DefaultColumnOrder domain property.
+		/// </summary>
+		internal sealed partial class DefaultColumnOrderPropertyHandler : DslModeling::DomainPropertyValueHandler<Schema, AutomaticColumnOrdering>
+		{
+			private DefaultColumnOrderPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Schema.DefaultColumnOrder domain property value handler.
+			/// </summary>
+			public static readonly DefaultColumnOrderPropertyHandler Instance = new DefaultColumnOrderPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Schema.DefaultColumnOrder domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefaultColumnOrderDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed AutomaticColumnOrdering GetValue(Schema element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.defaultColumnOrderPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Schema element, AutomaticColumnOrdering newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				AutomaticColumnOrdering oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.defaultColumnOrderPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Catalog opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Catalog.
@@ -388,6 +474,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 	/// DomainClass Table
 	/// Equivalent to a 'TABLE' in the SQL Standard.
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<Table, Design.TableTypeDescriptor<Table>>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -437,7 +524,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of Name domain property.
 		/// The name of the table.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("name")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/Name.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::ElementName]
@@ -504,6 +590,182 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.namePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region CustomName domain property code
+		
+		/// <summary>
+		/// CustomName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CustomNameDomainPropertyId = new global::System.Guid(0x46eadfda, 0xf440, 0x46fd, 0x8d, 0x54, 0x89, 0x2e, 0xa5, 0x98, 0x62, 0x6b);
+		
+		/// <summary>
+		/// Storage for CustomName
+		/// </summary>
+		private global::System.Boolean customNamePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of CustomName domain property.
+		/// The generated table name is modified by the user.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/CustomName.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/CustomName.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("46eadfda-f440-46fd-8d54-892ea598626b")]
+		public global::System.Boolean CustomName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return customNamePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CustomNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Table.CustomName domain property.
+		/// </summary>
+		internal sealed partial class CustomNamePropertyHandler : DslModeling::DomainPropertyValueHandler<Table, global::System.Boolean>
+		{
+			private CustomNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Table.CustomName domain property value handler.
+			/// </summary>
+			public static readonly CustomNamePropertyHandler Instance = new CustomNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Table.CustomName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CustomNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(Table element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.customNamePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Table element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.customNamePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region ColumnOrder domain property code
+		
+		/// <summary>
+		/// ColumnOrder domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ColumnOrderDomainPropertyId = new global::System.Guid(0x9c49935a, 0x631f, 0x434b, 0x93, 0xa3, 0xa0, 0x93, 0xf7, 0x41, 0xb5, 0x72);
+		
+		/// <summary>
+		/// Storage for ColumnOrder
+		/// </summary>
+		private ColumnOrdering columnOrderPropertyStorage = ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering.AutoSchemaDefault;
+		
+		/// <summary>
+		/// Gets or sets the value of ColumnOrder domain property.
+		/// Determine how columns are sorted in this table.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/ColumnOrder.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/ColumnOrder.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering.AutoSchemaDefault)]
+		[DslModeling::DomainObjectId("9c49935a-631f-434b-93a3-a093f741b572")]
+		public ColumnOrdering ColumnOrder
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return columnOrderPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ColumnOrderPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Table.ColumnOrder domain property.
+		/// </summary>
+		internal sealed partial class ColumnOrderPropertyHandler : DslModeling::DomainPropertyValueHandler<Table, ColumnOrdering>
+		{
+			private ColumnOrderPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Table.ColumnOrder domain property value handler.
+			/// </summary>
+			public static readonly ColumnOrderPropertyHandler Instance = new ColumnOrderPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Table.ColumnOrder domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ColumnOrderDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed ColumnOrdering GetValue(Table element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.columnOrderPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Table element, ColumnOrdering newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				ColumnOrdering oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.columnOrderPropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -648,7 +910,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of Name domain property.
 		/// The name of the column.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("name")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/Name.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::ElementName]
@@ -721,6 +982,94 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		}
 		
 		#endregion
+		#region CustomName domain property code
+		
+		/// <summary>
+		/// CustomName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CustomNameDomainPropertyId = new global::System.Guid(0xadaaea18, 0x1ec3, 0x48e5, 0xb0, 0x5e, 0xf7, 0x6d, 0xca, 0xe3, 0x97, 0xf0);
+		
+		/// <summary>
+		/// Storage for CustomName
+		/// </summary>
+		private global::System.Boolean customNamePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of CustomName domain property.
+		/// The generated table name is modified by the user.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/CustomName.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/CustomName.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("adaaea18-1ec3-48e5-b05e-f76dcae397f0")]
+		public global::System.Boolean CustomName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return customNamePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CustomNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Column.CustomName domain property.
+		/// </summary>
+		internal sealed partial class CustomNamePropertyHandler : DslModeling::DomainPropertyValueHandler<Column, global::System.Boolean>
+		{
+			private CustomNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Column.CustomName domain property value handler.
+			/// </summary>
+			public static readonly CustomNamePropertyHandler Instance = new CustomNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Column.CustomName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CustomNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(Column element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.customNamePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Column element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.customNamePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region IsNullable domain property code
 		
 		/// <summary>
@@ -737,7 +1086,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of IsNullable domain property.
 		/// Is NULL a valid value for this column?
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("isNullable")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsNullable.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsNullable.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("2fd3c751-bd3d-44ea-94e1-6f318fe25a07")]
@@ -825,7 +1173,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of IsIdentity domain property.
 		/// Is this an IDENTITY column?
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("isIdentity")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsIdentity.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsIdentity.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("bead460a-e2ba-417d-b36e-182833217f9a")]
@@ -1295,7 +1642,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of Name domain property.
 		/// The name of the constraint.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("name")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Constraint/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Constraint/Name.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::ElementName]
@@ -1425,7 +1771,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of IsPrimary domain property.
 		/// Is this uniqueness constraint a PRIMARY KEY?
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("isPrimary")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint/IsPrimary.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint/IsPrimary.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[global::System.ComponentModel.ReadOnly(true)]
@@ -1813,7 +2158,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of Name domain property.
 		/// The name of the data domain.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("name")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain/Name.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::ElementName]
@@ -2027,7 +2371,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// Gets or sets the value of Name domain property.
 		/// The name of the predefined type.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("name")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Name.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Name.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("9f52ce66-bb82-42f3-811f-0ecafab205b5")]
@@ -2116,7 +2459,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// The number of characters in a CHARACTER, CHARACTER VARYING, or CHARACTER LARGE
 		/// OBJECT, or the number of bytes in a BINARY LARGE OBJECT.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("length")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Length.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Length.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("c1982d15-4bff-4075-8ab3-6ba723a88915")]
@@ -2205,7 +2547,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// The maximum number of decimal digits in a NUMERIC or DECIMAL, or the maximum
 		/// number of binary digits in the significand (mantissa) of a FLOAT.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("precision")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Precision.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Precision.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("fd15650f-454e-464f-8ce0-dffe5551eed5")]
@@ -2294,7 +2635,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// The maximum number of decimal digits after the decimal point in a NUMERIC or
 		/// DECIMAL.
 		/// </summary>
-		[global::System.Xml.Serialization.XmlAttribute("scale")]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Scale.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.PredefinedDataType/Scale.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainObjectId("989b8033-13d5-455d-87ba-6807de8579b2")]

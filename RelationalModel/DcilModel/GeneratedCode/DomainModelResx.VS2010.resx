@@ -165,6 +165,14 @@
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Schema&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/DefaultColumnOrder.Description" xml:space="preserve">
+    <value>Determine the default column sort order for tables in this schema.</value>
+    <comment>Description for DomainProperty &apos;DefaultColumnOrder&apos; on DomainClass &apos;Schema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/DefaultColumnOrder.DisplayName" xml:space="preserve">
+    <value>DefaultColumnOrder</value>
+    <comment>DisplayName for DomainProperty &apos;DefaultColumnOrder&apos; on DomainClass &apos;Schema&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table.Description" xml:space="preserve">
     <value>Equivalent to a &apos;TABLE&apos; in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;Table&apos;</comment>
@@ -181,6 +189,22 @@
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Table&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/CustomName.Description" xml:space="preserve">
+    <value>The generated table name is modified by the user.</value>
+    <comment>Description for DomainProperty &apos;CustomName&apos; on DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/CustomName.DisplayName" xml:space="preserve">
+    <value>Custom Name</value>
+    <comment>DisplayName for DomainProperty &apos;CustomName&apos; on DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/ColumnOrder.Description" xml:space="preserve">
+    <value>Determine how columns are sorted in this table.</value>
+    <comment>Description for DomainProperty &apos;ColumnOrder&apos; on DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/ColumnOrder.DisplayName" xml:space="preserve">
+    <value>ColumnOrder</value>
+    <comment>DisplayName for DomainProperty &apos;ColumnOrder&apos; on DomainClass &apos;Table&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.Description" xml:space="preserve">
     <value>Equivalent to a &apos;COLUMN&apos; in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;Column&apos;</comment>
@@ -196,6 +220,14 @@
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/Name.DisplayName" xml:space="preserve">
     <value>Name</value>
     <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/CustomName.Description" xml:space="preserve">
+    <value>The generated table name is modified by the user.</value>
+    <comment>Description for DomainProperty &apos;CustomName&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/CustomName.DisplayName" xml:space="preserve">
+    <value>Custom Name</value>
+    <comment>DisplayName for DomainProperty &apos;CustomName&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsNullable.Description" xml:space="preserve">
     <value>Is NULL a valid value for this column?</value>
@@ -1006,6 +1038,102 @@
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerForEach/Row.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerForEach.Row</value>
     <comment>Description for EnumerationLiteral &apos;Row&apos; on DomainEnumeration &apos;TriggerForEach&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoSchemaDefault.DisplayName" xml:space="preserve">
+    <value>AutoSchemaDefault</value>
+    <comment>Display name for EnumerationLiteral &apos;AutoSchemaDefault&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoSchemaDefault.Description" xml:space="preserve">
+    <value>Sort columns using the default column ordering specific with schema.</value>
+    <comment>Description for EnumerationLiteral &apos;AutoSchemaDefault&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/Custom.DisplayName" xml:space="preserve">
+    <value>Custom</value>
+    <comment>Display name for EnumerationLiteral &apos;Custom&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/Custom.Description" xml:space="preserve">
+    <value>Lock the current column order and place new columns at the end of the table. Remember user-specified column order.</value>
+    <comment>Description for EnumerationLiteral &apos;Custom&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryMandatoryUniqueOther.DisplayName" xml:space="preserve">
+    <value>AutoPrimaryMandatoryUniqueOther</value>
+    <comment>Display name for EnumerationLiteral &apos;AutoPrimaryMandatoryUniqueOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryMandatoryUniqueOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then remaining mandatory columns, then other columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;AutoPrimaryMandatoryUniqueOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryMandatoryOther.DisplayName" xml:space="preserve">
+    <value>AutoPrimaryMandatoryOther</value>
+    <comment>Display name for EnumerationLiteral &apos;AutoPrimaryMandatoryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryMandatoryOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;AutoPrimaryMandatoryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryOther.DisplayName" xml:space="preserve">
+    <value>AutoPrimaryOther</value>
+    <comment>Display name for EnumerationLiteral &apos;AutoPrimaryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;AutoPrimaryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoMandatoryOther.DisplayName" xml:space="preserve">
+    <value>AutoMandatoryOther</value>
+    <comment>Display name for EnumerationLiteral &apos;AutoMandatoryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoMandatoryOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;AutoMandatoryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoByColumnName.DisplayName" xml:space="preserve">
+    <value>AutoByColumnName</value>
+    <comment>Display name for EnumerationLiteral &apos;AutoByColumnName&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoByColumnName.Description" xml:space="preserve">
+    <value>Automatically order columns by column name only.</value>
+    <comment>Description for EnumerationLiteral &apos;AutoByColumnName&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryMandatoryUniqueOther.DisplayName" xml:space="preserve">
+    <value>PrimaryMandatoryUniqueOther</value>
+    <comment>Display name for EnumerationLiteral &apos;PrimaryMandatoryUniqueOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryMandatoryUniqueOther.Description" xml:space="preserve">
+    <value>(Default) Automatically order columns with primary columns first, then remaining mandatory columns, then other columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;PrimaryMandatoryUniqueOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryMandatoryOther.DisplayName" xml:space="preserve">
+    <value>PrimaryMandatoryOther</value>
+    <comment>Display name for EnumerationLiteral &apos;PrimaryMandatoryOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryMandatoryOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;PrimaryMandatoryOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryOther.DisplayName" xml:space="preserve">
+    <value>PrimaryOther</value>
+    <comment>Display name for EnumerationLiteral &apos;PrimaryOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;PrimaryOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/MandatoryOther.DisplayName" xml:space="preserve">
+    <value>MandatoryOther</value>
+    <comment>Display name for EnumerationLiteral &apos;MandatoryOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/MandatoryOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;MandatoryOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/ByColumnName.DisplayName" xml:space="preserve">
+    <value>ByColumnName</value>
+    <comment>Display name for EnumerationLiteral &apos;ByColumnName&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/ByColumnName.Description" xml:space="preserve">
+    <value>Automatically order columns by column name only.</value>
+    <comment>Description for EnumerationLiteral &apos;ByColumnName&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition.SqlDataAccessIndication/NoSql.DisplayName" xml:space="preserve">
     <value>NoSql</value>

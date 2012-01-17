@@ -365,5 +365,130 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 				}
 			}
 		}
+		[NonSerialized]
+		private ColumnDragMouseAction myColumnDragMouseAction;
+		/// <summary>
+		/// The drag action used by a role box to begin dragging.
+		/// The default implementation chains to a RoleConnectAction
+		/// when dragging begins.
+		/// </summary>
+		public MouseAction GetColumnDragMouseAction()
+		{
+			ColumnDragMouseAction retVal = myColumnDragMouseAction;
+			if (retVal == null)
+			{
+				myColumnDragMouseAction = retVal = new ColumnDragMouseAction(this);
+			}
+			return retVal;
+		}
+		private sealed class ColumnDragMouseAction : ConnectAction
+		{
+			#region ColumnConnectionType class
+			/// <summary>
+			/// The ConnectionType used with this ConnectAction. The type
+			/// is a singleton, holds all of the context-independent logic,
+			/// and operates directly on shape elements.
+			/// </summary>
+			private sealed class ColumnConnectionType : ConnectionType
+			{
+				/// <summary>
+				/// The singleton RoleConnectionType instance
+				/// </summary>
+				public static new readonly ColumnConnectionType Instance = new ColumnConnectionType();
+				/// <summary>
+				/// An array of one element containing the singleton RoleConnectionType instance
+				/// </summary>
+				public static readonly ConnectionType[] InstanceArray = { Instance };
+				/// <summary>
+				/// Called as the pointer is moved over potential targets after a source is selected
+				/// So should be pretty quick
+				/// Gets called with a target of null when the cursor leaves the view.
+				/// Can't find a use for this at present.
+				/// </summary>
+				/// <param name="sourceShapeElement">ShapeElement</param>
+				/// <param name="targetShapeElement">ShapeElement</param>
+				public override bool IsOfInterest(ShapeElement sourceShapeElement, ShapeElement targetShapeElement)
+				{
+					return false; // Always or'd with IsValidSourceAndTarget
+				}
+				/// <summary>
+				/// Called as the pointer is moved over potential targets after a source is selected
+				/// So should be pretty quick
+				/// </summary>
+				/// <remarks>
+				/// The cursor can change dependant on CanCreateConnection when this returns true
+				/// </remarks>
+				/// <param name="sourceShapeElement">ShapeElement</param>
+				/// <param name="targetShapeElement">ShapeElement</param>
+				/// <returns></returns>
+				public override bool IsValidSourceAndTarget(ShapeElement sourceShapeElement, ShapeElement targetShapeElement)
+				{
+					return true;
+				}
+				/// <summary>
+				/// Called after IsValidSourceAndTarget allows the shapes through. Used for
+				/// more in-depth checking before ConnectionType.CreateConnection is called, and
+				/// to display warning messages on the design surface.
+				/// </summary>
+				/// <param name="sourceShapeElement">The source of the requested connection</param>
+				/// <param name="targetShapeElement">The target of the requested connection</param>
+				/// <param name="connectionWarning">A location to write the warning string</param>
+				/// <returns>true if the connection can proceed</returns>
+				public override bool CanCreateConnection(ShapeElement sourceShapeElement, ShapeElement targetShapeElement, ref string connectionWarning)
+				{
+					// Everything is handled in IsValidSourceAndTarget. A warning
+					// about connecting a role to its nesting object type would be
+					// annoying because it would be hit dragging an objectified role
+					// out of its own fact type. This condition is checked in IsValidSourceAndTarget
+					return true;
+				}
+				/// <summary>
+				/// Create a connection between an ExternalConstraintShape and a FactType. Roles
+				/// used in the connection are stored with the currently active connect action.
+				/// </summary>
+				/// <param name="sourceShapeElement">The source of the requested connection</param>
+				/// <param name="targetShapeElement">The target of the requested connection</param>
+				/// <param name="paintFeedbackArgs">PaintFeedbackArgs</param>
+				public override void CreateConnection(ShapeElement sourceShapeElement, ShapeElement targetShapeElement, PaintFeedbackArgs paintFeedbackArgs)
+				{
+				}
+				/// <summary>
+				/// Provide the transaction name. The name is displayed in the undo and redo lists.
+				/// </summary>
+				public override string GetConnectTransactionName(ShapeElement sourceShape, ShapeElement targetShape)
+				{
+					return "Move Column";
+				}
+			}
+			#endregion // ColumnConnectionType class
+			/// <summary>
+			/// Create a new ColumnDragMouseAction. Should be
+			/// called once per diagram
+			/// </summary>
+			/// <param name="diagram">The owning diagram</param>
+			public ColumnDragMouseAction(Diagram diagram)
+				: base(diagram, true)
+			{
+			}
+			protected override ConnectionType[] GetConnectionTypes(ShapeElement sourceShapeElement, ShapeElement targetShapeElement)
+			{
+				return ColumnConnectionType.InstanceArray;
+			}
+			protected override void OnMouseMove(DiagramMouseEventArgs e)
+			{
+				Debug.WriteLine("MouseMove");
+				base.OnMouseMove(e);
+			}
+			protected override void OnMouseActionActivated(DiagramEventArgs e)
+			{
+				Debug.WriteLine("Activated");
+				base.OnMouseActionActivated(e);
+			}
+			//protected override void OnMouseActionDeactivated(DiagramEventArgs e)
+			//{
+			//    Debug.WriteLine("Deactivated");
+			//    base.OnMouseActionDeactivated(e);
+			//}
+		}
 	}
 }

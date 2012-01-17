@@ -163,10 +163,15 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			/// <summary>
 			/// Generate names for the provided <see cref="Schema"/>
 			/// </summary>
-			public static void GenerateAllNames(Schema schema)
+			public static void GenerateAllNames(Schema schema, SchemaCustomization customization)
 			{
 				IDatabaseNameGenerator nameGenerator = new DefaultDatabaseNameGenerator(schema.Store);
 				UniqueNameGenerator uniqueChecker = new UniqueNameGenerator();
+				if (customization != null &&
+					customization.IsEmpty)
+				{
+					customization = null;
+				}
 
 				LinkedElementCollection<Table> tables = schema.TableCollection;
 
@@ -175,7 +180,26 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					tables,
 					delegate(object element, int phase)
 					{
-						return nameGenerator.GenerateTableName((Table)element, phase);
+						Table table = (Table)element;
+						string tableName;
+						if (customization != null &&
+							null != (tableName = customization.GetCustomizedTableName(table)))
+						{
+							if (phase == 0)
+							{
+								// Make sure this is set or it won't be remembered as a custom name.
+								// The schema customization should currently be null, so this won't
+								// trigger any rules.
+								table.CustomName = true;
+								return tableName;
+							}
+							return null; // Don't offer a new name on collision
+						}
+						return nameGenerator.GenerateTableName(table, phase);
+					},
+					delegate(object element)
+					{
+						return customization != null && customization.GetCustomizedTableName((Table)element) != null;
 					},
 					delegate(object element, string elementName)
 					{
@@ -185,16 +209,52 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				foreach (Table table in tables)
 				{
 					//column names
+					LinkedElementCollection<Column> columns = table.ColumnCollection;
+					AutomaticColumnOrdering orderingAlgorithm = ResolveOrderingAlgorithm(table, schema);
+					bool isCustomized;
 					uniqueChecker.GenerateUniqueElementNames(
-						table.ColumnCollection,
+						SortColumns(table, columns, orderingAlgorithm, true, customization, out isCustomized),
 						delegate(object element, int phase)
 						{
-							return nameGenerator.GenerateColumnName((Column)element, phase);
+							Column column = (Column)element;
+							string columnName;
+							if (customization != null &&
+								null != (columnName = customization.GetCustomizedColumnName(column)))
+							{
+								if (phase == 0)
+								{
+									// Make sure this is set or it won't be remembered as a custom name.
+									// The schema customization should currently be null, so this won't
+									// trigger any rules.
+									column.CustomName = true;
+									return columnName;
+								}
+								return null; // Don't offer a new name on collision
+							}
+							return nameGenerator.GenerateColumnName(column, phase);
+						},
+						delegate(object element)
+						{
+							return customization != null && customization.GetCustomizedColumnName((Column)element) != null;
 						},
 						delegate(object element, string elementName)
 						{
 							((Column)element).Name = elementName;
 						});
+					if (isCustomized && table.ColumnOrder != ColumnOrdering.Custom)
+					{
+						table.ColumnOrder = ColumnOrdering.Custom;
+						orderingAlgorithm = schema.DefaultColumnOrder;
+					}
+					IList<Column> sortedColumns = SortColumns(table, columns, orderingAlgorithm, false, customization, out isCustomized);
+					if (sortedColumns != columns)
+					{
+						int columnCount = sortedColumns.Count - 1; // Last one will fall in naturally, -1 is sufficient
+						for (int i = 0; i < columnCount; ++i)
+						{
+							columns.Move(sortedColumns[i], i);
+						}
+					}
 				}
 
 				// Constraint names, unique across the schema
@@ -204,10 +264,229 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					{
 						return nameGenerator.GenerateConstraintName((Constraint)element, phase);
 					},
+					null,
 					delegate(object element, string elementName)
 					{
 						((Constraint)element).Name = elementName;
 					});
+			}
+			private sealed class ColumnSorter : IComparer<int>
+			{
+				private IList<Column> myColumns;
+				private int[] myPreferredOrder;
+				private AutomaticColumnOrdering myAlgorithm;
+				private bool myIgnoreNames;
+				private bool myPreferredOrderSecondary;
+				public ColumnSorter(IList<Column> columns, int[] preferredOrder, AutomaticColumnOrdering orderingAlgorithm, bool preferredOrderSecondary, bool ignoreNames)
+				{
+					myColumns = columns;
+					myPreferredOrder = preferredOrder;
+					myAlgorithm = orderingAlgorithm;
+					myPreferredOrderSecondary = preferredOrderSecondary;
+					myIgnoreNames = ignoreNames;
+				}
+				public IList<Column> Apply()
+				{
+					IList<Column> columns = myColumns;
+					int count = columns.Count;
+					int[] indices = new int[count];
+					int i;
+					for (i = 0; i < count; ++i)
+					{
+						indices[i] = i;
+					}
+					Array.Sort<int>(indices, this);
+					for (i = 0; i < count; ++i)
+					{
+						if (indices[i] != i)
+						{
+							break;
+						}
+					}
+					if (i == count)
+					{
+						return columns;
+					}
+					Column[] newColumns = new Column[count];
+					for (i = 0; i < count; ++i)
+					{
+						newColumns[i] = columns[indices[i]];
+					}
+					return newColumns;
+				}
+				/// <summary>
+				/// Determine the overall automatic sort group for a column.
+				/// The grouping is based on the current ordering algorithm.
+				/// </summary>
+				private int GetAutoSortGroup(Column column)
+				{
+					bool isUnique = false;
+					AutomaticColumnOrdering algorithm;
+					switch (algorithm = myAlgorithm)
+					{
+						case AutomaticColumnOrdering.PrimaryOther:
+						case AutomaticColumnOrdering.PrimaryMandatoryOther:
+						case AutomaticColumnOrdering.PrimaryMandatoryUniqueOther:
+							foreach (UniquenessConstraint constraint in UniquenessConstraintIncludesColumn.GetUniquenessConstraints(column))
+							{
+								if (constraint.IsPrimary)
+								{
+									return 0;
+								}
+								isUnique = true;
+							}
+							return (!column.IsNullable && (algorithm != AutomaticColumnOrdering.PrimaryOther)) ? 1 : ((isUnique && (algorithm == AutomaticColumnOrdering.PrimaryMandatoryUniqueOther)) ? 2 : 3);
+						case AutomaticColumnOrdering.MandatoryOther:
+							return column.IsNullable ? 1 : 0;
+						default:
+							return 0;
+					}
+				}
+				int IComparer<int>.Compare(int x, int y)
+				{
+					int[] preferredOrder = myPreferredOrder;
+					bool preferredOrderSecondary = preferredOrder != null && myPreferredOrderSecondary;
+					int tempX;
+					int tempY;
+					if (preferredOrder != null &&
+						!preferredOrderSecondary)
+					{
+						tempX = preferredOrder[x];
+						tempY = preferredOrder[y];
+						if (tempX != -1)
+						{
+							if (tempY == -1)
+							{
+								return -1;
+							}
+							else if (tempY != tempX)
+							{
+								return tempX - tempY;
+							}
+						}
+						else if (tempY != -1)
+						{
+							return 1;
+						}
+					}
+					IList<Column> columns = myColumns;
+					Column columnX = columns[x];
+					Column columnY = columns[y];
+					tempX = GetAutoSortGroup(columnX);
+					tempY = GetAutoSortGroup(columnY);
+					if (tempX != tempY)
+					{
+						return tempX - tempY;
+					}
+					else if (preferredOrderSecondary)
+					{
+						tempX = preferredOrder[x];
+						tempY = preferredOrder[y];
+						if (tempX != -1)
+						{
+							if (tempY == -1)
+							{
+								return -1;
+							}
+							else if (tempY != tempX)
+							{
+								return tempX - tempY;
+							}
+						}
+						else if (tempY != -1)
+						{
+							return 1;
+						}
+					}
+					if (!myIgnoreNames)
+					{
+						if (0 != (tempX = string.Compare(columnX.Name, columnY.Name, StringComparison.CurrentCulture)))
+						{
+							return tempX;
+						}
+					}
+					return columnX.Id.CompareTo(columnY.Id);
+				}
+			}
+			private static AutomaticColumnOrdering ResolveOrderingAlgorithm(Table table, Schema schema)
+			{
+				switch (table.ColumnOrder)
+				{
+					case ColumnOrdering.AutoPrimaryMandatoryUniqueOther:
+						return AutomaticColumnOrdering.PrimaryMandatoryUniqueOther;
+					case ColumnOrdering.AutoPrimaryMandatoryOther:
+						return AutomaticColumnOrdering.PrimaryMandatoryOther;
+					case ColumnOrdering.AutoPrimaryOther:
+						return AutomaticColumnOrdering.PrimaryOther;
+					case ColumnOrdering.AutoMandatoryOther:
+						return AutomaticColumnOrdering.MandatoryOther;
+					case ColumnOrdering.AutoByColumnName:
+						return AutomaticColumnOrdering.ByColumnName;
+					//case ColumnOrdering.AutoSchemaDefault:
+					//case ColumnOrdering.Custom:
+					default:
+						return schema.DefaultColumnOrder;
+				}
+			}
+			private static IList<Column> SortColumns(Table table, IList<Column> startColumns, AutomaticColumnOrdering orderingAlgorithm, bool ignoreNames, SchemaCustomization customizations, out bool isCustomized)
+			{
+				int count = startColumns.Count;
+				int unorderedCount = 0;
+				isCustomized = false;
+				if (count < 2)
+				{
+					return startColumns;
+				}
+				int[] preferredOrder = null;
+				if (customizations != null)
+				{
+					for (int i = 0; i < count; ++i)
+					{
+						int customizedIndex = customizations.GetCustomizedColumnPosition(startColumns[i]);
+						if (customizedIndex != -1)
+						{
+							if (preferredOrder == null)
+							{
+								preferredOrder = new int[count];
+								for (int j = 0; j < i; ++j)
+								{
+									++unorderedCount;
+									preferredOrder[j] = -1;
+								}
+							}
+							preferredOrder[i] = customizedIndex;
+						}
+						else if (preferredOrder != null)
+						{
+							++unorderedCount;
+							preferredOrder[i] = -1;
+						}
+					}
+				}
+				bool preferredSortSecondary = false;
+				if (unorderedCount != 0 &&
+					!customizations.GetHasCustomOrderedColumns(table))
+				{
+					if ((count - unorderedCount) > 1)
+					{
+						// Don't switch to custom unless more than one
+						preferredSortSecondary = true;
+					}
+					else
+					{
+						preferredOrder = null;
+					}
+				}
+				isCustomized = preferredOrder != null;
+				// If there is a partial sort order, then we're looking at two possible cases:
+				// 1) The table was previously custom ordered and a new column has been added. In this
+				//    case, we add the new columns to the end of the table.
+				// 2) The table was not previously custom sorted, but has custom ordered columns. This
+				//    happens in partition and separation cases. In this case, we want the custom
+				//    columns to sort relative to each other, but not to the new columns.
+				// In the first case, we want the preferred ordering to take the highest sort priority (before grouping).
+				// In the second case, we want the preferred ordering to be prioritized after grouping.
+				return new ColumnSorter(startColumns, preferredOrder, orderingAlgorithm, preferredSortSecondary, ignoreNames).Apply();
 			}
 			private static IEnumerable IterateConstraints(Schema schema)
 			{
@@ -289,7 +568,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				Dictionary<string, string> myUnresolvedNames;
 				#endregion // Fields
 				#region Public methods
-				public void GenerateUniqueElementNames(IEnumerable elements, GenerateCandidateElementNameCallback generateName, SetElementNameCallback setName)
+				public void GenerateUniqueElementNames(IEnumerable elements, GenerateCandidateElementNameCallback generateName, Predicate<object> isFixedName, SetElementNameCallback setName)
 				{
 					if (myNameMappingDictionary != null)
 					{
@@ -407,15 +686,22 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 								{
 									element = nextNode.Value.Element;
 									nextNode = nextNode.Previous; // We started at the tail, walk backwards
-
 									string candidateName;
-									do
+									if (isFixedName != null && isFixedName(element))
 									{
-										++currentIndex;
-										candidateName = baseName + currentIndex.ToString();
-									} while (nameMappingDictionary.ContainsKey(candidateName));
+										// Set names (including duplicates) for fixed names
+										candidateName = baseName;
+									}
+									else
+									{
+										do
+										{
+											++currentIndex;
+											candidateName = baseName + currentIndex.ToString();
+										} while (nameMappingDictionary.ContainsKey(candidateName));
+										// If we get out of the loop, then we finally have a unique name
+									}
 
-									// If we get out of the loop, then we finally have a unique name
 									setName(element, candidateName);
 								}
 							}

@@ -2,7 +2,7 @@
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
-* Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -16,15 +16,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using ORMSolutions.ORMArchitect.Framework.Design;
 using System.ComponentModel;
-using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+using System.Diagnostics;
+using System.Globalization;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
-using System.Globalization;
-using ORMSolutions.ORMArchitect.Framework;
+using Microsoft.VisualStudio.VirtualTreeGrid;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 
 namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
@@ -439,10 +440,100 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ISurveyNodeContext Implementation
+		#region Column reorder helper method
+		/// <summary>
+		/// Move columns to the location of another column and verify that
+		/// the table is custom ordered. Helper method to allow uniform
+		/// implementation between the survey tree and other graphical views.
+		/// </summary>
+		/// <param name="sourceColumns">An collection of columns to be moved within a
+		/// <see cref="Table"/>. The columns will be moved to the new location without changing
+		/// their relative order.</param>
+		/// <param name="ontoColumn">The column that provides the new column location.
+		/// Must be in the same table as the source columns.</param>
+		/// <returns><see langword="true"/> if the move succeeded. If the columns are not all
+		/// in the same table or if there is insufficient model state to verify the tables then
+		/// the method returns silently.</returns>
+		public static bool CustomReorderColumns(IList<Column> sourceColumns, Column ontoColumn)
+		{
+			Table table;
+			Store store;
+			int count;
+			bool retVal = false;
+			if (null != ontoColumn &&
+				null != sourceColumns &&
+				0 != (count = sourceColumns.Count) &&
+				!sourceColumns.Contains(ontoColumn) &&
+				null != (store = Utility.ValidateStore(ontoColumn.Store)) &&
+				null != (table = ontoColumn.Table))
+			{
+				LinkedElementCollection<Column> columns = table.ColumnCollection;
+				if (count > 1)
+				{
+					int[] columnIndices = new int[count];
+					bool outOfOrder = false;
+					int columnIndex;
+					for (int i = 0; i < count; ++i)
+					{
+						columnIndex = columns.IndexOf(sourceColumns[i]);
+						if (columnIndex == -1)
+						{
+							return false; // Not in the target table
+						}
+						if (!outOfOrder &&
+							i != 0 &&
+							columnIndex < columnIndices[i - 1])
+						{
+							outOfOrder = true;
+						}
+						columnIndices[i] = columnIndex;
+					}
+					if (outOfOrder)
+					{
+						Array.Sort<int>(columnIndices);
+						Column[] orderedColumns = new Column[count];
+						for (int i = 0; i < count; ++i)
+						{
+							orderedColumns[i] = columns[columnIndices[i]];
+						}
+						sourceColumns = orderedColumns;
+					}
+				}
+				else if (sourceColumns[0].Table != table)
+				{
+					return false;
+				}
+				
+				using (Transaction t = store.TransactionManager.BeginTransaction(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ColumnReorderTransactionNameFormatString, table.Name)))
+				{
+					table.ColumnOrder = ColumnOrdering.Custom;
+					int targetIndex = columns.IndexOf(ontoColumn);
+					for (int i = 0; i < count; ++i)
+					{
+						int sourceIndex = columns.IndexOf(sourceColumns[i]);
+						if (count == 1 || (targetIndex - sourceIndex) != 1)
+						{
+							columns.Move(sourceIndex, targetIndex);
+							if (sourceIndex > targetIndex)
+							{
+								++targetIndex;
+							}
+						}
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+						retVal = true;
+					}
+				}
+			}
+			return retVal;
+		}
+		#endregion // Column reorder helper method
 	}
 	#endregion // Table answers
 	#region Column answers
-	partial class Column : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, IAnswerSurveyQuestion<SurveyColumnClassificationType>, ISurveyNode, ISurveyNodeContext, ICustomComparableSurveyNode
+	partial class Column : IAnswerSurveyQuestion<SurveyTableChildType>, IAnswerSurveyQuestion<SurveyTableChildGlyphType>, IAnswerSurveyQuestion<SurveyColumnClassificationType>, ISurveyNode, ISurveyNodeContext, ISurveyNodeDropTarget, ICustomComparableSurveyNode
 	{
 		#region IAnswerSurveyQuestion<SurveyTableChildType> Implementation
 		int IAnswerSurveyQuestion<SurveyTableChildType>.AskQuestion(object contextElement)
@@ -615,12 +706,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		{
 			if (other is Column)
 			{
-				bool leftIsPrimary = (bool)customSortData;
-				bool rightIsPrimary = (bool)otherCustomSortData;
-				if (leftIsPrimary ^ rightIsPrimary)
-				{
-					return leftIsPrimary ? -1 : 1;
-				}
+				return (int)customSortData - (int)otherCustomSortData;
 			}
 			// For this comparison, 0 implies no information is available
 			return 0;
@@ -635,8 +721,8 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// </summary>
 		protected bool ResetCustomSortData(object contextElement, ref object customSortData)
 		{
-			bool retVal = IsPartOfPrimaryIdentifier;
-			if (customSortData == null || (bool)customSortData != retVal)
+			int retVal = this.Table.ColumnCollection.IndexOf(this);
+			if (customSortData == null || (int)customSortData != retVal)
 			{
 				customSortData = retVal;
 				return true;
@@ -662,6 +748,48 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			}
 		}
 		#endregion // ICustomComparableSurveyNode Implementation
+		#region ISurveyNodeDropTarget Implementation
+		private static Column ExtractColumn(IDataObject data)
+		{
+			if (data != null &&
+				data.GetDataPresent(typeof(Column)))
+			{
+				return data.GetData(typeof(Column)) as Column;
+			}
+			return null;
+		}
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeDropTarget.OnDragEvent"/>
+		/// </summary>
+		protected void OnDragEvent(object contextElement, DragEventType eventType, DragEventArgs args)
+		{
+			Column column;
+			Table table;
+			switch (eventType)
+			{
+				case DragEventType.Enter:
+					if (null != (column = ExtractColumn(args.Data)) &&
+						column != this &&
+						column.Table == contextElement)
+					{
+						args.Effect = DragDropEffects.Move;
+					}
+					break;
+				case DragEventType.Drop:
+					if (null != (column = ExtractColumn(args.Data)) &&
+						column != this &&
+						(table = column.Table) == contextElement)
+					{
+						Table.CustomReorderColumns(new Column[] { column }, this);
+					}
+					break;
+			}
+		}
+		void ISurveyNodeDropTarget.OnDragEvent(object contextElement, DragEventType eventType, DragEventArgs args)
+		{
+			OnDragEvent(contextElement, eventType, args);
+		}
+		#endregion // ISurveyNodeDropTarget Implementation
 	}
 	#endregion // Column answers
 	#region ReferenceConstraint answers
@@ -1844,6 +1972,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			// UNDONE: This does not handle updates to the primary identifier keys.
 			// There are currently no incremental updates involving primary keys.
 			eventManager.AddOrRemoveHandler(dataDir.FindDomainRelationship(TableContainsColumn.DomainClassId), new EventHandler<ElementAddedEventArgs>(ColumnAdded), action);
+			eventManager.AddOrRemoveHandler(dataDir.FindDomainRole(TableContainsColumn.ColumnDomainRoleId), new EventHandler<RolePlayerOrderChangedEventArgs>(ColumnOrderChanged), action);
 			classInfo = dataDir.FindDomainClass(Column.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ElementRemoved), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ColumnChanged), action);
@@ -1944,6 +2073,22 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			{
 				TableContainsColumn link = element as TableContainsColumn;
 				eventNotify.ElementAdded(link.Column, link.Table);
+			}
+		}
+		private static void ColumnOrderChanged(object sender, RolePlayerOrderChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.SourceElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				Table table = (Table)element;
+				if (!table.IsDeleted)
+				{
+					foreach (Column column in table.ColumnCollection)
+					{
+						eventNotify.ElementCustomSortChanged(column);
+					}
+				}
 			}
 		}
 		private static void ColumnChanged(object sender, ElementPropertyChangedEventArgs e)

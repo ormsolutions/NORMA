@@ -123,8 +123,12 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			{
 				new DomainMemberInfo(typeof(Catalog), "Name", Catalog.NameDomainPropertyId, typeof(Catalog.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(Schema), "Name", Schema.NameDomainPropertyId, typeof(Schema.NamePropertyHandler)),
+				new DomainMemberInfo(typeof(Schema), "DefaultColumnOrder", Schema.DefaultColumnOrderDomainPropertyId, typeof(Schema.DefaultColumnOrderPropertyHandler)),
 				new DomainMemberInfo(typeof(Table), "Name", Table.NameDomainPropertyId, typeof(Table.NamePropertyHandler)),
+				new DomainMemberInfo(typeof(Table), "CustomName", Table.CustomNameDomainPropertyId, typeof(Table.CustomNamePropertyHandler)),
+				new DomainMemberInfo(typeof(Table), "ColumnOrder", Table.ColumnOrderDomainPropertyId, typeof(Table.ColumnOrderPropertyHandler)),
 				new DomainMemberInfo(typeof(Column), "Name", Column.NameDomainPropertyId, typeof(Column.NamePropertyHandler)),
+				new DomainMemberInfo(typeof(Column), "CustomName", Column.CustomNameDomainPropertyId, typeof(Column.CustomNamePropertyHandler)),
 				new DomainMemberInfo(typeof(Column), "IsNullable", Column.IsNullableDomainPropertyId, typeof(Column.IsNullablePropertyHandler)),
 				new DomainMemberInfo(typeof(Column), "IsIdentity", Column.IsIdentityDomainPropertyId, typeof(Column.IsIdentityPropertyHandler)),
 				new DomainMemberInfo(typeof(Column), "DataType", Column.DataTypeDomainPropertyId, typeof(Column.DataTypePropertyHandler)),
@@ -670,6 +674,120 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		[global::System.Xml.Serialization.XmlEnum("ROW")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.TriggerForEach/Row.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		Row = 1,
+	}
+}
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
+{
+	/// <summary>
+	/// DomainEnumeration: ColumnOrdering
+	/// Description for
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<ColumnOrdering, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog>))]
+	[global::System.CLSCompliant(true)]
+	public enum ColumnOrdering
+	{
+		/// <summary>
+		/// AutoSchemaDefault
+		/// Sort columns using the default column ordering specific with schema.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoSchemaDefault.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		AutoSchemaDefault = 0,
+		/// <summary>
+		/// Custom
+		/// Lock the current column order and place new columns at the end of the table.
+		/// Remember user-specified column order.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/Custom.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		Custom = 1,
+		/// <summary>
+		/// AutoPrimaryMandatoryUniqueOther
+		/// Automatically order columns with primary columns first, then remaining mandatory
+		/// columns, then other columns under uniqueness constraints, then all other
+		/// columns. Columns are sorted alphabetically by column name within each group.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryMandatoryUniqueOther.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		AutoPrimaryMandatoryUniqueOther = 2,
+		/// <summary>
+		/// AutoPrimaryMandatoryOther
+		/// Automatically order columns with primary columns first, then remaining mandatory
+		/// columns, then all other columns. Columns are sorted alphabetically by column
+		/// name within each group.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryMandatoryOther.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		AutoPrimaryMandatoryOther = 3,
+		/// <summary>
+		/// AutoPrimaryOther
+		/// Automatically order columns with primary columns first, then all other columns.
+		/// Columns are sorted alphabetically by column name within each group.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryOther.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		AutoPrimaryOther = 4,
+		/// <summary>
+		/// AutoMandatoryOther
+		/// Automatically order columns with primary columns first, then remaining mandatory
+		/// columns, then all other columns. Columns are sorted alphabetically by column
+		/// name within each group.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoMandatoryOther.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		AutoMandatoryOther = 5,
+		/// <summary>
+		/// AutoByColumnName
+		/// Automatically order columns by column name only.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoByColumnName.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		AutoByColumnName = 6,
+	}
+}
+namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
+{
+	/// <summary>
+	/// DomainEnumeration: AutomaticColumnOrdering
+	/// Description for
+	/// ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<AutomaticColumnOrdering, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Catalog>))]
+	[global::System.CLSCompliant(true)]
+	public enum AutomaticColumnOrdering
+	{
+		/// <summary>
+		/// PrimaryMandatoryUniqueOther
+		/// (Default) Automatically order columns with primary columns first, then remaining
+		/// mandatory columns, then other columns under uniqueness constraints, then all
+		/// other columns. Columns are sorted alphabetically by column name within each
+		/// group.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryMandatoryUniqueOther.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		PrimaryMandatoryUniqueOther = 0,
+		/// <summary>
+		/// PrimaryMandatoryOther
+		/// Automatically order columns with primary columns first, then remaining mandatory
+		/// columns, then all other columns. Columns are sorted alphabetically by column
+		/// name within each group.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryMandatoryOther.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		PrimaryMandatoryOther = 1,
+		/// <summary>
+		/// PrimaryOther
+		/// Automatically order columns with primary columns first, then all other columns.
+		/// Columns are sorted alphabetically by column name within each group.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryOther.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		PrimaryOther = 2,
+		/// <summary>
+		/// MandatoryOther
+		/// Automatically order columns with primary columns first, then remaining mandatory
+		/// columns, then all other columns. Columns are sorted alphabetically by column
+		/// name within each group.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/MandatoryOther.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		MandatoryOther = 3,
+		/// <summary>
+		/// ByColumnName
+		/// Automatically order columns by column name only.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/ByColumnName.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		ByColumnName = 4,
 	}
 }
 namespace ORMSolutions.ORMArchitect.RelationalModels.DatabaseDefinition

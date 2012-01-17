@@ -2612,7 +2612,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				bool seenDerived;
 				bool seenNonDerived;
-				return IsIndependent || (ImpliedMandatoryConstraint == null && (AllowIsIndependent(false, out seenDerived, out seenNonDerived) && (seenNonDerived || (seenDerived && !IsValueType))));
+				return IsIndependent || (ImpliedMandatoryConstraint == null && (AllowIsIndependent(false, out seenDerived, out seenNonDerived) && (seenNonDerived || (seenDerived && !IsValueType) || !seenDerived)));
 			}
 		}
 		/// <summary>

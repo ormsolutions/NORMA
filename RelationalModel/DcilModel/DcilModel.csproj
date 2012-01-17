@@ -44,6 +44,7 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.VirtualTreeGrid, Version=$(TargetVisualStudioAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -145,6 +146,7 @@
   <ItemGroup>
     <Compile Include="Column.cs" />
     <Compile Include="DcilModel.DeserializationFixupListeners.cs" />
+    <Compile Include="Design\TableTypeDescriptor.cs" />
     <Compile Include="ReferenceConstraint.cs" />
     <Compile Include="DcilModel.SurveyQuestionProvider.cs">
       <AutoGen>True</AutoGen>

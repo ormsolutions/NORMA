@@ -44,6 +44,12 @@
 			<arg:ChangeRule methodName="AssimilationMappingChangedRule">
 				<arg:RuleOn targetType="AssimilationMapping"/>
 			</arg:ChangeRule>
+			<arg:ChangeRule methodName="ColumnChangedRule">
+				<arg:RuleOn targetType="Column" targetTypeQualifier="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase"/>
+			</arg:ChangeRule>
+			<arg:RolePlayerPositionChangeRule methodName="ColumnOrderChangedRule">
+				<arg:RuleOn targetType="TableContainsColumn" targetTypeQualifier="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase"/>
+			</arg:RolePlayerPositionChangeRule>
 			<arg:AddRule methodName="ConceptTypeAddedRule">
 				<arg:RuleOn targetType="AbstractionModelHasConceptType" targetTypeQualifier="ORMSolutions.ORMArchitect.ORMAbstraction"/>
 			</arg:AddRule>
@@ -85,6 +91,12 @@
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="RoleNameChangedRule">
 				<arg:RuleOn targetType="Role" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="SchemaChangedRule">
+				<arg:RuleOn targetType="Schema" targetTypeQualifier="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="TableChangedRule">
+				<arg:RuleOn targetType="Table" targetTypeQualifier="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase"/>
 			</arg:ChangeRule>
 			<arg:DeleteRule methodName="UniquenessDeletedRule">
 				<arg:RuleOn targetType="UniquenessConstraintIsForUniqueness"/>

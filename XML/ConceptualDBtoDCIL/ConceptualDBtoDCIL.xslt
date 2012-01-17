@@ -109,9 +109,6 @@
 			</xsl:call-template>
 			<xsl:variable name="uniquenessConstraints" select="rcd:Constraints/rcd:UniquenessConstraint"/>
 			<xsl:apply-templates mode="GenerateTableContent" select="rcd:Columns/rcd:Column">
-				<xsl:sort data-type="number" select="number(not(boolean(@id = $uniquenessConstraints[@IsPrimary='true' or @IsPrimary=1]/rcd:Columns/rcd:Column/@ref)))"/>
-				<xsl:sort data-type="number" select="number(boolean(@IsNullable='true' or @IsNullable=1))"/>
-				<xsl:sort data-type="number" select="number(not(boolean(@id = $uniquenessConstraints[not(@IsPrimary='true' or @IsPrimary=1)]/rcd:Columns/rcd:Column/@ref)))"/>
 				<xsl:with-param name="oialDcilBridge" select="$oialDcilBridge"/>
 				<xsl:with-param name="ormOialBridge" select="$ormOialBridge"/>
 				<xsl:with-param name="oialModel" select="$oialModel"/>

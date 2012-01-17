@@ -51,7 +51,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
-		public const string CurrentNameAlgorithmVersion = "1.012";
+		public const string CurrentNameAlgorithmVersion = "1.013";
 		#endregion // Algorithm Version Constants
 		#region Fully populate from OIAL
 
@@ -157,11 +157,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// The generation of the Conceptual Database Model includes the population of all tables with
 		/// Columns, Uniquenesses, Foreign Keys, and Mandatory restrictions.
 		/// </summary>
-		private static void FullyGenerateConceptualDatabaseModel(Schema schema, AbstractionModel sourceModel, INotifyElementAdded notifyAdded)
+		private static void FullyGenerateConceptualDatabaseModel(Schema schema, AbstractionModel sourceModel, SchemaCustomization customization, INotifyElementAdded notifyAdded)
 		{
 			LinkedElementCollection<Table> tables = schema.TableCollection;
 			LinkedElementCollection<ConceptType> conceptTypes = sourceModel.ConceptTypeCollection;
 			Partition partition = schema.Partition;
+			if (customization != null &&
+				customization.IsEmpty)
+			{
+				customization = null;
+			}
 
 			// Map all InformationTypeFormats to domains in the schema
 			// UNDONE: (Phase 2 when we care about datatypes). There is not currently
@@ -271,7 +276,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			}
 
 			// Change all names to a more appropriate version.
-			NameGeneration.GenerateAllNames(schema);
+			NameGeneration.GenerateAllNames(schema, customization);
 		}
 
 		/// <summary>
@@ -1244,7 +1249,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					schema.Catalog = catalog;
 					notifyAdded.ElementAdded(schema, true);
 
-					FullyGenerateConceptualDatabaseModel(schema, element, notifyAdded);
+					FullyGenerateConceptualDatabaseModel(schema, element, null, notifyAdded);
+					SchemaCustomization.SetCustomization(schema, new SchemaCustomization(null)); // Null indicates not to look for customizations at this time
 				}
 				else
 				{
@@ -1283,15 +1289,24 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							generationSetting.NameAlgorithmVersion = CurrentNameAlgorithmVersion;
 						}
 					}
-					if (regenerateAll)
+					SchemaCustomization initialCustomization = new SchemaCustomization(schema);
+					if (regenerateAll || regenerateNames)
 					{
-						schema.TableCollection.Clear();
-						schema.DomainCollection.Clear();
-						FullyGenerateConceptualDatabaseModel(schema, element, notifyAdded);
+						if (regenerateAll)
+						{
+							schema.TableCollection.Clear();
+							schema.DomainCollection.Clear();
+							FullyGenerateConceptualDatabaseModel(schema, element, initialCustomization, notifyAdded);
+						}
+						else if (regenerateNames)
+						{
+							NameGeneration.GenerateAllNames(schema, initialCustomization);
+						}
+						SchemaCustomization.SetCustomization(schema, new SchemaCustomization(schema));
 					}
-					else if (regenerateNames)
+					else
 					{
-						NameGeneration.GenerateAllNames(schema);
+						SchemaCustomization.SetCustomization(schema, initialCustomization);
 					}
 				}
 			}

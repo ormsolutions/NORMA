@@ -36,6 +36,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 	public class ColumnTypeDescriptor<TModelElement> : ConceptualDatabaseElementTypeDescriptor<TModelElement>
 		where TModelElement : Column
 	{
+		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of <see cref="ColumnTypeDescriptor{TModelElement}"/>
 		/// for <paramref name="selectedElement"/>.
@@ -44,6 +45,8 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 			: base(parent, selectedElement)
 		{
 		}
+		#endregion // Constructor
+		#region Base overrides
 		/// <summary>
 		/// Create property descriptors that only allow merging of DataType facet properties
 		/// when the <see cref="P:ObjectType.DataType"/> instances are equal.
@@ -51,7 +54,11 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
 		{
 			Guid propertyId = domainPropertyInfo.Id;
-			if (propertyId == Column.DataTypeLengthDomainPropertyId || propertyId == Column.DataTypeScaleDomainPropertyId)
+			if (propertyId == Column.NameDomainPropertyId)
+			{
+				return new NamePropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
+			}
+			else if (propertyId == Column.DataTypeLengthDomainPropertyId || propertyId == Column.DataTypeScaleDomainPropertyId)
 			{
 				return new MatchDataTypePropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
 			}
@@ -72,52 +79,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 				return true;
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
-		}
-		/// <summary>
-		/// An element property descriptor that merges DataType facet properties only if the
-		/// DataTypes of the multi-selected elements match.
-		/// </summary>
-		private sealed class MatchDataTypePropertyDescriptor : ElementPropertyDescriptor
-		{
-			public MatchDataTypePropertyDescriptor(ElementTypeDescriptor owner, ModelElement modelElement, DomainPropertyInfo domainProperty, Attribute[] attributes)
-				: base(owner, modelElement, domainProperty, attributes)
-			{
-			}
-			/// <summary>
-			/// Allow equality only if the opposite element has the same DataType
-			/// </summary>
-			public override bool Equals(object obj)
-			{
-				bool retVal = base.Equals(obj);
-				if (retVal)
-				{
-					MatchDataTypePropertyDescriptor oppositeDescriptor = obj as MatchDataTypePropertyDescriptor;
-					Column thisElement;
-					Column otherElement;
-					if (oppositeDescriptor != null &&
-						null != (thisElement = ModelElement as Column) &&
-						null != (otherElement = oppositeDescriptor.ModelElement as Column))
-					{
-						retVal = thisElement.DataType == otherElement.DataType;
-					}
-				}
-				return retVal;
-			}
-			/// <summary>
-			/// Required with Equals override
-			/// </summary>
-			public override int GetHashCode()
-			{
-				int retVal = base.GetHashCode();
-				Column element;
-				DataType dataType;
-				if (null != (element = ModelElement as Column) &&
-					null != (dataType = element.DataType as DataType))
-				{
-					retVal ^= dataType.GetHashCode();
-				}
-				return retVal;
-			}
 		}
 		/// <summary>See <see cref="ElementTypeDescriptor.ShouldCreatePropertyDescriptor"/>.</summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
@@ -196,5 +157,110 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 			}
 			return base.GetDescription(propertyDescriptor);
 		}
+		#endregion // Base overrides
+		#region MatchDataTypePropertyDescriptor class
+		/// <summary>
+		/// An element property descriptor that merges DataType facet properties only if the
+		/// DataTypes of the multi-selected elements match.
+		/// </summary>
+		private sealed class MatchDataTypePropertyDescriptor : ElementPropertyDescriptor
+		{
+			public MatchDataTypePropertyDescriptor(ElementTypeDescriptor owner, ModelElement modelElement, DomainPropertyInfo domainProperty, Attribute[] attributes)
+				: base(owner, modelElement, domainProperty, attributes)
+			{
+			}
+			/// <summary>
+			/// Allow equality only if the opposite element has the same DataType
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				bool retVal = base.Equals(obj);
+				if (retVal)
+				{
+					MatchDataTypePropertyDescriptor oppositeDescriptor = obj as MatchDataTypePropertyDescriptor;
+					Column thisElement;
+					Column otherElement;
+					if (oppositeDescriptor != null &&
+						null != (thisElement = ModelElement as Column) &&
+						null != (otherElement = oppositeDescriptor.ModelElement as Column))
+					{
+						retVal = thisElement.DataType == otherElement.DataType;
+					}
+				}
+				return retVal;
+			}
+			/// <summary>
+			/// Required with Equals override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				int retVal = base.GetHashCode();
+				Column element;
+				DataType dataType;
+				if (null != (element = ModelElement as Column) &&
+					null != (dataType = element.DataType as DataType))
+				{
+					retVal ^= dataType.GetHashCode();
+				}
+				return retVal;
+			}
+		}
+		#endregion // MatchDataTypePropertyDescriptor class
+		#region NamePropertyDescriptor class
+		/// <summary>
+		/// A property descriptor that ties display and reset capabilities
+		/// on the column name to both the Name and CustomName properties.
+		/// </summary>
+		private sealed class NamePropertyDescriptor : ElementPropertyDescriptor
+		{
+			public NamePropertyDescriptor(ElementTypeDescriptor owner, ModelElement modelElement, DomainPropertyInfo domainProperty, Attribute[] attributes)
+				: base(owner, modelElement, domainProperty, attributes)
+			{
+			}
+			public override bool CanResetValue(object component)
+			{
+				return ((Column)this.ModelElement).CustomName;
+			}
+			public override void ResetValue(object component)
+			{
+				this.SetValue(component, "");
+			}
+			public override bool ShouldSerializeValue(object component)
+			{
+				return ((Column)this.ModelElement).CustomName;
+			}
+			public override void SetValue(object component, object value)
+			{
+				Column column;
+				Store store;
+				string newName;
+				if (null == (column = ModelElement as Column) ||
+					null == (store = Utility.ValidateStore(column.Store)) ||
+					null == (newName = value as string) ||
+					newName == column.Name)
+				{
+					return;
+				}
+				using (Transaction t = store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(this.DisplayName)))
+				{
+					if (string.IsNullOrEmpty(newName))
+					{
+						// Name generators should listen to this property to regenerate
+						// the name.
+						column.CustomName = false;
+					}
+					else
+					{
+						column.CustomName = true;
+						column.Name = newName;
+					}
+					if (t.HasPendingChanges)
+					{
+						t.Commit();
+					}
+				}
+			}
+		}
+		#endregion // NamePropertyDescriptor class
 	}
 }

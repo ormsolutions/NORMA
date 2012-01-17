@@ -31,7 +31,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 	/// <summary>
 	/// Double-derived base class for DomainClass RelationalDiagram
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<RelationalDiagram, global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptor<RelationalDiagram>>))]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<RelationalDiagram, Design.RelationalDiagramTypeDescriptor>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.Description", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("9dd5afce-2b3c-4854-ae9f-8ff5d5b7bf08")]

@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -160,6 +160,35 @@ namespace ORMSolutions.ORMArchitect.Framework
 				for (int i = 1; i < hashCodes.Length; i++)
 				{
 					hashCode ^= (uint)RotateRight(hashCodes[i], i);
+				}
+				return (int)hashCode;
+			}
+		}
+		/// <summary>
+		/// Combines multiple hash codes (as returned from implementations of <see cref="Object.GetHashCode"/>)
+		/// together in a way that results in an <see cref="Int32"/> value suitable for use as a hash code.
+		/// </summary>
+		/// <param name="items">
+		/// A type list of items. The <see cref="Object.GetHashCode"/> method is called on each item and the resulting
+		/// has codes are combined.
+		/// </param>
+		/// <returns>
+		/// The <see cref="Int32"/> value suitable for use as a hash code that results from combining hash codes for the specified <paramref name="items"/>.
+		/// </returns>
+		public static int GetCombinedHashCode<T>(IList<T> items)
+		{
+			unchecked
+			{
+				int count;
+				if (items == null ||
+					(count = items.Count) == 0)
+				{
+					return 0;
+				}
+				uint hashCode = (uint)items[0].GetHashCode();
+				for (int i = 1; i < count; ++i)
+				{
+					hashCode ^= (uint)RotateRight(items[i].GetHashCode(), i);
 				}
 				return (int)hashCode;
 			}

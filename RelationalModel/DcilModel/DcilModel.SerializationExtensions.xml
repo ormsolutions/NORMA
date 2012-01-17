@@ -45,6 +45,18 @@
 		</se:Container>
 	</se:Element>
 	<se:Element Class="Schema" SortChildElements="false">
+		<se:Attribute ID="DefaultColumnOrder">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DefaultColumnOrder" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="AutomaticColumnOrdering" name="PrimaryMandatoryUniqueOther" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="Tables">
 			<se:Embed RelationshipName="SchemaContainsTable" RoleName="Table"/>
 		</se:Container>
@@ -62,6 +74,25 @@
 		
 	</se:Element>
 	<se:Element Class="Table" SortChildElements="true">
+		<se:Attribute ID="CustomName">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="CustomName" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="ColumnOrder">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="ColumnOrder" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="ColumnOrdering" name="AutoSchemaDefault" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="Columns">
 			<se:Embed RelationshipName="TableContainsColumn" RoleName="Column"/>
 		</se:Container>
@@ -84,6 +115,13 @@
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="IsNullable" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="CustomName">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="CustomName" type="property"/>
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>

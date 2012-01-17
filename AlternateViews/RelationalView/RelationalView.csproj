@@ -183,6 +183,7 @@
     </Compile>
     <Compile Include="RelationalShape.Serialization.cs" />
     <Compile Include="ShapeModel\TableShape.cs" />
+    <Compile Include="ShapeModel\Design\RelationalDiagramTypeDescriptor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />

@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -15,18 +16,19 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
-using System.Collections.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 using UniquenessConstraint = ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.UniquenessConstraint;
-using System.Windows.Forms;
 
 namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
@@ -448,6 +450,195 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 				return false;
 			}
 		}
+		#region Column Reordering Gestures
+		/// <summary>
+		/// Get the <see cref="Column"/> represented by a given <see cref="DiagramItem"/>
+		/// </summary>
+		private static Column ResolveColumn(DiagramItem diagramItem)
+		{
+			ICollection targetElements;
+			if (diagramItem != null &&
+				null != diagramItem.SubField &&
+				null != (targetElements = diagramItem.RepresentedElements) &&
+				targetElements.Count == 1)
+			{
+				foreach (object targetElement in targetElements)
+				{
+					Column retVal = targetElement as Column;
+					if (retVal != null)
+					{
+						return retVal;
+					}
+					break;
+				}
+			}
+			return null;
+		}
+		/// <summary>
+		/// Check for column reordering
+		/// </summary>
+		public override void OnDragOver(DiagramDragEventArgs e)
+		{
+			// I want to handle this in subfield-specific events using
+			// enter events only. However, the list compartment doesn't
+			// support enter/leave/hover events (these extensions were
+			// added to the core elements, but I can't get access to the
+			// correct base types here), so we have to reprocess on every
+			// mouse move.
+			IDataObject data;
+			Column targetColumn;
+			Column sourceColumn;
+			Table table;
+			if (null != (data = e.Data) &&
+				data.GetDataPresent(typeof(Column)) &&
+				null != (targetColumn = ResolveColumn(e.HitDiagramItem)) &&
+				null != (sourceColumn = data.GetData(typeof(Column)) as Column) &&
+				targetColumn != sourceColumn &&
+				(table = targetColumn.Table) == sourceColumn.Table)
+			{
+				e.Effect = DragDropEffects.Move;
+				e.Handled = true;
+			}
+			base.OnDragOver(e);
+		}
+		/// <summary>
+		/// Reorder columns if a column is dropped on a different column
+		/// in the same table.
+		/// </summary>
+		public override void OnDragDrop(DiagramDragEventArgs e)
+		{
+			IDataObject data;
+			Column targetColumn;
+			Column sourceColumn;
+			if (null != (data = e.Data) &&
+				data.GetDataPresent(typeof(Column)) &&
+				null != (targetColumn = ResolveColumn(e.HitDiagramItem)) &&
+				null != (sourceColumn = data.GetData(typeof(Column)) as Column))
+			{
+				e.Handled = Table.CustomReorderColumns(new Column[]{sourceColumn}, targetColumn);
+			}
+			base.OnDragDrop(e);
+		}
+		[NonSerialized]
+		private static ColumnElementListCompartment myDragSourceShape;
+		[NonSerialized]
+		private static Column[] myDragSourceColumns;
+		public override void OnMouseDown(DiagramMouseEventArgs e)
+		{
+			base.OnMouseDown(e);
+			DiagramItem diagramItem = e.HitDiagramItem;
+			Column referenceColumn = ResolveColumn(diagramItem);
+			if (referenceColumn != null)
+			{
+				// See if we're dragging other columns
+				DiagramItemCollection selection = e.DiagramClientView.Selection.TopLevelItems;
+				Table table = referenceColumn.Table;
+				int count = selection.Count;
+				Column[] selectedColumns = new Column[count];
+				for (int i = 0; i < count; ++i)
+				{
+					Column column = ResolveColumn(selection[i]);
+					if (null == column ||
+						(column != referenceColumn && column.Table != table))
+					{
+						return;
+					}
+					selectedColumns[i] = column;
+				}
+				myDragSourceColumns = selectedColumns;
+				myDragSourceShape = (ColumnElementListCompartment)diagramItem.Shape;
+			}
+			else
+			{
+				myDragSourceColumns = null;
+				myDragSourceShape = null;
+			}
+		}
+		public override void OnMouseUp(DiagramMouseEventArgs e)
+		{
+			myDragSourceShape = null;
+			myDragSourceColumns = null;
+			base.OnMouseUp(e);
+		}
+		public override void OnMouseMove(DiagramMouseEventArgs e)
+		{
+			Column[] sourceColumns;
+			if (null != (sourceColumns = myDragSourceColumns))
+			{
+				DiagramItem currentItem = e.HitDiagramItem;
+				Column targetColumn;
+				ColumnElementListCompartment sourceShape = myDragSourceShape;
+				if (currentItem.Shape != sourceShape)
+				{
+					myDragSourceColumns = null;
+					myDragSourceShape = null;
+				}
+				else if (null != (targetColumn = ResolveColumn(currentItem)) &&
+					-1 == (Array.IndexOf<Column>(sourceColumns, targetColumn)))
+				{
+					myDragSourceColumns = null;
+					myDragSourceShape = null;
+					e.DiagramClientView.ActiveMouseAction = new ColumnDragMouseAction(sourceShape, sourceColumns, targetColumn);
+				}
+
+			}
+			base.OnMouseMove(e);
+		}
+		private sealed class ColumnDragMouseAction : MouseAction
+		{
+			private ColumnElementListCompartment myShape;
+			private Column[] mySourceColumns;
+			private Column myLastTargetColumn;
+			public ColumnDragMouseAction(ColumnElementListCompartment compartment, Column[] sourceColumns, Column targetColumn)
+				: base(compartment.Diagram)
+			{
+				myShape = compartment;
+				mySourceColumns = sourceColumns;
+				myLastTargetColumn = targetColumn;
+			}
+			/// <summary>
+			/// Call back to the source shape to drop the dragged item.
+			/// </summary>
+			/// <param name="e"></param>
+			protected override void OnMouseUp(DiagramMouseEventArgs e)
+			{
+				base.OnMouseUp(e);
+				this.Cancel(e.DiagramClientView);
+				e.Handled = true;
+				Column column = ResolveColumn(e.HitDiagramItem);
+				if (null != column)
+				{
+					Table.CustomReorderColumns(mySourceColumns, column);
+				}
+			}
+			protected override void OnMouseMove(DiagramMouseEventArgs e)
+			{
+				base.OnMouseMove(e);
+				myLastTargetColumn = ResolveColumn(e.HitDiagramItem);
+			}
+			/// <summary>
+			/// Sanity check. This action may still be active outside the
+			/// source shape with rapid clicks.
+			/// </summary>
+			protected override void OnMouseDown(DiagramMouseEventArgs e)
+			{
+				base.OnMouseDown(e);
+				this.Cancel(e.DiagramClientView);
+				e.Handled = false;
+			}
+			/// <summary>
+			/// Display a move cursor while dragging a column
+			/// </summary>
+			public override Cursor GetCursor(Cursor currentCursor, DiagramClientView diagramClientView, PointD mousePosition)
+			{
+				Column[] sourceColumns;
+				Column targetColumn;
+				return (null != (targetColumn = myLastTargetColumn) &&
+					-1 == Array.IndexOf<Column>(sourceColumns = mySourceColumns, targetColumn) &&
+					sourceColumns[0].Table == targetColumn.Table) ? Cursors.SizeAll : Cursors.No;
+			}
+		}
+		#endregion // Column reordering gestures
 	}
 	/// <summary>
 	/// A custom element list compartment description from which a <see cref="ColumnElementListCompartment"/> is created.

@@ -135,6 +135,7 @@
       <LastGenOutput>OialDcilBridge.AttachRules.cs</LastGenOutput>
     </Content>
     <Compile Include="AssimilationMapping.cs" />
+    <Compile Include="SchemaCustomization.cs" />
     <Compile Include="ReferenceModeNaming.cs" />
     <Compile Include="MappingCustomizationModel.cs" />
     <Compile Include="ModificationTracker.cs" />

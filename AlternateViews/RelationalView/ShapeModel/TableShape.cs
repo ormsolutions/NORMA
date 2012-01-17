@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -13,6 +14,13 @@
 * You must not remove this notice, or any other, from this software.       *
 \**************************************************************************/
 #endregion
+
+// CUSTOMSORT uses a column display algorithm from prior to the advent of
+// explicit column sorting in the relational model. I'm keeping the code
+// here because it is non-trivial and may be interesting for other uses,
+// and should be similar to the code required for column filtering, a possible
+// future feature.
+// #define CUSTOMSORT
 
 using System;
 using System.Collections.Generic;
@@ -83,6 +91,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		}
 		#endregion // Customize Appearance
 		#region Customize Column Order
+#if CUSTOMSORT
 		/// <summary>
 		/// A sorted replacement for the unsorted element list provided
 		/// by generated code. The goal of the class is to provide a replacement
@@ -318,6 +327,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			}
 			return retVal;
 		}
+#endif // CUSTOMSORT
 		#endregion // Customize Column Order
 		#region Event Management
 		/// <summary>
@@ -339,9 +349,56 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 				// on, then the ColumnRenamedEvent does not work for the initial transaction.
 				store.RuleManager.DisableRule(typeof(CompartmentItemChangeRule));
 			}
+#if CUSTOMSORT
 			propertyInfo = dataDirectory.FindDomainProperty(Column.NameDomainPropertyId);
 			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ColumnRenamedEvent), action);
+#else // CUSTOMSORT
+			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainRole(TableContainsColumn.ColumnDomainRoleId), new EventHandler<RolePlayerOrderChangedEventArgs>(ColumnOrderChanged), action);
+#endif // CUSTOMSORT
 		}
+		private static void MoveSubFieldSelectionOnOrderChange(ShapeElement parentShape, ElementListCompartment compartment, int oldIndex, int newIndex)
+		{
+			Diagram diagram;
+			DiagramView view;
+			SelectedShapesCollection selection;
+			if (null != (diagram = parentShape.Diagram) &&
+				null != (view = diagram.ActiveDiagramView) &&
+				null != (selection = view.Selection))
+			{
+				ShapeField testField = compartment.ListField;
+				foreach (DiagramItem selectedItem in selection)
+				{
+					ListItemSubField testSubField;
+					if (selectedItem.Shape == compartment &&
+						selectedItem.Field == testField &&
+						null != (testSubField = selectedItem.SubField as ListItemSubField))
+					{
+						int testRow = testSubField.Row;
+						if (testRow == oldIndex)
+						{
+							testSubField.Row = newIndex;
+						}
+						else
+						{
+							int adjustRow = testRow;
+							if (testRow > oldIndex)
+							{
+								--adjustRow;
+							}
+							if (adjustRow >= newIndex)
+							{
+								++adjustRow;
+							}
+							if (adjustRow != testRow)
+							{
+								testSubField.Row = adjustRow;
+							}
+						}
+					}
+				}
+			}
+		}
+#if CUSTOMSORT
 		/// <summary>
 		/// Reorder compartment items when a column is renamed.
 		/// </summary>
@@ -369,45 +426,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 							{
 								if (columnList.OnElementReorder(column, out oldIndex, out newIndex))
 								{
-									Diagram diagram;
-									DiagramView view;
-									SelectedShapesCollection selection;
-									if (null != (diagram = shape.Diagram) &&
-										null != (view = diagram.ActiveDiagramView) &&
-										null != (selection = view.Selection))
-									{
-										ShapeField testField = compartment.ListField;
-										foreach (DiagramItem selectedItem in selection)
-										{
-											ListItemSubField testSubField;
-											if (selectedItem.Shape == compartment &&
-												selectedItem.Field == testField &&
-												null != (testSubField = selectedItem.SubField as ListItemSubField))
-											{
-												int testRow = testSubField.Row;
-												if (testRow == oldIndex)
-												{
-													testSubField.Row = newIndex;
-												}
-												else
-												{
-													int adjustRow = testRow;
-													if (testRow > oldIndex)
-													{
-														--adjustRow;
-													}
-													if (adjustRow >= newIndex)
-													{
-														++adjustRow;
-													}
-													if (adjustRow != testRow)
-													{
-														testSubField.Row = adjustRow;
-													}
-												}
-											}
-										}
-									}
+									MoveSubFieldSelectionOnOrderChange(tableShape, compartment, oldIndex, newIndex);
 								}
 							}
 						}
@@ -415,6 +434,32 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 				}
 			}
 		}
+#else // CUSTOMSORT
+		private static void ColumnOrderChanged(object sender, RolePlayerOrderChangedEventArgs e)
+		{
+			// If a row is selected in the changed table, then adjust its row
+			ModelElement element = e.SourceElement;
+			if (!element.IsDeleted)
+			{
+				Table table = (Table)element;
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
+				{
+					TableShape shape;
+					if (null != (shape = pel as TableShape))
+					{
+						foreach (ShapeElement childShape in shape.NestedChildShapes)
+						{
+							ColumnElementListCompartment compartment;
+							if (null != (compartment = childShape as ColumnElementListCompartment))
+							{
+								MoveSubFieldSelectionOnOrderChange(shape, compartment, e.OldOrdinal, e.NewOrdinal);
+							}
+						}
+					}
+				}
+			}
+		}
+#endif // CUSTOMSORT
 		#endregion // Event Management
 		#region TableTextField class
 		/// <summary>
