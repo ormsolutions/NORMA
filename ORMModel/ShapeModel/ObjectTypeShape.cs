@@ -388,6 +388,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						refModeFactType == roleValueConstraint.Role.FactType;
 				}
 			}
+			IShapeExtender<ObjectTypeShape>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ObjectTypeShape>>();
+			if (extenders != null)
+			{
+				for (int i = 0; i < extenders.Length; ++i)
+				{
+					if (extenders[i].ShouldAddShapeForElement(this, element))
+					{
+						return true;
+					}
+				}
+			}
 			return base.ShouldAddShapeForElement(element);
 		}
 		/// <summary>

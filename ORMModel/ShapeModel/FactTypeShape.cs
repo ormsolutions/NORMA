@@ -4056,17 +4056,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						// Support ValueType objectification
 						return valueTypeValueConstraint.ValueType == objectType;
 					}
-				}
-				return false;
-			}
-			if (null != (objectType = element as ObjectType))
-			{
-				if (objectType.NestedFactType != AssociatedFactType)
-				{
-					return false;
+					else if (element is ObjectType || element is ReadingOrder)
+					{
+						return false;
+					}
 				}
 			}
-			else if (null != (readingOrder = element as ReadingOrder))
+			if (null != (readingOrder = element as ReadingOrder))
 			{
 				if (readingOrder.FactType != AssociatedFactType)
 				{
@@ -4080,6 +4076,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						return false;
 					}
 				}
+				return true;
 			}
 			else if (null != (role = element as Role))
 			{
@@ -4093,14 +4090,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				return !string.IsNullOrEmpty(role.Name) && (role != AssociatedFactType.ImplicitBooleanRole);
 			}
+			else if (null != (objectType = element as ObjectType))
+			{
+				return objectType.NestedFactType == AssociatedFactType;
+			}
 			else if (null != (roleValueConstraint = element as RoleValueConstraint))
 			{
-				if (roleValueConstraint.Role.FactType != AssociatedFactType)
+				return roleValueConstraint.Role.FactType == AssociatedFactType;
+			}
+			IShapeExtender<FactTypeShape>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<FactTypeShape>>();
+			if (extenders != null)
+			{
+				for (int i = 0; i < extenders.Length; ++i)
 				{
-					return false;
+					if (extenders[i].ShouldAddShapeForElement(this, element))
+					{
+						return true;
+					}
 				}
 			}
-			return true;
+			return base.ShouldAddShapeForElement(element);
 		}
 		/// <summary>
 		/// Makes an ObjectifiedFactTypeNameShape, ReadingShape, RoleNameShape, or ValueConstraintShape a
@@ -6916,6 +6925,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					// Support ValueType objectification
 					return valueTypeValueConstraint.ValueType == objectType;
+				}
+			}
+			IShapeExtender<ObjectifiedFactTypeNameShape>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ObjectifiedFactTypeNameShape>>();
+			if (extenders != null)
+			{
+				for (int i = 0; i < extenders.Length; ++i)
+				{
+					if (extenders[i].ShouldAddShapeForElement(this, element))
+					{
+						return true;
+					}
 				}
 			}
 			return base.ShouldAddShapeForElement(element);

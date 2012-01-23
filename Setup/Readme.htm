@@ -44,7 +44,7 @@ The January 2012 release adds the ability to remember customized relational colu
 
 <hr/>
 <h2>January 2012 CTP Changes</h2>
-<div>The January 2012 CTP release includes all modifications through changeset 1481.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The January 2012 CTP release includes all modifications through changeset 1482.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li><a href="#SchemaCustomization 2012-01">Custom relational names and column ordering</a>&nbsp;</li>
 <li><a href="#VerbalizedObjectTypeNameDisplay 2012-01">Verbalized object type name options</a>&nbsp;</li>
@@ -63,6 +63,7 @@ The January 2012 release adds the ability to remember customized relational colu
 <li>The Length property was available with a column selection for the Picture and OleObject data types, which do not support this facet.</li>
 <li>The data type for a column associated with a unary fact type is now read-only to avoid unwanted side-effects caused by modifying this data type.</li>
 <li>Fix issues with excessive model churn and extra shapes appearing when a reference mode format string is modified.</li>
+<li>Fix issue where objectifying a unary or binary fact type without a spanning uniqueness constraint would extra shapes on all diagrams without the fact type.</li>
 </ol>
 </li>
 </ul>
@@ -747,7 +748,7 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <hr/>
 <h3><a id="Version Numbers">Version Numbers</a></h3>
 <p>The NORMA version numbering scheme was changed in January 2011 to make better use of the available build numbers. A build number (for example, 1.0.1106.6281) has four parts separated by periods (.): Major (1), Minor (0), Revision (1106), and Build (6281). The major and minor numbers are self-explanatory. The third <em>revision</em> number is the last two digits of the year combined with the month number (1106=June 2011). The revision number is explicitly configured in the source code and generally changed once per official release. The final number is a build number that encodes the day the file was built.</p>
-<p>Originally, the first two digits of the build number were a month counter beginning at 01 in January 2006, with the last two digits representing the day in the month. So, build 6031 was created on day 31 of month 60 (December 31, 2010). Starting with January 2011 (month 61), the first two digits will only be incremented on a <strong>quarterly</strong> basis, effectively tripling the available remaining revision 4-digit revision numbers. Of course, the day numbers for the three months in a quarter cannot all begin with '1', so we partition as follows:</p>
+<p>Originally, the first two digits of the build number were a month counter beginning at 01 in January 2006, with the last two digits representing the day in the month. So, build 6031 was created on day 31 of month 60 (December 31, 2010). Starting with January 2011 (month 61), the first two digits will only be incremented on a <strong>quarterly</strong> basis, effectively tripling the available remaining 4-digit revision numbers. Of course, the day numbers for the three months in a quarter cannot all begin with '1', so we partition as follows:</p>
 <ul>
 <li>The first month in each quarter (January, April, July, October) gets the range 1-31 (subtract 0 to get the day).</li>
 <li>The second month in each quarter (February, May, August, November) gets the range 34-64 (subtract 33 to get the day).</li>

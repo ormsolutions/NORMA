@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -671,25 +672,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				proxy = role.Proxy;
 				associatedProxyFactType = (proxy != null) ? proxy.FactType : null;
-				FactType nestedFactType;
-				if (FactTypeShape.ShouldDrawObjectification(nestedFactType = rolePlayer.NestedFactType))
-				{
-					if (AllowElementFixup(nestedFactType))
-					{
-						Diagram.FixUpDiagram(model, nestedFactType);
-					}
-					Diagram.FixUpDiagram(nestedFactType, rolePlayer);
-				}
-				else if (AllowElementFixup(rolePlayer))
-				{
-					Diagram.FixUpDiagram(model, rolePlayer);
-				}
-				if (AllowElementFixup(associatedFactType))
-				{
-					Diagram.FixUpDiagram(model, associatedFactType);
-				}
-				// Do no fix up the link fact type (associatedProxyFactType). We never
-				// want to force link fact type element creation.
 
 				object AllowMultipleShapes;
 				Dictionary<object, object> topLevelContextInfo;
@@ -812,10 +794,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMModel model = factType.Model;
 				if (model != null)
 				{
-					if (AllowElementFixup(factType))
-					{
-						Diagram.FixUpDiagram(model, factType);
-					}
 					Diagram.FixUpDiagram(factType, roleValueConstraint);
 
 					object AllowMultipleShapes;
@@ -902,10 +880,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (null != (objectType = valueConstraint.ValueType) &&
 				null != (model = objectType.Model))
 			{
-				if (AllowElementFixup(objectType))
-				{
-					Diagram.FixUpDiagram(model, objectType);
-				}
 				Diagram.FixUpDiagram(objectType, valueConstraint);
 			}
 		}
@@ -927,19 +901,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				null != (objectType = uniquenessConstraint.PreferredIdentifierFor) &&
 				null != (model = objectType.Model))
 			{
-				FactType nestedFactType;
-				if (null != (nestedFactType = objectType.NestedFactType))
-				{
-					if (AllowElementFixup(nestedFactType))
-					{
-						Diagram.FixUpDiagram(model, nestedFactType);
-					}
-					Diagram.FixUpDiagram(nestedFactType, roleValueConstraint); // Handle fact type displayed as object type
-				}
-				else if (AllowElementFixup(objectType))
-				{
-					Diagram.FixUpDiagram(model, objectType);
-				}
 				Diagram.FixUpDiagram(objectType, roleValueConstraint);
 
 				object AllowMultipleShapes;
@@ -1109,11 +1070,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				!((factType = link.FactType) is SubtypeFact) &&
 				null != (model = factType.Model))
 			{
-				if (AllowElementFixup(factType))
-				{
-					Diagram.FixUpDiagram(model, factType); // Make sure the fact type is already there
-				}
-
 				object AllowMultipleShapes;
 				Dictionary<object, object> topLevelContextInfo;
 				bool containedAllowMultipleShapes;
