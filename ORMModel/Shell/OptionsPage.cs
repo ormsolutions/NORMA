@@ -351,6 +351,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private static RoleNameDisplay myCurrentRoleNameDisplay = RoleNameDisplay_Default;
 		private RoleNameDisplay myRoleNameDisplay = RoleNameDisplay_Default;
 
+		private const bool DisplayShadows_Default = true;
+		private static bool myCurrentDisplayShadows = DisplayShadows_Default;
+		private bool myDisplayShadows = DisplayShadows_Default;
+
 		private const PortableDataType DefaultDataType_Default = PortableDataType.Unspecified;
 		private static PortableDataType myCurrentDefaultDataType = DefaultDataType_Default;
 		private PortableDataType myDefaultDataType = DefaultDataType_Default;
@@ -449,6 +453,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentObjectifiedFactDisplayShape = myObjectifiedFactDisplayShape;
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
+			myCurrentDisplayShadows = myDisplayShadows;
 			myCurrentDefaultDataType = myDefaultDataType;
 			myCurrentExternalConstraintRoleBarDisplay = myExternalConstraintRoleBarDisplay;
 			myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
@@ -477,6 +482,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myObjectifiedFactDisplayShape = myCurrentObjectifiedFactDisplayShape;
 			myMandatoryDotPlacement = myCurrentMandatoryDotPlacement;
 			myRoleNameDisplay = myCurrentRoleNameDisplay;
+			myDisplayShadows = myCurrentDisplayShadows;
 			myDefaultDataType = myCurrentDefaultDataType;
 			myExternalConstraintRoleBarDisplay = myCurrentExternalConstraintRoleBarDisplay;
 			myPrimaryDeleteBehavior = myCurrentPrimaryDeleteBehavior;
@@ -512,6 +518,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
 				myCurrentObjectTypeDisplayShape == myObjectTypeDisplayShape &&
 				myCurrentRoleNameDisplay == myRoleNameDisplay &&
+				myCurrentDisplayShadows == myDisplayShadows &&
 				myCurrentExternalConstraintRoleBarDisplay == myExternalConstraintRoleBarDisplay &&
 				myCurrentPreferredInternalUniquenessConstraintDisplay == myPreferredInternalUniquenessConstraintDisplay &&
 				myCurrentReadingDirectionIndicatorDisplay == myReadingDirectionIndicatorDisplay &&
@@ -547,6 +554,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentObjectifiedFactDisplayShape = myObjectifiedFactDisplayShape;
 			myCurrentObjectTypeDisplayShape = myObjectTypeDisplayShape;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
+			myCurrentDisplayShadows = myDisplayShadows;
 			myCurrentExternalConstraintRoleBarDisplay = myExternalConstraintRoleBarDisplay;
 			myCurrentDefaultDataType = myDefaultDataType;
 			myCurrentPrimaryDeleteBehavior = myPrimaryDeleteBehavior;
@@ -717,6 +725,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public static RoleNameDisplay CurrentRoleNameDisplay
 		{
 			get { return myCurrentRoleNameDisplay; }
+		}
+
+		/// <summary>
+		/// Display of shape shadow
+		/// </summary>
+		[DefaultValue(DisplayShadows_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyDisplayShadowsDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyDisplayShadowsDisplayNameId)]
+		public bool DisplayShadows
+		{
+			get { return myDisplayShadows; }
+			set { myDisplayShadows = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for DisplayShadows
+		/// </summary>
+		public static bool CurrentDisplayShadows
+		{
+			get { return myCurrentDisplayShadows; }
 		}
 
 		/// <summary>

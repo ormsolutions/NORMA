@@ -572,6 +572,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		protected void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
+			EnsureUnaryRoleDisplayOrder();
+		}
+		private void EnsureUnaryRoleDisplayOrder()
+		{
 			// Make sure the factType shape is prepared to display as a unary
 			FactType factType;
 			Role unaryRole;
@@ -3276,7 +3280,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return ORMBaseShape.ElementHasMultiplePresentations(this);
+				return OptionsPage.CurrentDisplayShadows && ORMBaseShape.ElementHasMultiplePresentations(this);
 			}
 		}
 		/// <summary>
@@ -6852,6 +6856,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// </summary>
 			protected sealed override void ProcessElement(FactTypeShape element, Store store, INotifyElementAdded notifyAdded)
 			{
+				element.EnsureUnaryRoleDisplayOrder();
 				PointD centerPoint = RolesShape.GetBounds(element).Center;
 				element.RolesPosition = (element.DisplayOrientation != DisplayOrientation.Horizontal) ? centerPoint.X : centerPoint.Y;
 			}

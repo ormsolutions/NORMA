@@ -719,6 +719,14 @@
     <value xml:space="preserve">Show Description Tooltips</value>
     <comment xml:space="preserve">The display name for the display definition tooltips property.</comment>
   </data>
+  <data name="OptionsPage.Property.DisplayShadows.Description">
+    <value xml:space="preserve">Control if shape shadows are displayed when an element is represented by multiple shapes.</value>
+    <comment xml:space="preserve">The description for the Display Role Names option.</comment>
+  </data>
+  <data name="OptionsPage.Property.DisplayShadows.DisplayName">
+    <value xml:space="preserve">Display Shadows</value>
+    <comment xml:space="preserve">The display name for the Display Shadows option.</comment>
+  </data>
   <data name="OptionsPage.Property.DelayActivateModelBrowserLabelEdits.Description">
     <value xml:space="preserve">Automatically activate inline text editors in the ORM Model Browser after a short delay when selected with the mouse. Text edits can be explicitly activated with the View.EditLabel command (generally associated with the F2 key).</value>
     <comment xml:space="preserve">The delay activate model browser label edits description.</comment>

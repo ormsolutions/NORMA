@@ -349,6 +349,14 @@ namespace ORMSolutions.ORMArchitect.Core
 		/// </summary>
 		public const string OptionsPagePropertyRoleNameDisplayDisplayNameId = "OptionsPage.Property.RoleNameDisplay.DisplayName";
 		/// <summary>
+		/// Description of the Role Name Display option
+		/// </summary>
+		public const string OptionsPagePropertyDisplayShadowsDescriptionId = "OptionsPage.Property.DisplayShadows.Description";
+		/// <summary>
+		/// Display Name of the Role Name Display option
+		/// </summary>
+		public const string OptionsPagePropertyDisplayShadowsDisplayNameId = "OptionsPage.Property.DisplayShadows.DisplayName";
+		/// <summary>
 		/// Description of the Primary Delete Behavior
 		/// </summary>
 		public const string OptionsPagePropertyPrimaryDeleteBehaviorDescriptionId = "OptionsPage.Property.PrimaryDeleteBehavior.Description";

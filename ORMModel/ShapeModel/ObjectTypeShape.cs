@@ -104,7 +104,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return ORMBaseShape.ElementHasMultiplePresentations(this);
+				return OptionsPage.CurrentDisplayShadows && ORMBaseShape.ElementHasMultiplePresentations(this);
 			}
 		}
 		/// <summary>

@@ -262,21 +262,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				FactTypeShape fts = element as FactTypeShape;
 				if (fts != null)
 				{
-					bool shouldDisplay = false;
-					bool shouldRemove = false;
-					if (fts.DisplayRoleNames == DisplayRoleNames.UserDefault
-						&& OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On)
-					{
-						shouldDisplay = true;
-					}
-					else if (fts.DisplayRoleNames == DisplayRoleNames.On)
-					{
-						shouldDisplay = true;
-					}
-					else if (fts.DisplayRoleNames == DisplayRoleNames.Off)
-					{
-						shouldRemove = true;
-					}
+					DisplayRoleNames display = fts.DisplayRoleNames;
+					bool asObjectType = fts.DisplayAsObjectType;
+					bool shouldDisplay = !asObjectType && display == DisplayRoleNames.On || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On);
+					bool shouldRemove = asObjectType || display == DisplayRoleNames.Off;
 					foreach (RoleBase roleBase in fact.RoleCollection)
 					{
 						Role role = roleBase as Role;
