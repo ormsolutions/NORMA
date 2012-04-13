@@ -188,7 +188,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>()) &&
 				null != (element = (ModelNote)ModelElement))
 			{
-				ORMDiagramDynamicColor requestColor = isBackgroundBrush ? ORMDiagramDynamicColor.Background : ORMDiagramDynamicColor.ForegroundText;
+				ORMDiagramDynamicColor requestColor = ORMDiagramDynamicColor.Background;
+				if (isBackgroundBrush)
+				{
+					requestColor = ORMDiagramDynamicColor.Background;
+				}
+				else
+				{
+					// Note background defaults to transparent. Use the FloatingText if no background is set,
+					// otherwise use the ForegroundText.
+					requestColor = ORMDiagramDynamicColor.FloatingText;
+					for (int i = 0; i < providers.Length; ++i)
+					{
+						Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Background, this, element);
+						if (alternateColor != Color.Empty && alternateColor != Color.Transparent)
+						{
+							requestColor = ORMDiagramDynamicColor.ForegroundText;
+							break;
+						}
+					}
+				}
 				for (int i = 0; i < providers.Length; ++i)
 				{
 					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, element);

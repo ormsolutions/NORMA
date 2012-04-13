@@ -3322,7 +3322,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.ForegroundGraphics.Description")]
 		ForegroundGraphics,
 		/// <summary>
-		/// Shape text color
+		/// Shape foreground text color
 		/// </summary>
 		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.ForegroundText.Description")]
 		ForegroundText,
@@ -3341,6 +3341,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.DeonticConstraint.Description")]
 		DeonticConstraint,
+		/// <summary>
+		/// Role player connector color
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.RolePlayerConnector.Description")]
+		RolePlayerConnector,
+		/// <summary>
+		/// Shape floating text color
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMDiagram), "ORMDiagramDynamicColor.FloatingText.Description")]
+		FloatingText,
 	}
 	#endregion // ORMDiagramDynamicColor enum
 	#region IDynamicColorSetConsumer implementation

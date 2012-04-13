@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA January 2012 CTP Readme</title>
+<title>NORMA April 2012 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,8 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA January 2012 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA April 2012 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
+The April 2012 release is a maintenance release with bug fixes and updated verbalization patterns to more closely match the underlying logic-based forms. See detailed change notes below for specifics.<br/><br/>
 The January 2012 release adds the ability to remember customized relational column names and control column order, verbalization options to standardize the verbalized display of object type names, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2>Contents</h2>
@@ -44,7 +45,26 @@ The January 2012 release adds the ability to remember customized relational colu
 
 <hr/>
 <h2>January 2012 CTP Changes</h2>
-<div>The January 2012 CTP release includes all modifications through changeset 1482.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The January 2012 CTP release includes all modifications through changeset 1484.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#VerbalizePossiblePopulationsOption 2012-04">Verbalize possible populations option</a>&nbsp;</li>
+<li>Other Features:
+<ol>
+<li>Major rework of uniqueness, mandatory, and frequency verbalizations to closer match the underlying logical forms. The <em>Context:</em>-style verbalizations are gone and the accuracy of negative verbalizations (when offered) is improved.</li>
+<li>Added option to suppress display of shape shadows. Requested as an option for printing a cleaner diagram.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Reloading a model with an unconstrained unary fact type would display a two-role fact type with no uniqueness constraints.</li>
+<li>Reloading a model with a collapsed shape for an objectified fact type (FactTypeShape.DisplayAsObjectType = true) would incorrectly add role name shapes to the collapsed shape.</li>
+</ol>
+</li>
+</ul>
+
+<hr/>
+<h2>January 2012 CTP Changes</h2>
+<div>The January 2012 CTP release includes all modifications through changeset 1482.</div>
 <ul>
 <li><a href="#SchemaCustomization 2012-01">Custom relational names and column ordering</a>&nbsp;</li>
 <li><a href="#VerbalizedObjectTypeNameDisplay 2012-01">Verbalized object type name options</a>&nbsp;</li>
@@ -63,14 +83,14 @@ The January 2012 release adds the ability to remember customized relational colu
 <li>The Length property was available with a column selection for the Picture and OleObject data types, which do not support this facet.</li>
 <li>The data type for a column associated with a unary fact type is now read-only to avoid unwanted side-effects caused by modifying this data type.</li>
 <li>Fix issues with excessive model churn and extra shapes appearing when a reference mode format string is modified.</li>
-<li>Fix issue where objectifying a unary or binary fact type without a spanning uniqueness constraint would extra shapes on all diagrams without the fact type.</li>
+<li>Fix issue where objectifying a unary or binary fact type without a spanning uniqueness constraint would add extra shapes on all diagrams without the fact type.</li>
 </ol>
 </li>
 </ul>
 
 <hr/>
 <h2>October 2011 CTP Changes</h2>
-<div>The October 2011 CTP release includes all modifications through changeset 1476.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The October 2011 CTP release includes all modifications through changeset 1476.</div>
 <ul>
 <li>Features:
 <ol>
@@ -529,6 +549,10 @@ The <strong>Object Type Name Display</strong> option in the <em>Verbalization</e
         <td>thirdName</td>
     </tr>
 </table>
+</li>
+<li>
+<a id="VerbalizePossiblePopulationsOption 2012-04" class="new" title="April 2012 CTP: Verbalize possible populations option">2012-04</a>&nbsp;
+The <strong>Possible Populations</strong> option has replaced the <strong>Verbalization Default Constraint</strong> option in the <em>Verbalization</em> section of the <em>ORM Designer</em> tab on the <em>Options</em> page (available on the <em>Tools</em> menu). This option now applies to the possible populations of spanning internal uniqueness constraints in addition to many-to-one binary fact types.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>

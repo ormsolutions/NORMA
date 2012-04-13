@@ -331,6 +331,9 @@
                 <a href="#AtMostOneQuantifier">AtMostOneQuantifier</a>
               </li>
               <li>
+                <a href="#AtMostOneTypedOccurrence">AtMostOneTypedOccurrence</a>
+              </li>
+              <li>
                 <a href="#ChainedListClose">ChainedListClose</a>
               </li>
               <li>
@@ -367,13 +370,7 @@
                 <a href="#CloseVerbalizationSentence">CloseVerbalizationSentence</a>
               </li>
               <li>
-                <a href="#CombinationAssociation">CombinationAssociation</a>
-              </li>
-              <li>
                 <a href="#CombinationIdentifier">CombinationIdentifier</a>
-              </li>
-              <li>
-                <a href="#CombinationOccurrence">CombinationOccurrence</a>
               </li>
               <li>
                 <a href="#CombinationUniqueness">CombinationUniqueness</a>
@@ -424,13 +421,16 @@
                 <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
               </li>
               <li>
+                <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
+              </li>
+              <li>
                 <a href="#ConstraintProvidesPreferredIdentifier">ConstraintProvidesPreferredIdentifier</a>
               </li>
               <li>
-                <a href="#ContextScope">ContextScope</a>
+                <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
               </li>
               <li>
-                <a href="#ContextScopeReference">ContextScopeReference</a>
+                <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
               </li>
               <li>
                 <a href="#DefiniteArticle">DefiniteArticle</a>
@@ -487,10 +487,19 @@
                 <a href="#ExactlyOneQuantifier">ExactlyOneQuantifier</a>
               </li>
               <li>
+                <a href="#ExactlyOneTypedOccurrence">ExactlyOneTypedOccurrence</a>
+              </li>
+              <li>
+                <a href="#ExactlyOneUntypedOccurrence">ExactlyOneUntypedOccurrence</a>
+              </li>
+              <li>
                 <a href="#ExclusionBinaryLeadReading">ExclusionBinaryLeadReading</a>
               </li>
               <li>
                 <a href="#ExclusionCombined">ExclusionCombined</a>
+              </li>
+              <li>
+                <a href="#ExistenceImplicationOperator">ExistenceImplicationOperator</a>
               </li>
               <li>
                 <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
@@ -524,6 +533,12 @@
               </li>
               <li>
                 <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+              </li>
+              <li>
+                <a href="#ForEachNegatableCompactQuantifier">ForEachNegatableCompactQuantifier</a>
+              </li>
+              <li>
+                <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
               </li>
               <li>
                 <a href="#FrequencyPopulation">FrequencyPopulation</a>
@@ -1527,7 +1542,38 @@
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>AtMostOneQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="AtMostOneTypedOccurrence" class="snippet">
+          <span class="snippetHeader">
+            <a name="AtMostOneTypedOccurrence" id="AtMostOneTypedOccurrence">AtMostOneTypedOccurrence</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used for a single-role frequency constraint with min=max=1.
+<br />
+            <strong>Format: </strong> at most one {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">at most one {0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>AtMostOneTypedOccurrence</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>AtMostOneTypedOccurrence</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
               </ul>
             </p>
           </div>
@@ -1743,75 +1789,6 @@ restriction. If the non-top-level separator includes an indentation, then this s
             </div>
           </div>
         </div>
-        <div id="CombinationAssociation" class="snippet">
-          <span class="snippetHeader">
-            <a name="CombinationAssociation" id="CombinationAssociation">CombinationAssociation</a>
-          </span>
-          <div class="snippetStatement">
-            <strong>Description: </strong> Verbalizes an association of combinations.  <br />
-            <strong>Format: </strong> {0} combination is associated with {1}</div>
-          <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>2</div>
-          <div class="snippetUnformattedText">
-            <span class="reportItem">Unformatted version: </span>
-            <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">{0} combination is associated with {1}</pre>
-            </div>
-          </div>
-          <div class="snippetContains">
-            <p>The <strong>CombinationAssociation</strong> snippet contains the following snippets: <ul class="contains">
-                <li>
-                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
-                </li>
-                <li>
-                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
-                </li>
-                <li>
-                  <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
-                </li>
-                <li>
-                  <a href="#MoreThanOneQuantifier">MoreThanOneQuantifier</a>
-                </li>
-                <li>
-                  <a href="#OneQuantifier">OneQuantifier</a>
-                </li>
-              </ul>
-            </p>
-          </div>
-          <div classs="snippetContainedIn">
-            <p>The <strong>CombinationAssociation</strong> snippet is contained in the following snippets: <ul class="containedIn">
-                <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
-                </li>
-                <li>
-                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
-                </li>
-              </ul>
-            </p>
-          </div>
-          <div class="snippetUsedBy">
-            <p>The <strong>CombinationAssociation</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>FrequencyConstraint</li>
-                <li>UniquenessConstraint</li>
-              </ul>
-            </p>
-          </div>
-        </div>
         <div id="CombinationIdentifier" class="snippet">
           <span class="snippetHeader">
             <a name="CombinationIdentifier" id="CombinationIdentifier">CombinationIdentifier</a>
@@ -1841,6 +1818,15 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div classs="snippetContainedIn">
             <p>The <strong>CombinationIdentifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
+                  <a href="#ExistenceImplicationOperator">ExistenceImplicationOperator</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
+                </li>
+                <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
                 </li>
                 <li>
@@ -1848,6 +1834,9 @@ restriction. If the non-top-level separator includes an indentation, then this s
                 </li>
                 <li>
                   <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
+                </li>
+                <li>
+                  <a href="#MoreThanOneQuantifier">MoreThanOneQuantifier</a>
                 </li>
                 <li>
                   <a href="#OccursInPopulation">OccursInPopulation</a>
@@ -1858,63 +1847,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetUsedBy">
             <p>The <strong>CombinationIdentifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
-                <li>UniquenessConstraint</li>
-              </ul>
-            </p>
-          </div>
-        </div>
-        <div id="CombinationOccurrence" class="snippet">
-          <span class="snippetHeader">
-            <a name="CombinationOccurrence" id="CombinationOccurrence">CombinationOccurrence</a>
-          </span>
-          <div class="snippetStatement">
-            <strong>Description: </strong> Verbalizes a range of combination occurrences.  <br />
-            <strong>Format: </strong> {0} combination occurs {1}</div>
-          <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>2</div>
-          <div class="snippetUnformattedText">
-            <span class="reportItem">Unformatted version: </span>
-            <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">{0} combination occurs {1}</pre>
-            </div>
-          </div>
-          <div class="snippetContains">
-            <p>The <strong>CombinationOccurrence</strong> snippet contains the following snippets: <ul class="contains">
-                <li>
-                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
-                </li>
-                <li>
-                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
-                </li>
-              </ul>
-            </p>
-          </div>
-          <div classs="snippetContainedIn">
-            <p>The <strong>CombinationOccurrence</strong> snippet is contained in the following snippets: <ul class="containedIn">
-                <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
-                </li>
-                <li>
-                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
-                </li>
-              </ul>
-            </p>
-          </div>
-          <div class="snippetUsedBy">
-            <p>The <strong>CombinationOccurrence</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>FrequencyConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -1933,26 +1866,6 @@ restriction. If the non-top-level separator includes an indentation, then this s
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">{0} combination is unique</pre>
             </div>
-          </div>
-          <div classs="snippetContainedIn">
-            <p>The <strong>CombinationUniqueness</strong> snippet is contained in the following snippets: <ul class="containedIn">
-                <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
-                </li>
-                <li>
-                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
-                </li>
-              </ul>
-            </p>
-          </div>
-          <div class="snippetUsedBy">
-            <p>The <strong>CombinationUniqueness</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
-              </ul>
-            </p>
           </div>
         </div>
         <div id="CombinedObjectAndInstance" class="snippet">
@@ -2008,7 +1921,8 @@ restriction. If the non-top-level separator includes an indentation, then this s
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPreferredVerbalizer</li>
                 <li>ValueTypeValueConstraint</li>
               </ul>
             </p>
@@ -2035,7 +1949,8 @@ restriction. If the non-top-level separator includes an indentation, then this s
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPreferredVerbalizer</li>
                 <li>ValueTypeValueConstraint</li>
               </ul>
             </p>
@@ -2062,7 +1977,8 @@ restriction. If the non-top-level separator includes an indentation, then this s
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPreferredVerbalizer</li>
                 <li>ValueTypeValueConstraint</li>
               </ul>
             </p>
@@ -2089,7 +2005,8 @@ restriction. If the non-top-level separator includes an indentation, then this s
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPreferredVerbalizer</li>
                 <li>ValueTypeValueConstraint</li>
               </ul>
             </p>
@@ -2116,7 +2033,8 @@ restriction. If the non-top-level separator includes an indentation, then this s
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>NearestValueConstraintVerbalizer</li>
                 <li>RoleValueConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPreferredVerbalizer</li>
                 <li>ValueTypeValueConstraint</li>
               </ul>
             </p>
@@ -2141,7 +2059,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div classs="snippetContainedIn">
             <p>The <strong>CompatibleTypesIdentityInequalityOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
                 <li>
                   <a href="#LogicalAndOperator">LogicalAndOperator</a>
@@ -2175,7 +2093,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
             <p>The <strong>CompoundListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -2199,7 +2117,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
             <p>The <strong>CompoundListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -2223,7 +2141,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
             <p>The <strong>CompoundListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -2247,7 +2165,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
             <p>The <strong>CompoundListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -2271,7 +2189,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
             <p>The <strong>CompoundListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
                 <li>SubsetConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -2329,6 +2247,80 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetContains">
             <p>The <strong>ConditionalMultiLine</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
+                  <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ExactlyOneTypedOccurrence">ExactlyOneTypedOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ExactlyOneUntypedOccurrence">ExactlyOneUntypedOccurrence</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+                </li>
+                <li>
+                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>ConditionalMultiLine</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>ConditionalMultiLine</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="ConditionalMultiLineIndented" class="snippet">
+          <span class="snippetHeader">
+            <a name="ConditionalMultiLineIndented" id="ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Verbalizes a conditional statement on two lines with the 'then' line indented.
+<br />
+            <strong>Format: </strong> if {0}
+          then {1}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">if {0}then {1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>ConditionalMultiLineIndented</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
                   <a href="#CompatibleTypesIdentityInequalityOperator">CompatibleTypesIdentityInequalityOperator</a>
                 </li>
                 <li>
@@ -2362,7 +2354,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
             </p>
           </div>
           <div classs="snippetContainedIn">
-            <p>The <strong>ConditionalMultiLine</strong> snippet is contained in the following snippets: <ul class="containedIn">
+            <p>The <strong>ConditionalMultiLineIndented</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
                 </li>
@@ -2370,7 +2362,7 @@ restriction. If the non-top-level separator includes an indentation, then this s
             </p>
           </div>
           <div class="snippetUsedBy">
-            <p>The <strong>ConditionalMultiLine</strong> snippet is used by the following Constraints: <ul class="usedBy">
+            <p>The <strong>ConditionalMultiLineIndented</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>AntisymmetricRingVerbalizer</li>
                 <li>AsymmetricRingVerbalizer</li>
                 <li>IntransitiveRingVerbalizer</li>
@@ -2410,59 +2402,30 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div class="snippetUsedBy">
             <p>The <strong>ConstraintProvidesPreferredIdentifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>ImpliedUniqueVerbalizer</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessPreferredVerbalizer</li>
               </ul>
             </p>
           </div>
         </div>
-        <div id="ContextScope" class="snippet">
+        <div id="ContextCombinationAssociation" class="snippet">
           <span class="snippetHeader">
-            <a name="ContextScope" id="ContextScope">ContextScope</a>
+            <a name="ContextCombinationAssociation" id="ContextCombinationAssociation">ContextCombinationAssociation</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Used to define the context in which the object is used.  <br />
-            <strong>Format: </strong> context: {0}</div>
+            <strong>Description: </strong> Verbalizes a range of combination occurrences for a specified type where the combination has been previous specified.  <br />
+            <strong>Format: </strong> that combination is associated with {1} in this context</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>1</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">context:&amp;nbsp;{0}</pre>
-            </div>
-          </div>
-          <div class="snippetUsedBy">
-            <p>The <strong>ContextScope</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>FrequencyConstraint</li>
-                <li>UniquenessConstraint</li>
-              </ul>
-            </p>
-          </div>
-        </div>
-        <div id="ContextScopeReference" class="snippet">
-          <span class="snippetHeader">
-            <a name="ContextScopeReference" id="ContextScopeReference">ContextScopeReference</a>
-          </span>
-          <div class="snippetStatement">
-            <strong>Description: </strong> Used to define the context in which the following object will be in.  <br />
-            <strong>Format: </strong> in this context, {0}</div>
-          <div class="snippetReplacementFieldCount">
-            <span class="reportItem">Number of replacement fields: </span>1</div>
-          <div class="snippetUnformattedText">
-            <span class="reportItem">Unformatted version: </span>
-            <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">in this context, {0}</pre>
+              <pre class="unformattedSnippetDecorator">that combination is associated with {0} in this context</pre>
             </div>
           </div>
           <div class="snippetContains">
-            <p>The <strong>ContextScopeReference</strong> snippet contains the following snippets: <ul class="contains">
+            <p>The <strong>ContextCombinationAssociation</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
-                </li>
-                <li>
-                  <a href="#CombinationOccurrence">CombinationOccurrence</a>
-                </li>
-                <li>
-                  <a href="#CombinationUniqueness">CombinationUniqueness</a>
+                  <a href="#ExactlyOneTypedOccurrence">ExactlyOneTypedOccurrence</a>
                 </li>
                 <li>
                   <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
@@ -2479,34 +2442,89 @@ restriction. If the non-top-level separator includes an indentation, then this s
                 <li>
                   <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
                 </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>ContextCombinationAssociation</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
                 </li>
                 <li>
-                  <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
-                </li>
-                <li>
-                  <a href="#MoreThanOneQuantifier">MoreThanOneQuantifier</a>
-                </li>
-                <li>
-                  <a href="#OneQuantifier">OneQuantifier</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
           </div>
           <div class="snippetUsedBy">
-            <p>The <strong>ContextScopeReference</strong> snippet is used by the following Constraints: <ul class="usedBy">
+            <p>The <strong>ContextCombinationAssociation</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>FrequencyConstraint</li>
-                <li>UniquenessConstraint</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="ContextCombinationOccurrence" class="snippet">
+          <span class="snippetHeader">
+            <a name="ContextCombinationOccurrence" id="ContextCombinationOccurrence">ContextCombinationOccurrence</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Verbalizes a range of combination occurrences where the combination has been previous specified.  <br />
+            <strong>Format: </strong> that combination occurs {1} in this context</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">that combination occurs {0} in this context</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>ContextCombinationOccurrence</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#ExactlyOneUntypedOccurrence">ExactlyOneUntypedOccurrence</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>ContextCombinationOccurrence</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>ContextCombinationOccurrence</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -2529,13 +2547,22 @@ restriction. If the non-top-level separator includes an indentation, then this s
           <div classs="snippetContainedIn">
             <p>The <strong>DefiniteArticle</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
+                </li>
+                <li>
+                  <a href="#ExistenceImplicationOperator">ExistenceImplicationOperator</a>
                 </li>
                 <li>
                   <a href="#ForEachCompactQuantifier">ForEachCompactQuantifier</a>
                 </li>
                 <li>
                   <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableCompactQuantifier">ForEachNegatableCompactQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -2554,13 +2581,16 @@ restriction. If the non-top-level separator includes an indentation, then this s
                 <li>AntisymmetricRingVerbalizer</li>
                 <li>AsymmetricRingVerbalizer</li>
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>DefaultBinaryMissingUniquenessVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>IntransitiveRingVerbalizer</li>
-                <li>MandatoryConstraint</li>
+                <li>SimpleMandatoryVerbalizer</li>
                 <li>SymmetricRingVerbalizer</li>
                 <li>TransitiveRingVerbalizer</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -2906,6 +2936,93 @@ Replacement: {0}=error text,{1}=error id
             </p>
           </div>
         </div>
+        <div id="ExactlyOneTypedOccurrence" class="snippet">
+          <span class="snippetHeader">
+            <a name="ExactlyOneTypedOccurrence" id="ExactlyOneTypedOccurrence">ExactlyOneTypedOccurrence</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used for a fallback uniqueness verbalization, or for a frequency constraint with min=max=1.
+<br />
+            <strong>Format: </strong> exactly one {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">exactly one {0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>ExactlyOneTypedOccurrence</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>ExactlyOneTypedOccurrence</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="ExactlyOneUntypedOccurrence" class="snippet">
+          <span class="snippetHeader">
+            <a name="ExactlyOneUntypedOccurrence" id="ExactlyOneUntypedOccurrence">ExactlyOneUntypedOccurrence</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used for a fallback uniqueness verbalization, or for a frequency constraint with min=max=1.
+<br />
+            <strong>Format: </strong> exactly once</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">exactly once</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>ExactlyOneUntypedOccurrence</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#FrequencyPopulation">FrequencyPopulation</a>
+                </li>
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>ExactlyOneUntypedOccurrence</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>FrequencyConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
         <div id="ExclusionBinaryLeadReading" class="snippet">
           <span class="snippetHeader">
             <a name="ExclusionBinaryLeadReading" id="ExclusionBinaryLeadReading">ExclusionBinaryLeadReading</a>
@@ -2967,6 +3084,59 @@ Replacement: {0}=error text,{1}=error id
             </p>
           </div>
         </div>
+        <div id="ExistenceImplicationOperator" class="snippet">
+          <span class="snippetHeader">
+            <a name="ExistenceImplicationOperator" id="ExistenceImplicationOperator">ExistenceImplicationOperator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Verbalizes an existence condition and a consequent.  <br />
+            <strong>Format: </strong> there is {0} such that {1}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">there is {0} such that{1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>ExistenceImplicationOperator</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#CombinationIdentifier">CombinationIdentifier</a>
+                </li>
+                <li>
+                  <a href="#DefiniteArticle">DefiniteArticle</a>
+                </li>
+                <li>
+                  <a href="#MoreThanOneQuantifier">MoreThanOneQuantifier</a>
+                </li>
+                <li>
+                  <a href="#OneQuantifier">OneQuantifier</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>ExistenceImplicationOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>ExistenceImplicationOperator</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>UniquenessConstraintVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
         <div id="ExistentialQuantifier" class="snippet">
           <span class="snippetHeader">
             <a name="ExistentialQuantifier" id="ExistentialQuantifier">ExistentialQuantifier</a>
@@ -2985,13 +3155,19 @@ Replacement: {0}=error text,{1}=error id
           <div classs="snippetContainedIn">
             <p>The <strong>ExistentialQuantifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
                 <li>
                   <a href="#ForEachCompactQuantifier">ForEachCompactQuantifier</a>
                 </li>
                 <li>
                   <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableCompactQuantifier">ForEachNegatableCompactQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -3009,15 +3185,18 @@ Replacement: {0}=error text,{1}=error id
             <p>The <strong>ExistentialQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>AntisymmetricRingVerbalizer</li>
                 <li>AsymmetricRingVerbalizer</li>
+                <li>DefaultBinaryMissingUniquenessVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>IntransitiveRingVerbalizer</li>
                 <li>IrreflexiveRingVerbalizer</li>
-                <li>MandatoryConstraint</li>
                 <li>PurelyReflexiveRingVerbalizer</li>
                 <li>ReflexiveRingVerbalizer</li>
+                <li>SimpleMandatoryVerbalizer</li>
                 <li>StronglyIntransitiveRingVerbalizer</li>
                 <li>SymmetricRingVerbalizer</li>
                 <li>TransitiveRingVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -3211,12 +3390,12 @@ Replacement: {0}=error text,{1}=error id
           <div class="snippetUsedBy">
             <p>The <strong>ForEachCompactQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
                 <li>EqualityConstraint</li>
                 <li>ExclusionConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
-                <li>MandatoryConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -3239,7 +3418,19 @@ Replacement: {0}=error text,{1}=error id
           <div class="snippetContains">
             <p>The <strong>ForEachIndentedQuantifier</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
+                  <a href="#CombinationIdentifier">CombinationIdentifier</a>
+                </li>
+                <li>
                   <a href="#Conditional">Conditional</a>
+                </li>
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
                 </li>
                 <li>
                   <a href="#DefiniteArticle">DefiniteArticle</a>
@@ -3248,13 +3439,31 @@ Replacement: {0}=error text,{1}=error id
                   <a href="#Equality">Equality</a>
                 </li>
                 <li>
+                  <a href="#ExactlyOneTypedOccurrence">ExactlyOneTypedOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ExactlyOneUntypedOccurrence">ExactlyOneUntypedOccurrence</a>
+                </li>
+                <li>
                   <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
                 </li>
                 <li>
-                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
                 </li>
                 <li>
-                  <a href="#OneQuantifier">OneQuantifier</a>
+                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
+                </li>
+                <li>
+                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
+                </li>
+                <li>
+                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
+                </li>
+                <li>
+                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
                 </li>
               </ul>
             </p>
@@ -3270,9 +3479,133 @@ Replacement: {0}=error text,{1}=error id
           <div class="snippetUsedBy">
             <p>The <strong>ForEachIndentedQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>EqualityConstraint</li>
-                <li>MandatoryConstraint</li>
+                <li>FrequencyConstraint</li>
+                <li>SimpleMandatoryVerbalizer</li>
                 <li>SubsetConstraint</li>
-                <li>UniquenessConstraint</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="ForEachNegatableCompactQuantifier" class="snippet">
+          <span class="snippetHeader">
+            <a name="ForEachNegatableCompactQuantifier" id="ForEachNegatableCompactQuantifier">ForEachNegatableCompactQuantifier</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Verbalizes for each instance of an object, some rule applies to those instances.
+<br />
+          </div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">for each {0}, {1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>ForEachNegatableCompactQuantifier</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#DefiniteArticle">DefiniteArticle</a>
+                </li>
+                <li>
+                  <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
+                </li>
+                <li>
+                  <a href="#MoreThanOneQuantifier">MoreThanOneQuantifier</a>
+                </li>
+                <li>
+                  <a href="#OneQuantifier">OneQuantifier</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>ForEachNegatableCompactQuantifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>ForEachNegatableCompactQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>DefaultBinaryMissingUniquenessVerbalizer</li>
+                <li>SimpleMandatoryVerbalizer</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="ForEachNegatableIndentedQuantifier" class="snippet">
+          <span class="snippetHeader">
+            <a name="ForEachNegatableIndentedQuantifier" id="ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Verbalizes for each instance of an object then creates a line break where the rules that apply to those instances are listed.
+<br />
+          </div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">for each {0},{1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>ForEachNegatableIndentedQuantifier</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#CombinationIdentifier">CombinationIdentifier</a>
+                </li>
+                <li>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
+                </li>
+                <li>
+                  <a href="#DefiniteArticle">DefiniteArticle</a>
+                </li>
+                <li>
+                  <a href="#ExactlyOneUntypedOccurrence">ExactlyOneUntypedOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ExistenceImplicationOperator">ExistenceImplicationOperator</a>
+                </li>
+                <li>
+                  <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#MoreThanOneQuantifier">MoreThanOneQuantifier</a>
+                </li>
+                <li>
+                  <a href="#OneQuantifier">OneQuantifier</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>ForEachNegatableIndentedQuantifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+                <li>
+                  <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div class="snippetUsedBy">
+            <p>The <strong>ForEachNegatableIndentedQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
+                <li>SimpleMandatoryVerbalizer</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -3297,6 +3630,9 @@ Replacement: {0}=error text,{1}=error id
             <p>The <strong>FrequencyPopulation</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
                   <a href="#CombinationIdentifier">CombinationIdentifier</a>
+                </li>
+                <li>
+                  <a href="#ExactlyOneUntypedOccurrence">ExactlyOneUntypedOccurrence</a>
                 </li>
                 <li>
                   <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
@@ -3350,13 +3686,16 @@ Replacement: {0}=error text,{1}=error id
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyRangeExact</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
                 </li>
                 <li>
-                  <a href="#CombinationOccurrence">CombinationOccurrence</a>
+                  <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
                 </li>
                 <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
@@ -3369,9 +3708,6 @@ Replacement: {0}=error text,{1}=error id
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -3402,13 +3738,16 @@ Replacement: {0}=error text,{1}=error id
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyRangeMaxUnbounded</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
                 </li>
                 <li>
-                  <a href="#CombinationOccurrence">CombinationOccurrence</a>
+                  <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
                 </li>
                 <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
@@ -3421,9 +3760,6 @@ Replacement: {0}=error text,{1}=error id
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -3454,13 +3790,16 @@ Replacement: {0}=error text,{1}=error id
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyRangeMinAndMax</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
                 </li>
                 <li>
-                  <a href="#CombinationOccurrence">CombinationOccurrence</a>
+                  <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
                 </li>
                 <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
@@ -3473,9 +3812,6 @@ Replacement: {0}=error text,{1}=error id
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -3506,13 +3842,16 @@ Replacement: {0}=error text,{1}=error id
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyRangeMinUnbounded</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
                 </li>
                 <li>
-                  <a href="#CombinationOccurrence">CombinationOccurrence</a>
+                  <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
                 </li>
                 <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
@@ -3525,9 +3864,6 @@ Replacement: {0}=error text,{1}=error id
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -3575,16 +3911,16 @@ Replacement: {0}=error text,{1}=error id
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyTypedOccurrences</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
                 </li>
                 <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                  <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -3632,19 +3968,19 @@ Replacement: {0}=error text,{1}=error id
           <div classs="snippetContainedIn">
             <p>The <strong>FrequencyUntypedOccurrences</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#CombinationOccurrence">CombinationOccurrence</a>
+                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
                 </li>
                 <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
-                </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -3921,13 +4257,7 @@ Replacement: {0}=error text,{1}=error id
           <div classs="snippetContainedIn">
             <p>The <strong>IdentityReferenceQuantifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
-                </li>
-                <li>
                   <a href="#CombinationIdentifier">CombinationIdentifier</a>
-                </li>
-                <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -3945,7 +4275,7 @@ Replacement: {0}=error text,{1}=error id
             <p>The <strong>IdentityReferenceQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>DefaultBinaryMissingUniquenessVerbalizer</li>
                 <li>IrreflexiveRingVerbalizer</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4031,22 +4361,25 @@ types that represent the same instance where the first variable is an impersonal
                   <a href="#AcyclicityWithRoleNumbers">AcyclicityWithRoleNumbers</a>
                 </li>
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                  <a href="#AtMostOneTypedOccurrence">AtMostOneTypedOccurrence</a>
                 </li>
                 <li>
                   <a href="#CombinationIdentifier">CombinationIdentifier</a>
-                </li>
-                <li>
-                  <a href="#CombinationOccurrence">CombinationOccurrence</a>
-                </li>
-                <li>
-                  <a href="#CombinationUniqueness">CombinationUniqueness</a>
                 </li>
                 <li>
                   <a href="#Conditional">Conditional</a>
                 </li>
                 <li>
                   <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                </li>
+                <li>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
+                </li>
+                <li>
+                  <a href="#ContextCombinationAssociation">ContextCombinationAssociation</a>
+                </li>
+                <li>
+                  <a href="#ContextCombinationOccurrence">ContextCombinationOccurrence</a>
                 </li>
                 <li>
                   <a href="#DefiniteArticle">DefiniteArticle</a>
@@ -4058,10 +4391,19 @@ types that represent the same instance where the first variable is an impersonal
                   <a href="#ExactlyOneQuantifier">ExactlyOneQuantifier</a>
                 </li>
                 <li>
+                  <a href="#ExactlyOneTypedOccurrence">ExactlyOneTypedOccurrence</a>
+                </li>
+                <li>
+                  <a href="#ExactlyOneUntypedOccurrence">ExactlyOneUntypedOccurrence</a>
+                </li>
+                <li>
                   <a href="#ExclusionBinaryLeadReading">ExclusionBinaryLeadReading</a>
                 </li>
                 <li>
                   <a href="#ExclusionCombined">ExclusionCombined</a>
+                </li>
+                <li>
+                  <a href="#ExistenceImplicationOperator">ExistenceImplicationOperator</a>
                 </li>
                 <li>
                   <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
@@ -4071,6 +4413,12 @@ types that represent the same instance where the first variable is an impersonal
                 </li>
                 <li>
                   <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableCompactQuantifier">ForEachNegatableCompactQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#FrequencyPopulation">FrequencyPopulation</a>
@@ -4141,13 +4489,10 @@ types that represent the same instance where the first variable is an impersonal
           <div classs="snippetContainedIn">
             <p>The <strong>ImpliedModalNecessityOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
-                </li>
-                <li>
                   <a href="#ForEachCompactQuantifier">ForEachCompactQuantifier</a>
                 </li>
                 <li>
-                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
                 </li>
               </ul>
             </p>
@@ -4156,20 +4501,21 @@ types that represent the same instance where the first variable is an impersonal
             <p>The <strong>ImpliedModalNecessityOperator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>AcyclicRingVerbalizer</li>
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
                 <li>EqualityConstraint</li>
                 <li>ExclusionConstraint</li>
                 <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>IrreflexiveRingVerbalizer</li>
-                <li>MandatoryConstraint</li>
                 <li>PurelyReflexiveRingVerbalizer</li>
                 <li>ReflexiveRingVerbalizer</li>
+                <li>SimpleMandatoryVerbalizer</li>
                 <li>StronglyIntransitiveRingVerbalizer</li>
                 <li>SubsetConstraint</li>
                 <li>SymmetricRingVerbalizer</li>
                 <li>TransitiveRingVerbalizer</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4191,7 +4537,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedCompoundListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4213,7 +4559,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedCompoundListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4235,7 +4581,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedCompoundListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4257,7 +4603,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedCompoundListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4279,7 +4625,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedCompoundListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4301,7 +4647,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4323,7 +4669,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4345,7 +4691,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4367,7 +4713,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4389,7 +4735,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4491,7 +4837,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedLogicalOrListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4513,7 +4859,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedLogicalOrListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4535,7 +4881,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedLogicalOrListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4557,7 +4903,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedLogicalOrListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4579,7 +4925,7 @@ types that represent the same instance where the first variable is an impersonal
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>IndentedLogicalOrListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -4670,7 +5016,7 @@ types that represent the same instance where the first variable is an impersonal
           <div classs="snippetContainedIn">
             <p>The <strong>LogicalAndOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -4929,16 +5275,22 @@ types that represent the same instance where the first variable is an impersonal
           <div class="snippetContains">
             <p>The <strong>ModalPossibilityOperator</strong> snippet contains the following snippets: <ul class="contains">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
-                </li>
-                <li>
                   <a href="#CombinationIdentifier">CombinationIdentifier</a>
                 </li>
                 <li>
                   <a href="#DefiniteArticle">DefiniteArticle</a>
                 </li>
                 <li>
+                  <a href="#ExistenceImplicationOperator">ExistenceImplicationOperator</a>
+                </li>
+                <li>
                   <a href="#ExistentialQuantifier">ExistentialQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableCompactQuantifier">ForEachNegatableCompactQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
@@ -4964,10 +5316,7 @@ types that represent the same instance where the first variable is an impersonal
           <div classs="snippetContainedIn">
             <p>The <strong>ModalPossibilityOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
-                </li>
-                <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
                 <li>
                   <a href="#ForEachCompactQuantifier">ForEachCompactQuantifier</a>
@@ -4980,10 +5329,11 @@ types that represent the same instance where the first variable is an impersonal
                 <li>AntisymmetricRingVerbalizer</li>
                 <li>AsymmetricRingVerbalizer</li>
                 <li>DefaultBinaryMissingUniquenessVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>IntransitiveRingVerbalizer</li>
-                <li>MandatoryConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -5019,13 +5369,24 @@ types that represent the same instance where the first variable is an impersonal
               <pre class="unformattedSnippetDecorator">more than one {0}</pre>
             </div>
           </div>
+          <div class="snippetContains">
+            <p>The <strong>MoreThanOneQuantifier</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#CombinationIdentifier">CombinationIdentifier</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div classs="snippetContainedIn">
             <p>The <strong>MoreThanOneQuantifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
+                  <a href="#ExistenceImplicationOperator">ExistenceImplicationOperator</a>
                 </li>
                 <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                  <a href="#ForEachNegatableCompactQuantifier">ForEachNegatableCompactQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
@@ -5036,7 +5397,8 @@ types that represent the same instance where the first variable is an impersonal
           <div class="snippetUsedBy">
             <p>The <strong>MoreThanOneQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>DefaultBinaryMissingUniquenessVerbalizer</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -5820,7 +6182,7 @@ Note that VariableExistence can be used with a negated quantifier if the negated
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>NegativeReadingForUnaryOnlyDisjunctiveMandatory</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -5927,7 +6289,7 @@ Note that VariableExistence can be used with a negated quantifier if the negated
           <div class="snippetUsedBy">
             <p>The <strong>ObjectType</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>NearestValueConstraintVerbalizer</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessPreferredVerbalizer</li>
                 <li>ValueTypeValueConstraint</li>
               </ul>
             </p>
@@ -6088,7 +6450,7 @@ Note that VariableExistence can be used with a negated quantifier if the negated
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>OccursInPopulation</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -6112,16 +6474,16 @@ Note that VariableExistence can be used with a negated quantifier if the negated
           <div classs="snippetContainedIn">
             <p>The <strong>OneQuantifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
-                </li>
-                <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
+                  <a href="#ExistenceImplicationOperator">ExistenceImplicationOperator</a>
                 </li>
                 <li>
                   <a href="#ForEachCompactQuantifier">ForEachCompactQuantifier</a>
                 </li>
                 <li>
-                  <a href="#ForEachIndentedQuantifier">ForEachIndentedQuantifier</a>
+                  <a href="#ForEachNegatableCompactQuantifier">ForEachNegatableCompactQuantifier</a>
+                </li>
+                <li>
+                  <a href="#ForEachNegatableIndentedQuantifier">ForEachNegatableIndentedQuantifier</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -6129,16 +6491,13 @@ Note that VariableExistence can be used with a negated quantifier if the negated
                 <li>
                   <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
                 </li>
-                <li>
-                  <a href="#UniversalQuantifier">UniversalQuantifier</a>
-                </li>
               </ul>
             </p>
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>OneQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>ImpliedUniqueVerbalizer</li>
-                <li>UniquenessConstraint</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -6543,7 +6902,7 @@ different types that represent the same instance where the first variable is an 
           <div classs="snippetContainedIn">
             <p>The <strong>ReflexivePronoun</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -6576,7 +6935,7 @@ different types that represent the same instance where the first variable is an 
           <div classs="snippetContainedIn">
             <p>The <strong>ReflexiveQuantifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -6708,7 +7067,7 @@ active trailing outdent snippets.
           <div classs="snippetContainedIn">
             <p>The <strong>SameTypeIdentityInequalityOperator</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
                 <li>
                   <a href="#LogicalAndOperator">LogicalAndOperator</a>
@@ -6741,7 +7100,7 @@ active trailing outdent snippets.
           <div classs="snippetContainedIn">
             <p>The <strong>SelfReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -6788,10 +7147,12 @@ active trailing outdent snippets.
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
-                <li>ImpliedUniqueVerbalizer</li>
-                <li>MandatoryConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>SimpleMandatoryVerbalizer</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -6814,10 +7175,12 @@ active trailing outdent snippets.
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
-                <li>ImpliedUniqueVerbalizer</li>
-                <li>MandatoryConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>SimpleMandatoryVerbalizer</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -6840,10 +7203,12 @@ active trailing outdent snippets.
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
-                <li>ImpliedUniqueVerbalizer</li>
-                <li>MandatoryConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>SimpleMandatoryVerbalizer</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -6866,10 +7231,12 @@ active trailing outdent snippets.
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
-                <li>ImpliedUniqueVerbalizer</li>
-                <li>MandatoryConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>SimpleMandatoryVerbalizer</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -6892,10 +7259,12 @@ active trailing outdent snippets.
           <div class="snippetUsedBy">
             <p>The <strong>SimpleListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
+                <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
-                <li>ImpliedUniqueVerbalizer</li>
-                <li>MandatoryConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>SimpleMandatoryVerbalizer</li>
+                <li>UniquenessConstraintVerbalizer</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7032,7 +7401,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>SimpleLogicalOrListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7054,7 +7423,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>SimpleLogicalOrListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7076,7 +7445,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>SimpleLogicalOrListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7098,7 +7467,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>SimpleLogicalOrListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7120,7 +7489,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>SimpleLogicalOrListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7169,7 +7538,7 @@ active trailing outdent snippets.
           <div classs="snippetContainedIn">
             <p>The <strong>StronglyIntransitiveConsequent</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
-                  <a href="#ConditionalMultiLine">ConditionalMultiLine</a>
+                  <a href="#ConditionalMultiLineIndented">ConditionalMultiLineIndented</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -7258,7 +7627,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalAndListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7280,7 +7649,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalAndListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7302,7 +7671,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalAndListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7324,7 +7693,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalAndListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7346,7 +7715,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalAndListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>UniquenessConstraint</li>
+                <li>UniquenessPossibilityVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7368,7 +7737,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalOrListClose</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7390,7 +7759,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalOrListFinalSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7412,7 +7781,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalOrListOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7434,7 +7803,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalOrListPairSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7456,7 +7825,7 @@ active trailing outdent snippets.
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TopLevelIndentedLogicalOrListSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
-                <li>MandatoryConstraint</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
               </ul>
             </p>
           </div>
@@ -7476,48 +7845,10 @@ active trailing outdent snippets.
               <pre class="unformattedSnippetDecorator">each {0}</pre>
             </div>
           </div>
-          <div class="snippetContains">
-            <p>The <strong>UniversalQuantifier</strong> snippet contains the following snippets: <ul class="contains">
-                <li>
-                  <a href="#CombinationAssociation">CombinationAssociation</a>
-                </li>
-                <li>
-                  <a href="#CombinationOccurrence">CombinationOccurrence</a>
-                </li>
-                <li>
-                  <a href="#CombinationUniqueness">CombinationUniqueness</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeExact">FrequencyRangeExact</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeMaxUnbounded">FrequencyRangeMaxUnbounded</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeMinAndMax">FrequencyRangeMinAndMax</a>
-                </li>
-                <li>
-                  <a href="#FrequencyRangeMinUnbounded">FrequencyRangeMinUnbounded</a>
-                </li>
-                <li>
-                  <a href="#FrequencyTypedOccurrences">FrequencyTypedOccurrences</a>
-                </li>
-                <li>
-                  <a href="#FrequencyUntypedOccurrences">FrequencyUntypedOccurrences</a>
-                </li>
-                <li>
-                  <a href="#OneQuantifier">OneQuantifier</a>
-                </li>
-              </ul>
-            </p>
-          </div>
           <div classs="snippetContainedIn">
             <p>The <strong>UniversalQuantifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
                   <a href="#CombinationIdentifier">CombinationIdentifier</a>
-                </li>
-                <li>
-                  <a href="#ContextScopeReference">ContextScopeReference</a>
                 </li>
                 <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
@@ -7531,11 +7862,12 @@ active trailing outdent snippets.
           <div class="snippetUsedBy">
             <p>The <strong>UniversalQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>CombinedMandatoryUniqueVerbalizer</li>
+                <li>DisjunctiveMandatoryVerbalizer</li>
                 <li>FrequencyConstraint</li>
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
-                <li>MandatoryConstraint</li>
-                <li>UniquenessConstraint</li>
+                <li>SimpleMandatoryVerbalizer</li>
+                <li>UniquenessConstraintVerbalizer</li>
               </ul>
             </p>
           </div>

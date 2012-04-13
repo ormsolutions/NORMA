@@ -5207,10 +5207,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				foreach (ShapeElement childShape in RelativeChildShapes)
 				{
-					if (childShape is ReadingShape || childShape is ObjectifiedFactTypeNameShape)	
+					if (childShape is ReadingShape || childShape is ObjectifiedFactTypeNameShape)
 					{
 						yield return childShape;
 					}
+				}
+				foreach (RolePlayerLink linkShape in MultiShapeUtility.GetEffectiveAttachedLinkShapesFrom<RolePlayerLink>(this))
+				{
+					yield return linkShape;
 				}
 			}
 		}
@@ -7033,31 +7037,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		protected Color UpdateDynamicColor(StyleSetResourceId brushId, Brush brush)
 		{
-			// There are two options here for getting shape text. The first is to
-			// use the foreground color for the object type and let the color providers
-			// recognize the ObjectifiedFactTypeNameShape. The problem with this approach
-			// is that the text color for an object type is generally shown on top of the
-			// background color, but this is a transparent shape so the color displays
-			// against the diagram background, not the paired background color. The second
-			// option (which we use) is to get the foreground text color for the fact type
-			// shape. This color is also rendered for the reading shape and gives a consistent
-			// use of foreground text.
 			Color retVal = Color.Empty;
 			SolidBrush solidBrush;
 			Store store;
-			IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>[] providers;
-			FactTypeShape factTypeShape;
-			FactType factType;
+			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectifiedFactTypeNameShape, ObjectType>[] providers;
+			ObjectType objectType;
 			if (brushId == DiagramBrushes.ShapeText &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
-				null != (factTypeShape = ParentShape as FactTypeShape) &&
-				null != (factType = factTypeShape.AssociatedFactType))
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectifiedFactTypeNameShape, ObjectType>>()) &&
+				null != (objectType = this.AssociatedObjectType))
 			{
 				for (int i = 0; i < providers.Length; ++i)
 				{
-					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.ForegroundText, factTypeShape, factType);
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.FloatingText, this, objectType);
 					if (alternateColor != Color.Empty)
 					{
 						retVal = solidBrush.Color;

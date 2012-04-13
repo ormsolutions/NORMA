@@ -652,11 +652,11 @@
     <comment xml:space="preserve">The display name of the Show Debug Commands option.</comment>
   </data>
   <data name="OptionsPage.Property.ShowDefaultConstraintVerbalization.Description">
-    <value xml:space="preserve">Should verbalization be shown for constraints implied by the lack of a constraint?</value>
+    <value xml:space="preserve">Should verbalization be shown for populations allowed by the current internal uniqueness constraints?</value>
     <comment xml:space="preserve">The description of the Show Default Constraint Verbalization option.</comment>
   </data>
   <data name="OptionsPage.Property.ShowDefaultConstraintVerbalization.DisplayName">
-    <value xml:space="preserve">Verbalize Default Constraint</value>
+    <value xml:space="preserve">Possible Populations</value>
     <comment xml:space="preserve">The display name of the Show Default Constraint Verbalization option.</comment>
   </data>
   <data name="OptionsPage.Property.VerbalizeFactTypesWithObjectType.Description">
@@ -664,7 +664,7 @@
     <comment xml:space="preserve">The description of the Verbalize FactTypes with ObjectType Verbalization option.</comment>
   </data>
   <data name="OptionsPage.Property.VerbalizeFactTypesWithObjectType.DisplayName">
-    <value xml:space="preserve">Verbalize FactTypes with ObjectType</value>
+    <value xml:space="preserve">FactTypes with ObjectType</value>
     <comment xml:space="preserve">The display name of the Verbalize FactTypes with ObjectType Verbalization option.</comment>
   </data>
   <data name="OptionsPage.Property.VerbalizationHyperlinkTarget.Description">
@@ -851,7 +851,15 @@
     <value xml:space="preserve">The constraint display color of all grouped constraints with deontic modality</value>
     <comment xml:space="preserve">The description of the dynamic deontic constraint color.</comment>
   </data>
-  <data name="ORMDiagramDynamicColor.ForegroundGraphics">
+	<data name="ORMDiagramDynamicColor.FloatingText">
+		<value xml:space="preserve">FloatingText</value>
+		<comment xml:space="preserve">The display name for the dynamic floating text color.</comment>
+	</data>
+	<data name="ORMDiagramDynamicColor.FloatingText.Description">
+		<value xml:space="preserve">The display color for floating text elements. Displayed the diagram background.</value>
+		<comment xml:space="preserve">The description of the dynamic floating text color.</comment>
+	</data>
+	<data name="ORMDiagramDynamicColor.ForegroundGraphics">
     <value xml:space="preserve">Foreground</value>
     <comment xml:space="preserve">The display name for the dynamic foreground graphics color.</comment>
   </data>
@@ -860,11 +868,11 @@
     <comment xml:space="preserve">The description of the dynamic foreground graphics color.</comment>
   </data>
   <data name="ORMDiagramDynamicColor.ForegroundText">
-    <value xml:space="preserve">Text</value>
+    <value xml:space="preserve">ForegroundText</value>
     <comment xml:space="preserve">The display name for the dynamic foreground text color.</comment>
   </data>
   <data name="ORMDiagramDynamicColor.ForegroundText.Description">
-    <value xml:space="preserve">The display color for foreground text of grouped elements.</value>
+    <value xml:space="preserve">The display color for foreground text of grouped elements. Paired with the background display color.</value>
     <comment xml:space="preserve">The description of the dynamic foreground text color.</comment>
   </data>
   <data name="ORMDiagramDynamicColor.Outline">
@@ -874,6 +882,14 @@
   <data name="ORMDiagramDynamicColor.Outline.Description">
     <value xml:space="preserve">The display color for shape outlines of grouped elements.</value>
     <comment xml:space="preserve">The description of the dynamic outline color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.RolePlayerConnector">
+    <value xml:space="preserve">RolePlayerConnector</value>
+    <comment xml:space="preserve">The display name for the dynamic role player connector color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.RolePlayerConnector.Description">
+    <value xml:space="preserve">The display color for role player connectors of grouped elements.</value>
+    <comment xml:space="preserve">The description of the dynamic role player connector color.</comment>
   </data>
   <data name="ORMModelBrowser.WindowTitle">
     <value xml:space="preserve">ORM Model Browser</value>

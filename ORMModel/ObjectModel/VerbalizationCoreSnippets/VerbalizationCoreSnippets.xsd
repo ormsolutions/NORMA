@@ -150,9 +150,23 @@
 						<xs:documentation>Description: Verbalizes for each instance of an object, some rule applies to those instances.  Format: for each {0}, {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="ForEachNegatableCompactQuantifier">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes for each instance of an object, some rule applies to those instances.
+Format positive: for each {0}, {1}
+Format negative: for some {0}, {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="ForEachIndentedQuantifier">
 					<xs:annotation>
 						<xs:documentation>Description: Verbalizes for each instance of an object then creates a line break where the rules that apply to those instances are listed.  Format: for each {0}, \n{1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ForEachNegatableIndentedQuantifier">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes for each instance of an object then creates a line break where the rules that apply to those instances are listed.
+Format positive: for each {0}, \n{1}
+Format negative: for some {0}, \n{1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ExistentialQuantifier">
@@ -176,29 +190,24 @@
 Format for alethic and positive: {0}  Format for deontic and positive: it is obligatory that {0}  Format for alethic and negative: it is impossible that {0}  Format for deontic and negative: it is forbidden that {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ContextScope">
+				<xs:enumeration value="ContextCombinationOccurrence">
 					<xs:annotation>
-						<xs:documentation>Description: Used to define the context in which the object is used.  Format: context: {0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes a range of combination occurrences where the combination has been previous specified.  Format: that combination occurs {1} in this context</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ContextScopeReference">
+				<xs:enumeration value="ContextCombinationAssociation">
 					<xs:annotation>
-						<xs:documentation>Description: Used to define the context in which the following object will be in.  Format: in this context, {0}</xs:documentation>
-					</xs:annotation>
-				</xs:enumeration>
-				<xs:enumeration value="CombinationAssociation">
-					<xs:annotation>
-						<xs:documentation>Description: Verbalizes an association of combinations.  Format: {0} combination is associated with {1}</xs:documentation>
-					</xs:annotation>
-				</xs:enumeration>
-				<xs:enumeration value="CombinationOccurrence">
-					<xs:annotation>
-						<xs:documentation>Description: Verbalizes a range of combination occurrences.  Format: {0} combination occurs {1}</xs:documentation>
+						<xs:documentation>Description: Verbalizes a range of combination occurrences for a specified type where the combination has been previous specified.  Format: that combination is associated with {1} in this context</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="CombinationUniqueness">
 					<xs:annotation>
 						<xs:documentation>Description: Verbalizes uniqueness of a combination.  Format: {0} combination is unique</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExistenceImplicationOperator">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes an existence condition and a consequent.  Format: there is {0} such that {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MoreThanOneQuantifier">
@@ -898,6 +907,13 @@ Format: if {0}
         then {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="ConditionalMultiLineIndented">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes a conditional statement on two lines with the 'then' line indented.
+Format: if {0}
+          then {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="Equality">
 					<xs:annotation>
 						<xs:documentation>Description: Used to verbalize a simple equality constraint. Format: {0} if and only if {1}</xs:documentation>
@@ -960,6 +976,24 @@ Format: at least {0}</xs:documentation>
 					<xs:annotation>
 						<xs:documentation>Description: Used for a frequency range where the min value is less than 2.
 Format: at most {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExactlyOneUntypedOccurrence">
+					<xs:annotation>
+						<xs:documentation>Description: Used for a fallback uniqueness verbalization, or for a frequency constraint with min=max=1.
+Format: exactly once</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ExactlyOneTypedOccurrence">
+					<xs:annotation>
+						<xs:documentation>Description: Used for a fallback uniqueness verbalization, or for a frequency constraint with min=max=1.
+Format: exactly one {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="AtMostOneTypedOccurrence">
+					<xs:annotation>
+						<xs:documentation>Description: Used for a single-role frequency constraint with min=max=1.
+Format: at most one {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="LogicalAndOperator">

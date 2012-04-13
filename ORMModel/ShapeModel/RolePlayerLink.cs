@@ -249,27 +249,50 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		protected Color UpdateDynamicColor(StyleSetResourceId penId, Pen pen)
 		{
 			Color retVal = Color.Empty;
-			IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>[] providers;
 			ObjectTypePlaysRole link;
-			Role playedRole;
-			MandatoryConstraint mandatory;
 			Store store;
-			if (penId == DiagramPens.ConnectionLineDecorator &&
+			bool forLink = penId == DiagramPens.ConnectionLine;
+			if ((forLink || (penId == DiagramPens.ConnectionLineDecorator)) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
-				null != (link = ModelElement as ObjectTypePlaysRole) &&
-				null != (playedRole = link.PlayedRole) &&
-				null != (mandatory = playedRole.SimpleMandatoryConstraint))
+				null != (link = ModelElement as ObjectTypePlaysRole))
 			{
-				ORMDiagramDynamicColor requestColor = mandatory.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
-				for (int i = 0; i < providers.Length; ++i)
+				if (forLink)
 				{
-					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, mandatory);
-					if (alternateColor != Color.Empty)
+					IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, ObjectTypePlaysRole>[] providers;
+					if (null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, ObjectTypePlaysRole>>()))
 					{
-						retVal = pen.Color;
-						pen.Color = alternateColor;
-						break;
+						for (int i = 0; i < providers.Length; ++i)
+						{
+							Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.RolePlayerConnector, this, link);
+							if (alternateColor != Color.Empty)
+							{
+								retVal = pen.Color;
+								pen.Color = alternateColor;
+								break;
+							}
+						}
+					}
+				}
+				else
+				{
+					IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>[] providers;
+					Role playedRole;
+					MandatoryConstraint mandatory;
+					if (null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
+						null != (playedRole = link.PlayedRole) &&
+						null != (mandatory = playedRole.SimpleMandatoryConstraint))
+					{
+						ORMDiagramDynamicColor requestColor = mandatory.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
+						for (int i = 0; i < providers.Length; ++i)
+						{
+							Color alternateColor = providers[i].GetDynamicColor(requestColor, this, mandatory);
+							if (alternateColor != Color.Empty)
+							{
+								retVal = pen.Color;
+								pen.Color = alternateColor;
+								break;
+							}
+						}
 					}
 				}
 			}

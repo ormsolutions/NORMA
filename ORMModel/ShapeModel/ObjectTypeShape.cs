@@ -36,7 +36,7 @@ using ORMSolutions.ORMArchitect.Core.Shell;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
-	public partial class ObjectTypeShape : IModelErrorActivation, IDynamicColorGeometryHost, IConfigureableLinkEndpoint
+	public partial class ObjectTypeShape : IModelErrorActivation, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint
 	{
 		#region Member Variables
 		private static AutoSizeTextField myTextShapeField;
@@ -198,6 +198,28 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return UpdateDynamicColor(brushId, brush);
 		}
 		#endregion // IDynamicColorGeometryHost Implementation
+		#region IDynamicColorAlsoUsedBy Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorAlsoUsedBy.RelatedDynamicallyColoredShapes"/>
+		/// </summary>
+		protected IEnumerable<ShapeElement> RelatedDynamicallyColoredShapes
+		{
+			get
+			{
+				foreach (RolePlayerLink linkShape in MultiShapeUtility.GetEffectiveAttachedLinkShapesTo<RolePlayerLink>(this))
+				{
+					yield return linkShape;
+				}
+			}
+		}
+		IEnumerable<ShapeElement> IDynamicColorAlsoUsedBy.RelatedDynamicallyColoredShapes
+		{
+			get
+			{
+				return RelatedDynamicallyColoredShapes;
+			}
+		}
+		#endregion // IDynamicColorAlsoUsedBy Implementation
 		/// <summary>
 		/// Add a dashed pen to the class resource set
 		/// </summary>

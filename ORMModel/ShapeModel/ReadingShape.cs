@@ -71,7 +71,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				for (int i = 0; i < providers.Length; ++i)
 				{
-					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.ForegroundText, factTypeShape, factType);
+					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.FloatingText, factTypeShape, factType);
 					if (alternateColor != Color.Empty)
 					{
 						retVal = solidBrush.Color;

@@ -7748,6 +7748,115 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // UniquenessConstraintChangeRule
+		#region Verbalization
+		/// <summary>
+		/// Helper function to defer mandatory verbalization by constraint arity
+		/// </summary>
+		private void VerbalizeParts(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			UniquenessVerbalizerBase verbalize;
+			if ((bool)verbalizationContext.VerbalizationOptions[CoreVerbalizationOption.ShowDefaultConstraint])
+			{
+				verbalize = UniquenessPossibilityVerbalizer.GetVerbalizer();
+				using ((IDisposable)verbalize)
+				{
+					verbalize.Initialize(this);
+					verbalizationContext.DeferVerbalization(verbalize, DeferVerbalizationOptions.None, null);
+				}
+			}
+			verbalize = UniquenessConstraintVerbalizer.GetVerbalizer();
+			using ((IDisposable)verbalize)
+			{
+				verbalize.Initialize(this);
+				verbalizationContext.DeferVerbalization(verbalize, DeferVerbalizationOptions.None, null);
+			}
+			if (this.PreferredIdentifierFor != null)
+			{
+				verbalize = UniquenessPreferredVerbalizer.GetVerbalizer();
+				using ((IDisposable)verbalize)
+				{
+					verbalize.Initialize(this);
+					verbalizationContext.DeferVerbalization(verbalize, DeferVerbalizationOptions.None, null);
+				}
+			}
+		}
+		#region UniquenessVerbalizerBase class and partials for each mandatory classification
+		/// <summary>
+		/// Base class for child helper uniqueness verbalizers.
+		/// Provides properties expected by the generated verbalization code.
+		/// </summary>
+		private abstract class UniquenessVerbalizerBase
+		{
+			#region Member Variables
+			private UniquenessConstraint myConstraint;
+			#endregion // Member Variables
+			#region Cache Methods
+			/// <summary>
+			/// Attach this instance to a context <see cref="UniquenessConstraint"/>
+			/// </summary>
+			public void Initialize(UniquenessConstraint constraint)
+			{
+				myConstraint = constraint;
+			}
+			protected void DisposeHelper()
+			{
+				myConstraint = null;
+			}
+			#endregion // Cache Methods
+			#region Passthrough properties
+			protected ConstraintModality Modality
+			{
+				get
+				{
+					return myConstraint.Modality;
+				}
+			}
+			protected LinkedElementCollection<Role> RoleCollection
+			{
+				get
+				{
+					return myConstraint.RoleCollection;
+				}
+			}
+			protected LinkedElementCollection<FactType> FactTypeCollection
+			{
+				get
+				{
+					return myConstraint.FactTypeCollection;
+				}
+			}
+			protected ObjectType PreferredIdentifierFor
+			{
+				get
+				{
+					return myConstraint.PreferredIdentifierFor;
+				}
+			}
+			protected bool IsPreferred
+			{
+				get
+				{
+					return myConstraint.PreferredIdentifierFor != null;
+				}
+			}
+			protected ConstraintRoleSequenceJoinPath JoinPath
+			{
+				get
+				{
+					return myConstraint.JoinPath;
+				}
+			}
+			public static implicit operator UniquenessConstraint(UniquenessVerbalizerBase verbalizer)
+			{
+				return verbalizer.myConstraint;
+			}
+			#endregion // Passthrough properties
+		}
+		private partial class UniquenessConstraintVerbalizer : UniquenessVerbalizerBase { }
+		private partial class UniquenessPossibilityVerbalizer : UniquenessVerbalizerBase { }
+		private partial class UniquenessPreferredVerbalizer : UniquenessVerbalizerBase { }
+		#endregion // UniquenessVerbalizerBase class and partials for each mandatory classification
+		#endregion // Verbalization
 	}
 	#endregion // UniquenessConstraint class
 	#region MandatoryConstraint class
@@ -7932,6 +8041,84 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // IRedirectVerbalization Implementation
+		#region Verbalization
+		/// <summary>
+		/// Helper function to defer mandatory verbalization by constraint arity
+		/// </summary>
+		private void VerbalizeByConstraintArity(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			MandatoryVerbalizerBase verbalize = null;
+			switch (this.RoleCollection.Count)
+			{
+				case 0:
+					break;
+				case 1:
+					verbalize = SimpleMandatoryVerbalizer.GetVerbalizer();
+					break;
+				default:
+					verbalize = DisjunctiveMandatoryVerbalizer.GetVerbalizer();
+					break;
+			}
+			if (verbalize != null)
+			{
+				using ((IDisposable)verbalize)
+				{
+					verbalize.Initialize(this);
+					verbalizationContext.DeferVerbalization(verbalize, DeferVerbalizationOptions.None, null);
+				}
+			}
+		}
+		#region MandatoryVerbalizerBase class and partials for each mandatory classification
+		/// <summary>
+		/// Base class for child helper mandatory verbalizers.
+		/// Provides properties expected by the generated verbalization code.
+		/// </summary>
+		private abstract class MandatoryVerbalizerBase
+		{
+			#region Member Variables
+			private MandatoryConstraint myConstraint;
+			#endregion // Member Variables
+			#region Cache Methods
+			/// <summary>
+			/// Attach this instance to a context <see cref="MandatoryConstraint"/>
+			/// </summary>
+			public void Initialize(MandatoryConstraint constraint)
+			{
+				myConstraint = constraint;
+			}
+			protected void DisposeHelper()
+			{
+				myConstraint = null;
+			}
+			#endregion // Cache Methods
+			#region Passthrough properties
+			protected ConstraintModality Modality
+			{
+				get
+				{
+					return myConstraint.Modality;
+				}
+			}
+			protected LinkedElementCollection<Role> RoleCollection
+			{
+				get
+				{
+					return myConstraint.RoleCollection;
+				}
+			}
+			protected LinkedElementCollection<FactType> FactTypeCollection
+			{
+				get
+				{
+					return myConstraint.FactTypeCollection;
+				}
+			}
+			#endregion // Passthrough properties
+		}
+		private partial class SimpleMandatoryVerbalizer : MandatoryVerbalizerBase { }
+		private partial class DisjunctiveMandatoryVerbalizer : MandatoryVerbalizerBase { }
+		#endregion // MandatoryVerbalizerBase class and partials for each mandatory classification
+		#endregion // Verbalization
 	}
 	#endregion // MandatoryConstraint class
 	#region ExlusiveOrConstraintCoupler class

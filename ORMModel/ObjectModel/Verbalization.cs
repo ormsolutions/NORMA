@@ -2765,6 +2765,110 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // GetDocumentHeaderReplacementFields method
 	}
 	#endregion // VerbalizationHelper class
+	#region VerbalizationSubscripter class
+	/// <summary>
+	/// Helper class for generated subscripting code. Completes subscripting
+	/// on demand, so that subscripted elements are numbered in order of first
+	/// appearance.
+	/// </summary>
+	public struct VerbalizationSubscripter
+	{
+		private Dictionary<string, int> myLastSubscripts;
+		private IFormatProvider myFormatProvider;
+		/// <summary>
+		/// Create a <see cref="VerbalizationSubscripter"/>.
+		/// </summary>
+		/// <param name="formatProvider">The current format provider.</param>
+		public VerbalizationSubscripter(IFormatProvider formatProvider)
+		{
+			myFormatProvider = formatProvider;
+			myLastSubscripts = null;
+		}
+		/// <summary>
+		/// Get a subscripted name for the specified role replacement data.
+		/// </summary>
+		/// <param name="index">The array index of the first dimension of the
+		/// replacement data.</param>
+		/// <param name="replacementData">An array with three columns. The first column
+		/// is the unsubscripted data, the second is either a format string or the final
+		/// subscripted data, the third is either null (indicating that subscripting is not
+		/// used for this item), the empty string (indicating that the subscripted
+		/// data is still a format string), or a non-null string (the format string originally
+		/// stored in the main second column). Storing the original format string enables
+		/// the data to be reset.</param>
+		/// <returns>The subscripted name.</returns>
+		public string GetSubscriptedName(int index, string[,] replacementData)
+		{
+			string data = replacementData[index, 1];
+			string formatData = replacementData[index, 2];
+			if (null != formatData && formatData.Length == 0)
+			{
+				Dictionary<string, int> dict = myLastSubscripts;
+				string key = replacementData[index, 0];
+				int subscript;
+				if (dict == null)
+				{
+					myLastSubscripts = dict = new Dictionary<string, int>();
+					subscript = 1;
+				}
+				else if (dict.TryGetValue(key, out subscript))
+				{
+					++subscript;
+				}
+				else
+				{
+					subscript = 1;
+				}
+				dict[key] = subscript;
+				replacementData[index, 2] = data;
+				IFormatProvider formatProvider = myFormatProvider;
+				replacementData[index, 1] = data = string.Format(formatProvider, data, subscript.ToString(formatProvider));
+			}
+			return data;
+		}
+		/// <summary>
+		/// Prepare a subscripted format string for delayed subscripting with
+		/// <see cref="GetSubscriptedName"/>.
+		/// </summary>
+		/// <param name="subscriptedFormatString">The format string for the subscripted name.
+		/// The string has three replacements. 0=the name to subscript, 1=id of subscripted element,
+		/// 2=field for the subscript number.</param>
+		/// <param name="subscriptedElementName">The name of the element to subscript.</param>
+		/// <param name="subscriptedElementId">The id of the element to subscript</param>
+		/// <returns>Format string appropriate for use with <see cref="GetSubscriptedName"/>.</returns>
+		public string PrepareSubscriptFormatString(string subscriptedFormatString, string subscriptedElementName, string subscriptedElementId)
+		{
+			return string.Format(myFormatProvider, subscriptedFormatString, subscriptedElementName.Replace("{", "{{").Replace("}", "}}"), subscriptedElementId.Replace("{", "{{").Replace("}", "}}"), "{0}");
+		}
+		/// <summary>
+		/// Reset the subscript data for replacement fields.
+		/// </summary>
+		/// <param name="allReplacements">Replacement data created using <see cref="PrepareSubscriptFormatString"/> and
+		/// possibly modified with <see cref="GetSubscriptedName"/>.</param>
+		public void ResetSubscripts(string[][,] allReplacements)
+		{
+			Dictionary<string, int> dict = myLastSubscripts;
+			if (dict != null && dict.Count != 0)
+			{
+				dict.Clear();
+				for (int i = 0; i < allReplacements.Length; ++i)
+				{
+					string[,] replacements = allReplacements[i];
+					int length = replacements.GetLength(0);
+					for (int j = 0; j < length; ++j)
+					{
+						string replacementData = replacements[j, 2];
+						if (replacementData != null && replacementData.Length != 0)
+						{
+							replacements[j, 1] = replacementData;
+							replacements[j, 2] = string.Empty;
+						}
+					}
+				}
+			}
+		}
+	}
+	#endregion // Verbalization Subscripter class
 	#region ExtensionVerbalizerService class
 	/// <summary>
 	/// A standard implementation of <see cref="IExtensionVerbalizerService"/>
@@ -4003,7 +4107,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			/// <summary>
-			/// Retrieve the normalize correlation root associated with the key to
+			/// Retrieve the normalized correlation root associated with the key to
 			/// this variable use.
 			/// </summary>
 			public object CorrelationRoot
@@ -4124,7 +4228,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="visitStartNode"><see langword="true"/> if the <paramref name="startNode"/> should
 			/// be included in the enumeration.</param>
 			/// <returns>Enumeration</returns>
-			private IEnumerable<RolePathNode> GetPrecedingPathNodes(RolePathNode startNode, bool visitStartNode)
+			public IEnumerable<RolePathNode> GetPrecedingPathNodes(RolePathNode startNode, bool visitStartNode)
 			{
 				PathedRole startRole = startNode;
 				PathInfo pathInfo;
@@ -8215,6 +8319,231 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return "";
 		}
+		/// <summary>
+		/// Get a list of role path nodes containing all join nodes that occur at or
+		/// before the projected nodes (roles or roots) of a path, and all nodes at or
+		/// above nodes correlated with these variables. The return nodes correspond
+		/// to the first occur use of the project nodes (or correlated nodes) in the path
+		/// based on a depth-first iteration. Currently supported only for set constraint
+		/// role paths.
+		/// </summary>
+		/// <param name="projectionKeys">The keys used to .</param>
+		/// <returns>List of nodes, or <see langword="null"/>.</returns>
+		public IList<object> GetPreProjectionPrimaryNodeKeys<KeyType>(IEnumerable<KeyType> projectionKeys) where KeyType : class
+		{
+			if (projectionKeys != null)
+			{
+				List<RolePlayerVariableUse> variableUses = new List<RolePlayerVariableUse>();
+				// Key the correlation root to the project key
+				Dictionary<object, object> normalizedProjectionKeys = new Dictionary<object, object>();
+				// Keyed to itself, includes correlation roots and anything in the head above
+				Dictionary<object, object> correlatedNodes = new Dictionary<object,object>();
+				// Value is true if processed, false if already seen but processing pending.
+				Dictionary<RolePathNode, bool> processedNodes = new Dictionary<RolePathNode, bool>();
+				Queue<RolePathNode> toProcess = null;
+				RolePathCache cache = EnsureRolePathCache();
+				Action<RolePathNode> alsoProcess = delegate(RolePathNode node)
+				{
+					if (!processedNodes.ContainsKey(node))
+					{
+						processedNodes[node] = false;
+						(toProcess ?? (toProcess = new Queue<RolePathNode>())).Enqueue(node);
+					}
+				};
+				Action<RolePathNode> processNode = delegate(RolePathNode startNode)
+				{
+					bool alreadyProcessed;
+					if (processedNodes.TryGetValue(startNode, out alreadyProcessed) && alreadyProcessed)
+					{
+						return;
+					}
+					processedNodes[startNode] = true;
+					object resolvedNode;
+					foreach (RolePathNode node in cache.GetPrecedingPathNodes(startNode, false))
+					{
+						if (processedNodes.TryGetValue(node, out alreadyProcessed) && alreadyProcessed)
+						{
+							return;
+						}
+						processedNodes[node] = true;
+						PathedRole pathedRole;
+						RolePathObjectTypeRoot pathRoot = null;
+						if (null != (pathedRole = node.PathedRole))
+						{
+							if (pathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+							{
+								resolvedNode = cache.GetCorrelationRoot(node);
+								correlatedNodes[resolvedNode] = resolvedNode;
+							}
+						}
+						else
+						{
+							pathRoot = node.PathRoot;
+							resolvedNode = cache.GetCorrelationRoot(node);
+							correlatedNodes[resolvedNode] = resolvedNode;
+						}
+
+						PathObjectUnifier unifier = node.ObjectUnifier;
+						if (unifier != null)
+						{
+							// We also need to walk up the path from unified nodes.
+							// Add them to the stack of items to process.
+							foreach (PathedRole unifiedPathedRole in unifier.PathedRoleCollection)
+							{
+								if (unifiedPathedRole != pathedRole)
+								{
+									alsoProcess(new RolePathNode(unifiedPathedRole));
+								}
+							}
+							foreach (RolePathObjectTypeRoot unifiedPathRoot in unifier.PathRootCollection)
+							{
+								if (unifiedPathRoot != pathRoot)
+								{
+									alsoProcess(new RolePathNode(unifiedPathRoot));
+								}
+							}
+						}
+					}
+				};
+				foreach (KeyType key in projectionKeys)
+				{
+					RolePlayerVariableUse? testVariableUse = GetRolePlayerVariableUse(key);
+					RolePlayerVariableUse variableUse;
+					object correlationRoot;
+					if (testVariableUse.HasValue &&
+						null != (correlationRoot = (variableUse = testVariableUse.Value).CorrelationRoot))
+					{
+						normalizedProjectionKeys[correlationRoot] = key;
+						PathObjectUnifier unifier;
+						PathedRole pathedRole;
+						RolePathObjectTypeRoot pathRoot;
+						if (null != (pathedRole = correlationRoot as PathedRole))
+						{
+							processNode(new RolePathNode(pathedRole));
+						}
+						else if (null != (pathRoot = correlationRoot as RolePathObjectTypeRoot))
+						{
+							processNode(new RolePathNode(pathRoot));
+						}
+						else if (null != (unifier = correlationRoot as PathObjectUnifier))
+						{
+							foreach (PathedRole unifiedPathedRole in unifier.PathedRoleCollection)
+							{
+								processNode(unifiedPathedRole);
+							}
+							foreach (RolePathObjectTypeRoot unifiedPathRoot in unifier.PathRootCollection)
+							{
+								processNode(unifiedPathRoot);
+							}
+						}
+					}
+				}
+				if (toProcess != null)
+				{
+					while (toProcess.Count != 0)
+					{
+						RolePathNode nextNode = toProcess.Dequeue();
+						if (!processedNodes[nextNode])
+						{
+							processNode(nextNode);
+						}
+					}
+				}
+				if (correlatedNodes.Count != 0)
+				{
+					// Make sure we didn't pick up any other projected nodes
+					foreach (object key in normalizedProjectionKeys.Keys)
+					{
+						if (correlatedNodes.ContainsKey(key))
+						{
+							correlatedNodes.Remove(key);
+						}
+					}
+					int nodeCount = correlatedNodes.Count;
+					if (nodeCount != 0)
+					{
+						// The nodes are randomly ordered. Walk the path from the top to
+						// get a natural order.
+						object[] retVal = new object[nodeCount];
+						int nextIndex = 0;
+						Predicate<RolePath> pathWalker = null;
+						pathWalker = delegate(RolePath path)
+						{
+							RolePathObjectTypeRoot pathRoot = path.PathRoot;
+							object testValue;
+							object key;
+							if (pathRoot != null)
+							{
+								key = (object)pathRoot.ObjectUnifier ?? pathRoot;
+								if (correlatedNodes.TryGetValue(key, out testValue) && testValue != null)
+								{
+									correlatedNodes[key] = null;
+									retVal[nextIndex] = pathRoot;
+									if (++nextIndex == nodeCount)
+									{
+										return false; // Stop, we're done.
+									}
+								}
+							}
+							ReadOnlyCollection<PathedRole> pathedRoles = path.PathedRoleCollection;
+							int pathedRoleCount = pathedRoles.Count;
+							for (int i = 0; i < pathedRoleCount; ++i)
+							{
+								PathedRole pathedRole = pathedRoles[i];
+								if (pathedRole.PathedRolePurpose == PathedRolePurpose.SameFactType) // Correlation roots are never join nodes
+								{
+									key = (object)pathedRole.ObjectUnifier ?? pathedRole;
+									if (correlatedNodes.TryGetValue(key, out testValue) && testValue != null)
+									{
+										correlatedNodes[key] = null;
+										retVal[nextIndex] = pathedRole;
+										if (++nextIndex == nodeCount)
+										{
+											return false; // Stop, we're done.
+										}
+									}
+								}
+							}
+							foreach (RolePath subPath in path.SubPathCollection)
+							{
+								if (!pathWalker(subPath))
+								{
+									return false;
+								}
+							}
+							return true;
+						};
+						RolePathOwner singleOwner;
+						Dictionary<RolePathOwner, VerbalizationPlanNode> ownerMap;
+						if (null != (singleOwner = mySingleRolePathOwner))
+						{
+							foreach (RolePath path in singleOwner.LeadRolePathCollection)
+							{
+								if (!pathWalker(path))
+								{
+									return retVal;
+								}
+							}
+						}
+						else if (null != (ownerMap = myPathOwnerToVerbalizationPlanMap) &&
+							ownerMap.Count != 0)
+						{
+							foreach (RolePathOwner owner in ownerMap.Keys)
+							{
+								foreach (RolePath path in owner.LeadRolePathCollection)
+								{
+									if (!pathWalker(path))
+									{
+										return retVal;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			return null;
+		}
 		private string RenderVerbalizationPlanNode(StringBuilder builder, VerbalizationPlanNode node, LinkedNode<VerbalizationPlanNode> nodeLink, ref bool blockNextLeadRoleCollapse, out int outdentPosition)
 		{
 			outdentPosition = -1;
@@ -9596,7 +9925,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Fill in any constraint roles that do not have an associated variable.
 				// Note that this is an error condition for a pathed sequence, which should be fully
 				// projected, but not for a non-pathed sequence. We register variables for all uses to
-				// support subscripting for ring situations within the sequenct. Checking this condition
+				// support subscripting for ring situations within the sequence. Checking this condition
 				// for pathed sequences also enables better verbalization of incomplete structures.
 				foreach (ConstraintRoleSequenceHasRole constraintRole in ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(setConstraint))
 				{
