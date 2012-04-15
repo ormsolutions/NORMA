@@ -1755,7 +1755,7 @@
 					<xs:attribute name="columnArity" type="xs:positiveInteger" use="optional"/>
 					<xs:attribute name="sameConstraintRolePlayers" type="xs:boolean" use="optional">
 						<xs:annotation>
-							<xs:documentation>Used for a constraint with two roles that have the same role players. Use after a constraintArity attribute of 2.</xs:documentation>
+							<xs:documentation>Used for a constraint with two roles that have the same role players. Use with set constraints.</xs:documentation>
 						</xs:annotation>
 					</xs:attribute>
 					<xs:attribute name="rolePlayerLimitedToConstraintRoles" type="xs:boolean" use="optional">

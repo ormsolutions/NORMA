@@ -2227,6 +2227,80 @@
 						<plx:local name="reading" dataTypeName="IReading"/>
 						<plx:local name="hyphenBinder" dataTypeName="VerbalizationHyphenBinder"/>
 					</xsl:if>
+					<xsl:if test="descendant::cvg:*[@sameConstraintRolePlayers[.='true' or .='1'] and not(@constraintArity[.=2])]">
+						<plx:local name="singleConstrainedRolePlayerType" dataTypeName="ObjectType">
+							<plx:initialize>
+								<plx:callInstance name="RolePlayer" type="property">
+									<plx:callObject>
+										<plx:callInstance name=".implied" type="indexerCall">
+											<plx:callObject>
+												<plx:nameRef name="allConstraintRoles"/>
+											</plx:callObject>
+											<plx:passParam>
+												<plx:value type="i4" data="0"/>
+											</plx:passParam>
+										</plx:callInstance>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:initialize>
+						</plx:local>
+						<plx:loop>
+							<plx:initializeLoop>
+								<plx:local name="testSameRolePlayerIndex" dataTypeName=".i4">
+									<plx:initialize>
+										<plx:value type="i4" data="1"/>
+									</plx:initialize>
+								</plx:local>
+							</plx:initializeLoop>
+							<plx:condition>
+								<plx:binaryOperator type="lessThan">
+									<plx:left>
+										<plx:nameRef name="testSameRolePlayerIndex"/>
+									</plx:left>
+									<plx:right>
+										<plx:nameRef name="constraintRoleArity"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:beforeLoop>
+								<plx:increment>
+									<plx:nameRef name="testSameRolePlayerIndex"/>
+								</plx:increment>
+							</plx:beforeLoop>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:callInstance name="RolePlayer" type="property">
+												<plx:callObject>
+													<plx:callInstance name=".implied" type="indexerCall">
+														<plx:callObject>
+															<plx:nameRef name="allConstraintRoles"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:nameRef name="testSameRolePlayerIndex"/>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:nameRef name="singleConstrainedRolePlayerType"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:assign>
+									<plx:left>
+										<plx:nameRef name="singleConstrainedRolePlayerType"/>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:assign>
+								<plx:break/>
+							</plx:branch>
+						</plx:loop>
+					</xsl:if>
 					<xsl:if test="$isRoleValue or $isValueTypeValueConstraint or $isNearestValueConstraint">
 						<plx:local name="ranges" dataTypeName="LinkedElementCollection">
 							<plx:passTypeParam dataTypeName="ValueRange"/>
@@ -3105,39 +3179,53 @@
 	</xsl:template>
 	<xsl:template match="@sameConstraintRolePlayers" mode="ConstraintConditionOperator">
 		<xsl:param name="PatternGroup"/>
-		<xsl:if test="not(($PatternGroup='InternalSetConstraint' or $PatternGroup='SetConstraint') and parent::*[@constraintArity[.=2]])">
+		<xsl:if test="not(($PatternGroup='InternalSetConstraint' or $PatternGroup='SetConstraint'))">
 			<xsl:message terminate="yes">ConstraintRoles/@sameConstraintRolePlayers can be set only for binary set constraints.</xsl:message>
 		</xsl:if>
-		<plx:binaryOperator type="identityEquality">
-			<plx:left>
-				<plx:callInstance name="RolePlayer" type="property">
-					<plx:callObject>
-						<plx:callInstance name=".implied" type="indexerCall">
+		<xsl:choose>
+			<xsl:when test="parent::*[@constraintArity[.=2]]">
+				<plx:binaryOperator type="identityEquality">
+					<plx:left>
+						<plx:callInstance name="RolePlayer" type="property">
 							<plx:callObject>
-								<plx:nameRef name="allConstraintRoles"/>
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:nameRef name="allConstraintRoles"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value data="0" type="i4"/>
+									</plx:passParam>
+								</plx:callInstance>
 							</plx:callObject>
-							<plx:passParam>
-								<plx:value data="0" type="i4"/>
-							</plx:passParam>
 						</plx:callInstance>
-					</plx:callObject>
-				</plx:callInstance>
-			</plx:left>
-			<plx:right>
-				<plx:callInstance name="RolePlayer" type="property">
-					<plx:callObject>
-						<plx:callInstance name=".implied" type="indexerCall">
+					</plx:left>
+					<plx:right>
+						<plx:callInstance name="RolePlayer" type="property">
 							<plx:callObject>
-								<plx:nameRef name="allConstraintRoles"/>
+								<plx:callInstance name=".implied" type="indexerCall">
+									<plx:callObject>
+										<plx:nameRef name="allConstraintRoles"/>
+									</plx:callObject>
+									<plx:passParam>
+										<plx:value data="1" type="i4"/>
+									</plx:passParam>
+								</plx:callInstance>
 							</plx:callObject>
-							<plx:passParam>
-								<plx:value data="1" type="i4"/>
-							</plx:passParam>
 						</plx:callInstance>
-					</plx:callObject>
-				</plx:callInstance>
-			</plx:right>
-		</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</xsl:when>
+			<xsl:otherwise>
+				<plx:binaryOperator type="identityInequality">
+					<plx:left>
+						<plx:nameRef name="singleConstrainedRolePlayerType"/>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="@rolePlayerLimitedToConstraintRoles" mode="ConstraintConditionOperator">
 		<xsl:param name="PatternGroup"/>

@@ -8113,6 +8113,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return myConstraint.FactTypeCollection;
 				}
 			}
+			public static implicit operator MandatoryConstraint(MandatoryVerbalizerBase verbalizer)
+			{
+				return verbalizer.myConstraint;
+			}
 			#endregion // Passthrough properties
 		}
 		private partial class SimpleMandatoryVerbalizer : MandatoryVerbalizerBase { }

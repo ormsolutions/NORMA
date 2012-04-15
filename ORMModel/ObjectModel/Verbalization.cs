@@ -9927,12 +9927,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// projected, but not for a non-pathed sequence. We register variables for all uses to
 				// support subscripting for ring situations within the sequence. Checking this condition
 				// for pathed sequences also enables better verbalization of incomplete structures.
-				foreach (ConstraintRoleSequenceHasRole constraintRole in ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(setConstraint))
+				bool compatible = 0 != (((IConstraint)setConstraint).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns);
+				RolePlayerVariable compatibleVariable = null;
+				ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(setConstraint);
+
+				if (compatible)
+				{
+					ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(
+						constraintRoles,
+						delegate(ConstraintRoleSequenceHasRole constraintRole) { return constraintRole.Role.RolePlayer; });
+					while (compatibleTypes.Length > 1)
+					{
+						compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes);
+					}
+					compatibleVariable = AddExternalVariable(0, null, compatibleTypes.Length != 0 ? compatibleTypes[0] : null, RolePathNode.Empty);
+				}
+
+				foreach (ConstraintRoleSequenceHasRole constraintRole in constraintRoles)
 				{
 					RolePlayerVariableUse? variableUse = GetRolePlayerVariableUse(constraintRole);
 					if (!variableUse.HasValue)
 					{
-						AddExternalVariable(constraintRole, null, constraintRole.Role.RolePlayer, RolePathNode.Empty);
+						RolePlayerVariable newVariable = AddExternalVariable(constraintRole, compatibleVariable, constraintRole.Role.RolePlayer, RolePathNode.Empty);
+						if (compatible && compatibleVariable == null)
+						{
+							compatibleVariable = newVariable;
+						}
+					}
+					else if (compatible && compatibleVariable == null)
+					{
+						compatibleVariable = variableUse.Value.PrimaryRolePlayerVariable;
+					}
+				}
+
+				if (setConstraint is MandatoryConstraint)
+				{
+					Dictionary<ObjectType, RelatedRolePlayerVariables> map = myObjectTypeToVariableMap;
+					// Mark unconstrained roles in fact types as a pure existential use. This forces subscripts
+					// on constrained roles if there is a ring situation, but no on quantified requests of
+					// other roles with the same type.
+					LinkedElementCollection<Role> roles = setConstraint.RoleCollection;
+					foreach (FactType factType in setConstraint.FactTypeCollection)
+					{
+						foreach (RoleBase roleBase in factType.RoleCollection)
+						{
+							Role role = roleBase.Role;
+							ObjectType rolePlayer;
+							RelatedRolePlayerVariables vars;
+							if (!roles.Contains(role) &&
+								null != (rolePlayer = role.RolePlayer) &&
+								map.TryGetValue(rolePlayer, out vars) &&
+								!vars.UsedFullyExistentially)
+							{
+								vars.UsedFullyExistentially = true;
+								map[rolePlayer] = vars;
+							}
+						}
 					}
 				}
 
@@ -9940,6 +9990,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// sure a use phase is pushed so that we don't see quantified elements
 				// as a side effect of initialization.
 				BeginQuantificationUsePhase();
+			}
+			/// <summary>
+			/// The resolved supertype for the set constraint is the compatible column,
+			/// which is keyed with the column number (0).
+			/// </summary>
+			protected override object ResolveSupertypeKey(object rolePlayerFor)
+			{
+				ConstraintRoleSequenceHasRole constraintRole;
+				if (null != (constraintRole = rolePlayerFor as ConstraintRoleSequenceHasRole) &&
+					myUseToVariableMap.ContainsKey(0))
+				{
+					return 0;
+				}
+				return base.ResolveSupertypeKey(rolePlayerFor);
 			}
 			/// <summary>
 			/// Verbalize a path if it is projected
