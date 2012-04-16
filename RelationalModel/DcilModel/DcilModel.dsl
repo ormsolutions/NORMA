@@ -843,9 +843,11 @@
 				<EnumerationLiteral Name="Custom" Value="1" Description="Lock the current column order and place new columns at the end of the table. Remember user-specified column order."/>
 				<EnumerationLiteral Name="AutoPrimaryMandatoryUniqueOther" Value="2" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then other columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group."/>
 				<EnumerationLiteral Name="AutoPrimaryMandatoryOther" Value="3" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
-				<EnumerationLiteral Name="AutoPrimaryOther" Value="4" Description="Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group."/>
-				<EnumerationLiteral Name="AutoMandatoryOther" Value="5" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
-				<EnumerationLiteral Name="AutoByColumnName" Value="6" Description="Automatically order columns by column name only."/>
+				<EnumerationLiteral Name="AutoPrimaryUniqueMandatoryOther" Value="4" Description="Automatically order columns with primary columns first, then other columns under uniqueness constraints, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="AutoPrimaryUniqueOther" Value="5" Description="Automatically order columns with primary columns first, then remaining columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="AutoPrimaryOther" Value="6" Description="Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="AutoMandatoryOther" Value="7" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="AutoByColumnName" Value="8" Description="Automatically order columns by column name only."/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
@@ -859,9 +861,11 @@
 			<Literals>
 				<EnumerationLiteral Name="PrimaryMandatoryUniqueOther" Value="0" Description="(Default) Automatically order columns with primary columns first, then remaining mandatory columns, then other columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group."/>
 				<EnumerationLiteral Name="PrimaryMandatoryOther" Value="1" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
-				<EnumerationLiteral Name="PrimaryOther" Value="2" Description="Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group."/>
-				<EnumerationLiteral Name="MandatoryOther" Value="3" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
-				<EnumerationLiteral Name="ByColumnName" Value="4" Description="Automatically order columns by column name only."/>
+				<EnumerationLiteral Name="PrimaryUniqueMandatoryOther" Value="2" Description="Automatically order columns with primary columns first, then other columns under uniqueness constraints, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="PrimaryUniqueOther" Value="3" Description="Automatically order columns with primary columns first, then remaining columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="PrimaryOther" Value="4" Description="Automatically order columns with primary columns first, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="MandatoryOther" Value="5" Description="Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group."/>
+				<EnumerationLiteral Name="ByColumnName" Value="6" Description="Automatically order columns by column name only."/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">

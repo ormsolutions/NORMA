@@ -327,6 +327,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						case AutomaticColumnOrdering.PrimaryOther:
 						case AutomaticColumnOrdering.PrimaryMandatoryOther:
 						case AutomaticColumnOrdering.PrimaryMandatoryUniqueOther:
+						case AutomaticColumnOrdering.PrimaryUniqueMandatoryOther:
+						case AutomaticColumnOrdering.PrimaryUniqueOther:
 							foreach (UniquenessConstraint constraint in UniquenessConstraintIncludesColumn.GetUniquenessConstraints(column))
 							{
 								if (constraint.IsPrimary)
@@ -335,7 +337,15 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 								}
 								isUnique = true;
 							}
-							return (!column.IsNullable && (algorithm != AutomaticColumnOrdering.PrimaryOther)) ? 1 : ((isUnique && (algorithm == AutomaticColumnOrdering.PrimaryMandatoryUniqueOther)) ? 2 : 3);
+							switch (algorithm)
+							{
+								case AutomaticColumnOrdering.PrimaryUniqueOther:
+									return isUnique ? 1 : 2;
+								case AutomaticColumnOrdering.PrimaryUniqueMandatoryOther:
+									return isUnique ? 1 : (column.IsNullable ? 3 : 2);
+								default:
+									return (!column.IsNullable && (algorithm != AutomaticColumnOrdering.PrimaryOther)) ? 1 : ((isUnique && (algorithm == AutomaticColumnOrdering.PrimaryMandatoryUniqueOther)) ? 2 : 3);
+							}
 						case AutomaticColumnOrdering.MandatoryOther:
 							return column.IsNullable ? 1 : 0;
 						default:
@@ -416,6 +426,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						return AutomaticColumnOrdering.PrimaryMandatoryUniqueOther;
 					case ColumnOrdering.AutoPrimaryMandatoryOther:
 						return AutomaticColumnOrdering.PrimaryMandatoryOther;
+					case ColumnOrdering.AutoPrimaryUniqueMandatoryOther:
+						return AutomaticColumnOrdering.PrimaryUniqueMandatoryOther;
+					case ColumnOrdering.AutoPrimaryUniqueOther:
+						return AutomaticColumnOrdering.PrimaryUniqueOther;
 					case ColumnOrdering.AutoPrimaryOther:
 						return AutomaticColumnOrdering.PrimaryOther;
 					case ColumnOrdering.AutoMandatoryOther:

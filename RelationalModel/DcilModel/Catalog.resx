@@ -148,6 +148,12 @@
   <data name="AutomaticColumnOrdering.PrimaryOther" xml:space="preserve">
     <value>Primary/Other</value>
   </data>
+  <data name="AutomaticColumnOrdering.PrimaryUniqueOther" xml:space="preserve">
+    <value>Primary/Unique/Other</value>
+  </data>
+  <data name="AutomaticColumnOrdering.PrimaryUniqueMandatoryOther" xml:space="preserve">
+    <value>Primary/Unique/Mandatory/Other</value>
+  </data>
   <data name="ColumnOrdering.AutoSchemaDefault" xml:space="preserve">
     <value>&lt;Schema Default&gt;</value>
   </data>
@@ -165,6 +171,12 @@
   </data>
   <data name="ColumnOrdering.AutoPrimaryOther" xml:space="preserve">
     <value>Primary/Other</value>
+  </data>
+  <data name="ColumnOrdering.AutoPrimaryUniqueOther" xml:space="preserve">
+    <value>Primary/Unique/Other</value>
+  </data>
+  <data name="ColumnOrdering.AutoPrimaryUniqueMandatoryOther" xml:space="preserve">
+    <value>Primary/Unique/Mandatory/Other</value>
   </data>
   <data name="ColumnOrdering.Custom" xml:space="preserve">
     <value>Custom</value>

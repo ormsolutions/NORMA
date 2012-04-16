@@ -1071,6 +1071,22 @@
     <value>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
     <comment>Description for EnumerationLiteral &apos;AutoPrimaryMandatoryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryUniqueMandatoryOther.DisplayName" xml:space="preserve">
+    <value>AutoPrimaryUniqueMandatoryOther</value>
+    <comment>Display name for EnumerationLiteral &apos;AutoPrimaryUniqueMandatoryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryUniqueMandatoryOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then other columns under uniqueness constraints, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;AutoPrimaryUniqueMandatoryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryUniqueOther.DisplayName" xml:space="preserve">
+    <value>AutoPrimaryUniqueOther</value>
+    <comment>Display name for EnumerationLiteral &apos;AutoPrimaryUniqueOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryUniqueOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then remaining columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;AutoPrimaryUniqueOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnOrdering/AutoPrimaryOther.DisplayName" xml:space="preserve">
     <value>AutoPrimaryOther</value>
     <comment>Display name for EnumerationLiteral &apos;AutoPrimaryOther&apos; on DomainEnumeration &apos;ColumnOrdering&apos;</comment>
@@ -1110,6 +1126,22 @@
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryMandatoryOther.Description" xml:space="preserve">
     <value>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
     <comment>Description for EnumerationLiteral &apos;PrimaryMandatoryOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryUniqueMandatoryOther.DisplayName" xml:space="preserve">
+    <value>PrimaryUniqueMandatoryOther</value>
+    <comment>Display name for EnumerationLiteral &apos;PrimaryUniqueMandatoryOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryUniqueMandatoryOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then other columns under uniqueness constraints, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;PrimaryUniqueMandatoryOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryUniqueOther.DisplayName" xml:space="preserve">
+    <value>PrimaryUniqueOther</value>
+    <comment>Display name for EnumerationLiteral &apos;PrimaryUniqueOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryUniqueOther.Description" xml:space="preserve">
+    <value>Automatically order columns with primary columns first, then remaining columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group.</value>
+    <comment>Description for EnumerationLiteral &apos;PrimaryUniqueOther&apos; on DomainEnumeration &apos;AutomaticColumnOrdering&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.AutomaticColumnOrdering/PrimaryOther.DisplayName" xml:space="preserve">
     <value>PrimaryOther</value>

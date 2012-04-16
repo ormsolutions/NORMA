@@ -141,7 +141,7 @@
 					<xs:documentation>The name of the schema.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="DefaultOrder" default="PrimaryMandatoryUniqueOther">
+			<xs:attribute name="DefaultColumnOrder" default="PrimaryMandatoryUniqueOther">
 				<xs:annotation>
 					<xs:documentation>Choose the default algorithm for automatically sorting columns in this schema.</xs:documentation>
 				</xs:annotation>
@@ -155,6 +155,16 @@
 						<xs:enumeration value="PrimaryMandatoryOther">
 							<xs:annotation>
 								<xs:documentation>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="PrimaryUniqueMandatoryOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then other columns under uniqueness constraints, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="PrimaryUniqueOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then remaining columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
 							</xs:annotation>
 						</xs:enumeration>
 						<xs:enumeration value="PrimaryOther">
@@ -255,6 +265,16 @@
 						<xs:enumeration value="AutoPrimaryMandatoryOther">
 							<xs:annotation>
 								<xs:documentation>Automatically order columns with primary columns first, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="AutoPrimaryUniqueMandatoryOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then other columns under uniqueness constraints, then remaining mandatory columns, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
+							</xs:annotation>
+						</xs:enumeration>
+						<xs:enumeration value="AutoPrimaryUniqueOther">
+							<xs:annotation>
+								<xs:documentation>Automatically order columns with primary columns first, then remaining columns under uniqueness constraints, then all other columns. Columns are sorted alphabetically by column name within each group.</xs:documentation>
 							</xs:annotation>
 						</xs:enumeration>
 						<xs:enumeration value="AutoPrimaryOther">
