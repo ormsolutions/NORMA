@@ -4690,7 +4690,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private void ValidateJoinPath(INotifyElementAdded notifyAdded, bool verifyError, bool verifyAutomaticPath)
 		{
-			bool checkBinaryOppositeRolePlayerPattern = false;
+			int checkBinaryOppositeRolePlayerPatternMinArity = int.MaxValue;
 			bool joinNotNeeded = false;
 			bool allowStepOverRolePlayer = true;
 			IConstraint constraint = Constraint;
@@ -4718,8 +4718,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						break;
 					case ConstraintType.Frequency:
 					case ConstraintType.ExternalUniqueness:
-						checkBinaryOppositeRolePlayerPattern = true;
+						checkBinaryOppositeRolePlayerPatternMinArity = 1;
 						allowStepOverRolePlayer = false;
+						break;
+					case ConstraintType.Equality:
+					case ConstraintType.Exclusion:
+					case ConstraintType.Subset:
+						checkBinaryOppositeRolePlayerPatternMinArity = 3;
 						break;
 				}
 			}
@@ -4742,6 +4747,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool usesOppositeObjectification = false;
 #endif // BLOCK_TRIVIAL_JOINPATHS
 					BitTracker usedObjectifyingRole = new BitTracker(constraintRoleCount);
+					bool checkBinaryOppositeRolePlayerPattern = constraintRoleCount >= checkBinaryOppositeRolePlayerPatternMinArity;
 					for (int i = 1; i < constraintRoleCount; ++i)
 					{
 						Role currentRole = constraintRoles[i].Role;
@@ -5047,6 +5053,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int constraintRoleCount = constraintRoles.Count;
 			ConstraintRoleSequenceHasRole constraintRole = constraintRoles[0];
 			Role previousRole = constraintRole.Role;
+			Role otherRole;
 			if (previousRole.RolePlayer == null)
 			{
 				if (existingJoinPath != null)
@@ -5056,12 +5063,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return null;
 			}
 			List<AutomaticJoinPathData> pathData = new List<AutomaticJoinPathData>(3 * constraintRoleCount); // Plenty of space
+			Dictionary<Role, object> usedRoles = new Dictionary<Role, object>();
 			FactType previousFactType = previousRole.FactType;
 			ObjectType previousFactTypeObjectifiedBy = previousFactType.NestingType;
 			LinkedElementCollection<RoleBase> previousFactTypeRoles = null;
 			int previousFactTypeRoleCount = 0;
 			int? previousFactTypeUnaryRoleIndex = null;
 			pathData.Add(new AutomaticJoinPathData(constraintRole, previousRole, PathedRolePurpose.PostInnerJoin));
+			usedRoles[previousRole] = null;
 			int lastFactTypeEntryIndex = 0;
 			bool incompleteOrAmbiguousPath = false;
 			BitTracker processedConstraintRoles = new BitTracker(constraintRoleCount);
@@ -5082,6 +5091,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						break;
 					}
 					pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
+					usedRoles[currentRole] = null;
 					previousRole = currentRole;
 				}
 				else
@@ -5136,13 +5146,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									// context represents a use in the link fact type, not the objectified fact type,
 									// so it needs to be repeated with a join.
 									pathData.Add(new AutomaticJoinPathData(null, previousRole, PathedRolePurpose.PostInnerJoin));
+									usedRoles[previousRole] = null;
 									// Note that we do not need to deal with unary objectification here because
 									// a unary fact type cannot have more than one constrained role.
-									pathData.Add(new AutomaticJoinPathData(null, previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
+									pathData.Add(new AutomaticJoinPathData(null, otherRole = previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
+									usedRoles[otherRole] = null;
 								}
 								// Shared role player from a SameFactTypeRole to a target. Note that a projection from a
 								// PostInnerJoin will back up later to project from the start or entry role this is joined to.
 								pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
+								usedRoles[currentRole] = null;
 								previousFactType = currentFactType;
 								previousFactTypeObjectifiedBy = currentFactTypeObjectifiedBy;
 								previousFactTypeRoles = null; // Also invalidates unary and count locals
@@ -5234,12 +5247,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								if (currentFactTypeUnaryRoleIndex.HasValue)
 								{
 									Role objectifiedUnaryRole = currentRole.ObjectifiedUnaryRole;
-									pathData.Add(new AutomaticJoinPathData(null, objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.PostInnerJoin));
+									pathData.Add(new AutomaticJoinPathData(null, otherRole = objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.PostInnerJoin));
 									pathData.Add(new AutomaticJoinPathData(constraintRole, objectifiedUnaryRole, PathedRolePurpose.SameFactType));
+									usedRoles[otherRole] = null;
+									usedRoles[objectifiedUnaryRole] = null;
 								}
 								else
 								{
-									pathData.Add(new AutomaticJoinPathData(null, currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
+									pathData.Add(new AutomaticJoinPathData(null, otherRole = currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
+									usedRoles[otherRole] = null;
 									if (constrainedRoleCountInCurrentFactType > 1)
 									{
 										// Step across the link fact type then join into the objectified fact type
@@ -5251,11 +5267,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										// Project directly on the link fact type
 										pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
 									}
+									usedRoles[currentRole] = null;
 								}
 							}
 							else if (matchedRole == currentRole) // Unary case
 							{
 								pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
+								usedRoles[currentRole] = null;
 							}
 							else
 							{
@@ -5264,8 +5282,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									if (currentFactTypeUnaryRoleIndex.HasValue)
 									{
 										Role objectifiedUnaryRole = currentRole.ObjectifiedUnaryRole;
-										pathData.Add(new AutomaticJoinPathData(null, objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.PostInnerJoin));
+										pathData.Add(new AutomaticJoinPathData(null, otherRole = objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.PostInnerJoin));
 										pathData.Add(new AutomaticJoinPathData(constraintRole, objectifiedUnaryRole, PathedRolePurpose.SameFactType));
+										usedRoles[otherRole] = null;
+										usedRoles[objectifiedUnaryRole] = null;
 									}
 									else
 									{
@@ -5276,21 +5296,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											// If only one role was used in the objectified fact type, then not adding an additional
 											// join step switches the path to use the link fact type.
 											pathData.Add(new AutomaticJoinPathData(null, previousRole, PathedRolePurpose.PostInnerJoin));
+											usedRoles[previousRole] = null;
 										}
 										// Prepare to step into the next fact type and distinguish a step
 										// in the link fact type from the objectified fact type by stepping
 										// over the objectified role.
-										pathData.Add(new AutomaticJoinPathData(null, previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
+										pathData.Add(new AutomaticJoinPathData(null, otherRole = previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
 										// Join with the current fact type
 										pathData.Add(new AutomaticJoinPathData(null, matchedRole, PathedRolePurpose.PostInnerJoin));
 										// Project on the current role
 										pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
+										usedRoles[otherRole] = null;
+										usedRoles[matchedRole] = null;
+										usedRoles[currentRole] = null;
 									}
 								}
 								else
 								{
 									pathData.Add(new AutomaticJoinPathData(null, matchedRole, PathedRolePurpose.PostInnerJoin));
 									pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
+									usedRoles[matchedRole] = null;
+									usedRoles[currentRole] = null;
 								}
 							}
 							previousFactType = currentFactType;
@@ -5444,6 +5470,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									incompleteOrAmbiguousPath = true;
 									break;
 								}
+								else if (usedRoles.ContainsKey(testLeftRole))
+								{
+									// Don't allow backtracking in automatic join paths.
+									continue;
+								}
 								if (currentFactTypeObjectifiedBy == testLeftRolePlayer)
 								{
 									if (matchedLeftRole == null && matchedRightRole == null)
@@ -5562,7 +5593,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							AutomaticJoinPathData unaryRoleData = pathData[replaceIndex];
 							unaryRoleData.Role = objectifiedUnaryRole;
 							pathData[replaceIndex] = unaryRoleData;
-							pathData.Add(new AutomaticJoinPathData(null, objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.SameFactType));
+							pathData.Add(new AutomaticJoinPathData(null, otherRole = objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.SameFactType));
 						}
 						else
 						{
@@ -5571,18 +5602,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (constrainedInPreviousFactTypeCount > 1)
 							{
 								pathData.Add(new AutomaticJoinPathData(null, previousRole, PathedRolePurpose.PostInnerJoin));
+								usedRoles[previousRole] = null;
 							}
-							pathData.Add(new AutomaticJoinPathData(null, previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
+							pathData.Add(new AutomaticJoinPathData(null, otherRole = previousRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.SameFactType));
 						}
+						usedRoles[otherRole] = null;
 					}
 					else if (!previousFactTypeUnaryRoleIndex.HasValue &&
 						matchedLeftRole != previousRole)
 					{
 						pathData.Add(new AutomaticJoinPathData(null, matchedLeftRole, PathedRolePurpose.SameFactType));
+						usedRoles[matchedLeftRole] = null;
 					}
 					if (matchedRightRole == currentRole)
 					{
 						pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
+						usedRoles[currentRole] = null;
 					}
 					else if (matchedRightRole != null)
 					{
@@ -5596,6 +5631,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							pathData.Add(new AutomaticJoinPathData(null, matchedRightRole, PathedRolePurpose.PostInnerJoin));
 						}
 						pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
+						usedRoles[matchedRightRole] = null;
+						usedRoles[currentRole] = null;
 					}
 					else
 					{
@@ -5609,13 +5646,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							// Objectified unary pattern
 							Role objectifiedUnaryRole = currentRole.ObjectifiedUnaryRole;
-							pathData.Add(new AutomaticJoinPathData(null, objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.PostInnerJoin));
+							pathData.Add(new AutomaticJoinPathData(null, otherRole = objectifiedUnaryRole.OppositeRole.Role, PathedRolePurpose.PostInnerJoin));
 							pathData.Add(new AutomaticJoinPathData(constraintRole, objectifiedUnaryRole, PathedRolePurpose.SameFactType));
+							usedRoles[otherRole] = null;
+							usedRoles[objectifiedUnaryRole] = null;
 						}
 						else
 						{
 							// Objectified binary or n-ary pattern
-							pathData.Add(new AutomaticJoinPathData(null, currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
+							pathData.Add(new AutomaticJoinPathData(null, otherRole = currentRole.OppositeRoleAlwaysResolveProxy.Role, PathedRolePurpose.PostInnerJoin));
+							usedRoles[otherRole] = null;
 							if (constrainedRoleCountInCurrentFactType == 1)
 							{
 								pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.SameFactType));
@@ -5625,6 +5665,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								pathData.Add(new AutomaticJoinPathData(null, currentRole, PathedRolePurpose.SameFactType));
 								pathData.Add(new AutomaticJoinPathData(constraintRole, currentRole, PathedRolePurpose.PostInnerJoin));
 							}
+							usedRoles[currentRole] = null;
 						}
 					}
 					previousFactType = currentFactType;
