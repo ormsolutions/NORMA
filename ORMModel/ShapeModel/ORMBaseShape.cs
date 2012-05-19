@@ -98,115 +98,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#endregion // MultipleShapesSupport
 		#region Customize appearance
 		/// <summary>
-		/// Determines if a the model element backing the shape element
-		/// is represented by a shape of the same type elsewhere in the presentation
-		/// layer. If a derived shape displays multiple presentations, they should
-		/// also override the <see cref="DisplaysMultiplePresentations"/> property.
-		/// </summary>
-		public static bool ElementHasMultiplePresentations(ShapeElement shapeElement)
-		{
-			ModelElement modelElement;
-			if (null != shapeElement &&
-				null != (modelElement = shapeElement.ModelElement))
-			{
-				LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelElement);
-				int pelCount = presentationElements.Count;
-				if (pelCount != 0)
-				{
-					Partition shapePartition = shapeElement.Partition;
-					Type thisType = shapeElement.GetType();
-					for (int i = 0; i < pelCount; ++i)
-					{
-						PresentationElement pel = presentationElements[i];
-						if (shapeElement != pel && shapePartition == pel.Partition && thisType.IsAssignableFrom(pel.GetType()))
-						{
-							return true;
-						}
-					}
-				}
-			}
-			return false;
-		}
-		/// <summary>
-		/// Iterate shapes associated with a given element
-		/// </summary>
-		/// <param name="modelElement">The parent element to iterate. Can be <see langword="null"/> if <paramref name="shapeElement"/> is specified.</param>
-		/// <param name="shapeElement">The shape to reference. Can be <see langword="null"/> if <paramref name="modelElement"/> is specified.</param>
-		/// <param name="onePerDiagram">True to filter the shapes to one per diagram</param>
-		/// <param name="visitor">A <see cref="Predicate{ShapeElement}"/> callback.
-		/// Return <see langword="true"/> to continue iteration.</param>
-		public static void VisitAssociatedShapes(ModelElement modelElement, ShapeElement shapeElement, bool onePerDiagram, Predicate<ShapeElement> visitor)
-		{
-			if (modelElement == null && shapeElement != null)
-			{
-				modelElement = shapeElement.ModelElement;
-			}
-			if (modelElement != null)
-			{
-				LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(modelElement);
-				int pelCount = presentationElements.Count;
-				if (pelCount != 0)
-				{
-					List<Diagram> visitedDiagrams = null;
-					Diagram visitedDiagram = null;
-
-					Partition shapePartition = (shapeElement != null) ? shapeElement.Partition : modelElement.Partition;
-					Type thisType = (shapeElement != null) ? shapeElement.GetType() : typeof(ShapeElement);
-					for (int i = 0; i < pelCount; ++i)
-					{
-						PresentationElement pel = presentationElements[i];
-						if (shapePartition == pel.Partition && thisType.IsAssignableFrom(pel.GetType()))
-						{
-							ShapeElement sel = pel as ShapeElement;
-							Diagram selDiagram = sel.Diagram;
-							if (!onePerDiagram || (visitedDiagram != selDiagram && (visitedDiagrams == null || !visitedDiagrams.Contains(selDiagram))))
-							{
-								if (!visitor(sel))
-								{
-									return;
-								}
-								if (onePerDiagram)
-								{
-									if (visitedDiagram == null)
-									{
-										visitedDiagram = selDiagram;
-									}
-									else
-									{
-										if (visitedDiagrams == null)
-										{
-											visitedDiagrams = new List<Diagram>();
-										}
-										visitedDiagrams.Add(selDiagram);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		/// <summary>
 		/// Turn off the shadow by default
 		/// </summary>
 		/// <value>false</value>
 		public override bool HasShadow
 		{
 			get { return false; }
-		}
-		/// <summary>
-		/// Indicate that the shape changes its display when more
-		/// than one presentation is visible. Derived shapes should
-		/// use the <see cref="ElementHasMultiplePresentations"/> method
-		/// to determine when multiple presentations should be displayed.
-		/// Default is <see langword="false"/>
-		/// </summary>
-		public virtual bool DisplaysMultiplePresentations
-		{
-			get
-			{
-				return false;
-			}
 		}
 		/// <summary>
 		/// Default to no sides being resizable.
@@ -552,7 +449,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			ORMBaseShape shape = e.ModelElement as ORMBaseShape;
 			ModelElement backingElement;
-			if (shape.DisplaysMultiplePresentations &&
+			if (shape is IDisplayMultiplePresentations &&
 				null != (backingElement = shape.ModelElement))
 			{
 				InvalidateRemainingShapes(backingElement, shape);
@@ -561,16 +458,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static void ShapeDeletedEvent(object sender, ElementDeletedEventArgs e)
 		{
 			PresentationViewsSubject link = e.ModelElement as PresentationViewsSubject;
-			ORMBaseShape shape;
 			ModelElement backingElement;
 			if (!(backingElement = link.Subject).IsDeleted &&
-				null != (shape = link.Presentation as ORMBaseShape) &&
-				shape.DisplaysMultiplePresentations)
+				link.Presentation is IDisplayMultiplePresentations)
 			{
 				InvalidateRemainingShapes(backingElement, null);
 			}
 		}
-		private static void InvalidateRemainingShapes(ModelElement backingElement, ORMBaseShape ignoreShape)
+		private static void InvalidateRemainingShapes(ModelElement backingElement, ShapeElement ignoreShape)
 		{
 			LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(backingElement);
 			int pelCount = pels.Count;
@@ -579,9 +474,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				for (int i = 0; i < pelCount; ++i)
 				{
 					PresentationElement pel = pels[i];
-					ORMBaseShape updateShape;
+					ShapeElement updateShape;
 					if (pel != ignoreShape &&
-						null != (updateShape = pel as ORMBaseShape))
+						null != (updateShape = pel as ShapeElement) &&
+						updateShape is IDisplayMultiplePresentations)
 					{
 						updateShape.Invalidate();
 					}

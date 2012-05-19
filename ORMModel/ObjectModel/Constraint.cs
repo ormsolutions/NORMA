@@ -7791,33 +7791,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // UniquenessConstraintChangeRule
 		#region Verbalization
 		/// <summary>
-		/// Helper function to defer mandatory verbalization by constraint arity
+		/// Helper function to defer uniqueness verbalization parts
 		/// </summary>
 		private void VerbalizeParts(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
 		{
-			UniquenessVerbalizerBase verbalize;
-			if ((bool)verbalizationContext.VerbalizationOptions[CoreVerbalizationOption.ShowDefaultConstraint])
+			if (this.RoleCollection.Count != 0)
 			{
-				verbalize = UniquenessPossibilityVerbalizer.GetVerbalizer();
+				UniquenessVerbalizerBase verbalize;
+				if ((bool)verbalizationContext.VerbalizationOptions[CoreVerbalizationOption.ShowDefaultConstraint])
+				{
+					verbalize = UniquenessPossibilityVerbalizer.GetVerbalizer();
+					using ((IDisposable)verbalize)
+					{
+						verbalize.Initialize(this);
+						verbalizationContext.DeferVerbalization(verbalize, DeferVerbalizationOptions.None, null);
+					}
+				}
+				verbalize = UniquenessConstraintVerbalizer.GetVerbalizer();
 				using ((IDisposable)verbalize)
 				{
 					verbalize.Initialize(this);
 					verbalizationContext.DeferVerbalization(verbalize, DeferVerbalizationOptions.None, null);
 				}
-			}
-			verbalize = UniquenessConstraintVerbalizer.GetVerbalizer();
-			using ((IDisposable)verbalize)
-			{
-				verbalize.Initialize(this);
-				verbalizationContext.DeferVerbalization(verbalize, DeferVerbalizationOptions.None, null);
-			}
-			if (this.PreferredIdentifierFor != null)
-			{
-				verbalize = UniquenessPreferredVerbalizer.GetVerbalizer();
-				using ((IDisposable)verbalize)
+				if (this.PreferredIdentifierFor != null)
 				{
-					verbalize.Initialize(this);
-					verbalizationContext.DeferVerbalization(verbalize, DeferVerbalizationOptions.None, null);
+					verbalize = UniquenessPreferredVerbalizer.GetVerbalizer();
+					using ((IDisposable)verbalize)
+					{
+						verbalize.Initialize(this);
+						verbalizationContext.DeferVerbalization(verbalize, DeferVerbalizationOptions.None, null);
+					}
 				}
 			}
 		}

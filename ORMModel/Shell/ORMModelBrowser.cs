@@ -33,6 +33,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.Framework.Shell;
 using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
@@ -173,7 +174,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								null != (element = selectedNode as ModelElement))
 						{
 							int diagramIndex = cmd.MatchedCommandId;
-							ORMBaseShape.VisitAssociatedShapes(
+							MultiShapeUtility.VisitAssociatedShapes(
 								element,
 								null,
 								true,
@@ -669,7 +670,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					null != (element = elementReference.ReferencedElement as ModelElement) :
 					null != (element = selectedNode as ModelElement))
 			{
-				ORMBaseShape.VisitAssociatedShapes(
+				MultiShapeUtility.VisitAssociatedShapes(
 					element,
 					null,
 					true,

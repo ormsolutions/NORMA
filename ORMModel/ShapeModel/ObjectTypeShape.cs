@@ -36,7 +36,7 @@ using ORMSolutions.ORMArchitect.Core.Shell;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
-	public partial class ObjectTypeShape : IModelErrorActivation, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint
+	public partial class ObjectTypeShape : IModelErrorActivation, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint, IDisplayMultiplePresentations
 	{
 		#region Member Variables
 		private static AutoSizeTextField myTextShapeField;
@@ -104,17 +104,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return OptionsPage.CurrentDisplayShadows && ORMBaseShape.ElementHasMultiplePresentations(this);
-			}
-		}
-		/// <summary>
-		/// Support automatic appearance updating when multiple presentations are present.
-		/// </summary>
-		public override bool DisplaysMultiplePresentations
-		{
-			get
-			{
-				return true;
+				return OptionsPage.CurrentDisplayShadows && MultiShapeUtility.ElementHasMultiplePresentations(this);
 			}
 		}
 		/// <summary>

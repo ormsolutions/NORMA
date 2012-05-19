@@ -34,6 +34,7 @@ using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
@@ -978,10 +979,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					toleratedCommands |= ORMDesignerCommands.AlignShapes;
 				}
 			}
-			ORMBaseShape shape;
-			if (null != (shape = (presentationElement as ORMBaseShape)) &&
-				shape.DisplaysMultiplePresentations &&
-				ORMBaseShape.ElementHasMultiplePresentations(shape))
+			ShapeElement shape;
+			if (null != (shape = presentationElement as ShapeElement) &&
+				shape is IDisplayMultiplePresentations &&
+				MultiShapeUtility.ElementHasMultiplePresentations(shape))
 			{
 				visibleCommands |= ORMDesignerCommands.DiagramList;
 				enabledCommands |= ORMDesignerCommands.DiagramList;
@@ -2797,7 +2798,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			// other shapes on the first diagram
 			ShapeElement firstShape = null;
 			bool seenCurrent = false;
-			ORMBaseShape.VisitAssociatedShapes(
+			MultiShapeUtility.VisitAssociatedShapes(
 				null,
 				shape,
 				false,
@@ -2841,17 +2842,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			IList selectedElements = myDesignerView.SelectedElements;
 			if (selectedElements.Count >= 1) // Single-select command
 			{
-				ORMBaseShape shape = selectedElements[0] as ORMBaseShape;
-				if (shape != null)
+				ShapeElement shape = selectedElements[0] as ShapeElement;
+				if (shape != null &&
+					shape is IDisplayMultiplePresentations)
 				{
 					Diagram shapeDiagram = shape.Diagram;
-					ORMBaseShape.VisitAssociatedShapes(
+					MultiShapeUtility.VisitAssociatedShapes(
 						null,
 						shape,
 						true,
 						delegate(ShapeElement testShape)
 						{
-							if (testShape.Diagram != shapeDiagram)
+							if (testShape.Diagram != shapeDiagram &&
+								testShape is IDisplayMultiplePresentations)
 							{
 								if (diagramIndex == 0)
 								{

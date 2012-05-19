@@ -42,7 +42,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region FactTypeShape class
-	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IRedirectVerbalization, IConfigureAsChildShape, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint
+	public partial class FactTypeShape : ICustomShapeFolding, IModelErrorActivation, IProvideConnectorShape, IProxyDisplayProvider, IRedirectVerbalization, IConfigureAsChildShape, IDynamicColorGeometryHost, IDynamicColorAlsoUsedBy, IConfigureableLinkEndpoint, IDisplayMultiplePresentations
 	{
 		#region ConstraintBoxRoleActivity enum
 		/// <summary>
@@ -3280,17 +3280,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return OptionsPage.CurrentDisplayShadows && ORMBaseShape.ElementHasMultiplePresentations(this);
-			}
-		}
-		/// <summary>
-		/// Support automatic appearance updating when multiple presentations are present.
-		/// </summary>
-		public override bool DisplaysMultiplePresentations
-		{
-			get
-			{
-				return true;
+				return OptionsPage.CurrentDisplayShadows && MultiShapeUtility.ElementHasMultiplePresentations(this);
 			}
 		}
 		/// <summary>

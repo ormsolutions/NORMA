@@ -32,7 +32,7 @@ using ORMSolutions.ORMArchitect.Framework;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region ModelNoteShape class
-	public partial class ModelNoteShape : IConfigureAsChildShape, IDynamicColorGeometryHost
+	public partial class ModelNoteShape : IConfigureAsChildShape, IDynamicColorGeometryHost, IDisplayMultiplePresentations
 	{
 		private static AutoSizeTextField myTextField;
 		// Now combined in DSL InitialWidth and InitialHeight
@@ -99,17 +99,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return OptionsPage.CurrentDisplayShadows && ORMBaseShape.ElementHasMultiplePresentations(this);
-			}
-		}
-		/// <summary>
-		/// Support automatic appearance updating when multiple presentations are present.
-		/// </summary>
-		public override bool DisplaysMultiplePresentations
-		{
-			get
-			{
-				return true;
+				return OptionsPage.CurrentDisplayShadows && MultiShapeUtility.ElementHasMultiplePresentations(this);
 			}
 		}
 		/// <summary>
