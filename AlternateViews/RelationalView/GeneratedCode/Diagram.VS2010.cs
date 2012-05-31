@@ -246,7 +246,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 				DslDiagrams::ShapeElement shape = (DslDiagrams::ShapeElement)sender;
 				DslDiagrams::AssociatedPropertyInfo propertyInfo;
 				
-				propertyInfo = new DslDiagrams::AssociatedPropertyInfo(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table.NameDomainPropertyId);
+				propertyInfo = new DslDiagrams::AssociatedPropertyInfo(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table.EditNameDomainPropertyId);
 				DslDiagrams::ShapeElement.FindDecorator(shape.Decorators, "TableNameDecorator").AssociateValueWith(shape.Store, propertyInfo);
 			}
 		}
@@ -590,7 +590,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			internal static void ElementPropertyChanged(DslModeling::ElementPropertyChangedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(e.ModelElement is global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column && e.DomainProperty.Id == global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.NameDomainPropertyId)
+				if(e.ModelElement is global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column && e.DomainProperty.Id == global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.EditNameDomainPropertyId)
 				{
 					global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartment((global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column)e.ModelElement);
 					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.TableShape), "ColumnsCompartment", repaintOnly);

@@ -87,6 +87,11 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Id="E9CABB40-6E7D-4AE3-A56F-5D9834270474" Name="EditName" IsBrowsable="false" DisplayName="Name" Description="The name of the table." Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Id="9C49935A-631F-434B-93A3-A093F741B572" Name="ColumnOrder" DisplayName="ColumnOrder" DefaultValue="AutoSchemaDefault" Description="Determine how columns are sorted in this table.">
 					<Type>
 						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/ColumnOrdering"/>
@@ -114,6 +119,11 @@
 				<DomainProperty Id="ADAAEA18-1EC3-48E5-B05E-F76DCAE397F0" Name="CustomName" IsBrowsable="false" Description="The generated table name is modified by the user.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Id="261D5E44-2426-4298-A055-796AB702F556" Name="EditName" IsBrowsable="false" DisplayName="Name" Description="The name of the column." Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Id="2FD3C751-BD3D-44EA-94E1-6F318FE25A07" Name="IsNullable" DisplayName="IsNullable" Description="Is NULL a valid value for this column?">

@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Column.cs" />
+    <Compile Include="Table.cs" />
     <Compile Include="DcilModel.DeserializationFixupListeners.cs" />
     <Compile Include="Design\TableTypeDescriptor.cs" />
     <Compile Include="ReferenceConstraint.cs" />

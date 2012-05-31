@@ -99,7 +99,7 @@
 					<TextDecoratorMoniker Name="TableShape/TableNameDecorator"/>
 					<PropertyDisplayed>
 						<PropertyPath>
-							<DomainPropertyMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/Table/Name"/>
+							<DomainPropertyMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/Table/EditName"/>
 						</PropertyPath>
 					</PropertyDisplayed>
 				</DecoratorMap>
@@ -111,7 +111,7 @@
 					</ElementsDisplayed>
 					<PropertyDisplayed>
 						<PropertyPath>
-							<DomainPropertyMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/Column/Name" />
+							<DomainPropertyMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/Column/EditName" />
 						</PropertyPath>
 					</PropertyDisplayed>
 				</CompartmentMap>

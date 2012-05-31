@@ -29,7 +29,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				return ResourceStrings.GetString(ResourceManagers.CatalogModel, "ColumnReference.DisplayFormatString");
 			}
 		}
-		/// <summary>The format string used to provide a transaction for a column move operation. {0}=name of the moved column</summary>
+		/// <summary>The format string used to provide a transaction for a column move operation. {0}=name of the parent table</summary>
 		public static string ColumnReorderTransactionNameFormatString
 		{
 			get

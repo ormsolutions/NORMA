@@ -684,6 +684,97 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		}
 		
 		#endregion
+		#region EditName domain property code
+		
+		/// <summary>
+		/// EditName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid EditNameDomainPropertyId = new global::System.Guid(0xe9cabb40, 0x6e7d, 0x4ae3, 0xa5, 0x6f, 0x5d, 0x98, 0x34, 0x27, 0x04, 0x74);
+		
+		/// <summary>
+		/// Gets or sets the value of EditName domain property.
+		/// The name of the table.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/EditName.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/EditName.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("e9cabb40-6e7d-4ae3-a56f-5d9834270474")]
+		public global::System.String EditName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return EditNamePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				EditNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Table.EditName domain property.
+		/// </summary>
+		internal sealed partial class EditNamePropertyHandler : DslModeling::DomainPropertyValueHandler<Table, global::System.String>
+		{
+			private EditNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Table.EditName domain property value handler.
+			/// </summary>
+			public static readonly EditNamePropertyHandler Instance = new EditNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Table.EditName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return EditNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(Table element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for EditName because its Kind is
+				// set to CustomStorage. Please provide the GetEditNameValue()
+				// method on the domain class.
+				return element.GetEditNameValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Table element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for EditName because its Kind is
+					// set to CustomStorage. Please provide the SetEditNameValue()
+					// method on the domain class.
+					element.SetEditNameValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region ColumnOrder domain property code
 		
 		/// <summary>
@@ -1064,6 +1155,97 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.customNamePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region EditName domain property code
+		
+		/// <summary>
+		/// EditName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid EditNameDomainPropertyId = new global::System.Guid(0x261d5e44, 0x2426, 0x4298, 0xa0, 0x55, 0x79, 0x6a, 0xb7, 0x02, 0xf5, 0x56);
+		
+		/// <summary>
+		/// Gets or sets the value of EditName domain property.
+		/// The name of the column.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/EditName.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/EditName.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("261d5e44-2426-4298-a055-796ab702f556")]
+		public global::System.String EditName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return EditNamePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				EditNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Column.EditName domain property.
+		/// </summary>
+		internal sealed partial class EditNamePropertyHandler : DslModeling::DomainPropertyValueHandler<Column, global::System.String>
+		{
+			private EditNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Column.EditName domain property value handler.
+			/// </summary>
+			public static readonly EditNamePropertyHandler Instance = new EditNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Column.EditName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return EditNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(Column element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for EditName because its Kind is
+				// set to CustomStorage. Please provide the GetEditNameValue()
+				// method on the domain class.
+				return element.GetEditNameValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Column element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for EditName because its Kind is
+					// set to CustomStorage. Please provide the SetEditNameValue()
+					// method on the domain class.
+					element.SetEditNameValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}

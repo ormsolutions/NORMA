@@ -197,6 +197,14 @@
     <value>Custom Name</value>
     <comment>DisplayName for DomainProperty &apos;CustomName&apos; on DomainClass &apos;Table&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/EditName.Description" xml:space="preserve">
+    <value>The name of the table.</value>
+    <comment>Description for DomainProperty &apos;EditName&apos; on DomainClass &apos;Table&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/EditName.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;EditName&apos; on DomainClass &apos;Table&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table/ColumnOrder.Description" xml:space="preserve">
     <value>Determine how columns are sorted in this table.</value>
     <comment>Description for DomainProperty &apos;ColumnOrder&apos; on DomainClass &apos;Table&apos;</comment>
@@ -228,6 +236,14 @@
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/CustomName.DisplayName" xml:space="preserve">
     <value>Custom Name</value>
     <comment>DisplayName for DomainProperty &apos;CustomName&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/EditName.Description" xml:space="preserve">
+    <value>The name of the column.</value>
+    <comment>Description for DomainProperty &apos;EditName&apos; on DomainClass &apos;Column&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/EditName.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;EditName&apos; on DomainClass &apos;Column&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column/IsNullable.Description" xml:space="preserve">
     <value>Is NULL a valid value for this column?</value>

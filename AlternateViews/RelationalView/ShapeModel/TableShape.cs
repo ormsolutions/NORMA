@@ -468,22 +468,17 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		private sealed class TableTextField : TextField
 		{
 			/// <summary>
-			/// Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableTextField" /> is selectable.
+			/// Push an edited value back through the EditName property so that
+			/// custom name changes are tracked.
 			/// </summary>
-			/// <param name="parentShape">parentShape</param>
-			/// <returns><see langword="false" />.</returns>
-			public override bool GetSelectable(ShapeElement parentShape)
+			public override void SetValue(ShapeElement parentShape, object value)
 			{
-				return false;
-			}
-			/// <summary>
-			/// Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableTextField" /> is focusable.
-			/// </summary>
-			/// <param name="parentShape">parentShape</param>
-			/// <returns><see langword="false" />.</returns>
-			public override bool GetFocusable(ShapeElement parentShape)
-			{
-				return false;
+				Table table;
+				if (null != (table = parentShape.ModelElement as Table))
+				{
+					// Note that a transaction has already been established
+					table.EditName = value as String ?? "";
+				}
 			}
 			/// <summary>
 			/// Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableTextField" /> class.	

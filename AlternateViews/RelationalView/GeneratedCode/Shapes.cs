@@ -321,7 +321,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 					}
 					mappings[localCompartmentMappingsOffset+0] = new DslDiagrams::ElementListCompartmentMapping(
 																				"ColumnsCompartment", 
-																				global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.NameDomainPropertyId, 
+																				global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.EditNameDomainPropertyId, 
 																				global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.DomainClassId, 
 																				GetElementsFromTableForColumnsCompartment,
 																				null,

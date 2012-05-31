@@ -554,7 +554,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			internal static void ElementPropertyChanged(DslModeling::ElementPropertyChangedEventArgs e, bool repaintOnly)
 			{
 				if(e==null) throw new global::System.ArgumentNullException("e");
-				if(e.ModelElement is global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column && e.DomainProperty.Id == global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.NameDomainPropertyId)
+				if(e.ModelElement is global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column && e.DomainProperty.Id == global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.EditNameDomainPropertyId)
 				{
 					global::System.Collections.IEnumerable elements = CompartmentItemAddRule.GetTableForTableShapeColumnsCompartment((global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column)e.ModelElement);
 					CompartmentItemAddRule.UpdateCompartments(elements, typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.TableShape), "ColumnsCompartment", repaintOnly);

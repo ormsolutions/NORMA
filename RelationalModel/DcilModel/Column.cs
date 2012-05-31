@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -90,6 +91,27 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				if (valueType != null)
 				{
 					valueType.DataTypeScale = value;
+				}
+			}
+		}
+		private string GetEditNameValue()
+		{
+			return Name;
+		}
+		private void SetEditNameValue(string value)
+		{
+			if (Store.TransactionActive)
+			{
+				if (string.IsNullOrEmpty(value))
+				{
+					// Name generators should listen to this property to regenerate
+					// the name.
+					CustomName = false;
+				}
+				else
+				{
+					CustomName = true;
+					Name = value;
 				}
 			}
 		}
