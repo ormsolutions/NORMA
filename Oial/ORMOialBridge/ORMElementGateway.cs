@@ -192,7 +192,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						// Ignore non-stored derived fact types
 						FactTypeDerivationRule rule;
 						FactTypeDerivationExpression expression;
-						if (null != (rule = factType.DerivationRule))
+						if (null != (rule = factType.DerivationRule as FactTypeDerivationRule))
 						{
 							if (rule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 								(!rule.ExternalDerivation || rule.DerivationStorage == DerivationStorage.NotStored))
@@ -932,7 +932,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				FactType factType = link.FactType;
 				FactTypeDerivationRule rule;
 				if (!(factType is SubtypeFact) &&
-					((rule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					null != (rule = link.DerivationRule as FactTypeDerivationRule) &&
+					(rule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 					(!rule.ExternalDerivation || rule.DerivationStorage == DerivationStorage.NotStored)))
 				{
 					FilterModifiedFactType(factType, true);
@@ -949,7 +950,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				FactTypeDerivationRule rule;
 				if (!factType.IsDeleted &&
 					!(factType is SubtypeFact) &&
-					((rule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					null != (rule = link.DerivationRule as FactTypeDerivationRule) &&
+					(rule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 					(!rule.ExternalDerivation || rule.DerivationStorage == DerivationStorage.NotStored)))
 				{
 					FilterModifiedFactType(factType, true);

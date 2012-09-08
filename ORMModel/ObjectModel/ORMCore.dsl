@@ -1197,6 +1197,40 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
+		<DomainClass Name="QueryBase" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FC900EB1-9874-4648-9040-59EA3EBFF1F3" DisplayName="QueryBase" InheritanceModifier="Abstract" Description="A query representation based on a fact type structure. Queries support parameterization and do not need readings.">
+			<BaseClass>
+				<DomainClassMoniker Name="FactType"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="QueryParameter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2A84CA88-86B8-4DDF-996A-2E79F130AA9F" DisplayName="QueryParameter" Description="An input parameter for a query.">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMModelElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="Name" DefaultValue="" DisplayName="Name" Id="8717DDF3-5254-4CDE-894F-7DAB9F9003E5" Description="The explicit name for this parameter.">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		<DomainClass Name="Subquery" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="24D28542-E929-4BD2-B4FF-B0257FC285A1" DisplayName="Subquery" Description="A query used as a component of a role path.">
+			<BaseClass>
+				<DomainClassMoniker Name="QueryBase"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="RoleProjectedDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8567EC6A-5A9D-45AB-8C8E-9E3142B2F384" DisplayName="RoleProjectedDerivationRule" InheritanceModifier="Abstract" Description="Role path(s) projected onto a set of roles. Forms the base type for FactTypeDerivationRule and QueryDerivationRule.">
+			<BaseClass>
+				<DomainClassMoniker Name="RolePathOwner"/>
+			</BaseClass>
+		</DomainClass>
 		<DomainClass Name="FactTypeDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DEDADFCE-C351-4FCB-A455-B19FB91875B8" DisplayName="FactTypeDerivationRule" Description="A role path defining a fact type derivation.">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
@@ -1206,7 +1240,7 @@
 				</ClrAttribute>
 			</Attributes>
 			<BaseClass>
-				<DomainClassMoniker Name="RolePathOwner"/>
+				<DomainClassMoniker Name="RoleProjectedDerivationRule"/>
 			</BaseClass>
 			<Properties>
 				<DomainProperty Name="DerivationCompleteness" DefaultValue="FullyDerived" DisplayName="Completeness" Id="F254F0A7-E37E-4FDA-AC96-DEEEB8828FEC" Description="Specify if a fact can be explicitly populated without satisfying the derivation path.">
@@ -1235,6 +1269,11 @@
 					</Type>
 				</DomainProperty>
 			</Properties>
+		</DomainClass>
+		<DomainClass Name="QueryDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9A0271E5-D818-4E11-94A7-6758DB41B867" DisplayName="QueryDerivationRule" Description="Role path(s) defining a query.">
+			<BaseClass>
+				<DomainClassMoniker Name="RoleProjectedDerivationRule"/>
+			</BaseClass>
 		</DomainClass>
 		<DomainClass Name="SubtypeDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7B27FBFE-0A5E-447C-89B7-1BA25F9ED880" DisplayName="SubtypeDerivationRule" Description="A role path defining subtype population.">
 			<Attributes>
@@ -1323,12 +1362,12 @@
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="FactTypeDerivationRequiresProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E9B0F6E7-B1D4-4437-AB27-375DC63FB7C3" DisplayName="Fact Type Derivation Not Projected" Description="Roles in a fact type derivation rule must be projected from at least one role path.">
+		<DomainClass Name="RoleProjectedDerivationRequiresProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E9B0F6E7-B1D4-4437-AB27-375DC63FB7C3" DisplayName="Fact Type Derivation Not Projected" Description="Roles in a fact type derivation rule must be projected from at least one role path.">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="PartialFactTypeDerivationProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="926850BE-EA62-4552-91B6-B9A7E0E22DCC" DisplayName="Incomplete Fact Type Derivation Projection" Description="A fact type derivation projection must project on every role in the fact type.">
+		<DomainClass Name="PartialRoleSetDerivationProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="926850BE-EA62-4552-91B6-B9A7E0E22DCC" DisplayName="Incomplete Fact Type Derivation Projection" Description="A fact type derivation projection must project on every role in the fact type.">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -2553,7 +2592,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="FactType" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FactType" Id="972619DE-83C9-4A7B-A2C5-A626F02D192B">
+				<DomainRole Name="FactType" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="FactType" Id="972619DE-83C9-4A7B-A2C5-A626F02D192B">
 					<RolePlayer>
 						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
@@ -5502,6 +5541,61 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Name="RolePathOwnerHasSubquery" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" InheritanceModifier="Abstract" Id="6D845888-B31E-4EBA-BA21-D8D48203749E">
+			<Source>
+				<DomainRole Name="PathOwner" PropertyName="SubqueryCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="65E52F06-B599-419D-AFED-9E764EA40653">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathOwner"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Subquery" PropertyName="PathOwnerCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" PropagatesDelete="true" DisplayName="Subquery" Id="FA242AEB-8255-4968-8F27-BA847A826031">
+					<RolePlayer>
+						<DomainClassMoniker Name="Subquery"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathOwnerOwnsSubquery" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="6B8564F8-F8E8-4FE1-A3D6-6DCA08122370">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="RolePathOwnerHasSubquery"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathOwner" PropertyName="OwnedSubqueryCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="DAFDD574-9167-4E76-8F65-FF67A6942AF9">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathOwner"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<!-- Delete propagation here is turned off to enable transfer of a shared path to one of the other owners. -->
+				<DomainRole Name="Subquery" PropertyName="PathOwner" Multiplicity="One" IsPropertyGenerator="true" PropagatesDelete="false" DisplayName="Subquery" Id="78B9D9E7-2CA9-4725-9FE9-8F9214731ED7">
+					<RolePlayer>
+						<DomainClassMoniker Name="Subquery"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="RolePathOwnerUsesSharedSubquery" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C7D7F69D-BB41-4121-8F30-18C7385AC74F">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="RolePathOwnerHasSubquery"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="PathOwner" PropertyName="SharedSubqueryCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="PathOwner" Id="1CDCA494-6762-4F96-995B-FA00082AB79C">
+					<RolePlayer>
+						<DomainClassMoniker Name="RolePathOwner"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Subquery" PropertyName="SharedWithPathOwnerCollection" Multiplicity="ZeroMany" IsPropertyGenerator="true" DisplayName="Subquery" Id="9FBCD949-AC9C-48F8-9981-5842CD9CFF6C">
+					<RolePlayer>
+						<DomainClassMoniker Name="Subquery"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 		<DomainRelationship Name="RolePathObjectTypeRoot" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="4FFD036F-FC35-41AF-A318-27DB84E2D7B4">
 			<Properties>
 				<DomainProperty Name="IsNegated" DefaultValue="False" DisplayName="IsNegated" Id="0CA66A3F-586D-433C-A829-B9698DE2ACB3" Description="Indicates a negated path root.">
@@ -5875,6 +5969,182 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Name="QueryDefinesParameter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="DC78D1C0-2899-44DA-8D9C-F22C70E14CE9">
+			<Source>
+				<DomainRole Name="Query" PropertyName="ParameterCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Query" Id="8A9DB653-4A43-4B40-8E86-BF960548A570">
+					<RolePlayer>
+						<DomainClassMoniker Name="QueryBase"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Parameter" PropertyName="Query" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Parameter" Id="B193B8E1-84C8-411C-8A7A-516C2BBA1DF2">
+					<RolePlayer>
+						<DomainClassMoniker Name="QueryParameter"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="QueryParameterHasParameterType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="63F6D98F-0D9A-4E77-9E70-AECC621232D4">
+			<Source>
+				<DomainRole Name="Parameter" PropertyName="ParameterType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Parameter" Id="EFDABA10-3426-4C09-9309-C5D2E776C693">
+					<RolePlayer>
+						<DomainClassMoniker Name="QueryParameter"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="ParameterType" PropertyName="TypedQueryParameterCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ParameterType" Id="8589FA39-30B3-4E32-B039-96310F5E1B62">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="QueryParameterBinding" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BB38C31E-4109-4BE9-8BD8-0E05289A0513">
+			<Source>
+				<DomainRole Name="QueryParameter" PropertyName="PathBindingCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="QueryParameter" Id="E8892557-CA49-4A17-80DA-6B9ECD07B147">
+					<RolePlayer>
+						<DomainClassMoniker Name="QueryParameter"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RolePath" PropertyName="ParameterBindings" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="RolePath" Id="E7FACE69-CD30-408A-8ECB-B512FBB0C089">
+					<RolePlayer>
+						<DomainClassMoniker Name="LeadRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="QueryParameterBoundToRolePathRoot" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="3BAE9211-EE29-4076-8BA3-F7EE009622EE">
+			<Source>
+				<DomainRole Name="ParameterBinding" PropertyName="BoundToPathRoot" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ParameterBinding" Id="AB30B344-D98D-45B0-B980-B6FD65B07E2F" Description="The role path root from a derivation path for this query that corresponds to this parameter.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="QueryParameterBinding"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="BoundQueryParameterCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="F92415C3-9EBF-4494-818A-C991CC23595B" Description="The parameter binding associated with this role path root.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="RolePathObjectTypeRoot"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="QueryParameterBoundToPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2B594C11-F14A-45CC-A8F4-32BF1DCD474C">
+			<Source>
+				<DomainRole Name="ParameterBinding" PropertyName="BoundToPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ParameterBinding" Id="57E33A9A-29BB-4CBF-B026-E7BA91BC6CE8" Description="The pathed role from a derivation path for this query that corresponds to this parameter.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="QueryParameterBinding"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="BoundQueryParameterCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="AE5B308D-D9E3-457F-8512-BE3364099467" Description="The parameter binding associated with this pathed role.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="SubqueryParameterInputs" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A2CD332C-E57E-41CC-B4DA-8F464833D33D">
+			<Source>
+				<DomainRole Name="RolePath" PropertyName="SubqueryParameterInputsCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="RolePath" Id="384BFC86-68B3-497B-BB03-2585A85EAE80">
+					<RolePlayer>
+						<DomainClassMoniker Name="LeadRolePath"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="PathedEntryRole" PropertyName="ParameterInputsCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="PathedEntryRole" Id="A19A3DB2-A36F-4A7E-90FD-215E1F29AAA6">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="SubqueryParameterInput" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CD94297F-A8AB-41D8-9509-1BA613297704">
+			<Source>
+				<DomainRole Name="Inputs" PropertyName="InputCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Inputs" Id="42E57854-731E-403A-96C5-E5C0CD38A2E5">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="SubqueryParameterInputs"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Parameter" PropertyName="SubqueryParameterInputsCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Parameter" Id="FF5C7847-047B-49DF-90B8-4BBE29EAF264">
+					<RolePlayer>
+						<DomainClassMoniker Name="QueryParameter"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="SubqueryParameterInputFromRolePathRoot" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="DA23C890-76A6-4D07-AAB8-F3532C1ABF39">
+			<Source>
+				<DomainRole Name="ParameterInput" PropertyName="InputFromPathRoot" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ParameterInput" Id="B23F84E9-5095-4702-AE40-8E1EC8F0A785" Description="The role path root from the containing path passed to a parameter in a single use of a subquery.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="SubqueryParameterInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="SubqueryParameterInputCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="1B31DECE-4E3B-4DD4-B680-3BC55D9918EF" Description="The parameter input associated with this role path root.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="RolePathObjectTypeRoot"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="SubqueryParameterInputFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="2DC68A8A-B5B0-4D08-A7CF-DE164D81B668">
+			<Source>
+				<DomainRole Name="ParameterInput" PropertyName="InputFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ParameterInput" Id="133AE683-DF06-4C1C-BC84-1000687CD9B4" Description="The pathed role from the containing path passed to a parameter in a single use of a subquery.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="SubqueryParameterInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="SubqueryParameterInputCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="4C5374B4-0100-4DEB-9310-485437358876" Description="The parameter input associated with this pathed role.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="PathedRole"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="SubqueryParameterInputFromCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6D3CF204-B001-4173-87A0-AE668CE95139">
+			<Source>
+				<DomainRole Name="ParameterInput" PropertyName="InputFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ParameterInput" Id="84211EFB-55FA-4C02-8D2C-56C2CF7F1766" Description="The calculated value from the containing path passed to a parameter in a single use of a subquery.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="SubqueryParameterInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="SubqueryParameterInputCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="B8DC86EE-E099-45DA-9498-6370B59FF885" Description="The parameter input associated with this calculated value.">
+					<RolePlayer>
+						<DomainClassMoniker Name="CalculatedPathValue"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="SubqueryParameterInputFromPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="54FA0553-8003-4D1E-8249-04D299AD1AC6">
+			<Source>
+				<DomainRole Name="ParameterInput" PropertyName="InputFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="ParameterInput" Id="F37516AD-44C6-4207-9CF8-6BB1C7EED5F8" Description="The constant value passed to a parameter in a single use of a subquery.">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="SubqueryParameterInput"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Source" PropertyName="SubqueryParameterInput" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="1FE58E05-97E8-4A71-9CAE-B8D174DE149E" Description="The parameter binding that uses this path constant.">
+					<RolePlayer>
+						<DomainClassMoniker Name="PathConstant"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 		<DomainRelationship Name="FactTypeHasDerivationRule" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="BB165F20-D91A-44E3-AED4-687E4C2D6474">
 			<Source>
 				<DomainRole Name="FactType" PropertyName="DerivationRule" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="8991A795-F786-42B6-ADFE-2645E4FCF91E">
@@ -5886,7 +6156,8 @@
 			<Target>
 				<DomainRole Name="DerivationRule" PropertyName="FactType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="5F0E53BF-A6D2-439A-90B9-465A5E85A7DD">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactTypeDerivationRule"/>
+						<!-- This will be a QueryDerivationRule if the FactType is a QueryBase and a FactTypeDerivationRule otherwise. -->
+						<DomainClassMoniker Name="RoleProjectedDerivationRule"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -5907,27 +6178,27 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="FactTypeDerivationProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="029B0F47-FA95-4ED3-848B-239FDBCEBAF8">
+		<DomainRelationship Name="RoleSetDerivationProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="029B0F47-FA95-4ED3-848B-239FDBCEBAF8">
 			<Source>
 				<DomainRole Name="DerivationRule" PropertyName="ProjectedPathComponentCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="93BC60F8-A436-406A-B7F3-1200360C34D9">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactTypeDerivationRule"/>
+						<DomainClassMoniker Name="RoleProjectedDerivationRule"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="RolePath" PropertyName="FactTypeDerivationRuleProjectionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="RolePath" Id="B92067D1-2DD4-4E80-A667-FCF437C84EF8">
+				<DomainRole Name="RolePath" PropertyName="RoleProjectedDerivationRuleProjectionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="RolePath" Id="B92067D1-2DD4-4E80-A667-FCF437C84EF8">
 					<RolePlayer>
 						<DomainClassMoniker Name="LeadRolePath"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="FactTypeRoleProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E4E47551-0637-443F-ADB0-4BE9CAD921F0">
+		<DomainRelationship Name="DerivedRoleProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E4E47551-0637-443F-ADB0-4BE9CAD921F0">
 			<Source>
 				<DomainRole Name="DerivationProjection" PropertyName="ProjectedRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationProjection" Id="F0996660-410E-4147-AD3C-EA5C6629DBB5">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="FactTypeDerivationProjection"/>
+						<DomainRelationshipMoniker Name="RoleSetDerivationProjection"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
@@ -5939,67 +6210,67 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="FactTypeRoleProjectedFromRolePathRoot" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="31250F99-9B68-49F9-BF5A-712A0AEDFB23">
+		<DomainRelationship Name="DerivedRoleProjectedFromRolePathRoot" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="31250F99-9B68-49F9-BF5A-712A0AEDFB23">
 			<Source>
 				<DomainRole Name="RoleProjection" PropertyName="ProjectedFromPathRoot" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="RoleProjection" Id="2494C062-5DF1-4B88-8FA3-C109E87CD5A5" Description="The role path root used to populate the derived fact type for this role in this projection.">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="FactTypeRoleProjection"/>
+						<DomainRelationshipMoniker Name="DerivedRoleProjection"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
 				<!-- Although it is unusual to derive two columns from the same source, it should not illegal. -->
-				<DomainRole Name="Source" PropertyName="FactTypeRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="BA3071D8-F068-4EDE-AA80-8685B82B516A" Description="The derived role associated with this role path root.">
+				<DomainRole Name="Source" PropertyName="DerivedRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="BA3071D8-F068-4EDE-AA80-8685B82B516A" Description="The derived role associated with this role path root.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="RolePathObjectTypeRoot"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="FactTypeRoleProjectedFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="16C19D21-B699-45E7-BCB3-62649747F94B">
+		<DomainRelationship Name="DerivedRoleProjectedFromPathedRole" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="16C19D21-B699-45E7-BCB3-62649747F94B">
 			<Source>
 				<DomainRole Name="RoleProjection" PropertyName="ProjectedFromPathedRole" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="RoleProjection" Id="4025B3A1-84D7-4D17-B1EC-D34FDAAC5E51" Description="The pathed role used to populate the derived fact type for this role in this projection.">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="FactTypeRoleProjection"/>
+						<DomainRelationshipMoniker Name="DerivedRoleProjection"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
 				<!-- Although it is unusual to derive two columns from the same source, it should not illegal. -->
-				<DomainRole Name="Source" PropertyName="FactTypeRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="A13B7D15-8EC9-4775-B9CB-FF041B8652AC" Description="The derived role associated with this pathed role.">
+				<DomainRole Name="Source" PropertyName="DerivedRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="A13B7D15-8EC9-4775-B9CB-FF041B8652AC" Description="The derived role associated with this pathed role.">
 					<RolePlayer>
 						<DomainRelationshipMoniker Name="PathedRole"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="FactTypeRoleProjectedFromCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="37216599-11AA-4D3A-90EB-010D21B7E3AB">
+		<DomainRelationship Name="DerivedRoleProjectedFromCalculatedPathValue" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="37216599-11AA-4D3A-90EB-010D21B7E3AB">
 			<Source>
 				<DomainRole Name="RoleProjection" PropertyName="ProjectedFromCalculatedValue" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="RoleProjection" Id="DC6C1E96-1D32-4600-8745-85493C7C2088" Description="The calculated value used to populate the derived fact type for this role in this projection.">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="FactTypeRoleProjection"/>
+						<DomainRelationshipMoniker Name="DerivedRoleProjection"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
 				<!-- Although it is unusual to derive two columns from the same source, it should not illegal. -->
-				<DomainRole Name="Source" PropertyName="FactTypeRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="AE9C159E-6909-46CF-8635-059DE2B9E7F3" Description="The derived role associated with this calculated value.">
+				<DomainRole Name="Source" PropertyName="DerivedRoleProjections" Multiplicity="ZeroMany" IsPropertyGenerator="false" DisplayName="Source" Id="AE9C159E-6909-46CF-8635-059DE2B9E7F3" Description="The derived role associated with this calculated value.">
 					<RolePlayer>
 						<DomainClassMoniker Name="CalculatedPathValue"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="FactTypeRoleProjectedFromPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="205ED2D0-43CE-4141-9A3F-5C33138AD048">
+		<DomainRelationship Name="DerivedRoleProjectedFromPathConstant" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="205ED2D0-43CE-4141-9A3F-5C33138AD048">
 			<Source>
 				<DomainRole Name="RoleProjection" PropertyName="ProjectedFromConstant" Multiplicity="ZeroOne" IsPropertyGenerator="true" DisplayName="RoleProjection" Id="AD816A27-E687-46EC-9240-F1C69EDCF9DB" Description="The constant value used to populate this role in the derived fact type.">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="FactTypeRoleProjection"/>
+						<DomainRelationshipMoniker Name="DerivedRoleProjection"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Source" PropertyName="FactTypeRoleProjection" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="F798AF86-1E64-4789-A840-05B615404544" Description="The derived role that uses this path constant.">
+				<DomainRole Name="Source" PropertyName="DerivedRoleProjection" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Source" Id="F798AF86-1E64-4789-A840-05B615404544" Description="The derived role that uses this path constant.">
 					<RolePlayer>
 						<DomainClassMoniker Name="PathConstant"/>
 					</RolePlayer>
@@ -6276,40 +6547,40 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="FactTypeDerivationRuleHasProjectionRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FB983BA1-60F2-4C56-8BA4-B2C2A6DE6CA8">
+		<DomainRelationship Name="RoleProjectedDerivationRuleHasProjectionRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="FB983BA1-60F2-4C56-8BA4-B2C2A6DE6CA8">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
 			<Source>
 				<DomainRole Name="DerivationRule" PropertyName="ProjectionRequiredError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationRule" Id="BCEAF3F3-C188-4F83-BEB1-71920310711D">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactTypeDerivationRule"/>
+						<DomainClassMoniker Name="RoleProjectedDerivationRule"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
 				<DomainRole Name="ProjectionRequiredError" PropertyName="DerivationRule" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ProjectionRequiredError" Id="4D4B10EF-6A87-4721-B4C5-CF0D321374F9">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactTypeDerivationRequiresProjectionError"/>
+						<DomainClassMoniker Name="RoleProjectedDerivationRequiresProjectionError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-		<DomainRelationship Name="FactTypeDerivationProjectionHasPartialProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9972479B-3323-4446-9DD9-FD42F70C96A2">
+		<DomainRelationship Name="RoleSetDerivationProjectionHasPartialProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9972479B-3323-4446-9DD9-FD42F70C96A2">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
 			</BaseRelationship>
 			<Source>
 				<DomainRole Name="DerivationProjection" PropertyName="PartialProjectionError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationProjection" Id="29F09464-ABFF-43CC-9AA1-067A2FF0ADD8">
 					<RolePlayer>
-						<DomainRelationshipMoniker Name="FactTypeDerivationProjection"/>
+						<DomainRelationshipMoniker Name="RoleSetDerivationProjection"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
 				<DomainRole Name="PartialProjectionError" PropertyName="DerivationProjection" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PartialProjectionError" Id="53B3D1CE-E61C-4567-81A0-829BE37B7DA7">
 					<RolePlayer>
-						<DomainClassMoniker Name="PartialFactTypeDerivationProjectionError"/>
+						<DomainClassMoniker Name="PartialRoleSetDerivationProjectionError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

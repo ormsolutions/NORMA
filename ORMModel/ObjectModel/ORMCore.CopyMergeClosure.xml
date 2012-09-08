@@ -184,6 +184,7 @@
 			<cmc:ClosureRole relationship="RolePathObjectTypeRoot" role="RootObjectType" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="LeadRolePathSatisfiesCalculatedCondition" role="CalculatedCondition" closureBehavior="InternalReferencedPart"/>
 			<cmc:ClosureRole relationship="RolePathOwnerUsesSharedLeadRolePath" role="RolePath" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="RolePathOwnerUsesSharedSubquery" role="Subquery" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="CalculatedPathValueIsCalculatedWithFunction" role="Function" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="CalculatedPathValueInputCorrespondsToFunctionParameter" role="Parameter" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="CalculatedPathValueInputBindsToRolePathRoot" role="Source" closureBehavior="InternalReferencedPart"/>
@@ -194,12 +195,12 @@
 			<cmc:ClosureRole relationship="PathObjectUnifierUnifiesRolePathRoot" role="PathRoot" closureBehavior="InternalReferencedPart" order="From"/>
 			<cmc:ClosureRole relationship="PathObjectUnifierUnifiesPathedRole" role="PathedRole" closureBehavior="InternalReferencedPart" order="From"/>
 
-			<!-- FactType derivation projection -->
-			<cmc:ClosureRole relationship="FactTypeDerivationProjection" role="RolePath" closureBehavior="Custom">
+			<!-- Role set derivation projection -->
+			<cmc:ClosureRole relationship="RoleSetDerivationProjection" role="RolePath" closureBehavior="Custom">
 				<cmc:CustomBehavior>
-					<plx:local name="projection" dataTypeName="FactTypeDerivationProjection">
+					<plx:local name="projection" dataTypeName="RoleSetDerivationProjection">
 						<plx:initialize>
-							<plx:cast dataTypeName="FactTypeDerivationProjection" type="exceptionCast">
+							<plx:cast dataTypeName="RoleSetDerivationProjection" type="exceptionCast">
 								<plx:nameRef name="link" type="parameter"/>
 							</plx:cast>
 						</plx:initialize>
@@ -236,10 +237,10 @@
 					</plx:return>
 				</cmc:CustomBehavior>
 			</cmc:ClosureRole>
-			<cmc:ClosureRole relationship="FactTypeRoleProjection" role="ProjectedRole" closureBehavior="InternalReferencedPart"/>
-			<cmc:ClosureRole relationship="FactTypeRoleProjectedFromRolePathRoot" role="Source" closureBehavior="ExternalReferencedPart"/>
-			<cmc:ClosureRole relationship="FactTypeRoleProjectedFromPathedRole" role="Source" closureBehavior="ExternalReferencedPart"/>
-			<cmc:ClosureRole relationship="FactTypeRoleProjectedFromCalculatedPathValue" role="Source" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="DerivedRoleProjection" role="ProjectedRole" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="DerivedRoleProjectedFromRolePathRoot" role="Source" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="DerivedRoleProjectedFromPathedRole" role="Source" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="DerivedRoleProjectedFromCalculatedPathValue" role="Source" closureBehavior="ExternalReferencedPart"/>
 
 			<!-- Join path projection -->
 			<cmc:ClosureRole relationship="ConstraintRoleSequenceJoinPathProjection" role="RolePath" closureBehavior="Custom">

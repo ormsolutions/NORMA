@@ -4896,11 +4896,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			else if (null != (requireRolePlayer = error as RolePlayerRequiredError))
 			{
 				// The role will be selected by the IProxyDisplayProvider implementation
-				ORMDiagram ormDiagram = Diagram as ORMDiagram;
-				ormDiagram.RoleConnectAction.ChainMouseAction(
-					GetAbsoluteRoleAttachPoint(requireRolePlayer.Role),
-					ormDiagram.ActiveDiagramView.DiagramClientView,
-					false);
+				Role activateRole = requireRolePlayer.Role;
+				if (retVal = (activateRole.FactType == AssociatedFactType)) // Subquery roles can get here through embedding chain, ignore to force to model browser
+				{
+					ORMDiagram ormDiagram = Diagram as ORMDiagram;
+					ormDiagram.RoleConnectAction.ChainMouseAction(
+						GetAbsoluteRoleAttachPoint(activateRole),
+						ormDiagram.ActiveDiagramView.DiagramClientView,
+						false);
+				}
 			}
 			else if (null != (constraintNameError = error as ConstraintDuplicateNameError))
 			{

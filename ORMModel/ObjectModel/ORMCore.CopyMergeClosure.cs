@@ -52,6 +52,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ConstraintRoleProjectedFromPathConstant.ConstraintRoleProjectionDomainRoleId), new DomainRoleClosureRestriction(ConstraintRoleProjectedFromPathConstant.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ConstraintRoleSequenceHasJoinPath.JoinPathDomainRoleId), new DomainRoleClosureRestriction(ConstraintRoleSequenceHasJoinPath.RoleSequenceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ConstraintRoleSequenceHasJoinPath.RoleSequenceDomainRoleId), new DomainRoleClosureRestriction(ConstraintRoleSequenceHasJoinPath.JoinPathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathConstant.SourceDomainRoleId), new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathConstant.RoleProjectionDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathConstant.RoleProjectionDomainRoleId), new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathConstant.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ElementGroupingHasDefinition.DefinitionDomainRoleId), new DomainRoleClosureRestriction(ElementGroupingHasDefinition.GroupingDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ElementGroupingHasDefinition.GroupingDomainRoleId), new DomainRoleClosureRestriction(ElementGroupingHasDefinition.DefinitionDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ElementGroupingHasNote.NoteDomainRoleId), new DomainRoleClosureRestriction(ElementGroupingHasNote.GroupingDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
@@ -76,8 +78,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeHasReadingOrder.FactTypeDomainRoleId), new DomainRoleClosureRestriction(FactTypeHasReadingOrder.ReadingOrderDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeHasRole.RoleDomainRoleId), new DomainRoleClosureRestriction(FactTypeHasRole.FactTypeDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeHasRole.FactTypeDomainRoleId), new DomainRoleClosureRestriction(FactTypeHasRole.RoleDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
-			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeRoleProjectedFromPathConstant.SourceDomainRoleId), new DomainRoleClosureRestriction(FactTypeRoleProjectedFromPathConstant.RoleProjectionDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
-			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeRoleProjectedFromPathConstant.RoleProjectionDomainRoleId), new DomainRoleClosureRestriction(FactTypeRoleProjectedFromPathConstant.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FunctionOperatesOnParameter.ParameterDomainRoleId), new DomainRoleClosureRestriction(FunctionOperatesOnParameter.FunctionDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FunctionOperatesOnParameter.FunctionDomainRoleId), new DomainRoleClosureRestriction(FunctionOperatesOnParameter.ParameterDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(LeadRolePathCalculatesCalculatedPathValue.CalculatedValueDomainRoleId), new DomainRoleClosureRestriction(LeadRolePathCalculatesCalculatedPathValue.LeadRolePathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
@@ -96,6 +96,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ObjectTypeHasNote.ObjectTypeDomainRoleId), new DomainRoleClosureRestriction(ObjectTypeHasNote.NoteDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(PathedRoleHasValueConstraint.ValueConstraintDomainRoleId), new DomainRoleClosureRestriction(PathedRoleHasValueConstraint.PathedRoleDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(PathedRoleHasValueConstraint.PathedRoleDomainRoleId), new DomainRoleClosureRestriction(PathedRoleHasValueConstraint.ValueConstraintDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(QueryDefinesParameter.ParameterDomainRoleId), new DomainRoleClosureRestriction(QueryDefinesParameter.QueryDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(QueryDefinesParameter.QueryDomainRoleId), new DomainRoleClosureRestriction(QueryDefinesParameter.ParameterDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ReadingOrderHasReading.ReadingDomainRoleId), new DomainRoleClosureRestriction(ReadingOrderHasReading.ReadingOrderDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ReadingOrderHasReading.ReadingOrderDomainRoleId), new DomainRoleClosureRestriction(ReadingOrderHasReading.ReadingDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RecognizedPhraseHasAbbreviation.AbbreviationDomainRoleId), new DomainRoleClosureRestriction(RecognizedPhraseHasAbbreviation.RecognizedPhraseDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
@@ -104,6 +106,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RoleHasValueConstraint.RoleDomainRoleId), new DomainRoleClosureRestriction(RoleHasValueConstraint.ValueConstraintDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RolePathOwnerOwnsLeadRolePath.RolePathDomainRoleId), new DomainRoleClosureRestriction(RolePathOwnerOwnsLeadRolePath.PathOwnerDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RolePathOwnerOwnsLeadRolePath.PathOwnerDomainRoleId), new DomainRoleClosureRestriction(RolePathOwnerOwnsLeadRolePath.RolePathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RolePathOwnerOwnsSubquery.SubqueryDomainRoleId), new DomainRoleClosureRestriction(RolePathOwnerOwnsSubquery.PathOwnerDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RolePathOwnerOwnsSubquery.PathOwnerDomainRoleId), new DomainRoleClosureRestriction(RolePathOwnerOwnsSubquery.SubqueryDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RolePathRootHasValueConstraint.ValueConstraintDomainRoleId), new DomainRoleClosureRestriction(RolePathRootHasValueConstraint.PathRootDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RolePathRootHasValueConstraint.PathRootDomainRoleId), new DomainRoleClosureRestriction(RolePathRootHasValueConstraint.ValueConstraintDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RoleSubPathIsContinuationOfRolePath.SubPathDomainRoleId), new DomainRoleClosureRestriction(RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
@@ -118,6 +122,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(SetConstraintHasDefinition.SetConstraintDomainRoleId), new DomainRoleClosureRestriction(SetConstraintHasDefinition.DefinitionDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(SetConstraintHasNote.NoteDomainRoleId), new DomainRoleClosureRestriction(SetConstraintHasNote.SetConstraintDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(SetConstraintHasNote.SetConstraintDomainRoleId), new DomainRoleClosureRestriction(SetConstraintHasNote.NoteDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(SubqueryParameterInputFromPathConstant.SourceDomainRoleId), new DomainRoleClosureRestriction(SubqueryParameterInputFromPathConstant.ParameterInputDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(SubqueryParameterInputFromPathConstant.ParameterInputDomainRoleId), new DomainRoleClosureRestriction(SubqueryParameterInputFromPathConstant.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId), new DomainRoleClosureRestriction(SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(SubtypeDerivationRuleHasDerivationNote.DerivationRuleDomainRoleId), new DomainRoleClosureRestriction(SubtypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ContainedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(SubtypeHasDerivationRule.DerivationRuleDomainRoleId), new DomainRoleClosureRestriction(SubtypeHasDerivationRule.SubtypeDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
@@ -142,8 +148,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddOrderedRole(LeadRolePathCalculatesCalculatedPathValue.LeadRolePathDomainRoleId, MergeIntegrationOrder.AfterLeading);
 			closureManager.AddOrderedRole(LeadRolePathHasObjectUnifier.LeadRolePathDomainRoleId, MergeIntegrationOrder.AfterLeading);
 			closureManager.AddOrderedRole(NameGeneratorRefinesNameGenerator.ParentDomainRoleId, MergeIntegrationOrder.AfterLeading);
+			closureManager.AddOrderedRole(QueryDefinesParameter.QueryDomainRoleId, MergeIntegrationOrder.AfterLeading);
 			closureManager.AddOrderedRole(ReadingOrderHasReading.ReadingOrderDomainRoleId, MergeIntegrationOrder.AfterLeading);
 			closureManager.AddOrderedRole(RolePathOwnerOwnsLeadRolePath.PathOwnerDomainRoleId, MergeIntegrationOrder.AfterLeading);
+			closureManager.AddOrderedRole(RolePathOwnerOwnsSubquery.PathOwnerDomainRoleId, MergeIntegrationOrder.AfterLeading);
 			closureManager.AddOrderedRole(RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId, MergeIntegrationOrder.AfterLeading);
 			closureManager.AddOrderedRole(SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId, MergeIntegrationOrder.AfterLeading);
 			closureManager.AddOrderedRole(ValueConstraintHasValueRange.ValueConstraintDomainRoleId, MergeIntegrationOrder.AfterLeading);
@@ -182,6 +190,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					return CopyClosureBehavior.ExternalReferencedPart;
 				});
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DerivedRoleProjectedFromCalculatedPathValue.RoleProjectionDomainRoleId), new DomainRoleClosureRestriction(DerivedRoleProjectedFromCalculatedPathValue.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathedRole.RoleProjectionDomainRoleId), new DomainRoleClosureRestriction(DerivedRoleProjectedFromPathedRole.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DerivedRoleProjectedFromRolePathRoot.RoleProjectionDomainRoleId), new DomainRoleClosureRestriction(DerivedRoleProjectedFromRolePathRoot.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(DerivedRoleProjection.DerivationProjectionDomainRoleId), new DomainRoleClosureRestriction(DerivedRoleProjection.ProjectedRoleDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.InternalReferencedPart);
 			// Make the preferred identifier a composite part instead of an external reference to enforce the 1-1 nature of the relationship.
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(EntityTypeHasPreferredIdentifier.PreferredIdentifierForDomainRoleId), new DomainRoleClosureRestriction(EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalCompositePart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(EntityTypeInstanceHasRoleInstance.EntityTypeInstanceDomainRoleId), new DomainRoleClosureRestriction(EntityTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
@@ -189,21 +201,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(EntityTypeSubtypeInstanceHasSupertypeInstance.EntityTypeSubtypeInstanceDomainRoleId), new DomainRoleClosureRestriction(EntityTypeSubtypeInstanceHasSupertypeInstance.SupertypeInstanceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ExclusiveOrConstraintCoupler.MandatoryConstraintDomainRoleId), new DomainRoleClosureRestriction(ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalCompositePart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId), new DomainRoleClosureRestriction(ExclusiveOrConstraintCoupler.MandatoryConstraintDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalCompositePart);
-			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeDerivationProjection.DerivationRuleDomainRoleId), new DomainRoleClosureRestriction(FactTypeDerivationProjection.RolePathDomainRoleId), CopyClosureDirectiveOptions.None, delegate(ElementLink link)
-				{
-					FactTypeDerivationProjection projection = (FactTypeDerivationProjection)link;
-					if (projection.DerivationRule == projection.RolePath.PathOwner)
-					{
-						return CopyClosureBehavior.InternalReferencedPart;
-					}
-					return CopyClosureBehavior.ExternalReferencedPart;
-				});
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeInstanceHasRoleInstance.FactTypeInstanceDomainRoleId), new DomainRoleClosureRestriction(FactTypeInstanceHasRoleInstance.RoleInstanceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.InternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeRoleInstance.RoleDomainRoleId), new DomainRoleClosureRestriction(FactTypeRoleInstance.ObjectTypeInstanceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
-			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeRoleProjectedFromCalculatedPathValue.RoleProjectionDomainRoleId), new DomainRoleClosureRestriction(FactTypeRoleProjectedFromCalculatedPathValue.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
-			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeRoleProjectedFromPathedRole.RoleProjectionDomainRoleId), new DomainRoleClosureRestriction(FactTypeRoleProjectedFromPathedRole.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
-			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeRoleProjectedFromRolePathRoot.RoleProjectionDomainRoleId), new DomainRoleClosureRestriction(FactTypeRoleProjectedFromRolePathRoot.SourceDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
-			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(FactTypeRoleProjection.DerivationProjectionDomainRoleId), new DomainRoleClosureRestriction(FactTypeRoleProjection.ProjectedRoleDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.InternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(GroupingElementRelationship.GroupingDomainRoleId), new DomainRoleClosureRestriction(GroupingElementRelationship.ElementDomainRoleId), CopyClosureDirectiveOptions.RootElementOnly, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(GroupingElementRelationship.ElementDomainRoleId), new DomainRoleClosureRestriction(GroupingElementRelationship.GroupingDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(LeadRolePathSatisfiesCalculatedCondition.LeadRolePathDomainRoleId), new DomainRoleClosureRestriction(LeadRolePathSatisfiesCalculatedCondition.CalculatedConditionDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.InternalReferencedPart);
@@ -227,7 +226,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ReferenceModeHasReferenceModeKind.ReferenceModeDomainRoleId), new DomainRoleClosureRestriction(ReferenceModeHasReferenceModeKind.KindDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RolePathObjectTypeRoot.RolePathDomainRoleId), new DomainRoleClosureRestriction(RolePathObjectTypeRoot.RootObjectTypeDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RolePathOwnerUsesSharedLeadRolePath.PathOwnerDomainRoleId), new DomainRoleClosureRestriction(RolePathOwnerUsesSharedLeadRolePath.RolePathDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RolePathOwnerUsesSharedSubquery.PathOwnerDomainRoleId), new DomainRoleClosureRestriction(RolePathOwnerUsesSharedSubquery.SubqueryDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RoleProxyHasRole.ProxyDomainRoleId), new DomainRoleClosureRestriction(RoleProxyHasRole.TargetRoleDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalCompositePart);
+			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(RoleSetDerivationProjection.DerivationRuleDomainRoleId), new DomainRoleClosureRestriction(RoleSetDerivationProjection.RolePathDomainRoleId), CopyClosureDirectiveOptions.None, delegate(ElementLink link)
+				{
+					RoleSetDerivationProjection projection = (RoleSetDerivationProjection)link;
+					if (projection.DerivationRule == projection.RolePath.PathOwner)
+					{
+						return CopyClosureBehavior.InternalReferencedPart;
+					}
+					return CopyClosureBehavior.ExternalReferencedPart;
+				});
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ValueTypeHasDataType.ValueTypeDomainRoleId), new DomainRoleClosureRestriction(ValueTypeHasDataType.DataTypeDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.ExternalReferencedPart);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId), new DomainRoleClosureRestriction(ValueTypeHasValueTypeInstance.ValueTypeDomainRoleId), CopyClosureDirectiveOptions.None, CopyClosureBehavior.Container);
 			closureManager.AddCopyClosureDirective(new DomainRoleClosureRestriction(ValueTypeHasValueTypeInstance.ValueTypeDomainRoleId), new DomainRoleClosureRestriction(ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId), CopyClosureDirectiveOptions.RootElementOnly, CopyClosureBehavior.ContainedPart);
@@ -505,32 +514,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // DerivationNote Element Equivalence
-	#region FactTypeDerivationRule Element Equivalence
-	partial class FactTypeDerivationRule : IElementEquivalence
-	{
-		/// <summary>Implements <cref name="IElementEquivalence.MapEquivalentElements"/></summary>
-		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
-		{
-			FactType parentFactType;
-			if (null != (parentFactType = this.FactType))
-			{
-				// Embedded through the FactTypeHasDerivationRule relationship
-				FactType otherParentFactType;
-				FactTypeDerivationRule otherFactTypeDerivationRule;
-				if (null != (otherParentFactType = CopyMergeUtility.GetEquivalentElement(parentFactType, foreignStore, elementTracker)) && null != (otherFactTypeDerivationRule = otherParentFactType.DerivationRule))
-				{
-					elementTracker.AddEquivalentElement(this, otherFactTypeDerivationRule);
-					return true;
-				}
-			}
-			return false;
-		}
-		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
-		{
-			return this.MapEquivalentElements(foreignStore, elementTracker);
-		}
-	}
-	#endregion // FactTypeDerivationRule Element Equivalence
 	#region ModelErrorDisplayFilter Element Equivalence
 	partial class ModelErrorDisplayFilter : IElementEquivalence
 	{
@@ -724,7 +707,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			CalculatedPathValueInput parentCalculatedPathValueInput;
 			ConstraintRoleProjection parentConstraintRoleProjection;
-			FactTypeRoleProjection parentFactTypeRoleProjection;
+			DerivedRoleProjection parentDerivedRoleProjection;
+			SubqueryParameterInput parentSubqueryParameterInput;
 			if (null != (parentCalculatedPathValueInput = this.BoundInput))
 			{
 				// Embedded through the CalculatedPathValueInputBindsToPathConstant relationship
@@ -747,12 +731,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return true;
 				}
 			}
-			else if (null != (parentFactTypeRoleProjection = this.FactTypeRoleProjection))
+			else if (null != (parentDerivedRoleProjection = this.DerivedRoleProjection))
 			{
-				// Embedded through the FactTypeRoleProjectedFromPathConstant relationship
-				FactTypeRoleProjection otherParentFactTypeRoleProjection;
+				// Embedded through the DerivedRoleProjectedFromPathConstant relationship
+				DerivedRoleProjection otherParentDerivedRoleProjection;
 				PathConstant otherPathConstant;
-				if (null != (otherParentFactTypeRoleProjection = CopyMergeUtility.GetEquivalentElement(parentFactTypeRoleProjection, foreignStore, elementTracker)) && null != (otherPathConstant = otherParentFactTypeRoleProjection.ProjectedFromConstant))
+				if (null != (otherParentDerivedRoleProjection = CopyMergeUtility.GetEquivalentElement(parentDerivedRoleProjection, foreignStore, elementTracker)) && null != (otherPathConstant = otherParentDerivedRoleProjection.ProjectedFromConstant))
+				{
+					elementTracker.AddEquivalentElement(this, otherPathConstant);
+					return true;
+				}
+			}
+			else if (null != (parentSubqueryParameterInput = this.SubqueryParameterInput))
+			{
+				// Embedded through the SubqueryParameterInputFromPathConstant relationship
+				SubqueryParameterInput otherParentSubqueryParameterInput;
+				PathConstant otherPathConstant;
+				if (null != (otherParentSubqueryParameterInput = CopyMergeUtility.GetEquivalentElement(parentSubqueryParameterInput, foreignStore, elementTracker)) && null != (otherPathConstant = otherParentSubqueryParameterInput.InputFromConstant))
 				{
 					elementTracker.AddEquivalentElement(this, otherPathConstant);
 					return true;
@@ -766,6 +761,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // PathConstant Element Equivalence
+	#region RoleProjectedDerivationRule Element Equivalence
+	partial class RoleProjectedDerivationRule : IElementEquivalence
+	{
+		/// <summary>Implements <cref name="IElementEquivalence.MapEquivalentElements"/></summary>
+		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			FactType parentFactType;
+			if (null != (parentFactType = this.FactType))
+			{
+				// Embedded through the FactTypeHasDerivationRule relationship
+				FactType otherParentFactType;
+				RoleProjectedDerivationRule otherRoleProjectedDerivationRule;
+				if (null != (otherParentFactType = CopyMergeUtility.GetEquivalentElement(parentFactType, foreignStore, elementTracker)) && null != (otherRoleProjectedDerivationRule = otherParentFactType.DerivationRule))
+				{
+					elementTracker.AddEquivalentElement(this, otherRoleProjectedDerivationRule);
+					return true;
+				}
+			}
+			return false;
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return this.MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // RoleProjectedDerivationRule Element Equivalence
 	#region RoleValueConstraint Element Equivalence
 	partial class RoleValueConstraint : IElementEquivalence
 	{

@@ -36,8 +36,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void FactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
-			FactTypeDerivationRule derivationRule = link.DerivationRule;
-			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+			FactTypeDerivationRule derivationRule;
+			if (!(link.FactType is QueryBase) &&
+				null != (derivationRule = link.DerivationRule as FactTypeDerivationRule) &&
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 				!derivationRule.ExternalDerivation)
 			{
 				FrameworkDomainModel.DelayValidateElement(link.FactType, DelayProcessFactTypeForImpliedObjectification);
@@ -64,8 +66,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
 			FactType factType;
-			FactTypeDerivationRule derivationRule = link.DerivationRule;
-			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+			FactTypeDerivationRule derivationRule;
+			if (!(link.FactType is QueryBase) &&
+				null != (derivationRule = link.DerivationRule as FactTypeDerivationRule) &&
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 				!derivationRule.ExternalDerivation &&
 				!(factType = link.FactType).IsDeleted)
 			{
@@ -1036,9 +1040,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// Fully derived fact types are not implicitly objectified
 			FactTypeDerivationRule derivationRule;
-			if (null != (derivationRule = factType.DerivationRule) &&
+			if (factType is QueryBase ||
+				(null != (derivationRule = factType.DerivationRule as FactTypeDerivationRule) &&
 				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-				!derivationRule.ExternalDerivation)
+				!derivationRule.ExternalDerivation))
 			{
 				return false;
 			}
@@ -1328,9 +1333,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				isIndependent = isImplied && preferredConstraint != null && preferredConstraint.RoleCollection.Count == factRoleCount;
 			}
 			Store store = factType.Store;
-			FactTypeDerivationRule derivationRule = factType.DerivationRule;
+			FactTypeDerivationRule derivationRule;
 			string objectTypeName;
-			if (null == (derivationRule = factType.DerivationRule) ||
+			if (null == (derivationRule = factType.DerivationRule as FactTypeDerivationRule) ||
 				// Ignore derivationRule.DerivationCompleteness  and derivationRule.ExternalDerivation
 				// here, unlike the the factType.Name property rules. If the objectification is implicitly
 				// created as a result of DerivationCompleteness being switched to PartiallyDerived,
@@ -2156,7 +2161,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						element.IsImplied = false;
 					}
-					else if (null != (derivationRule = nestedFact.DerivationRule) &&
+					else if (null != (derivationRule = nestedFact.DerivationRule as FactTypeDerivationRule) &&
 						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 						!derivationRule.ExternalDerivation)
 					{
@@ -2628,9 +2633,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				FactTypeDerivationRule derivationRule;
 				if (!element.IsDeleted &&
+					!(element is QueryBase) &&
 					null == element.Objectification &&
 					null == element.ImpliedByObjectification &&
-					(null == (derivationRule = element.DerivationRule) ||
+					(null == (derivationRule = element.DerivationRule as FactTypeDerivationRule) ||
 					derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived ||
 					derivationRule.ExternalDerivation))
 				{

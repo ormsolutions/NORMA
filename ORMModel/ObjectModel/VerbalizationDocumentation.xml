@@ -2357,6 +2357,52 @@ Format: {1} is {0} who</statement>
     <containedIn />
     <usedBy />
   </snippet>
+  <snippet name="QueryNamedParameter" replacementCount="2">
+    <statement>Description: Describe a query parameter with an associated name.
+Format: {0}=name, {1}=type name</statement>
+    <unformattedSnippet>{1}={0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="QueryParameterContainer" />
+      <snippet name="QueryVerbalization" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="QueryParameterContainer" replacementCount="1">
+    <statement>Description: Outer container for listing query parameters. Used as part of a query verbalization.
+Format: given {0}</statement>
+    <unformattedSnippet>given {0} </unformattedSnippet>
+    <contains>
+      <snippet name="QueryNamedParameter" />
+      <snippet name="QueryUnnamedParameter" />
+    </contains>
+    <containedIn>
+      <snippet name="QueryVerbalization" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="QueryUnnamedParameter" replacementCount="1">
+    <statement>Description: Describe a query parameter with no associated name. Format: given {0}</statement>
+    <unformattedSnippet>{0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="QueryParameterContainer" />
+      <snippet name="QueryVerbalization" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="QueryVerbalization" replacementCount="3">
+    <statement>Description: Root verbalization for a query. Containers a parameter (defined with QueryParameterContainer if present) and projection lists plus the derivation rule.
+Format: {0}select {1} where {2}</statement>
+    <unformattedSnippet>{0}select {1} where{2}</unformattedSnippet>
+    <contains>
+      <snippet name="QueryNamedParameter" />
+      <snippet name="QueryParameterContainer" />
+      <snippet name="QueryUnnamedParameter" />
+    </contains>
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="ReferenceModeVerbalization" replacementCount="1">
     <statement>Description: Verbalizes the mode in which an object is referenced. Format: Reference Mode: {0}</statement>
     <unformattedSnippet>Reference Mode: {0}</unformattedSnippet>

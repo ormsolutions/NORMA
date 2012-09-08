@@ -361,43 +361,35 @@
 		<comment>An entity type must have a preferred reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
 	</data>
 	<data name="ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.Message" xml:space="preserve">
-		<value>Objectified FactType instance required for instance '{0}' of '{1}' in model '{2}'.</value>
-		<comment>Text displayed when an objectified FactType instance is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</comment>
+		<value>Objectified fact instance required for instance '{0}' of '{1}' in model '{2}'.</value>
+		<comment>Text displayed when an objectified fact instance is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</comment>
 	</data>
 	<data name="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message" xml:space="preserve">
 		<value>'{0}' instance '{1}' in model '{2}' has an incomplete identifier.</value>
 		<comment>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. {0}=entitytype, {1}=instance, {2}=model.</comment>
 	</data>
 	<data name="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text" xml:space="preserve">
-		<value>FactType '{0}' in model '{1}' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</value>
-		<comment>Text used in the ImpliedInternalUniquenessConstraintError' {0}=fact type name {2}=model name</comment>
+		<value>{0} contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</value>
+		<comment>Text used in the ImpliedInternalUniquenessConstraintError' {0}=fact type display context</comment>
 	</data>
 	<data name="ModelError.FactType.NMinusOneRule.Text" xml:space="preserve">
-		<value>Uniqueness constraint '{0}' on FactType '{1}' in model '{2}' must span at least {3} roles.</value>
-		<comment>Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact name, {2}=model name, {3}=factarity-1</comment>
+		<value>Uniqueness constraint '{0}' on {1} must span at least {2} roles.</value>
+		<comment>Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact type display context, {2}=factarity-1</comment>
 	</data>
 	<data name="ModelError.FactType.RequiresInternalUniquenessConstraint.Message" xml:space="preserve">
-		<value>FactType '{0}' in model '{1}' requires an internal uniqueness constraint with alethic modality.</value>
-		<comment>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</comment>
+		<value>{0} requires an internal uniqueness constraint with alethic modality.</value>
+		<comment>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError. {0}=fact type display context</comment>
 	</data>
 	<data name="ModelError.FactType.RequiresReading.Message" xml:space="preserve">
-		<value>At least one reading is required for FactType '{0}' in model '{1}'.</value>
-		<comment>Text displayed in the text of the FactTypeRequiresReadingError</comment>
-	</data>
-	<data name="ModelError.FactTypeDerivationRule.FactTypeDerivationRequiresProjection.Text" xml:space="preserve">
-		<value>{0} must project derived roles from at least one source path.</value>
-		<comment>Model validation error text for a fact type derivation with no path projection. {0}=error display context</comment>
-	</data>
-	<data name="ModelError.FactTypeDerivationRule.PartialFactTypeDerivationProjection.Text" xml:space="preserve">
-		<value>{0} must project all derived roles from each projected source path.</value>
-		<comment>Model validation error text for a fact type derivation projection that does not project all fact type roles. {0}=error display context</comment>
+		<value>At least one reading is required for {0}.</value>
+		<comment>Text displayed in the text of the FactTypeRequiresReadingError. {0}=fact type display context</comment>
 	</data>
 	<data name="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.Message" xml:space="preserve">
-		<value>Identifier required for FactType instance '{0}' in model '{1}'.</value>
+		<value>Identifier required for fact instance '{0}' in model '{1}'.</value>
 		<comment>Text displayed when an external identifier is needed for a FactTypeInstance. {0}=instance {1}=model.</comment>
 	</data>
 	<data name="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message" xml:space="preserve">
-		<value>FactType instance '{0}' in model '{1}' has a partial population.</value>
+		<value>Fact instance '{0}' in model '{1}' has a partial population.</value>
 		<comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=facttype {1}=model.</comment>
 	</data>
 	<data name="ModelError.Model.DuplicateConstraintNames.Text" xml:space="preserve">
@@ -417,15 +409,15 @@
 		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
 	<data name="ModelError.Model.PopulationMandatoryError.Text" xml:space="preserve">
-		<value>'{0}' instance '{1}' in model '{2}' must participate in FactType '{3}'{4}.</value>
+		<value>'{0}' instance '{1}' in model '{2}' must participate in fact type '{3}'{4}.</value>
 		<comment>Model validation error shown when a population violates a mandatory constraint. Field 0 is the name of the role player, field 1 is the derived name of the instance, field 2 is the model name, field 3 is the name of the first facttype name, field 4 is a placeholder for additional fact types.</comment>
 	</data>
 	<data name="ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText" xml:space="preserve">
-		<value> or FactType '{0}'{1}</value>
+		<value> or fact type '{0}'{1}</value>
 		<comment>Model validation error shown when a population violates a mandatory constraint (additional fact types). Field 0 is the name of the fact type, field 1 is the following fact type (replaced by yet another trailing fact type, if available).</comment>
 	</data>
 	<data name="ModelError.Model.PopulationUniquenessError.FactType.Text" xml:space="preserve">
-		<value>'{0}'  instance '{1}' in model '{2}' violates a uniqueness constraint on FactType '{3}'.</value>
+		<value>'{0}' instance '{1}' in model '{2}' violates a uniqueness constraint on fact type '{3}'.</value>
 		<comment>Model validation error shown when a population violates a uniqueness constraint and its role is unnamed.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the facttype name.</comment>
 	</data>
 	<data name="ModelError.Model.PopulationUniquenessError.Role.Text" xml:space="preserve">
@@ -433,32 +425,32 @@
 		<comment>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the role name.</comment>
 	</data>
 	<data name="ModelError.ObjectType.CompatibleSupertypesError.Message" xml:space="preserve">
-		<value>Direct supertypes of ObjectType '{0}' in model '{1}' must be overlapping without transitive implication or mutual exclusion.</value>
-		<comment>Text displayed in the text of the CompatibleSupertypesError. {0}=ObjectType name {1}=model name.</comment>
+		<value>Direct supertypes of {0} must be overlapping without transitive implication or mutual exclusion.</value>
+		<comment>Text displayed in the text of the CompatibleSupertypesError. {0}=object type display context.</comment>
 	</data>
 	<data name="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message" xml:space="preserve">
-		<value>Object type '{0}' in model '{1}' has a preferred identification scheme with no corresponding mandatory roles. One or more near roles in the facts attached to the preferred identifier must be mandatory.</value>
-		<comment>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=ObjectType name {1}=model name</comment>
+		<value>{0} has a preferred identification scheme with no corresponding mandatory roles. One or more near roles in the facts attached to the preferred identifier must be mandatory.</value>
+		<comment>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=object type display context</comment>
 	</data>
 	<data name="ModelError.Reading.RequiresUserModification.Message" xml:space="preserve">
-		<value>FactType '{0}' in model '{1}' requires user modification of the reading text '{2}'.</value>
-		<comment>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact name,{1}=model name,{2}=reading text</comment>
+		<value>{0} requires user modification of the reading text '{1}'.</value>
+		<comment>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact type display context,{1}=reading text</comment>
 	</data>
 	<data name="ModelError.Reading.TooFewRoles.Message" xml:space="preserve">
-		<value>FactType '{0}' in model '{1}' has too few roles for the reading with text '{2}'.</value>
-		<comment>Text displayed in the text of the TooFewRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
+		<value>{0} has too few roles for the reading with text '{1}'.</value>
+		<comment>Text displayed in the text of the TooFewRolesError. {0}=fact type display context,{1}=reading text</comment>
 	</data>
 	<data name="ModelError.Reading.TooManyRoles.Message" xml:space="preserve">
-		<value>FactType '{0}' in model '{1}' has too many roles for the reading with text '{2}'.</value>
-		<comment>Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text</comment>
+		<value>{0} has too many roles for the reading with text '{1}'.</value>
+		<comment>Text displayed in the text of the TooManyRolesError. {0}=fact type display context,{1}=reading text</comment>
 	</data>
 	<data name="ModelError.RecognizedPhrase.DuplicateNameError.Message" xml:space="preserve">
 		<value>Model '{0}' contains multiple recognized phrases named '{1}'.</value>
 		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
 	<data name="ModelError.Role.RolePlayerRequired.Message" xml:space="preserve">
-		<value>Role '{0}' in FactType '{1}' in model '{2}' requires a role player.</value>
-		<comment>Model validation error text displayed when a role does not have a specified role player. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</comment>
+		<value>{0} requires a role player.</value>
+		<comment>Model validation error text displayed when a role does not have a specified role player. {0}=error display context for role.</comment>
 	</data>
 	<data name="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.Text" xml:space="preserve">
 		<value>{0} joins to a path role with an incompatible role player.</value>
@@ -484,22 +476,33 @@
 		<value>{0} has a start role in an invalid path position.</value>
 		<comment>Model validation error text for a pathed role that is not marked as a start role or is marked as a start role and should not be. {0}=error display context</comment>
 	</data>
+	<data name="ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.Text" xml:space="preserve">
+		<value>{0} must project derived roles from at least one source path.</value>
+		<comment>Model validation error text for a fact type or query derivation with no path projection. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.Text" xml:space="preserve">
+		<value>{0} must project all derived roles from each projected source path.</value>
+		<comment>Model validation error text for a fact type or query derivation projection that does not project all roles. {0}=error display context</comment>
+	</data>
 	<data name="ModelError.UncategorizedModelError.CategoryDisplayName" xml:space="preserve">
 		<value>Uncategorized Model Validation Errors</value>
 		<comment>Category name to display for uncategorized model errors.</comment>
 	</data>
-
-	<data name="ModelError.DisplayContext.FactTypeDerivationRule" xml:space="preserve">
-		<value>derivation rule for FactType '{0}' in model '{1}'</value>
-		<comment>Dynamic text replacement for an error associated with the derivation rule of a FactType. Automatically capitalized on replacement. {0}=FactType {1}=Model.</comment>
+	<data name="ModelError.DisplayContext.FactType" xml:space="preserve">
+		<value>fact type '{0}' in model '{1}'</value>
+		<comment>Dynamic text replacement for an error associated a normal FactType. Automatically capitalized on replacement. {0}=FactType {1}=Model.</comment>
 	</data>
 	<data name="ModelError.DisplayContext.FactTypeRole" xml:space="preserve">
-		<value>role '{2}' of FactType '{1}' in model '{0}'</value>
-		<comment>Dynamic text replacement for an error associated with a Role in a FactType. Automatically capitalized on replacement. {0}=model {1}=facttype {2}=role number.</comment>
+		<value>role '{1}' of {0}</value>
+		<comment>Dynamic text replacement for an error associated with a Role in a FactType. Automatically capitalized on replacement. {0}=display contex for fact type {1}=role number.</comment>
 	</data>
 	<data name="ModelError.DisplayContext.ObjectType" xml:space="preserve">
-		<value>'{0}' in model '{1}'</value>
+		<value>object type '{0}' in model '{1}'</value>
 		<comment>Dynamic text replacement for an error associated with an ObjectType. Automatically capitalized on replacement. {0}=ObjectType {1}=Model.</comment>
+	</data>
+	<data name="ModelError.DisplayContext.RoleProjectedDerivationRule" xml:space="preserve">
+		<value>derivation rule for {0}</value>
+		<comment>Dynamic text replacement for an error associated with a role projected derivation rule (either for a fact type or subquery). Automatically capitalized on replacement. {0}=display context for owning fact type.</comment>
 	</data>
 	<data name="ModelError.DisplayContext.SetComparisonConstraintSequence" xml:space="preserve">
 		<value>sequence '{2}' of constraint '{0}' in model '{1}'</value>
@@ -516,6 +519,10 @@
 	<data name="ModelError.DisplayContext.SetConstraintJoinPath" xml:space="preserve">
 		<value>join path for constraint '{0}' in model '{1}'</value>
 		<comment>Dynamic text replacement for an error associated with a SetConstraint join path. Automatically capitalized on replacement. {0}=SetConstraint {1}=Model.</comment>
+	</data>
+	<data name="ModelError.DisplayContext.Subquery" xml:space="preserve">
+		<value>subquery '?{0}' in {1}</value>
+		<comment>Dynamic text replacement for an error associated a Subquery. Automatically capitalized on replacement. {0}=SubquerySignature {1}=Display context for role path owner.</comment>
 	</data>
 	<data name="ModelError.DisplayContext.SubtypeDerivationRule" xml:space="preserve">
 		<value>subtype derivation rule for '{0}' in model '{1}'</value>
@@ -942,12 +949,12 @@
 		<comment>Text to place when selection is null in the sample population window.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.ObjectifyingIdentifierAlreadyUsedExceptionText" xml:space="preserve">
-		<value>'{0}' is already associated with another FactType instance.</value>
-		<comment>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another FactType instance.</comment>
+		<value>'{0}' is already associated with another fact instance.</value>
+		<comment>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another fact instance.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.ObjectifyingIdentifierRelationshipConflictsExceptionText" xml:space="preserve">
-		<value>'{0}' cannot be used, existing relationships conflict with relationships on this FactType instance.</value>
-		<comment>Text used to describe the editor exception when an objectification identifier is chosen that conflicts with existing FactType instance relationships.</comment>
+		<value>'{0}' cannot be used, existing relationships conflict with relationships on this fact instance.</value>
+		<comment>Text used to describe the editor exception when an objectification identifier is chosen that conflicts with existing fact instance relationships.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.RefuseDeleteRoleInstanceExceptionText" xml:space="preserve">
 		<value>This instance is implied by an implicit or explicit simple mandatory constraint.&#xd;&#xa;The identifying instance is a simple value with multiple uses, or is an entity instance.&#xd;&#xa;The instance cannot be deleted.</value>
@@ -955,10 +962,10 @@
 	</data>
 	<data name="ModelSamplePopulationEditor.RelateObjectifiedInstanceIdentifierTransactionText" xml:space="preserve">
 		<value>Relate '{0}' Identifier '{1}' to Objectified Instance '{2}'</value>
-		<comment>Text used to describe the transaction when an identifier is attached to an objectified FactType instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</comment>
+		<comment>Text used to describe the transaction when an identifier is attached to an objectified fact instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.RemoveFactInstanceTransactionText" xml:space="preserve">
-		<value>Remove FactType Instance '{0}'</value>
+		<value>Remove Fact Instance '{0}'</value>
 		<comment>Text used to describe the transaction when removing a fact instance. {0}=instance name.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.RemoveObjectInstanceReferenceTransactionText" xml:space="preserve">
@@ -971,7 +978,7 @@
 	</data>
 	<data name="ModelSamplePopulationEditor.SeparateObjectifiedInstanceIdentifierTransactionText" xml:space="preserve">
 		<value>Separate '{0}' Identifier '{1}' from Objectified Instance '{2}'</value>
-		<comment>Text used to describe the transaction when an identifier is separated from an objectified FactType instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</comment>
+		<comment>Text used to describe the transaction when an identifier is separated from an objectified fact instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.WindowTitle" xml:space="preserve">
 		<value>ORM Sample Population Editor</value>
@@ -1497,6 +1504,14 @@ The remaining replacements are trimmed for leading/trailing whitespace
 	<data name="ObjectModel.ValueType.AutoCreateReferenceModeNamePattern" xml:space="preserve">
 		<value>{0}_RefMode{1}</value>
 		<comment>Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.</comment>
+	</data>
+	<data name="Subquery.SignatureFormat" xml:space="preserve">
+		<value>({0})-&gt;{{{1}}}</value>
+		<comment>The general structure for the signature of a subquery. {0}=parameter list, {1}=role list</comment>
+	</data>
+	<data name="Subquery.NamedArgumentFormat" xml:space="preserve">
+		<value>{1} ({0})</value>
+		<comment>The format string used to combine a parameter or role and and the parameter or role type in a subquery signature. {0}=item name, {1}=item type</comment>
 	</data>
 	<data name="SubtypeFact.ComponentNameFormat" xml:space="preserve">
 		<value>{0}-&gt;{1}</value>

@@ -1036,22 +1036,6 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SubsetImpliedByMandatoryError.Text");
 			}
 		}
-		/// <summary>Model validation error text for a fact type derivation with no path projection. {0}=error display context</summary>
-		public static string ModelErrorFactTypeDerivationRuleProjectionRequired
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeDerivationRule.FactTypeDerivationRequiresProjection.Text");
-			}
-		}
-		/// <summary>Model validation error text for a fact type derivation projection that does not project all fact type roles. {0}=error display context</summary>
-		public static string ModelErrorFactTypeDerivationRulePartialProjection
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeDerivationRule.PartialFactTypeDerivationProjection.Text");
-			}
-		}
 		/// <summary>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</summary>
 		public static string ModelErrorNotWellModeledSubsetAndMandatoryError
 		{
@@ -1076,15 +1060,15 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.Text");
 			}
 		}
-		/// <summary>Dynamic text replacement for an error associated with the derivation rule of a FactType. Automatically capitalized on replacement. {0}=FactType {1}=Model.</summary>
-		public static string ModelErrorDisplayContextFactTypeDerivationRule
+		/// <summary>Dynamic text replacement for an error associated a normal FactType. Automatically capitalized on replacement. {0}=FactType {1}=Model.</summary>
+		public static string ModelErrorDisplayContextFactType
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.FactTypeDerivationRule");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.FactType");
 			}
 		}
-		/// <summary>Dynamic text replacement for an error associated with a Role in a FactType. Automatically capitalized on replacement. {0}=model {1}=facttype {2}=role number.</summary>
+		/// <summary>Dynamic text replacement for an error associated with a Role in a FactType. Automatically capitalized on replacement. {0}=display contex for fact type {1}=role number.</summary>
 		public static string ModelErrorDisplayContextFactTypeRole
 		{
 			get
@@ -1098,6 +1082,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.ObjectType");
+			}
+		}
+		/// <summary>Dynamic text replacement for an error associated with a role projected derivation rule (either for a fact type or subquery). Automatically capitalized on replacement. {0}=display context for owning fact type.</summary>
+		public static string ModelErrorDisplayContextRoleProjectedDerivationRule
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.RoleProjectedDerivationRule");
 			}
 		}
 		/// <summary>Dynamic text replacement for an error associated with a sequence in a set comparison constraint. Automatically capitalized on replacement. {0}=Constraint {1}=Model {2}=sequence number.</summary>
@@ -1130,6 +1122,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.SetConstraintJoinPath");
+			}
+		}
+		/// <summary>Dynamic text replacement for an error associated a Subquery. Automatically capitalized on replacement. {0}=SubquerySignature {1}=Display context for role path owner.</summary>
+		public static string ModelErrorDisplayContextSubquery
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DisplayContext.Subquery");
 			}
 		}
 		/// <summary>Dynamic text replacement for an error associated with the derivation rule of a subtype. Automatically capitalized on replacement. {0}=ObjectType {1}=Model.</summary>
@@ -1290,6 +1290,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.RequiresRootObjectType.Text");
+			}
+		}
+		/// <summary>Model validation error text for a fact type or query derivation with no path projection. {0}=error display context</summary>
+		public static string ModelErrorRoleProjectedDerivationRuleProjectionRequired
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.Text");
+			}
+		}
+		/// <summary>Model validation error text for a fact type or query derivation projection that does not project all roles. {0}=error display context</summary>
+		public static string ModelErrorRoleProjectedDerivationRulePartialProjection
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.Text");
 			}
 		}
 		/// <summary>ValueConstraintValueTypeDetachedError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
@@ -2002,7 +2018,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.EditInstanceTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another FactType instance.</summary>
+		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that is already associated with another fact instance.</summary>
 		public static string ModelSamplePopulationEditorObjectifyingIdentifierAlreadyUsedExceptionText
 		{
 			get
@@ -2010,7 +2026,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.ObjectifyingIdentifierAlreadyUsedExceptionText");
 			}
 		}
-		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that conflicts with existing FactType instance relationships.</summary>
+		/// <summary>Text used to describe the editor exception when an objectification identifier is chosen that conflicts with existing fact instance relationships.</summary>
 		public static string ModelSamplePopulationEditorObjectifyingIdentifierRelationshipConflictsExceptionText
 		{
 			get
@@ -2026,7 +2042,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RefuseDeleteRoleInstanceExceptionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when an identifier is attached to an objectified FactType instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</summary>
+		/// <summary>Text used to describe the transaction when an identifier is attached to an objectified fact instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</summary>
 		public static string ModelSamplePopulationEditorRelateObjectifiedInstanceIdentifierTransactionText
 		{
 			get
@@ -2058,7 +2074,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.RemoveObjectInstanceTransactionText");
 			}
 		}
-		/// <summary>Text used to describe the transaction when an identifier is separated from an objectified FactType instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</summary>
+		/// <summary>Text used to describe the transaction when an identifier is separated from an objectified fact instance. {0}=type name, {1}=identifier instance name, {2}=fact instance name.</summary>
 		public static string ModelSamplePopulationEditorSeparateObjectifiedInstanceIdentifierTransactionText
 		{
 			get
@@ -2522,7 +2538,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModePicker.FormatString");
 			}
 		}
-		/// <summary>Text displayed in the text of the TooFewRolesError. {0}=fact name,{1}=model name,{2}=reading text</summary>
+		/// <summary>Text displayed in the text of the TooFewRolesError. {0}=fact type display context,{1}=reading text</summary>
 		public static string ModelErrorReadingTooFewRolesMessage
 		{
 			get
@@ -2530,7 +2546,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooFewRoles.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact name,{1}=model name,{2}=reading text</summary>
+		/// <summary>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact type display context,{1}=reading text</summary>
 		public static string ModelErrorReadingRequiresUserModificationMessage
 		{
 			get
@@ -2538,7 +2554,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.RequiresUserModification.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the TooManyRolesError. {0}=fact name,{1}=model name,{2}=reading text</summary>
+		/// <summary>Text displayed in the text of the TooManyRolesError. {0}=fact type display context,{1}=reading text</summary>
 		public static string ModelErrorReadingTooManyRolesMessage
 		{
 			get
@@ -2570,7 +2586,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ElementGrouping.MembershipContradictionError.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError</summary>
+		/// <summary>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError. {0}=fact type display context</summary>
 		public static string ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage
 		{
 			get
@@ -2578,7 +2594,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresInternalUniquenessConstraint.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the FactTypeRequiresReadingError</summary>
+		/// <summary>Text displayed in the text of the FactTypeRequiresReadingError. {0}=fact type display context</summary>
 		public static string ModelErrorFactTypeRequiresReadingMessage
 		{
 			get
@@ -2594,7 +2610,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.Message");
 			}
 		}
-		/// <summary>Text displayed when an objectified FactType instance is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</summary>
+		/// <summary>Text displayed when an objectified fact instance is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</summary>
 		public static string ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredMessage
 		{
 			get
@@ -2672,6 +2688,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "Role.SurveyNameMissingRolePlayer");
+			}
+		}
+		/// <summary>The general structure for the signature of a subquery. {0}=parameter list, {1}=role list</summary>
+		public static string SubquerySignatureFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "Subquery.SignatureFormat");
+			}
+		}
+		/// <summary>The format string used to combine a parameter or role and and the parameter or role type in a subquery signature. {0}=item name, {1}=item type</summary>
+		public static string SubqueryNamedArgumentFormat
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "Subquery.NamedArgumentFormat");
 			}
 		}
 		/// <summary>Closing delimiter to contain one or more value ranges.</summary>
@@ -2875,7 +2907,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.UnattachedRoleDisplay");
 			}
 		}
-		/// <summary>Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact name, {2}=model name, {3}=factarity-1</summary>
+		/// <summary>Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact type display context, {2}=factarity-1</summary>
 		public static string NMinusOneRuleInternalSpan
 		{
 			get
@@ -2907,7 +2939,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text");
 			}
 		}
-		/// <summary>Model validation error text displayed when a role does not have a specified role player. {0} is the (1-based) role number, {1} is the name of the fact, and {2} is the name of the model.</summary>
+		/// <summary>Model validation error text displayed when a role does not have a specified role player. {0}=error display context for role.</summary>
 		public static string ModelErrorRolePlayerRequiredError
 		{
 			get
@@ -2915,7 +2947,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Role.RolePlayerRequired.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the CompatibleSupertypesError. {0}=ObjectType name {1}=model name.</summary>
+		/// <summary>Text displayed in the text of the CompatibleSupertypesError. {0}=object type display context.</summary>
 		public static string ModelErrorObjectTypeCompatibleSupertypesError
 		{
 			get
@@ -2923,7 +2955,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.CompatibleSupertypesError.Message");
 			}
 		}
-		/// <summary>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=ObjectType name {1}=model name</summary>
+		/// <summary>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=object type display context</summary>
 		public static string ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError
 		{
 			get
@@ -2979,7 +3011,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelVerbalization.WindowTitle");
 			}
 		}
-		/// <summary>Text used in the ImpliedInternalUniquenessConstraintError' {0}=fact type name {2}=model name</summary>
+		/// <summary>Text used in the ImpliedInternalUniquenessConstraintError' {0}=fact type display context</summary>
 		public static string ModelErrorImpliedInternalUniquenessConstraintError
 		{
 			get

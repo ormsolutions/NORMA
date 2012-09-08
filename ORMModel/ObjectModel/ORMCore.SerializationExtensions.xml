@@ -86,6 +86,7 @@
 			<se:OmitRelationship Class="RolePathOwnerHasSingleLeadRolePath"/>
 			<se:OmitRelationship Class="RolePathOwnerHasSingleOwnedLeadRolePath"/>
 			<se:OmitRelationship Class="RolePathOwnerHasLeadRolePath"/>
+			<se:OmitRelationship Class="RolePathOwnerHasSubquery"/>
 			<se:OmitClass Class="IntrinsicReferenceMode"/>
 			<se:OmitRelationship Class="GroupingElementRelationship"/>
 			<se:OmitRelationship Class="ElementGroupingContainsElementGrouping"/>
@@ -364,6 +365,7 @@
 		<se:Link RelationshipName="ObjectTypeHasCompatibleSupertypesError" RoleName="CompatibleSupertypesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ModelNoteReferencesObjectType" RoleName="Note" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RolePathObjectTypeRoot" RoleName="RolePath" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="QueryParameterHasParameterType" RoleName="Parameter" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RecognizedPhrase" Override="true">
 		<se:Container Name="Abbreviations">
@@ -557,6 +559,16 @@
 			<se:Embed RelationshipName="FactTypeHasNote" RoleName="Note"/>
 		</se:Container>
 		<se:Container Name="FactRoles">
+			<se:ConditionalName Name="QueryRoles">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:thisKeyword/>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="Subquery"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
 			<se:Embed RelationshipName="FactTypeHasRole" RoleName="Role"/>
 		</se:Container>
 		<se:Container Name="ReadingOrders">
@@ -735,28 +747,49 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Container Name="DerivationProjections">
-			<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="RolePath"/>
+			<se:Link RelationshipName="RoleSetDerivationProjection" RoleName="RolePath"/>
 		</se:Container>
 		<se:Container Name="InformalRule">
 			<se:Embed RelationshipName="FactTypeDerivationRuleHasDerivationNote" RoleName="DerivationNote"/>
 		</se:Container>
-		<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="RolePath" Name="DerivationProjection" WriteStyle="PrimaryLinkElement"/>
-		<se:Link RelationshipName="FactTypeDerivationRuleHasProjectionRequiredError" RoleName="ProjectionRequiredError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="RoleSetDerivationProjection" RoleName="RolePath" Name="DerivationProjection" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="RoleProjectedDerivationRuleHasProjectionRequiredError" RoleName="ProjectionRequiredError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="FactTypeDerivationProjection">
-		<se:Link RelationshipName="FactTypeRoleProjection" RoleName="ProjectedRole" Name="RoleProjection" WriteStyle="PrimaryLinkElement"/>
-		<se:Link RelationshipName="FactTypeDerivationProjectionHasPartialProjectionError" RoleName="PartialProjectionError" WriteStyle="NotWritten"/>
+	<se:Element Class="RoleSetDerivationProjection">
+		<se:Link RelationshipName="DerivedRoleProjection" RoleName="ProjectedRole" Name="RoleProjection" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="RoleSetDerivationProjectionHasPartialProjectionError" RoleName="PartialProjectionError" WriteStyle="NotWritten"/>
 	</se:Element>
-	<se:Element Class="FactTypeRoleProjection">
+	<se:Element Class="DerivedRoleProjection">
 		<se:Container Name="DerivationSource">
-			<se:Link RelationshipName="FactTypeRoleProjectedFromRolePathRoot" RoleName="Source"/>
-			<se:Link RelationshipName="FactTypeRoleProjectedFromPathedRole" RoleName="Source"/>
-			<se:Link RelationshipName="FactTypeRoleProjectedFromCalculatedPathValue" RoleName="Source"/>
-			<se:Embed RelationshipName="FactTypeRoleProjectedFromPathConstant" RoleName="Source"/>
+			<se:Link RelationshipName="DerivedRoleProjectedFromRolePathRoot" RoleName="Source"/>
+			<se:Link RelationshipName="DerivedRoleProjectedFromPathedRole" RoleName="Source"/>
+			<se:Link RelationshipName="DerivedRoleProjectedFromCalculatedPathValue" RoleName="Source"/>
+			<se:Embed RelationshipName="DerivedRoleProjectedFromPathConstant" RoleName="Source"/>
 		</se:Container>
-		<se:Link RelationshipName="FactTypeRoleProjectedFromRolePathRoot" RoleName="Source" Name="PathRoot"/>
-		<se:Link RelationshipName="FactTypeRoleProjectedFromPathedRole" RoleName="Source" Name="PathedRole"/>
-		<se:Link RelationshipName="FactTypeRoleProjectedFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
+		<se:Link RelationshipName="DerivedRoleProjectedFromRolePathRoot" RoleName="Source" Name="PathRoot"/>
+		<se:Link RelationshipName="DerivedRoleProjectedFromPathedRole" RoleName="Source" Name="PathedRole"/>
+		<se:Link RelationshipName="DerivedRoleProjectedFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
+	</se:Element>
+	<se:Element Class="QueryDerivationRule" Name="QueryDerivationPath" Override="true">
+		<se:Container Name="DerivationProjections">
+			<se:Link RelationshipName="RoleSetDerivationProjection" RoleName="RolePath"/>
+		</se:Container>
+		<se:Link RelationshipName="RoleSetDerivationProjection" RoleName="RolePath" Name="DerivationProjection" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="RoleProjectedDerivationRuleHasProjectionRequiredError" RoleName="ProjectionRequiredError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="SubqueryParameterInputs">
+		<se:Link RelationshipName="SubqueryParameterInput" RoleName="Parameter" Name="ParameterInput" WriteStyle="PrimaryLinkElement"/>
+	</se:Element>
+	<se:Element Class="SubqueryParameterInput">
+		<se:Container Name="InputFrom">
+			<se:Link RelationshipName="SubqueryParameterInputFromRolePathRoot" RoleName="Source"/>
+			<se:Link RelationshipName="SubqueryParameterInputFromPathedRole" RoleName="Source"/>
+			<se:Link RelationshipName="SubqueryParameterInputFromCalculatedPathValue" RoleName="Source"/>
+			<se:Embed RelationshipName="SubqueryParameterInputFromPathConstant" RoleName="Source"/>
+		</se:Container>
+		<se:Link RelationshipName="SubqueryParameterInputFromRolePathRoot" RoleName="Source" Name="PathRoot"/>
+		<se:Link RelationshipName="SubqueryParameterInputFromPathedRole" RoleName="Source" Name="PathedRole"/>
+		<se:Link RelationshipName="SubqueryParameterInputFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
 	</se:Element>
 	<se:Element Class="SubtypeDerivationRule" Name="SubtypeDerivationPath" Override="true">
 		<se:ConditionalSerialization>
@@ -833,6 +866,31 @@
 			</se:Condition>
 		</se:Attribute>
 	</se:Element>
+	<se:Element Class="QueryBase" SortChildElements="true" Override="true">
+		<se:Attribute ID="Name" Name="_Signature" WriteCustomStorage="true"/>
+		<se:Container Name="QueryParameters">
+			<se:Embed RelationshipName="QueryDefinesParameter" RoleName="Parameter"/>
+		</se:Container>
+	</se:Element>
+	<se:Element Class="QueryParameter" SortChildElements="true" Override="true">
+		<se:Link Name="ParameterType" RelationshipName="QueryParameterHasParameterType" RoleName="ParameterType"/>
+		<se:Container Name="ParameterBindings">
+			<se:Link RelationshipName="QueryParameterBinding" RoleName="RolePath"/>
+		</se:Container>
+		<se:Link RelationshipName="QueryParameterBinding" RoleName="RolePath" Name="ParameterBinding" WriteStyle="PrimaryLinkElement"/>
+		<se:Link RelationshipName="SubqueryParameterInput" RoleName="Inputs" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="QueryParameterBinding" LinkOnly="true">
+		<se:Container Name="BoundTo">
+			<se:Link RelationshipName="QueryParameterBoundToRolePathRoot" RoleName="Source"/>
+			<se:Link RelationshipName="QueryParameterBoundToPathedRole" RoleName="Source"/>
+		</se:Container>
+		<se:Link RelationshipName="QueryParameterBoundToRolePathRoot" RoleName="Source" Name="PathRoot"/>
+		<se:Link RelationshipName="QueryParameterBoundToPathedRole" RoleName="Source" Name="PathedRole"/>
+	</se:Element>
+	<se:Element Class="Subquery" Name="Subquery" Override="true">
+		<se:Link RelationshipName="RolePathOwnerUsesSharedSubquery" RoleName="PathOwner" WriteStyle="NotWritten"/>
+	</se:Element>
 	<se:Element Class="Objectification" LinkOnly="true">
 		<se:Attribute ID="IsImplied">
 			<se:Condition WriteStyle="NotWritten">
@@ -888,7 +946,7 @@
 		<se:Link RelationshipName="ReadingOrderHasRole" RoleName="ReadingOrder" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RoleHasRolePlayerRequiredError" RoleName="RolePlayerRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRole" RoleName="RolePath" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeRoleProjection" RoleName="DerivationProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="DerivedRoleProjection" RoleName="DerivationProjection" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--RoleProxy-->
 	<se:Element Class="RoleProxy" Override="true">
@@ -1135,11 +1193,19 @@
 		<se:Container Name="CalculatedValues">
 			<se:Embed RelationshipName="RolePathOwnerCalculatesCalculatedPathValue_Deprecated" RoleName="CalculatedValue"/>
 		</se:Container>
+		<se:Container Name="Subqueries" SortChildElements="true">
+			<se:Embed RelationshipName="RolePathOwnerOwnsSubquery" RoleName="Subquery"/>
+			<se:Link RelationshipName="RolePathOwnerUsesSharedSubquery" RoleName="Subquery"/>
+		</se:Container>
 		<se:Link RelationshipName="RolePathOwnerUsesSharedLeadRolePath" RoleName="RolePath" Name="SharedRolePath"/>
+		<se:Link RelationshipName="RolePathOwnerUsesSharedSubquery" RoleName="Subquery" Name="SharedSubquery"/>
 	</se:Element>
 	<se:Element Class="LeadRolePath" Override="true" SortChildElements="true" Name="RolePath">
 		<se:Container Name="ObjectUnifiers">
 			<se:Embed RelationshipName="LeadRolePathHasObjectUnifier" RoleName="ObjectUnifier"/>
+		</se:Container>
+		<se:Container Name="SubqueryParameterInputs">
+			<se:Link RelationshipName="SubqueryParameterInputs" RoleName="PathedEntryRole" />
 		</se:Container>
 		<se:Container Name="CalculatedValues">
 			<se:Embed RelationshipName="LeadRolePathCalculatesCalculatedPathValue" RoleName="CalculatedValue"/>
@@ -1151,9 +1217,11 @@
 			<se:Embed RelationshipName="LeadRolePathHasNote" RoleName="Note"/>
 		</se:Container>
 		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="CalculatedCondition" Name="CalculatedCondition"/>
-		<se:Link RelationshipName="FactTypeDerivationProjection" RoleName="DerivationRule" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="RoleSetDerivationProjection" RoleName="DerivationRule" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathProjection" RoleName="JoinPath" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="RolePathOwnerUsesSharedLeadRolePath" RoleName="PathOwner" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="QueryParameterBinding" RoleName="QueryParameter" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SubqueryParameterInputs" RoleName="PathedEntryRole" Name="SubqueryParameterInputsFor" WriteStyle="PrimaryLinkElement"/>
 	</se:Element>
 	<se:Element Class="CalculatedPathValue" Name="CalculatedValue" SortChildElements="true" Override="true">
 		<se:Attribute ID="UniversalAggregationContext">
@@ -1268,8 +1336,9 @@
 		</se:Link>
 		<se:Link RelationshipName="LeadRolePathSatisfiesCalculatedCondition" RoleName="LeadRolePath" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToCalculatedPathValue" RoleName="Input" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeRoleProjectedFromCalculatedPathValue" RoleName="RoleProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="DerivedRoleProjectedFromCalculatedPathValue" RoleName="RoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SubqueryParameterInputFromCalculatedPathValue" RoleName="ParameterInput" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueHasFunctionRequiredError" RoleName="FunctionRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueHasAggregationContextRequiredError" RoleName="AggregationContextRequiredError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueHasUnboundParameterError" RoleName="ParameterBindingError" WriteStyle="NotWritten"/>
@@ -1399,9 +1468,11 @@
 		</se:Container>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToRolePathRoot" RoleName="Input" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromRolePathRoot" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeRoleProjectedFromRolePathRoot" RoleName="RoleProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="DerivedRoleProjectedFromRolePathRoot" RoleName="RoleProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SubqueryParameterInputFromRolePathRoot" RoleName="ParameterInput" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathObjectUnifierUnifiesRolePathRoot" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesRolePathRoot" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="QueryParameterBoundToRolePathRoot" RoleName="ParameterBinding" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RoleSubPath" Name="SubPath" Override="true"/>
 	<se:Element Class="PathedRole" SortChildElements="true">
@@ -1418,13 +1489,16 @@
 		</se:Container>
 		<se:Link RelationshipName="PathedRoleIsRemotelyCorrelatedWithPathedRole_Deprecated" RoleName="CorrelatingParent" Name="CorrelatedWith"/>
 		<se:Link RelationshipName="CalculatedPathValueInputBindsToPathedRole" RoleName="Input" WriteStyle="NotWritten"/>
-		<se:Link RelationshipName="FactTypeRoleProjectedFromPathedRole" RoleName="RoleProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="DerivedRoleProjectedFromPathedRole" RoleName="RoleProjection" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="ConstraintRoleProjection" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SubqueryParameterInputFromPathedRole" RoleName="ParameterInput" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasCompatibleJoinRolePlayerError" RoleName="JoinCompatibilityError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasSameFactTypeFollowsJoinError" RoleName="SameFactTypeRoleFollowsJoinError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathedRoleHasMandatoryOuterJoinError" RoleName="MandatoryOuterJoinError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="PathObjectUnifierUnifiesPathedRole" RoleName="ObjectUnifier" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="CalculatedPathValueAggregationContextIncludesPathedRole" RoleName="CalculatedValue" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SubqueryParameterInputs" RoleName="RolePath" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="QueryParameterBoundToPathedRole" RoleName="ParameterBinding" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="PathObjectUnifier" Name="ObjectUnifier" Override="true" SortChildElements="true">
 		<se:Link RelationshipName="PathObjectUnifierUnifiesRolePathRoot" RoleName="PathRoot" Name="PathRoot"/>
@@ -1771,11 +1845,46 @@
 	<se:Element Class="CalculatedPathValueHasUnboundParameterError">
 		<se:Link RelationshipName="CalculatedPathValueParameterBindingErrorTargetsFunctionParameter" RoleName="Parameter" Name="Parameter"/>
 	</se:Element>
-	<se:Element Class="FactTypeDerivationRequiresProjectionError" Override="true">
-		<se:Link RelationshipName="FactTypeDerivationRuleHasProjectionRequiredError" RoleName="DerivationRule" Name="FactTypeDerivationPath"/>
+	<se:Element Class="RoleProjectedDerivationRequiresProjectionError" Override="true" Name="FactTypeDerivationRequiresProjectionError">
+		<se:ConditionalName Name="QueryDerivationRequiresProjectionError">
+			<plx:binaryOperator type="typeEquality">
+				<plx:left>
+					<plx:callThis type="property" name="DerivationRule"/>
+				</plx:left>
+				<plx:right>
+					<plx:directTypeReference dataTypeName="QueryDerivationRule"/>
+				</plx:right>
+			</plx:binaryOperator>
+		</se:ConditionalName>
+		<se:Link RelationshipName="RoleProjectedDerivationRuleHasProjectionRequiredError" RoleName="DerivationRule" Name="FactTypeDerivationPath">
+			<se:ConditionalName Name="QueryDerivationPath">
+				<plx:binaryOperator type="typeEquality">
+					<plx:left>
+						<plx:callThis type="property" name="DerivationRule"/>
+					</plx:left>
+					<plx:right>
+						<plx:directTypeReference dataTypeName="QueryDerivationRule"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
+		</se:Link>
 	</se:Element>
-	<se:Element Class="PartialFactTypeDerivationProjectionError" Override="true">
-		<se:Link RelationshipName="FactTypeDerivationProjectionHasPartialProjectionError" RoleName="DerivationProjection" Name="DerivationProjection"/>
+	<se:Element Class="PartialRoleSetDerivationProjectionError" Override="true" Name="PartialFactTypeDerivationProjectionError">
+		<se:ConditionalName Name="PartialQueryDerivationProjectionError">
+			<plx:binaryOperator type="typeEquality">
+				<plx:left>
+					<plx:callInstance type="property" name="DerivationRule">
+						<plx:callObject>
+							<plx:callThis type="property" name="DerivationProjection"/>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:left>
+				<plx:right>
+					<plx:directTypeReference dataTypeName="QueryDerivationRule"/>
+				</plx:right>
+			</plx:binaryOperator>
+		</se:ConditionalName>
+		<se:Link RelationshipName="RoleSetDerivationProjectionHasPartialProjectionError" RoleName="DerivationProjection" Name="DerivationProjection"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleSequenceJoinPathRequiresProjectionError" Name="JoinPathRequiresProjectionError" Override="true">
 		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathHasProjectionRequiredError" RoleName="JoinPath" Name="JoinPath"/>

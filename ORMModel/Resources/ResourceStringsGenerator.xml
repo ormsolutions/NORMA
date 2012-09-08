@@ -179,18 +179,18 @@
 	<ResourceString name="ModelErrorConstraintImplication" model="Model" resourceName="ModelError.Constraint.ImplicationError.Text"/>
 	<ResourceString name="ModelErrorConstraintImplicationEqualityMandatory" model="Model" resourceName="ModelError.Constraint.EqualityImpliedByMandatoryError.Text"/>
 	<ResourceString name="ModelErrorConstraintImplicationSubsetMandatory" model="Model" resourceName="ModelError.Constraint.SubsetImpliedByMandatoryError.Text"/>
-	<ResourceString name="ModelErrorFactTypeDerivationRuleProjectionRequired" model="Model" resourceName="ModelError.FactTypeDerivationRule.FactTypeDerivationRequiresProjection.Text"/>
-	<ResourceString name="ModelErrorFactTypeDerivationRulePartialProjection" model="Model" resourceName="ModelError.FactTypeDerivationRule.PartialFactTypeDerivationProjection.Text"/>
 	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text"/>
 	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text"/>
-	<ResourceString name="ModelErrorDisplayContextFactTypeDerivationRule" model="Model" resourceName="ModelError.DisplayContext.FactTypeDerivationRule"/>
+	<ResourceString name="ModelErrorDisplayContextFactType" model="Model" resourceName="ModelError.DisplayContext.FactType"/>
 	<ResourceString name="ModelErrorDisplayContextFactTypeRole" model="Model" resourceName="ModelError.DisplayContext.FactTypeRole"/>
 	<ResourceString name="ModelErrorDisplayContextObjectType" model="Model" resourceName="ModelError.DisplayContext.ObjectType"/>
+	<ResourceString name="ModelErrorDisplayContextRoleProjectedDerivationRule" model="Model" resourceName="ModelError.DisplayContext.RoleProjectedDerivationRule"/>
 	<ResourceString name="ModelErrorDisplayContextSetComparisonConstraintSequence" model="Model" resourceName="ModelError.DisplayContext.SetComparisonConstraintSequence"/>
 	<ResourceString name="ModelErrorDisplayContextSetComparisonConstraintSequenceJoinPath" model="Model" resourceName="ModelError.DisplayContext.SetComparisonConstraintSequenceJoinPath"/>
 	<ResourceString name="ModelErrorDisplayContextSetConstraint" model="Model" resourceName="ModelError.DisplayContext.SetConstraint"/>
 	<ResourceString name="ModelErrorDisplayContextSetConstraintJoinPath" model="Model" resourceName="ModelError.DisplayContext.SetConstraintJoinPath"/>
+	<ResourceString name="ModelErrorDisplayContextSubquery" model="Model" resourceName="ModelError.DisplayContext.Subquery"/>
 	<ResourceString name="ModelErrorDisplayContextSubtypeDerivationRule" model="Model" resourceName="ModelError.DisplayContext.SubtypeDerivationRule"/>
 	<ResourceString name="ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text"/>
 	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text"/>
@@ -211,6 +211,8 @@
 	<ResourceString name="ModelErrorRolePathStartRoleFollowsRootObjectType" model="Model" resourceName="ModelError.RolePath.StartRoleFollowsRootObjectType.Text"/>
 	<ResourceString name="ModelErrorRolePathMandatoryOuterJoin" model="Model" resourceName="ModelError.RolePath.OuterJoinRequiresOptionalRole.Text"/>
 	<ResourceString name="ModelErrorRolePathRequiresRootObjectType" model="Model" resourceName="ModelError.RolePath.RequiresRootObjectType.Text"/>
+	<ResourceString name="ModelErrorRoleProjectedDerivationRuleProjectionRequired" model="Model" resourceName="ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.Text"/>
+	<ResourceString name="ModelErrorRoleProjectedDerivationRulePartialProjection" model="Model" resourceName="ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.Text"/>
 	<ResourceString name="ModelErrorValueConstraintValueTypeDetachedError" model="Model" resourceName="ModelError.ValueConstraint.ValueTypeDetachedError.Message"/>
 	<ResourceString name="ModelErrorValueConstraintValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Message"/>
 	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Message"/>
@@ -385,6 +387,8 @@
 	<ResourceString name="ExclusiveOrConstraintExclusionConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName"/>
 	<ResourceString name="RoleSurveyNameFormat" model="Model" resourceName="Role.SurveyNameFormat"/>
 	<ResourceString name="RoleSurveyNameMissingRolePlayer" model="Model" resourceName="Role.SurveyNameMissingRolePlayer"/>
+	<ResourceString name="SubquerySignatureFormat" model="Model" resourceName="Subquery.SignatureFormat"/>
+	<ResourceString name="SubqueryNamedArgumentFormat" model="Model" resourceName="Subquery.NamedArgumentFormat"/>
 	<ResourceString name="ValueConstraintDefinitionContainerCloseDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.DefinitionContainer.CloseDelimiter"/>
 	<ResourceString name="ValueConstraintDefinitionContainerOpenDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.DefinitionContainer.OpenDelimiter"/>
 	<ResourceString name="ValueConstraintClosedInclusionLowerDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.ClosedInclusion.LowerDelimiter"/>

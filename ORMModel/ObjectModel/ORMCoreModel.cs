@@ -92,6 +92,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				EventHandler<ElementPropertyChangedEventArgs> standardGlyphChangeHandler = new EventHandler<ElementPropertyChangedEventArgs>(SurveyGlyphChangedEvent);
 				EventHandler<ElementDeletedEventArgs> standardErrorPathDeletedHandler = new EventHandler<ElementDeletedEventArgs>(ModelElementErrorStateChangedEvent);
 				EventHandler<RolePlayerChangedEventArgs> standardErrorPathRolePlayedChangedHandler = new EventHandler<RolePlayerChangedEventArgs>(ModelElementErrorStateOwnerPathChangedEvent);
+				DomainRoleInfo roleInfo;
 				//Object Type
 				DomainClassInfo classInfo = directory.FindDomainClass(ObjectType.DomainClassId);
 				DomainPropertyInfo propertyInfo = directory.FindDomainProperty(ObjectType.NameDomainPropertyId);
@@ -100,8 +101,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				eventManager.AddOrRemoveHandler(classInfo, standardDeleteHandler, action);
 
 				//Fact Type
-				classInfo = directory.FindDomainClass(FactType.DomainClassId);
+				classInfo = directory.FindDomainRelationship(ModelHasFactType.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeAddedEvent), action);
+				classInfo = directory.FindDomainClass(FactType.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardDeleteHandler, action);
 
 				//Set Constraint
@@ -163,6 +165,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(RolePlayerAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(RolePlayerDeletedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(RolePlayerRolePlayerChangedEvent), action);
+
+				//Query parameter type changes
+				classInfo = directory.FindDomainClass(QueryParameterHasParameterType.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(QueryParameterTypeAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(QueryParameterTypeDeletedEvent), action);
+				roleInfo = directory.FindDomainRole(QueryParameterHasParameterType.ParameterTypeDomainRoleId);
+				eventManager.AddOrRemoveHandler(roleInfo, new EventHandler<RolePlayerChangedEventArgs>(QueryParameterTypeRolePlayerChangedEvent), action);
 
 				//Error state changed
 				classInfo = directory.FindDomainRelationship(ElementAssociatedWithModelError.DomainClassId);
@@ -321,7 +330,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				IElementDirectory elementDirectory = Store.ElementDirectory;
 				foreach (FactType element in elementDirectory.FindElements<FactType>(true))
 				{
-					if (null == element.ImpliedByObjectification)
+					if (null == element.ImpliedByObjectification && !(element is QueryBase))
 					{
 						yield return element;
 					}
@@ -568,7 +577,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				FactType factType = (FactType)element;
+				FactType factType = ((ModelHasFactType)element).FactType;
 				Objectification objectification = factType.ImpliedByObjectification;
 				eventNotify.ElementAdded(factType, (objectification != null) ? objectification.NestedFactType : null);
 			}
@@ -916,6 +925,52 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			eventNotify.ElementChanged(role, SurveyGlyphQuestionTypes);
 			eventNotify.ElementRenamed(role);
+		}
+		/// <summary>
+		/// Survey event handler when a query parameter type is added.
+		/// </summary>
+		private static void QueryParameterTypeAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted &&
+				null != (eventNotify = (element.Store as IFrameworkServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementChanged(((QueryParameterHasParameterType)element).Parameter, SurveyGlyphQuestionTypes);
+			}
+		}
+		/// <summary>
+		/// Survey event handler when a query parameter type is deleted.
+		/// </summary>
+		private static void QueryParameterTypeDeletedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IFrameworkServices).NotifySurveyElementChanged))
+			{
+				QueryParameter parameter = ((QueryParameterHasParameterType)element).Parameter;
+				if (!parameter.IsDeleted)
+				{
+					eventNotify.ElementChanged(parameter, SurveyGlyphQuestionTypes);
+				}
+			}
+		}
+		/// <summary>
+		/// Survey event handler when a query parameter type is changed.
+		/// </summary>
+		private static void QueryParameterTypeRolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
+		{
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ElementLink;
+			if (!element.IsDeleted &&
+				null != (eventNotify = (element.Store as IFrameworkServices).NotifySurveyElementChanged))
+			{
+				QueryParameter parameter = ((QueryParameterHasParameterType)element).Parameter;
+				if (!parameter.IsDeleted)
+				{
+					eventNotify.ElementChanged(parameter, SurveyGlyphQuestionTypes);
+				}
+			}
 		}
 		/// <summary>
 		/// Verify that error glyphs for the remote entity type update on role player changes

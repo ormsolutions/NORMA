@@ -296,9 +296,6 @@
 											</xsl:message>
 										</xsl:if>
 										<xsl:variable name="outerIndex" select="position()-1"/>
-										<xsl:call-template name="CreateCustomSerializedElementInfoNameVariable">
-											<xsl:with-param name="modifier" select="$outerIndex"/>
-										</xsl:call-template>
 										<plx:assign>
 											<plx:left>
 												<plx:callInstance name=".implied" type="arrayIndexer">
@@ -315,7 +312,7 @@
 													<xsl:call-template name="PassCustomSerializedElementInfoParams">
 														<xsl:with-param name="namespaces" select="$namespaces"/>
 														<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
-														<xsl:with-param name="modifier" select="$outerIndex"/>
+														<xsl:with-param name="ignoreConditionals" select="true()"/>
 													</xsl:call-template>
 													<xsl:for-each select="se:Link | se:Embed">
 														<plx:passParam>
@@ -327,9 +324,6 @@
 										</plx:assign>
 										<xsl:for-each select="se:Container">
 											<xsl:variable name="innerIndex" select="$outerIndex + position()"/>
-											<xsl:call-template name="CreateCustomSerializedElementInfoNameVariable">
-												<xsl:with-param name="modifier" select="$innerIndex"/>
-											</xsl:call-template>
 											<plx:assign>
 												<plx:left>
 													<plx:callInstance name=".implied" type="arrayIndexer">
@@ -346,7 +340,7 @@
 														<xsl:call-template name="PassCustomSerializedElementInfoParams">
 															<xsl:with-param name="namespaces" select="$namespaces"/>
 															<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
-															<xsl:with-param name="modifier" select="$innerIndex"/>
+															<xsl:with-param name="ignoreConditionals" select="true()"/>
 														</xsl:call-template>
 														<plx:passParam>
 															<plx:callInstance name=".implied" type="arrayIndexer">
@@ -378,9 +372,143 @@
 									</plx:right>
 								</plx:assign>
 							</plx:branch>
-							<plx:return>
-								<plx:nameRef name="ret"/>
-							</plx:return>
+							<xsl:choose>
+								<xsl:when test="$allContainers[se:ConditionalName]">
+									<plx:local name="customRet" dataTypeName="CustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true">
+										<plx:initialize>
+											<plx:nullKeyword/>
+										</plx:initialize>
+									</plx:local>
+									<xsl:variable name="initCustomRetFragment">
+										<plx:branch>
+											<plx:condition>
+												<plx:binaryOperator type="identityEquality">
+													<plx:left>
+														<plx:nameRef name="customRet"/>
+													</plx:left>
+													<plx:right>
+														<plx:nullKeyword/>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:condition>
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef name="customRet"/>
+												</plx:left>
+												<plx:right>
+													<plx:callNew dataTypeName="CustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true">
+														<plx:passParam>
+															<plx:callInstance name="Length" type="property">
+																<plx:callObject>
+																	<plx:nameRef name="ret"/>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:passParam>
+													</plx:callNew>
+												</plx:right>
+											</plx:assign>
+											<plx:callInstance name="CopyTo">
+												<plx:callObject>
+													<plx:nameRef name="ret"/>
+												</plx:callObject>
+												<plx:passParam>
+													<plx:nameRef name="customRet"/>
+												</plx:passParam>
+												<plx:passParam>
+													<plx:value type="i4" data="0"/>
+												</plx:passParam>
+											</plx:callInstance>
+										</plx:branch>
+									</xsl:variable>
+									<xsl:for-each select="$allContainers">
+										<xsl:if test="not(parent::se:Container)">
+											<xsl:variable name="outerIndex" select="position()-1"/>
+											<xsl:variable name="conditionals" select="se:ConditionalName"/>
+											<xsl:if test="$conditionals">
+												<xsl:call-template name="CreateInlineCustomizations">
+													<xsl:with-param name="namespaces" select="$namespaces"/>
+													<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+													<xsl:with-param name="prelim" select="$initCustomRetFragment"/>
+													<xsl:with-param name="assignTo">
+														<plx:callInstance name=".implied" type="arrayIndexer">
+															<plx:callObject>
+																<plx:nameRef name="customRet"/>
+															</plx:callObject>
+															<plx:passParam>
+																<plx:value type="i4" data="{$outerIndex}"/>
+															</plx:passParam>
+														</plx:callInstance>
+													</xsl:with-param>
+													<xsl:with-param name="elementType" select="'CustomSerializedContainerElementInfo'"/>
+													<xsl:with-param name="trailingParams">
+														<xsl:for-each select="se:Link | se:Embed">
+															<plx:passParam>
+																<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}" type="field"/>
+															</plx:passParam>
+														</xsl:for-each>
+													</xsl:with-param>
+												</xsl:call-template>
+											</xsl:if>
+											<xsl:for-each select="se:Container">
+												<xsl:variable name="innerConditionals" select="se:ConditionalName"/>
+												<xsl:if test="$innerConditionals">
+													<xsl:variable name="innerIndex" select="$outerIndex + position()"/>
+													<xsl:call-template name="CreateInlineCustomizations">
+														<xsl:with-param name="namespaces" select="$namespaces"/>
+														<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+														<xsl:with-param name="prelim" select="$initCustomRetFragment"/>
+														<xsl:with-param name="assignTo">
+															<plx:callInstance name=".implied" type="arrayIndexer">
+																<plx:callObject>
+																	<plx:nameRef name="customRet"/>
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:value type="i4" data="{$innerIndex}"/>
+																</plx:passParam>
+															</plx:callInstance>
+														</xsl:with-param>
+														<xsl:with-param name="elementType" select="'CustomSerializedInnerContainerElementInfo'"/>
+														<xsl:with-param name="trailingParams">
+															<plx:passParam>
+																<plx:callInstance name=".implied" type="arrayIndexer">
+																	<plx:callObject>
+																		<plx:nameRef name="ret"/>
+																	</plx:callObject>
+																	<plx:passParam>
+																		<plx:value type="i4" data="{$outerIndex}"/>
+																	</plx:passParam>
+																</plx:callInstance>
+															</plx:passParam>
+															<xsl:for-each select="se:Link | se:Embed">
+																<plx:passParam>
+																	<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}" type="field"/>
+																</plx:passParam>
+															</xsl:for-each>
+														</xsl:with-param>
+													</xsl:call-template>
+												</xsl:if>
+											</xsl:for-each>
+										</xsl:if>
+									</xsl:for-each>
+									<plx:return>
+										<plx:inlineStatement dataTypeName="CustomSerializedContainerElementInfo" dataTypeIsSimpleArray="true">
+											<plx:nullFallbackOperator>
+												<plx:left>
+													<plx:nameRef name="customRet"/>
+												</plx:left>
+												<plx:right>
+													<plx:nameRef name="ret"/>
+												</plx:right>
+											</plx:nullFallbackOperator>
+										</plx:inlineStatement>
+									</plx:return>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:return>
+										<plx:nameRef name="ret"/>
+									</plx:return>
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 						<xsl:otherwise>
 							<plx:throw>
@@ -535,9 +663,37 @@
 									</plx:callInstance>
 								</plx:initialize>
 							</plx:local>
+							<xsl:variable name="notWrittenFragment">
+								<xsl:variable name="unwritten" select="$customLinkInfo[@WriteStyle='NotWritten' and not(se:ConditionalName)]"/>
+								<xsl:if test="$unwritten">
+									<plx:branch>
+										<plx:condition>
+											<xsl:variable name="conditionsFragment">
+												<xsl:for-each select="$unwritten">
+													<plx:binaryOperator type="equality">
+														<plx:left>
+															<plx:nameRef name="roleId"/>
+														</plx:left>
+														<plx:right>
+															<plx:callStatic type="field" name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}"/>
+														</plx:right>
+													</plx:binaryOperator>
+												</xsl:for-each>
+											</xsl:variable>
+											<xsl:call-template name="CombineOperations">
+												<xsl:with-param name="OperatorType" select="'booleanOr'"/>
+												<xsl:with-param name="Elements" select="exsl:node-set($conditionsFragment)/*"/>
+											</xsl:call-template>
+										</plx:condition>
+										<plx:return>
+											<plx:callStatic dataTypeName="CustomSerializedElementInfo" name="NotWritten" type="field"/>
+										</plx:return>
+									</plx:branch>
+								</xsl:if>
+							</xsl:variable>
 							<xsl:choose>
 								<xsl:when test="not((se:Link|se:StandaloneLink)[normalize-space(@CreateAsRelationshipName)])">
-									<xsl:for-each select="$customLinkInfo">
+									<xsl:for-each select="$customLinkInfo[not(@WriteStyle='NotWritten') or se:ConditionalName]">
 										<plx:branch>
 											<plx:condition>
 												<plx:binaryOperator type="equality">
@@ -555,10 +711,11 @@
 											</xsl:call-template>
 										</plx:branch>
 									</xsl:for-each>
+									<xsl:copy-of select="$notWrittenFragment"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:variable name="sortedCustomLinkInfo">
-										<xsl:for-each select="$customLinkInfo">
+										<xsl:for-each select="$customLinkInfo[not(@WriteStyle='NotWritten') or se:ConditionalName]">
 											<xsl:sort select="@RelationshipName"/>
 											<xsl:sort select="@RoleName"/>
 											<!-- Put the ones without a CreatedAsRelationshipName last -->
@@ -656,6 +813,7 @@
 											</plx:branch>
 										</xsl:if>
 									</xsl:for-each>
+									<xsl:copy-of select="$notWrittenFragment"/>
 								</xsl:otherwise>
 							</xsl:choose>
 							<xsl:if test="$ClassOverride">
@@ -1289,7 +1447,6 @@
 							</xsl:for-each>
 						</xsl:variable>
 						<xsl:variable name="outerContainerNamespace" select="string($outerContainerNamespaceFragment)"/>
-						<xsl:variable name="containerName" select="string(@Name)"/>
 						<xsl:variable name="containerNamespaceFragment">
 							<xsl:call-template name="ResolveNamespace">
 								<xsl:with-param name="namespaces" select="$namespaces"/>
@@ -1297,6 +1454,7 @@
 							</xsl:call-template>
 						</xsl:variable>
 						<xsl:variable name="containerNamespace" select="string($containerNamespaceFragment)"/>
+						<xsl:variable name="containerNames" select="self::*[not(@WriteStyle='NotWritten')]|child::se:ConditionalName[not(@WriteStyle='NotWritten')]"/>
 						<xsl:for-each select="$localLinks">
 							<xsl:variable name="createAsRelationshipName" select="normalize-space(@CreateAsRelationshipName)"/>
 							<xsl:variable name="explicitForwardReferenceType" select="string(@ForwardReferenceRolePlayerType)"/>
@@ -1359,53 +1517,59 @@
 									<plx:callStatic name="{@RoleName}DomainRoleId" dataTypeName="{@RelationshipName}" dataTypeQualifier="{@RelationshipTypeQualifier}" type="field"/>
 								</plx:passParam>
 							</plx:callInstance>
-							<xsl:if test="self::se:StandaloneLink or (string(@Name) and not(@WriteStyle='NotWritten'))">
-								<plx:callInstance name="Add">
-									<plx:callObject>
-										<plx:nameRef name="childElementMappings"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:string>
-											<plx:string data="{$outerContainerNamespace}|{$outerContainerName}|"/>
-											<xsl:if test="$outerContainerNamespace!=$containerNamespace">
-												<plx:string data="{$containerNamespace}"/>
-											</xsl:if>
-											<plx:string data="|{$containerName}|"/>
-											<xsl:if test="$elementNamespace!=$containerNamespace">
-												<plx:string data="{$elementNamespace}"/>
-											</xsl:if>
-											<plx:string data="|{@Name}"/>
-										</plx:string>
-									</plx:passParam>
-									<plx:passParam>
-										<plx:nameRef name="match"/>
-									</plx:passParam>
-								</plx:callInstance>
-							</xsl:if>
-							<xsl:for-each select="se:ConditionalName">
-								<plx:callInstance name="Add">
-									<plx:callObject>
-										<plx:nameRef name="childElementMappings"/>
-									</plx:callObject>
-									<plx:passParam>
-										<plx:string>
+							<xsl:if test="self::se:StandaloneLink|self::*[string(@Name) and not(@WriteStyle='NotWritten')]">
+								<xsl:variable name="elementName" select="string(@Name)"/>
+								<xsl:for-each select="$containerNames">
+									<plx:callInstance name="Add">
+										<plx:callObject>
+											<plx:nameRef name="childElementMappings"/>
+										</plx:callObject>
+										<plx:passParam>
 											<plx:string>
 												<plx:string data="{$outerContainerNamespace}|{$outerContainerName}|"/>
 												<xsl:if test="$outerContainerNamespace!=$containerNamespace">
 													<plx:string data="{$containerNamespace}"/>
 												</xsl:if>
-												<plx:string data="|{$containerName}|"/>
+												<plx:string data="|{@Name}|"/>
 												<xsl:if test="$elementNamespace!=$containerNamespace">
 													<plx:string data="{$elementNamespace}"/>
 												</xsl:if>
-												<plx:string data="|{@Name}"/>
+												<plx:string data="|{$elementName}"/>
 											</plx:string>
-										</plx:string>
-									</plx:passParam>
-									<plx:passParam>
-										<plx:nameRef name="match"/>
-									</plx:passParam>
-								</plx:callInstance>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:nameRef name="match"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</xsl:for-each>
+							</xsl:if>
+							<xsl:for-each select="se:ConditionalName">
+								<xsl:variable name="elementName" select="string(@Name)"/>
+								<xsl:for-each select="$containerNames">
+									<plx:callInstance name="Add">
+										<plx:callObject>
+											<plx:nameRef name="childElementMappings"/>
+										</plx:callObject>
+										<plx:passParam>
+											<plx:string>
+												<plx:string>
+													<plx:string data="{$outerContainerNamespace}|{$outerContainerName}|"/>
+													<xsl:if test="$outerContainerNamespace!=$containerNamespace">
+														<plx:string data="{$containerNamespace}"/>
+													</xsl:if>
+													<plx:string data="|{@Name}|"/>
+													<xsl:if test="$elementNamespace!=$containerNamespace">
+														<plx:string data="{$elementNamespace}"/>
+													</xsl:if>
+													<plx:string data="|{$elementName}"/>
+												</plx:string>
+											</plx:string>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:nameRef name="match"/>
+										</plx:passParam>
+									</plx:callInstance>
+								</xsl:for-each>
 							</xsl:for-each>
 						</xsl:for-each>
 					</xsl:if>
@@ -1474,23 +1638,25 @@
 							</xsl:call-template>
 						</xsl:variable>
 						<xsl:variable name="containerNamespace" select="string($containerNamespaceFragment)"/>
-						<plx:callInstance name="Add">
-							<plx:callObject>
-								<plx:nameRef name="childElementMappings"/>
-							</plx:callObject>
-							<plx:passParam>
-								<plx:string>
-									<plx:string data="{$outerContainerNamespace}|{$outerContainer/@Name}|"/>
-									<xsl:if test="$outerContainerNamespace!=$containerNamespace">
-										<plx:string data="{$containerNamespace}"/>
-									</xsl:if>
-									<plx:string data="|{@Name}||"/>
-								</plx:string>
-							</plx:passParam>
-							<plx:passParam>
-								<plx:nameRef name="match"/>
-							</plx:passParam>
-						</plx:callInstance>
+						<xsl:for-each select="self::*[not(@WriteStyle='NotWritten')]|child::se:ConditionalName[not(@WriteStyle='NotWritten')]">
+							<plx:callInstance name="Add">
+								<plx:callObject>
+									<plx:nameRef name="childElementMappings"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string>
+										<plx:string data="{$outerContainerNamespace}|{$outerContainer/@Name}|"/>
+										<xsl:if test="$outerContainerNamespace!=$containerNamespace">
+											<plx:string data="{$containerNamespace}"/>
+										</xsl:if>
+										<plx:string data="|{@Name}||"/>
+									</plx:string>
+								</plx:passParam>
+								<plx:passParam>
+									<plx:nameRef name="match"/>
+								</plx:passParam>
+							</plx:callInstance>
+						</xsl:for-each>
 					</xsl:if>
 				</xsl:for-each>
 
@@ -2991,10 +3157,76 @@
 			</xsl:for-each>
 		</xsl:if>
 	</xsl:template>
+	<xsl:template name="CreateInlineCustomizations">
+		<xsl:param name="namespaces"/>
+		<xsl:param name="defaultNamespace"/>
+		<xsl:param name="prelim"/>
+		<xsl:param name="assignTo"/>
+		<xsl:param name="elementType"/>
+		<xsl:param name="trailingParams"/>
+		<xsl:variable name="conditionalNames" select="se:ConditionalName"/>
+		<xsl:if test="$conditionalNames">
+			<xsl:variable name="context" select="."/>
+			<xsl:for-each select="$conditionalNames">
+				<xsl:variable name="contextConditional" select="."/>
+				<xsl:variable name="allStatements" select="child::*"/>
+				<xsl:variable name="preConditionStatements" select="$allStatements[position()!=last()]"/>
+				<xsl:variable name="conditionFragment">
+					<xsl:copy-of select="$preConditionStatements"/>
+					<xsl:variable name="branchType">
+						<xsl:choose>
+							<xsl:when test="position()=1 or $preConditionStatements">
+								<xsl:text>plx:branch</xsl:text>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:text>plx:alternateBranch</xsl:text>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<xsl:element name="{$branchType}">
+						<plx:condition>
+							<xsl:copy-of select="$allStatements[last()]"/>
+						</plx:condition>
+						<xsl:copy-of select="$prelim"/>
+						<plx:assign>
+							<plx:left>
+								<xsl:copy-of select="$assignTo"/>
+							</plx:left>
+							<plx:right>
+								<xsl:for-each select="$context">
+									<plx:callNew dataTypeName="{$elementType}">
+										<xsl:call-template name="PassCustomSerializedElementInfoParams">
+											<xsl:with-param name="namespaces" select="$namespaces"/>
+											<xsl:with-param name="defaultNamespace" select="$defaultNamespace"/>
+											<xsl:with-param name="deferToConditional" select="$contextConditional"/>
+											<xsl:with-param name="ignoreConditionals" select="true()"/>
+										</xsl:call-template>
+										<xsl:copy-of select="$trailingParams"/>
+									</plx:callNew>
+								</xsl:for-each>
+							</plx:right>
+						</plx:assign>
+					</xsl:element>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$preConditionStatements and position()!=1">
+						<plx:fallbackBranch>
+							<xsl:copy-of select="$conditionFragment"/>
+						</plx:fallbackBranch>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="$conditionFragment"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:for-each>
+		</xsl:if>
+	</xsl:template>
 	<xsl:template name="PassCustomSerializedElementInfoParams">
 		<xsl:param name="namespaces"/>
 		<xsl:param name="defaultNamespace"/>
 		<xsl:param name="modifier"/>
+		<xsl:param name="deferToConditional" select="self::se:ConditionalName"/> <!-- Make it a node set, will always be empty -->
+		<xsl:param name="ignoreConditionals" select="false()"/>
 		<xsl:variable name="conditionalNames" select="se:ConditionalName"/>
 		<plx:passParam>
 			<xsl:choose>
@@ -3008,7 +3240,10 @@
 		</plx:passParam>
 		<plx:passParam>
 			<xsl:choose>
-				<xsl:when test="$conditionalNames">
+				<xsl:when test="string-length($deferToConditional/@Name)">
+					<plx:string data="{$deferToConditional/@Name}"/>
+				</xsl:when>
+				<xsl:when test="not($ignoreConditionals) and $conditionalNames">
 					<plx:nameRef name="name{$modifier}"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -3039,7 +3274,10 @@
 		<plx:passParam>
 			<xsl:variable name="primaryWriteStyle" select="string(@WriteStyle)"/>
 			<xsl:choose>
-				<xsl:when test="$conditionalNames/@WriteStyle[not(.=$primaryWriteStyle)]">
+				<xsl:when test="$deferToConditional[@WriteStyle]">
+					<plx:callStatic name="{$deferToConditional/@WriteStyle}" type="field" dataTypeName="CustomSerializedElementWriteStyle"/>
+				</xsl:when>
+				<xsl:when test="not($ignoreConditionals) and $conditionalNames/@WriteStyle[not(.=$primaryWriteStyle)]">
 					<plx:nameRef name="writeStyle{$modifier}"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -3078,7 +3316,10 @@
 		<plx:passParam>
 			<xsl:variable name="primaryDoubleTagName" select="string(@DoubleTagName)"/>
 			<xsl:choose>
-				<xsl:when test="$conditionalNames/@DoubleTagName[not(.=$primaryDoubleTagName)]">
+				<xsl:when test="string-length($deferToConditional/@DoubleTagName)">
+					<plx:string data="{$deferToConditional/@DoubleTagName}"/>
+				</xsl:when>
+				<xsl:when test="not($ignoreConditionals) and $conditionalNames/@DoubleTagName[not(.=$primaryDoubleTagName)]">
 					<plx:nameRef name="doubleTagName{$modifier}"/>
 				</xsl:when>
 				<xsl:otherwise>
@@ -3282,5 +3523,31 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</plx:callNew>
+	</xsl:template>
+	<xsl:template name="CombineOperations">
+		<xsl:param name="OperatorType"/>
+		<xsl:param name="Elements"/>
+		<xsl:param name="Position" select="1"/>
+		<xsl:param name="Count" select="count($Elements)"/>
+		<xsl:choose>
+			<xsl:when test="$Position=$Count">
+				<xsl:copy-of select="$Elements[$Position]"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<plx:binaryOperator type="{$OperatorType}">
+					<plx:left>
+						<xsl:copy-of select="$Elements[$Position]"/>
+					</plx:left>
+					<plx:right>
+						<xsl:call-template name="CombineOperations">
+							<xsl:with-param name="OperatorType" select="$OperatorType"/>
+							<xsl:with-param name="Elements" select="$Elements"/>
+							<xsl:with-param name="Position" select="$Position + 1"/>
+							<xsl:with-param name="Count" select="$Count"/>
+						</xsl:call-template>
+					</plx:right>
+				</plx:binaryOperator>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>

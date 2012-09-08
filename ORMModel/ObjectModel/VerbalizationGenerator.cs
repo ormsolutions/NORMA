@@ -787,6 +787,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'PredicatePart' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Format string to decorate predicate text in between replacement fields. Must contain a {{0}}. Replacement field {0} is the FactType name, and {1} is the guid id for the element.</remark>
 		PredicatePart,
+		/// <summary>The 'QueryNamedParameter' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Describe a query parameter with an associated name.
+		/// Format: {0}=name, {1}=type name</remark>
+		QueryNamedParameter,
+		/// <summary>The 'QueryParameterContainer' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Outer container for listing query parameters. Used as part of a query verbalization.
+		/// Format: given {0}</remark>
+		QueryParameterContainer,
+		/// <summary>The 'QueryUnnamedParameter' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Describe a query parameter with no associated name. Format: given {0}</remark>
+		QueryUnnamedParameter,
+		/// <summary>The 'QueryVerbalization' format string snippet. Contains 3 replacement fields.</summary>
+		/// <remark>Description: Root verbalization for a query. Containers a parameter (defined with QueryParameterContainer if present) and projection lists plus the derivation rule.
+		/// Format: {0}select {1} where {2}</remark>
+		QueryVerbalization,
 		/// <summary>The 'ReferenceModeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes the mode in which an object is referenced. Format: Reference Mode: {0}</remark>
 		ReferenceModeVerbalization,
@@ -1267,6 +1282,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
+				@"{1}<span class=""logicalOperator"">=</span>{0}",
+				@"<span class=""quantifier"">given</span> {0} ",
+				"{0}",
+				@"{0}<span class=""quantifier"">select</span> {1} where<br/><span class=""smallIndent"">{2}</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
@@ -1589,6 +1608,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
+				@"{1}<span class=""logicalOperator"">=</span>{0}",
+				@"<span class=""quantifier"">given</span> {0} ",
+				"{0}",
+				@"{0}<span class=""quantifier"">select</span> {1} where<br/><span class=""smallIndent"">{2}</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
@@ -1911,6 +1934,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
+				@"{1}<span class=""logicalOperator"">=</span>{0}",
+				@"<span class=""quantifier"">given</span> {0} ",
+				"{0}",
+				@"{0}<span class=""quantifier"">select</span> {1} where<br/><span class=""smallIndent"">{2}</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
@@ -2233,6 +2260,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
+				@"{1}<span class=""logicalOperator"">=</span>{0}",
+				@"<span class=""quantifier"">given</span> {0} ",
+				"{0}",
+				@"{0}<span class=""quantifier"">select</span> {1} where<br/><span class=""smallIndent"">{2}</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Mode:</span> <span class=""referenceMode"">{0}</span></span>",
 				@"{0}<span class=""listSeparator"">(</span><span class=""referenceMode"">{1}</span><span class=""listSeparator"">)</span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
@@ -2540,7 +2571,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// to the verbalization generator instead of hand-coding derivation rules
 			FactTypeDerivationRule derivationRule;
 			RolePathVerbalizer pathVerbalizer;
-			if ((derivationRule = this.DerivationRule) != null && (pathVerbalizer = RolePathVerbalizer.Create(derivationRule, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider))).HasPathVerbalization(derivationRule))
+			if ((derivationRule = this.DerivationRule as FactTypeDerivationRule) != null && (pathVerbalizer = RolePathVerbalizer.Create(derivationRule, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider))).HasPathVerbalization(derivationRule))
 			{
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, false, isNegative), predicatePartFormatString);
@@ -2745,6 +2776,233 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // SubtypeFact verbalization
+	#region QueryBase verbalization
+	public partial class QueryBase : IVerbalize
+	{
+		/// <summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+		protected new bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			#region Preliminary
+			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			#region Prerequisite error check
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			bool blockingErrors = false;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			#endregion // Prerequisite error check
+			const bool isDeontic = false;
+			StringBuilder sbTemp = null;
+			IList<RoleBase> factRoles = this.RoleCollection;
+			int factArity = factRoles.Count;
+			IList<QueryParameter> queryParameters = this.ParameterCollection;
+			int queryParameterCount = queryParameters.Count;
+			QueryDerivationRule derivationRule;
+			RolePathVerbalizer pathVerbalizer;
+			#endregion // Preliminary
+			#region Pattern Matches
+			if ((derivationRule = (QueryDerivationRule)this.DerivationRule) != null && (pathVerbalizer = RolePathVerbalizer.Create(derivationRule, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider))).HasPathVerbalization(derivationRule))
+			{
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.QueryVerbalization, isDeontic, isNegative);
+				string snippet1Replace1 = null;
+				if (queryParameterCount != 0)
+				{
+					string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.QueryParameterContainer, isDeontic, isNegative);
+					string snippet1Replace1Replace1 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					for (int i = 0; i < queryParameterCount; ++i)
+					{
+						QueryParameter queryParameter = queryParameters[i];
+						string queryParameterName = queryParameter.Name;
+						CoreVerbalizationSnippetType listSnippet;
+						if (i == 0)
+						{
+							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+						}
+						else if (i == queryParameterCount - 1)
+						{
+							if (i == 1)
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
+							}
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+						}
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType1 = 0;
+						if (!string.IsNullOrEmpty(queryParameterName))
+						{
+							snippet1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.QueryNamedParameter;
+						}
+						else
+						{
+							snippet1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.QueryUnnamedParameter;
+						}
+						string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1ReplaceSnippetType1, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1 = null;
+						snippet1Replace1Replace1Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(queryParameter, null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead);
+						string snippet1Replace1Replace1Replace2 = null;
+						snippet1Replace1Replace1Replace2 = queryParameterName;
+						snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1, snippet1Replace1Replace1Replace2);
+						sbTemp.Append(snippet1Replace1Replace1);
+						if (i == queryParameterCount - 1)
+						{
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleLogicalAndListClose, isDeontic, isNegative));
+						}
+					}
+					snippet1Replace1Replace1 = sbTemp.ToString();
+					snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1);
+				}
+				string snippet1Replace2 = null;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				for (int RoleIter2 = 0; RoleIter2 < factArity; ++RoleIter2)
+				{
+					CoreVerbalizationSnippetType listSnippet;
+					if (RoleIter2 == 0)
+					{
+						listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListOpen;
+					}
+					else if (RoleIter2 == factArity - 1)
+					{
+						if (RoleIter2 == 1)
+						{
+							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListPairSeparator;
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListFinalSeparator;
+						}
+					}
+					else
+					{
+						listSnippet = CoreVerbalizationSnippetType.SimpleLogicalAndListSeparator;
+					}
+					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+					snippet1Replace2 = pathVerbalizer.RenderAssociatedRolePlayer(factRoles[RoleIter2], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead);
+					sbTemp.Append(snippet1Replace2);
+					if (RoleIter2 == factArity - 1)
+					{
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleLogicalAndListClose, isDeontic, isNegative));
+					}
+				}
+				snippet1Replace2 = sbTemp.ToString();
+				string snippet1Replace3 = null;
+				snippet1Replace3 = pathVerbalizer.RenderPathVerbalization(derivationRule, null);
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2, snippet1Replace3), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			#endregion // Pattern Matches
+			#region Error report
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			#endregion // Error report
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+		}
+	}
+	#endregion // QueryBase verbalization
 	#region ObjectType verbalization
 	public partial class ObjectType : IVerbalize
 	{

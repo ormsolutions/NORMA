@@ -554,7 +554,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			private static void DelayValidateUnaryBinarization(ModelElement element)
 			{
 				FactType factType = (FactType)element;
-				if (!factType.IsDeleted)
+				if (!factType.IsDeleted &&
+					!(factType is QueryBase || factType is SubtypeFact))
 				{
 					ProcessFactType(factType, null);
 				}
@@ -565,7 +566,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			private static void FactTypeHasRoleDeletingRule(ElementDeletingEventArgs e)
 			{
 				FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
-				if (!factType.IsDeleting)
+				if (!factType.IsDeleting &&
+					!(factType is QueryBase || factType is SubtypeFact))
 				{
 					LinkedElementCollection<RoleBase> factRoles = factType.RoleCollection;
 					int? unaryIndex = GetUnaryRoleIndex(factRoles);

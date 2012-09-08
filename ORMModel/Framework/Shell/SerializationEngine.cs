@@ -224,7 +224,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		{
 		}
 		/// <summary>
-		/// Main Constructor
+		/// Create customized serialization info
 		/// </summary>
 		/// <param name="customPrefix">The custom prefix to use.</param>
 		/// <param name="customName">The custom name to use.</param>
@@ -238,10 +238,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			myDoubleTagName = doubleTagName;
 		}
 
-		private string myCustomPrefix;
-		private string myCustomName;
-		private string myCustomNamespace;
-		private string myDoubleTagName;
+		private readonly string myCustomPrefix;
+		private readonly string myCustomName;
+		private readonly string myCustomNamespace;
+		private readonly string myDoubleTagName;
 
 		/// <summary>
 		/// Return true if no values are set in the structure
@@ -261,16 +261,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		public string CustomPrefix
 		{
 			get { return myCustomPrefix; }
-			set { myCustomPrefix = value; }
 		}
 		/// <summary>
 		/// The custom name to use.
 		/// </summary>
-		/// <value>The custom name to use.</value>
 		public string CustomName
 		{
 			get { return myCustomName; }
-			set { myCustomName = value; }
 		}
 		/// <summary>
 		/// The custom namespace to use.
@@ -279,7 +276,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		public string CustomNamespace
 		{
 			get { return myCustomNamespace; }
-			set { myCustomNamespace = value; }
 		}
 		/// <summary>
 		/// The name of the double tag.
@@ -288,7 +284,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		public string DoubleTagName
 		{
 			get { return myDoubleTagName; }
-			set { myDoubleTagName = value; }
 		}
 	}
 	#endregion // CustomSerializedInfo class
@@ -332,6 +327,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// Default CustomSerializedElementInfo
 		/// </summary>
 		public static readonly CustomSerializedElementInfo Default = new CustomSerializedElementInfo();
+		/// <summary>
+		/// Commonly used 'not written' element info
+		/// </summary>
+		public static readonly CustomSerializedElementInfo NotWritten = new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
 
 		/// <summary>
 		/// Return true if no values are set in the structure
@@ -432,7 +431,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		{
 		}
 		/// <summary>
-		/// Constructor
+		/// Basic element constructor
 		/// </summary>
 		/// <param name="customName">The custom name to use.</param>
 		/// <param name="childRoleIds">The domain role ideas of opposite child elements.</param>
@@ -442,7 +441,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			myGuidList = childRoleIds;
 		}
 		/// <summary>
-		/// Main Constructor
+		/// Full constructor
 		/// </summary>
 		/// <param name="customPrefix">The custom prefix to use.</param>
 		/// <param name="customName">The custom name to use.</param>
@@ -545,7 +544,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		{
 		}
 		/// <summary>
-		/// Constructor
+		/// Basic constructor
 		/// </summary>
 		/// <param name="customName">The custom name to use.</param>
 		/// <param name="outerContainer">The outer container</param>
@@ -556,7 +555,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			myOuterContainer = outerContainer;
 		}
 		/// <summary>
-		/// Main Constructor
+		/// Full Constructor
 		/// </summary>
 		/// <param name="customPrefix">The custom prefix to use.</param>
 		/// <param name="customName">The custom name to use.</param>
@@ -1924,8 +1923,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 						}
 					case CustomSerializedElementWriteStyle.DoubleTaggedElement:
 						{
-							string prefix = (customInfo.CustomPrefix != null ? customInfo.CustomPrefix : defaultPrefix);
-							string name = (customInfo.CustomName != null ? customInfo.CustomName : defaultName);
+							string prefix = customInfo.CustomPrefix ?? defaultPrefix;
+							string name = customInfo.CustomName ?? defaultName;
 
 							if (containerInfo != null)
 							{
@@ -1940,7 +1939,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 							file.WriteStartElement
 							(
 								prefix,
-								customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
+								customInfo.DoubleTagName ?? name,
 								customInfo.CustomNamespace
 							);
 
@@ -1954,8 +1953,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				}
 				file.WriteStartElement
 				(
-					customInfo.CustomPrefix != null ? customInfo.CustomPrefix : defaultPrefix,
-					customInfo.CustomName != null ? customInfo.CustomName : defaultName,
+					customInfo.CustomPrefix ?? defaultPrefix,
+					customInfo.CustomName ?? defaultName,
 					customInfo.CustomNamespace
 				);
 			}
@@ -2091,8 +2090,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 							{
 								file.WriteElementString
 								(
-									customInfo.CustomPrefix != null ? customInfo.CustomPrefix : DefaultElementPrefix(element),
-									customInfo.CustomName != null ? customInfo.CustomName : property.Name,
+									customInfo.CustomPrefix ?? DefaultElementPrefix(element),
+									customInfo.CustomName ?? property.Name,
 									customInfo.CustomNamespace,
 									ToXml(element, property)
 								);
@@ -2104,8 +2103,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 							}
 						case CustomSerializedAttributeWriteStyle.DoubleTaggedElement:
 							{
-								string prefix = (customInfo.CustomPrefix != null ? customInfo.CustomPrefix : DefaultElementPrefix(element));
-								string name = (customInfo.CustomName != null ? customInfo.CustomName : property.Name);
+								string prefix = customInfo.CustomPrefix ?? DefaultElementPrefix(element);
+								string name = customInfo.CustomName ?? property.Name;
 
 								file.WriteStartElement
 								(
@@ -2116,7 +2115,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 								file.WriteElementString
 								(
 									prefix,
-									customInfo.DoubleTagName != null ? customInfo.DoubleTagName : name,
+									customInfo.DoubleTagName ?? name,
 									customInfo.CustomNamespace,
 									ToXml(element, property)
 								);
@@ -2131,7 +2130,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					file.WriteAttributeString
 					(
 						customInfo.CustomPrefix,
-						customInfo.CustomName != null ? customInfo.CustomName : property.Name,
+						customInfo.CustomName ?? property.Name,
 						customInfo.CustomNamespace,
 						ToXml(element, property)
 					);

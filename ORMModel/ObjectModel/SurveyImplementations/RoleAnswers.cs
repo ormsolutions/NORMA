@@ -260,7 +260,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return ((IAnswerSurveyQuestion<SurveyQuestionGlyph>)rolePlayer).AskQuestion(null);
 			}
-			return -1;
+			return (int)SurveyQuestionGlyph.ObjectTypeNotSet;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
 	}

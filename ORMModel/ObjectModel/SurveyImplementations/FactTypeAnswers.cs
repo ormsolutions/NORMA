@@ -247,8 +247,61 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected int AnswerDerivationTypeQuestion(object contextElement)
 		{
-			return DerivationRule != null ? (int)SurveyDerivationType.Derived : -1;
+			return DerivationRule != null ? ((this is QueryBase) ? (int)SurveyDerivationType.Query : (int)SurveyDerivationType.Derived) : -1;
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyDerivationType> Implementation
+	}
+	partial class QueryParameter : IAnswerSurveyQuestion<SurveyQuestionGlyph>, IAnswerSurveyQuestion<SurveyQueryParameterType>, ISurveyFloatingNode
+	{
+		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		int IAnswerSurveyQuestion<SurveyQuestionGlyph>.AskQuestion(object contextElement)
+		{
+			return AskGlyphQuestion(contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyQuestionGlyph}.AskQuestion"/>
+		/// </summary>
+		protected int AskGlyphQuestion(object contextElement)
+		{
+			ObjectType parameterType = ParameterType;
+			if (parameterType != null)
+			{
+				return ((IAnswerSurveyQuestion<SurveyQuestionGlyph>)parameterType).AskQuestion(null);
+			}
+			return (int)SurveyQuestionGlyph.ObjectTypeNotSet;
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation
+		#region IAnswerSurveyQuestion<SurveyQueryParameterType> Implementation
+		int IAnswerSurveyQuestion<SurveyQueryParameterType>.AskQuestion(object contextElement)
+		{
+			return AskParameterTypeQuestion(contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="IAnswerSurveyQuestion{SurveyQueryParameterType}.AskQuestion"/>
+		/// </summary>
+		protected int AskParameterTypeQuestion(object contextElement)
+		{
+			return (int)SurveyQueryParameterType.Input;
+		}
+		#endregion // IAnswerSurveyQuestion<SurveyQueryParameterType> Implementation
+		#region ISurveyFloatingNode Implementation
+		/// <summary>
+		/// Implements <see cref="ISurveyFloatingNode.FloatingSurveyNodeQuestionKey"/>
+		/// </summary>
+		protected object FloatingSurveyNodeQuestionKey
+		{
+			get
+			{
+				return ORMCoreDomainModel.SurveyFloatingExpansionKey;
+			}
+		}
+		object ISurveyFloatingNode.FloatingSurveyNodeQuestionKey
+		{
+			get
+			{
+				return FloatingSurveyNodeQuestionKey;
+			}
+		}
+		#endregion // ISurveyFloatingNode Implementation
 	}
 }

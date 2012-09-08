@@ -60,7 +60,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IVerbalizeCustomChildren, IHierarchyContextEnabled
+	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
 		#region Public token values
 		/// <summary>
@@ -451,7 +451,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactTypeDerivationRule derivationRule;
 			DerivationNote derivationNote;
-			return (null != (derivationRule = DerivationRule) && null != (derivationNote = derivationRule.DerivationNote)) ? derivationNote.Body : String.Empty;
+			return (null != (derivationRule = DerivationRule as FactTypeDerivationRule) && null != (derivationNote = derivationRule.DerivationNote)) ? derivationNote.Body : String.Empty;
 		}
 		private void SetDerivationNoteDisplayValue(string newValue)
 		{
@@ -460,7 +460,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				FactTypeDerivationRule derivationRule;
 				DerivationNote derivationNote;
-				if (null != (derivationRule = DerivationRule))
+				if (null != (derivationRule = DerivationRule as FactTypeDerivationRule))
 				{
 					derivationNote = derivationRule.DerivationNote;
 					if (derivationNote == null && string.IsNullOrEmpty(newValue))
@@ -498,7 +498,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private DerivationExpressionStorageType GetDerivationStorageDisplayValue()
 		{
 			FactTypeDerivationRule rule;
-			if (null != (rule = DerivationRule))
+			if (null != (rule = DerivationRule as FactTypeDerivationRule))
 			{
 				switch (rule.DerivationCompleteness)
 				{
@@ -515,7 +515,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!Store.InUndoRedoOrRollback)
 			{
 				FactTypeDerivationRule rule;
-				if (null != (rule = DerivationRule))
+				if (null != (rule = DerivationRule as FactTypeDerivationRule))
 				{
 					DerivationCompleteness completeness = DerivationCompleteness.FullyDerived;
 					DerivationStorage storage = DerivationStorage.NotStored;
@@ -653,7 +653,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return nestingType.Name;
 			}
-			else if (null != (derivationRule = DerivationRule) && derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived && !derivationRule.ExternalDerivation)
+			else if (null != (derivationRule = DerivationRule as FactTypeDerivationRule) && derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived && !derivationRule.ExternalDerivation)
 			{
 				return derivationRule.Name;
 			}
@@ -753,7 +753,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						objectifyingType.Name = (string)e.NewValue;
 					}
-					else if (null != (derivationRule = factType.DerivationRule) &&
+					else if (null != (derivationRule = factType.DerivationRule as FactTypeDerivationRule) &&
 						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 						!derivationRule.ExternalDerivation)
 					{
@@ -884,7 +884,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 
-				FactTypeDerivationRule derivationRule = DerivationRule;
+				RoleProjectedDerivationRule derivationRule = DerivationRule;
 				if (derivationRule != null)
 				{
 					foreach (ModelErrorUsage derivationError in ((IModelErrorOwner)derivationRule).GetErrorCollection(startFilter))
@@ -933,6 +933,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected string ErrorDisplayContext
+		{
+			get
+			{
+				ORMModel model = Model;
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextFactType, Name, model != null ? model.Name : "");
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
 		#region Virtual methods for implicit reading support
 		/// <summary>
 		/// Allow fact types to have implicit readings without using the ReadingCollection
@@ -1048,7 +1068,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// UNDONE: On the next format change these errors should not
 				// be allowed to load or the readings to be created, so we don't have
 				// to look for readings or the reading required error if HasImplicitReadings is true.
-				bool hasError = !HasImplicitReadings;
+				bool hasError = !HasImplicitReadings && !(this is QueryBase);
 				if (hasError)
 				{
 					LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
@@ -1099,11 +1119,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private void ValidateRequiresInternalUniqueness(INotifyElementAdded notifyAdded)
 		{
 			ORMModel theModel;
-			if (!IsDeleted && (null != (theModel = Model)))
+			if (!IsDeleted && (null != (theModel = Model)) && !(this is QueryBase))
 			{
 				FactTypeDerivationRule derivationRule;
 				bool hasError = RoleCollection.Count > 1 &&
-					(null == (derivationRule = DerivationRule) || derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived || derivationRule.ExternalDerivation);
+					(null == (derivationRule = DerivationRule as FactTypeDerivationRule) || derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived || derivationRule.ExternalDerivation);
 				Store theStore = Store;
 
 				if (hasError)
@@ -1376,7 +1396,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ObjectType objectifyingType;
 				FactTypeDerivationRule derivationRule = null;
 				if (null != (objectifyingType = factType.NestingType) ||
-					(null != (derivationRule = factType.DerivationRule) &&
+					(null != (derivationRule = factType.DerivationRule as FactTypeDerivationRule) &&
 					derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 					!derivationRule.ExternalDerivation))
 				{
@@ -1572,59 +1592,125 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					return GenerateImplicitName();
 				}
-				// Grab the first reading with no errors from the first reading order
-				// Note that the first reading in the first reading order is considered
-				// to be the default reading order
-				LinkedElementCollection<RoleBase> roles = null;
-				string formatText = null;
-				LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
-				int readingOrdersCount = readingOrders.Count;
-				for (int i = 0; i < readingOrdersCount && formatText == null; ++i)
+				QueryBase query;
+				if (null != (query = this as QueryBase))
 				{
-					ReadingOrder order = readingOrders[i];
-					LinkedElementCollection<Reading> readings = order.ReadingCollection;
-					int readingsCount = readings.Count;
-					for (int j = 0; j < readingsCount; ++j)
+					// We aren't expecting a reading for a query. Use the signature (PARAMS)->{ROLES}
+					// as the generated name. We do this inline here as a favor to QueryBase because so
+					// many of the components overlap that it isn't worth keeping two sets of ruls.
+					string structureFormat = ResourceStrings.SubquerySignatureFormat;
+					string namedArgFormat = ResourceStrings.SubqueryNamedArgumentFormat;
+					string missingTypeName = ResourceStrings.ModelReadingEditorMissingRolePlayerText;
+					CultureInfo culture = CultureInfo.CurrentCulture;
+					IFormatProvider formatProvider = culture;
+					string separator = culture.TextInfo.ListSeparator;
+					if (!char.IsWhiteSpace(separator, separator.Length - 1))
 					{
-						Reading reading = readings[j];
-						if (!ModelError.HasErrors(reading, ModelErrorUses.DisplayPrimary))
+						separator += " ";
+					}
+					string parameters;
+					string roles;
+					StringBuilder builder = new StringBuilder();
+					ObjectType rolePlayer;
+					string typeName;
+					string fieldName;
+					bool first = true;
+
+					// Get parameters
+					foreach (QueryParameter parameter in query.ParameterCollection)
+					{
+						if (first)
 						{
-							roles = order.RoleCollection;
-							formatText = reading.Text;
-							break;
+							first = false;
+						}
+						else
+						{
+							builder.Append(separator);
+						}
+						rolePlayer = parameter.ParameterType;
+						typeName = (rolePlayer != null) ? rolePlayer.Name : missingTypeName;
+						builder.Append(string.IsNullOrEmpty(fieldName = parameter.Name) ? typeName : string.Format(formatProvider, namedArgFormat, fieldName, typeName));
+					}
+					parameters = builder.ToString();
+
+					// Get roles
+					builder.Length = 0;
+					first = true;
+					foreach (RoleBase roleBase in query.RoleCollection)
+					{
+						if (first)
+						{
+							first = false;
+						}
+						else
+						{
+							builder.Append(separator);
+						}
+						Role role = roleBase.Role;
+						rolePlayer = role.RolePlayer;
+						typeName = (rolePlayer != null) ? rolePlayer.Name : missingTypeName;
+						builder.Append(string.IsNullOrEmpty(fieldName = role.Name) ? typeName : string.Format(formatProvider, namedArgFormat, fieldName, typeName));
+					}
+					roles = builder.ToString();
+
+					retVal = string.Format(formatProvider, structureFormat, parameters, roles);
+				}
+				else
+				{
+					// Grab the first reading with no errors from the first reading order
+					// Note that the first reading in the first reading order is considered
+					// to be the default reading order
+					LinkedElementCollection<RoleBase> roles = null;
+					string formatText = null;
+					LinkedElementCollection<ReadingOrder> readingOrders = ReadingOrderCollection;
+					int readingOrdersCount = readingOrders.Count;
+					for (int i = 0; i < readingOrdersCount && formatText == null; ++i)
+					{
+						ReadingOrder order = readingOrders[i];
+						LinkedElementCollection<Reading> readings = order.ReadingCollection;
+						int readingsCount = readings.Count;
+						for (int j = 0; j < readingsCount; ++j)
+						{
+							Reading reading = readings[j];
+							if (!ModelError.HasErrors(reading, ModelErrorUses.DisplayPrimary))
+							{
+								roles = order.RoleCollection;
+								formatText = reading.Text;
+								break;
+							}
 						}
 					}
-				}
-				if (roles == null)
-				{
-					roles = RoleCollection;
-				}
-				int roleCount = roles.Count;
-				if (roleCount != 0)
-				{
-					//used for naming binarized unaries
-					bool applyValueText = false;
-					if (roleCount == 2 && GetUnaryRoleIndex(roles).HasValue)
+					if (roles == null)
 					{
-						roleCount = 1;
-						applyValueText = readingOrdersCount == 0;
+						roles = RoleCollection;
 					}
-					string[] replacements = new string[roleCount];
-					for (int k = 0; k < roleCount; ++k)
+					int roleCount = roles.Count;
+					if (roleCount != 0)
 					{
-						ObjectType rolePlayer = roles[k].Role.RolePlayer;
-						replacements[k] = (rolePlayer != null) ? rolePlayer.Name.Replace('-', ' ') : ResourceStrings.ModelReadingEditorMissingRolePlayerText;
-					}
-					retVal = (formatText == null) ?
-						string.Concat(replacements) :
-						string.Format(CultureInfo.InvariantCulture, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(formatText.Replace('-', ' ')), replacements);
-					if (!string.IsNullOrEmpty(retVal))
-					{
-						retVal = retVal.Replace(" ", null);
-					}
-					if (applyValueText)
-					{
-						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ImplicitBooleanValueTypeNoReadingFormatString, retVal);
+						//used for naming binarized unaries
+						bool applyValueText = false;
+						if (roleCount == 2 && GetUnaryRoleIndex(roles).HasValue)
+						{
+							roleCount = 1;
+							applyValueText = readingOrdersCount == 0;
+						}
+						string[] replacements = new string[roleCount];
+						for (int k = 0; k < roleCount; ++k)
+						{
+							ObjectType rolePlayer = roles[k].Role.RolePlayer;
+							replacements[k] = (rolePlayer != null) ? rolePlayer.Name.Replace('-', ' ') : ResourceStrings.ModelReadingEditorMissingRolePlayerText;
+						}
+						retVal = (formatText == null) ?
+							string.Concat(replacements) :
+							string.Format(CultureInfo.InvariantCulture, CultureInfo.InvariantCulture.TextInfo.ToTitleCase(formatText.Replace('-', ' ')), replacements);
+						if (!string.IsNullOrEmpty(retVal))
+						{
+							retVal = retVal.Replace(" ", null);
+						}
+						if (applyValueText)
+						{
+							retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ImplicitBooleanValueTypeNoReadingFormatString, retVal);
+						}
 					}
 				}
 			}
@@ -2035,7 +2121,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						nestedFact.RegenerateErrorText();
 						nestedFact.OnFactTypeNameChanged();
 					}
-					FactTypeDerivationRule derivationRule = nestedFact.DerivationRule;
+					FactTypeDerivationRule derivationRule = nestedFact.DerivationRule as FactTypeDerivationRule;
 					if (derivationRule != null &&
 						derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 						!derivationRule.ExternalDerivation)
@@ -2167,25 +2253,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void DerivationRuleAddedRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
-			FactTypeDerivationRule derivationRule = link.DerivationRule;
-			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-				!derivationRule.ExternalDerivation)
+			FactTypeDerivationRule derivationRule;
+			if (null != (derivationRule = link.DerivationRule as FactTypeDerivationRule))
 			{
-				FactType factType = link.FactType;
-				ObjectType nestingType;
-				if (null != (nestingType = factType.NestingType))
+				if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					!derivationRule.ExternalDerivation)
 				{
-					derivationRule.Name = nestingType.Name;
+					FactType factType = link.FactType;
+					ObjectType nestingType;
+					if (null != (nestingType = factType.NestingType))
+					{
+						derivationRule.Name = nestingType.Name;
+					}
+					else if (string.IsNullOrEmpty(derivationRule.Name))
+					{
+						derivationRule.Name = factType.DefaultName;
+					}
+					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
 				}
-				else if (string.IsNullOrEmpty(derivationRule.Name))
+				else if (!string.IsNullOrEmpty(derivationRule.Name))
 				{
-					derivationRule.Name = factType.DefaultName;
+					derivationRule.Name = "";
 				}
-				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-			}
-			else if (!string.IsNullOrEmpty(derivationRule.Name))
-			{
-				derivationRule.Name = "";
 			}
 		}
 		/// <summary>
@@ -2212,7 +2301,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FactTypeDerivationRule derivationRule;
 			string explicitName;
 			if (!(factType = link.FactType).IsDeleted &&
-				(derivationRule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				null != (derivationRule = link.DerivationRule as FactTypeDerivationRule) &&
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 				!derivationRule.ExternalDerivation)
 			{
 				if (factType.NestingType == null &&
@@ -2330,6 +2420,116 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (resetObjectTypeName)
 			{
 				link.NestingType.Name = "";
+			}
+		}
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(FactTypeHasRole)
+		/// </summary>
+		private static void FactTypeHasRoleOrderChangedRule(RolePlayerOrderChangedEventArgs e)
+		{
+			if (e.SourceDomainRole.Id == FactTypeHasRole.FactTypeDomainRoleId)
+			{
+				FrameworkDomainModel.DelayValidateElement(e.SourceElement, DelayValidateFactTypeNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(Role)
+		/// Track query signature change
+		/// </summary>
+		private static void RoleNameChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == Role.NameDomainPropertyId)
+			{
+				QueryBase queryBase;
+				if (null != (queryBase = ((Role)e.ModelElement).FactType as QueryBase))
+				{
+					FrameworkDomainModel.DelayValidateElement(queryBase, DelayValidateFactTypeNamePartChanged);
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(QueryDefinesParameter)
+		/// Track query signature change
+		/// </summary>
+		private static void QueryParameterAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((QueryDefinesParameter)e.ModelElement).Query, DelayValidateFactTypeNamePartChanged);
+		}
+		/// <summary>
+		/// ChangeRule: typeof(QueryParameter)
+		/// Track query signature change
+		/// </summary>
+		private static void QueryParameterChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			QueryBase query;
+			if (e.DomainProperty.Id == QueryParameter.NameDomainPropertyId &&
+				null != (query = ((QueryParameter)e.ModelElement).Query))
+			{
+				FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(QueryDefinesParameter)
+		/// Track query signature change
+		/// </summary>
+		private static void QueryParameterDeletedRule(ElementDeletedEventArgs e)
+		{
+			QueryBase query = ((QueryDefinesParameter)e.ModelElement).Query;
+			if (!query.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(QueryDefinesParameter)
+		/// Track query signature change
+		/// </summary>
+		private static void QueryParameterOrderChangedRule(RolePlayerOrderChangedEventArgs e)
+		{
+			if (e.SourceDomainRole.Id == QueryDefinesParameter.QueryDomainRoleId)
+			{
+				FrameworkDomainModel.DelayValidateElement(e.SourceElement, DelayValidateFactTypeNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(QueryParameterHasParameterType)
+		/// Track query signature change
+		/// </summary>
+		private static void QueryParameterTypeAddedRule(ElementAddedEventArgs e)
+		{
+			QueryBase query;
+			if (null != (query = ((QueryParameterHasParameterType)e.ModelElement).Parameter.Query))
+			{
+				FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(QueryParameterHasParameterType)
+		/// Track query signature change
+		/// </summary>
+		private static void QueryParameterTypeDeletedRule(ElementDeletedEventArgs e)
+		{
+			QueryBase query;
+			QueryParameter parameter = ((QueryParameterHasParameterType)e.ModelElement).Parameter;
+			if (!parameter.IsDeleted &&
+				null != (query = parameter.Query))
+			{
+				FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(QueryParameterHasParameterType)
+		/// Track query signature change
+		/// </summary>
+		private static void QueryParameterTypeRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == QueryParameterHasParameterType.ParameterTypeDomainRoleId)
+			{
+				QueryBase query;
+				if (null != (query = ((QueryParameterHasParameterType)e.ElementLink).Parameter.Query))
+				{
+					FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+				}
 			}
 		}
 		#endregion // Model Validation Rules
@@ -3000,7 +3200,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// rule children, we jump to the only thing we want to verbalize independently.
 			FactTypeDerivationRule derivationRule;
 			DerivationNote derivationNote;
-			if (null != (derivationRule = DerivationRule) &&
+			if (null != (derivationRule = DerivationRule as FactTypeDerivationRule) &&
 				null != (derivationNote = derivationRule.DerivationNote))
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(derivationNote, false);
@@ -3207,6 +3407,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					UnaryBinarizationUtility.ProcessFactType(element, notifyAdded);
 				}
 			}
+			protected override bool VerifyElementType(ModelElement element)
+			{
+				return !(element is QueryBase || element is SubtypeFact);
+			}
 		}
 		#endregion
 	}
@@ -3235,25 +3439,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // RolePlayer Hierarchy Context Navigation
 	#region FactType Model Validation Errors
-
 	#region class FactTypeRequiresReadingError
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	partial class FactTypeRequiresReadingError
 	{
-		#region overrides
-
+		#region Base overrides
 		/// <summary>
 		/// Creates error text for when a fact has no readings.
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresReadingMessage, FactType.Name, Model.Name);
-			if (ErrorText != newText)
-			{
-				ErrorText = newText;
-			}
+			IModelErrorDisplayContext context = FactType;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresReadingMessage, context != null ? (context.ErrorDisplayContext ?? "") : ""));
 		}
-
 		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
@@ -3264,28 +3462,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
 			}
 		}
-
-		#endregion
+		#endregion // Base overrides
 	}
 	#endregion // class FactTypeRequiresReadingError
 	#region class FactTypeRequiresInternalUniquenessConstraintError
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	partial class FactTypeRequiresInternalUniquenessConstraintError
 	{
-		#region overrides
-
+		#region Base overrides
 		/// <summary>
 		/// Creates error text for when a fact lacks an internal uniqueness constraint.
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string newText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage, FactType.Name, Model.Name);
-			if (ErrorText != newText)
-			{
-				ErrorText = newText;
-			}
+			IModelErrorDisplayContext context = FactType;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage, context != null ? (context.ErrorDisplayContext ?? "") : ""));
 		}
-
 		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
@@ -3296,11 +3488,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
 			}
 		}
-		#endregion
+		#endregion // Base overrides
 	}
 	#endregion // class FactTypeRequiresInternalUniquenessConstraintError
 	#region class NMinusOneError
-
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class NMinusOneError
 	{
@@ -3312,11 +3503,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			UniquenessConstraint iuc = Constraint;
 			FactType factType = iuc.FactTypeCollection[0];
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.NMinusOneRuleInternalSpan, iuc.Name, factType.Name, factType.Model.Name, factType.RoleCollection.Count - 1);
-			if (ErrorText != newText)
-			{
-				ErrorText = newText;
-			}
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.NMinusOneRuleInternalSpan, iuc.Name, ((IModelErrorDisplayContext)factType).ErrorDisplayContext ?? "", factType.RoleCollection.Count - 1));
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes

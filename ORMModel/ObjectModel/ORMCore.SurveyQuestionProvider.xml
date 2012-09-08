@@ -49,7 +49,7 @@
 		<qp:surveyQuestion questionType="SurveyGroupingTypeGlyph" dynamicValues="true">
 			<qp:displaySupport displayCategory="Glyph"/>
 			<qp:sequentialImageMap>
-				<qp:offset afterSurveyQuestion="SurveyDerivationType"/>
+				<qp:offset afterSurveyQuestion="SurveyQueryParameterType"/>
 			</qp:sequentialImageMap>
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyGroupingReferenceType">
@@ -67,8 +67,14 @@
 		</qp:surveyQuestion>
 		<qp:surveyQuestion questionType="SurveyDerivationType">
 			<qp:displaySupport displayCategory="Overlay"/>
-			<qp:sequentialImageMap lastAnswer="Derived">
+			<qp:sequentialImageMap lastAnswer="Query">
 				<qp:offset afterSurveyQuestion="SurveyGroupingReferenceType"/>
+			</qp:sequentialImageMap>
+		</qp:surveyQuestion>
+		<qp:surveyQuestion questionType="SurveyQueryParameterType">
+			<qp:displaySupport displayCategory="Overlay"/>
+			<qp:sequentialImageMap lastAnswer="Input">
+				<qp:offset afterSurveyQuestion="SurveyDerivationType"/>
 			</qp:sequentialImageMap>
 		</qp:surveyQuestion>
 	</qp:surveyQuestions>
@@ -107,6 +113,7 @@
 				<plx:callStatic dataTypeName="ORMCoreDomainModel" name="SurveyFloatingExpansionKey" type="field"/>
 			</qp:expansionKey>
 			<qp:surveyQuestion ref="SurveyQuestionGlyph"/>
+			<qp:surveyQuestion ref="SurveyQueryParameterType"/>
 		</qp:grouping>
 		<qp:grouping>
 			<qp:expansionKey>

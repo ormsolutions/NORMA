@@ -569,8 +569,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// for a property on an element that is not defined
 		/// in the domain model.
 		/// </summary>
-		/// <param name="componentType">The type of the component. This must
-		/// be a subtype of <see cref="ModelElement"/></param>
+		/// <param name="componentType">The type of the component. The component
+		/// is expected to be a subtype of <see cref="ModelElement"/>, or each instance
+		/// must implement <see cref="IElementReference"/> and return a subtype of ModelElement.</param>
 		/// <param name="propertyName">The name of the property in the class.</param>
 		/// <param name="propertyType">The type of the property.</param>
 		/// <param name="displayName">The display name for the property. If this is <see langword="null"/>,
@@ -920,7 +921,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		#region Constructor
 		/// <summary>
 		/// Create a wrapped descriptor that automatically resolves and forwards
-		/// <see cref="ModelElement"/> components to the provided descriptor.
+		/// a component to the provided descriptor. The component must be a <see cref="ModelElement"/>
+		/// or implement <see cref="IElementReference"/> and return a ModelElement.
 		/// </summary>
 		/// <param name="modifyDescriptor">A standard property descriptor to wrap.</param>
 		/// <param name="displayName">A customized display name. If this is <see langword="null"/>, then the original display name is used.</param>
@@ -1025,10 +1027,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// </summary>
 		public override void ResetValue(object component)
 		{
-			ModelElement element;
+			object element;
+			IElementReference elementRef;
+			ModelElement mel;
 			Store store;
-			if (null == (element = ResolveComponent(component) as ModelElement) ||
-				null == (store = Utility.ValidateStore(element.Store)))
+			if (null == (element = ResolveComponent(component)) ||
+				(null == (mel = element as ModelElement) &&
+				(null == (elementRef = element as IElementReference) ||
+				null == (mel = elementRef.ReferencedElement as ModelElement))) ||
+				null == (store = Utility.ValidateStore(mel.Store)))
 			{
 				return;
 			}
@@ -1047,10 +1054,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// </summary>
 		public override void SetValue(object component, object value)
 		{
-			ModelElement element;
+			object element;
+			IElementReference elementRef;
+			ModelElement mel;
 			Store store;
-			if (null == (element = ResolveComponent(component) as ModelElement) ||
-				null == (store = Utility.ValidateStore(element.Store)))
+			if (null == (element = ResolveComponent(component)) ||
+				(null == (mel = element as ModelElement) &&
+				(null == (elementRef = element as IElementReference) ||
+				null == (mel = elementRef.ReferencedElement as ModelElement))) ||
+				null == (store = Utility.ValidateStore(mel.Store)))
 			{
 				return;
 			}

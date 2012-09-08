@@ -1019,22 +1019,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class TooFewReadingRolesError
 	{
-		#region overrides
+		#region Base overrides
 		/// <summary>
 		/// Creates the error text.
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			Reading reading = Reading;
-			ReadingOrder order = reading.ReadingOrder;
-			FactType fact = order.FactType;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooFewRolesMessage, fact.Name, Model.Name, Reading.Text);
-			if (ErrorText != newText)
+			Reading reading;
+			ReadingOrder order;
+			IModelErrorDisplayContext context;
+			if (null != (reading = Reading) &&
+				null != (order = reading.ReadingOrder) &&
+				null != (context = order.FactType))
 			{
-				ErrorText = newText;
+				ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooFewRolesMessage, context.ErrorDisplayContext ?? "", reading.Text));
 			}
 		}
-
 		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
@@ -1046,29 +1046,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 
-		#endregion // overrides
+		#endregion // Base overrides
 	}
 	#endregion // TooFewReadingRolesError class
 	#region TooManyReadingRolesError class
 	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
 	public partial class TooManyReadingRolesError
 	{
-		#region overrides
+		#region Base overrides
 		/// <summary>
 		/// Creates the error text.
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			Reading reading = Reading;
-			ReadingOrder order = reading.ReadingOrder;
-			FactType fact = order.FactType;
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooManyRolesMessage, fact.Name, Model.Name, Reading.Text);
-			if (ErrorText != newText)
+			Reading reading;
+			ReadingOrder order;
+			IModelErrorDisplayContext context;
+			if (null != (reading = Reading) &&
+				null != (order = reading.ReadingOrder) &&
+				null != (context = order.FactType))
 			{
-				ErrorText = newText;
+				ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooManyRolesMessage, context.ErrorDisplayContext ?? "", reading.Text));
 			}
 		}
-
 		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
@@ -1079,8 +1079,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
 			}
 		}
-
-		#endregion // overrides
+		#endregion // Base overrides
 	}
 	#endregion // TooManyReadingRolesError class
 	#region ReadingRequiresUserModificationError class
@@ -1094,19 +1093,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			Reading reading = Reading;
-			if (reading != null)
+			ReadingOrder order;
+			IModelErrorDisplayContext context;
+			if (null != (reading = Reading) &&
+				null != (order = reading.ReadingOrder) &&
+				null != (context = order.FactType))
 			{
-				ReadingOrder order = reading.ReadingOrder;
-				string newText = string.Format(
-					CultureInfo.InvariantCulture,
-					ResourceStrings.ModelErrorReadingRequiresUserModificationMessage,
-					order.FactType.Name,
-					Model.Name,
-					GenerateReadingText(reading.Text, order));
-				if (ErrorText != newText)
-				{
-					ErrorText = newText;
-				}
+				ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingRequiresUserModificationMessage, context.ErrorDisplayContext ?? "", GenerateReadingText(reading.Text, order)));
 			}
 		}
 

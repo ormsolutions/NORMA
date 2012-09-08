@@ -44,11 +44,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			/// <param name="survey">The <see cref="Survey"/> this node is associated with</param>
 			/// <param name="contextElement">The parent element, or null for a root expansion context</param>
 			/// <param name="element">The element to create a node for</param>
-			/// <param name="verifyReferences">Set to <see langword="true"/> to verify link information.</param>
 			/// <returns>A fully initialized <see cref="SampleDataElementNode"/>.</returns>
-			public static SampleDataElementNode Create(SurveyTree<SurveyContextType> surveyTree, Survey survey, object contextElement, object element, bool verifyReferences)
+			public static SampleDataElementNode Create(SurveyTree<SurveyContextType> surveyTree, Survey survey, object contextElement, object element)
 			{
-				return new SampleDataElementNode(surveyTree, contextElement, element, InitializeNodeData(element, contextElement, survey), null, null, verifyReferences);
+				return new SampleDataElementNode(surveyTree, contextElement, element, InitializeNodeData(element, contextElement, survey), null, null, true);
 			}
 			/// <summary>
 			/// Refetch the current settings of the <see cref="SurveyName"/> property
@@ -120,11 +119,28 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					// Add a link relating the target element to this node. Note that we're fully constructed at this point
 					Dictionary<object, LinkedNode<SurveyNodeReference>> links = surveyTree.myReferenceDictionary;
-					LinkedNode<SurveyNodeReference> newLink = new LinkedNode<SurveyNodeReference>(new SurveyNodeReference(this, contextElement));
-					LinkedNode<SurveyNodeReference> existingLink;
-					if (links.TryGetValue(referencedElement, out existingLink))
+					SurveyNodeReference newReference = new SurveyNodeReference(this, contextElement);
+					LinkedNode<SurveyNodeReference> firstLink = null;
+					if (links.TryGetValue(referencedElement, out firstLink))
 					{
-						newLink.SetNext(existingLink, ref existingLink);
+						LinkedNode<SurveyNodeReference> existingLink = firstLink;
+						while (existingLink != null)
+						{
+							SurveyNodeReference testRef = existingLink.Value;
+							if ((contextElement == null ? testRef.ContextElement == null : contextElement.Equals(testRef.ContextElement)) &&
+								element.Equals(testRef.Node.Element))
+							{
+								existingLink.Value = newReference;
+								return;
+							}
+							existingLink = existingLink.Next;
+						}
+					}
+					LinkedNode<SurveyNodeReference> newLink = new LinkedNode<SurveyNodeReference>(newReference);
+					newLink = new LinkedNode<SurveyNodeReference>(newReference);
+					if (firstLink != null)
+					{
+						newLink.SetNext(firstLink, ref firstLink);
 					}
 					links[referencedElement] = newLink;
 				}

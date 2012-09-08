@@ -940,6 +940,18 @@
                 <a href="#PredicatePart">PredicatePart</a>
               </li>
               <li>
+                <a href="#QueryNamedParameter">QueryNamedParameter</a>
+              </li>
+              <li>
+                <a href="#QueryParameterContainer">QueryParameterContainer</a>
+              </li>
+              <li>
+                <a href="#QueryUnnamedParameter">QueryUnnamedParameter</a>
+              </li>
+              <li>
+                <a href="#QueryVerbalization">QueryVerbalization</a>
+              </li>
+              <li>
                 <a href="#ReferenceModeVerbalization">ReferenceModeVerbalization</a>
               </li>
               <li>
@@ -6819,6 +6831,128 @@ different types that represent the same instance where the first variable is an 
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">{{0}}</pre>
             </div>
+          </div>
+        </div>
+        <div id="QueryNamedParameter" class="snippet">
+          <span class="snippetHeader">
+            <a name="QueryNamedParameter" id="QueryNamedParameter">QueryNamedParameter</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Describe a query parameter with an associated name.
+<br />
+            <strong>Format: </strong> {0}=name, {1}=type name</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{1}={0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>QueryNamedParameter</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#QueryParameterContainer">QueryParameterContainer</a>
+                </li>
+                <li>
+                  <a href="#QueryVerbalization">QueryVerbalization</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="QueryParameterContainer" class="snippet">
+          <span class="snippetHeader">
+            <a name="QueryParameterContainer" id="QueryParameterContainer">QueryParameterContainer</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Outer container for listing query parameters. Used as part of a query verbalization.
+<br />
+            <strong>Format: </strong> given {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">given {0} </pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>QueryParameterContainer</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#QueryNamedParameter">QueryNamedParameter</a>
+                </li>
+                <li>
+                  <a href="#QueryUnnamedParameter">QueryUnnamedParameter</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>QueryParameterContainer</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#QueryVerbalization">QueryVerbalization</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="QueryUnnamedParameter" class="snippet">
+          <span class="snippetHeader">
+            <a name="QueryUnnamedParameter" id="QueryUnnamedParameter">QueryUnnamedParameter</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Describe a query parameter with no associated name. <br />
+            <strong>Format: </strong> given {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>QueryUnnamedParameter</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#QueryParameterContainer">QueryParameterContainer</a>
+                </li>
+                <li>
+                  <a href="#QueryVerbalization">QueryVerbalization</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="QueryVerbalization" class="snippet">
+          <span class="snippetHeader">
+            <a name="QueryVerbalization" id="QueryVerbalization">QueryVerbalization</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Root verbalization for a query. Containers a parameter (defined with QueryParameterContainer if present) and projection lists plus the derivation rule.
+<br />
+            <strong>Format: </strong> {0}select {1} where {2}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>3</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{0}select {1} where{2}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>QueryVerbalization</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#QueryNamedParameter">QueryNamedParameter</a>
+                </li>
+                <li>
+                  <a href="#QueryParameterContainer">QueryParameterContainer</a>
+                </li>
+                <li>
+                  <a href="#QueryUnnamedParameter">QueryUnnamedParameter</a>
+                </li>
+              </ul>
+            </p>
           </div>
         </div>
         <div id="ReferenceModeVerbalization" class="snippet">

@@ -1781,20 +1781,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				int roleNumber = 0;
-				string factTypeName = null;
-				string modelName = null;
+				string contextName = null;
 				FactType factType = FactType;
 				if (factType != null)
 				{
 					roleNumber = factType.RoleCollection.IndexOf(this) + 1;
-					factTypeName = factType.Name;
-					ORMModel model = factType.Model;
-					if (model != null)
-					{
-						modelName = model.Name;
-					}
+					contextName = ((IModelErrorDisplayContext)factType).ErrorDisplayContext;
 				}
-				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextFactTypeRole, modelName ?? "", factTypeName ?? "", roleNumber);
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextFactTypeRole, contextName ?? "", roleNumber);
 			}
 		}
 		string IModelErrorDisplayContext.ErrorDisplayContext
@@ -1815,30 +1809,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			string roleName = "";
-			string factName = "";
-			string modelName = "";
-			Role role = Role;
-			if (role != null)
-			{
-				FactType fact = role.FactType;
-				if (fact != null)
-				{
-					factName = fact.Name;
-					roleName = (fact.RoleCollection.IndexOf(role) + 1).ToString(CultureInfo.InvariantCulture);
-				}
-			}
-			ORMModel model = Model;
-			if (model != null)
-			{
-				modelName = model.Name;
-			}
-			string newText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePlayerRequiredError, roleName, factName, modelName);
-			string currentText = ErrorText;
-			if (currentText != newText)
-			{
-				ErrorText = newText;
-			}
+			IModelErrorDisplayContext context = (IModelErrorDisplayContext)Role;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePlayerRequiredError, context != null ? (context.ErrorDisplayContext ?? "") : ""));
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes

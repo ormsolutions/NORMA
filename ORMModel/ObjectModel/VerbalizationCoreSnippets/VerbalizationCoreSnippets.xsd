@@ -936,6 +936,29 @@ Format: No {0} the same {1}</xs:documentation>
 Format: {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="QueryParameterContainer">
+					<xs:annotation>
+						<xs:documentation>Description: Outer container for listing query parameters. Used as part of a query verbalization.
+Format: given {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="QueryNamedParameter">
+					<xs:annotation>
+						<xs:documentation>Description: Describe a query parameter with an associated name.
+Format: {0}=name, {1}=type name</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="QueryUnnamedParameter">
+					<xs:annotation>
+						<xs:documentation>Description: Describe a query parameter with no associated name. Format: given {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="QueryVerbalization">
+					<xs:annotation>
+						<xs:documentation>Description: Root verbalization for a query. Containers a parameter (defined with QueryParameterContainer if present) and projection lists plus the derivation rule.
+Format: {0}select {1} where {2}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="FrequencyPopulation">
 					<xs:annotation>
 						<xs:documentation>Description: Used as for the main body text of a frequency constraint on one FactType.

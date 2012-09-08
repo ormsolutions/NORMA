@@ -54,7 +54,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				FactType factType = ModelElement;
 				FactTypeDerivationRule derivationRule;
 				return factType.Objectification == null &&
-					(null == (derivationRule = factType.DerivationRule) || derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived || derivationRule.ExternalDerivation);
+					(null == (derivationRule = factType.DerivationRule as FactTypeDerivationRule) || derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived || derivationRule.ExternalDerivation);
 			}
 			return base.IsPropertyDescriptorReadOnly(propertyDescriptor);
 		}

@@ -1,6 +1,7 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
+ * 
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 * Copyright © ORM Solutions, LLC. All rights reserved.                     *

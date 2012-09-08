@@ -2194,8 +2194,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void FactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
-			FactTypeDerivationRule derivationRule = link.DerivationRule;
-			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+			FactTypeDerivationRule derivationRule;
+			if (null != (derivationRule = link.DerivationRule as FactTypeDerivationRule) &&
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 				!derivationRule.ExternalDerivation)
 			{
 				foreach (RoleBase roleBase in link.FactType.RoleCollection)
@@ -2246,7 +2247,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FactTypeDerivationRule derivationRule;
 			FactType factType;
 			if (!(factType = link.FactType).IsDeleted &&
-				(derivationRule = link.DerivationRule).DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				null != (derivationRule = link.DerivationRule as FactTypeDerivationRule) &&
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 				!derivationRule.ExternalDerivation)
 			{
 				foreach (RoleBase roleBase in factType.RoleCollection)
@@ -2355,7 +2357,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			MandatoryConstraint impliedMandatory = ImpliedMandatoryConstraint;
 			LinkedElementCollection<Role> impliedMandatoryRoles = (impliedMandatory != null) ? impliedMandatory.RoleCollection : null;
 			bool seenNonMandatoryRole = false;
-			FactTypeDerivationRule derivationRule;
+			RoleProjectedDerivationRule derivationRule;
+			FactTypeDerivationRule factTypeDerivationRule;
 			FactType factType;
 			for (int i = 0; i < playedRoleCount; ++i)
 			{
@@ -2419,8 +2422,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									checkedCurrentRoleDerivation = true;
 									currentRoleOnFullyDerivedFactType = null != (factType = playedRole.FactType) &&
 										null != (derivationRule = factType.DerivationRule) &&
-										derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-										!derivationRule.ExternalDerivation;
+										(null == (factTypeDerivationRule = derivationRule as FactTypeDerivationRule) ||
+										(factTypeDerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+										!factTypeDerivationRule.ExternalDerivation));
 								}
 								if (!currentRoleOnFullyDerivedFactType)
 								{
@@ -2455,8 +2459,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						checkedCurrentRoleDerivation = true;
 						currentRoleOnFullyDerivedFactType = null != (factType = playedRole.FactType) &&
 							null != (derivationRule = factType.DerivationRule) &&
-							derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-							!derivationRule.ExternalDerivation;
+							(null == (factTypeDerivationRule = derivationRule as FactTypeDerivationRule) ||
+							(factTypeDerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+							!factTypeDerivationRule.ExternalDerivation));
 					}
 					if (!checkedPreferredRoles)
 					{
@@ -2486,8 +2491,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						checkedCurrentRoleDerivation = true;
 						currentRoleOnFullyDerivedFactType = null != (factType = playedRole.FactType) &&
 							null != (derivationRule = factType.DerivationRule) &&
-							derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-							!derivationRule.ExternalDerivation;
+							(null == (factTypeDerivationRule = derivationRule as FactTypeDerivationRule) ||
+							(factTypeDerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+							!factTypeDerivationRule.ExternalDerivation));
 					}
 					if (currentRoleIsWithPreferredIdentifier || currentRoleOnFullyDerivedFactType)
 					{
@@ -2544,8 +2550,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (!roleIsMandatory &&
 								!(null != (factType = playedRole.FactType) &&
 								null != (derivationRule = factType.DerivationRule) &&
-								derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-								!derivationRule.ExternalDerivation))
+								(null == (factTypeDerivationRule = derivationRule as FactTypeDerivationRule) ||
+								(factTypeDerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+								!factTypeDerivationRule.ExternalDerivation))))
 							{
 								impliedMandatoryRoles.Add(playedRole);
 							}
@@ -2657,11 +2664,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				Role playedRole = playedRoles[i];
 				FactType factType;
-				FactTypeDerivationRule derivationRule;
+				RoleProjectedDerivationRule derivationRule;
+				FactTypeDerivationRule factTypeDerivationRule;
 				if (null != (factType = playedRole.FactType) &&
 					null != (derivationRule = factType.DerivationRule) &&
-					derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-					!derivationRule.ExternalDerivation)
+					(null == (factTypeDerivationRule = derivationRule as FactTypeDerivationRule) ||
+					(factTypeDerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+					!factTypeDerivationRule.ExternalDerivation)))
 				{
 					// Completely ignore mandatory roles on derived fact types.
 					// UNDONE: Reconsider this in the future. Non-implied mandatory
@@ -5007,7 +5016,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError, ObjectType.Name, Model.Name);
+			IModelErrorDisplayContext context = ObjectType;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError, context != null ? (context.ErrorDisplayContext ?? "") : ""));
 		}
 		/// <summary>
 		/// Regenerate error text when the object name changes or model name changes
@@ -5029,7 +5039,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeCompatibleSupertypesError, ObjectType.Name, Model.Name);
+			IModelErrorDisplayContext context = ObjectType;
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeCompatibleSupertypesError, context != null ? (context.ErrorDisplayContext ?? "") : "");
 		}
 		/// <summary>
 		/// Regenerate error text when the object name changes or model name changes

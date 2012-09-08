@@ -86,7 +86,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					{
 						foreach (object elementNode in nodeProvider.GetSurveyNodes(contextElement, expansionKey))
 						{
-							nodes.Add(SampleDataElementNode.Create(surveyTree, survey, contextElement, elementNode, true));
+							nodes.Add(SampleDataElementNode.Create(surveyTree, survey, contextElement, elementNode));
 						}
 					}
 				}
@@ -386,40 +386,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				SampleDataElementNode node = myNodes[row];
 				SurveyTree<SurveyContextType> surveyTree = mySurveyTree;
 				int image = -1;
-				ISurveyNodeReference reference = node.Element as ISurveyNodeReference;
+				ISurveyNodeReference reference = null;
 				object referencedElement = null;
-				SampleDataElementNode referenceNode;
-				SurveyNodeReferenceOptions referenceOptions;
-				Survey referenceSurvey;
-				bool filterTargetQuestions;
-				if (reference != null &&
-					null != (referencedElement = reference.ReferencedElement))
-				{
-					NodeLocation targetLocation;
-					if (!surveyTree.myNodeDictionary.TryGetValue(referencedElement, out targetLocation))
-					{
-						// Defensive code to handle callbacks on partially removed references
-						// resulting from event side effects.
-						return retVal;
-					}
-					referenceOptions = reference.SurveyNodeReferenceOptions;
-					filterTargetQuestions = 0 != (referenceOptions & SurveyNodeReferenceOptions.FilterReferencedAnswers);
-					referenceNode = targetLocation.ElementNode;
-					referenceSurvey = targetLocation.Survey;
-				}
-				else
-				{
-					referenceOptions = SurveyNodeReferenceOptions.None;
-					filterTargetQuestions = false;
-					referenceNode = default(SampleDataElementNode);
-					referenceSurvey = null;
-				}
-
-				int overlayImage = (reference != null && 0 == (referenceOptions & SurveyNodeReferenceOptions.BlockLinkDisplay) && !(referencedElement is ISurveyFloatingNode)) ? LinkOverlayImageIndex : -1;
+				SurveyNodeReferenceOptions referenceOptions = SurveyNodeReferenceOptions.None;
+				bool filterTargetQuestions = false;
+				bool firstReference = true;
+				int overlayImage = -1;
 				int overlayBitField = -1;
 				SurveyQuestionUISupport supportMask = SurveyQuestionUISupport.Glyph | SurveyQuestionUISupport.Overlay | SurveyQuestionUISupport.DisplayData;
 				Survey survey = mySurvey;
-				bool referencePass = false;
 				int nodeData = node.NodeData;
 				while (true)
 				{
@@ -433,7 +408,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						{
 							int answer = question.ExtractAnswer(nodeData);
 							if (answer != SurveyQuestion.NeutralAnswer &&
-								(!referencePass || !filterTargetQuestions || reference.UseSurveyNodeReferenceAnswer(questionInfo.QuestionType, questionInfo.DynamicQuestionValues, answer)))
+								(referencedElement == null || !filterTargetQuestions || reference.UseSurveyNodeReferenceAnswer(questionInfo.QuestionType, questionInfo.DynamicQuestionValues, answer)))
 							{
 								// Extract image and overlay support
 								if (0 != (support & SurveyQuestionUISupport.Glyph))
@@ -476,15 +451,48 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							}
 						}
 					}
-					if (!referencePass && referenceSurvey != null)
-					{
-						referencePass = true;
-						survey = referenceSurvey;
-						nodeData = referenceNode.NodeData;
-					}
-					else
+
+					reference = node.Element as ISurveyNodeReference;
+					referencedElement = null;
+					if (null == (reference = node.Element as ISurveyNodeReference) ||
+						null == (referencedElement = reference.ReferencedElement))
 					{
 						break;
+					}
+					NodeLocation targetLocation;
+					if (!surveyTree.myNodeDictionary.TryGetValue(referencedElement, out targetLocation))
+					{
+						// Defensive code to handle callbacks on partially removed references
+						// resulting from event side effects.
+						break;
+					}
+					if (null == (survey = targetLocation.Survey))
+					{
+						break;
+					}
+					referenceOptions = reference.SurveyNodeReferenceOptions;
+					filterTargetQuestions = 0 != (referenceOptions & SurveyNodeReferenceOptions.FilterReferencedAnswers);
+					node = targetLocation.ElementNode;
+					nodeData = node.NodeData;
+					if (firstReference)
+					{
+						firstReference = false;
+						if (0 == (referenceOptions & SurveyNodeReferenceOptions.BlockLinkDisplay) && !(referencedElement is ISurveyFloatingNode))
+						{
+							if (overlayImage == -1)
+							{
+								overlayImage = LinkOverlayImageIndex;
+							}
+							else
+							{
+								if (overlayBitField == -1)
+								{
+									overlayBitField = 0;
+									AddToOverlayList(overlayImage, ref overlayBitField);
+								}
+								AddToOverlayList(LinkOverlayImageIndex, ref overlayBitField);
+							}
+						}
 					}
 				}
 
@@ -905,7 +913,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			/// </summary>
 			public void ElementAdded(object element)
 			{
-				SampleDataElementNode newNode = SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, element, true);
+				SampleDataElementNode newNode = SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, element);
 				int index;
 				if (0 <= (index = myNodes.BinarySearch(newNode, myNodeComparer)))
 				{
@@ -1154,7 +1162,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				UpdateNode(
 					fromIndex,
 					null,
-					SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, elementReference, true),
+					SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, elementReference),
 					true,
 					0 != (elementReference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.InlineExpansion) && mySurveyTree.myMainListDictionary.ContainsKey(previousTarget));
 			}

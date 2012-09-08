@@ -59,7 +59,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						if (objType.IsImplicitBooleanValue ||
 							(null != (objectification = objType.Objectification) && !objectification.IsImplied && objectification == instance.FactType.Objectification))
 						{
-							candidates = null;
+							return new ObjectType[0];
 						}
 					}
 					break;

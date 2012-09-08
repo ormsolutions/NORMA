@@ -1093,7 +1093,7 @@
 		<xs:annotation>
 			<xs:documentation>A fact type directly specified by the modeler.</xs:documentation>
 		</xs:annotation>
-		<!-- These are duplicated in ImpliedFactTypeType and SubtypeFactTypeType without type extension -->
+		<!-- These are duplicated in ImpliedFactTypeType, SubtypeFactTypeType, and QueryType without type extension -->
 		<xs:sequence minOccurs="0">
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
@@ -1190,6 +1190,95 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:complexType name="QueryType">
+		<xs:annotation>
+			<xs:documentation>A query specified by the modeler.</xs:documentation>
+		</xs:annotation>
+		<!-- This is a straight copy from Fact with a change to FactRoles and several items removed -->
+		<xs:sequence minOccurs="0">
+			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
+			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
+			<xs:element name="QueryRoles" type="FactRolesType" minOccurs="0"/>
+			<xs:element name="DerivationRule" type="QueryDerivationRuleType" minOccurs="0"/>
+			<xs:element name="QueryParameters" type="QueryParametersType" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="_Signature" type="xs:string" use="optional">
+			<xs:annotation>
+				<xs:documentation>A description of the query signature show names and types for parameters and roles.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="SubqueryRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a subquery.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="QueryParametersType">
+		<xs:annotation>
+			<xs:documentation>Container for parameters defined by a query.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="QueryParameter" type="QueryParameterType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="QueryParameterType">
+		<xs:annotation>
+			<xs:documentation>A parameter defined as the input for a query element.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ParameterType" type="ObjectTypeRef" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The type associated with this parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ParameterBindings" type="QueryParameterBindingsType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="Name" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The name of the parameter.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="QueryParameterBindingsType">
+		<xs:annotation>
+			<xs:documentation>Container to bind parameters to join path elements.</xs:documentation>
+		</xs:annotation>
+		<xs:choice>
+			<xs:element name="ParameterBinding" type="QueryParameterBindingType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="QueryParameterBindingType">
+		<xs:annotation>
+			<xs:documentation>Bind the referenced parameter to a pathed role or root object type in the context lead role path.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="BoundTo">
+				<xs:annotation>
+					<xs:documentation>Indicate the bound path node for this parameter.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="PathedRole" type="PathedRoleRef">
+							<xs:annotation>
+								<xs:documentation>The PathedRole associated with this parameter for this role path.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+						<xs:element name="PathRoot" type="RootObjectTypeRef">
+							<xs:annotation>
+								<xs:documentation>The PathRoot associated with this parameter for this role path.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
 	<!--Derived FactType-->
 	<xs:complexType name="FactTypeDerivationRuleType">
 		<xs:annotation>
@@ -1198,6 +1287,14 @@
 		<xs:sequence>
 			<xs:element name="DerivationExpression" type="FactTypeDerivationExpressionType" minOccurs="0"/>
 			<xs:element name="FactTypeDerivationPath" type="FactTypeDerivationPathType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QueryDerivationRuleType">
+		<xs:annotation>
+			<xs:documentation>The formal derivation rule for a query.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="QueryDerivationPath" type="QueryDerivationPathType" minOccurs="0"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="DerivationExpressionType">
@@ -1500,6 +1597,17 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="Subqueries" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A container for subquery elements used by paths in this container.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Subquery" type="QueryType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="SharedSubquery" type="SubqueryRef" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
@@ -1517,6 +1625,16 @@
 						<xs:complexType>
 							<xs:sequence>
 								<xs:element name="ObjectUnifier" type="ObjectUnifierType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="SubqueryParameterInputs" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A container for subquery parameter inputs relating pathed roles and pathed roots with parameters used in subqueries used directly by this path.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="SubqueryParameterInputsFor" type="SubqueryParameterInputsForType" minOccurs="0" maxOccurs="unbounded"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -1571,6 +1689,38 @@
 		<xs:annotation>
 			<xs:documentation>A reference to an object unifier.</xs:documentation>
 		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="SubqueryParameterInputsForType">
+		<xs:annotation>
+			<xs:documentation>Associate the pathed role used to path over a subquery with the inputs passed from the containing role path to the subquery.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ParameterInput" type="SubqueryParameterInputType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="SubqueryParameterInputType">
+		<xs:annotation>
+			<xs:documentation>Associate the referenced parameter with a path node from the path that steps into this subquery.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="InputFrom" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Specify the path node used to provide the input data for the subquery.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:choice minOccurs="0">
+						<xs:element name="PathRoot" type="RootObjectTypeRef"/>
+						<xs:element name="PathedRole" type="PathedRoleRef"/>
+						<xs:element name="CalculatedValue" type="CalculatedValueRef"/>
+						<xs:element name="Constant" type="PathConstantType"/>
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="CalculatedValueType">
@@ -1678,7 +1828,7 @@
 						</xs:annotation>
 						<xs:complexType>
 							<xs:sequence>
-								<xs:element name="DerivationProjection" type="FactTypeDerivationProjectionType" minOccurs="0" maxOccurs="unbounded"/>
+								<xs:element name="DerivationProjection" type="RoleBasedDerivationProjectionType" minOccurs="0" maxOccurs="unbounded"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
@@ -1710,12 +1860,39 @@
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="FactTypeDerivationProjectionType">
+	<xs:complexType name="QueryDerivationPathType">
+		<xs:annotation>
+			<xs:documentation>A role path with projected nodes used to populate a query.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="RolePathOwnerType">
+				<xs:sequence>
+					<xs:element name="DerivationProjections" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>A container for different sets of role projections.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="DerivationProjection" type="RoleBasedDerivationProjectionType" minOccurs="0" maxOccurs="unbounded"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="QueryDerivationPathRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a query derivation path.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:complexType name="RoleBasedDerivationProjectionType">
 		<xs:annotation>
 			<xs:documentation>Specify projections for each role used in a role projection corresponding to the referenced role path.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleProjection" type="FactTypeRoleProjectionType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="RoleProjection" type="DerivedRoleProjectionType" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attributeGroup ref="refAttribute"/>
@@ -1726,7 +1903,7 @@
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="FactTypeRoleProjectionType">
+	<xs:complexType name="DerivedRoleProjectionType">
 		<xs:annotation>
 			<xs:documentation>Specifying the derivation source for a referenced role in a derived FactType.</xs:documentation>
 		</xs:annotation>
@@ -2429,7 +2606,9 @@
 			<xs:element name="CalculatedPathValueMustBeConsumedError" type="CalculatedPathValueMustBeConsumedErrorType"/>
 			<xs:element name="CalculatedPathValueParameterBindingError" type="CalculatedPathValueParameterBindingErrorType"/>
 			<xs:element name="FactTypeDerivationRequiresProjectionError" type="FactTypeDerivationRequiresProjectionErrorType"/>
+			<xs:element name="QueryDerivationRequiresProjectionError" type="QueryDerivationRequiresProjectionErrorType"/>
 			<xs:element name="PartialFactTypeDerivationProjectionError" type="PartialFactTypeDerivationProjectionErrorType"/>
+			<xs:element name="PartialQueryDerivationProjectionError" type="PartialQueryDerivationProjectionErrorType"/>
 			<xs:element name="JoinPathRequiresProjectionError" type="JoinPathRequiresProjectionErrorType"/>
 			<xs:element name="PartialJoinPathProjectionError" type="PartialJoinPathProjectionErrorType"/>
 		</xs:choice>
@@ -3288,9 +3467,33 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:complexType name="QueryDerivationRequiresProjectionErrorType">
+		<xs:annotation>
+			<xs:documentation>A query derivation path must be projected on at least one role path.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="QueryDerivationPath" type="QueryDerivationPathRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 	<xs:complexType name="PartialFactTypeDerivationProjectionErrorType">
 		<xs:annotation>
 			<xs:documentation>A fact type derivation projection must project on all roles in the derived fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="DerivationProjection" type="FactTypeDerivationProjectionRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="PartialQueryDerivationProjectionErrorType">
+		<xs:annotation>
+			<xs:documentation>A query derivation projection must project on all roles in the derived query.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">

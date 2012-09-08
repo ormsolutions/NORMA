@@ -375,7 +375,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					expansionKey = floatingNode.FloatingSurveyNodeQuestionKey;
 				}
 				Survey targetSurvey = GetSurvey(expansionKey);
-				nodes.Add(referencedElement, new NodeLocation(targetSurvey, SampleDataElementNode.Create(this, targetSurvey, targetContextElement, referencedElement, false)));
+				nodes.Add(referencedElement, new NodeLocation(targetSurvey, SampleDataElementNode.Create(this, targetSurvey, targetContextElement, referencedElement)));
 			}
 		}
 		#endregion // Helper Methods
@@ -430,18 +430,24 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					node.Update(questionTypes, contextElement != null ? contextElement.SurveyNodeContext : null, survey);
 					myNodeDictionary[element] = new NodeLocation(survey, node);
 				}
-				LinkedNode<SurveyNodeReference> linkNode;
-				if (myReferenceDictionary.TryGetValue(element, out linkNode))
+				NotifyReferenceAnswerChanges(element, questionTypes);
+			}
+		}
+		private void NotifyReferenceAnswerChanges(object element, Type[] questionTypes)
+		{
+			LinkedNode<SurveyNodeReference> linkNode;
+			MainList notifyList;
+			if (myReferenceDictionary.TryGetValue(element, out linkNode))
+			{
+				while (linkNode != null)
 				{
-					while (linkNode != null)
+					SurveyNodeReference link = linkNode.Value;
+					if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
 					{
-						SurveyNodeReference link = linkNode.Value;
-						if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
-						{
-							notifyList.NodeChanged(linkNode.Value.Node, linkNode, true, questionTypes);
-						}
-						linkNode = linkNode.Next;
+						notifyList.NodeChanged(link.Node, linkNode, true, questionTypes);
 					}
+					NotifyReferenceAnswerChanges(link.Node.Element, questionTypes);
+					linkNode = linkNode.Next;
 				}
 			}
 		}
@@ -523,17 +529,25 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		void ElementReferenceChanged(object element, object referenceReason, object contextElement, params Type[] questionTypes)
 		{
 			LinkedNode<SurveyNodeReference> linkNode;
-			MainList notifyList;
-			if (myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList) &&
-				myReferenceDictionary.TryGetValue(element, out linkNode))
+			if (myReferenceDictionary.TryGetValue(element, out linkNode))
 			{
 				while (linkNode != null)
 				{
 					SurveyNodeReference link = linkNode.Value;
-					if (link.ContextElement == contextElement &&
-						referenceReason == link.ReferenceReason)
+					if (((contextElement == null) ? link.ContextElement == contextElement : contextElement.Equals(link.ContextElement)) &&
+						((referenceReason == null) ? referenceReason == link.ReferenceReason : referenceReason.Equals(link.ReferenceReason)))
 					{
-						notifyList.NodeChanged(link.Node, linkNode, false, questionTypes);
+						SampleDataElementNode node = link.Node;
+						MainList notifyList;
+						if (myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList))
+						{
+							notifyList.NodeChanged(node, linkNode, false, questionTypes);
+						}
+						element = node.Element;
+						if (0 != (((ISurveyNodeReference)element).SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+						{
+							NotifyReferenceAnswerChanges(element, questionTypes);
+						}
 						break;
 					}
 					linkNode = linkNode.Next;
@@ -582,13 +596,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							object referencedElement = reference.ReferencedElement;
 							if (myReferenceDictionary.TryGetValue(referencedElement, out headLinkNode))
 							{
+								// UNDONE: PENDING Does this need to recurse to handle references to references?
 								LinkedNode<SurveyNodeReference> linkNode = headLinkNode;
 								LinkedNode<SurveyNodeReference> startHeadLinkNode = headLinkNode;
 								object referenceReason = reference.SurveyNodeReferenceReason;
 								while (linkNode != null)
 								{
 									SurveyNodeReference link = linkNode.Value;
-									if (referenceReason == link.ReferenceReason)
+									if (referenceReason == null ? referenceReason == link.ReferenceReason : referenceReason.Equals(link.ReferenceReason))
 									{
 										linkNode.Detach(ref headLinkNode);
 										break;
@@ -674,8 +689,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				while (linkNode != null)
 				{
 					SurveyNodeReference link = linkNode.Value;
-					if (link.ContextElement == contextElement &&
-						referenceReason == link.ReferenceReason)
+					if (((contextElement == null) ? link.ContextElement == contextElement : contextElement.Equals(link.ContextElement)) &&
+						((referenceReason == null) ? referenceReason == link.ReferenceReason : referenceReason.Equals(link.ReferenceReason)))
 					{
 						if (notifyList != null)
 						{
@@ -732,7 +747,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				while (linkNode != null)
 				{
 					SurveyNodeReference link = linkNode.Value;
-					if (link.ContextElement == contextElement &&
+					if (((contextElement == null) ? link.ContextElement == contextElement : contextElement.Equals(link.ContextElement)) &&
 						link.Node.Element == elementReference)
 					{
 						// Detach the node from the old reference list
@@ -798,18 +813,24 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					notifyList.NodeRenamed(location.ElementNode, null);
 				}
-				LinkedNode<SurveyNodeReference> linkNode;
-				if (myReferenceDictionary.TryGetValue(element, out linkNode))
+				NotifyReferenceNameChanges(element);
+			}
+		}
+		private void NotifyReferenceNameChanges(object element)
+		{
+			LinkedNode<SurveyNodeReference> linkNode;
+			MainList notifyList;
+			if (myReferenceDictionary.TryGetValue(element, out linkNode))
+			{
+				while (linkNode != null)
 				{
-					while (linkNode != null)
+					SurveyNodeReference link = linkNode.Value;
+					if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
 					{
-						SurveyNodeReference link = linkNode.Value;
-						if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
-						{
-							notifyList.NodeRenamed(linkNode.Value.Node, linkNode);
-						}
-						linkNode = linkNode.Next;
+						notifyList.NodeRenamed(link.Node, linkNode);
 					}
+					NotifyReferenceNameChanges(link.Node.Element);
+					linkNode = linkNode.Next;
 				}
 			}
 		}
@@ -823,17 +844,25 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		protected void ElementReferenceRenamed(object element, object referenceReason, object contextElement)
 		{
 			LinkedNode<SurveyNodeReference> linkNode;
-			MainList notifyList;
-			if (myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList) &&
-				myReferenceDictionary.TryGetValue(element, out linkNode))
+			if (myReferenceDictionary.TryGetValue(element, out linkNode))
 			{
 				while (linkNode != null)
 				{
 					SurveyNodeReference link = linkNode.Value;
-					if (link.ContextElement == contextElement &&
-						referenceReason == link.ReferenceReason)
+					if (((contextElement == null) ? link.ContextElement == contextElement : contextElement.Equals(link.ContextElement)) &&
+						((referenceReason == null) ? referenceReason == link.ReferenceReason : referenceReason.Equals(link.ReferenceReason)))
 					{
-						notifyList.NodeRenamed(link.Node, linkNode);
+						SampleDataElementNode node = link.Node;
+						MainList notifyList;
+						if (myMainListDictionary.TryGetValue(contextElement ?? TopLevelExpansionKey, out notifyList))
+						{
+							notifyList.NodeRenamed(node, linkNode);
+						}
+						element = node.Element;
+						if (0 != (((ISurveyNodeReference)element).SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+						{
+							NotifyReferenceNameChanges(element);
+						}
 						break;
 					}
 					linkNode = linkNode.Next;
@@ -877,8 +906,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				while (linkNode != null)
 				{
 					SurveyNodeReference link = linkNode.Value;
-					if (link.ContextElement == contextElement &&
-						referenceReason == link.ReferenceReason)
+					if (((contextElement == null) ? link.ContextElement == contextElement : contextElement.Equals(link.ContextElement)) &&
+						((referenceReason == null) ? referenceReason == link.ReferenceReason : referenceReason.Equals(link.ReferenceReason)))
 					{
 						notifyList.NodeCustomSortChanged(link.Node, linkNode);
 						break;

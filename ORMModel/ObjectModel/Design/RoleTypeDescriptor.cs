@@ -57,13 +57,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
 			Guid propertyId = domainProperty.Id;
-			if (propertyId.Equals(Role.MultiplicityDomainPropertyId))
+			if (propertyId == Role.MultiplicityDomainPropertyId)
 			{
 				FactType factType = ModelElement.FactType;
 				Objectification objectification;
 				LinkedElementCollection<RoleBase> roles;
 				// Display for binary fact types
-				if (factType != null && (roles = factType.RoleCollection).Count == 2)
+				if (factType != null &&
+					!(factType is QueryBase) &&
+					(roles = factType.RoleCollection).Count == 2)
 				{
 					if (null != (objectification = factType.ImpliedByObjectification))
 					{
@@ -77,20 +79,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				}
 				return false;
 			}
-			else if (propertyId.Equals(Role.MandatoryConstraintNameDomainPropertyId) ||
-				propertyId.Equals(Role.MandatoryConstraintModalityDomainPropertyId))
+			else if (propertyId == Role.IsMandatoryDomainPropertyId ||
+				propertyId == Role.ValueRangeTextDomainPropertyId)
+			{
+				if (ModelElement.FactType is QueryBase)
+				{
+					return false;
+				}
+			}
+			else if (propertyId == Role.MandatoryConstraintNameDomainPropertyId ||
+				propertyId == Role.MandatoryConstraintModalityDomainPropertyId)
 			{
 				return ModelElement.SimpleMandatoryConstraint != null;
 			}
-			else if (propertyId.Equals(Role.ObjectificationOppositeRoleNameDomainPropertyId))
+			else if (propertyId == Role.ObjectificationOppositeRoleNameDomainPropertyId)
 			{
 				FactType fact = ModelElement.FactType;
 				return fact != null && fact.Objectification != null;
 			}
-			else
-			{
-				return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
-			}
+			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}
 
 		/// <summary>

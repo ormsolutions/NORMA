@@ -35,6 +35,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	{
 		#region Constructor and Fields
 		private readonly object myPathObject;
+		private readonly object myContext;
 		/// <summary>
 		/// An empty <see cref="RolePathNode"/>
 		/// </summary>
@@ -45,6 +46,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public RolePathNode(PathedRole pathedRole)
 		{
 			myPathObject = pathedRole;
+			myContext = null;
 		}
 		/// <summary>
 		/// Create a <see cref="RolePathNode"/> for a <see cref="RolePathObjectTypeRoot"/>
@@ -52,6 +54,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public RolePathNode(RolePathObjectTypeRoot pathRoot)
 		{
 			myPathObject = pathRoot;
+			myContext = null;
+		}
+		/// <summary>
+		/// Create a <see cref="RolePathNode"/> for a <see cref="PathedRole"/>
+		/// and a context object, which allows for tracking multiple uses of a single path.
+		/// </summary>
+		public RolePathNode(PathedRole pathedRole, object context)
+		{
+			myPathObject = pathedRole;
+			myContext = context;
+		}
+		/// <summary>
+		/// Create a <see cref="RolePathNode"/> for a <see cref="RolePathObjectTypeRoot"/>
+		/// and a context object, which allows for tracking multiple uses of a single path.
+		/// </summary>
+		public RolePathNode(RolePathObjectTypeRoot pathRoot, object context)
+		{
+			myPathObject = pathRoot;
+			myContext = context;
+		}
+		/// <summary>
+		/// Create a new <see cref="RolePathNode"/> from an existing node and
+		/// and a context object, which allows for tracking multiple uses of a single path.
+		/// </summary>
+		public RolePathNode(RolePathNode existingNode, object context)
+		{
+			myPathObject = existingNode.myPathObject;
+			myContext = context;
 		}
 		#endregion // Constructor and Fields
 		#region Accessor Properties
@@ -62,7 +92,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return myPathObject == null;
+				return myPathObject == null && myContext == null;
 			}
 		}
 		/// <summary>
@@ -117,7 +147,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Get the <see cref="PathObjectUnifier"/> associated with this node.
 		/// </summary>
 		/// <remarks>This retrieves the direct object unifier. It does not attempt
-		/// to resolve a <see cref="P:PathedRole"/> to the same fact type role or
+		/// to resolve a <see cref="P:PathedRole"/> to a same fact type role or
 		/// path root that can be unified. So, if the pathed role is not a same fact
 		/// type role, then it will never be unified.</remarks>
 		public PathObjectUnifier ObjectUnifier
@@ -161,6 +191,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return myPathObject as RolePathObjectTypeRoot;
 			}
 		}
+		/// <summary>
+		/// Retrieve the context object specified with the constructor.
+		/// </summary>
+		public object Context
+		{
+			get
+			{
+				return myContext;
+			}
+		}
 		#endregion // Accessor Properties
 		#region Equality and casting routines
 		/// <summary>
@@ -170,9 +210,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (obj is RolePathNode)
 			{
-				return ((RolePathNode)obj).myPathObject == myPathObject;
+				return ((RolePathNode)obj).Equals(this);
 			}
-			return obj == myPathObject;
+			return obj == myPathObject && myContext == null;
 		}
 		/// <summary>
 		/// Standard GetHashCode override
@@ -182,7 +222,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			object obj = myPathObject;
 			if (obj != null)
 			{
-				return obj.GetHashCode();
+				object context = myContext;
+				return (context == null) ? obj.GetHashCode() : Utility.GetCombinedHashCode(obj.GetHashCode(), context.GetHashCode());
 			}
 			return 0;
 		}
@@ -191,21 +232,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public bool Equals(RolePathNode other)
 		{
-			return myPathObject == other.myPathObject;
+			object context = myContext;
+			return myPathObject == other.myPathObject &&
+				((context == null) ? other.myContext == null : context.Equals(other.myContext));
 		}
 		/// <summary>
 		/// Equality operator
 		/// </summary>
 		public static bool operator ==(RolePathNode left, RolePathNode right)
 		{
-			return left.myPathObject == right.myPathObject;
+			return left.Equals(right);
 		}
 		/// <summary>
 		/// Inequality operator
 		/// </summary>
 		public static bool operator !=(RolePathNode left, RolePathNode right)
 		{
-			return left.myPathObject != right.myPathObject;
+			return !left.Equals(right);
 		}
 		/// <summary>
 		/// Automatically cast this structure to a <see cref="PathedRole"/>
@@ -1043,7 +1086,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						LinkedElementCollection<RoleBase> factRoles = factTypeDerivation.FactType.RoleCollection;
 						int factRoleCount = factRoles.Count;
 						LeadRolePath resolvedLeadRolePath = null;
-						FactTypeDerivationProjection derivationProjection = null;
+						RoleSetDerivationProjection derivationProjection = null;
 						bool repeatLoop = true;
 						while (repeatLoop)
 						{
@@ -1065,9 +1108,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										}
 										else if (singleLeadRolePath != null)
 										{
-											FactTypeRoleProjection roleProjection = EnsureFactTypeRoleProjection(ref derivationProjection, factTypeDerivation, singleLeadRolePath, role, notifyAdded);
+											DerivedRoleProjection roleProjection = EnsureRoleProjection(ref derivationProjection, factTypeDerivation, singleLeadRolePath, role, notifyAdded);
 											roleProjection.ProjectedFromPathedRole = null;
-											FactTypeRoleProjectedFromPathedRole pathedRoleLink = new FactTypeRoleProjectedFromPathedRole(roleProjection, sourcePathedRoleLink.Source);
+											DerivedRoleProjectedFromPathedRole pathedRoleLink = new DerivedRoleProjectedFromPathedRole(roleProjection, sourcePathedRoleLink.Source);
 											if (notifyAdded != null)
 											{
 												notifyAdded.ElementAdded(pathedRoleLink);
@@ -1108,9 +1151,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										}
 										else if (singleLeadRolePath != null)
 										{
-											FactTypeRoleProjection roleProjection = EnsureFactTypeRoleProjection(ref derivationProjection, factTypeDerivation, singleLeadRolePath, role, notifyAdded);
+											DerivedRoleProjection roleProjection = EnsureRoleProjection(ref derivationProjection, factTypeDerivation, singleLeadRolePath, role, notifyAdded);
 											roleProjection.ProjectedFromCalculatedValue = null;
-											FactTypeRoleProjectedFromCalculatedPathValue calculatedValueLink = new FactTypeRoleProjectedFromCalculatedPathValue(roleProjection, sourceCalculatedValueLink.Source);
+											DerivedRoleProjectedFromCalculatedPathValue calculatedValueLink = new DerivedRoleProjectedFromCalculatedPathValue(roleProjection, sourceCalculatedValueLink.Source);
 											if (notifyAdded != null)
 											{
 												notifyAdded.ElementAdded(calculatedValueLink);
@@ -1151,11 +1194,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										}
 										else if (singleLeadRolePath != null)
 										{
-											FactTypeRoleProjection roleProjection = EnsureFactTypeRoleProjection(ref derivationProjection, factTypeDerivation, singleLeadRolePath, role, notifyAdded);
+											DerivedRoleProjection roleProjection = EnsureRoleProjection(ref derivationProjection, factTypeDerivation, singleLeadRolePath, role, notifyAdded);
 											pathConstant = sourceConstantLink.Source;
 											sourceConstantLink.Delete(); // Introducing a second aggregate, make sure we only have one live at a time.
 											roleProjection.ProjectedFromConstant = null;
-											FactTypeRoleProjectedFromPathConstant constantLink = new FactTypeRoleProjectedFromPathConstant(roleProjection, pathConstant);
+											DerivedRoleProjectedFromPathConstant constantLink = new DerivedRoleProjectedFromPathConstant(roleProjection, pathConstant);
 											if (notifyAdded != null)
 											{
 												notifyAdded.ElementAdded(constantLink);
@@ -1339,7 +1382,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											// projections are removed in later validators.
 											if (factTypeDerivation != null)
 											{
-												FactTypeRoleProjectedFromPathedRole.GetFactTypeRoleProjections(pathedRole).Clear();
+												DerivedRoleProjectedFromPathedRole.GetDerivedRoleProjections(pathedRole).Clear();
 											}
 											else if (joinPath != null)
 											{
@@ -1350,14 +1393,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											PathedRole previousPathedRole = previousPathNode.PathedRole;
 											RolePathObjectTypeRoot previousPathRoot = previousPathNode.PathRoot;
-											LinkedElementCollection<FactTypeRoleProjection> roleProjections = FactTypeRoleProjectedFromPathedRole.GetFactTypeRoleProjections(pathedRole);
+											LinkedElementCollection<DerivedRoleProjection> roleProjections = DerivedRoleProjectedFromPathedRole.GetDerivedRoleProjections(pathedRole);
 											for (int i = roleProjections.Count - 1; i >= 0; --i) // Walk backwards to allow deletion from set
 											{
-												FactTypeRoleProjection roleProjection = roleProjections[i];
+												DerivedRoleProjection roleProjection = roleProjections[i];
 												roleProjection.ProjectedFromPathedRole = previousPathedRole; // Removes roleProjection from iteration set if previousPathedRole is null 
 												if (previousPathRoot != null)
 												{
-													notifyAdded.ElementAdded(new FactTypeRoleProjectedFromRolePathRoot(roleProjection, previousPathRoot));
+													notifyAdded.ElementAdded(new DerivedRoleProjectedFromRolePathRoot(roleProjection, previousPathRoot));
 												}
 											}
 										}
@@ -1630,22 +1673,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					childLink.Delete();
 				}
 			}
-			private static FactTypeRoleProjection EnsureFactTypeRoleProjection(ref FactTypeDerivationProjection derivationProjection, FactTypeDerivationRule factTypeDerivationRule, LeadRolePath projectedFromRolePath, Role projectedOnRole, INotifyElementAdded notifyAdded)
+			private static DerivedRoleProjection EnsureRoleProjection(ref RoleSetDerivationProjection derivationProjection, RoleProjectedDerivationRule derivationRule, LeadRolePath projectedFromRolePath, Role projectedOnRole, INotifyElementAdded notifyAdded)
 			{
-				FactTypeRoleProjection roleProjection = null;
+				DerivedRoleProjection roleProjection = null;
 				if (null == derivationProjection &&
-					null == (derivationProjection = FactTypeDerivationProjection.GetLink(factTypeDerivationRule, projectedFromRolePath)))
+					null == (derivationProjection = RoleSetDerivationProjection.GetLink(derivationRule, projectedFromRolePath)))
 				{
-					derivationProjection = new FactTypeDerivationProjection(factTypeDerivationRule, projectedFromRolePath);
+					derivationProjection = new RoleSetDerivationProjection(derivationRule, projectedFromRolePath);
 					notifyAdded.ElementAdded(derivationProjection);
 				}
 				else
 				{
-					roleProjection = FactTypeRoleProjection.GetLink(derivationProjection, projectedOnRole);
+					roleProjection = DerivedRoleProjection.GetLink(derivationProjection, projectedOnRole);
 				}
 				if (roleProjection == null)
 				{
-					roleProjection = new FactTypeRoleProjection(derivationProjection, projectedOnRole);
+					roleProjection = new DerivedRoleProjection(derivationProjection, projectedOnRole);
 					notifyAdded.ElementAdded(roleProjection);
 				}
 				return roleProjection;
@@ -2133,6 +2176,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateDerivedRolePathOwner);
 				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RolePathOwnerHasSubquery)
+		/// Validate state on subquery owner link deletion. If the subquery
+		/// itself is not deleted, transfer ownership of the subquery to a
+		/// <see cref="RolePathOwner"/> that shares this subquery, or delete
+		/// the subquery otherwise.
+		/// </summary>
+		private static void SubqueryDeletedRule(ElementDeletedEventArgs e)
+		{
+			RolePathOwnerHasSubquery link = (RolePathOwnerHasSubquery)e.ModelElement;
+			bool isOwningLink = link is RolePathOwnerOwnsSubquery;
+			RolePathOwner owner = link.PathOwner;
+			Subquery subquery;
+			if (isOwningLink &&
+				!(subquery = link.Subquery).IsDeleted)
+			{
+				foreach (RolePathOwnerUsesSharedSubquery sharedLink in RolePathOwnerUsesSharedSubquery.GetLinksToSharedWithPathOwnerCollection(subquery))
+				{
+					RolePathOwner newOwner = sharedLink.PathOwner;
+					sharedLink.Delete();
+					new RolePathOwnerOwnsSubquery(newOwner, subquery);
+					return;
+				}
+				subquery.Delete();
 			}
 		}
 		/// <summary>
@@ -3516,30 +3585,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Path Validation
 	}
 	#endregion // RolePathOwner class
-	#region FactTypeDerivationRule class
-	partial class FactTypeDerivationRule : IModelErrorDisplayContext, IModelErrorOwner, IHasIndirectModelErrorOwner
+	#region RoleProjectedDerivationRule class
+	partial class RoleProjectedDerivationRule : IModelErrorOwner, IModelErrorDisplayContext
 	{
-		#region Base overrides
+		#region Accessor Properties
 		/// <summary>
-		/// Get the <see cref="ORMModel"/> from the associated <see cref="FactType"/>
+		/// Property used to block projection errors if an external derivation is defined.
 		/// </summary>
-		public override ORMModel Model
+		protected virtual bool HasExternalDerivation
 		{
 			get
 			{
-				FactType factType = FactType;
-				return factType != null ? factType.Model : null;
+				return false;
 			}
 		}
+		#endregion // Accessor Properties
+		#region Base overrides
 		/// <summary>
 		/// Add role projections to the set of base elements than can consume a <see cref="CalculatedPathValue"/>
 		/// </summary>
 		protected override bool IsCalculatedPathValueConsumed(CalculatedPathValue calculation)
 		{
-			return base.IsCalculatedPathValueConsumed(calculation) || FactTypeRoleProjectedFromCalculatedPathValue.GetFactTypeRoleProjections(calculation).Count != 0;
+			return base.IsCalculatedPathValueConsumed(calculation) || DerivedRoleProjectedFromCalculatedPathValue.GetDerivedRoleProjections(calculation).Count != 0;
 		}
 		/// <summary>
-		/// Register validation for a new <see cref="FactTypeDerivationRule"/>
+		/// Register validation for a new <see cref="RoleProjectedDerivationRule"/>
 		/// </summary>
 		protected override void NewlyCreated()
 		{
@@ -3560,12 +3630,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Verify all projection errors
 		/// </summary>
-		/// <param name="element">A <see cref="FactTypeDerivationRule"/></param>
-		private static void DelayValidateProjections(ModelElement element)
+		/// <param name="element">A <see cref="RoleProjectedDerivationRule"/></param>
+		protected static void DelayValidateProjections(ModelElement element)
 		{
 			if (!element.IsDeleted)
 			{
-				((FactTypeDerivationRule)element).ValidateProjections(null);
+				((RoleProjectedDerivationRule)element).ValidateProjections(null);
 			}
 		}
 		/// <summary>
@@ -3579,7 +3649,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int factTypeRoleCount = 0;
 			Store store = Store;
 			ORMModel model = null;
-			foreach (FactTypeDerivationProjection projection in FactTypeDerivationProjection.GetLinksToProjectedPathComponentCollection(this))
+			foreach (RoleSetDerivationProjection projection in RoleSetDerivationProjection.GetLinksToProjectedPathComponentCollection(this))
 			{
 				if (factTypeRoleCount == 0)
 				{
@@ -3597,9 +3667,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// Clean up projections with no source information on load. Empty
 					// projections are automatically removed after deserialization, so
 					// verify that we have a consistent state.
-					ReadOnlyCollection<FactTypeRoleProjection> projectionLinks = FactTypeRoleProjection.GetLinksToProjectedRoleCollection(projection);
+					ReadOnlyCollection<DerivedRoleProjection> projectionLinks = DerivedRoleProjection.GetLinksToProjectedRoleCollection(projection);
 					projectedRoleCount = projectionLinks.Count;
-					foreach (FactTypeRoleProjection roleProjection in projectionLinks)
+					foreach (DerivedRoleProjection roleProjection in projectionLinks)
 					{
 						if (null == roleProjection.ProjectedFromPathedRole &&
 							null == roleProjection.ProjectedFromPathRoot &&
@@ -3621,12 +3691,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					projectedRoleCount = projection.ProjectedRoleCollection.Count;
 				}
 				seenProjection = true;
-				PartialFactTypeDerivationProjectionError partialProjectionError = projection.PartialProjectionError;
+				PartialRoleSetDerivationProjectionError partialProjectionError = projection.PartialProjectionError;
 				if (projectedRoleCount < factTypeRoleCount)
 				{
 					if (partialProjectionError == null)
 					{
-						partialProjectionError = new PartialFactTypeDerivationProjectionError(store);
+						partialProjectionError = new PartialRoleSetDerivationProjectionError(store);
 						partialProjectionError.DerivationProjection = projection;
 						partialProjectionError.Model = model ?? (model = Model);
 						partialProjectionError.GenerateErrorText();
@@ -3641,12 +3711,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					partialProjectionError.Delete();
 				}
 			}
-			FactTypeDerivationRequiresProjectionError projectionRequiredError = ProjectionRequiredError;
-			if (!seenProjection && !ExternalDerivation)
+			RoleProjectedDerivationRequiresProjectionError projectionRequiredError = ProjectionRequiredError;
+			if (!seenProjection && !HasExternalDerivation)
 			{
 				if (projectionRequiredError == null)
 				{
-					projectionRequiredError = new FactTypeDerivationRequiresProjectionError(store);
+					projectionRequiredError = new RoleProjectedDerivationRequiresProjectionError(store);
 					projectionRequiredError.DerivationRule = this;
 					projectionRequiredError.Model = model ?? (model = Model);
 					projectionRequiredError.GenerateErrorText();
@@ -3662,6 +3732,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Base overrides
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorOwner.GetErrorCollection"/>
+		/// </summary>
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
+		{
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+			if (filter == ModelErrorUses.None)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
+			{
+				RoleProjectedDerivationRequiresProjectionError projectionRequiredError = ProjectionRequiredError;
+				if (projectionRequiredError != null)
+				{
+					yield return projectionRequiredError;
+				}
+				else
+				{
+					foreach (RoleSetDerivationProjection projection in RoleSetDerivationProjection.GetLinksToProjectedPathComponentCollection(this))
+					{
+						PartialRoleSetDerivationProjectionError partialProjectionError = projection.PartialProjectionError;
+						if (partialProjectionError != null)
+						{
+							yield return partialProjectionError;
+						}
+					}
+				}
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
+		}
+		#endregion // IModelErrorOwner Implementation
 		#region IModelErrorDisplayContext Implementation
 		/// <summary>
 		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
@@ -3670,19 +3779,518 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				string factTypeName = null;
-				string modelName = null;
-				FactType factType = FactType;
-				if (factType != null)
+				IModelErrorDisplayContext context = (IModelErrorDisplayContext)FactType;
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextRoleProjectedDerivationRule, context != null ? (context.ErrorDisplayContext ?? "") : "");
+			}
+		}
+		string IModelErrorDisplayContext.ErrorDisplayContext
+		{
+			get
+			{
+				return ErrorDisplayContext;
+			}
+		}
+		#endregion // IModelErrorDisplayContext Implementation
+		#region Validation Rule Methods
+		/// <summary>
+		/// AddRule: typeof(DerivedRoleProjectedFromCalculatedPathValue)
+		/// </summary>
+		private static void DerivedRoleProjectionOnCalculatedPathValueAddedRule(ElementAddedEventArgs e)
+		{
+			CalculatedValueUseChangedInRule(((DerivedRoleProjectedFromCalculatedPathValue)e.ModelElement).Source);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(DerivedRoleProjectedFromCalculatedPathValue)
+		/// </summary>
+		private static void DerivedRoleProjectionOnCalculatedPathValueDeletedRule(ElementDeletedEventArgs e)
+		{
+			CalculatedPathValue calculation = ((DerivedRoleProjectedFromCalculatedPathValue)e.ModelElement).Source;
+			if (!calculation.IsDeleted)
+			{
+				CalculatedValueUseChangedInRule(calculation);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(DerivedRoleProjectedFromCalculatedPathValue)
+		/// </summary>
+		private static void DerivedRoleProjectionOnCalculatedPathValueRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == DerivedRoleProjectedFromCalculatedPathValue.SourceDomainRoleId)
+			{
+				CalculatedValueUseChangedInRule((CalculatedPathValue)e.OldRolePlayer);
+				CalculatedValueUseChangedInRule((CalculatedPathValue)e.NewRolePlayer);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(FactTypeHasRole)
+		/// </summary>
+		private static void FactTypeRoleAddedRule(ElementAddedEventArgs e)
+		{
+			RoleProjectedDerivationRule derivationRule;
+			if (null != (derivationRule = ((FactTypeHasRole)e.ModelElement).FactType.DerivationRule))
+			{
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasRole)
+		/// </summary>
+		private static void FactTypeRoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactType factType = ((FactTypeHasRole)e.ModelElement).FactType;
+			RoleProjectedDerivationRule derivationRule;
+			if (!factType.IsDeleted &&
+				null != (derivationRule = factType.DerivationRule))
+			{
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+			}
+		}
+		/// <summary>
+		/// DeletingRule: typeof(PathObjectUnifierUnifiesPathedRole)
+		/// Preserve projection with other previously unified elements if
+		/// a unified pathed role is deleted.
+		/// </summary>
+		private static void PathedRoleUnificationDeletingRule(ElementDeletingEventArgs e)
+		{
+			PathObjectUnifierUnifiesPathedRole link = (PathObjectUnifierUnifiesPathedRole)e.ModelElement;
+			ReadOnlyCollection<DerivedRoleProjectedFromPathedRole> roleProjections = DerivedRoleProjectedFromPathedRole.GetLinksToDerivedRoleProjections(link.PathedRole);
+			if (roleProjections.Count != 0)
+			{
+				PathObjectUnifier objectUnifier = link.ObjectUnifier;
+				foreach (PathObjectUnifierUnifiesRolePathRoot unifiedRootLink in PathObjectUnifierUnifiesRolePathRoot.GetLinksToPathRootCollection(objectUnifier))
 				{
-					factTypeName = factType.Name;
-					ORMModel model = factType.Model;
-					if (model != null)
+					if (!unifiedRootLink.IsDeleting)
 					{
-						modelName = model.Name;
+						RolePathObjectTypeRoot replaceWithPathRoot = unifiedRootLink.PathRoot;
+						foreach (DerivedRoleProjectedFromPathedRole roleProjection in roleProjections)
+						{
+							if (!roleProjection.IsDeleting)
+							{
+								roleProjection.RoleProjection.ProjectedFromPathRoot = replaceWithPathRoot;
+							}
+						}
+						return;
 					}
 				}
-				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextFactTypeDerivationRule, factTypeName ?? "", modelName ?? "");
+				foreach (PathObjectUnifierUnifiesPathedRole unifiedPathedRoleLink in PathObjectUnifierUnifiesPathedRole.GetLinksToPathedRoleCollection(objectUnifier))
+				{
+					if (!unifiedPathedRoleLink.IsDeleting)
+					{
+						PathedRole replaceWithPathedRole = unifiedPathedRoleLink.PathedRole;
+						foreach (DerivedRoleProjectedFromPathedRole roleProjection in roleProjections)
+						{
+							if (!roleProjection.IsDeleting)
+							{
+								roleProjection.RoleProjection.ProjectedFromPathedRole = replaceWithPathedRole;
+							}
+						}
+						return;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// DeletingRule: typeof(PathObjectUnifierUnifiesRolePathRoot)
+		/// Preserve projection with other previously unified elements if
+		/// a unified path root is deleted.
+		/// </summary>
+		private static void PathRootUnificationDeletingRule(ElementDeletingEventArgs e)
+		{
+			PathObjectUnifierUnifiesRolePathRoot link = (PathObjectUnifierUnifiesRolePathRoot)e.ModelElement;
+			ReadOnlyCollection<DerivedRoleProjectedFromRolePathRoot> roleProjections = DerivedRoleProjectedFromRolePathRoot.GetLinksToDerivedRoleProjections(link.PathRoot);
+			if (roleProjections.Count != 0)
+			{
+				PathObjectUnifier objectUnifier = link.ObjectUnifier;
+				foreach (PathObjectUnifierUnifiesRolePathRoot unifiedRootLink in PathObjectUnifierUnifiesRolePathRoot.GetLinksToPathRootCollection(objectUnifier))
+				{
+					if (!unifiedRootLink.IsDeleting)
+					{
+						RolePathObjectTypeRoot replaceWithPathRoot = unifiedRootLink.PathRoot;
+						foreach (DerivedRoleProjectedFromRolePathRoot roleProjection in roleProjections)
+						{
+							if (!roleProjection.IsDeleting)
+							{
+								roleProjection.RoleProjection.ProjectedFromPathRoot = replaceWithPathRoot;
+							}
+						}
+						return;
+					}
+				}
+				foreach (PathObjectUnifierUnifiesPathedRole unifiedPathedRoleLink in PathObjectUnifierUnifiesPathedRole.GetLinksToPathedRoleCollection(objectUnifier))
+				{
+					if (!unifiedPathedRoleLink.IsDeleting)
+					{
+						PathedRole replaceWithPathedRole = unifiedPathedRoleLink.PathedRole;
+						foreach (DerivedRoleProjectedFromRolePathRoot roleProjection in roleProjections)
+						{
+							if (!roleProjection.IsDeleting)
+							{
+								roleProjection.RoleProjection.ProjectedFromPathedRole = replaceWithPathedRole;
+							}
+						}
+						return;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(RoleSetDerivationProjection)
+		/// </summary>
+		private static void ProjectionAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((RoleSetDerivationProjection)e.ModelElement).DerivationRule, DelayValidateProjections);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RoleSetDerivationProjection)
+		/// </summary>
+		private static void ProjectionDeletedRule(ElementDeletedEventArgs e)
+		{
+			RoleProjectedDerivationRule derivationRule = ((RoleSetDerivationProjection)e.ModelElement).DerivationRule;
+			if (!derivationRule.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RoleSetDerivationProjection)
+		/// </summary>
+		private static void ProjectionRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RoleSetDerivationProjection.DerivationRuleDomainRoleId)
+			{
+				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateProjections);
+			}
+			else
+			{
+				FrameworkDomainModel.DelayValidateElement(((RoleSetDerivationProjection)e.ElementLink).DerivationRule, DelayValidateProjections);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Eliminate projections for detached but undeleted paths.
+		/// </summary>
+		private static void LeadRolePathDeletedRule(ElementDeletedEventArgs e)
+		{
+			RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ModelElement;
+			DeleteProjectionForDetachedPath(link.PathOwner, link.RolePath);
+		}
+		/// <summary>
+		/// If a role path has been detached from the derivation rule but not deleted, then clear
+		/// the associated projections and parameter bindings if the path has not been reattached
+		/// through a different (owns vs sharing) relationship.
+		/// </summary>
+		private static void DeleteProjectionForDetachedPath(RolePathOwner owner, LeadRolePath rolePath)
+		{
+			RoleProjectedDerivationRule derivationRule;
+			if (!rolePath.IsDeleted &&
+				null != (derivationRule = owner as RoleProjectedDerivationRule) &&
+				!derivationRule.IsDeleted &&
+				null == RolePathOwnerHasLeadRolePath.GetLink(derivationRule, rolePath))
+			{
+				RoleSetDerivationProjection projection;
+				if (null != (projection = RoleSetDerivationProjection.GetLink(derivationRule, rolePath)))
+				{
+					projection.Delete();
+				}
+				foreach (QueryParameterBinding parameterBinding in QueryParameterBinding.GetLinksToParameterBindings(rolePath))
+				{
+					QueryBase query;
+					QueryDerivationRule queryRule;
+					if (null == (query = parameterBinding.QueryParameter.Query) ||
+						null == (queryRule = query.DerivationRule as QueryDerivationRule) ||
+						queryRule == owner)
+					{
+						parameterBinding.Delete();
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when paths are added to the derivation rule and
+		/// eliminate projections for detached but undeleted paths.
+		/// </summary>
+		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
+			{
+				DeleteProjectionForDetachedPath((RolePathOwner)e.OldRolePlayer, ((RolePathOwnerHasLeadRolePath)e.ElementLink).RolePath);
+			}
+			else
+			{
+				DeleteProjectionForDetachedPath(((RolePathOwnerHasLeadRolePath)e.ElementLink).PathOwner, (LeadRolePath)e.OldRolePlayer);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(DerivedRoleProjection)
+		/// </summary>
+		private static void RoleProjectionAddedRule(ElementAddedEventArgs e)
+		{
+			RoleProjectedDerivationRule derivationRule = ((DerivedRoleProjection)e.ModelElement).DerivationProjection.DerivationRule;
+			if (derivationRule != null)
+			{
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(DerivedRoleProjection)
+		/// </summary>
+		private static void RoleProjectionDeletedRule(ElementDeletedEventArgs e)
+		{
+			RoleSetDerivationProjection projection = ((DerivedRoleProjection)e.ModelElement).DerivationProjection;
+			RoleProjectedDerivationRule derivationRule;
+			if (!projection.IsDeleted &&
+				null != (derivationRule = projection.DerivationRule))
+			{
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(DerivedRoleProjection)
+		/// </summary>
+		private static void RoleProjectionRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == DerivedRoleProjection.DerivationProjectionDomainRoleId)
+			{
+				RoleProjectedDerivationRule derivationRule = ((RoleSetDerivationProjection)e.OldRolePlayer).DerivationRule;
+				if (derivationRule != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+				}
+				derivationRule = ((RoleSetDerivationProjection)e.NewRolePlayer).DerivationRule;
+				if (derivationRule != null)
+				{
+					FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+				}
+			}
+		}
+		#endregion // Validation Rule Methods
+	}
+	#endregion // RoleProjectedDerivationRule class
+	#region FactTypeDerivationRule class
+	partial class FactTypeDerivationRule : IHasIndirectModelErrorOwner
+	{
+		#region Base overrides
+		/// <summary>
+		/// Get the <see cref="ORMModel"/> from the associated <see cref="FactType"/>
+		/// </summary>
+		public override ORMModel Model
+		{
+			get
+			{
+				FactType factType = FactType;
+				return factType != null ? factType.Model : null;
+			}
+		}
+		/// <summary>
+		/// Block projection validation if the derivation rules is external
+		/// </summary>
+		protected override bool HasExternalDerivation
+		{
+			get
+			{
+				return ExternalDerivation;
+			}
+		}
+		#endregion // Base overrides
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { FactTypeHasDerivationRule.DerivationRuleDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region Validation Rule Methods
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeDerivationRuleHasDerivationNote), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void DerivationNoteDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeDerivationRule derivationRule = ((FactTypeDerivationRuleHasDerivationNote)e.ModelElement).DerivationRule;
+			if (!derivationRule.IsDeleted &&
+				derivationRule.ExternalDerivation &&
+				derivationRule.LeadRolePathCollection.Count == 0 &&
+				derivationRule.SubqueryCollection.Count == 0)
+			{
+				derivationRule.Delete();
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeDerivationRule)
+		/// </summary>
+		private static void FactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ExternalDerivationDomainPropertyId)
+			{
+				// Projection errors will come and go based on this setting
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateProjections);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when paths are added to the derivation rule.
+		/// </summary>
+		private static void LeadRolePathAddedRule(ElementAddedEventArgs e)
+		{
+			RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ModelElement;
+			FactTypeDerivationRule derivationRule;
+			if (!link.IsDeleted &&
+				null != (derivationRule = link.PathOwner as FactTypeDerivationRule))
+			{
+				derivationRule.ExternalDerivation = false;
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when paths are added to the derivation rule and
+		/// eliminate projections for detached but undeleted paths.
+		/// </summary>
+		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
+			{
+				FactTypeDerivationRule derivationRule;
+				if (null != (derivationRule = e.NewRolePlayer as FactTypeDerivationRule) &&
+					!derivationRule.IsDeleted)
+				{
+					derivationRule.ExternalDerivation = false;
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(RolePathOwnerHasSubquery), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when subqueries are added to the derivation rule.
+		/// </summary>
+		private static void SubqueryAddedRule(ElementAddedEventArgs e)
+		{
+			RolePathOwnerHasSubquery link = (RolePathOwnerHasSubquery)e.ModelElement;
+			FactTypeDerivationRule derivationRule;
+			if (!link.IsDeleted &&
+				null != (derivationRule = link.PathOwner as FactTypeDerivationRule))
+			{
+				derivationRule.ExternalDerivation = false;
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerHasSubquery), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when subqueries are added to the derivation rule and
+		/// eliminate projections for detached but undeleted paths.
+		/// </summary>
+		private static void SubqueryRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RolePathOwnerHasSubquery.PathOwnerDomainRoleId)
+			{
+				FactTypeDerivationRule derivationRule;
+				if (null != (derivationRule = e.NewRolePlayer as FactTypeDerivationRule) &&
+					!derivationRule.IsDeleted)
+				{
+					derivationRule.ExternalDerivation = false;
+				}
+			}
+		}
+		#endregion // Validation Rule Methods
+	}
+	#endregion // FactTypeDerivationRule class
+	#region QueryBase class
+	partial class QueryBase
+	{
+		/// <summary>
+		/// Each query type has a different path to the <see cref="ORMModel"/>
+		/// than the base <see cref="FactType"/>. Replace the Model property.
+		/// </summary>
+		public override abstract ORMModel Model
+		{
+			get;
+			set;
+		}
+		#region Rule Methods
+		/// <summary>
+		/// AddRule: typeof(QueryBase)
+		/// Queries are always derived. Make sure a query always has an associated QueryDerivationRule
+		/// </summary>
+		private static void QueryAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateQueryHasValidationRule);
+		}
+		/// <summary>
+		/// Ensure that a newly created query has an associated validation rule.
+		/// </summary>
+		[DelayValidatePriority(-1)]
+		private static void DelayValidateQueryHasValidationRule(ModelElement element)
+		{
+			QueryBase query = (QueryBase)element;
+			if (!query.IsDeleted && null == query.DerivationRule)
+			{
+				query.DerivationRule = new QueryDerivationRule(query.Store);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(FactTypeHasDerivationRule), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Delete a query when its derivation rule is deleted.
+		/// </summary>
+		private static void QueryDerivationRuleDeletedRule(ElementDeletedEventArgs e)
+		{
+			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
+			QueryBase query;
+			if (null != (query = link.FactType as QueryBase) &&
+				!query.IsDeleted &&
+				query.DerivationRule == null)
+			{
+				// Note that the opposite direction (deleting the derivation rule with the query)
+				// is already covered by delete propagation, but the reverse delete propagation
+				// applies only to queries, not general fact types.
+				query.Delete();
+			}
+		}
+		#endregion // Rule Methods
+	}
+	#endregion // QueryBase class
+	#region Subquery class
+	partial class Subquery : IModelErrorDisplayContext, IHasIndirectModelErrorOwner
+	{
+		#region Base Overrides
+		/// <summary>
+		/// Retrieve the <see cref="ORMModel"/> through path owner.
+		/// </summary>
+		public override ORMModel Model
+		{
+			get
+			{
+				RolePathOwner owner = this.PathOwner;
+				return owner != null ? owner.Model : null;
+			}
+			set
+			{
+				Debug.Fail("Subquery model set indirectly");
+			}
+		}
+		#endregion // Base Overrides
+		#region IModelErrorDisplayContext Implementation
+		/// <summary>
+		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
+		/// </summary>
+		protected new string ErrorDisplayContext
+		{
+			get
+			{
+				IModelErrorDisplayContext ownerContext = this.PathOwner as IModelErrorDisplayContext;
+				// Name for a subquery returns the signature
+				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextSubquery, Name, ownerContext != null ? ownerContext.ErrorDisplayContext : "");
 			}
 		}
 		string IModelErrorDisplayContext.ErrorDisplayContext
@@ -3705,6 +4313,59 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
 			if (linkRoles == null)
 			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RolePathOwnerOwnsSubquery.SubqueryDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
+	}
+	#endregion // Subquery class
+	#region SubqueryDerivationRule class
+	partial class QueryDerivationRule : IHasIndirectModelErrorOwner
+	{
+		#region Base overrides
+		/// <summary>
+		/// Get the <see cref="ORMModel"/> from the associated <see cref="Subquery"/>
+		/// </summary>
+		public override ORMModel Model
+		{
+			get
+			{
+				QueryBase query;
+				return null != (query = this.FactType as QueryBase) ? query.Model : null;
+			}
+		}
+		/// <summary>
+		/// Block path sharing for subquery derivation paths
+		/// </summary>
+		public override bool AllowOwnedPathSharing
+		{
+			get
+			{
+				// We could reconsider this in the future, but a shared subquery path generally
+				// indicates that the construct would be better defined as a reusable derived
+				// fact type. The ownership here can also be recursively defined, which complicates
+				// ownership transfer. For now, do not allow these paths to be shared.
+				return false;
+			}
+		}
+		#endregion // Base overrides
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
 				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { FactTypeHasDerivationRule.DerivationRuleDomainRoleId };
 			}
 			return linkRoles;
@@ -3714,355 +4375,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
-		#region IModelErrorOwner Implementation
-		/// <summary>
-		/// Implements <see cref="IModelErrorOwner.GetErrorCollection"/>
-		/// </summary>
-		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
-		{
-			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
-			{
-				yield return baseError;
-			}
-			if (filter == ModelErrorUses.None)
-			{
-				filter = (ModelErrorUses)(-1);
-			}
-			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
-			{
-				FactTypeDerivationRequiresProjectionError projectionRequiredError = ProjectionRequiredError;
-				if (projectionRequiredError != null)
-				{
-					yield return projectionRequiredError;
-				}
-				else
-				{
-					foreach (FactTypeDerivationProjection projection in FactTypeDerivationProjection.GetLinksToProjectedPathComponentCollection(this))
-					{
-						PartialFactTypeDerivationProjectionError partialProjectionError = projection.PartialProjectionError;
-						if (partialProjectionError != null)
-						{
-							yield return partialProjectionError;
-						}
-					}
-				}
-			}
-		}
-		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
-		{
-			return GetErrorCollection(filter);
-		}
-		#endregion // IModelErrorOwner Implementation
-		#region Validation Rule Methods
-		/// <summary>
-		/// DeleteRule: typeof(FactTypeDerivationRuleHasDerivationNote), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
-		/// </summary>
-		private static void DerivationNoteDeletedRule(ElementDeletedEventArgs e)
-		{
-			FactTypeDerivationRule derivationRule = ((FactTypeDerivationRuleHasDerivationNote)e.ModelElement).DerivationRule;
-			if (!derivationRule.IsDeleted &&
-				derivationRule.ExternalDerivation &&
-				derivationRule.LeadRolePathCollection.Count == 0)
-			{
-				derivationRule.Delete();
-			}
-		}
-		/// <summary>
-		/// ChangeRule: typeof(FactTypeDerivationRule)
-		/// </summary>
-		private static void FactTypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
-		{
-			if (e.DomainProperty.Id == ExternalDerivationDomainPropertyId)
-			{
-				// Projection errors with come and go based on this setting
-				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateProjections);
-			}
-		}
-		/// <summary>
-		/// AddRule: typeof(FactTypeRoleProjectedFromCalculatedPathValue)
-		/// </summary>
-		private static void FactTypeRoleProjectionOnCalculatedPathValueAddedRule(ElementAddedEventArgs e)
-		{
-			CalculatedValueUseChangedInRule(((FactTypeRoleProjectedFromCalculatedPathValue)e.ModelElement).Source);
-		}
-		/// <summary>
-		/// DeleteRule: typeof(FactTypeRoleProjectedFromCalculatedPathValue)
-		/// </summary>
-		private static void FactTypeRoleProjectionOnCalculatedPathValueDeletedRule(ElementDeletedEventArgs e)
-		{
-			CalculatedPathValue calculation = ((FactTypeRoleProjectedFromCalculatedPathValue)e.ModelElement).Source;
-			if (!calculation.IsDeleted)
-			{
-				CalculatedValueUseChangedInRule(calculation);
-			}
-		}
-		/// <summary>
-		/// RolePlayerChangeRule: typeof(FactTypeRoleProjectedFromCalculatedPathValue)
-		/// </summary>
-		private static void FactTypeRoleProjectionOnCalculatedPathValueRolePlayerChangedRule(RolePlayerChangedEventArgs e)
-		{
-			if (e.DomainRole.Id == FactTypeRoleProjectedFromCalculatedPathValue.SourceDomainRoleId)
-			{
-				CalculatedValueUseChangedInRule((CalculatedPathValue)e.OldRolePlayer);
-				CalculatedValueUseChangedInRule((CalculatedPathValue)e.NewRolePlayer);
-			}
-		}
-		/// <summary>
-		/// AddRule: typeof(FactTypeHasRole)
-		/// </summary>
-		private static void FactTypeRoleAddedRule(ElementAddedEventArgs e)
-		{
-			FactTypeDerivationRule derivationRule;
-			if (null != (derivationRule = ((FactTypeHasRole)e.ModelElement).FactType.DerivationRule))
-			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
-			}
-		}
-		/// <summary>
-		/// DeleteRule: typeof(FactTypeHasRole)
-		/// </summary>
-		private static void FactTypeRoleDeletedRule(ElementDeletedEventArgs e)
-		{
-			FactType factType = ((FactTypeHasRole)e.ModelElement).FactType;
-			FactTypeDerivationRule derivationRule;
-			if (!factType.IsDeleted &&
-				null != (derivationRule = factType.DerivationRule))
-			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
-			}
-		}
-		/// <summary>
-		/// DeletingRule: typeof(PathObjectUnifierUnifiesPathedRole)
-		/// Preserve projection with other previously unified elements if
-		/// a unified pathed role is deleted.
-		/// </summary>
-		private static void PathedRoleUnificationDeletingRule(ElementDeletingEventArgs e)
-		{
-			PathObjectUnifierUnifiesPathedRole link = (PathObjectUnifierUnifiesPathedRole)e.ModelElement;
-			ReadOnlyCollection<FactTypeRoleProjectedFromPathedRole> roleProjections = FactTypeRoleProjectedFromPathedRole.GetLinksToFactTypeRoleProjections(link.PathedRole);
-			if (roleProjections.Count != 0)
-			{
-				PathObjectUnifier objectUnifier = link.ObjectUnifier;
-				foreach (PathObjectUnifierUnifiesRolePathRoot unifiedRootLink in PathObjectUnifierUnifiesRolePathRoot.GetLinksToPathRootCollection(objectUnifier))
-				{
-					if (!unifiedRootLink.IsDeleting)
-					{
-						RolePathObjectTypeRoot replaceWithPathRoot = unifiedRootLink.PathRoot;
-						foreach (FactTypeRoleProjectedFromPathedRole roleProjection in roleProjections)
-						{
-							if (!roleProjection.IsDeleting)
-							{
-								roleProjection.RoleProjection.ProjectedFromPathRoot = replaceWithPathRoot;
-							}
-						}
-						return;
-					}
-				}
-				foreach (PathObjectUnifierUnifiesPathedRole unifiedPathedRoleLink in PathObjectUnifierUnifiesPathedRole.GetLinksToPathedRoleCollection(objectUnifier))
-				{
-					if (!unifiedPathedRoleLink.IsDeleting)
-					{
-						PathedRole replaceWithPathedRole = unifiedPathedRoleLink.PathedRole;
-						foreach (FactTypeRoleProjectedFromPathedRole roleProjection in roleProjections)
-						{
-							if (!roleProjection.IsDeleting)
-							{
-								roleProjection.RoleProjection.ProjectedFromPathedRole = replaceWithPathedRole;
-							}
-						}
-						return;
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// DeletingRule: typeof(PathObjectUnifierUnifiesRolePathRoot)
-		/// Preserve projection with other previously unified elements if
-		/// a unified path root is deleted.
-		/// </summary>
-		private static void PathRootUnificationDeletingRule(ElementDeletingEventArgs e)
-		{
-			PathObjectUnifierUnifiesRolePathRoot link = (PathObjectUnifierUnifiesRolePathRoot)e.ModelElement;
-			ReadOnlyCollection<FactTypeRoleProjectedFromRolePathRoot> roleProjections = FactTypeRoleProjectedFromRolePathRoot.GetLinksToFactTypeRoleProjections(link.PathRoot);
-			if (roleProjections.Count != 0)
-			{
-				PathObjectUnifier objectUnifier = link.ObjectUnifier;
-				foreach (PathObjectUnifierUnifiesRolePathRoot unifiedRootLink in PathObjectUnifierUnifiesRolePathRoot.GetLinksToPathRootCollection(objectUnifier))
-				{
-					if (!unifiedRootLink.IsDeleting)
-					{
-						RolePathObjectTypeRoot replaceWithPathRoot = unifiedRootLink.PathRoot;
-						foreach (FactTypeRoleProjectedFromRolePathRoot roleProjection in roleProjections)
-						{
-							if (!roleProjection.IsDeleting)
-							{
-								roleProjection.RoleProjection.ProjectedFromPathRoot = replaceWithPathRoot;
-							}
-						}
-						return;
-					}
-				}
-				foreach (PathObjectUnifierUnifiesPathedRole unifiedPathedRoleLink in PathObjectUnifierUnifiesPathedRole.GetLinksToPathedRoleCollection(objectUnifier))
-				{
-					if (!unifiedPathedRoleLink.IsDeleting)
-					{
-						PathedRole replaceWithPathedRole = unifiedPathedRoleLink.PathedRole;
-						foreach (FactTypeRoleProjectedFromRolePathRoot roleProjection in roleProjections)
-						{
-							if (!roleProjection.IsDeleting)
-							{
-								roleProjection.RoleProjection.ProjectedFromPathedRole = replaceWithPathedRole;
-							}
-						}
-						return;
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// AddRule: typeof(FactTypeDerivationProjection)
-		/// </summary>
-		private static void ProjectionAddedRule(ElementAddedEventArgs e)
-		{
-			FrameworkDomainModel.DelayValidateElement(((FactTypeDerivationProjection)e.ModelElement).DerivationRule, DelayValidateProjections);
-		}
-		/// <summary>
-		/// DeleteRule: typeof(FactTypeDerivationProjection)
-		/// </summary>
-		private static void ProjectionDeletedRule(ElementDeletedEventArgs e)
-		{
-			FactTypeDerivationRule derivationRule = ((FactTypeDerivationProjection)e.ModelElement).DerivationRule;
-			if (!derivationRule.IsDeleted)
-			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
-			}
-		}
-		/// <summary>
-		/// RolePlayerChangeRule: typeof(FactTypeDerivationProjection)
-		/// </summary>
-		private static void ProjectionRolePlayerChangedRule(RolePlayerChangedEventArgs e)
-		{
-			if (e.DomainRole.Id == FactTypeDerivationProjection.DerivationRuleDomainRoleId)
-			{
-				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateProjections);
-				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateProjections);
-			}
-			else
-			{
-				FrameworkDomainModel.DelayValidateElement(((FactTypeDerivationProjection)e.ElementLink).DerivationRule, DelayValidateProjections);
-			}
-		}
-		/// <summary>
-		/// AddRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
-		/// Clear the ExternalDefinition setting when paths are added to the derivation rule.
-		/// </summary>
-		private static void LeadRolePathAddedRule(ElementAddedEventArgs e)
-		{
-			RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ModelElement;
-			FactTypeDerivationRule derivationRule;
-			if (!link.IsDeleted &&
-				null != (derivationRule = link.PathOwner as FactTypeDerivationRule))
-			{
-				derivationRule.ExternalDerivation = false;
-			}
-		}
-		/// <summary>
-		/// DeleteRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
-		/// Eliminate projections for detached but undeleted paths.
-		/// </summary>
-		private static void LeadRolePathDeletedRule(ElementDeletedEventArgs e)
-		{
-			RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ModelElement;
-			DeleteProjectionForDetachedPath(link.PathOwner, link.RolePath);
-		}
-		/// <summary>
-		/// If a role path has been detached from the derivation rule but not deleted, then clear
-		/// the associated projection if the path has not been reattached through a different
-		/// (owns vs sharing) relationship.
-		/// </summary>
-		private static void DeleteProjectionForDetachedPath(RolePathOwner owner, LeadRolePath rolePath)
-		{
-			FactTypeDerivationRule derivationRule;
-			FactTypeDerivationProjection projection;
-			if (!rolePath.IsDeleted &&
-				null != (derivationRule = owner as FactTypeDerivationRule) &&
-				!derivationRule.IsDeleted &&
-				null == RolePathOwnerHasLeadRolePath.GetLink(derivationRule, rolePath) &&
-				null != (projection = FactTypeDerivationProjection.GetLink(derivationRule, rolePath)))
-			{
-				projection.Delete();
-			}
-		}
-		/// <summary>
-		/// RolePlayerChangeRule: typeof(RolePathOwnerHasLeadRolePath), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
-		/// Clear the ExternalDefinition setting when paths are added to the derivation rule and
-		/// eliminate projections for detached but undeleted paths.
-		/// </summary>
-		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
-		{
-			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
-			{
-				DeleteProjectionForDetachedPath((RolePathOwner)e.OldRolePlayer, ((RolePathOwnerHasLeadRolePath)e.ElementLink).RolePath);
-				FactTypeDerivationRule derivationRule;
-				if (null != (derivationRule = e.NewRolePlayer as FactTypeDerivationRule) &&
-					!derivationRule.IsDeleted)
-				{
-					derivationRule.ExternalDerivation = false;
-				}
-			}
-			else
-			{
-				DeleteProjectionForDetachedPath(((RolePathOwnerHasLeadRolePath)e.ElementLink).PathOwner, (LeadRolePath)e.OldRolePlayer);
-			}
-		}
-		/// <summary>
-		/// AddRule: typeof(FactTypeRoleProjection)
-		/// </summary>
-		private static void RoleProjectionAddedRule(ElementAddedEventArgs e)
-		{
-			FactTypeDerivationRule derivationRule = ((FactTypeRoleProjection)e.ModelElement).DerivationProjection.DerivationRule;
-			if (derivationRule != null)
-			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
-			}
-		}
-		/// <summary>
-		/// DeleteRule: typeof(FactTypeRoleProjection)
-		/// </summary>
-		private static void RoleProjectionDeletedRule(ElementDeletedEventArgs e)
-		{
-			FactTypeDerivationProjection projection = ((FactTypeRoleProjection)e.ModelElement).DerivationProjection;
-			FactTypeDerivationRule derivationRule;
-			if (!projection.IsDeleted &&
-				null != (derivationRule = projection.DerivationRule))
-			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
-			}
-		}
-		/// <summary>
-		/// RolePlayerChangeRule: typeof(FactTypeRoleProjection)
-		/// </summary>
-		private static void RoleProjectionRolePlayerChangedRule(RolePlayerChangedEventArgs e)
-		{
-			if (e.DomainRole.Id == FactTypeRoleProjection.DerivationProjectionDomainRoleId)
-			{
-				FactTypeDerivationRule derivationRule = ((FactTypeDerivationProjection)e.OldRolePlayer).DerivationRule;
-				if (derivationRule != null)
-				{
-					FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
-				}
-				derivationRule = ((FactTypeDerivationProjection)e.NewRolePlayer).DerivationRule;
-				if (derivationRule != null)
-				{
-					FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
-				}
-			}
-		}
-		#endregion // Validation Rule Methods
 	}
-	#endregion // FactTypeDerivationRule class
-	#region FactTypeDerivationProjection class
-	partial class FactTypeDerivationProjection : IElementLinkRoleHasIndirectModelErrorOwner, IModelErrorDisplayContext
+	#endregion // SubqueryDerivationRule class
+	#region RoleSetDerivationProjection class
+	partial class RoleSetDerivationProjection : IElementLinkRoleHasIndirectModelErrorOwner, IModelErrorDisplayContext
 	{
 		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
@@ -4076,7 +4392,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
 			if (linkRoles == null)
 			{
-				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { FactTypeDerivationProjection.DerivationRuleDomainRoleId };
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { RoleSetDerivationProjection.DerivationRuleDomainRoleId };
 			}
 			return linkRoles;
 		}
@@ -4095,7 +4411,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				// UNDONE: Add more specific display context information at the projection level
 				// instead of deferring back up the parent hierarchy.
-				IModelErrorDisplayContext deferTo = DerivationRule;
+				IModelErrorDisplayContext deferTo = DerivationRule as IModelErrorDisplayContext;
 				return deferTo != null ? deferTo.ErrorDisplayContext : "";
 			}
 		}
@@ -4108,18 +4424,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorDisplayContext Implementation
 	}
-	#endregion // FactTypeDerivationProjection class
-	#region FactTypeRoleProjection class
-	partial class FactTypeRoleProjection
+	#endregion // RoleSetDerivationProjection class
+	#region DerivedRoleProjection class
+	partial class DerivedRoleProjection
 	{
 		#region Role derivation validation rules
 		/// <summary>
-		/// DeleteRule: typeof(FactTypeRoleProjection), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// DeleteRule: typeof(DerivedRoleProjection), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 		/// Delete a fact type derivation projection if there are no more contained role projections.
 		/// </summary>
-		private static void FactTypeRoleProjectionDeletedRule(ElementDeletedEventArgs e)
+		private static void DerivedRoleProjectionDeletedRule(ElementDeletedEventArgs e)
 		{
-			FactTypeDerivationProjection projection = ((FactTypeRoleProjection)e.ModelElement).DerivationProjection;
+			RoleSetDerivationProjection projection = ((DerivedRoleProjection)e.ModelElement).DerivationProjection;
 			if (!projection.IsDeleted &&
 				projection.ProjectedRoleCollection.Count == 0)
 			{
@@ -4127,87 +4443,232 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(FactTypeRoleProjectedFromCalculatedPathValue)
+		/// AddRule: typeof(DerivedRoleProjectedFromCalculatedPathValue)
 		/// </summary>
 		private static void ProjectedFromCalculatedValueAddedRule(ElementAddedEventArgs e)
 		{
-			FactTypeRoleProjection roleProjection = ((FactTypeRoleProjectedFromCalculatedPathValue)e.ModelElement).RoleProjection;
+			DerivedRoleProjection roleProjection = ((DerivedRoleProjectedFromCalculatedPathValue)e.ModelElement).RoleProjection;
 			roleProjection.ProjectedFromConstant = null;
 			roleProjection.ProjectedFromPathRoot = null;
 			roleProjection.ProjectedFromPathedRole = null;
 		}
 		/// <summary>
-		/// DeleteRule: typeof(FactTypeRoleProjectedFromCalculatedPathValue), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// DeleteRule: typeof(DerivedRoleProjectedFromCalculatedPathValue), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 		/// </summary>
 		private static void ProjectedFromCalculatedValueDeletedRule(ElementDeletedEventArgs e)
 		{
-			DeleteIfEmpty(((FactTypeRoleProjectedFromCalculatedPathValue)e.ModelElement).RoleProjection);
+			DeleteIfEmpty(((DerivedRoleProjectedFromCalculatedPathValue)e.ModelElement).RoleProjection);
 		}
-		private static void DeleteIfEmpty(FactTypeRoleProjection factTypeRoleProjection)
+		private static void DeleteIfEmpty(DerivedRoleProjection derivedRoleProjection)
 		{
-			if (!factTypeRoleProjection.IsDeleted &&
-				null == factTypeRoleProjection.ProjectedFromPathedRole &&
-				null == factTypeRoleProjection.ProjectedFromPathRoot &&
-				null == factTypeRoleProjection.ProjectedFromCalculatedValue &&
-				null == factTypeRoleProjection.ProjectedFromConstant)
+			if (!derivedRoleProjection.IsDeleted &&
+				null == derivedRoleProjection.ProjectedFromPathedRole &&
+				null == derivedRoleProjection.ProjectedFromPathRoot &&
+				null == derivedRoleProjection.ProjectedFromCalculatedValue &&
+				null == derivedRoleProjection.ProjectedFromConstant)
 			{
-				factTypeRoleProjection.Delete();
+				derivedRoleProjection.Delete();
 			}
 		}
 		/// <summary>
-		/// AddRule: typeof(FactTypeRoleProjectedFromPathConstant)
+		/// AddRule: typeof(DerivedRoleProjectedFromPathConstant)
 		/// </summary>
 		private static void ProjectedFromConstantAddedRule(ElementAddedEventArgs e)
 		{
-			FactTypeRoleProjection roleProjection = ((FactTypeRoleProjectedFromPathConstant)e.ModelElement).RoleProjection;
+			DerivedRoleProjection roleProjection = ((DerivedRoleProjectedFromPathConstant)e.ModelElement).RoleProjection;
 			roleProjection.ProjectedFromPathRoot = null;
 			roleProjection.ProjectedFromPathedRole = null;
 			roleProjection.ProjectedFromCalculatedValue = null;
 		}
 		/// <summary>
-		/// DeleteRule: typeof(FactTypeRoleProjectedFromPathConstant), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// DeleteRule: typeof(DerivedRoleProjectedFromPathConstant), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 		/// </summary>
 		private static void ProjectedFromConstantDeletedRule(ElementDeletedEventArgs e)
 		{
-			DeleteIfEmpty(((FactTypeRoleProjectedFromPathConstant)e.ModelElement).RoleProjection);
+			DeleteIfEmpty(((DerivedRoleProjectedFromPathConstant)e.ModelElement).RoleProjection);
 		}
 		/// <summary>
-		/// AddRule: typeof(FactTypeRoleProjectedFromPathedRole)
+		/// AddRule: typeof(DerivedRoleProjectedFromPathedRole)
 		/// </summary>
 		private static void ProjectedFromPathedRoleAddedRule(ElementAddedEventArgs e)
 		{
-			FactTypeRoleProjection roleProjection = ((FactTypeRoleProjectedFromPathedRole)e.ModelElement).RoleProjection;
+			DerivedRoleProjection roleProjection = ((DerivedRoleProjectedFromPathedRole)e.ModelElement).RoleProjection;
 			roleProjection.ProjectedFromPathRoot = null;
 			roleProjection.ProjectedFromConstant = null;
 			roleProjection.ProjectedFromCalculatedValue = null;
 		}
 		/// <summary>
-		/// DeleteRule: typeof(FactTypeRoleProjectedFromPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// DeleteRule: typeof(DerivedRoleProjectedFromPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 		/// </summary>
 		private static void ProjectedFromPathedRoleDeletedRule(ElementDeletedEventArgs e)
 		{
-			DeleteIfEmpty(((FactTypeRoleProjectedFromPathedRole)e.ModelElement).RoleProjection);
+			DeleteIfEmpty(((DerivedRoleProjectedFromPathedRole)e.ModelElement).RoleProjection);
 		}
 		/// <summary>
-		/// AddRule: typeof(FactTypeRoleProjectedFromRolePathRoot)
+		/// AddRule: typeof(DerivedRoleProjectedFromRolePathRoot)
 		/// </summary>
 		private static void ProjectedFromPathRootAddedRule(ElementAddedEventArgs e)
 		{
-			FactTypeRoleProjection roleProjection = ((FactTypeRoleProjectedFromRolePathRoot)e.ModelElement).RoleProjection;
+			DerivedRoleProjection roleProjection = ((DerivedRoleProjectedFromRolePathRoot)e.ModelElement).RoleProjection;
 			roleProjection.ProjectedFromPathedRole = null;
 			roleProjection.ProjectedFromConstant = null;
 			roleProjection.ProjectedFromCalculatedValue = null;
 		}
 		/// <summary>
-		/// DeleteRule: typeof(FactTypeRoleProjectedFromRolePathRoot), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// DeleteRule: typeof(DerivedRoleProjectedFromRolePathRoot), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
 		/// </summary>
 		private static void ProjectedFromPathRootDeletedRule(ElementDeletedEventArgs e)
 		{
-			DeleteIfEmpty(((FactTypeRoleProjectedFromRolePathRoot)e.ModelElement).RoleProjection);
+			DeleteIfEmpty(((DerivedRoleProjectedFromRolePathRoot)e.ModelElement).RoleProjection);
 		}
 		#endregion // Role derivation validation rules
 	}
-	#endregion // FactTypeRoleProjection class
+	#endregion // DerivedRoleProjection class
+	#region QueryParameterBinding class
+	partial class QueryParameterBinding
+	{
+		#region Binding validation rules
+		/// <summary>
+		/// AddRule: typeof(QueryParameterBoundToPathedRole)
+		/// </summary>
+		private static void BoundToPathedRoleAddedRule(ElementAddedEventArgs e)
+		{
+			QueryParameterBinding binding = ((QueryParameterBoundToPathedRole)e.ModelElement).ParameterBinding;
+			binding.BoundToPathRoot = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(QueryParameterBoundToPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void BoundToPathedRoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			DeleteIfEmpty(((QueryParameterBoundToPathedRole)e.ModelElement).ParameterBinding);
+		}
+		/// <summary>
+		/// AddRule: typeof(QueryParameterBoundToRolePathRoot)
+		/// </summary>
+		private static void BoundToPathRootAddedRule(ElementAddedEventArgs e)
+		{
+			QueryParameterBinding binding = ((QueryParameterBoundToRolePathRoot)e.ModelElement).ParameterBinding;
+			binding.BoundToPathedRole = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(QueryParameterBoundToRolePathRoot), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void BoundToPathRootDeletedRule(ElementDeletedEventArgs e)
+		{
+			DeleteIfEmpty(((QueryParameterBoundToRolePathRoot)e.ModelElement).ParameterBinding);
+		}
+		private static void DeleteIfEmpty(QueryParameterBinding binding)
+		{
+			if (!binding.IsDeleted &&
+				null == binding.BoundToPathedRole &&
+				null == binding.BoundToPathRoot)
+			{
+				binding.Delete();
+			}
+		}
+		#endregion // Binding validation rules
+	}
+	#endregion // QueryParameterBinding class
+	#region SubqueryParameterInput class
+	partial class SubqueryParameterInput
+	{
+		#region Parameter input validation rules
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInput), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Delete a fact type derivation projection if there are no more contained role projections.
+		/// </summary>
+		private static void InputDeletedRule(ElementDeletedEventArgs e)
+		{
+			SubqueryParameterInputs inputs = ((SubqueryParameterInput)e.ModelElement).Inputs;
+			if (!inputs.IsDeleted &&
+				inputs.InputCollection.Count == 0)
+			{
+				inputs.Delete();
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(SubqueryParameterInputFromCalculatedPathValue)
+		/// </summary>
+		private static void InputFromCalculatedValueAddedRule(ElementAddedEventArgs e)
+		{
+			SubqueryParameterInput input = ((SubqueryParameterInputFromCalculatedPathValue)e.ModelElement).ParameterInput;
+			input.InputFromConstant = null;
+			input.InputFromPathRoot = null;
+			input.InputFromPathedRole = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(DerivedRoleProjectedFromCalculatedPathValue), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void InputFromCalculatedValueDeletedRule(ElementDeletedEventArgs e)
+		{
+			DeleteIfEmpty(((SubqueryParameterInputFromCalculatedPathValue)e.ModelElement).ParameterInput);
+		}
+		private static void DeleteIfEmpty(SubqueryParameterInput input)
+		{
+			if (!input.IsDeleted &&
+				null == input.InputFromPathedRole &&
+				null == input.InputFromPathRoot &&
+				null == input.InputFromCalculatedValue &&
+				null == input.InputFromConstant)
+			{
+				input.Delete();
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(SubqueryParameterInputFromPathConstant)
+		/// </summary>
+		private static void InputFromConstantAddedRule(ElementAddedEventArgs e)
+		{
+			SubqueryParameterInput input = ((SubqueryParameterInputFromPathConstant)e.ModelElement).ParameterInput;
+			input.InputFromPathRoot = null;
+			input.InputFromPathedRole = null;
+			input.InputFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInputFromPathConstant), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void InputFromConstantDeletedRule(ElementDeletedEventArgs e)
+		{
+			DeleteIfEmpty(((SubqueryParameterInputFromPathConstant)e.ModelElement).ParameterInput);
+		}
+		/// <summary>
+		/// AddRule: typeof(SubqueryParameterInputFromPathedRole)
+		/// </summary>
+		private static void InputFromPathedRoleAddedRule(ElementAddedEventArgs e)
+		{
+			SubqueryParameterInput input = ((SubqueryParameterInputFromPathedRole)e.ModelElement).ParameterInput;
+			input.InputFromPathRoot = null;
+			input.InputFromConstant = null;
+			input.InputFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInputFromPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void InputFromPathedRoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			DeleteIfEmpty(((SubqueryParameterInputFromPathedRole)e.ModelElement).ParameterInput);
+		}
+		/// <summary>
+		/// AddRule: typeof(SubqueryParameterInputFromRolePathRoot)
+		/// </summary>
+		private static void InputFromPathRootAddedRule(ElementAddedEventArgs e)
+		{
+			SubqueryParameterInput input = ((SubqueryParameterInputFromRolePathRoot)e.ModelElement).ParameterInput;
+			input.InputFromPathedRole = null;
+			input.InputFromConstant = null;
+			input.InputFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// DeleteRule: typeof(SubqueryParameterInputFromRolePathRoot), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void InputFromPathRootDeletedRule(ElementDeletedEventArgs e)
+		{
+			DeleteIfEmpty(((SubqueryParameterInputFromRolePathRoot)e.ModelElement).ParameterInput);
+		}
+		#endregion // Parameter input validation rules
+	}
+	#endregion // SubqueryParameterInput class
 	#region SubtypeDerivationRule class
 	partial class SubtypeDerivationRule : IModelErrorDisplayContext, IHasIndirectModelErrorOwner
 	{
@@ -4285,7 +4746,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SubtypeDerivationRule derivationRule = ((SubtypeDerivationRuleHasDerivationNote)e.ModelElement).DerivationRule;
 			if (!derivationRule.IsDeleted &&
 				derivationRule.ExternalDerivation &&
-				derivationRule.LeadRolePathCollection.Count == 0)
+				derivationRule.LeadRolePathCollection.Count == 0 &&
+				derivationRule.SubqueryCollection.Count == 0)
 			{
 				derivationRule.Delete();
 			}
@@ -4312,6 +4774,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			SubtypeDerivationRule derivationRule;
 			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId &&
+				null != (derivationRule = e.NewRolePlayer as SubtypeDerivationRule) &&
+				!derivationRule.IsDeleted)
+			{
+				derivationRule.ExternalDerivation = false;
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(RolePathOwnerHasSubquery), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when subqueries are added to the derivation rule.
+		/// </summary>
+		private static void SubqueryAddedRule(ElementAddedEventArgs e)
+		{
+			RolePathOwnerHasSubquery link = (RolePathOwnerHasSubquery)e.ModelElement;
+			SubtypeDerivationRule derivationRule;
+			if (!link.IsDeleted &&
+				null != (derivationRule = link.PathOwner as SubtypeDerivationRule))
+			{
+				derivationRule.ExternalDerivation = false;
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerHasSubquery), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Clear the ExternalDefinition setting when subqueries are added to the derivation rule.
+		/// </summary>
+		private static void SubqueryRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			SubtypeDerivationRule derivationRule;
+			if (e.DomainRole.Id == RolePathOwnerHasSubquery.PathOwnerDomainRoleId &&
 				null != (derivationRule = e.NewRolePlayer as SubtypeDerivationRule) &&
 				!derivationRule.IsDeleted)
 			{
@@ -5604,7 +6094,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
-	partial class FactTypeDerivationRequiresProjectionError
+	partial class RoleProjectedDerivationRequiresProjectionError
 	{
 		/// <summary>
 		/// Standard override
@@ -5621,12 +6111,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			IModelErrorDisplayContext displayContext = DerivationRule;
-			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeDerivationRuleProjectionRequired, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+			IModelErrorDisplayContext displayContext = (IModelErrorDisplayContext)DerivationRule;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRoleProjectedDerivationRuleProjectionRequired, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
-	partial class PartialFactTypeDerivationProjectionError
+	partial class PartialRoleSetDerivationProjectionError
 	{
 		/// <summary>
 		/// Standard override
@@ -5644,7 +6134,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			IModelErrorDisplayContext displayContext = DerivationProjection;
-			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeDerivationRulePartialProjection, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRoleProjectedDerivationRulePartialProjection, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
@@ -5734,7 +6224,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!element.IsDeleted)
 				{
 					FactType factType = element.FactType;
-					FactTypeDerivationRule derivationRule = factType.DerivationRule;
+					FactTypeDerivationRule derivationRule = factType.DerivationRule as FactTypeDerivationRule;
 					FactTypeDerivationExpression derivationExpression = element.DerivationRule;
 					string expressionBody = derivationExpression.Body;
 					DerivationNote derivationNote;

@@ -7538,13 +7538,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				LinkedElementCollection<FactType> facts;
 				NMinusOneError error = NMinusOneError;
 				FactType factType;
-				FactTypeDerivationRule derivationRule;
+				RoleProjectedDerivationRule derivationRule;
+				FactTypeDerivationRule factTypeDerivationRule;
 				if (IsInternal &&
 					Modality == ConstraintModality.Alethic &&
 					1 == (facts = FactTypeCollection).Count &&
 					(null == (derivationRule = (factType = facts[0]).DerivationRule) ||
-					derivationRule.ExternalDerivation ||
-					derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived) &&
+					(null != (factTypeDerivationRule = derivationRule as FactTypeDerivationRule) &&
+					(factTypeDerivationRule.ExternalDerivation ||
+					factTypeDerivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived))) &&
 					RoleCollection.Count < factType.RoleCollection.Count - 1)
 				{
 					//Adding the Error to the model
@@ -7651,8 +7653,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void NMinusOneFactTypeDerivationRuleAddedRule(ElementAddedEventArgs e)
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
-			FactTypeDerivationRule derivationRule = link.DerivationRule;
-			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+			FactTypeDerivationRule derivationRule;
+			if (null != (derivationRule = link.DerivationRule as FactTypeDerivationRule) &&
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 				!derivationRule.ExternalDerivation)
 			{
 				DelayValidateInternalUniquenessConstraintsForNMinusOneRule(link.FactType);
@@ -7678,8 +7681,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void NMinusOneFactTypeDerivationRuleDeletedRule(ElementDeletedEventArgs e)
 		{
 			FactTypeHasDerivationRule link = (FactTypeHasDerivationRule)e.ModelElement;
-			FactTypeDerivationRule derivationRule = link.DerivationRule;
-			if (derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+			FactTypeDerivationRule derivationRule;
+			if (null != (derivationRule = link.DerivationRule as FactTypeDerivationRule) &&
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 				!derivationRule.ExternalDerivation)
 			{
 				DelayValidateInternalUniquenessConstraintsForNMinusOneRule(link.FactType);
@@ -9508,19 +9512,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			FactType parent = FactType;
-			string modelName = "";
-			string parentName = "";
-			if (parent != null)
-			{
-				parentName = parent.Name;
-				ORMModel model = parent.Model;
-				if (model != null)
-				{
-					modelName = model.Name;
-				}
-			}
-			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorImpliedInternalUniquenessConstraintError, parentName, modelName);
+			IModelErrorDisplayContext context = FactType;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorImpliedInternalUniquenessConstraintError, context != null ? (context.ErrorDisplayContext ?? "") : ""));
 		}
 		/// <summary>
 		/// Regenerates the error text when the Fact type changes

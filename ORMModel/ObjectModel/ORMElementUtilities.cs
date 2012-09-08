@@ -129,6 +129,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
+		
 		}
 
 		#region ExpandableExtensionPropertyDescriptor

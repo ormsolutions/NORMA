@@ -45,6 +45,28 @@
 				</Snippet>
 			</Snippet>
 		</SubtypeFact>
+		<QueryBase>
+			<Snippet ref="QueryVerbalization" conditionalMatch="HasVerbalizableQueryDerivationPath">
+				<ConditionalReplacement>
+					<Snippet ref="QueryParameterContainer" conditionalMatch="IsParameterized">
+						<IterateQueryParameters listStyle="SimpleLogicalAndList">
+							<ConditionalSnippet>
+								<Snippet ref="QueryNamedParameter" conditionalMatch="IsNamedParameter"/>
+								<Snippet ref="QueryUnnamedParameter"/>
+								<SnippetReplacements>
+									<ProvidedRolePlayer rolePlayerKey="QueryParameter" markAsHead="true"/>
+									<ParameterName/>
+								</SnippetReplacements>
+							</ConditionalSnippet>
+						</IterateQueryParameters>
+					</Snippet>
+				</ConditionalReplacement>
+				<IterateRoles listStyle="SimpleLogicalAndList" match="providedFactRoles">
+					<ProvidedRolePlayer rolePlayerKey="FactRole" markAsHead="true"/>
+				</IterateRoles>
+				<DerivationPath/>
+			</Snippet>
+		</QueryBase>
 		<!-- Generate ObjectType verbalization along with constraints -->
 		<ObjectType>
 			<ConditionalSnippet>
@@ -608,6 +630,13 @@
 									<CompositeList listStyle="IndentedLogicalOrList">
 										<IterateRoles match="providedConstraintRoles" minFactArity="2">
 											<Fact readingChoice="PreferPrimaryLeadReadingNoFrontText">
+												<!-- UNDONE: PENDING This is wrong if multiple roles from disjunctive mandatory in same (ring) fact type.
+												Need to quantify primary role with 'that', secondary with 'some' (either pass in role instead of pathedRole,
+												or add flag to force pure existential), and excluded as 'some'. Switching 'included' to 'primary' is generating
+												incorrectly and returning an unquantified name for non-primary roles.
+												To get a subscripted name, we'll need to register the non-constrained roles for all
+												fact types in the path verbalizer, then set the minimizeHeadSubscripting in ?all?
+												patterns except this one. -->
 												<ProvidedPredicateReplacement match="included" quantify="true"/>
 												<ProvidedPredicateReplacement match="excluded" quantify="true"/>
 											</Fact>

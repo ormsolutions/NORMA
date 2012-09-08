@@ -120,6 +120,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		EntityType,
 		/// <summary>
+		/// ObjectType should be set, but is not. Use
+		/// if an object type main image is expected.
+		/// </summary>
+		ObjectTypeNotSet,
+		/// <summary>
 		/// Unary fact type
 		/// </summary>
 		UnaryFactType,
@@ -542,8 +547,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// The element has an associated derivation rule
 		/// </summary>
 		Derived,
+		/// <summary>
+		/// The element is a derived query
+		/// </summary>
+		Query,
 	}
 	#endregion // SurveyDerivationType question
+	#region SurveyQueryParameterType question
+	/// <summary>
+	/// Identify a <see cref="QueryParameter"/> for overlay display
+	/// </summary>
+	public enum SurveyQueryParameterType
+	{
+		/// <summary>
+		/// The element is an input parameter (only current kind)
+		/// </summary>
+		Input,
+	}
+	#endregion // SurveyQueryParameterType question
 	#region Constraint Detail Question
 	/// <summary>
 	/// Constraint detail survey answers

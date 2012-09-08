@@ -29,7 +29,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ProvideSurveyQuestionForSurveyGroupingReferenceType.Instance});
 		}
 		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo5 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
-			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance};
+			ProvideSurveyQuestionForSurveyQuestionGlyph.Instance,
+			ProvideSurveyQuestionForSurveyQueryParameterType.Instance};
 		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo6 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
 			ProvideSurveyQuestionForSurveyConstraintDetailType.Instance};
 		private static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[] mySurveyQuestionTypeInfo7 = new ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>[]{
@@ -683,7 +684,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			public int MapAnswerToImageIndex(int answer)
 			{
-				return (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 2 + (int)SurveyDerivationType.Derived + 1 + answer;
+				return (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 2 + (int)SurveyDerivationType.Query + 1 + (int)SurveyQueryParameterType.Input + 1 + answer;
 			}
 			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
 			{
@@ -837,6 +838,73 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public int MapAnswerToImageIndex(int answer)
 			{
 				return (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 2 + answer;
+			}
+			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return null;
+			}
+			public bool ShowEmptyGroup(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
+			{
+				return false;
+			}
+			public SurveyQuestionDisplayData GetDisplayData(int answer)
+			{
+				return SurveyQuestionDisplayData.Default;
+			}
+			public SurveyQuestionUISupport UISupport
+			{
+				get
+				{
+					return SurveyQuestionUISupport.Overlay;
+				}
+			}
+			public static int QuestionPriority
+			{
+				get
+				{
+					return 0;
+				}
+			}
+			int ISurveyQuestionTypeInfo.QuestionPriority
+			{
+				get
+				{
+					return QuestionPriority;
+				}
+			}
+		}
+		private sealed class ProvideSurveyQuestionForSurveyQueryParameterType : ISurveyQuestionTypeInfo, ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store>
+		{
+			private ProvideSurveyQuestionForSurveyQueryParameterType()
+			{
+			}
+			public static readonly ISurveyQuestionTypeInfo<Microsoft.VisualStudio.Modeling.Store> Instance = new ProvideSurveyQuestionForSurveyQueryParameterType();
+			public Type QuestionType
+			{
+				get
+				{
+					return typeof(SurveyQueryParameterType);
+				}
+			}
+			public ISurveyDynamicValues DynamicQuestionValues
+			{
+				get
+				{
+					return null;
+				}
+			}
+			public int AskQuestion(object data, object contextElement)
+			{
+				IAnswerSurveyQuestion<SurveyQueryParameterType> typedData = data as IAnswerSurveyQuestion<SurveyQueryParameterType>;
+				if (typedData != null)
+				{
+					return typedData.AskQuestion(contextElement);
+				}
+				return -1;
+			}
+			public int MapAnswerToImageIndex(int answer)
+			{
+				return (int)SurveyQuestionGlyph.Last + 1 + 1 + (int)SurveyRoleType.Supertype + 1 + 2 + (int)SurveyDerivationType.Query + 1 + answer;
 			}
 			public IFreeFormCommandProvider<Microsoft.VisualStudio.Modeling.Store> GetFreeFormCommands(Microsoft.VisualStudio.Modeling.Store surveyContext, int answer)
 			{

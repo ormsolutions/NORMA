@@ -1246,6 +1246,46 @@
     <value>DistinctValues</value>
     <comment>DisplayName for DomainProperty &apos;DistinctValues&apos; on DomainClass &apos;CalculatedPathValueInput&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryBase.Description" xml:space="preserve">
+    <value>A query representation based on a fact type structure. Queries support parameterization and do not need readings.</value>
+    <comment>Description for DomainClass &apos;QueryBase&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryBase.DisplayName" xml:space="preserve">
+    <value>QueryBase</value>
+    <comment>DisplayName for DomainClass &apos;QueryBase&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameter.Description" xml:space="preserve">
+    <value>An input parameter for a query.</value>
+    <comment>Description for DomainClass &apos;QueryParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameter.DisplayName" xml:space="preserve">
+    <value>QueryParameter</value>
+    <comment>DisplayName for DomainClass &apos;QueryParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameter/Name.Description" xml:space="preserve">
+    <value>The explicit name for this parameter.</value>
+    <comment>Description for DomainProperty &apos;Name&apos; on DomainClass &apos;QueryParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameter/Name.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;Name&apos; on DomainClass &apos;QueryParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Subquery.Description" xml:space="preserve">
+    <value>A query used as a component of a role path.</value>
+    <comment>Description for DomainClass &apos;Subquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Subquery.DisplayName" xml:space="preserve">
+    <value>Subquery</value>
+    <comment>DisplayName for DomainClass &apos;Subquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.Description" xml:space="preserve">
+    <value>Role path(s) projected onto a set of roles. Forms the base type for FactTypeDerivationRule and QueryDerivationRule.</value>
+    <comment>Description for DomainClass &apos;RoleProjectedDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.DisplayName" xml:space="preserve">
+    <value>RoleProjectedDerivationRule</value>
+    <comment>DisplayName for DomainClass &apos;RoleProjectedDerivationRule&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.Description" xml:space="preserve">
     <value>A role path defining a fact type derivation.</value>
     <comment>Description for DomainClass &apos;FactTypeDerivationRule&apos;</comment>
@@ -1293,6 +1333,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule/ExternalDerivation.DisplayName" xml:space="preserve">
     <value>ExternalDerivation</value>
     <comment>DisplayName for DomainProperty &apos;ExternalDerivation&apos; on DomainClass &apos;FactTypeDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDerivationRule.Description" xml:space="preserve">
+    <value>Role path(s) defining a query.</value>
+    <comment>Description for DomainClass &apos;QueryDerivationRule&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDerivationRule.DisplayName" xml:space="preserve">
+    <value>QueryDerivationRule</value>
+    <comment>DisplayName for DomainClass &apos;QueryDerivationRule&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.Description" xml:space="preserve">
     <value>A role path defining subtype population.</value>
@@ -1414,21 +1462,21 @@
     <value>Calculation Not Used</value>
     <comment>DisplayName for DomainClass &apos;CalculatedPathValueMustBeConsumedError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRequiresProjectionError.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRequiresProjectionError.Description" xml:space="preserve">
     <value>Roles in a fact type derivation rule must be projected from at least one role path.</value>
-    <comment>Description for DomainClass &apos;FactTypeDerivationRequiresProjectionError&apos;</comment>
+    <comment>Description for DomainClass &apos;RoleProjectedDerivationRequiresProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRequiresProjectionError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRequiresProjectionError.DisplayName" xml:space="preserve">
     <value>Fact Type Derivation Not Projected</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeDerivationRequiresProjectionError&apos;</comment>
+    <comment>DisplayName for DomainClass &apos;RoleProjectedDerivationRequiresProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PartialFactTypeDerivationProjectionError.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PartialRoleSetDerivationProjectionError.Description" xml:space="preserve">
     <value>A fact type derivation projection must project on every role in the fact type.</value>
-    <comment>Description for DomainClass &apos;PartialFactTypeDerivationProjectionError&apos;</comment>
+    <comment>Description for DomainClass &apos;PartialRoleSetDerivationProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PartialFactTypeDerivationProjectionError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PartialRoleSetDerivationProjectionError.DisplayName" xml:space="preserve">
     <value>Incomplete Fact Type Derivation Projection</value>
-    <comment>DisplayName for DomainClass &apos;PartialFactTypeDerivationProjectionError&apos;</comment>
+    <comment>DisplayName for DomainClass &apos;PartialRoleSetDerivationProjectionError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathRequiresProjectionError.Description" xml:space="preserve">
     <value>Roles in a constraint role sequence join path must be projected from at least one role path.</value>
@@ -7740,6 +7788,102 @@
     <value>Path Owner</value>
     <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RolePathOwnerHasSingleOwnedLeadRolePath&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery</value>
+    <comment>Description for DomainClass &apos;RolePathOwnerHasSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery.DisplayName" xml:space="preserve">
+    <value>Role Path Owner Has Subquery</value>
+    <comment>DisplayName for DomainClass &apos;RolePathOwnerHasSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery/PathOwner.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery.PathOwner</value>
+    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery/PathOwner.DisplayName" xml:space="preserve">
+    <value>PathOwner</value>
+    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery/PathOwner.PropertyDisplayName" xml:space="preserve">
+    <value>Subquery Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerHasSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery/Subquery.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery.Subquery</value>
+    <comment>Description for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerHasSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery/Subquery.DisplayName" xml:space="preserve">
+    <value>Subquery</value>
+    <comment>DisplayName for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerHasSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerHasSubquery/Subquery.PropertyDisplayName" xml:space="preserve">
+    <value>Path Owner Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerHasSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery</value>
+    <comment>Description for DomainClass &apos;RolePathOwnerOwnsSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery.DisplayName" xml:space="preserve">
+    <value>Role Path Owner Owns Subquery</value>
+    <comment>DisplayName for DomainClass &apos;RolePathOwnerOwnsSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery/PathOwner.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery.PathOwner</value>
+    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerOwnsSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery/PathOwner.DisplayName" xml:space="preserve">
+    <value>PathOwner</value>
+    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerOwnsSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery/PathOwner.PropertyDisplayName" xml:space="preserve">
+    <value>Owned Subquery Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerOwnsSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery/Subquery.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery.Subquery</value>
+    <comment>Description for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerOwnsSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery/Subquery.DisplayName" xml:space="preserve">
+    <value>Subquery</value>
+    <comment>DisplayName for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerOwnsSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerOwnsSubquery/Subquery.PropertyDisplayName" xml:space="preserve">
+    <value>Path Owner</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerOwnsSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery</value>
+    <comment>Description for DomainClass &apos;RolePathOwnerUsesSharedSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery.DisplayName" xml:space="preserve">
+    <value>Role Path Owner Uses Shared Subquery</value>
+    <comment>DisplayName for DomainClass &apos;RolePathOwnerUsesSharedSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery/PathOwner.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery.PathOwner</value>
+    <comment>Description for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery/PathOwner.DisplayName" xml:space="preserve">
+    <value>PathOwner</value>
+    <comment>DisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery/PathOwner.PropertyDisplayName" xml:space="preserve">
+    <value>Shared Subquery Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathOwner&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery/Subquery.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery.Subquery</value>
+    <comment>Description for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery/Subquery.DisplayName" xml:space="preserve">
+    <value>Subquery</value>
+    <comment>DisplayName for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedSubquery&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwnerUsesSharedSubquery/Subquery.PropertyDisplayName" xml:space="preserve">
+    <value>Shared With Path Owner Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Subquery&apos; on DomainRelationship &apos;RolePathOwnerUsesSharedSubquery&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathObjectTypeRoot</value>
     <comment>Description for DomainClass &apos;RolePathObjectTypeRoot&apos;</comment>
@@ -8468,6 +8612,358 @@
     <value>Bound Input</value>
     <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;CalculatedPathValueInputBindsToPathConstant&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter</value>
+    <comment>Description for DomainClass &apos;QueryDefinesParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter.DisplayName" xml:space="preserve">
+    <value>Query Defines Parameter</value>
+    <comment>DisplayName for DomainClass &apos;QueryDefinesParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter/Query.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter.Query</value>
+    <comment>Description for DomainRole &apos;Query&apos; on DomainRelationship &apos;QueryDefinesParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter/Query.DisplayName" xml:space="preserve">
+    <value>Query</value>
+    <comment>DisplayName for DomainRole &apos;Query&apos; on DomainRelationship &apos;QueryDefinesParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter/Query.PropertyDisplayName" xml:space="preserve">
+    <value>Parameter Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Query&apos; on DomainRelationship &apos;QueryDefinesParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter/Parameter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter.Parameter</value>
+    <comment>Description for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;QueryDefinesParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter/Parameter.DisplayName" xml:space="preserve">
+    <value>Parameter</value>
+    <comment>DisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;QueryDefinesParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryDefinesParameter/Parameter.PropertyDisplayName" xml:space="preserve">
+    <value>Query</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;QueryDefinesParameter&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType</value>
+    <comment>Description for DomainClass &apos;QueryParameterHasParameterType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType.DisplayName" xml:space="preserve">
+    <value>Query Parameter Has Parameter Type</value>
+    <comment>DisplayName for DomainClass &apos;QueryParameterHasParameterType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType/Parameter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType.Parameter</value>
+    <comment>Description for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;QueryParameterHasParameterType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType/Parameter.DisplayName" xml:space="preserve">
+    <value>Parameter</value>
+    <comment>DisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;QueryParameterHasParameterType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType/Parameter.PropertyDisplayName" xml:space="preserve">
+    <value>Parameter Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;QueryParameterHasParameterType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType/ParameterType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType.ParameterType</value>
+    <comment>Description for DomainRole &apos;ParameterType&apos; on DomainRelationship &apos;QueryParameterHasParameterType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType/ParameterType.DisplayName" xml:space="preserve">
+    <value>ParameterType</value>
+    <comment>DisplayName for DomainRole &apos;ParameterType&apos; on DomainRelationship &apos;QueryParameterHasParameterType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterHasParameterType/ParameterType.PropertyDisplayName" xml:space="preserve">
+    <value>Typed Query Parameter Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParameterType&apos; on DomainRelationship &apos;QueryParameterHasParameterType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding</value>
+    <comment>Description for DomainClass &apos;QueryParameterBinding&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.DisplayName" xml:space="preserve">
+    <value>Query Parameter Binding</value>
+    <comment>DisplayName for DomainClass &apos;QueryParameterBinding&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding/QueryParameter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.QueryParameter</value>
+    <comment>Description for DomainRole &apos;QueryParameter&apos; on DomainRelationship &apos;QueryParameterBinding&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding/QueryParameter.DisplayName" xml:space="preserve">
+    <value>QueryParameter</value>
+    <comment>DisplayName for DomainRole &apos;QueryParameter&apos; on DomainRelationship &apos;QueryParameterBinding&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding/QueryParameter.PropertyDisplayName" xml:space="preserve">
+    <value>Path Binding Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;QueryParameter&apos; on DomainRelationship &apos;QueryParameterBinding&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding/RolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.RolePath</value>
+    <comment>Description for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;QueryParameterBinding&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding/RolePath.DisplayName" xml:space="preserve">
+    <value>RolePath</value>
+    <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;QueryParameterBinding&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding/RolePath.PropertyDisplayName" xml:space="preserve">
+    <value>Parameter Bindings</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;QueryParameterBinding&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToRolePathRoot.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToRolePathRoot</value>
+    <comment>Description for DomainClass &apos;QueryParameterBoundToRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToRolePathRoot.DisplayName" xml:space="preserve">
+    <value>Query Parameter Bound To Role Path Root</value>
+    <comment>DisplayName for DomainClass &apos;QueryParameterBoundToRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToRolePathRoot/ParameterBinding.Description" xml:space="preserve">
+    <value>The role path root from a derivation path for this query that corresponds to this parameter.</value>
+    <comment>Description for DomainRole &apos;ParameterBinding&apos; on DomainRelationship &apos;QueryParameterBoundToRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToRolePathRoot/ParameterBinding.DisplayName" xml:space="preserve">
+    <value>ParameterBinding</value>
+    <comment>DisplayName for DomainRole &apos;ParameterBinding&apos; on DomainRelationship &apos;QueryParameterBoundToRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToRolePathRoot/ParameterBinding.PropertyDisplayName" xml:space="preserve">
+    <value>Bound To Path Root</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParameterBinding&apos; on DomainRelationship &apos;QueryParameterBoundToRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToRolePathRoot/Source.Description" xml:space="preserve">
+    <value>The parameter binding associated with this role path root.</value>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;QueryParameterBoundToRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToRolePathRoot/Source.DisplayName" xml:space="preserve">
+    <value>Source</value>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;QueryParameterBoundToRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToRolePathRoot/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Bound Query Parameter Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;QueryParameterBoundToRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToPathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToPathedRole</value>
+    <comment>Description for DomainClass &apos;QueryParameterBoundToPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToPathedRole.DisplayName" xml:space="preserve">
+    <value>Query Parameter Bound To Pathed Role</value>
+    <comment>DisplayName for DomainClass &apos;QueryParameterBoundToPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToPathedRole/ParameterBinding.Description" xml:space="preserve">
+    <value>The pathed role from a derivation path for this query that corresponds to this parameter.</value>
+    <comment>Description for DomainRole &apos;ParameterBinding&apos; on DomainRelationship &apos;QueryParameterBoundToPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToPathedRole/ParameterBinding.DisplayName" xml:space="preserve">
+    <value>ParameterBinding</value>
+    <comment>DisplayName for DomainRole &apos;ParameterBinding&apos; on DomainRelationship &apos;QueryParameterBoundToPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToPathedRole/ParameterBinding.PropertyDisplayName" xml:space="preserve">
+    <value>Bound To Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParameterBinding&apos; on DomainRelationship &apos;QueryParameterBoundToPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToPathedRole/Source.Description" xml:space="preserve">
+    <value>The parameter binding associated with this pathed role.</value>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;QueryParameterBoundToPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToPathedRole/Source.DisplayName" xml:space="preserve">
+    <value>Source</value>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;QueryParameterBoundToPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBoundToPathedRole/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Bound Query Parameter Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;QueryParameterBoundToPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs</value>
+    <comment>Description for DomainClass &apos;SubqueryParameterInputs&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs.DisplayName" xml:space="preserve">
+    <value>Subquery Parameter Inputs</value>
+    <comment>DisplayName for DomainClass &apos;SubqueryParameterInputs&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs/RolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs.RolePath</value>
+    <comment>Description for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;SubqueryParameterInputs&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs/RolePath.DisplayName" xml:space="preserve">
+    <value>RolePath</value>
+    <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;SubqueryParameterInputs&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs/RolePath.PropertyDisplayName" xml:space="preserve">
+    <value>Subquery Parameter Inputs Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;SubqueryParameterInputs&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs/PathedEntryRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs.PathedEntryRole</value>
+    <comment>Description for DomainRole &apos;PathedEntryRole&apos; on DomainRelationship &apos;SubqueryParameterInputs&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs/PathedEntryRole.DisplayName" xml:space="preserve">
+    <value>PathedEntryRole</value>
+    <comment>DisplayName for DomainRole &apos;PathedEntryRole&apos; on DomainRelationship &apos;SubqueryParameterInputs&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputs/PathedEntryRole.PropertyDisplayName" xml:space="preserve">
+    <value>Parameter Inputs Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;PathedEntryRole&apos; on DomainRelationship &apos;SubqueryParameterInputs&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput</value>
+    <comment>Description for DomainClass &apos;SubqueryParameterInput&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.DisplayName" xml:space="preserve">
+    <value>Subquery Parameter Input</value>
+    <comment>DisplayName for DomainClass &apos;SubqueryParameterInput&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput/Inputs.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.Inputs</value>
+    <comment>Description for DomainRole &apos;Inputs&apos; on DomainRelationship &apos;SubqueryParameterInput&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput/Inputs.DisplayName" xml:space="preserve">
+    <value>Inputs</value>
+    <comment>DisplayName for DomainRole &apos;Inputs&apos; on DomainRelationship &apos;SubqueryParameterInput&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput/Inputs.PropertyDisplayName" xml:space="preserve">
+    <value>Input Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Inputs&apos; on DomainRelationship &apos;SubqueryParameterInput&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput/Parameter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.Parameter</value>
+    <comment>Description for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;SubqueryParameterInput&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput/Parameter.DisplayName" xml:space="preserve">
+    <value>Parameter</value>
+    <comment>DisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;SubqueryParameterInput&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput/Parameter.PropertyDisplayName" xml:space="preserve">
+    <value>Subquery Parameter Inputs Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parameter&apos; on DomainRelationship &apos;SubqueryParameterInput&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromRolePathRoot.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromRolePathRoot</value>
+    <comment>Description for DomainClass &apos;SubqueryParameterInputFromRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromRolePathRoot.DisplayName" xml:space="preserve">
+    <value>Subquery Parameter Input From Role Path Root</value>
+    <comment>DisplayName for DomainClass &apos;SubqueryParameterInputFromRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromRolePathRoot/ParameterInput.Description" xml:space="preserve">
+    <value>The role path root from the containing path passed to a parameter in a single use of a subquery.</value>
+    <comment>Description for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromRolePathRoot/ParameterInput.DisplayName" xml:space="preserve">
+    <value>ParameterInput</value>
+    <comment>DisplayName for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromRolePathRoot/ParameterInput.PropertyDisplayName" xml:space="preserve">
+    <value>Input From Path Root</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromRolePathRoot/Source.Description" xml:space="preserve">
+    <value>The parameter input associated with this role path root.</value>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromRolePathRoot/Source.DisplayName" xml:space="preserve">
+    <value>Source</value>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromRolePathRoot/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Subquery Parameter Input Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromRolePathRoot&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathedRole</value>
+    <comment>Description for DomainClass &apos;SubqueryParameterInputFromPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathedRole.DisplayName" xml:space="preserve">
+    <value>Subquery Parameter Input From Pathed Role</value>
+    <comment>DisplayName for DomainClass &apos;SubqueryParameterInputFromPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathedRole/ParameterInput.Description" xml:space="preserve">
+    <value>The pathed role from the containing path passed to a parameter in a single use of a subquery.</value>
+    <comment>Description for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathedRole/ParameterInput.DisplayName" xml:space="preserve">
+    <value>ParameterInput</value>
+    <comment>DisplayName for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathedRole/ParameterInput.PropertyDisplayName" xml:space="preserve">
+    <value>Input From Pathed Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathedRole/Source.Description" xml:space="preserve">
+    <value>The parameter input associated with this pathed role.</value>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathedRole/Source.DisplayName" xml:space="preserve">
+    <value>Source</value>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathedRole/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Subquery Parameter Input Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathedRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromCalculatedPathValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromCalculatedPathValue</value>
+    <comment>Description for DomainClass &apos;SubqueryParameterInputFromCalculatedPathValue&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromCalculatedPathValue.DisplayName" xml:space="preserve">
+    <value>Subquery Parameter Input From Calculated Path Value</value>
+    <comment>DisplayName for DomainClass &apos;SubqueryParameterInputFromCalculatedPathValue&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromCalculatedPathValue/ParameterInput.Description" xml:space="preserve">
+    <value>The calculated value from the containing path passed to a parameter in a single use of a subquery.</value>
+    <comment>Description for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromCalculatedPathValue&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromCalculatedPathValue/ParameterInput.DisplayName" xml:space="preserve">
+    <value>ParameterInput</value>
+    <comment>DisplayName for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromCalculatedPathValue&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromCalculatedPathValue/ParameterInput.PropertyDisplayName" xml:space="preserve">
+    <value>Input From Calculated Value</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromCalculatedPathValue&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromCalculatedPathValue/Source.Description" xml:space="preserve">
+    <value>The parameter input associated with this calculated value.</value>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromCalculatedPathValue&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromCalculatedPathValue/Source.DisplayName" xml:space="preserve">
+    <value>Source</value>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromCalculatedPathValue&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromCalculatedPathValue/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Subquery Parameter Input Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromCalculatedPathValue&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathConstant.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathConstant</value>
+    <comment>Description for DomainClass &apos;SubqueryParameterInputFromPathConstant&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathConstant.DisplayName" xml:space="preserve">
+    <value>Subquery Parameter Input From Path Constant</value>
+    <comment>DisplayName for DomainClass &apos;SubqueryParameterInputFromPathConstant&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathConstant/ParameterInput.Description" xml:space="preserve">
+    <value>The constant value passed to a parameter in a single use of a subquery.</value>
+    <comment>Description for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathConstant&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathConstant/ParameterInput.DisplayName" xml:space="preserve">
+    <value>ParameterInput</value>
+    <comment>DisplayName for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathConstant&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathConstant/ParameterInput.PropertyDisplayName" xml:space="preserve">
+    <value>Input From Constant</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ParameterInput&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathConstant&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathConstant/Source.Description" xml:space="preserve">
+    <value>The parameter binding that uses this path constant.</value>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathConstant&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathConstant/Source.DisplayName" xml:space="preserve">
+    <value>Source</value>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathConstant&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInputFromPathConstant/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Subquery Parameter Input</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;SubqueryParameterInputFromPathConstant&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasDerivationRule</value>
     <comment>Description for DomainClass &apos;FactTypeHasDerivationRule&apos;</comment>
@@ -8532,197 +9028,197 @@
     <value>Fact Type Derivation Rule</value>
     <comment>PropertyDisplayName for DomainRole &apos;DerivationNote&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasDerivationNote&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection</value>
-    <comment>Description for DomainClass &apos;FactTypeDerivationProjection&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection</value>
+    <comment>Description for DomainClass &apos;RoleSetDerivationProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.DisplayName" xml:space="preserve">
-    <value>Fact Type Derivation Projection</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeDerivationProjection&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection.DisplayName" xml:space="preserve">
+    <value>Role Set Derivation Projection</value>
+    <comment>DisplayName for DomainClass &apos;RoleSetDerivationProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/DerivationRule.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.DerivationRule</value>
-    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationProjection&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection/DerivationRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection.DerivationRule</value>
+    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;RoleSetDerivationProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/DerivationRule.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection/DerivationRule.DisplayName" xml:space="preserve">
     <value>DerivationRule</value>
-    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationProjection&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;RoleSetDerivationProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/DerivationRule.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection/DerivationRule.PropertyDisplayName" xml:space="preserve">
     <value>Projected Path Component Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationProjection&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;RoleSetDerivationProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/RolePath.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection.RolePath</value>
-    <comment>Description for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;FactTypeDerivationProjection&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection/RolePath.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection.RolePath</value>
+    <comment>Description for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RoleSetDerivationProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/RolePath.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection/RolePath.DisplayName" xml:space="preserve">
     <value>RolePath</value>
-    <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;FactTypeDerivationProjection&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RoleSetDerivationProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjection/RolePath.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Derivation Rule Projection Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;FactTypeDerivationProjection&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjection/RolePath.PropertyDisplayName" xml:space="preserve">
+    <value>Role Projected Derivation Rule Projection Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RolePath&apos; on DomainRelationship &apos;RoleSetDerivationProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection</value>
-    <comment>Description for DomainClass &apos;FactTypeRoleProjection&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection</value>
+    <comment>Description for DomainClass &apos;DerivedRoleProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.DisplayName" xml:space="preserve">
-    <value>Fact Type Role Projection</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeRoleProjection&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.DisplayName" xml:space="preserve">
+    <value>Derived Role Projection</value>
+    <comment>DisplayName for DomainClass &apos;DerivedRoleProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection/DerivationProjection.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.DerivationProjection</value>
-    <comment>Description for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;FactTypeRoleProjection&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/DerivationProjection.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.DerivationProjection</value>
+    <comment>Description for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;DerivedRoleProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection/DerivationProjection.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/DerivationProjection.DisplayName" xml:space="preserve">
     <value>DerivationProjection</value>
-    <comment>DisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;FactTypeRoleProjection&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;DerivedRoleProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection/DerivationProjection.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/DerivationProjection.PropertyDisplayName" xml:space="preserve">
     <value>Projected Role Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;FactTypeRoleProjection&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;DerivedRoleProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection/ProjectedRole.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection.ProjectedRole</value>
-    <comment>Description for DomainRole &apos;ProjectedRole&apos; on DomainRelationship &apos;FactTypeRoleProjection&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/ProjectedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedRole</value>
+    <comment>Description for DomainRole &apos;ProjectedRole&apos; on DomainRelationship &apos;DerivedRoleProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection/ProjectedRole.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/ProjectedRole.DisplayName" xml:space="preserve">
     <value>ProjectedRole</value>
-    <comment>DisplayName for DomainRole &apos;ProjectedRole&apos; on DomainRelationship &apos;FactTypeRoleProjection&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;ProjectedRole&apos; on DomainRelationship &apos;DerivedRoleProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjection/ProjectedRole.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/ProjectedRole.PropertyDisplayName" xml:space="preserve">
     <value>Derivation Projection Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ProjectedRole&apos; on DomainRelationship &apos;FactTypeRoleProjection&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;ProjectedRole&apos; on DomainRelationship &apos;DerivedRoleProjection&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot</value>
-    <comment>Description for DomainClass &apos;FactTypeRoleProjectedFromRolePathRoot&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromRolePathRoot.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromRolePathRoot</value>
+    <comment>Description for DomainClass &apos;DerivedRoleProjectedFromRolePathRoot&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot.DisplayName" xml:space="preserve">
-    <value>Fact Type Role Projected From Role Path Root</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeRoleProjectedFromRolePathRoot&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromRolePathRoot.DisplayName" xml:space="preserve">
+    <value>Derived Role Projected From Role Path Root</value>
+    <comment>DisplayName for DomainClass &apos;DerivedRoleProjectedFromRolePathRoot&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/RoleProjection.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromRolePathRoot/RoleProjection.Description" xml:space="preserve">
     <value>The role path root used to populate the derived fact type for this role in this projection.</value>
-    <comment>Description for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromRolePathRoot&apos;</comment>
+    <comment>Description for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromRolePathRoot&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/RoleProjection.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromRolePathRoot/RoleProjection.DisplayName" xml:space="preserve">
     <value>RoleProjection</value>
-    <comment>DisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromRolePathRoot&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromRolePathRoot&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/RoleProjection.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromRolePathRoot/RoleProjection.PropertyDisplayName" xml:space="preserve">
     <value>Projected From Path Root</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromRolePathRoot&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromRolePathRoot&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/Source.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromRolePathRoot/Source.Description" xml:space="preserve">
     <value>The derived role associated with this role path root.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromRolePathRoot&apos;</comment>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromRolePathRoot&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/Source.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromRolePathRoot/Source.DisplayName" xml:space="preserve">
     <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromRolePathRoot&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromRolePathRoot&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromRolePathRoot/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Role Projections</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromRolePathRoot&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromRolePathRoot/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Derived Role Projections</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromRolePathRoot&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathedRole.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathedRole</value>
-    <comment>Description for DomainClass &apos;FactTypeRoleProjectedFromPathedRole&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathedRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathedRole</value>
+    <comment>Description for DomainClass &apos;DerivedRoleProjectedFromPathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathedRole.DisplayName" xml:space="preserve">
-    <value>Fact Type Role Projected From Pathed Role</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeRoleProjectedFromPathedRole&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathedRole.DisplayName" xml:space="preserve">
+    <value>Derived Role Projected From Pathed Role</value>
+    <comment>DisplayName for DomainClass &apos;DerivedRoleProjectedFromPathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathedRole/RoleProjection.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathedRole/RoleProjection.Description" xml:space="preserve">
     <value>The pathed role used to populate the derived fact type for this role in this projection.</value>
-    <comment>Description for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathedRole&apos;</comment>
+    <comment>Description for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathedRole/RoleProjection.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathedRole/RoleProjection.DisplayName" xml:space="preserve">
     <value>RoleProjection</value>
-    <comment>DisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathedRole&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathedRole/RoleProjection.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathedRole/RoleProjection.PropertyDisplayName" xml:space="preserve">
     <value>Projected From Pathed Role</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathedRole&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathedRole/Source.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathedRole/Source.Description" xml:space="preserve">
     <value>The derived role associated with this pathed role.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathedRole&apos;</comment>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathedRole/Source.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathedRole/Source.DisplayName" xml:space="preserve">
     <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathedRole&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathedRole/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Role Projections</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathedRole&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathedRole/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Derived Role Projections</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathedRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromCalculatedPathValue.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromCalculatedPathValue</value>
-    <comment>Description for DomainClass &apos;FactTypeRoleProjectedFromCalculatedPathValue&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromCalculatedPathValue.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromCalculatedPathValue</value>
+    <comment>Description for DomainClass &apos;DerivedRoleProjectedFromCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromCalculatedPathValue.DisplayName" xml:space="preserve">
-    <value>Fact Type Role Projected From Calculated Path Value</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeRoleProjectedFromCalculatedPathValue&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromCalculatedPathValue.DisplayName" xml:space="preserve">
+    <value>Derived Role Projected From Calculated Path Value</value>
+    <comment>DisplayName for DomainClass &apos;DerivedRoleProjectedFromCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromCalculatedPathValue/RoleProjection.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromCalculatedPathValue/RoleProjection.Description" xml:space="preserve">
     <value>The calculated value used to populate the derived fact type for this role in this projection.</value>
-    <comment>Description for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromCalculatedPathValue&apos;</comment>
+    <comment>Description for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromCalculatedPathValue/RoleProjection.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromCalculatedPathValue/RoleProjection.DisplayName" xml:space="preserve">
     <value>RoleProjection</value>
-    <comment>DisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromCalculatedPathValue&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromCalculatedPathValue/RoleProjection.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromCalculatedPathValue/RoleProjection.PropertyDisplayName" xml:space="preserve">
     <value>Projected From Calculated Value</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromCalculatedPathValue&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromCalculatedPathValue/Source.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromCalculatedPathValue/Source.Description" xml:space="preserve">
     <value>The derived role associated with this calculated value.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromCalculatedPathValue&apos;</comment>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromCalculatedPathValue/Source.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromCalculatedPathValue/Source.DisplayName" xml:space="preserve">
     <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromCalculatedPathValue&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromCalculatedPathValue/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Role Projections</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromCalculatedPathValue&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromCalculatedPathValue/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Derived Role Projections</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromCalculatedPathValue&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathConstant.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathConstant</value>
-    <comment>Description for DomainClass &apos;FactTypeRoleProjectedFromPathConstant&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant</value>
+    <comment>Description for DomainClass &apos;DerivedRoleProjectedFromPathConstant&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathConstant.DisplayName" xml:space="preserve">
-    <value>Fact Type Role Projected From Path Constant</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeRoleProjectedFromPathConstant&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant.DisplayName" xml:space="preserve">
+    <value>Derived Role Projected From Path Constant</value>
+    <comment>DisplayName for DomainClass &apos;DerivedRoleProjectedFromPathConstant&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathConstant/RoleProjection.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant/RoleProjection.Description" xml:space="preserve">
     <value>The constant value used to populate this role in the derived fact type.</value>
-    <comment>Description for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathConstant&apos;</comment>
+    <comment>Description for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathConstant&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathConstant/RoleProjection.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant/RoleProjection.DisplayName" xml:space="preserve">
     <value>RoleProjection</value>
-    <comment>DisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathConstant&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathConstant&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathConstant/RoleProjection.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant/RoleProjection.PropertyDisplayName" xml:space="preserve">
     <value>Projected From Constant</value>
-    <comment>PropertyDisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathConstant&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;RoleProjection&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathConstant&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathConstant/Source.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant/Source.Description" xml:space="preserve">
     <value>The derived role that uses this path constant.</value>
-    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathConstant&apos;</comment>
+    <comment>Description for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathConstant&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathConstant/Source.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant/Source.DisplayName" xml:space="preserve">
     <value>Source</value>
-    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathConstant&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathConstant&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeRoleProjectedFromPathConstant/Source.PropertyDisplayName" xml:space="preserve">
-    <value>Fact Type Role Projection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;FactTypeRoleProjectedFromPathConstant&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectedFromPathConstant/Source.PropertyDisplayName" xml:space="preserve">
+    <value>Derived Role Projection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Source&apos; on DomainRelationship &apos;DerivedRoleProjectedFromPathConstant&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleDerivesFromPathedRole_Deprecated</value>
@@ -9204,69 +9700,69 @@
     <value>Calculated Path Value</value>
     <comment>PropertyDisplayName for DomainRole &apos;AggregationContextRequiredError&apos; on DomainRelationship &apos;CalculatedPathValueHasAggregationContextRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError</value>
-    <comment>Description for DomainClass &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError</value>
+    <comment>Description for DomainClass &apos;RoleProjectedDerivationRuleHasProjectionRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError.DisplayName" xml:space="preserve">
-    <value>Fact Type Derivation Rule Has Projection Required Error</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError.DisplayName" xml:space="preserve">
+    <value>Role Projected Derivation Rule Has Projection Required Error</value>
+    <comment>DisplayName for DomainClass &apos;RoleProjectedDerivationRuleHasProjectionRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/DerivationRule.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError.DerivationRule</value>
-    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError/DerivationRule.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError.DerivationRule</value>
+    <comment>Description for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;RoleProjectedDerivationRuleHasProjectionRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/DerivationRule.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError/DerivationRule.DisplayName" xml:space="preserve">
     <value>DerivationRule</value>
-    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;RoleProjectedDerivationRuleHasProjectionRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/DerivationRule.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError/DerivationRule.PropertyDisplayName" xml:space="preserve">
     <value>Projection Required Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationRule&apos; on DomainRelationship &apos;RoleProjectedDerivationRuleHasProjectionRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/ProjectionRequiredError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError.ProjectionRequiredError</value>
-    <comment>Description for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError/ProjectionRequiredError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError.ProjectionRequiredError</value>
+    <comment>Description for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;RoleProjectedDerivationRuleHasProjectionRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/ProjectionRequiredError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError/ProjectionRequiredError.DisplayName" xml:space="preserve">
     <value>ProjectionRequiredError</value>
-    <comment>DisplayName for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;RoleProjectedDerivationRuleHasProjectionRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRuleHasProjectionRequiredError/ProjectionRequiredError.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRuleHasProjectionRequiredError/ProjectionRequiredError.PropertyDisplayName" xml:space="preserve">
     <value>Derivation Rule</value>
-    <comment>PropertyDisplayName for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;FactTypeDerivationRuleHasProjectionRequiredError&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;ProjectionRequiredError&apos; on DomainRelationship &apos;RoleProjectedDerivationRuleHasProjectionRequiredError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError</value>
-    <comment>Description for DomainClass &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError</value>
+    <comment>Description for DomainClass &apos;RoleSetDerivationProjectionHasPartialProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError.DisplayName" xml:space="preserve">
-    <value>Fact Type Derivation Projection Has Partial Projection Error</value>
-    <comment>DisplayName for DomainClass &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError.DisplayName" xml:space="preserve">
+    <value>Role Set Derivation Projection Has Partial Projection Error</value>
+    <comment>DisplayName for DomainClass &apos;RoleSetDerivationProjectionHasPartialProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/DerivationProjection.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError.DerivationProjection</value>
-    <comment>Description for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError/DerivationProjection.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError.DerivationProjection</value>
+    <comment>Description for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;RoleSetDerivationProjectionHasPartialProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/DerivationProjection.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError/DerivationProjection.DisplayName" xml:space="preserve">
     <value>DerivationProjection</value>
-    <comment>DisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;RoleSetDerivationProjectionHasPartialProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/DerivationProjection.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError/DerivationProjection.PropertyDisplayName" xml:space="preserve">
     <value>Partial Projection Error</value>
-    <comment>PropertyDisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;DerivationProjection&apos; on DomainRelationship &apos;RoleSetDerivationProjectionHasPartialProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/PartialProjectionError.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError.PartialProjectionError</value>
-    <comment>Description for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError/PartialProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError.PartialProjectionError</value>
+    <comment>Description for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;RoleSetDerivationProjectionHasPartialProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/PartialProjectionError.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError/PartialProjectionError.DisplayName" xml:space="preserve">
     <value>PartialProjectionError</value>
-    <comment>DisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+    <comment>DisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;RoleSetDerivationProjectionHasPartialProjectionError&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationProjectionHasPartialProjectionError/PartialProjectionError.PropertyDisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleSetDerivationProjectionHasPartialProjectionError/PartialProjectionError.PropertyDisplayName" xml:space="preserve">
     <value>Derivation Projection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;FactTypeDerivationProjectionHasPartialProjectionError&apos;</comment>
+    <comment>PropertyDisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;RoleSetDerivationProjectionHasPartialProjectionError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError</value>
