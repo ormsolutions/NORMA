@@ -8968,13 +8968,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (joinToVariable != null)
 				{
-					if (joinedToCustomCorrelatedVariable && !existingVariable.IsCustomCorrelated)
-					{
-						CustomCorrelateVariables(joinToVariable, existingVariable);
-					}
 					if (joinedToExternalVariable && !existingVariable.IsExternalVariable)
 					{
 						existingVariable.IsExternalVariable = true;
+						CustomCorrelateVariables(joinToVariable, existingVariable);
+					}
+					else if (joinedToCustomCorrelatedVariable && !existingVariable.IsCustomCorrelated)
+					{
+						CustomCorrelateVariables(joinToVariable, existingVariable);
 					}
 				}
 				existingVariable.Use(myLatestUsePhase, false);
