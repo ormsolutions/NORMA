@@ -2,7 +2,11 @@
 SETLOCAL
 SET RootDir=%~dp0.
 IF NOT "%~2"=="" (SET TargetVisualStudioVersion=%~2)
-CALL "%RootDir%\SetupEnvironment.bat" %*
+CALL "%RootDir%\SetupEnvironment.bat"
+IF NOT EXIST "%RootDir%\Version.bat" (
+	CALL:_GenerateVersion
+)
+CALL "%RootDir%\Version.bat" %*
 
 IF "%VSIXInstallDir%"=="" (
 	IF EXIST "%OldNORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%NORMADir%\bin\Neumont.Tools.ORM.dll")
@@ -150,6 +154,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 		XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\%TargetVisualStudioShortProductName%\ORMDesigner.pkgdef" "%VSIXInstallDir%\"
 		XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerIcon.png" "%VSIXInstallDir%\"
 		XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerPreview.png" "%VSIXInstallDir%\"
+		REG ADD "%VSRegistryConfigHive%\%VSRegistryConfigRootBase%\%VSRegistryRootVersion%%VSRegistryRootSuffix%\ExtensionManager\EnabledExtensions" /v "efddc549-1646-4451-8a51-e5a5e94d647c,%ProductMajorVersion%.%ProductMinorVersion%" /d "%VSIXInstallDir%\\" /f 1>NUL
 	)
 
 	REG ADD "%DesignerRegistryRoot%\DesignerSettings\Core" /v "SettingsFile" /d "%NORMADir%\Xml\ORMDesignerSettings.xml" /f 1>NUL
@@ -163,7 +168,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 	REG ADD "HKCR\ormfile" /ve /d "Object-Role Modeling File" /f 1>NUL
 	REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\%TargetBaseName%.dll,0" /f 1>NUL
 	REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
-	REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSEnvironmentPath%\" /RootSuffix \"%VSRegistryRootSuffix%\" /dde" /f 1>NUL
+	CALL:_SetShellCommand
 	REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%%1\")" /f 1>NUL
 	REG ADD "HKCR\ormfile\shell\open\ddeexec\application" /ve /d "VisualStudio.%TargetVisualStudioMajorMinorVersion%" /f 1>NUL
 	REG ADD "HKCR\ormfile\shell\open\ddeexec\topic" /ve /d "system" /f 1>NUL
@@ -174,6 +179,10 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 
 GOTO:EOF
 
+:_SetShellCommand
+::Hack to handle parentheses in environment path
+REG ADD "HKCR\ormfile\shell\open\command" /ve /d "\"%VSEnvironmentPath%\" /RootSuffix \"%VSRegistryRootSuffix%\" /dde" /f 1>NUL
+GOTO:EOF
 
 :_MakeDir
 IF NOT EXIST "%~1" (MKDIR "%~1")
@@ -194,4 +203,8 @@ GOTO:EOF
 
 :_CleanupFile
 IF EXIST "%~1" (DEL /F /Q "%~1")
+GOTO:EOF
+
+:_GenerateVersion
+"%RootDir%\VersionGenerator.exe"
 GOTO:EOF

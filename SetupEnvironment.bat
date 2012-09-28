@@ -41,7 +41,14 @@ IF NOT DEFINED DILTransformsDir SET DILTransformsDir=%DILDir%\Transforms
 IF NOT DEFINED VSRegistryRootBase (SET VSRegistryRootBase=SOFTWARE%WOWRegistryAdjust%\Microsoft\VisualStudio)
 IF NOT DEFINED VSRegistryRootVersion (SET VSRegistryRootVersion=%TargetVisualStudioMajorMinorVersion%)
 IF NOT DEFINED VSRegistryRoot (SET VSRegistryRoot=%VSRegistryRootBase%\%VSRegistryRootVersion%%VSRegistryRootSuffix%)
-IF NOT DEFINED VSRegistryConfigRoot (SET VSRegistryConfigRoot=%VSRegistryRootBase%\%VSRegistryRootVersion%%VSRegistryRootSuffix%%VSRegistryConfigDecorator%)
+IF NOT DEFINED VSRegistryConfigRootBase (
+	IF "%VSRegistryConfigHive%"=="HKCU" (
+		SET VSRegistryConfigRootBase=SOFTWARE\Microsoft\VisualStudio
+	) ELSE (
+		SET VSRegistryConfigRootBase=%VSRegistryRootBase%
+	)
+)
+IF NOT DEFINED VSRegistryConfigRoot (SET VSRegistryConfigRoot=%VSRegistryConfigRootBase%\%VSRegistryRootVersion%%VSRegistryRootSuffix%%VSRegistryConfigDecorator%)
 
 CALL "%TrunkDir%\SetFromRegistry.bat" "VSEnvironmentPath" "%VSRegistryConfigHive%\%VSRegistryConfigRoot%\Setup\VS" "EnvironmentPath" "f"
 CALL "%TrunkDir%\SetFromRegistry.bat" "VSEnvironmentDir" "%VSRegistryConfigHive%\%VSRegistryConfigRoot%\Setup\VS" "EnvironmentDirectory" "f"
@@ -50,9 +57,9 @@ CALL "%TrunkDir%\SetFromRegistry.bat" "VSItemTemplatesDir" "%VSRegistryConfigHiv
 IF NOT DEFINED LocalAppData SET LocalAppData=%UserProfile%\Local Settings\Application Data
 IF NOT "%VSIXExtensionDir%"=="" (
 	IF "%VSRegistryRootSuffix%"=="" (
-		SET VSIXInstallDir=%VSEnvironmentDir%\%VSIXExtensionDir%
+		CALL:SETVAR "VSIXInstallDir" "%VSEnvironmentDir%\%VSIXExtensionDir%"
 	) ELSE (
-		SET VSIXInstallDir=%LocalAppData%\Microsoft\VisualStudio\%VSRegistryRootVersion%%VSRegistryRootSuffix%\%VSIXExtensionDir%
+		CALL:SETVAR "VSIXInstallDir" "%LocalAppData%\Microsoft\VisualStudio\%VSRegistryRootVersion%%VSRegistryRootSuffix%\%VSIXExtensionDir%"
 	)
 ) ELSE (
 	SET VSIXInstallDir=
@@ -126,7 +133,15 @@ GOTO:EOF
 ::Do this somewhere the resolved parens will not cause problems.
 SET ResolvedProgramFiles=%ProgramFiles(x86)%
 SET ResolvedCommonProgramFiles=%CommonProgramFiles(x86)%
-SET WOWRegistryAdjust=\Wow6432Node
+::If this batch file is already running under a 32 bit process, then the
+::reg utility will choose the appropriate registry keys without our help.
+::This also means that this file should not be called to pre-set environment
+::variables before invoking 32-bit processes that use these variables.
+IF DEFINED PROCESSOR_ARCHITEW6432 (
+	SET WOWRegistryAdjust=
+) ELSE (
+	SET WOWRegistryAdjust=\Wow6432Node
+)
 GOTO:EOF
 
 :SETVAR

@@ -7,9 +7,9 @@ CALL "%RootDir%\..\..\SetupEnvironment.bat" %*
 :: for there to be parentheses in the %VSIPDir% path (and there are by default on x64), which
 :: causes a syntax error. Therefore, we leave the parentheses off here.
 IF /I "%TargetVisualStudioVersion%"=="v8.0" (
-	IF EXIST "%VSIPDir%\Prerelease\VSCT" SET VsSDKVsctDir=%VSIPDir%\Prerelease\VSCT
+	IF EXIST "%VSIPDir%\Prerelease\VSCT" CALL:SETVAR "VsSDKVsctDir" "%VSIPDir%\Prerelease\VSCT"
 )
-IF NOT DEFINED VsSDKVsctDir SET VsSDKVsctDir=%VSIPDir%\VisualStudioIntegration\Tools\Bin
+IF NOT DEFINED VsSDKVsctDir CALL:SETVAR "VsSDKVsctDir" "%VSIPDir%\VisualStudioIntegration\Tools\Bin"
 
 :: GAC the VSCT compiler so that we can use it.
 gacutil.exe /nologo /f /i "%VsSDKVsctDir%\VSCTCompress.dll"
@@ -37,4 +37,8 @@ FOR /F "usebackq skip=3 tokens=*" %%A IN (`REG QUERY "HKLM\%VSRegistryRootBase%"
 FOR /F "usebackq skip=3 tokens=*" %%A IN (`REG QUERY "HKLM\%VSRegistryRootBase%"`) DO (REG QUERY "%%~A\MSBuild\SafeImports" 1>NUL 2>&1 && IF NOT ERRORLEVEL 1 (REG ADD "%%~A\MSBuild\SafeImports" /v "NUBuildVSMultitargeting1" /d "%MSBuildExtensionsPath%\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" /f))
 IF ERRORLEVEL 1 %COMSPEC% /c
 
+GOTO:EOF
+
+:SETVAR
+SET %~1=%~2
 GOTO:EOF

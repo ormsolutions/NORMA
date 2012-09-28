@@ -83,5 +83,9 @@ GOTO:EOF
 :SET6432
 ::Do this somewhere the resolved parens will not cause problems.
 SET ResolvedProgramFiles=%ProgramFiles(X86)%
-SET WOWRegistryAdjust=\Wow6432Node
+IF DEFINED PROCESSOR_ARCHITEW6432 (
+	SET WOWRegistryAdjust=
+) ELSE (
+	SET WOWRegistryAdjust=\Wow6432Node
+)
 GOTO:EOF

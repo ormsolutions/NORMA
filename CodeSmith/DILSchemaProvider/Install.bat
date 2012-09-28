@@ -6,7 +6,11 @@ SET RootDir=%~dp0.
 IF "%ProgramFiles(X86)%"=="" (
 	SET WOWRegistryAdjust=
 ) ELSE (
-	SET WOWRegistryAdjust=\Wow6432Node
+	IF DEFINED PROCESSOR_ARCHITEW6432 (
+		SET WOWRegistryAdjust=
+	) ELSE (
+		SET WOWRegistryAdjust=\Wow6432Node
+	)
 )
 
 FOR /F "usebackq skip=2 tokens=2*" %%A IN (`REG QUERY "HKLM\SOFTWARE%WOWRegistryAdjust%\CodeSmith\v3.2" /v "ApplicationDirectory"`) DO SET CodeSmithDir=%%~fB
