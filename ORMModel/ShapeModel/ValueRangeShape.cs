@@ -180,12 +180,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public override void PlaceAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
 			AutoResize();
-			SizeD size = Size;
-			RectangleD parentBounds = ParentShape.AbsoluteBoundingBox;
-			// Place slightly to the right. This will cause the label to
-			// track in this position due to a horizontal resize of the
-			// shape because of rename, etc
-			Location = new PointD(parentBounds.Width + .06, -1 * size.Height);
+			if (createdDuringViewFixup)
+			{
+				SizeD size = Size;
+				RectangleD parentBounds = ParentShape.AbsoluteBoundingBox;
+				// Place slightly to the right. This will cause the label to
+				// track in this position due to a horizontal resize of the
+				// shape because of rename, etc
+				Location = new PointD(parentBounds.Width + .06, -1 * size.Height);
+			}
 		}
 		/// <summary>
 		/// Overrides default implemenation to instantiate an value constraint specific one.

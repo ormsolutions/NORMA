@@ -331,24 +331,27 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
 		public override void PlaceAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
-			FactTypeShape factTypeShape = (FactTypeShape)parent;
-			FactType factType;
-			Objectification objectification;
 			AutoResize();
-			SizeD size = Size;
-			double yOffset;
-			if (factTypeShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Bottom &&
-				(null == (factType = factTypeShape.AssociatedFactType) ||
-				null == (objectification = factType.Objectification) ||
-				objectification.IsImplied))
+			if (createdDuringViewFixup)
 			{
-				yOffset = -1.5 * size.Height;
+				FactTypeShape factTypeShape = (FactTypeShape)parent;
+				FactType factType;
+				Objectification objectification;
+				SizeD size = Size;
+				double yOffset;
+				if (factTypeShape.ConstraintDisplayPosition == ConstraintDisplayPosition.Bottom &&
+					(null == (factType = factTypeShape.AssociatedFactType) ||
+					null == (objectification = factType.Objectification) ||
+					objectification.IsImplied))
+				{
+					yOffset = -1.5 * size.Height;
+				}
+				else
+				{
+					yOffset = factTypeShape.Size.Height + .5 * size.Height;
+				}
+				Location = new PointD(0, yOffset);
 			}
-			else
-			{
-				yOffset = factTypeShape.Size.Height + .5 * size.Height;
-			}
-			Location = new PointD(0, yOffset);
 		}
 		/// <summary>
 		/// Overrides default implemenation to instantiate an Reading specific one.

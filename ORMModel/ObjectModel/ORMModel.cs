@@ -70,11 +70,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// explicit, intrinsic, and implicit elements are in place.
 		/// </summary>
 		ValidateErrors = StandardFixupPhase.LastModelElementPhase + 200,
-		/// <summary>
+        /// <summary>
+        /// Create implicitly stored presentation elements
+        /// </summary>
+        AutoCreateStoredPresentationElements = StandardFixupPhase.AutoCreateStoredPresentationElements,
+        /// <summary>
 		/// Fixup stored presentation elements
 		/// </summary>
 		ValidateStoredPresentationElements = StandardFixupPhase.ValidateStoredPresentationElements,
-		/// <summary>
+        /// <summary>
 		/// Add any presentation elements that are implicit and not
 		/// serialized with the model.
 		/// </summary>

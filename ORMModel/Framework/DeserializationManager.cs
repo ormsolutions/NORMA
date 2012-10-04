@@ -326,21 +326,26 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <summary>
 		/// The first standard fixup phase for loading presentation elements.
 		/// </summary>
-		FirstPresentationElementPhase = ValidateStoredPresentationElements,
+        FirstPresentationElementPhase = AutoCreateStoredPresentationElements,
+        /// <summary>
+        /// Initialized automatically created stored presentation elements that
+        /// will be serialized with the model.
+        /// </summary>
+        AutoCreateStoredPresentationElements = 5100,
 		/// <summary>
 		/// Fixup stored presentation elements
 		/// </summary>
-		ValidateStoredPresentationElements = 5100,
+		ValidateStoredPresentationElements = 5200,
 		/// <summary>
 		/// Validate presentation elements that are implicitly recreated
 		/// if they are not serialized.
 		/// </summary>
-		ValidateImplicitStoredPresentationElements = 5200,
+		ValidateImplicitStoredPresentationElements = 5300,
 		/// <summary>
 		/// Add any presentation elements that are implicit and not
 		/// serialized with the model.
 		/// </summary>
-		AddImplicitPresentationElements = 5300,
+		AddImplicitPresentationElements = 5400,
 		/// <summary>
 		/// The last standard fixup phase for loading presentation elements.
 		/// </summary>

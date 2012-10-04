@@ -38,7 +38,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				yield return new DisplayValueTypeValueConstraintFixupListener();
 				yield return new DisplayRoleNameFixupListener();
 				yield return new DisplayModelNoteLinksFixupListener();
-				yield return FactTypeShape.FixupListener;
+                yield return new DisplayAutoPopulatedShapesFixupListener();
+                yield return FactTypeShape.FixupListener;
 				yield return ReadingShape.FixupListener;
 				yield return ObjectTypeShape.FixupListener;
 				yield return ObjectifiedFactTypeNameShape.FixupListener;

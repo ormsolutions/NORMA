@@ -96,19 +96,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="createdDuringViewFixup">Whether this shape was created as part of a view fixup</param>
 		public override void PlaceAsChildOf(NodeShape parent, bool createdDuringViewFixup)
 		{
-			FactTypeShape factShape = (FactTypeShape)parent;
-			double x = -0.2;
-			double y = -0.2;
-			FactType factType = factShape.AssociatedFactType;
-			// Cascades RoleNameShapes for facts that contain more than one role
-			LinkedElementCollection<RoleBase> roles = factShape.DisplayedRoleOrder;
-			int roleIndex = roles.IndexOf((RoleBase)ModelElement);
-			if (roleIndex != -1)
+			if (createdDuringViewFixup)
 			{
-				x += roleIndex * 0.15;
-				y -= roleIndex * 0.15;
+				FactTypeShape factShape = (FactTypeShape)parent;
+				double x = -0.2;
+				double y = -0.2;
+				FactType factType = factShape.AssociatedFactType;
+				// Cascades RoleNameShapes for facts that contain more than one role
+				LinkedElementCollection<RoleBase> roles = factShape.DisplayedRoleOrder;
+				int roleIndex = roles.IndexOf((RoleBase)ModelElement);
+				if (roleIndex != -1)
+				{
+					x += roleIndex * 0.15;
+					y -= roleIndex * 0.15;
+				}
+				Location = new PointD(x, y);
 			}
-			Location = new PointD(x, y);
 		}
 		/// <summary>
 		/// Highlight both the name shape and the corresponding role box.

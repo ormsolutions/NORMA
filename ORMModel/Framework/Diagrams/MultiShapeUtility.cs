@@ -149,7 +149,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				}
 			}
 
-			if (allowMultipleShapesForChildren)
+			if (allowMultipleShapesForChildren &&
+				(existingChildShape == null || existingChildShape is LinkShape || existingChildShape.ParentShape != existingParentShape))
 			{
 				if (unparentedChildShape == null)
 				{
@@ -188,10 +189,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 					existingChildShape.OnBoundsFixup(BoundsFixupState.ViewFixup, 0, false);
 
 					//fix up grand child shapes
-					ICollection GrandChildShapes = existingChildShape.GetChildElements(childElement);
-					foreach (ModelElement GrandChildShape in GrandChildShapes)
+					ICollection grandChildShapes = existingChildShape.GetChildElements(childElement);
+					foreach (ModelElement grandChildShape in grandChildShapes)
 					{
-						existingChildShape.FixUpChildShapes(GrandChildShape);
+						existingChildShape.FixUpChildShapes(grandChildShape);
 					}
 
 					return existingChildShape;
