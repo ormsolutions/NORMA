@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+  <Identifier Id="efddc549-1646-4451-8a51-e5a5e94d647c">
+    <Name>Natural ORM Architect</Name>
+    <Author>ORM Solutions, LLC</Author>
+    <Version>1.0</Version>
+    <Description xml:space="preserve">Object-Role Modeling Designer</Description>
+    <Locale>1033</Locale>
+    <MoreInfoUrl>http://www.ORMSolutions.com</MoreInfoUrl>
+    <GettingStartedGuide />
+    <Icon>ORMDesignerIcon.png</Icon>
+    <PreviewImage>ORMDesignerPreview.png</PreviewImage>
+    <InstalledByMsi>true</InstalledByMsi>
+    <SupportedProducts>
+      <VisualStudio Version="11.0">
+        <Edition>Ultimate</Edition>
+        <Edition>Premium</Edition>
+        <Edition>Pro</Edition>
+      </VisualStudio>
+    </SupportedProducts>
+    <SupportedFrameworkRuntimeEdition MinVersion="4.5" MaxVersion="4.5" />
+    <SystemComponent>false</SystemComponent>
+  </Identifier>
+  <References />
+  <Content>
+    <VsPackage>ORMDesigner.pkgdef</VsPackage>
+    <ItemTemplate>ItemTemplates</ItemTemplate>
+  </Content>
+</Vsix>

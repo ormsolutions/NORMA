@@ -18,7 +18,7 @@
 // Turn this on to always refresh the toolbox for development builds. This incurs significant
 // startup costs during debugging sessions, but should be turned on temporarily if toolbox items
 // are currently under development
-#define ALWAYS_REFRESH_EXP_TOOLBOX
+//#define ALWAYS_REFRESH_EXP_TOOLBOX
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -114,7 +114,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	{
 		#region Constants
 		private const string REGISTRYROOT_PACKAGE_USER = @"ORM Solutions\Natural ORM Architect";
-#if VISUALSTUDIO_10_0
+#if VISUALSTUDIO_11_0
+		// Key relative to the root local-machine key
+		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2012\Designer";
+#elif VISUALSTUDIO_10_0
 		// Key relative to the root local-machine key
 		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2010\Designer";
 #else
@@ -241,7 +244,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
-		/// Get the user registry root as a writable registry key.
+		/// Get the user registry root as a writable registry key. Returns
+		/// <see langword="null"/> if the key has not been created. Use
+		/// <see cref="GetPackageUserRegistryRoot"/> to force key creation.
 		/// </summary>
 		public RegistryKey PackageUserRegistryRoot
 		{
@@ -256,6 +261,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return null;
 			}
+		}
+		/// <summary>
+		/// Get the user registry root as a writable registry key.
+		/// </summary>
+		/// <param name="forceCreate">Create the registry key if it does not exist.</param>
+		/// <returns>A registry key. The caller must close this key.</returns>
+		public RegistryKey GetPackageUserRegistryRoot(bool forceCreate)
+		{
+			using (RegistryKey rootKey = UserRegistryRoot)
+			{
+				if (rootKey != null)
+				{
+					return forceCreate ? rootKey.CreateSubKey(REGISTRYROOT_PACKAGE_USER, RegistryKeyPermissionCheck.ReadWriteSubTree) : rootKey.OpenSubKey(REGISTRYROOT_PACKAGE_USER, true);
+				}
+			}
+			return null;
 		}
 		/// <summary>
 		/// For use by unit tests. Also used by ModelElementLocator.
@@ -363,7 +384,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							toolboxRevisionsKey = packageRegistryRoot.OpenSubKey(REGISTRYKEY_TOOLBOXREVISIONS, RegistryKeyPermissionCheck.ReadWriteSubTree);
 							hadRevisionsKey = toolboxRevisionsKey != null;
 						}
-						if (!hadRegistryRoot)
+						else
 						{
 							packageRegistryRoot = userRegistryRoot.CreateSubKey(REGISTRYROOT_PACKAGE_USER, RegistryKeyPermissionCheck.ReadWriteSubTree);
 						}
@@ -468,7 +489,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				base.SetupDynamicToolbox();
 			}
 #endif // ALWAYS_REFRESH_EXP_TOOLBOX
-				}
+		}
 		/// <summary>
 		/// This is called by the package base class when our package gets unloaded.
 		/// </summary>
@@ -792,12 +813,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				myResolvedType = providerType;
 				object[] customAttributes = providerType.Assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
-				int? assemblyRevision = null;
-				for (int i = 0; i < customAttributes.Length; i++)
-				{
-					assemblyRevision = new Version(((AssemblyFileVersionAttribute)customAttributes[i]).Version).Revision;
-				}
-				myExpectedRevisionNumber = assemblyRevision.GetValueOrDefault(0);
+				myExpectedRevisionNumber = customAttributes.Length != 0 ? new Version(((AssemblyFileVersionAttribute)customAttributes[0]).Version).Revision : 0;
 			}
 			/// <summary>
 			/// Create toolbox provider revision information for an extension type

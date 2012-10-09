@@ -52,6 +52,11 @@
 				<RegistrySearch Id="VSTemplateItemDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="EnvironmentDirectory" Type="directory" Win64="$(var.Win64)"/>
 			</Property>
 		<?else?>
+			<?ifdef NewORMFileViaNewFileItems?>
+				<Property Id="VSENVIRONMENTDIR">
+					<RegistrySearch Id="VSEnvironmentDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Setup\VS" Name="EnvironmentDirectory" Type="directory" Win64="$(var.Win64)"/>
+				</Property>
+			<?endif?>
 			<Property Id="VSTEMPLATEITEMDIR">
 				<RegistrySearch Id="VSTemplateItemDirRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\VSTemplate\Item" Name="UserFolder" Type="directory" Win64="$(var.Win64)"/>
 			</Property>
@@ -82,7 +87,11 @@
 		
 		<!-- Get the package GUIDs for the various VS packages. -->
 		<Property Id="VCSHARPPACKAGEGUID">
-			<RegistrySearch Id="VCSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C#" Name="Package" Type="raw" Win64="$(var.Win64)"/>
+			<?ifdef CSharpPackageKeyThroughLanguageService?>
+				<RegistrySearch Id="VCSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\Languages\Language Services\CSharp" Name="Package" Type="raw" Win64="$(var.Win64)"/>
+			<?else?>
+				<RegistrySearch Id="VCSharpPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual C#" Name="Package" Type="raw" Win64="$(var.Win64)"/>
+			<?endif?>
 		</Property>
 		<Property Id="VBASICPACKAGEGUID">
 			<RegistrySearch Id="VBasicPackageGUIDRegistrySearch" Root="HKLM" Key="$(var.VSRegRoot)\InstalledProducts\Microsoft Visual Basic" Name="Package" Type="raw" Win64="$(var.Win64)"/>
@@ -130,7 +139,7 @@
 		<InstallExecuteSequence>
 			<RemoveExistingProducts Before="ArpInstallLocationCustomAction"/>
 			<Custom Before="InstallInitialize" Action="ArpInstallLocationCustomAction"/>
-			<?ifndef VSIXInstall?>
+			<?ifdef DoDevenvSetup?>
 			<Custom Before="InstallFinalize" Action="DevEnvSetupCustomAction"/>
 			<?endif?>
 			<!-- We need to move InstallFinalize back from its normal point in the sequence, since the MSHelp2 merge modules expect it to occur later. -->

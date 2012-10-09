@@ -91,7 +91,8 @@
 								<?ifndef VSIXInstall?>
 								<?include NORMAVSPackageRegistry.wxi?>
 								<?endif?>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay">
+								<RegistryKey ForceCreateOnInstall="yes" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)"/>
+								<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay">
 									<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel"/>
 								</RegistryKey>
 								<ProgId Id="ormfile" Description="!(loc.ORMFileDescription)" Icon="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll" IconIndex="0">
@@ -100,18 +101,18 @@
 										<Verb Id="Open" Command="!(loc.ORMFileOpenCommand)" TargetProperty="[VSENVIRONMENTPATH]" Argument="$(var.RootSuffixCmd)/dde"/>
 									</Extension>
 								</ProgId>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="ormfile\shell\open\ddeexec">
+								<RegistryKey Root="HKCR" Key="ormfile\shell\open\ddeexec">
 									<RegistryValue Type="string" Value="Open(&quot;%1&quot;)"/>
 									<RegistryValue Key="application" Type="string" Value="VisualStudio.8.0"/>
 									<RegistryValue Key="topic" Type="string" Value="system"/>
 								</RegistryKey>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS">
+								<RegistryKey Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS">
 									<RegistryValue Type="string" Value="[BINDIR]"/>
 								</RegistryKey>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions">
+								<RegistryKey Root="HKLM" Key="SOFTWARE\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions">
 									<RegistryValue Type="string" Value="[EXTENSIONSDIR]"/>
 								</RegistryKey>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)">
 									<RegistryValue Type="string" Name="InstallDir" Value="[$(var.DefaultShortProductDir)]"/>
 									<RegistryValue Type="string" Name="ProductVersion" Value="$(var.ProductVersion)"/>
 								</RegistryKey>
@@ -129,9 +130,9 @@
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll"/>
 								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml" ShortName="ORMCstTl.xml" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml" Source="..\Tools\ORMCustomTool\bin\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml"
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolGuid)}">
+								<RegistryKey Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolGuid)}">
 									<RegistryValue Type="string" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"/>
-									<RegistryKey Action="create" Key="InprocServer32">
+									<RegistryKey Key="InprocServer32">
 										<RegistryValue Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
 										<RegistryValue Type="string" Name="ThreadingModel" Value="Both"/>
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"/>
@@ -139,15 +140,15 @@
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll]"/>
 									</RegistryKey>
 								</RegistryKey>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolExtenderGuid)}">
+								<RegistryKey Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolExtenderGuid)}">
 									<RegistryValue Type="string" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"/>
-									<RegistryKey Action="create" Key="InprocServer32">
+									<RegistryKey Key="InprocServer32">
 										<RegistryValue Type="string" Value="[$(var.SystemFolder)]mscoree.dll"/>
 										<RegistryValue Type="string" Name="ThreadingModel" Value="Both"/>
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"/>
 										<RegistryValue Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll]"/>
-										<RegistryKey Action="create" Key="$(var.MajorMinorVersion).0.0">
+										<RegistryKey Key="$(var.MajorMinorVersion).0.0">
 											<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"/>
 											<RegistryValue Type="string" Name="Assembly" Value="$(var.ORMCustomToolAssemblyName)"/>
 											<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll]"/>
@@ -162,28 +163,38 @@
 							<Component Id="ORMCustomToolVBasicComponent" Guid="0B8DF8D8-7418-47F3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
 								<Condition>VBASICPACKAGEGUID OR Installed</Condition>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VBASICPACKAGEGUID]\ORMCustomTool">
+								<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VBASICPACKAGEGUID]\ORMCustomTool">
 									<RegistryValue Type="string" Value="!(loc.ORMCustomToolDescription)"/>
 									<RegistryValue Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
 								</RegistryKey>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VBASICPACKAGEGUID]\.orm">
+									<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VBASICPACKAGEGUID]\.orm">
 									<RegistryValue Type="string" Value="ORMCustomTool"/>
 								</RegistryKey>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{EA5BD05D-3C72-40A5-95A0-28A2773311CA}\ORMCustomTool">
+									<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{EA5BD05D-3C72-40A5-95A0-28A2773311CA}\ORMCustomTool">
 									<RegistryValue Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
 								</RegistryKey>
 							</Component>
 							<Component Id="ORMCustomToolVCSharpComponent" Guid="E42EF6E9-2EBD-4AA7-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
 								<Condition>VCSHARPPACKAGEGUID OR Installed</Condition>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VCSHARPPACKAGEGUID]\ORMCustomTool">
+								<?ifdef FixedCSharpPackageGuid?>
+								<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Generators\$(var.FixedCSharpPackageGuid)\ORMCustomTool">
 									<RegistryValue Type="string" Value="!(loc.ORMCustomToolDescription)"/>
 									<RegistryValue Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
 								</RegistryKey>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VCSHARPPACKAGEGUID]\.orm">
+								<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Generators\$(var.FixedCSharpPackageGuid)\.orm">
 									<RegistryValue Type="string" Value="ORMCustomTool"/>
 								</RegistryKey>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}\ORMCustomTool">
+								<?else?>
+								<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VCSHARPPACKAGEGUID]\ORMCustomTool">
+									<RegistryValue Type="string" Value="!(loc.ORMCustomToolDescription)"/>
+									<RegistryValue Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
+								</RegistryKey>
+								<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VCSHARPPACKAGEGUID]\.orm">
+									<RegistryValue Type="string" Value="ORMCustomTool"/>
+								</RegistryKey>
+								<?endif?>
+								<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}\ORMCustomTool">
 									<RegistryValue Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
 								</RegistryKey>
 							</Component>
@@ -191,14 +202,14 @@
 							<Component Id="ORMCustomToolVJSharpComponent" Guid="5E506A17-A87F-4B81-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
 								<Condition>VJSHARPPACKAGEGUID OR Installed</Condition>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\ORMCustomTool">
+								<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\ORMCustomTool">
 									<RegistryValue Type="string" Value="!(loc.ORMCustomToolDescription)"/>
 									<RegistryValue Type="string" Name="CLSID" Value="{$(var.ORMCustomToolGuid)}"/>
 								</RegistryKey>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\.orm">
+								<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Generators\[VJSHARPPACKAGEGUID]\.orm">
 									<RegistryValue Type="string" Value="ORMCustomTool"/>
 								</RegistryKey>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{E6FDF869-F3D1-11D4-8576-0002A516ECE8}\ORMCustomTool">
+								<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)\Extenders\{E6FDF869-F3D1-11D4-8576-0002A516ECE8}\ORMCustomTool">
 									<RegistryValue Type="string" Value="{$(var.ORMCustomToolExtenderGuid)}"/>
 								</RegistryKey>
 							</Component>
@@ -210,7 +221,7 @@
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll" ProcessorArchitecture="msil"/>
 									<File Id="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).pdb" ShortName="ReltnlVw.pdb" Name="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).pdb" Source="..\AlternateViews\RelationalView\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).pdb"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2007-11/RelationalView">
+									<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2007-11/RelationalView">
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll]"/>
@@ -222,7 +233,7 @@
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll" ProcessorArchitecture="msil"/>
 									<File Id="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).pdb" ShortName="ORMCstPr.pdb" Name="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).pdb" Source="..\CustomProperties\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).pdb"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2007-11/CustomProperties">
+									<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2007-11/CustomProperties">
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll]"/>
@@ -236,7 +247,7 @@
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"/>
 									<File Id="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).xml" ShortName="ORMAbstr.xml" Name="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).xml" Source="..\Oial\OialModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).xml"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core">
+									<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core">
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll]"/>
@@ -251,7 +262,7 @@
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll"/>
 									<File Id="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.xml" ShortName="ORMAbsBr.xml" Name="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).xml" Source="..\Oial\ORMOialBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).xml"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
+									<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction">
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge$(var.VSExt).dll]"/>
@@ -265,7 +276,7 @@
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll"/>
 									<File Id="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).xml" ShortName="RelMods.xml" Name="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).xml" Source="..\RelationalModel\DcilModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).xml"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
+									<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase">
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.RelationalModels$(var.VSExt).dll]"/>
@@ -280,7 +291,7 @@
 										DefaultLanguage="0" CompanionFile="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"/>
 									<File Id="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.xml" ShortName="CDBBr.xml" Name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).xml" Source="..\RelationalModel\OialDcilBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).xml"
 										DefaultLanguage="0" CompanionFile="ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase">
+									<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase">
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMArchitect.ORMAbstractionToConceptualDatabaseBridge$(var.VSExt).dll]"/>
@@ -294,7 +305,7 @@
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll"/>
 									<File Id="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).xml" ShortName="ErMods.xml" Name="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).xml" Source="..\EntityRelationship\BarkerErModel\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).xml"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker">
+									<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker">
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.EntityRelationshipModels$(var.VSExt).dll]"/>
@@ -309,7 +320,7 @@
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
 									<File Id="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.xml" ShortName="BarkerBr.xml" Name="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).xml" Source="..\EntityRelationship\OialBerBridge\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).xml"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER">
+									<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER">
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge$(var.VSExt).dll]"/>
@@ -321,7 +332,7 @@
 										DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.Views.RelationalView$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll" ProcessorArchitecture="msil"/>
 									<File Id="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).pdb" ShortName="BarkerVw.pdb" Name="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).pdb" Source="..\AlternateViews\BarkerERView\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).pdb"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2008-05/BarkerERView">
+									<RegistryKey Root="HKLM" Key="$(var.NORMAExtensionsRegRoot)\http://schemas.neumont.edu/ORM/2008-05/BarkerERView">
 										<RegistryValue Type="string" Name="Class" Value="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel"/>
 										<RegistryValue Type="string" Name="Assembly" Value="ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt), $(var.BaseAssemblyName)"/>
 										<RegistryValue Type="string" Name="CodeBase" Value="[#ORMSolutions.ORMArchitect.Views.BarkerERView$(var.VSExt).dll]"/>
@@ -337,7 +348,7 @@
 								<File Id="Creating_ORM_Schemas.doc" ShortName="CrORMSch.doc" Name="Creating ORM Schemas.doc" Source="..\Documentation\Creating ORM Schemas.doc"
 									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 
-								<?if $(var.VSVer)!=v10.0?>
+								<?ifdef IntegrateHelp?>
 								<File Id="Neumont.ORM.General.hxs" ShortName="ORMGnrl.hxs" Name="Neumont.ORM.General.hxs" Source="..\Documentation\Help Project\Build\Neumont.ORM.General.hxs"
 									DefaultLanguage="$(var.DefaultLCID)" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll">
 									<vs:HelpFile Id="Neumont.ORM.General" Name="Neumont.ORM.General" Language="$(var.DefaultLCID)"/>
@@ -537,7 +548,7 @@
 							<Component Id="ORMTransformsComponent" Guid="92A82A59-CC06-4850-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="CoRefORM.xslt" ShortName="CoRefORM.xsl" Name="CoRefORM.xslt" Source="..\XML\OIAL\CoRefORM.xslt"
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CoRefORM">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CoRefORM">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="CoRefORM"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="ORM Co-Referencer"/>
@@ -553,7 +564,7 @@
 							<Component Id="OIALTransformsComponent" Guid="165ED455-31BE-4E30-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="ORMtoOIAL.xslt" ShortName="ORM2OIAL.xsl" Name="ORMtoOIAL.xslt" Source="..\XML\OIAL\ORMtoOIAL.xslt"
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ORMtoOIAL">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ORMtoOIAL">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="ORMtoOIAL"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="ORM to OIAL"/>
@@ -569,7 +580,7 @@
 							<Component Id="ORMClassModelTransformsComponent" Guid="82A94F1B-CC68-4924-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="OIALtoCLIProperties.xslt" ShortName="OIL2CLIP.xsl" Name="OIALtoCLIProperties.xslt" Source="..\XML\OIALtoPLiX\OIALtoCLIProperties.xslt"
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoCLIProperties">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoCLIProperties">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="OIALtoCLIProperties"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="OIAL to CLI Properties"/>
@@ -590,7 +601,7 @@
 
 								<File Id="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" ShortName="O2P_GGSC.xsl" Name="OIALtoPLiX_GenerateGlobalSupportClasses.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PLiXSupport">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PLiXSupport">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="PLiXSupport"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="PLiX Support"/>
@@ -604,7 +615,7 @@
 
 								<File Id="OIALtoPLiX_Abstract.xslt" ShortName="O2P_Abst.xsl" Name="OIALtoPLiX_Abstract.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_Abstract.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXAbstract">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXAbstract">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="CLIPropertiesToPLiXAbstract"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="CLIProperties to PLiX Abstract"/>
@@ -622,7 +633,7 @@
 
 								<!--<File Id="OIALtoPLiX_DataLayer_Implementation.xslt" ShortName="O2P_DLS.xsl" Name="OIALtoPLiX_DataLayer_Implementation.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_DataLayer_Implementation.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXDataLayerWithSproc">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXDataLayerWithSproc">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="CLIPropertiesToPLiXDataLayerWithSproc"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="CLIProperties to PLiX Data Layer with Sprocs"/>
@@ -662,7 +673,7 @@
 
 								<File Id="OIALtoPLiX_InMemory_Implementation.xslt" ShortName="O2P_IM.xsl" Name="OIALtoPLiX_InMemory_Implementation.xslt" Source="..\XML\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt"
 									DefaultLanguage="0" CompanionFile="OIALtoCLIProperties.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXInMemory">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\CLIPropertiesToPLiXInMemory">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="CLIPropertiesToPLiXInMemory"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="CLIProperties to PLiX In Memory"/>
@@ -687,7 +698,7 @@
 
 									<File Id="PHP_PHPEntities.xslt" ShortName="PHPEnt.xsl" Name="PHPEntities.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPEntities.xslt"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPEntitiesPLiX">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPEntitiesPLiX">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="OIALtoPHPEntitiesPLiX"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="OIAL to PHP Entities PLiX"/>
@@ -703,7 +714,7 @@
 											<MultiStringValue>PHPDataLayerPLiX</MultiStringValue>
 										</RegistryValue>
 									</RegistryKey>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPEntitiesPLiXtoPHP">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPEntitiesPLiXtoPHP">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="PHPEntitiesPLiXtoPHP"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="PHP Entities PLiX to PHP"/>
@@ -721,7 +732,7 @@
 
 									<File Id="PHP_PHPProxies.xslt" ShortName="PHPProx.xsl" Name="PHPProxies.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPProxies.xslt"
 										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPProxiesPLiX">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPProxiesPLiX">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="OIALtoPHPProxiesPLiX"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="OIAL to PHP Proxies PLiX"/>
@@ -732,7 +743,7 @@
 										<RegistryValue Type="string" Name="TransformUri" Value="[#PHP_PHPProxies.xslt]"/>
 										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
 									</RegistryKey>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPProxiesPLiXtoPHP">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPProxiesPLiXtoPHP">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="PHPProxiesPLiXtoPHP"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="PHP Proxies PLiX to PHP"/>
@@ -746,7 +757,7 @@
 
 									<File Id="PHP_PHPServices.xslt" ShortName="PHPServ.xsl" Name="PHPServices.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPServices.xslt"
 										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPServicesPLiX">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPServicesPLiX">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="OIALtoPHPServicesPLiX"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="OIAL to PHP Services PLiX"/>
@@ -757,7 +768,7 @@
 										<RegistryValue Type="string" Name="TransformUri" Value="[#PHP_PHPServices.xslt]"/>
 										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
 									</RegistryKey>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPServicesPLiXtoPHP">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPServicesPLiXtoPHP">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="PHPServicesPLiXtoPHP"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="PHP Services PLiX to PHP"/>
@@ -771,7 +782,7 @@
 
 									<File Id="PHP_PHPDataLayer.xslt" ShortName="PHPDL.xsl" Name="PHPDataLayer.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPDataLayer.xslt"
 										DefaultLanguage="0" CompanionFile="PHP_PHPEntities.xslt"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPDataLayerPLiX">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoPHPDataLayerPLiX">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="OIALtoPHPDataLayerPLiX"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="OIAL to PHP Data Layer PLiX"/>
@@ -782,7 +793,7 @@
 										<RegistryValue Type="string" Name="TransformUri" Value="[#PHP_PHPDataLayer.xslt]"/>
 										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
 									</RegistryKey>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPDataLayerPLiXtoPHP">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\PHPDataLayerPLiXtoPHP">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="PHPDataLayerPLiXtoPHP"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="PHP DataLayer PLiX to PHP"/>
@@ -801,7 +812,7 @@
 								<Component Id="ORMClassModelLinqToSqlTransformsComponent" Guid="3A361C38-3267-4481-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="LinqToSqlSettings.xslt" ShortName="LqSqlSet.xsl" Name="LinqToSqlSettings.xslt" Source="..\XML\DCILtoLinq\LinqToSqlSettings.xslt"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\LinqToSqlSettings">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\LinqToSqlSettings">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="LinqToSqlSettings"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="LinqToSql Settings"/>
@@ -816,7 +827,7 @@
 
 									<File Id="DCILtoLinqAttributeMapping.xslt" ShortName="DclLqAM.xsl" Name="DCILtoLinqAttributeMapping.xslt" Source="..\XML\DCILtoLinq\DCILtoLinqAttributeMapping.xslt"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoLinqAttributeMapping">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoLinqAttributeMapping">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="DCILtoLinqAttributeMapping"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="DCIL to LinqToSql"/>
@@ -838,7 +849,7 @@
 								<Component Id="ORMClassModelTransformsTestFormComponent" Guid="870B6A5C-543A-416a-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 									<File Id="OIALtoPLiX_DataLayerTestForm.xslt" ShortName="OIL2DLTF.xsl" Name="OIALtoPLiX_DataLayerTestForm.xslt" Source="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestForm">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestForm">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="DataLayerTestForm"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="Data Layer Test Form"/>
@@ -854,7 +865,7 @@
 									</RegistryKey>
 									<File Id="OIALtoPLiX_InputControl.xslt" ShortName="OIL2IC.xsl" Name="OIALtoPLiX_InputControl.xslt" Source="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl.xslt"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControl">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControl">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="DataLayerTestFormInputControl"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="Data Layer Test Form Input Control"/>
@@ -873,7 +884,7 @@
 									</RegistryKey>
 									<File Id="OIALtoPLiX_InputControl_Designer.xslt" ShortName="OIL2ICD.xsl" Name="OIALtoPLiX_InputControl_Designer.xslt" Source="..\XML\OIALtoPLiX\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-									<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControlDesigner">
+									<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DataLayerTestFormInputControlDesigner">
 										<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 										<RegistryValue Type="string" Name="OfficialName" Value="DataLayerTestFormInputControlDesigner"/>
 										<RegistryValue Type="string" Name="DisplayName" Value="Data Layer Test Form Input Control Designer"/>
@@ -894,7 +905,7 @@
 									<Component Id="ORMXmlSchemaTransformsComponent" Guid="E9166531-A29B-49B6-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 										<File Id="OIALtoXSD.xslt" ShortName="OIAL2XSD.xsl" Name="OIALtoXSD.xslt" Source="..\XML\OIALtoXSD\OIALtoXSD.xslt"
 											DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoXSD">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoXSD">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="OIALtoXSD"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="OIAL to XSD"/>
@@ -909,7 +920,7 @@
 							<Component Id="ORMRelationalSchemaTransformsComponent" Guid="2A455908-5BB2-48A3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 								<File Id="ConceptualDBtoDCIL.xslt" ShortName="CDB2DCIL.xsl" Name="ConceptualDBtoDCIL.xslt" Source="..\XML\ConceptualDBtoDCIL\ConceptualDBtoDCIL.xslt"
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ConceptualDBtoDCL">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\ConceptualDBtoDCL">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="ConceptualDBtoDCL"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="ConceptualDB to DCIL"/>
@@ -922,7 +933,7 @@
 								</RegistryKey>
 								<File Id="OIALtoDCIL.xslt" ShortName="OIL2DCIL.xsl" Name="OIALtoDCIL.xslt" Source="..\XML\OIALtoDCIL\OIALtoDCIL.xslt"
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoDCIL">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\OIALtoDCIL">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="OIALtoDCIL"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="OIAL to DCIL"/>
@@ -965,7 +976,7 @@
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 								<File Id="DDILtoSQLStandard.xslt" ShortName="DIL2Stnd.xsl" Name="DDILtoSQLStandard.xslt" Source="..\XML\DILtoSQL\DDILtoSQLStandard.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLStandard">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLStandard">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoSQLStandard"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to SQL Standard"/>
@@ -977,7 +988,7 @@
 								</RegistryKey>
 								<File Id="DDILtoDB2.xslt" ShortName="DIL2DB2.xsl" Name="DDILtoDB2.xslt" Source="..\XML\DILtoSQL\DDILtoDB2.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoDB2">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoDB2">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoDB2"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to DB2"/>
@@ -989,7 +1000,7 @@
 								</RegistryKey>
 								<File Id="DDILtoPostgreSQL.xslt" ShortName="DIL2Post.xsl" Name="DDILtoPostgreSQL.xslt" Source="..\XML\DILtoSQL\DDILtoPostgreSQL.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoPostgreSQL">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoPostgreSQL">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoPostgreSQL"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to PostgreSQL"/>
@@ -1001,7 +1012,7 @@
 								</RegistryKey>
 								<File Id="DDILtoSQLServer.xslt" ShortName="DIL2MS.xsl" Name="DDILtoSQLServer.xslt" Source="..\XML\DILtoSQL\DDILtoSQLServer.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLServer">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLServer">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoSQLServer"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to SQL Server"/>
@@ -1013,7 +1024,7 @@
 								</RegistryKey>
 								<File Id="DDILtoOracle.xslt" ShortName="DIL2Orac.xsl" Name="DDILtoOracle.xslt" Source="..\XML\DILtoSQL\DDILtoOracle.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoOracle">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoOracle">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoOracle"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to Oracle"/>
@@ -1025,7 +1036,7 @@
 								</RegistryKey>
 								<File Id="DDILtoMySQL.xslt" ShortName="DIL2MySQ.xsl" Name="DDILtoMySQL.xslt" Source="..\XML\DILtoSQL\DDILtoMySQL.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoMySQL">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoMySQL">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoMySQL"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to MySQL"/>
@@ -1047,7 +1058,7 @@
 
 								<File Id="DCILtoDDIL.xslt" ShortName="DCIL2DDL.xsl" Name="DCILtoDDIL.xslt" Source="..\XML\DILtoSQL\DCILtoDDIL.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoDDIL">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoDDIL">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="DCILtoDDIL"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="DCIL to DDIL"/>
@@ -1061,7 +1072,7 @@
 
 								<File Id="DCILtoTV.xslt" ShortName="DCIL2TV.xsl" Name="DCILtoTV.xslt" Source="..\XML\DCILtoHTML\DCILtoTV.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoTV">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DCILtoTV">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="DCILtoTV"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="DCIL to TableView"/>
@@ -1074,7 +1085,7 @@
 								</RegistryKey>
 								<File Id="TVtoHTML.xslt" ShortName="TV2HTML.xsl" Name="TVtoHTML.xslt" Source="..\XML\DCILtoHTML\TVtoHTML.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
-								<RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="$(var.NORMARegRoot)\Generators\TVtoHTML">
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\TVtoHTML">
 									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
 									<RegistryValue Type="string" Name="OfficialName" Value="TVtoHTML"/>
 									<RegistryValue Type="string" Name="DisplayName" Value="TableView to HTML"/>
@@ -1116,8 +1127,8 @@
 				</Directory>
 			</Directory>
 
-			<?ifdef VSIXInstall?>
 			<Directory Id="VSENVIRONMENTDIR">
+				<?ifdef NewORMFileViaNewFileItems?>
 				<Directory Id="VSNEWFILEITEMSDIR" Name="NewFileItems">
 					<Component Id="NORMAVSNewFileItemsComponent" Guid="1190936B-AD65-4F05-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 						<File Id="NewFileItemORMFile" Name="ORMModel.orm" Source="..\ORMModel\Shell\ProjectItems\NewFileItems\ORMModel.orm"
@@ -1126,6 +1137,8 @@
 							DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 					</Component>
 				</Directory>
+				<?endif?>
+				<?ifdef VSIXInstall?>
 				<Directory Id="VSEXTENSIONSDIR" Name="Extensions">
 					<Directory Id="ORMSOLUTIONSEXTENSIONSDIR" Name="ORM Solutions">
 						<Directory Id="NORMAEXTENSIONSDIR" Name="Natural ORM Architect">
@@ -1147,8 +1160,8 @@
 						</Directory>
 					</Directory>
 				</Directory>
+				<?endif?>
 			</Directory>
-			<?endif?>
 		</Directory>
 	</Fragment>
 </Wix>

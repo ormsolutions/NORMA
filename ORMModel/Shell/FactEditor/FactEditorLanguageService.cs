@@ -17,11 +17,17 @@
 
 #region Using Directives
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
+
+using Microsoft.Win32;
 
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
@@ -29,18 +35,15 @@ using Microsoft.VisualStudio.TextManager.Interop;
 using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell.Interop;
-using System.Collections;
-using ORMSolutions.ORMArchitect.Framework.Shell;
 using Microsoft.VisualStudio.Modeling.Shell;
-using ORMSolutions.ORMArchitect.Core.ObjectModel;
-using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
-using System.Globalization;
-using System.Text;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Core.ObjectModel.Design;
 using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 #endregion
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
@@ -208,6 +211,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// The official language name for this language service
 		/// </summary>
 		public const string LanguageName = "ORM Fact Editor";
+		/// <summary>
+		/// Registry key indicating that the color settings have been verified for the current revision.
+		/// Setup does not do this cleanly. Colors will always be visible in the Tools/Options/Fonts and Colors/Text Editor
+		/// item list after the fact editor is opened.
+		/// </summary>
+		private const string REGISTRYVALUE_FACTEDITORCOLORSCHECKEDFORREVISION = "FactEditorColorsCheckedForRevision";
 		#endregion // Constraints
 		#region Private Members
 		private FactEditorLineScanner m_FactScanner;
@@ -215,6 +224,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private ImageList m_ImageList;
 		private IVsWindowFrame m_ToolWindow;
 		private ActivationManager m_ActivationManager;
+		private bool m_checkedColors;
 		#endregion // Private Members
 		#region Guid Fields
 		/// <summary>
@@ -273,6 +283,89 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public override ViewFilter CreateViewFilter(CodeWindowManager mgr, IVsTextView newView)
 		{
 			return new FactEditorViewFilter(mgr, newView);
+		}
+		/// <summary>
+		/// Verify that system colorizer settings are initialized
+		/// </summary>
+		public override Colorizer GetColorizer(IVsTextLines buffer)
+		{
+			if (!m_checkedColors)
+			{
+				m_checkedColors = true;
+				using (RegistryKey userKey = ORMDesignerPackage.Singleton.GetPackageUserRegistryRoot(true))
+				{
+					if (userKey != null)
+					{
+						object objVal;
+						// An uninstall/use/reinstall may toss our custom colors without clearing our
+						// value, so record our build version. This won't help the uninstall/reinstall of
+						// the same version, but that is an unusual scenario in practice. This guarantees
+						// that the fact editor will always be colorized, and that the named colors will
+						// show in the options dialog after the fact editor has been shown.
+						object[] customAttributes = this.GetType().Assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
+						int expectedRevisionNumber = customAttributes.Length != 0 ? new Version(((AssemblyFileVersionAttribute)customAttributes[0]).Version).Revision : 0;
+						if (null == (objVal = userKey.GetValue(REGISTRYVALUE_FACTEDITORCOLORSCHECKEDFORREVISION, 0)) ||
+							!(objVal is int) ||
+							expectedRevisionNumber != (int)objVal)
+						{
+							userKey.SetValue(REGISTRYVALUE_FACTEDITORCOLORSCHECKEDFORREVISION, expectedRevisionNumber, RegistryValueKind.DWord);
+							IVsFontAndColorStorage storage;
+							Guid textMgrIID = new Guid(
+#if VISUALSTUDIO_11_0
+								"{E0187991-B458-4F7E-8CA9-42C9A573B56C}" /* 'Text Editor Language Services Items' category discovered in the registry. Resetting TextEditor has no effect. */
+#else
+								FontsAndColorsCategory.TextEditor
+#endif
+							);
+							if (null != (storage = GetService(typeof(IVsFontAndColorStorage)) as IVsFontAndColorStorage) &&
+								VSConstants.S_OK == storage.OpenCategory(ref textMgrIID, (uint)(__FCSTORAGEFLAGS.FCSF_READONLY | __FCSTORAGEFLAGS.FCSF_LOADDEFAULTS)))
+							{
+								bool missingColor = false;
+								try
+								{
+									DefaultColorSetting[] colorSettings = myDefaultColorSettings;
+									ColorableItemInfo[] info = new ColorableItemInfo[1];
+									for (int i = 0; i < colorSettings.Length; ++i)
+									{
+										if (ErrorHandler.Failed(storage.GetItem(ResourceStrings.GetColorNameString(colorSettings[i].LocalizedNameId), info)))
+										{
+											missingColor = true;
+											break;
+										}
+									}
+								}
+								finally
+								{
+									storage.CloseCategory();
+								}
+								if (missingColor)
+								{
+									IOleServiceProvider oleProvider;
+									// The service and interface guids are different, so we need to go to the OLE layer to get the service
+									Guid iid = typeof(IVsFontAndColorCacheManager).GUID;
+									Guid sid = typeof(SVsFontAndColorCacheManager).GUID;
+									IntPtr pCacheManager;
+									if (null != (oleProvider = GetService(typeof(IOleServiceProvider)) as IOleServiceProvider) &&
+										VSConstants.S_OK == oleProvider.QueryService(ref sid, ref iid, out pCacheManager) &&
+										pCacheManager != IntPtr.Zero)
+									{
+										try
+										{
+											IVsFontAndColorCacheManager cacheManager = (IVsFontAndColorCacheManager)Marshal.GetObjectForIUnknown(pCacheManager);
+											cacheManager.ClearCache(ref textMgrIID);
+										}
+										finally
+										{
+											Marshal.Release(pCacheManager);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			return base.GetColorizer(buffer);
 		}
 		/// <summary>
 		/// Creates a IVsTextLines and forwards the call to the overloaded GetOrCreateSource method.

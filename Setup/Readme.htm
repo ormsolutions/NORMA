@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA April 2012 CTP Readme</title>
+<title>NORMA October 2012 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,10 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA April 2012 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA October 2012 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The April 2012 release is a maintenance release with bug fixes and updated verbalization patterns to more closely match the underlying logic-based forms. See detailed change notes below for specifics.<br/><br/>
-The January 2012 release adds the ability to remember customized relational column names and control column order, verbalization options to standardize the verbalized display of object type names, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
+The October 2012 release adds Visual Studio 2012 support and some enhances some disjunctive mandatory and external uniqueness verbalization patterns, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2>Contents</h2>
 <ul>
@@ -42,6 +41,22 @@ The January 2012 release adds the ability to remember customized relational colu
 <ul>
 <li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Build ####)</li>
 </ul>-->
+
+<hr/>
+<h2>October 2012 CTP Changes</h2>
+<div>The October 2012 CTP release includes all modifications through changeset 1495.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li>Bug Fixes:
+<ol>
+<li>Crash verbalizing internal uniqueness constraints with no roles (possible from toolbox and with error activation).</li>
+<li>Inline edits of column names inside relational view table shapes were not remembered after ORM model change.</li>
+<li>Cross-model drag lost position of value constraint shapes for object types and fact types.</li>
+<li>Duplication of fact types shapes with role value constraints on the same diagram did not conect the new constraint shapes to the new fact type shapes.</li>
+<li>Database import did not create shapes for most object types and fact types.</li>
+<li>(VS2010) Database import wizard worked from File/New, but not adding a file directly to a project.</li>
+</ol>
+</li>
+</ul>
 
 <hr/>
 <h2>April 2012 CTP Changes</h2>
@@ -757,7 +772,6 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <li>The <em>ORM Diagram Spy</em> window will occasionally go blank after extended use with multiple open ORM files. A restart of the environment is required to recover the window. If you can reliably reproduce this issue please report the scenario.</li>
 <li>The NORMA help files are not installed or integrated with Visual Studio 2010. [The installer merge modules used for help integration in VS2005 and VS2008 are not included with the VS2010 SDK.]</li>
 <li>The FrequencyConstraint and Reading shapes are larger in Visual Studio 2010.</li>
-<li>Database import does not work from the <em>Add New Item</em> dialog in a project. Use <em>File/New</em> instead then save the file in the project file and add it to the project.</li>
 <li>The document tab after a database import using <em>File/New</em> displays the full path of the temporary file instead of the base file name.</li>
 </ol>
 <a href="#The Top">Return to top</a>

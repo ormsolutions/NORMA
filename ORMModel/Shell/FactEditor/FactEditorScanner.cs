@@ -87,14 +87,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					m_Offset = tokenInfo.EndIndex + 1;
 
+#if FACTEDITOR_TIPTEXT
 					if (tokenInfo is FactTokenInfo)
 					{
 						FactTokenInfo factToken = tokenInfo as FactTokenInfo;
 						factToken.Value = m_Line.Substring(factToken.StartIndex, factToken.Length);
-#if FACTEDITOR_TIPTEXT
 						factToken.ExistsOnModel = this.ObjectTypeExists(factToken.Value);
-#endif // FACTEDITOR_TIPTEXT
 					}
+#endif // FACTEDITOR_TIPTEXT
 				}
 				return foundToken;
 			}

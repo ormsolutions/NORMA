@@ -15,7 +15,7 @@
 -->
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Directory Id="General" Name="General">
-		<?ifndef VSIXInstall?>
+		<?ifdef NewORMFileViaGeneralZip?>
 			<Component Id="NORMAVSProjectItemsGeneralComponent" Guid="26D96FE1-69F2-46ED-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
 				<File Id="General.zip" Name="ORMModel.zip" Source="..\ORMModel\Shell\ProjectItems\$(var.VSShortName)\General.zip"
 					DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>

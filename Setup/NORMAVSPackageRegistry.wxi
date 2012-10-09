@@ -16,7 +16,7 @@
 <Include xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<RegistryKey Root="HKLM" Key="$(var.VSRegRoot)">
 		
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="Packages\{$(var.NORMAVSPackageGuid)}">
+		<RegistryKey Key="Packages\{$(var.NORMAVSPackageGuid)}">
 			<RegistryValue Value="ORMSolutions.ORMArchitect.Core.Shell.ORMDesignerPackage, $(var.NORMAVSPackageAssemblyName)" Type="string"/>
 			<RegistryValue Name="InprocServer32" Value="[$(var.SystemFolder)]mscoree.dll" Type="string"/>
 			<RegistryValue Name="Assembly" Value="$(var.NORMAVSPackageAssemblyName)" Type="string"/>
@@ -26,14 +26,14 @@
 			<RegistryValue Name="ProductVersion" Value="$(var.PLKProductVersion)" Type="string"/>
 			<RegistryValue Name="ProductName" Value="$(var.PLKProductName)" Type="string"/>
 			<RegistryValue Name="CompanyName" Value="$(var.PLKCompanyName)" Type="string"/>
-			<RegistryKey Action="create" Key="ToolBox">
+			<RegistryKey Key="ToolBox">
 				<RegistryValue Name="Default Items" Value="1" Type="integer"/>
 				<RegistryValue Name="Formats" Value="Microsoft.VisualStudio.Modeling.ElementGroupPrototype" Type="string"/>
 				<RegistryValue Name="NeedsCallbackAfterReset" Value="1" Type="integer"/>
 			</RegistryKey>
 		</RegistryKey>
 
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="InstalledProducts\ORM Solutions Natural Object-Role Modeling Architect">
+		<RegistryKey Key="InstalledProducts\ORM Solutions Natural Object-Role Modeling Architect">
 			<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 			<RegistryValue Name="UseInterface" Value="1" Type="integer"/>
 			<RegistryValue Name="DefaultProductAttribute" Value="ORM" Type="string"/>
@@ -43,33 +43,33 @@
 			<RegistryValue Name="{$(var.NORMAVSPackageGuid)}" Value=", 1000, 1" Type="string"/>
 		</RegistryKey>
 
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="ShellFileAssociations\.orm">
+		<RegistryKey Key="ShellFileAssociations\.orm">
 			<RegistryValue Value="ormfile" Type="string"/>
 		</RegistryKey>
 
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="Editors\{$(var.NORMAVSEditorGuid)}">
+		<RegistryKey Key="Editors\{$(var.NORMAVSEditorGuid)}">
 			<RegistryValue Value="ORMDesignerEditorFactory" Type="string"/>
 			<RegistryValue Name="DisplayName" Value="#108" Type="string"/>
 			<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 			<RegistryValue Name="TrustLevel" Value="1" Type="integer"/>
-			<RegistryKey Action="create" Key="Extensions">
+			<RegistryKey Key="Extensions">
 				<RegistryValue Name="orm" Value="50" Type="integer"/>
 				<RegistryValue Name="xml" Value="16" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="create" Key="LogicalViews">
+			<RegistryKey Key="LogicalViews">
 				<RegistryValue Name="{$(var.VSLogicalViewDesignerGuid)}" Value="Designer" Type="string"/>
 			</RegistryKey>
 		</RegistryKey>
 
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="Editors\{$(var.NORMAVSFactEditorGuid)}">
+		<RegistryKey Key="Editors\{$(var.NORMAVSFactEditorGuid)}">
 			<RegistryValue Value="ORMFactEditorEditorFactory" Type="string"/>
 			<RegistryValue Name="DisplayName" Value="#109" Type="string"/>
 			<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 			<RegistryValue Name="TrustLevel" Value="1" Type="integer"/>
-			<RegistryKey Action="create" Key="LogicalViews"/>
+			<RegistryKey ForceCreateOnInstall="yes" Key="LogicalViews"/>
 		</RegistryKey>
 
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="XmlDesigners\{$(var.NORMAVSEditorGuid)}">
+		<RegistryKey Key="XmlDesigners\{$(var.NORMAVSEditorGuid)}">
 			<RegistryValue Value="ORM Designer" Type="string"/>
 			<RegistryValue Name="Editor" Value="$(var.NORMAVSEditorGuid)" Type="string"/>
 			<RegistryValue Name="Extension" Value="orm" Type="string"/>
@@ -77,10 +77,10 @@
 			<RegistryValue Name="Namespace" Value="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" Type="string"/>
 		</RegistryKey>
 
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="ToolsOptionsPages\ORM Designer">
+		<RegistryKey Key="ToolsOptionsPages\ORM Designer">
 			<RegistryValue Value="#105" Type="string"/>
 			<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
-			<RegistryKey Action="create" Key="General">
+			<RegistryKey Key="General">
 				<RegistryValue Value="#106" Type="string"/>
 				<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Page" Value="{B4ABD9FD-CE79-4B26-8D36-F345CB53B525}" Type="string"/>
@@ -88,7 +88,7 @@
 		</RegistryKey>
 
 		<RegistryKey Key="ToolWindows">
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{63B6F84D-DF09-4E65-86EA-6BC1B856837B}">
+			<RegistryKey Key="{63B6F84D-DF09-4E65-86EA-6BC1B856837B}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.FactEditorToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -97,7 +97,7 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{C2415D9F-DBA8-49BC-8BF2-008F24F10559}">
+			<RegistryKey Key="{C2415D9F-DBA8-49BC-8BF2-008F24F10559}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMReferenceModeEditorToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -106,7 +106,7 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{1E45D5B8-890A-4ED5-AE1A-80BE221398D2}">
+			<RegistryKey Key="{1E45D5B8-890A-4ED5-AE1A-80BE221398D2}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMReadingEditorToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -115,7 +115,7 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{051209C1-250B-45A7-B7B1-8AFB50BEC9B7}">
+			<RegistryKey Key="{051209C1-250B-45A7-B7B1-8AFB50BEC9B7}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMSamplePopulationToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -124,7 +124,7 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{C9AA5E71-9193-46C9-971A-CB6365ACA338}">
+			<RegistryKey Key="{C9AA5E71-9193-46C9-971A-CB6365ACA338}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMVerbalizationToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -133,7 +133,7 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}">
+			<RegistryKey Key="{DD2334C3-AFDB-4FC5-9E8A-17D19A8CC97A}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMModelBrowserToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -142,7 +142,7 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{FC6D8343-48D1-4294-915F-01B6350E0E12}">
+			<RegistryKey Key="{FC6D8343-48D1-4294-915F-01B6350E0E12}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMDefinitionToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -151,7 +151,7 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{A7C9E14E-9EEE-4D79-A7F4-9E9D1A567498}">
+			<RegistryKey Key="{A7C9E14E-9EEE-4D79-A7F4-9E9D1A567498}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMNotesToolWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -160,7 +160,7 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{2B93A7CC-1F28-4347-8A22-644FB7B92090}">
+			<RegistryKey Key="{2B93A7CC-1F28-4347-8A22-644FB7B92090}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMContextWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -169,7 +169,7 @@
 				<RegistryValue Name="DontForceCreate" Value="1" Type="integer"/>
 				<RegistryValue Key="Visibility" Name="{$(var.NORMAVSEditorGuid)}" Value="0" Type="integer"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="{19A5C15D-14D4-4A88-9891-A3294077BE56}">
+			<RegistryKey Key="{19A5C15D-14D4-4A88-9891-A3294077BE56}">
 				<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 				<RegistryValue Name="Name" Value="ORMSolutions.ORMArchitect.Core.Shell.ORMDiagramSpyWindow" Type="string"/>
 				<RegistryValue Name="Style" Value="Tabbed" Type="string"/>
@@ -180,23 +180,23 @@
 			</RegistryKey>
 		</RegistryKey>
 
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="Services\{$(var.NORMAVSFontAndColorsServiceGuid)}">
+		<RegistryKey Key="Services\{$(var.NORMAVSFontAndColorsServiceGuid)}">
 			<RegistryValue Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>
 			<RegistryValue Name="Name" Value="OrmDesignerFontAndColorProvider" Type="string"/>
 		</RegistryKey>
 		
 		<RegistryKey Key="FontAndColors">
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="Orm Designer">
+			<RegistryKey Key="Orm Designer">
 				<RegistryValue Name="Category" Value="{663DE24F-8E3A-4C0F-A307-53053ED6C59B}" Type="string"/>
 				<RegistryValue Name="Package" Value="{$(var.NORMAVSFontAndColorsServiceGuid)}" Type="string"/>
 			</RegistryKey>
-			<RegistryKey Action="createAndRemoveOnUninstall" Key="Orm Verbalizer">
+			<RegistryKey Key="Orm Verbalizer">
 				<RegistryValue Name="Category" Value="{663DE24F-5A08-4490-80E7-EA332DFFE7F0}" Type="string"/>
 				<RegistryValue Name="Package" Value="{$(var.NORMAVSFontAndColorsServiceGuid)}" Type="string"/>
 			</RegistryKey>
 		</RegistryKey>
 
-		<RegistryKey Action="createAndRemoveOnUninstall" Key="Languages\Language Services\ORM Fact Editor">
+		<RegistryKey Key="Languages\Language Services\ORM Fact Editor">
 			<RegistryValue Value="{C50CD300-9D1E-4AB0-B494-73FA23D14D2B}" Type="string"/>
 			<RegistryValue Name="LangResID" Value="109" Type="integer"/>
 			<RegistryValue Name="Package" Value="{$(var.NORMAVSPackageGuid)}" Type="string"/>

@@ -14,6 +14,7 @@ IF "%ProgramFiles(X86)%"=="" (
 ::   v8.0 = Visual Studio 2005 (Code Name "Whidbey")
 ::   v9.0 = Visual Studio 2008 (Code Name "Orcas")
 ::  v10.0 = Visual Studio 2010 (Code Name "Rosario")
+::  v11.0 = Visual Studio 2012
 IF NOT DEFINED TargetVisualStudioVersion (SET TargetVisualStudioVersion=v8.0)
 
 :: Remove the value "Exp" on the next line if you want installations to be performed
@@ -124,6 +125,22 @@ IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortPr
 IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2010)
 IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2010)
 IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=10.0.0.0)
+IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
+IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
+IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0)
+GOTO:EOF
+
+:_SetupVersionVars_v11.0
+IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v4.5)
+IF NOT DEFINED TargetFrameworkVersionSuffix (SET TargetFrameworkVersionSuffix=.v4.0)
+IF NOT DEFINED TargetVisualStudioMajorMinorVersion (SET TargetVisualStudioMajorMinorVersion=11.0)
+IF NOT DEFINED TargetVisualStudioAssemblyVersion (SET TargetVisualStudioAssemblyVersion=11.0.0.0)
+IF NOT DEFINED TargetVisualStudioFrameworkAssemblyVersion (SET TargetVisualStudioFrameworkAssemblyVersion=4.5.0.0)
+IF NOT DEFINED TargetVisualStudioLongProductYear (SET TargetVisualStudioLongProductYear=2012)
+IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortProductYear=12)
+IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2012)
+IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2012)
+IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=11.0.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0)

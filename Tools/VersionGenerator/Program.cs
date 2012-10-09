@@ -47,9 +47,9 @@ namespace Neumont.Tools.ORM.SDK
 			{
 				// This revision mechanism was moving much too quickly, so allow the
 				// option to increment by quarter instead of month. For quarter increments,
-				// days 1-31 are the first month, 34-64 are the second month, and 66-96 are
+				// days 1-31 are the first month, 34-64 are the second month, and 67-97 are
 				// the third month in the quarter. Months before quarter counting began are
-				// added to the quarter count, giving a sequential versions.
+				// added to the quarter count, giving sequential version numbers.
 				revision = ((month - monthsAsQuarters) + (monthsAsQuarters + 2) / 3) * 100;
 				switch ((monthsAsQuarters - 1) % 3)
 				{

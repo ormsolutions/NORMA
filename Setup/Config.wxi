@@ -43,19 +43,39 @@
 		<?define PackageGuidStart="EFDDC549-0000-5653"?>
 		<?define RootSuffixVersion="8.0"?>
 		<?define HelpFileTargetCollection="MS_VSIPCC_v80"?>
+		<?define IntegrateHelp?>
 		<?define JSharpSupport=1 ?>
 		<?define RequireDSLRedist=1 ?>
+		<?define NewORMFileViaGeneralZip?>
+		<?define DoDevenvSetup?>
 	<?elseif $(var.VSVer) = v9.0?>
 		<?define PackageGuidStart="24D571AB-0000-4FA4"?>
 		<?define RootSuffixVersion="9.0"?>
 		<?define LinqSupport=1 ?>
 		<?define HelpFileTargetCollection="MS.VSIPCC.v90"?>
+		<?define IntegrateHelp?>
+		<?define NewORMFileViaGeneralZip?>
+		<?define DoDevenvSetup?>
 	<?elseif $(var.VSVer) = v10.0?>
 		<?define PackageGuidStart="BB66440D-0000-4413"?>
 		<?define RootSuffixVersion="10.0"?>
 		<?define LinqSupport=1 ?>
 		<?define HelpFileTargetCollection="MS.VSIPCC.v100"?>
 		<?define VSIXInstall?>
+		<?define VSRegistryPackageOnly?>
+		<?define NewORMFileViaNewFileItems?>
+		<?define ModelingProjectSupport=1 ?>
+	<?elseif $(var.VSVer) = v11.0?>
+		<?define PackageGuidStart="E94E7B30-0000-4AEC"?>
+		<?define RootSuffixVersion="11.0"?>
+		<?define LinqSupport=1 ?>
+		<?define HelpFileTargetCollection="MS.VSIPCC.v110"?>
+		<!--<?define VSIXInstall?>-->
+		<?define VSRegistryPackageOnly?>
+		<?define NewORMFileViaNewFileItems?>
+		<?define DoDevenvSetup?>
+		<?define CSharpPackageKeyThroughLanguageService?>
+		<?define FixedCSharpPackageGuid="{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}"?>
 		<?define ModelingProjectSupport=1 ?>
 	<?endif?>
 	<?define PackageCode="$(var.PackageGuidStart)-$(var.VersionGuidSuffix)"?>
@@ -117,7 +137,7 @@
 	<?define NeumontRegRoot="SOFTWARE\Neumont"?>
 	<?define ORMSolutionsRegRoot="SOFTWARE\ORM Solutions"?>
 	<?define NORMARegRoot="$(var.ORMSolutionsRegRoot)\Natural ORM Architect for $(var.VSLongName)"?>
-	<?ifdef VSIXInstall?>
+	<?ifdef VSRegistryPackageOnly?>
 		<?define NORMADesignerRegRoot="$(var.NORMARegRoot)\Designer"?>
 	<?else?>
 		<?define NORMADesignerRegRoot="$(var.VSRegRoot)\ORM Solutions\Natural ORM Architect"?>

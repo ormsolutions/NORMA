@@ -80,6 +80,25 @@
 				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
 			</PropertyGroup>
 		</When>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v11.0' ">
+			<PropertyGroup>
+				<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.5</TargetFrameworkVersion>
+				<TargetFrameworkVersionSuffix Condition=" '$(TargetFrameworkVersionSuffix)' == '' ">.v4.0</TargetFrameworkVersionSuffix>
+				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">11.0.0.0</TargetVisualStudioAssemblyVersion>
+				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.11.0</TargetVisualStudioAssemblySuffix>
+				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">4.5.0.0</TargetVisualStudioFrameworkAssemblyVersion>
+				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' ">.11.0</TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetVisualStudioLongProductYear Condition=" '$(TargetVisualStudioLongProductYear)' == '' ">2012</TargetVisualStudioLongProductYear>
+				<TargetVisualStudioShortProductYear Condition=" '$(TargetVisualStudioShortProductYear)' == '' ">12</TargetVisualStudioShortProductYear>
+				<TargetVisualStudioLongProductName Condition=" '$(TargetVisualStudioLongProductName)' == '' ">Visual Studio 2012</TargetVisualStudioLongProductName>
+				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2012</TargetVisualStudioShortProductName>
+				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">11.0.0.0</TargetDslToolsAssemblyVersion>
+				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.11.0</TargetDslToolsVersionSuffix>
+				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">4.0</ProjectToolsVersion>
+				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' ">.VS2010</GeneratedDslFileSuffix>
+				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
+			</PropertyGroup>
+		</When>
 		<Otherwise>
 			<PropertyGroup>
 				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">*Undefined*</TargetVisualStudioAssemblyVersion>
@@ -100,6 +119,11 @@
 		<When Condition=" '$(TargetVisualStudioVersion)' == 'v10.0' ">
 			<PropertyGroup>
 				<DefineConstants>$(DefineConstants);VISUALSTUDIO_9_0;VISUALSTUDIO_10_0</DefineConstants>
+			</PropertyGroup>
+		</When>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v11.0' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);VISUALSTUDIO_9_0;VISUALSTUDIO_10_0;VISUALSTUDIO_11_0</DefineConstants>
 			</PropertyGroup>
 		</When>
 	</Choose>
@@ -124,6 +148,11 @@
 		<When Condition=" '$(TargetFrameworkVersion)' == 'v4.0' ">
 			<PropertyGroup>
 				<DefineConstants>$(DefineConstants);NET_2_0;NET_3_0;NET_3_5;NET_4_0</DefineConstants>
+			</PropertyGroup>
+		</When>
+		<When Condition=" '$(TargetFrameworkVersion)' == 'v4.5' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);NET_2_0;NET_3_0;NET_3_5;NET_4_0;NET_4_5</DefineConstants>
 			</PropertyGroup>
 		</When>
 	</Choose>

@@ -688,6 +688,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			base.OnSelectionChanged(e);
 			CommandManager.UpdateCommandStatus();
 		}
+#if VISUALSTUDIO_11_0
+		/// <summary>
+		/// Required AllDesigners override
+		/// </summary>
+		public override IEnumerable<VSDiagramView> AllDesigners
+		{
+			get
+			{
+				// I have no idea what this does, I can't get VS to call it.
+				return new VSDiagramView[] { };
+			}
+		}
+#endif // VISUALSTUDIO_11_0
 		#endregion // Base overrides
 		#region IModelingEventSubscriber Implementation
 		/// <summary>

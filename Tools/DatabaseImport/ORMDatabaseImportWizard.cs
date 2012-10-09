@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -37,7 +38,9 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 	/// Wizard interface used when loading a DcilREFromDB template
 	/// </summary>	
 	[CLSCompliant(false)]
+#if !VISUALSTUDIO_10_0
 	[TemplateWizardDisallowUserTemplatesSecurity(true)]
+#endif
 	public class ORMDatabaseImportWizard : IWizard
 	{
 		#region Member variables
@@ -248,7 +251,7 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 			RunStarted(automationObject, replacementsDictionary, runKind, customParams);
 		}
 
-#if !VISUALSTUDIO_10_0 // UNDONE: Accessing any documents at this point throws in VS2010. I'd rather see the temp path in the caption than an error message.
+#if !VISUALSTUDIO_10_0 || VISUALSTUDIO_11_0 // UNDONE: Accessing any documents at this point throws in VS2010. I'd rather see the temp path in the caption than an error message.
 		/// <summary>
 		/// Ensures that only the file name portion of the new <see cref="ProjectItem"/>'s path is used as the
 		/// title for the document window.

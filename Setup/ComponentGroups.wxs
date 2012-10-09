@@ -20,6 +20,8 @@
 			<ComponentRef Id="DocumentationComponent"/>
 			<?ifdef VSIXInstall?>
 			<ComponentRef Id="VSIXExtensionComponent"/>
+			<?endif?>
+			<?ifdef NewORMFileViaNewFileItems?>
 			<ComponentRef Id="NORMAVSNewFileItemsComponent"/>
 			<?endif?>
 			<ComponentRef Id="NORMAVSPackageComponent"/>
@@ -30,7 +32,7 @@
 			<ComponentRef Id="NORMAVSSettingsComponent"/>
 			<ComponentRef Id="NORMAVSConvertersComponent"/>
 			<ComponentRef Id="NORMAVSDiagramDisplaySchemaComponent"/>
-			<?ifndef VSIXInstall?>
+			<?ifdef NewORMFileViaGeneralZip?>
 			<ComponentRef Id="NORMAVSProjectItemsGeneralComponent"/>
 			<?endif?>
 			<ComponentRef Id="NORMAVSProjectItemsVBasicComponent"/>

@@ -18,8 +18,6 @@
 	<Extern href="stdidcmd.h"/>
 	<!-- Shell specified groups/guids -->
 	<Extern href="vsshlids.h"/>
-	<!-- Shell specified commands -->
-	<Extern href="msobtnid.h"/>
 
 	<Commands package="guidORMDesignerPackage">
 

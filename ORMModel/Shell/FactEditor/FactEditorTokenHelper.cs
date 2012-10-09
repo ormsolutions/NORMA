@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
+#if FACTEDITOR_TIPTEXT
 	partial class FactEditorLanguageService
 	{
 		/// <summary>
@@ -121,4 +122,5 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 	}
+#endif // FACTEDITOR_TIPTEXT
 }

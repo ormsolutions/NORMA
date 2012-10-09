@@ -18,9 +18,9 @@
 using System;
 using Microsoft.VisualStudio.Package;
 #endregion
-
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
+#if FACTEDITOR_TIPTEXT
 	partial class FactEditorLanguageService
 	{
 		/// <summary>
@@ -105,4 +105,5 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			#endregion // Public Properties
 		}
 	}
+#endif // FACTEDITOR_TIPTEXT
 }

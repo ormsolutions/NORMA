@@ -20,7 +20,7 @@ Microsoft Visual Studio SDK
 
 Additional components used by other portions of this software include:
 
-Windows Installer XML (WiX) toolset (v3.5, tested successfully through 2415)
+Windows Installer XML (WiX) toolset (v3.6, tested successfully through 3303.1)
 	Homepage: http://wix.sourceforge.net
 
 NUnit (v2.4.7 or later)
@@ -78,4 +78,9 @@ You can build the VS2005 pieces using a VS2008 SDK installation (plus a handful 
 
 Notes on building and debugging with VS2010:
 The general directions are the same as for the VS2008 approach (open a Visual Studio 2010 Command Prompt, navigate to the NORMA directory, set TargetVisualStudioVersion=v10.0, and use the *VS2010* solutions and batch files).
+
+Notes on building and debugging with VS2012:
+The general directions are the same as for the VS2008 approach (open a Visual Studio 2012 Command Prompt, navigate to the NORMA directory, set TargetVisualStudioVersion=v11.0, and use the *VS2012* solutions and batch files).
+
+The installation process on VS2012 is not as easy as on VS2010, which simply required extension files to be copied into place. You will likely to need run devenv /setup for VS2012 regardless of what you do with the Visual Studio installations. See additional readme information in the VSIXInstall/VS2012 directory.
 
