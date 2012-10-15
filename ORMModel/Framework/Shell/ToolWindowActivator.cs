@@ -581,8 +581,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		{
 			FrameVisibilityFlags flags = myFrameVisibility;
 			FrameVisibilityFlags startFlags = flags & ~(FrameVisibilityFlags.FrameVisibilityMask | FrameVisibilityFlags.PersistentFlagsMask);
-			bool coverPending = 0 != (flags & FrameVisibilityFlags.PendingHiddenMeansCovered);
-			bool closePending = !coverPending && 0 != (flags & FrameVisibilityFlags.PendingHiddenMeansCovered);
 			myFrameVisibility &= FrameVisibilityFlags.FrameVisibilityMask | FrameVisibilityFlags.PersistentFlagsMask;
 			switch ((__FRAMESHOW)fShow)
 			{
@@ -591,7 +589,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					break;
 				case __FRAMESHOW.FRAMESHOW_WinMinimized:
 				case __FRAMESHOW.FRAMESHOW_TabDeactivated:
-					myFrameVisibility |= FrameVisibilityFlags.PendingHiddenMeansCovered;
+					// VS2010 is sending a BeforeWinHidden/TabDeactivated/Hidden, which results in a covered state
+					// with a closed window. If closed is already pending, don't degrade to cover pending instead.
+					myFrameVisibility |= 0 != (startFlags & FrameVisibilityFlags.PendingHiddenMeansClosed) ? FrameVisibilityFlags.PendingHiddenMeansClosed : FrameVisibilityFlags.PendingHiddenMeansCovered;
 					break;
 				case __FRAMESHOW.FRAMESHOW_DestroyMultInst:
 				case __FRAMESHOW.FRAMESHOW_WinClosed:

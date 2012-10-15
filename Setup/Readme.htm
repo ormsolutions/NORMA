@@ -44,7 +44,7 @@ The October 2012 release adds Visual Studio 2012 support and some enhances some 
 
 <hr/>
 <h2>October 2012 CTP Changes</h2>
-<div>The October 2012 CTP release includes all modifications through changeset 1495.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The October 2012 CTP release includes all modifications through changeset 1496.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li>Bug Fixes:
 <ol>
@@ -53,7 +53,10 @@ The October 2012 release adds Visual Studio 2012 support and some enhances some 
 <li>Cross-model drag lost position of value constraint shapes for object types and fact types.</li>
 <li>Duplication of fact types shapes with role value constraints on the same diagram did not conect the new constraint shapes to the new fact type shapes.</li>
 <li>Database import did not create shapes for most object types and fact types.</li>
+<li>Fixed verbalization subscripting for disjunctive mandatory constraints with multiple roles in the same fact type.</li>
+<li>Fixed verbalization of external uniqueness and frequency constraints over unary fact types.</li>
 <li>(VS2010) Database import wizard worked from File/New, but not adding a file directly to a project.</li>
+<li>(VS2010) Diagram Spy and other tool windows could end up blank, requiring restart.</li>
 </ol>
 </li>
 </ul>
@@ -399,8 +402,8 @@ The October 2008 release includes two major functionality additions plus a numbe
 <li>Updating NORMA to the latest version requires Setup.bat to be run from the downloaded .zip file, which should be chosen based on whether you want to install for Visual Studio 2010, Visual Studio 2008, or Visual Studio 2005. NORMA does not share installation files between these two products, so you must choose your target when you download the installation package.</li>
 <li>Any previous NORMA versions and any dependencies will be automatically uninstalled and reinstalled by the Setup.bat file. Make sure Visual Studio is not running during the installation pocess. Please be patient with the uninstall, which takes roughly the same amount of time as the install. Killing installation processes (the setup command prompt, msiexec, devenv) can leave you with a system that requires manual intervention to restore.</li>
 <li>First extract the files from the .zip file first unless you open them with the standard 'Compressed (zipped) Folders' viewer, in which case you can usually run Setup.bat without pre-expanding the zip file. Vista is likely to recommend expansion even with the standard viewer.</li>
-<li><a id="#Setup 2008-10" class="new" title="October 2008 CTP: SetupVista.bat elevates install permissions on Vista">2008-10</a>&nbsp;
-The setup process must be run with admistrative permissions on Vista. You can either right-click the Setup.bat file and choose 'Run as Administrator', or you can run SetupVista.bat instead of Setup.bat and agree to the Vista security warnings.</li>
+<li><a id="#Setup 2008-10" class="new" title="October 2008 CTP: SetupVistaOrLater.bat elevates install permissions on Vista, Windows7, and later operating systems.">2008-10</a>&nbsp;
+The setup process must be run with admistrative permissions on Vista, Windows7, and later operating systems. You can either right-click the Setup.bat file and choose 'Run as Administrator', or you can run SetupVistaOrLater.bat instead of Setup.bat and agree to the security warnings.</li>
 <li>(Visual Studio 2005 Install Only) The DSLToolsRedist.msi included with this release will not automatically upgrade if you have an older DSL installation on your machine. If you were an early user of NORMA or other DSL products and have not previously upgraded, or have experience designer issues on Windows Vista, then you may want to explicit uninstall the 'Microsoft DSL Tools Redistributable' product before running NORMA setup.</li>
 </ol>
 <a href="#The Top">Return to top</a>
@@ -769,7 +772,6 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <p>These are areas that are incomplete and known issues with Visual Studio 2010.</p>
 <ol>
 <li>If the .orm designer is opened simultaneously with more than one other file (such as when opening a solution) and is the active file immediately after load, then the ORM designer tool windows and menu items will not activate properly. Activating a second document (of any type) and reactivating the ORM designer will fix the problem. <em>This is a Visual Studio 2010 bug</em> (I can reproduce similar behavior with missing menus with one XML and one Text file).</li>
-<li>The <em>ORM Diagram Spy</em> window will occasionally go blank after extended use with multiple open ORM files. A restart of the environment is required to recover the window. If you can reliably reproduce this issue please report the scenario.</li>
 <li>The NORMA help files are not installed or integrated with Visual Studio 2010. [The installer merge modules used for help integration in VS2005 and VS2008 are not included with the VS2010 SDK.]</li>
 <li>The FrequencyConstraint and Reading shapes are larger in Visual Studio 2010.</li>
 <li>The document tab after a database import using <em>File/New</em> displays the full path of the temporary file instead of the base file name.</li>
