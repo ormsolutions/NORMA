@@ -582,225 +582,239 @@
 	</xs:simpleType>
 	<xs:simpleType name="ConditionalMatchPatternType">
 		<xs:annotation>
-			<xs:documentation>Provide an extension point for conditionally including snippets.</xs:documentation>
+			<xs:documentation>Provide an extension point for conditionally including snippets. If multiple conditions are specified, they are combined with 'or'.</xs:documentation>
 		</xs:annotation>
-		<xs:restriction base="xs:token">
-			<xs:enumeration value="IsEntityType">
-				<xs:annotation>
-					<xs:documentation>True if the IsValueType property for the current object type is false.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsValueType">
-				<xs:annotation>
-					<xs:documentation>True if the IsValueType property for the current object type is true.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsObjectifiedFactType">
-				<xs:annotation>
-					<xs:documentation>True if the current object type objectifies a fact type.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="HasVerbalizableQueryDerivationPath">
-				<xs:annotation>
-					<xs:documentation>True if there is a path-based verbalization available for a query object.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="HasVerbalizableSubtypeDerivationPath">
-				<xs:annotation>
-					<xs:documentation>True if there is a path-based subtype verbalization available for an object type.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="HasPortableDataType">
-				<xs:annotation>
-					<xs:documentation>True if the current object type has portable data type.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="HasNotes">
-				<xs:annotation>
-					<xs:documentation>True if the current object type has notes associated with it.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsIndependent">
-				<xs:annotation>
-					<xs:documentation>True if the current object type is independent.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="HasReferenceMode">
-				<xs:annotation>
-					<xs:documentation>True if the current object type has a reference mode.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsParameterized">
-				<xs:annotation>
-					<xs:documentation>True if the current query has parameters defined. Used with QueryBase construct.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsNamedParameter">
-				<xs:annotation>
-					<xs:documentation>True if the current query parameter has a name. Used inside an IterateQueryParameters element.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="HasPreferredIdentifier">
-				<xs:annotation>
-					<xs:documentation>True if the current object type has preferred identifier.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="HasUnobjectifiedPreferredIdentifier">
-				<xs:annotation>
-					<xs:documentation>True if the current object type has a preferred identifier that is not an internal constraint on an objectified fact type.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsPersonal">
-				<xs:annotation>
-					<xs:documentation>True if the IsPersonal property for the current role player is true.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsPreferredIdentifier">
-				<xs:annotation>
-					<xs:documentation>True if the current constraint is a preferred identifier.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="BinaryWithRoleName">
-				<xs:annotation>
-					<xs:documentation>True if the current role is named and is playing a role within a binary fact type.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="RolePlayerHasReferenceScheme">
-				<xs:annotation>
-					<xs:documentation>True if the current role player has a reference scheme</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsPositive">
-				<xs:annotation>
-					<xs:documentation>Matches if creating a positive verbalization.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsNegative">
-				<xs:annotation>
-					<xs:documentation>Matches if creating a negative verbalization.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsSingleValue">
-				<xs:annotation>
-					<xs:documentation>True if the value range collection has only one value range whose	min value is equal to the max value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsText">
-				<xs:annotation>
-					<xs:documentation>True if the current ValueConstraint has a text data type.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsBinaryLeadReading">
-				<xs:annotation>
-					<xs:documentation>True if non-hyphenated lead readings start at lead column roles are available in a 2x2 set comparison constraint.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="IsBinaryLeadReadingReverse">
-				<xs:annotation>
-					<xs:documentation>True if non-hyphenated lead readings start at trailing column roles are available in a 2x2 set comparison constraint.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="ExclusionIsExclusiveOrConstraint">
-				<xs:annotation>
-					<xs:documentation>True if the Exclusion constraint is an Exclusive Or Constraint</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="MinEqualsMax">
-				<xs:annotation>
-					<xs:documentation>Matches a value range whose min value is equal to the max value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="MinClosedMaxUnbounded">
-				<xs:annotation>
-					<xs:documentation>Matches a value range with a closed minimum value and an unbounded maximum value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="MinOpenMaxUnbounded">
-				<xs:annotation>
-					<xs:documentation>Matches a value range with an open minimum value and an unbounded maximum value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="MinUnboundedMaxClosed">
-				<xs:annotation>
-					<xs:documentation>Matches a value range with an unbounded minimum value and a closed maximum value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="MinUnboundedMaxOpen">
-				<xs:annotation>
-					<xs:documentation>Matches a value range with an unbounded minimum value and an open maximum value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="MinClosedMaxClosed">
-				<xs:annotation>
-					<xs:documentation>Matches a value range with a closed minimum value and an open maximum value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="MinClosedMaxOpen">
-				<xs:annotation>
-					<xs:documentation>Matches a value range with a closed minimum value and an open maximum value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="MinOpenMaxClosed">
-				<xs:annotation>
-					<xs:documentation>Matches a value range with an open minimum value and an open maximum value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="MinOpenMaxOpen">
-				<xs:annotation>
-					<xs:documentation>Matches a value range with an open minimum value and an open maximum value.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="FrequencyRangeExactlyOne">
-				<xs:annotation>
-					<xs:documentation>Matches a frequency range where the minimum and maximum frequencies are equal to 1.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="FrequencyRangeExact">
-				<xs:annotation>
-					<xs:documentation>Matches a frequency range where the minimum and maximum frequencies are equal.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="FrequencyRangeMaxUnbounded">
-				<xs:annotation>
-					<xs:documentation>Matches a frequency range with no upper bound.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="FrequencyRangeMinUnbounded">
-				<xs:annotation>
-					<xs:documentation>Matches a frequency range where the minimum is one.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="SingleRoleRoleSequence">
-				<xs:annotation>
-					<xs:documentation>Matches a role sequence with exactly one role.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="ObjectifyingInstance">
-				<xs:annotation>
-					<xs:documentation>The FactTypeInstance has an objectifying identifier that should be displayed</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="VerbalizeFactTypesWithBrowserObjectType">
-				<xs:annotation>
-					<xs:documentation>Verbalize only if we're writing to the verbalization browser and have the correct option set.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="HasPreProjectionKeys">
-				<xs:annotation>
-					<xs:documentation>Verbalize only if pre-projection keys are available. Used with the 'preProjectionKeys' block helper.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="NoPreProjectionKeys">
-				<xs:annotation>
-					<xs:documentation>Verbalize only if no pre-projection keys are available. Used with the 'preProjectionKeys' block helper. Currently supported only after HasPreProjectionKeys has been used in a condition.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-			<xs:enumeration value="BinaryRingFactType">
-				<xs:annotation>
-					<xs:documentation>Check if the current binary fact type is a ring fact type. Binary is already assumed.</xs:documentation>
-				</xs:annotation>
-			</xs:enumeration>
-		</xs:restriction>
+		<xs:list>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="IsEntityType">
+						<xs:annotation>
+							<xs:documentation>True if the IsValueType property for the current object type is false.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsValueType">
+						<xs:annotation>
+							<xs:documentation>True if the IsValueType property for the current object type is true.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsObjectifiedFactType">
+						<xs:annotation>
+							<xs:documentation>True if the current object type objectifies a fact type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasVerbalizableQueryDerivationPath">
+						<xs:annotation>
+							<xs:documentation>True if there is a path-based verbalization available for a query object.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasVerbalizableSubtypeDerivationPath">
+						<xs:annotation>
+							<xs:documentation>True if there is a path-based subtype verbalization available for an object type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasPortableDataType">
+						<xs:annotation>
+							<xs:documentation>True if the current object type has portable data type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasNotes">
+						<xs:annotation>
+							<xs:documentation>True if the current object type has notes associated with it.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsIndependent">
+						<xs:annotation>
+							<xs:documentation>True if the current object type is independent.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasReferenceMode">
+						<xs:annotation>
+							<xs:documentation>True if the current object type has a reference mode.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsParameterized">
+						<xs:annotation>
+							<xs:documentation>True if the current query has parameters defined. Used with QueryBase construct.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsNamedParameter">
+						<xs:annotation>
+							<xs:documentation>True if the current query parameter has a name. Used inside an IterateQueryParameters element.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasPreferredIdentifier">
+						<xs:annotation>
+							<xs:documentation>True if the current object type has preferred identifier.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasUnobjectifiedPreferredIdentifier">
+						<xs:annotation>
+							<xs:documentation>True if the current object type has a preferred identifier that is not an internal constraint on an objectified fact type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsPersonal">
+						<xs:annotation>
+							<xs:documentation>True if the IsPersonal property for the current role player is true.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsPreferredIdentifier">
+						<xs:annotation>
+							<xs:documentation>True if the current constraint is a preferred identifier.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="BinaryWithRoleName">
+						<xs:annotation>
+							<xs:documentation>True if the current role is named and is playing a role within a binary fact type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="RolePlayerHasReferenceScheme">
+						<xs:annotation>
+							<xs:documentation>True if the current role player has a reference scheme</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsPositive">
+						<xs:annotation>
+							<xs:documentation>Matches if creating a positive verbalization.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsNegative">
+						<xs:annotation>
+							<xs:documentation>Matches if creating a negative verbalization.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsSingleValue">
+						<xs:annotation>
+							<xs:documentation>True if the value range collection has only one value range whose	min value is equal to the max value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsText">
+						<xs:annotation>
+							<xs:documentation>True if the current ValueConstraint has a text data type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsBinaryLeadReading">
+						<xs:annotation>
+							<xs:documentation>True if non-hyphenated lead readings start at lead column roles are available in a 2x2 set comparison constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="IsBinaryLeadReadingReverse">
+						<xs:annotation>
+							<xs:documentation>True if non-hyphenated lead readings start at trailing column roles are available in a 2x2 set comparison constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ExclusionIsExclusiveOrConstraint">
+						<xs:annotation>
+							<xs:documentation>True if the Exclusion constraint is an Exclusive Or Constraint</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="MinEqualsMax">
+						<xs:annotation>
+							<xs:documentation>Matches a value range whose min value is equal to the max value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="MinClosedMaxUnbounded">
+						<xs:annotation>
+							<xs:documentation>Matches a value range with a closed minimum value and an unbounded maximum value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="MinOpenMaxUnbounded">
+						<xs:annotation>
+							<xs:documentation>Matches a value range with an open minimum value and an unbounded maximum value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="MinUnboundedMaxClosed">
+						<xs:annotation>
+							<xs:documentation>Matches a value range with an unbounded minimum value and a closed maximum value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="MinUnboundedMaxOpen">
+						<xs:annotation>
+							<xs:documentation>Matches a value range with an unbounded minimum value and an open maximum value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="MinClosedMaxClosed">
+						<xs:annotation>
+							<xs:documentation>Matches a value range with a closed minimum value and an open maximum value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="MinClosedMaxOpen">
+						<xs:annotation>
+							<xs:documentation>Matches a value range with a closed minimum value and an open maximum value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="MinOpenMaxClosed">
+						<xs:annotation>
+							<xs:documentation>Matches a value range with an open minimum value and an open maximum value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="MinOpenMaxOpen">
+						<xs:annotation>
+							<xs:documentation>Matches a value range with an open minimum value and an open maximum value.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="FrequencyRangeExactlyOne">
+						<xs:annotation>
+							<xs:documentation>Matches a frequency range where the minimum and maximum frequencies are equal to 1.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="FrequencyRangeExact">
+						<xs:annotation>
+							<xs:documentation>Matches a frequency range where the minimum and maximum frequencies are equal.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="FrequencyRangeMaxUnbounded">
+						<xs:annotation>
+							<xs:documentation>Matches a frequency range with no upper bound.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="FrequencyRangeMinUnbounded">
+						<xs:annotation>
+							<xs:documentation>Matches a frequency range where the minimum is one.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="SingleRoleRoleSequence">
+						<xs:annotation>
+							<xs:documentation>Matches a role sequence with exactly one role.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ObjectifyingInstance">
+						<xs:annotation>
+							<xs:documentation>The FactTypeInstance has an objectifying identifier that should be displayed</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="VerbalizeFactTypesWithBrowserObjectType">
+						<xs:annotation>
+							<xs:documentation>Verbalize only if we're writing to the verbalization browser and have the correct option set.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasPreProjectionKeys">
+						<xs:annotation>
+							<xs:documentation>Verbalize only if pre-projection keys are available. Used with the 'preProjectionKeys' block helper.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="NoPreProjectionKeys">
+						<xs:annotation>
+							<xs:documentation>Verbalize only if no pre-projection keys are available. Used with the 'preProjectionKeys' block helper. Currently supported only after HasPreProjectionKeys has been used in a condition.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasSinglePreProjectionKey">
+						<xs:annotation>
+							<xs:documentation>There is exactly one pre-projection key.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasSingleLeadPreProjectionKey">
+						<xs:annotation>
+							<xs:documentation>There is exactly one pre-projection key and it corresponds to a variable that is verbalized by the role path before any other phrases.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="BinaryRingFactType">
+						<xs:annotation>
+							<xs:documentation>Check if the current binary fact type is a ring fact type. Binary is already assumed.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:list>
 	</xs:simpleType>
 	<xs:complexType name="SnippetType">
 		<xs:complexContent>
@@ -859,6 +873,7 @@
 		</xs:annotation>
 		<xs:choice>
 			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch"/>
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetTypeWithConditionalMatch"/>
 			<xs:element name="IterateRoles">
 				<xs:complexType>
 					<xs:complexContent>
@@ -1037,6 +1052,20 @@
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="SequenceJoinPath">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="SequenceJoinPathType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+							<xs:attribute name="leadVariableQuantifier" type="ve:SnippetTypeEnum">
+								<xs:annotation>
+									<xs:documentation>Use the HasSingleLeadPreProjectionKey conditional match to provide a snippet used to quantify the lead variable.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
 		</xs:choice>
 	</xs:group>
 	
@@ -1060,6 +1089,14 @@
 			<xs:element name="Snippet" type="SnippetLeafTypeWithConditionalMatch"/>
 			<xs:element name="SnippetReplacements" type="SnippetReplacementsType"/>
 		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ConditionalSnippetTypeWithConditionalMatch">
+		<xs:complexContent>
+			<xs:extension base="ConditionalSnippetType">
+				<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+				<xs:attribute name="conditionalBlockContext" use="optional" type="ConditionalBlockContextType"/>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="SnippetReplacementsType">
 		<xs:annotation>
@@ -1550,6 +1587,11 @@
 				<xs:documentation>Set to true if the FactType has not already been verified as have sufficient state to support verbalization.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="skipUnaryValueRole" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Set to true to filter out unary value roles.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 		<xs:attribute name="markProvidedConstraintRolesAsHead" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:documentation>Used with the providedConstraintRoles match style. Mark the variable returned for the constrained role as a head variable. Head variables are given back reference priority during automatic role path verbalization.</xs:documentation>
@@ -1611,15 +1653,20 @@
 	</xs:complexType>
 	<xs:complexType name="SequenceJoinPathType">
 		<xs:annotation>
-			<xs:documentation>Use the join path for this sequence if it is available. Otherwise, verbalize the contents.</xs:documentation>
+			<xs:documentation>Use the join path for this sequence if it is available. Otherwise, verbalize the contents if provided.</xs:documentation>
 		</xs:annotation>
-		<xs:choice>
+		<xs:choice minOccurs="0">
 			<xs:element name="Snippet" type="SnippetType"/>
 			<xs:element name="IterateRoles" type="IterateRolesType"/>
 		</xs:choice>
 		<xs:attribute name="markTrailingOutdentStart" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:documentation>Strings returned for rendering a full role path should add an outdent replacement field immediately before the first of any trailing snippets that close an indentation.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="pathPreValidated" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The role path is validated as part of a condition. Do not call HasPathVerbalization before using the path.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

@@ -532,7 +532,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	{
 	}
 	#endregion // IVerbalizationSets interface
-	#region IVerbalizationSets interface
+	#region Generic IVerbalizationSets interface
 	/// <summary>An interface representing generic verbalization sets.</summary>
 	/// <typeParam name="TEnum">An enumeration representing the verbalization sets</typeParam>
 	public interface IVerbalizationSets<TEnum> : IVerbalizationSets
@@ -549,7 +549,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>Snippet string</returns>
 		string GetSnippet(TEnum snippetType);
 	}
-	#endregion // Genereic IVerbalizationSets interface
+	#endregion // Generic IVerbalizationSets interface
 	#region Generic VerbalizationSets class
 	/// <summary>A generic class containing one VerbalizationSet structure for each combination of {alethic,deontic} and {positive,negative} snippets.</summary>
 	/// <typeparam name="TEnum">The enumeration type of snippet set</typeparam>
@@ -3749,6 +3749,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		MarkTrailingOutdentStart,
 	}
 	#endregion // RolePathVerbalizerOptions enum
+	#region CoreSnippetIdentifier struct
+	/// <summary>
+	/// Identify a specific snippet from the <see cref="CoreVerbalizationSnippetType"/> snippets
+	/// </summary>
+	public struct CoreSnippetIdentifier
+	{
+		/// <summary>
+		/// Create an unambiguous identifier for a core snippet.
+		/// </summary>
+		public CoreSnippetIdentifier(CoreVerbalizationSnippetType snippet, bool isDeontic, bool isNegative)
+		{
+			Snippet = snippet;
+			IsDeontic = isDeontic;
+			IsNegative = isNegative;
+		}
+		/// <summary>
+		/// The enumerated snippet value
+		/// </summary>
+		public readonly CoreVerbalizationSnippetType Snippet;
+		/// <summary>
+		/// True to use a deontic snippet
+		/// </summary>
+		public readonly bool IsDeontic;
+		/// <summary>
+		/// True to use a negated snippet
+		/// </summary>
+		public readonly bool IsNegative;
+	}
+	#endregion // CoreSnippetIdentifier struct
 	/// <summary>
 	/// A class to assist in verbalization of a role path
 	/// </summary>
@@ -6263,6 +6292,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private RolePathVerbalizerOptions myOptions;
 		/// <summary>
+		/// Basic option for quantifying the first requested variable.
+		/// </summary>
+		private CoreSnippetIdentifier? myLeadVariableQuantifier;
+		/// <summary>
 		/// Used during path rendering to track a floating
 		/// root variable that is not naturally used in the path.
 		/// </summary>
@@ -6331,6 +6364,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			set
 			{
 				myOptions = value;
+			}
+		}
+		/// <summary>
+		/// Get and set the <see cref="CoreSnippetIdentifier"/> used to quantify
+		/// the lead variable in the path. This is cleared automatically after it is used
+		/// to quantify a variable. The assumption is that this is set after <see cref="KeyedVariableLeadsVerbalization"/>
+		/// has been called to verify that the lead variable verbalizes first, and before <see cref="RenderPathVerbalization"/>
+		/// </summary>
+		public CoreSnippetIdentifier? LeadVariableQuantifier
+		{
+			get
+			{
+				return myLeadVariableQuantifier;
+			}
+			set
+			{
+				myLeadVariableQuantifier = value;
 			}
 		}
 		#endregion // Accessor Properties
@@ -9629,6 +9679,58 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return null;
 		}
+		/// <summary>
+		/// Determine if a rendering of the provided variable leads the verbalization.
+		/// </summary>
+		/// <remarks>Always returns false if there are multiple available verbalization plans.</remarks>
+		/// <param name="pathOwner">The role path owner</param>
+		/// <param name="variableKey">A key associated with a variable.</param>
+		/// <returns><see langword="true"/> if this variable leads.</returns>
+		public bool KeyedVariableLeadsVerbalization(RolePathOwner pathOwner, object variableKey)
+		{
+			VerbalizationPlanNode node;
+			RolePlayerVariableUse variableUse;
+			Dictionary<object, RolePlayerVariableUse> useMap;
+			if (pathOwner == mySingleRolePathOwner &&
+				null != (node = myRootPlanNode) &&
+				(useMap = myUseToVariableMap).TryGetValue(variableKey, out variableUse))
+			{
+				RolePlayerVariable leadVariable = variableUse.PrimaryRolePlayerVariable;
+				while (node != null)
+				{
+					VerbalizationPlanNodeType nodeType = node.NodeType;
+					if (nodeType == VerbalizationPlanNodeType.Branch)
+					{
+						LinkedNode<VerbalizationPlanNode> nodeLink;
+						LinkedNode<object> contextKey;
+						if (node.BranchRenderingStyle != VerbalizationPlanBranchRenderingStyle.OperatorSeparated ||
+							(null != (contextKey = node.RequiredContextVariableUseKeys) && (contextKey.Next != null || useMap[contextKey.Value].PrimaryRolePlayerVariable != leadVariable)) ||
+							null == (nodeLink = node.FirstChildNode))
+						{
+							break;
+						}
+						node = nodeLink.Value;
+					}
+					else if (nodeType == VerbalizationPlanNodeType.FactType)
+					{
+						PathedRole entryRole;
+						if (0 != (node.ReadingOptions & VerbalizationPlanReadingOptions.BasicLeadRole) &&
+							(entryRole = node.FactTypeEntry).Role == node.Reading.RoleCollection[0].Role &&
+							useMap.TryGetValue(entryRole, out variableUse) &&
+							variableUse.PrimaryRolePlayerVariable == leadVariable)
+						{
+							return true;
+						}
+						break;
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+			return false;
+		}
 		private string RenderVerbalizationPlanNode(StringBuilder builder, VerbalizationPlanNode node, LinkedNode<VerbalizationPlanNode> nodeLink, ref bool blockNextLeadRoleCollapse, out int outdentPosition)
 		{
 			outdentPosition = -1;
@@ -11048,7 +11150,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private string QuantifyRolePlayerName(string rolePlayerName, bool existentialQuantifier, bool negateExistentialQuantifier)
 		{
 			IRolePathRenderer renderer = myRenderer;
-			string formatString = renderer.GetSnippet(existentialQuantifier ? CoreVerbalizationSnippetType.ExistentialQuantifier : CoreVerbalizationSnippetType.DefiniteArticle, false, negateExistentialQuantifier && existentialQuantifier);
+			CoreVerbalizationSnippetType snippet = CoreVerbalizationSnippetType.DefiniteArticle;
+			bool isDeontic = false;
+			bool isNegative = negateExistentialQuantifier && existentialQuantifier;
+			if (existentialQuantifier)
+			{
+				CoreSnippetIdentifier? forceSnippet = myLeadVariableQuantifier;
+				if (forceSnippet.HasValue)
+				{
+					CoreSnippetIdentifier snippetId = forceSnippet.Value;
+					snippet = snippetId.Snippet;
+					isDeontic = snippetId.IsDeontic;
+					isNegative = snippetId.IsNegative;
+					myLeadVariableQuantifier = null;
+				}
+				else
+				{
+					snippet = CoreVerbalizationSnippetType.ExistentialQuantifier;
+				}
+			}
+			string formatString = renderer.GetSnippet(snippet, isDeontic, isNegative);
 			if (string.IsNullOrEmpty(formatString) || formatString == "{0}")
 			{
 				return rolePlayerName;
@@ -11504,6 +11625,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// on constrained roles if there is a ring situation, but not on quantified requests of
 					// other roles with the same type.
 					LinkedElementCollection<Role> roles = setConstraint.RoleCollection;
+					int roleCount = roles.Count;
 					foreach (FactType factType in setConstraint.FactTypeCollection)
 					{
 						foreach (RoleBase roleBase in factType.RoleCollection)
@@ -11511,13 +11633,41 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							Role role = roleBase.Role;
 							ObjectType rolePlayer;
 							RelatedRolePlayerVariables vars;
-							if (!roles.Contains(role) &&
-								null != (rolePlayer = role.RolePlayer) &&
-								map.TryGetValue(rolePlayer, out vars) &&
-								!vars.UsedFullyExistentially)
+							int roleIndex;
+							if (-1 == (roleIndex = roles.IndexOf(role)))
 							{
-								vars.UsedFullyExistentially = true;
-								map[rolePlayer] = vars;
+								if (null != (rolePlayer = role.RolePlayer) &&
+									map.TryGetValue(rolePlayer, out vars) &&
+									!vars.UsedFullyExistentially)
+								{
+									vars.UsedFullyExistentially = true;
+									map[rolePlayer] = vars;
+								}
+							}
+							else if (roleCount > 1)
+							{
+								// If more than one constrained role is in the same fact type
+								// then we mark the variable as used fully existentially so that
+								// we can force a subscript when the role is accessed through the
+								// constrained role and use the same role to represent a fully
+								// existentially quantified variable when the variable is requested
+								// through the role itself.
+								// This forces verbalization patterns that do not need this
+								// feature to minimize head subscripting so that they do not
+								// subscript unncessarily, but this is not the place for pattern
+								// matching.
+								for (int i = 0; i < roleCount; ++i)
+								{
+									if (i != roleIndex &&
+										roles[i].FactType == factType &&
+										null != (rolePlayer = role.RolePlayer) &&
+										map.TryGetValue(rolePlayer, out vars) &&
+										!vars.UsedFullyExistentially)
+									{
+										vars.UsedFullyExistentially = true;
+										map[rolePlayer] = vars;
+									}
+								}
 							}
 						}
 					}

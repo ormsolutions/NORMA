@@ -175,6 +175,7 @@ Format: at most one {0}</statement>
     <unformattedSnippet>at most one {0}</unformattedSnippet>
     <contains />
     <containedIn>
+      <snippet name="ForEachIndentedQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
     <usedBy>
@@ -291,7 +292,6 @@ Format: \n where</statement>
       <snippet name="UniversalQuantifier" />
     </contains>
     <containedIn>
-      <snippet name="ExistenceImplicationOperator" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="ForEachNegatableIndentedQuantifier" />
       <snippet name="FrequencyPopulation" />
@@ -299,6 +299,7 @@ Format: \n where</statement>
       <snippet name="ModalPossibilityOperator" />
       <snippet name="MoreThanOneQuantifier" />
       <snippet name="OccursInPopulation" />
+      <snippet name="SingularExistenceImplicationOperator" />
     </containedIn>
     <usedBy>
       <constraint name="FrequencyConstraint" />
@@ -487,15 +488,12 @@ Format: if {0}
         then {1}</statement>
     <unformattedSnippet>if {0}then {1}</unformattedSnippet>
     <contains>
-      <snippet name="ContextCombinationAssociation" />
       <snippet name="ContextCombinationOccurrence" />
-      <snippet name="ExactlyOneTypedOccurrence" />
       <snippet name="ExactlyOneUntypedOccurrence" />
       <snippet name="FrequencyRangeExact" />
       <snippet name="FrequencyRangeMaxUnbounded" />
       <snippet name="FrequencyRangeMinAndMax" />
       <snippet name="FrequencyRangeMinUnbounded" />
-      <snippet name="FrequencyTypedOccurrences" />
       <snippet name="FrequencyUntypedOccurrences" />
     </contains>
     <containedIn>
@@ -555,22 +553,9 @@ Format: this association with {0}provides the preferred identification scheme fo
   <snippet name="ContextCombinationAssociation" replacementCount="1">
     <statement>Description: Verbalizes a range of combination occurrences for a specified type where the combination has been previous specified.  Format: that combination is associated with {1} in this context</statement>
     <unformattedSnippet>that combination is associated with {0} in this context</unformattedSnippet>
-    <contains>
-      <snippet name="ExactlyOneTypedOccurrence" />
-      <snippet name="FrequencyRangeExact" />
-      <snippet name="FrequencyRangeMaxUnbounded" />
-      <snippet name="FrequencyRangeMinAndMax" />
-      <snippet name="FrequencyRangeMinUnbounded" />
-      <snippet name="FrequencyTypedOccurrences" />
-    </contains>
-    <containedIn>
-      <snippet name="ConditionalMultiLine" />
-      <snippet name="ForEachIndentedQuantifier" />
-      <snippet name="ImpliedModalNecessityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="FrequencyConstraint" />
-    </usedBy>
+    <contains />
+    <containedIn />
+    <usedBy />
   </snippet>
   <snippet name="ContextCombinationOccurrence" replacementCount="1">
     <statement>Description: Verbalizes a range of combination occurrences where the combination has been previous specified.  Format: that combination occurs {1} in this context</statement>
@@ -600,7 +585,6 @@ Format: this association with {0}provides the preferred identification scheme fo
     <contains />
     <containedIn>
       <snippet name="ConditionalMultiLineIndented" />
-      <snippet name="ExistenceImplicationOperator" />
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="ForEachNegatableCompactQuantifier" />
@@ -608,6 +592,7 @@ Format: this association with {0}provides the preferred identification scheme fo
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="LogicalAndOperator" />
       <snippet name="ModalPossibilityOperator" />
+      <snippet name="SingularExistenceImplicationOperator" />
     </containedIn>
     <usedBy>
       <constraint name="AntisymmetricRingVerbalizer" />
@@ -635,13 +620,6 @@ Format: this association with {0}provides the preferred identification scheme fo
   <snippet name="DescriptionVerbalization" replacementCount="1">
     <statement>Description: Verbalizes the text specified for an element description. Format: Informal Description: {0}</statement>
     <unformattedSnippet>Informal Description: {0}</unformattedSnippet>
-    <contains />
-    <containedIn />
-    <usedBy />
-  </snippet>
-  <snippet name="EachInstanceQuantifier" replacementCount="1">
-    <statement>Description: Verbalizes an instance of the specified object may occur at most one time.  Format: each instance of {0} occurs only once</statement>
-    <unformattedSnippet>each instance of {0} occurs only once</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -774,15 +752,8 @@ Format: Model Error: {0}</statement>
 Format: exactly one {0}</statement>
     <unformattedSnippet>exactly one {0}</unformattedSnippet>
     <contains />
-    <containedIn>
-      <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationAssociation" />
-      <snippet name="ForEachIndentedQuantifier" />
-      <snippet name="ImpliedModalNecessityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="FrequencyConstraint" />
-    </usedBy>
+    <containedIn />
+    <usedBy />
   </snippet>
   <snippet name="ExactlyOneUntypedOccurrence" replacementCount="0">
     <statement>Description: Used for a fallback uniqueness verbalization, or for a frequency constraint with min=max=1.
@@ -823,24 +794,6 @@ Format: No {0} the same {1}</statement>
     </containedIn>
     <usedBy>
       <constraint name="ExclusionConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="ExistenceImplicationOperator" replacementCount="2">
-    <statement>Description: Verbalizes an existence condition and a consequent.  Format: there is {0} such that {1}</statement>
-    <unformattedSnippet>there is {0} such that{1}</unformattedSnippet>
-    <contains>
-      <snippet name="CombinationIdentifier" />
-      <snippet name="DefiniteArticle" />
-      <snippet name="MoreThanOneQuantifier" />
-      <snippet name="OneQuantifier" />
-    </contains>
-    <containedIn>
-      <snippet name="ForEachNegatableIndentedQuantifier" />
-      <snippet name="ImpliedModalNecessityOperator" />
-      <snippet name="ModalPossibilityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="UniquenessConstraintVerbalizer" />
     </usedBy>
   </snippet>
   <snippet name="ExistentialQuantifier" replacementCount="1">
@@ -962,22 +915,26 @@ Format: No {0} the same {1}</statement>
     <statement>Description: Verbalizes for each instance of an object then creates a line break where the rules that apply to those instances are listed.  Format: for each {0}, \n{1}</statement>
     <unformattedSnippet>for each {0},{1}</unformattedSnippet>
     <contains>
+      <snippet name="AtMostOneTypedOccurrence" />
       <snippet name="CombinationIdentifier" />
       <snippet name="Conditional" />
       <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationAssociation" />
       <snippet name="ContextCombinationOccurrence" />
       <snippet name="DefiniteArticle" />
       <snippet name="Equality" />
-      <snippet name="ExactlyOneTypedOccurrence" />
       <snippet name="ExactlyOneUntypedOccurrence" />
       <snippet name="ExistentialQuantifier" />
+      <snippet name="FrequencyNotPopulatedOrRange" />
       <snippet name="FrequencyRangeExact" />
       <snippet name="FrequencyRangeMaxUnbounded" />
       <snippet name="FrequencyRangeMinAndMax" />
       <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="FrequencyTypedCombinationOccurrences" />
       <snippet name="FrequencyTypedOccurrences" />
       <snippet name="FrequencyUntypedOccurrences" />
+      <snippet name="PluralExistenceImplicationOperator" />
+      <snippet name="SelfReference" />
+      <snippet name="SingularExistenceImplicationOperator" />
     </contains>
     <containedIn>
       <snippet name="ImpliedModalNecessityOperator" />
@@ -1022,11 +979,11 @@ Format negative: for some {0}, \n{1}</statement>
       <snippet name="ContextCombinationOccurrence" />
       <snippet name="DefiniteArticle" />
       <snippet name="ExactlyOneUntypedOccurrence" />
-      <snippet name="ExistenceImplicationOperator" />
       <snippet name="ExistentialQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="MoreThanOneQuantifier" />
       <snippet name="OneQuantifier" />
+      <snippet name="SingularExistenceImplicationOperator" />
     </contains>
     <containedIn>
       <snippet name="ImpliedModalNecessityOperator" />
@@ -1035,6 +992,19 @@ Format negative: for some {0}, \n{1}</statement>
     <usedBy>
       <constraint name="SimpleMandatoryVerbalizer" />
       <constraint name="UniquenessConstraintVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="FrequencyNotPopulatedOrRange" replacementCount="1">
+    <statement>Description: Combined with a frequency range to indicate that a frequency constraint with a lower bound does not imply existence.
+Format: either no, or {0}</statement>
+    <unformattedSnippet>either 0,  or  {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
     </usedBy>
   </snippet>
   <snippet name="FrequencyPopulation" replacementCount="3">
@@ -1064,11 +1034,9 @@ Format: exactly {0}</statement>
     <contains />
     <containedIn>
       <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationAssociation" />
       <snippet name="ContextCombinationOccurrence" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="FrequencyPopulation" />
-      <snippet name="FrequencyTypedOccurrences" />
       <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
@@ -1083,11 +1051,9 @@ Format: at least {0}</statement>
     <contains />
     <containedIn>
       <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationAssociation" />
       <snippet name="ContextCombinationOccurrence" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="FrequencyPopulation" />
-      <snippet name="FrequencyTypedOccurrences" />
       <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
@@ -1102,11 +1068,9 @@ Format: at least {0} and at most {1}</statement>
     <contains />
     <containedIn>
       <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationAssociation" />
       <snippet name="ContextCombinationOccurrence" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="FrequencyPopulation" />
-      <snippet name="FrequencyTypedOccurrences" />
       <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
@@ -1121,7 +1085,6 @@ Format: at most {1}</statement>
     <contains />
     <containedIn>
       <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationAssociation" />
       <snippet name="ContextCombinationOccurrence" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="FrequencyPopulation" />
@@ -1133,19 +1096,27 @@ Format: at most {1}</statement>
       <constraint name="FrequencyConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="FrequencyTypedCombinationOccurrences" replacementCount="2">
+    <statement>Description: Used to specify an instance count or range for a combination of object types.
+Format: {1} combinations of {0}</statement>
+    <unformattedSnippet>{1} combinations of {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
+  </snippet>
   <snippet name="FrequencyTypedOccurrences" replacementCount="2">
     <statement>Description: Used to specify an instance count or range for a specific object type.
 Format: {1} instances of {0}</statement>
     <unformattedSnippet>{1} instances of {0}</unformattedSnippet>
     <contains>
-      <snippet name="FrequencyRangeExact" />
-      <snippet name="FrequencyRangeMaxUnbounded" />
-      <snippet name="FrequencyRangeMinAndMax" />
       <snippet name="FrequencyRangeMinUnbounded" />
     </contains>
     <containedIn>
-      <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationAssociation" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
@@ -1330,26 +1301,25 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <snippet name="Conditional" />
       <snippet name="ConditionalMultiLine" />
       <snippet name="ConditionalMultiLineIndented" />
-      <snippet name="ContextCombinationAssociation" />
       <snippet name="ContextCombinationOccurrence" />
       <snippet name="DefiniteArticle" />
       <snippet name="Equality" />
       <snippet name="ExactlyOneQuantifier" />
-      <snippet name="ExactlyOneTypedOccurrence" />
       <snippet name="ExactlyOneUntypedOccurrence" />
       <snippet name="ExclusionBinaryLeadReading" />
       <snippet name="ExclusionCombined" />
-      <snippet name="ExistenceImplicationOperator" />
       <snippet name="ExistentialQuantifier" />
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="ForEachNegatableCompactQuantifier" />
       <snippet name="ForEachNegatableIndentedQuantifier" />
+      <snippet name="FrequencyNotPopulatedOrRange" />
       <snippet name="FrequencyPopulation" />
       <snippet name="FrequencyRangeExact" />
       <snippet name="FrequencyRangeMaxUnbounded" />
       <snippet name="FrequencyRangeMinAndMax" />
       <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="FrequencyTypedCombinationOccurrences" />
       <snippet name="FrequencyTypedOccurrences" />
       <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="GroupEquality" />
@@ -1360,9 +1330,11 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <snippet name="ObjectType" />
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
+      <snippet name="PluralExistenceImplicationOperator" />
       <snippet name="ReflexivePronoun" />
       <snippet name="ReflexiveQuantifier" />
       <snippet name="SelfReference" />
+      <snippet name="SingularExistenceImplicationOperator" />
       <snippet name="StronglyIntransitiveConsequent" />
       <snippet name="SubtypeMetaReading" />
       <snippet name="UniversalQuantifier" />
@@ -1712,7 +1684,6 @@ Format for alethic and positive: it is possible that {0}  Format for deontic and
     <contains>
       <snippet name="CombinationIdentifier" />
       <snippet name="DefiniteArticle" />
-      <snippet name="ExistenceImplicationOperator" />
       <snippet name="ExistentialQuantifier" />
       <snippet name="ForEachNegatableCompactQuantifier" />
       <snippet name="ForEachNegatableIndentedQuantifier" />
@@ -1722,6 +1693,7 @@ Format for alethic and positive: it is possible that {0}  Format for deontic and
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
       <snippet name="SelfReference" />
+      <snippet name="SingularExistenceImplicationOperator" />
     </contains>
     <containedIn>
       <snippet name="ConditionalMultiLineIndented" />
@@ -1752,10 +1724,10 @@ Format for alethic and positive: it is possible that {0}  Format for deontic and
       <snippet name="CombinationIdentifier" />
     </contains>
     <containedIn>
-      <snippet name="ExistenceImplicationOperator" />
       <snippet name="ForEachNegatableCompactQuantifier" />
       <snippet name="ForEachNegatableIndentedQuantifier" />
       <snippet name="ModalPossibilityOperator" />
+      <snippet name="SingularExistenceImplicationOperator" />
     </containedIn>
     <usedBy>
       <constraint name="DefaultBinaryMissingUniquenessVerbalizer" />
@@ -2209,12 +2181,12 @@ Format negative: more than one {0}
     <unformattedSnippet>at most one {0}</unformattedSnippet>
     <contains />
     <containedIn>
-      <snippet name="ExistenceImplicationOperator" />
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ForEachNegatableCompactQuantifier" />
       <snippet name="ForEachNegatableIndentedQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="ModalPossibilityOperator" />
+      <snippet name="SingularExistenceImplicationOperator" />
     </containedIn>
     <usedBy>
       <constraint name="ImpliedUniqueVerbalizer" />
@@ -2342,6 +2314,18 @@ Format: {1} is {0} who</statement>
     <contains />
     <containedIn />
     <usedBy />
+  </snippet>
+  <snippet name="PluralExistenceImplicationOperator" replacementCount="2">
+    <statement>Description: Verbalizes an existence condition for a multiple items and a consequent.  Format: there are {0} such that {1}</statement>
+    <unformattedSnippet>there are {0} such that{1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+    </usedBy>
   </snippet>
   <snippet name="PortableDataTypeVerbalization" replacementCount="1">
     <statement>Description: Verbalizes an object's portable data type. Format: Portable data type: {0}</statement>
@@ -2525,6 +2509,7 @@ Format: {0} is not {1}</statement>
     <contains />
     <containedIn>
       <snippet name="ConditionalMultiLineIndented" />
+      <snippet name="ForEachIndentedQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="LogicalAndOperator" />
       <snippet name="ModalPossibilityOperator" />
@@ -2532,6 +2517,7 @@ Format: {0} is not {1}</statement>
     <usedBy>
       <constraint name="AntisymmetricRingVerbalizer" />
       <constraint name="AsymmetricRingVerbalizer" />
+      <constraint name="FrequencyConstraint" />
       <constraint name="IntransitiveRingVerbalizer" />
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -2721,6 +2707,26 @@ Format: the possible value of {0} is {1}</statement>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
       <constraint name="ValueTypeValueConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="SingularExistenceImplicationOperator" replacementCount="2">
+    <statement>Description: Verbalizes an existence condition for a single item and a consequent.  Format: there is {0} such that {1}</statement>
+    <unformattedSnippet>there is {0} such that{1}</unformattedSnippet>
+    <contains>
+      <snippet name="CombinationIdentifier" />
+      <snippet name="DefiniteArticle" />
+      <snippet name="MoreThanOneQuantifier" />
+      <snippet name="OneQuantifier" />
+    </contains>
+    <containedIn>
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ForEachNegatableIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="ModalPossibilityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+      <constraint name="UniquenessConstraintVerbalizer" />
     </usedBy>
   </snippet>
   <snippet name="StronglyIntransitiveConsequent" replacementCount="2">

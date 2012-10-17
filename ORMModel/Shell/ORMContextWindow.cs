@@ -298,7 +298,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			}
-			else if (hierarchyElement == myCurrentlySelectedObject && !refresh && (myDiagram != null && myDiagram.HasChildren))
+			else if (hierarchyElement == myCurrentlySelectedObject && hierarchyElement != null && !refresh && (myDiagram != null && myDiagram.HasChildren))
 			{
 				return;
 			}

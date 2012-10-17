@@ -630,14 +630,10 @@
 									<CompositeList listStyle="IndentedLogicalOrList">
 										<IterateRoles match="providedConstraintRoles" minFactArity="2">
 											<Fact readingChoice="PreferPrimaryLeadReadingNoFrontText">
-												<!-- UNDONE: PENDING This is wrong if multiple roles from disjunctive mandatory in same (ring) fact type.
-												Need to quantify primary role with 'that', secondary with 'some' (either pass in role instead of pathedRole,
-												or add flag to force pure existential), and excluded as 'some'. Switching 'included' to 'primary' is generating
-												incorrectly and returning an unquantified name for non-primary roles.
-												To get a subscripted name, we'll need to register the non-constrained roles for all
-												fact types in the path verbalizer, then set the minimizeHeadSubscripting in ?all?
-												patterns except this one. -->
-												<ProvidedPredicateReplacement match="included" quantify="true"/>
+												<ProvidedPredicateReplacement match="primary" quantify="true"/>
+												<!-- If there are multiple constrained roles in the same fact type then both the
+												constrained role and the role are registered. The excluded fallback picks up the
+												registered role. -->
 												<ProvidedPredicateReplacement match="excluded" quantify="true"/>
 											</Fact>
 										</IterateRoles>
@@ -659,13 +655,13 @@
 							<CompositeList listStyle="IndentedLogicalOrList">
 								<IterateRoles match="providedConstraintRoles" minFactArity="2">
 									<Fact readingChoice="PreferPrimaryLeadReadingNoFrontText">
-										<ProvidedPredicateReplacement match="included" quantify="true"/>
-										<ProvidedPredicateReplacement match="excluded" quantify="true"/>
+										<ProvidedPredicateReplacement match="included" minimizeHeadSubscripting="true" quantify="true"/>
+										<ProvidedPredicateReplacement match="excluded" minimizeHeadSubscripting="true" quantify="true"/>
 									</Fact>
 								</IterateRoles>
 								<IterateRoles factArity="1" match="providedConstraintRoles">
 									<Fact>
-										<ProvidedPredicateReplacement match="included" quantify="true"/>
+										<ProvidedPredicateReplacement match="included" minimizeHeadSubscripting="true" quantify="true"/>
 									</Fact>
 								</IterateRoles>
 							</CompositeList>
@@ -769,7 +765,7 @@
 						<Snippet ref="ModalPossibilityOperator">
 							<Snippet ref="ForEachNegatableIndentedQuantifier">
 								<IterateRoles match="included" listStyle="SimpleList" hyphenBind="true" subscript="true"/>
-								<Snippet ref="ExistenceImplicationOperator">
+								<Snippet ref="SingularExistenceImplicationOperator">
 									<Snippet ref="MoreThanOneQuantifier">
 										<Snippet ref="CombinationIdentifier">
 											<IterateRoles match="excluded" listStyle="SimpleList" hyphenBind="true" subscript="true"/>
@@ -829,7 +825,7 @@
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="ForEachNegatableIndentedQuantifier">
 									<IterateRoles match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
-									<Snippet ref="ExistenceImplicationOperator">
+									<Snippet ref="SingularExistenceImplicationOperator">
 										<Snippet ref="OneQuantifier">
 											<ProvidedRolePlayer rolePlayerKey="SingleLeadRolePath"/>
 										</Snippet>
@@ -871,7 +867,7 @@
 							<Snippet ref="ImpliedModalNecessityOperator">
 								<Snippet ref="ForEachNegatableIndentedQuantifier">
 									<IterateRoles match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
-									<Snippet ref="ExistenceImplicationOperator">
+									<Snippet ref="SingularExistenceImplicationOperator">
 										<Snippet ref="OneQuantifier">
 											<ProvidedRolePlayer rolePlayerKey="SingleLeadRolePath"/>
 										</Snippet>
@@ -889,11 +885,11 @@
 						</ReadingChoice>
 					</ConditionalReading>
 				</ConstrainedRoles>
-				<ConstrainedRoles blockHelpers="pathVerbalizer preProjectionKeys">
+				<ConstrainedRoles minFactArity="1" maxFactArity="1" blockHelpers="pathVerbalizer preProjectionKeys">
 					<Snippet ref="ImpliedModalNecessityOperator" conditionalMatch="HasPreProjectionKeys">
-						<Snippet ref="ForEachNegatableIndentedQuantifier">
-							<IterateRoles match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
-							<Snippet ref="ExistenceImplicationOperator">
+						<ConditionalReplacement>
+							<SequenceJoinPath pathPreValidated="true" conditionalMatch="HasSingleLeadPreProjectionKey" leadVariableQuantifier="OneQuantifier"/>
+							<Snippet ref="SingularExistenceImplicationOperator">
 								<Snippet ref="OneQuantifier">
 									<IterateRoles match="preProjectionKeys" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
 								</Snippet>
@@ -906,11 +902,36 @@
 									</IterateRoles>
 								</SequenceJoinPath>
 							</Snippet>
+						</ConditionalReplacement>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles blockHelpers="pathVerbalizer preProjectionKeys">
+					<Snippet ref="ImpliedModalNecessityOperator" conditionalMatch="HasPreProjectionKeys">
+						<Snippet ref="ForEachNegatableIndentedQuantifier">
+							<IterateRoles match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList" skipUnaryValueRole="true"/>
+							<ConditionalReplacement>
+								<SequenceJoinPath pathPreValidated="true" conditionalMatch="HasSingleLeadPreProjectionKey" leadVariableQuantifier="OneQuantifier"/>
+								<Snippet ref="SingularExistenceImplicationOperator">
+									<Snippet ref="OneQuantifier">
+										<IterateRoles match="preProjectionKeys" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
+									</Snippet>
+									<SequenceJoinPath>
+										<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
+											<Fact readingChoice="PreferPrimaryLeadReading">
+												<ProvidedPredicateReplacement match="included" quantify="false"/>
+												<ProvidedPredicateReplacement quantify="false"/>
+											</Fact>
+										</IterateRoles>
+									</SequenceJoinPath>
+								</Snippet>
+							</ConditionalReplacement>
 						</Snippet>
 					</Snippet>
 					<Snippet ref="ImpliedModalNecessityOperator" conditionalMatch="NoPreProjectionKeys">
 						<Snippet ref="ForEachNegatableIndentedQuantifier">
 							<Snippet ref="CombinationIdentifier">
+								<!-- UNDONE: Switch the roles here to get a unique set of role players opposite unary value roles.
+								Apply same approach to the frequency constraint. Low priority: this is only used in fallback conditions. -->
 								<IterateRoles match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
 							</Snippet>
 							<Snippet ref="ConditionalMultiLine">
@@ -1072,13 +1093,40 @@
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles sign="positive" minFactArity="2" maxFactArity="2" trivialOppositeRolePath="true" blockHelpers="pathVerbalizer">
-					<Snippet ref="ImpliedModalNecessityOperator">
-						<Snippet ref="ForEachIndentedQuantifier">
-							<Snippet ref="CombinationIdentifier">
-								<IterateRoles match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
-							</Snippet>
-							<Snippet ref="ConditionalMultiLine">
+				<ConstrainedRoles sign="positive" minFactArity="1" maxFactArity="1" blockHelpers="pathVerbalizer preProjectionKeys">
+					<Snippet ref="ImpliedModalNecessityOperator" conditionalMatch="HasPreProjectionKeys">
+						<ConditionalSnippet>
+							<Snippet ref="SingularExistenceImplicationOperator" conditionalMatch="FrequencyRangeExactlyOne"/>
+							<Snippet ref="PluralExistenceImplicationOperator"/>
+							<SnippetReplacements>
+								<ConditionalReplacement>
+									<Snippet ref="AtMostOneTypedOccurrence" conditionalMatch="FrequencyRangeExactlyOne">
+										<IterateRoles match="preProjectionKeys" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
+									</Snippet>
+									<ConditionalSnippet>
+										<Snippet ref="FrequencyTypedOccurrences" conditionalMatch="HasSinglePreProjectionKey"/>
+										<Snippet ref="FrequencyTypedCombinationOccurrences"/>
+										<SnippetReplacements>
+											<IterateRoles match="preProjectionKeys" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
+											<ConditionalSnippet>
+												<Snippet ref="SelfReference" conditionalMatch="FrequencyRangeMinUnbounded"/>
+												<Snippet ref="FrequencyNotPopulatedOrRange"/>
+												<SnippetReplacements>
+													<ConditionalSnippet>
+														<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
+														<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+														<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+														<Snippet ref="FrequencyRangeMinAndMax"/>
+														<SnippetReplacements>
+															<MinFrequencyValue/>
+															<MaxFrequencyValue/>
+														</SnippetReplacements>
+													</ConditionalSnippet>
+												</SnippetReplacements>
+											</ConditionalSnippet>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+								</ConditionalReplacement>
 								<SequenceJoinPath>
 									<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
 										<Fact readingChoice="PreferPrimaryLeadReading">
@@ -1087,63 +1135,93 @@
 										</Fact>
 									</IterateRoles>
 								</SequenceJoinPath>
-								<Snippet ref="ContextCombinationAssociation">
-									<ConditionalReplacement>
-										<Snippet ref="ExactlyOneTypedOccurrence" conditionalMatch="FrequencyRangeExactlyOne">
-											<ProvidedRolePlayer rolePlayerKey="SingleLeadRolePath"/>
-										</Snippet>
-										<Snippet ref="FrequencyTypedOccurrences">
-											<ProvidedRolePlayer rolePlayerKey="SingleLeadRolePath"/>
-											<ConditionalSnippet>
-												<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
-												<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
-												<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
-												<Snippet ref="FrequencyRangeMinAndMax"/>
-												<SnippetReplacements>
-													<MinFrequencyValue/>
-													<MaxFrequencyValue/>
-												</SnippetReplacements>
-											</ConditionalSnippet>
-										</Snippet>
-									</ConditionalReplacement>
-								</Snippet>
-							</Snippet>
-						</Snippet>
+							</SnippetReplacements>
+						</ConditionalSnippet>
 					</Snippet>
 				</ConstrainedRoles>
-				<ConstrainedRoles sign="positive" blockHelpers="pathVerbalizer">
+				<ConstrainedRoles sign="positive" blockHelpers="pathVerbalizer preProjectionKeys">
 					<Snippet ref="ImpliedModalNecessityOperator">
 						<Snippet ref="ForEachIndentedQuantifier">
-							<Snippet ref="CombinationIdentifier">
-								<IterateRoles match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
-							</Snippet>
-							<Snippet ref="ConditionalMultiLine">
-								<SequenceJoinPath>
-									<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
-										<Fact readingChoice="PreferPrimaryLeadReading">
-											<ProvidedPredicateReplacement match="included" quantify="false"/>
-											<ProvidedPredicateReplacement quantify="false"/>
-										</Fact>
-									</IterateRoles>
-								</SequenceJoinPath>
-								<Snippet ref="ContextCombinationOccurrence">
-									<ConditionalReplacement>
-										<Snippet ref="ExactlyOneUntypedOccurrence" conditionalMatch="FrequencyRangeExactlyOne"/>
-										<Snippet ref="FrequencyUntypedOccurrences">
+							<ConditionalSnippet>
+								<Snippet ref="CombinationIdentifier" conditionalMatch="NoPreProjectionKeys"/>
+								<Snippet ref="SelfReference"/>
+								<SnippetReplacements>
+									<IterateRoles match="providedConstraintRoles" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList" skipUnaryValueRole="true"/>
+								</SnippetReplacements>
+							</ConditionalSnippet>
+							<ConditionalReplacement>
+								<ConditionalSnippet conditionalMatch="HasPreProjectionKeys">
+									<Snippet ref="SingularExistenceImplicationOperator" conditionalMatch="FrequencyRangeExactlyOne"/>
+									<Snippet ref="PluralExistenceImplicationOperator"/>
+									<SnippetReplacements>
+										<ConditionalReplacement>
+											<Snippet ref="AtMostOneTypedOccurrence" conditionalMatch="FrequencyRangeExactlyOne">
+												<IterateRoles match="preProjectionKeys" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
+											</Snippet>
 											<ConditionalSnippet>
-												<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
-												<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
-												<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
-												<Snippet ref="FrequencyRangeMinAndMax"/>
+												<Snippet ref="FrequencyTypedOccurrences" conditionalMatch="HasSinglePreProjectionKey"/>
+												<Snippet ref="FrequencyTypedCombinationOccurrences"/>
 												<SnippetReplacements>
-													<MinFrequencyValue/>
-													<MaxFrequencyValue/>
+													<IterateRoles match="preProjectionKeys" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
+													<ConditionalSnippet>
+														<Snippet ref="SelfReference" conditionalMatch="FrequencyRangeMinUnbounded"/>
+														<Snippet ref="FrequencyNotPopulatedOrRange"/>
+														<SnippetReplacements>
+															<ConditionalSnippet>
+																<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
+																<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+																<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+																<Snippet ref="FrequencyRangeMinAndMax"/>
+																<SnippetReplacements>
+																	<MinFrequencyValue/>
+																	<MaxFrequencyValue/>
+																</SnippetReplacements>
+															</ConditionalSnippet>
+														</SnippetReplacements>
+													</ConditionalSnippet>
 												</SnippetReplacements>
 											</ConditionalSnippet>
-										</Snippet>
-									</ConditionalReplacement>
+										</ConditionalReplacement>
+										<SequenceJoinPath>
+											<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
+												<Fact readingChoice="PreferPrimaryLeadReading">
+													<ProvidedPredicateReplacement match="included" quantify="false"/>
+													<ProvidedPredicateReplacement quantify="false"/>
+												</Fact>
+											</IterateRoles>
+										</SequenceJoinPath>
+									</SnippetReplacements>
+								</ConditionalSnippet>
+								<Snippet ref="ConditionalMultiLine">
+									<!-- UNDONE: This fallback case is not complete, but it gives us something when the join path is
+									not specified. -->
+									<SequenceJoinPath>
+										<IterateRoles match="constraintRoles" listStyle="CompoundList" uniqueFactType="true">
+											<Fact readingChoice="PreferPrimaryLeadReading">
+												<ProvidedPredicateReplacement match="included" quantify="false"/>
+												<ProvidedPredicateReplacement quantify="false"/>
+											</Fact>
+										</IterateRoles>
+									</SequenceJoinPath>
+									<Snippet ref="ContextCombinationOccurrence">
+										<ConditionalReplacement>
+											<Snippet ref="ExactlyOneUntypedOccurrence" conditionalMatch="FrequencyRangeExactlyOne"/>
+											<Snippet ref="FrequencyUntypedOccurrences">
+												<ConditionalSnippet>
+													<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
+													<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+													<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+													<Snippet ref="FrequencyRangeMinAndMax"/>
+													<SnippetReplacements>
+														<MinFrequencyValue/>
+														<MaxFrequencyValue/>
+													</SnippetReplacements>
+												</ConditionalSnippet>
+											</Snippet>
+										</ConditionalReplacement>
+									</Snippet>
 								</Snippet>
-							</Snippet>
+							</ConditionalReplacement>
 						</Snippet>
 					</Snippet>
 				</ConstrainedRoles>

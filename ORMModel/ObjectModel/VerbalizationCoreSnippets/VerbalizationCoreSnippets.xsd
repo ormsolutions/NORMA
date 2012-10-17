@@ -140,11 +140,6 @@
 						<xs:documentation>Description: Used for 'exactly one' before an object name to signify the quantity may only be one.  Format: exactly one {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="EachInstanceQuantifier">
-					<xs:annotation>
-						<xs:documentation>Description: Verbalizes an instance of the specified object may occur at most one time.  Format: each instance of {0} occurs only once</xs:documentation>
-					</xs:annotation>
-				</xs:enumeration>
 				<xs:enumeration value="ForEachCompactQuantifier">
 					<xs:annotation>
 						<xs:documentation>Description: Verbalizes for each instance of an object, some rule applies to those instances.  Format: for each {0}, {1}</xs:documentation>
@@ -205,9 +200,14 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
 						<xs:documentation>Description: Verbalizes uniqueness of a combination.  Format: {0} combination is unique</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="ExistenceImplicationOperator">
+				<xs:enumeration value="SingularExistenceImplicationOperator">
 					<xs:annotation>
-						<xs:documentation>Description: Verbalizes an existence condition and a consequent.  Format: there is {0} such that {1}</xs:documentation>
+						<xs:documentation>Description: Verbalizes an existence condition for a single item and a consequent.  Format: there is {0} such that {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="PluralExistenceImplicationOperator">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes an existence condition for a multiple items and a consequent.  Format: there are {0} such that {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MoreThanOneQuantifier">
@@ -971,10 +971,22 @@ Format: each {0} in the population of {1} occurs there {2} times</xs:documentati
 Format: {1} instances of {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="FrequencyTypedCombinationOccurrences">
+					<xs:annotation>
+						<xs:documentation>Description: Used to specify an instance count or range for a combination of object types.
+Format: {1} combinations of {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="FrequencyUntypedOccurrences">
 					<xs:annotation>
 						<xs:documentation>Description: Used to specify an instance count or range using an untyped occurrence phrase
 Format: {0} times</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FrequencyNotPopulatedOrRange">
+					<xs:annotation>
+						<xs:documentation>Description: Combined with a frequency range to indicate that a frequency constraint with a lower bound does not imply existence.
+Format: either no, or {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FrequencyRangeExact">
