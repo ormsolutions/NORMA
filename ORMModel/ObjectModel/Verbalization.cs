@@ -2007,6 +2007,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// The option name to determine how object type names are displayed.
 		/// </summary>
 		public const string ObjectTypeNameDisplay = "ObjectTypeNameDisplay";
+		/// <summary>
+		/// The option to determine which separator characters are turned into spaces
+		/// when the name display separates combined names.
+		/// </summary>
+		public const string RemoveObjectTypeNameCharactersOnSeparate = "RemoveObjectTypeNameCharactersOnSeparate";
 	}
 	#endregion // CoreVerbalizationOption class
 	#region VerbalizationHelper class
@@ -2654,10 +2659,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						while (match.Success)
 						{
 							string matchText = match.Value;
-							if (match.Groups["TrailingUpper"].Success)
+							GroupCollection groups = match.Groups;
+							if (groups["TrailingUpper"].Success)
 							{
 								sb.Append(matchText);
 								makeLower = false;
+							}
+							else if (groups["PunctuationOrSymbol"].Success)
+							{
+								sb.Append(matchText);
+								// Leave the upper/lower state alone until we see something other than a symbol
 							}
 							else if (makeLower)
 							{
@@ -2675,7 +2686,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case ObjectTypeNameVerbalizationStyle.SeparateCombinedNames:
 					if (Utility.IsMultiPartName(originalName))
 					{
-						bool first = true;
+						string removeSeparatedCharacters = (string)verbalizationOptions[CoreVerbalizationOption.RemoveObjectTypeNameCharactersOnSeparate];
+						if (removeSeparatedCharacters != null && removeSeparatedCharacters.Length == 0)
+						{
+							removeSeparatedCharacters = null;
+						}
+						bool spacePending = false;
 						StringBuilder sb = new StringBuilder();
 						Match match = Utility.MatchNameParts(originalName);
 						while (match.Success)
@@ -2685,26 +2701,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (groups["TrailingUpper"].Success)
 							{
 								// Multiple caps, leave as is
-								if (!first)
+								if (spacePending)
 								{
 									sb.Append(" ");
 								}
 								sb.Append(matchText);
+								spacePending = true;
+							}
+							else if (groups["PunctuationOrSymbol"].Success)
+							{
+								// This returns a single symbol. Either append it or do nothing
+								// and leav the space pending setting untouched.
+								if (removeSeparatedCharacters == null || !removeSeparatedCharacters.Contains(matchText))
+								{
+									sb.Append(matchText);
+									spacePending = false;
+								}
 							}
 							else if (groups["Numeric"].Success)
 							{
-								// No space, no casing
+								// No space added, no casing
 								sb.Append(matchText);
+								spacePending = true;
 							}
 							else
 							{
-								if (!first)
+								if (spacePending)
 								{
 									sb.Append(" ");
 								}
 								sb.Append(Utility.LowerCaseFirstLetter(matchText));
+								spacePending = true;
 							}
-							first = false;
 							match = match.NextMatch();
 						}
 						return sb.ToString();
@@ -3212,12 +3240,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Render a list of equivalent variables
 		/// </summary>
 		/// <param name="equivalentVariableKeys">A list of variable keys to render as equivalent.</param>
+		/// <param name="renderingOptions">Rendering options to apply to keyed variables.</param>
+		/// <param name="pairingSnippet">A snippet type used to combined paired variables, or -1 for the default equality list.</param>
 		/// <param name="pathContext">The path use context these keys apply to.</param>
 		/// <param name="rendererContext">The rendering context. Used to retrieve variable names.</param>
 		/// <param name="builder">A <see cref="StringBuilder"/> for scratch strings. Return
 		/// to original position on exit.</param>
 		/// <returns>Formatted string of the equivalence.</returns>
-		string RenderVariableEquivalence(IList<object> equivalentVariableKeys, object pathContext, IRolePathRendererContext rendererContext, StringBuilder builder);
+		string RenderVariableEquivalence(IList<object> equivalentVariableKeys, RolePathRolePlayerRenderingOptions renderingOptions, CoreVerbalizationSnippetType pairingSnippet, object pathContext, IRolePathRendererContext rendererContext, StringBuilder builder);
 		/// <summary>
 		/// Render a constant value
 		/// </summary>
@@ -3604,27 +3634,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return RenderCalculation(calculation, pathContext, rendererContext, builder);
 		}
-		private string RenderVariableEquivalence(IList<object> equivalentVariableKeys, object pathContext, IRolePathRendererContext rendererContext, StringBuilder builder)
+		private string RenderVariableEquivalence(IList<object> equivalentVariableKeys, RolePathRolePlayerRenderingOptions renderingOptions, CoreVerbalizationSnippetType pairingSnippet, object pathContext, IRolePathRendererContext rendererContext, StringBuilder builder)
 		{
 			int restoreBuilder = builder.Length;
 			int varCount = equivalentVariableKeys.Count;
-			for (int i = 0; i < varCount; ++i)
+			if (pairingSnippet != (CoreVerbalizationSnippetType)(-1) &&
+				varCount == 2)
 			{
-				if (i != 0)
-				{
-					builder.Append(" = ");
-				}
-				// UNDONE: Consider adding a sorting mechanism based on name then subscript for ensuring that
-				// the variables in this list are consistently ordered.
-				builder.Append(rendererContext.RenderAssociatedRolePlayer(equivalentVariableKeys[i], null, RolePathRolePlayerRenderingOptions.None));
+				return string.Format(myFormatProvider, myCoreSnippets.GetSnippet(pairingSnippet), rendererContext.RenderAssociatedRolePlayer(equivalentVariableKeys[0], null, renderingOptions), rendererContext.RenderAssociatedRolePlayer(equivalentVariableKeys[1], null, renderingOptions));
 			}
-			string result = builder.ToString(restoreBuilder, builder.Length - restoreBuilder);
-			builder.Length = restoreBuilder;
-			return result;
+			else
+			{
+				for (int i = 0; i < varCount; ++i)
+				{
+					if (i != 0)
+					{
+						builder.Append(" = ");
+					}
+					// UNDONE: Consider adding a sorting mechanism based on name then subscript for ensuring that
+					// the variables in this list are consistently ordered.
+					builder.Append(rendererContext.RenderAssociatedRolePlayer(equivalentVariableKeys[i], null, renderingOptions));
+				}
+				string result = builder.ToString(restoreBuilder, builder.Length - restoreBuilder);
+				builder.Length = restoreBuilder;
+				return result;
+			}
 		}
-		string IRolePathRenderer.RenderVariableEquivalence(IList<object> equivalentVariableKeys, object pathContext, IRolePathRendererContext rendererContext, StringBuilder builder)
+		string IRolePathRenderer.RenderVariableEquivalence(IList<object> equivalentVariableKeys, RolePathRolePlayerRenderingOptions renderingOptions, CoreVerbalizationSnippetType pairingSnippet, object pathContext, IRolePathRendererContext rendererContext, StringBuilder builder)
 		{
-			return RenderVariableEquivalence(equivalentVariableKeys, pathContext, rendererContext, builder);
+			return RenderVariableEquivalence(equivalentVariableKeys, renderingOptions, pairingSnippet, pathContext, rendererContext, builder);
 		}
 		private string RenderParameter(object pathContext, CalculatedPathValueInput calculatedValueInput, FunctionParameter parameter, RolePathNode[] aggregationContext, IRolePathRendererContext rendererContext, StringBuilder builder)
 		{
@@ -5038,6 +5076,43 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			VariableEquivalence,
 		}
 		#endregion // VerbalizationPlanNodeType enum
+		#region IVariableEquivalenceQuantified interface
+		/// <summary>
+		/// Implement on the variable list associated with a VariableEquivalence node
+		/// to quantify the listed variables.
+		/// </summary>
+		private interface IVariableEquivalenceQuantified
+		{
+		}
+		#endregion /// IVariableEquivalenceQuantified interface
+		#region IVariableEquivalenceIdentifiedBy interface
+		/// <summary>
+		/// Implement on the variable list associated with a VariableEquivalence node
+		/// to use an 'is identified by' snippet instead of an equality list. Applies
+		/// to variable lists with exactly two nodes and the first identified by the
+		/// second.
+		/// </summary>
+		private interface IVariableEquivalenceIdentifiedBy : IVariableEquivalenceQuantified
+		{
+		}
+		#endregion // IVariableEquivalenceIdentifiedBy interface
+		#region VariableEquivalenceIdentifiedByImpl class
+		/// <summary>
+		/// A helper class to implement <see cref="IVariableEquivalenceIdentifiedBy"/>
+		/// </summary>
+		private class VariableEquivalenceIdentifiedByImpl : List<object>, IVariableEquivalenceIdentifiedBy
+		{
+			/// <summary>
+			/// Create a new <see cref="VariableEquivalenceIdentifiedByImpl"/> instance with identified
+			/// and identifying keys.
+			/// </summary>
+			public VariableEquivalenceIdentifiedByImpl(object identifiedKey, object identifiedByKey)
+			{
+				this.Add(identifiedKey);
+				this.Add(identifiedByKey);
+			}
+		}
+		#endregion // VariableEquivalenceIdentifiedByImpl class
 		#region VerbalizationPlanBranchType enum
 		private enum VerbalizationPlanBranchType
 		{
@@ -10285,7 +10360,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						renderer.GetSnippet((negateExistence && variableUse.PrimaryRolePlayerVariable.HasBeenUsed(CurrentQuantificationUsePhase, true)) ? CoreVerbalizationSnippetType.NegatedVariableExistence : CoreVerbalizationSnippetType.VariableExistence),
 						QuantifyVariableUse(variableUse, node.PathContext, negateExistence, false, default(VerbalizationHyphenBinder), -1));
 				case VerbalizationPlanNodeType.VariableEquivalence:
-					return renderer.RenderVariableEquivalence(node.EquivalentVariableKeys, node.PathContext, this, builder);
+					IList<object> equivalentKeys = node.EquivalentVariableKeys;
+					return renderer.RenderVariableEquivalence(equivalentKeys, equivalentKeys is IVariableEquivalenceQuantified ? RolePathRolePlayerRenderingOptions.Quantify : RolePathRolePlayerRenderingOptions.None, equivalentKeys is IVariableEquivalenceIdentifiedBy ? CoreVerbalizationSnippetType.IsIdentifiedBy : (CoreVerbalizationSnippetType)(-1), node.PathContext, this, builder);
 				case VerbalizationPlanNodeType.FloatingRootVariableContext:
 					// There will always be exactly one child node link at this point
 					childNodeLink = node.FirstChildNode;
@@ -10971,6 +11047,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (!correlationNode.IsEmpty)
 						{
 							object correlationKey = cache.GetCorrelationRoot(correlationNode);
+							ObjectType objectType = correlationNode.ObjectType;
+							if (objectType != null)
+							{
+								bool correlatedWithValueType = objectType.IsValueType;
+								if (null != (objectType = role.RolePlayer) &&
+									correlatedWithValueType != objectType.IsValueType)
+								{
+									// Add an 'identified by' equivalence node
+									if (equalRolePairings == null)
+									{
+										(retVal ?? (retVal = new Dictionary<LeadRolePath, IList<IList<object>>>()))[rolePath] = equalRolePairings = new List<IList<object>>();
+										equalRolePairings.Add(new VariableEquivalenceIdentifiedByImpl(correlatedWithValueType ? roleKey : correlationKey, correlatedWithValueType ? correlationKey : roleKey));
+									}
+								}
+							}
 							List<object> equalRolePairing = null;
 							for (int j = i + 1; j < roleProjectionCount; ++j)
 							{
@@ -11103,6 +11194,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								if (!correlationNode.IsEmpty)
 								{
 									object correlationKey = cache.GetCorrelationRoot(correlationNode);
+									ObjectType objectType = correlationNode.ObjectType;
+									if (objectType != null)
+									{
+										bool correlatedWithValueType = objectType.IsValueType;
+										if (null != (objectType = parameter.ParameterType) &&
+											correlatedWithValueType != objectType.IsValueType)
+										{
+											// Add an 'identified by' equivalence node
+											if (equalRolePairings == null)
+											{
+												(retVal ?? (retVal = new Dictionary<LeadRolePath, IList<IList<object>>>()))[rolePath] = equalRolePairings = new List<IList<object>>();
+												equalRolePairings.Add(new VariableEquivalenceIdentifiedByImpl(correlatedWithValueType ? parameterKey : correlationKey, correlatedWithValueType ? correlationKey : parameterKey));
+											}
+										}
+									}
 									List<object> equalRolePairing = null;
 									for (int j = i + 1; j < parameterBindingCount; ++j)
 									{
@@ -11741,6 +11847,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (!correlateProjectedRoles && !correlationNode.IsEmpty)
 							{
 								object correlationKey = cache.GetCorrelationRoot(correlationNode);
+								ObjectType objectType = correlationNode.ObjectType;
+								if (objectType != null)
+								{
+									bool correlatedWithValueType = objectType.IsValueType;
+									if (null != (objectType = constraintRole.Role.RolePlayer) &&
+										correlatedWithValueType != objectType.IsValueType)
+									{
+										// Add an 'identified by' equivalence node
+										if (equalRolePairings == null)
+										{
+											(retVal ?? (retVal = new Dictionary<LeadRolePath, IList<IList<object>>>()))[projection.RolePath] = equalRolePairings = new List<IList<object>>();
+											equalRolePairings.Add(new VariableEquivalenceIdentifiedByImpl(correlatedWithValueType ? constraintRole : correlationKey, correlatedWithValueType ? correlationKey : constraintRole));
+										}
+									}
+								}
 								List<object> equalRolePairing = null;
 								for (int j = i + 1; j < constraintRoleProjectionCount; ++j)
 								{

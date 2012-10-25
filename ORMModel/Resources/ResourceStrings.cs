@@ -413,6 +413,14 @@ namespace ORMSolutions.ORMArchitect.Core
 		/// </summary>
 		public const string OptionsPagePropertyVerbalizationObjectTypeNameDisplayDisplayNameId = "OptionsPage.Property.VerbalizationObjectTypeNameDisplay.DisplayName";
 		/// <summary>
+		/// Description of the Remove Object Type Name Characters On Separate Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyVerbalizationRemoveObjectTypeNameCharactersOnSeparateDescriptionId = "OptionsPage.Property.VerbalizationRemoveObjectTypeNameCharactersOnSeparate.Description";
+		/// <summary>
+		/// Display Name of the Remove Object Type Name Characters On Separatey Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyVerbalizationRemoveObjectTypeNameCharactersOnSeparateDisplayNameId = "OptionsPage.Property.VerbalizationRemoveObjectTypeNameCharactersOnSeparate.DisplayName";
+		/// <summary>
 		/// Description of the show debug commands option
 		/// </summary>
 		public const string OptionsPagePropertyShowDebugCommandsDescriptionId = "OptionsPage.Property.ShowDebugCommands.Description";

@@ -279,6 +279,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="LogicalAndOperator"><![CDATA[{0}<span class="logicalOperator"> and </span>{1}]]></Snippet>
 			<Snippet type="SameTypeIdentityInequalityOperator"><![CDATA[{0}<span class="logicalOperator"> is not </span>{1}]]></Snippet>
 			<Snippet type="CompatibleTypesIdentityInequalityOperator"><![CDATA[<span class="logicalOperator">that </span>{0}<span class="logicalOperator"> is not that </span>{1}]]></Snippet>
+			<Snippet type="IsIdentifiedBy"><![CDATA[{0}<span class="quantifier"> is identified by </span>{1}]]></Snippet>
 			<Snippet type="Acyclicity"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more traversals through </span>{1}]]></Snippet>
 			<Snippet type="AcyclicityWithRoleNumbers"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more instances of the role pair:</span><br/><span class="smallIndent"><span class="quantifier">roles <span class="objectType">{2}</span> and <span class="objectType">{3}</span> of </span>{1}</span>]]></Snippet>
 			<Snippet type="StronglyIntransitiveConsequent"><![CDATA[<span class="quantifier">it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</span>]]></Snippet>

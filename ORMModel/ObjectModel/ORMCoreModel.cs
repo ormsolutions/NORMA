@@ -282,6 +282,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					new VerbalizationOptionData(CoreVerbalizationOption.ShowDefaultConstraint, typeof(bool), true),
 					new VerbalizationOptionData(CoreVerbalizationOption.FactTypesWithObjectType, typeof(bool), true),
 					new VerbalizationOptionData(CoreVerbalizationOption.ObjectTypeNameDisplay, typeof(ObjectTypeNameVerbalizationStyle), ObjectTypeNameVerbalizationStyle.AsIs),
+					new VerbalizationOptionData(CoreVerbalizationOption.RemoveObjectTypeNameCharactersOnSeparate, typeof(string), ".:_"),
 				};
 			}
 			#endregion // IVerbalizationOptionProvider implementation

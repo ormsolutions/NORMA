@@ -683,6 +683,14 @@
     <value xml:space="preserve">Object Type Name Display</value>
     <comment xml:space="preserve">The display name of the Object Type Name Display Verbalization option.</comment>
   </data>
+  <data name="OptionsPage.Property.VerbalizationRemoveObjectTypeNameCharactersOnSeparate.Description">
+    <value xml:space="preserve">If an object type name is automatically separated, which punctuation and symbol characters should be replaced with spaces in the separated name?</value>
+    <comment xml:space="preserve">The description of the Remove Object Type Name Characters On Separate option.</comment>
+  </data>
+  <data name="OptionsPage.Property.VerbalizationRemoveObjectTypeNameCharactersOnSeparate.DisplayName">
+    <value xml:space="preserve">Object Type Name Removed Characters</value>
+    <comment xml:space="preserve">The display name of the Remove Object Type Name Characters On Separate option.</comment>
+  </data>
   <data name="OptionsPage.Property.CustomVerbalizationSnippets.Description">
     <value xml:space="preserve">Choose alternate verbalization text patterns for the core model and extension packages.</value>
     <comment xml:space="preserve">The custom verbalization snippets property description.</comment>

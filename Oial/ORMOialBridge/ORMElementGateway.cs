@@ -132,6 +132,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 								}
 							}
 						}
+						Objectification objectification;
+						if (null != (objectification = objectType.Objectification) &&
+							!ShouldConsiderFactType(objectification.NestedFactType, null, false))
+						{
+							return false;
+						}
 					}
 					else if (!objectType.IsValueType)
 					{

@@ -12238,7 +12238,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_52A37F5B-1E80-4FCB-802E-AA9FA4315D0D" AlgorithmVersion="1.008">
 				<ormtooial:AbstractionModel ref="_AFA60651-CCAD-47F2-B397-70E5855BF20B" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_CD0EC594-EDEA-44FC-9593-1DE35929D199" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.012">
+			<oialtocdb:SchemaGenerationSetting id="_CD0EC594-EDEA-44FC-9593-1DE35929D199" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.014">
 				<oialtocdb:Schema ref="_1CA1A0E5-2553-4907-AC75-1850287F4A51" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -13255,7 +13255,7 @@
 					<ormDiagram:Role ref="_57F1134B-0D16-47A7-95A1-6E5D60B38887" />
 				</ormDiagram:RoleDisplayOrder>
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:RingConstraintShape AbsoluteBounds="2.5048500794728596, 2.2916667461395264, 0.21280000000000002, 0.21280000000000002" IsExpanded="true" id="_8792DEAA-D167-4EE9-B27F-D5D893C13594">
+			<ormDiagram:RingConstraintShape IsExpanded="true" id="_8792DEAA-D167-4EE9-B27F-D5D893C13594" AbsoluteBounds="2.5045834129728597, 2.2914000796395264, 0.213333333, 0.213333333">
 				<ormDiagram:Subject ref="_283D43A8-9483-416D-BA05-41682882ABCE" />
 			</ormDiagram:RingConstraintShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="2.4523395818938143, 1.3871419154418012, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_054BCBC6-0839-4E82-B88C-72FD4381FC46">
@@ -13288,7 +13288,7 @@
 					<ormDiagram:Role ref="_CC9BDEEB-CA75-42CB-9E93-4EAF71381BB7" />
 				</ormDiagram:RoleDisplayOrder>
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_74484D24-C753-4470-9FE7-DD898C99B8DC" AbsoluteBounds="6.6711374366316605, 4.9757966441118731, 0.36792931973934173, 0.35900605320930479">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_74484D24-C753-4470-9FE7-DD898C99B8DC" AbsoluteBounds="6.6554954791102219, 4.9757966441118731, 0.36792931973934173, 0.35900605320930479">
 				<ormDiagram:Subject ref="_BF67C6CA-E387-4F0B-A2AC-93600F0D302D" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:ObjectTypeShape AbsoluteBounds="9.0383911033471414, 4.416666666666667, 0.38558881998062133, 0.22950302660465241" IsExpanded="true" id="_C0D4870E-49E4-4FEC-A918-378483E49447">
@@ -13724,7 +13724,7 @@
 					<ormDiagram:Role ref="_435165C1-0EFF-4F69-9812-8379523D1629" />
 				</ormDiagram:RoleDisplayOrder>
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_4F9BE8C5-D502-4D5B-AEE8-D17BB96D5E28" AbsoluteBounds="5.2110507199429232, 2.1179076997876249, 0.36792931973934173, 0.35900605320930479">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_4F9BE8C5-D502-4D5B-AEE8-D17BB96D5E28" AbsoluteBounds="5.2110507199429232, 2.1179076997876249, 0.35045970499515533, 0.35900605320930479">
 				<ormDiagram:Subject ref="_D29F2E60-0F0A-4332-A35C-48880349E04A" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:ExternalConstraintShape AbsoluteBounds="3.291666666666667, 2.9252718246125839, 0.16, 0.16" IsExpanded="true" id="_9C55B9CD-1B6D-40D1-A223-52FDD057B37C">
@@ -13847,7 +13847,7 @@
 			<ormDiagram:ModelNoteShape AbsoluteBounds="8.9583333333333321, 1.0624998410542816, 3.4892138595581055, 3.6620110626220703" IsExpanded="true" id="_643C1B36-9FD4-451B-AB76-265B668878C7">
 				<ormDiagram:Subject ref="_87FC3A62-4EA1-4A28-9EBD-B7AF22281542" />
 			</ormDiagram:ModelNoteShape>
-			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_FFBDE189-4551-48E6-8841-0BE7743D2C98" AbsoluteBounds="0.55, 2.9166666666666665, 0.36792931973934173, 0.35900605320930479">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_FFBDE189-4551-48E6-8841-0BE7743D2C98" AbsoluteBounds="0.53435804247856145, 2.9166666666666665, 0.36792931973934173, 0.35900605320930479">
 				<ormDiagram:Subject ref="_BF67C6CA-E387-4F0B-A2AC-93600F0D302D" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="1.2404068631114384, 4.3683482688295738, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_3907A292-E3C2-4D56-9BB6-F440E18636F7">
@@ -14002,7 +14002,7 @@
 	</ormDiagram:ORMDiagram>
 	<ormDiagram:ORMDiagram BaseFontName="Tahoma" BaseFontSize="0.0972222238779068" IsCompleteView="false" Name="Calendars" id="_D84A6322-784D-4ABF-8833-43E238216E23">
 		<ormDiagram:Shapes>
-			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_5FDDC53F-2E0E-444E-B340-3A9A3D695454" AbsoluteBounds="1.8480990881721171, 4.889889664129524, 0.36792931973934173, 0.35900605320930479">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_5FDDC53F-2E0E-444E-B340-3A9A3D695454" AbsoluteBounds="1.8480990881721171, 4.889889664129524, 0.35045970499515533, 0.35900605320930479">
 				<ormDiagram:Subject ref="_D29F2E60-0F0A-4332-A35C-48880349E04A" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="4.2033140928070791, 2.6192643942068141, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_7EAD1D8A-707D-4F5C-AED8-FE072D4FA370">
@@ -14518,7 +14518,7 @@
 					<ormDiagram:Role ref="_2FC3B1D9-753A-464D-BBC5-715B486CCA8E" />
 				</ormDiagram:RoleDisplayOrder>
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_13D5ABD9-5017-4F78-B108-F5B415643955" AbsoluteBounds="5.5106186734636626, 4.8437500198682137, 0.36792931973934173, 0.35900605320930479">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_13D5ABD9-5017-4F78-B108-F5B415643955" AbsoluteBounds="5.494976715942224, 4.8437500198682137, 0.36792931973934173, 0.35900605320930479">
 				<ormDiagram:Subject ref="_BF67C6CA-E387-4F0B-A2AC-93600F0D302D" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:ObjectTypeShape AbsoluteBounds="5.9707152438163753, 1.5275449828759802, 0.46856951236724853, 0.35900605320930479" IsExpanded="true" id="_FD2D719F-5D8A-4EC4-A674-C7AECB594AD7">
@@ -14536,7 +14536,7 @@
 					<ormDiagram:Role ref="_4EF1BF3A-A509-4104-A2A7-56E67D64C32C" />
 				</ormDiagram:RoleDisplayOrder>
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:RingConstraintShape AbsoluteBounds="6.0465166666666672, 0.55208333333333393, 0.21280000000000002, 0.21280000000000002" IsExpanded="true" id="_D8F83D20-D7D5-4AAE-8738-76E6053F958F">
+			<ormDiagram:RingConstraintShape IsExpanded="true" id="_D8F83D20-D7D5-4AAE-8738-76E6053F958F" AbsoluteBounds="6.0462500001666672, 0.551816666833334, 0.213333333, 0.213333333">
 				<ormDiagram:Subject ref="_830228F6-C6F3-4C68-ACD5-0D2C6E852FEA" />
 			</ormDiagram:RingConstraintShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="4.3269523174088267, 4.2413086019766828, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_8F8EFA9F-B13A-40AC-80B1-FD4FB61B8B20">
@@ -14554,7 +14554,7 @@
 			<ormDiagram:ObjectTypeShape AbsoluteBounds="5.3592311533292136, 4.2187500198682146, 0.67070436000823974, 0.35900605320930479" IsExpanded="true" id="_F41D26F1-D8D6-47EA-8E77-833DAFDDC3DE">
 				<ormDiagram:Subject ref="_53341504-72D2-455D-896B-4E33C7573BA6" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:RingConstraintShape AbsoluteBounds="3.5048499205271404, 4.4270833333333321, 0.21280000000000002, 0.21280000000000002" IsExpanded="true" id="_6F1041F9-C149-4421-A2F1-F676ADF98021">
+			<ormDiagram:RingConstraintShape IsExpanded="true" id="_6F1041F9-C149-4421-A2F1-F676ADF98021" AbsoluteBounds="3.5045832540271404, 4.4268166668333322, 0.213333333, 0.213333333">
 				<ormDiagram:Subject ref="_340ABFAC-9015-43AA-89AD-57E0A313AEF6" />
 			</ormDiagram:RingConstraintShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="2.4791666666666656, 3.5850586019766828, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_69EB7FB0-C3BD-4102-9DDD-588CE43692F6">
@@ -15456,18 +15456,18 @@
 				<rcd:Tables>
 					<rcd:Table Name="User" id="_322F3337-C1FC-4AD5-A70E-513C32A78F65">
 						<rcd:Columns>
-							<rcd:Column IsNullable="true" id="_2CC5EBE6-7AAF-462F-9141-D2990AF446B7" Name="isActive" />
-							<rcd:Column Name="givenName" id="_41C4D3B9-CB6A-449A-B627-A26BD71870C2" />
-							<rcd:Column Name="surname" id="_C46990D5-2190-4D3D-99F2-F0082D0C24AD" />
-							<rcd:Column Name="emailAddress" id="_69E3B8A4-848B-4BCE-8D7C-9D7E09ADAC87" />
-							<rcd:Column Name="instant" id="_7D114F7D-F5F3-41DB-B7BA-FEBABEA7D78C" />
-							<rcd:Column Name="userName" id="_26C75F94-0D8D-4646-9586-735B919B567A" />
-							<rcd:Column Name="password" id="_CA44951D-CE5F-436C-9A22-1860286323B6" />
-							<rcd:Column Name="salt" id="_425F9B4C-542A-486E-BC6B-61975A4D9786" />
-							<rcd:Column Name="personalDescription" id="_12AB8EB8-893F-4EFA-9639-621E5C64A82C" />
-							<rcd:Column Name="autobiography" id="_C182B660-CE52-4B1A-8BBA-1A8F4FD06CD9" />
 							<rcd:Column id="_BA5CBA0A-9D65-418D-88E6-7E8D5601C17D" Name="userId" />
+							<rcd:Column Name="autobiography" id="_C182B660-CE52-4B1A-8BBA-1A8F4FD06CD9" />
+							<rcd:Column Name="emailAddress" id="_69E3B8A4-848B-4BCE-8D7C-9D7E09ADAC87" />
+							<rcd:Column Name="givenName" id="_41C4D3B9-CB6A-449A-B627-A26BD71870C2" />
+							<rcd:Column Name="instant" id="_7D114F7D-F5F3-41DB-B7BA-FEBABEA7D78C" />
+							<rcd:Column Name="password" id="_CA44951D-CE5F-436C-9A22-1860286323B6" />
+							<rcd:Column Name="personalDescription" id="_12AB8EB8-893F-4EFA-9639-621E5C64A82C" />
+							<rcd:Column Name="salt" id="_425F9B4C-542A-486E-BC6B-61975A4D9786" />
+							<rcd:Column Name="surname" id="_C46990D5-2190-4D3D-99F2-F0082D0C24AD" />
+							<rcd:Column Name="userName" id="_26C75F94-0D8D-4646-9586-735B919B567A" />
 							<rcd:Column IsNullable="true" id="_C527527E-BEBA-45AC-95A2-E171938E829F" Name="organizationUserOrStaffBlogId" />
+							<rcd:Column IsNullable="true" id="_2CC5EBE6-7AAF-462F-9141-D2990AF446B7" Name="isActive" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint Name="User_UC1" id="_F6C8C82D-CA91-498C-8C63-4F9E79BCDA21">
@@ -15494,10 +15494,10 @@
 					</rcd:Table>
 					<rcd:Table Name="Organization" id="_17311BA8-A4CF-4E26-A553-D02C88ACE577">
 						<rcd:Columns>
-							<rcd:Column Name="organizationName" id="_D618CC5A-9815-4513-8963-4028F45AF2C4" />
-							<rcd:Column Name="organizationDescription" id="_B5ECC303-DFDB-4C6E-A1D8-06213B80D98B" />
-							<rcd:Column Name="organizationTypeName" id="_C6037AE7-49AB-4FB1-B509-2D231306E3D9" />
 							<rcd:Column Name="organizationId" id="_4D59E71A-C4A7-4E46-82D2-82B7DA4AA1D7" />
+							<rcd:Column Name="organizationDescription" id="_B5ECC303-DFDB-4C6E-A1D8-06213B80D98B" />
+							<rcd:Column Name="organizationName" id="_D618CC5A-9815-4513-8963-4028F45AF2C4" />
+							<rcd:Column Name="organizationTypeName" id="_C6037AE7-49AB-4FB1-B509-2D231306E3D9" />
 							<rcd:Column IsNullable="true" Name="nonStudentGroupBlogId" id="_1DF7E4E8-7BDC-4C90-9326-528DCF49AC60" />
 							<rcd:Column IsNullable="true" Name="nonStudentGroupForumId" id="_58D1050A-760B-4A26-8D0B-E243B7A94D53" />
 							<rcd:Column IsNullable="true" Name="nonStudentCommitteeTeacherId" id="_E794023E-CC42-4D22-BD56-6DC51EB8C1D6" />
@@ -15548,8 +15548,8 @@
 							<rcd:Column Name="newsArticleId" id="_D34B5F37-DA24-4C4D-BAC3-94AD1BEB2BC5" />
 							<rcd:Column Name="newsStatus" id="_46831DEB-CD98-4C3A-9592-F798C6261AC2" />
 							<rcd:Column Name="organizationUserOrStaffId" id="_C77F5D3B-FCCA-4607-94FE-64D0D1177083" />
-							<rcd:Column IsNullable="true" Name="studentCommitteeOrLearningTeamId" id="_15D5CB37-6AD0-4DDF-AA13-DFAB15DD2C8C" />
 							<rcd:Column IsNullable="true" Name="approvedNewsArticleTeacherOrAdministratorId" id="_EE5B4551-AB8F-441E-8F27-43BFDFF8F25F" />
+							<rcd:Column IsNullable="true" Name="studentCommitteeOrLearningTeamId" id="_15D5CB37-6AD0-4DDF-AA13-DFAB15DD2C8C" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="NewsArticle_PK" id="_BABDE8E2-308D-4D6A-B5A3-0A21226DA229">
@@ -15604,12 +15604,12 @@
 					<rcd:Table Name="Message" id="_6849825F-2520-41D8-A315-00209DCD74FD">
 						<rcd:Columns>
 							<rcd:Column Name="messageId" id="_725C6320-092F-4E03-83F4-3283BCF64F4F" />
-							<rcd:Column Name="messageSubject" id="_8EBB03F6-A3A6-4EA6-87F8-23A667157928" />
-							<rcd:Column Name="messageBody" id="_BDAD8282-3C0F-49FB-A2BA-71A7D7403DEC" />
 							<rcd:Column Name="instant" id="_8B2B136F-555E-4F38-B107-CC11A2D7BE90" />
+							<rcd:Column Name="messageBody" id="_BDAD8282-3C0F-49FB-A2BA-71A7D7403DEC" />
+							<rcd:Column Name="messageSubject" id="_8EBB03F6-A3A6-4EA6-87F8-23A667157928" />
+							<rcd:Column Name="sentFolderId" id="_3A4C1055-AE19-462F-8A39-13B5527847A4" />
 							<rcd:Column Name="userId" id="_028CEA6B-BE92-4C47-89EF-C33F39CCFACD" />
 							<rcd:Column IsNullable="true" Name="isInReplyToMessageId" id="_749BC0A8-7640-43B1-9047-1AE4C9C88F9D" />
-							<rcd:Column Name="sentFolderId" id="_3A4C1055-AE19-462F-8A39-13B5527847A4" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="Message_PK" id="_4ABA8547-9B43-4C97-9C99-7832AE97EE6A">
@@ -15642,11 +15642,11 @@
 					</rcd:Table>
 					<rcd:Table Name="ReceivedMessage" id="_211C6600-C625-4655-A23E-988B96A53DC1">
 						<rcd:Columns>
-							<rcd:Column IsNullable="true" Name="isDeleted" id="_D9032CD3-8C91-4A20-9EA5-4A686046E40B" />
-							<rcd:Column IsNullable="true" Name="isUnread" id="_88ADF087-5918-4B3E-B82C-8EC4560B364F" />
 							<rcd:Column Name="messageId" id="_91B269F3-E834-4497-985F-2E8161582E9C" />
 							<rcd:Column Name="userId" id="_2359D1B7-E056-4927-9192-10198B65D9D8" />
 							<rcd:Column Name="inboxFolderId" id="_FD08ED10-BF9D-4273-A000-06155D22EA3E" />
+							<rcd:Column IsNullable="true" Name="isDeleted" id="_D9032CD3-8C91-4A20-9EA5-4A686046E40B" />
+							<rcd:Column IsNullable="true" Name="isUnread" id="_88ADF087-5918-4B3E-B82C-8EC4560B364F" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="ReceivedMessage_PK" id="_7E0B46BE-416F-4C57-8B32-31D39836524E">
@@ -15680,8 +15680,8 @@
 					</rcd:Table>
 					<rcd:Table Name="StudentMember" id="_D63B1A8E-22D0-496C-ADCE-729997514C56">
 						<rcd:Columns>
-							<rcd:Column Name="studentId" id="_7123CB47-C1A5-4360-AE04-296202C7E1D9" />
 							<rcd:Column Name="organizationId" id="_3A4D2806-19F1-47F5-A308-5C6BDA378917" />
+							<rcd:Column Name="studentId" id="_7123CB47-C1A5-4360-AE04-296202C7E1D9" />
 							<rcd:Column IsNullable="true" Name="projectStudentMemberOwnsProject" id="_9ACD7447-8E6B-4F1E-8E8D-16CCCADB2BB0" />
 						</rcd:Columns>
 						<rcd:Constraints>
@@ -15760,8 +15760,8 @@
 						<rcd:Columns>
 							<rcd:Column Name="taskAssignmentId" id="_F1F28CDE-33B6-4889-9BB8-509CB9D7BEA1" />
 							<rcd:Column Name="taskId" id="_DE426D79-B7E2-4F1A-B4F8-FD31166A7EDC" />
-							<rcd:Column IsNullable="true" Name="studentId" id="_95338475-25F7-49F3-BB43-9D5CF623DF80" />
 							<rcd:Column IsNullable="true" Name="studentGroupId" id="_76D78811-1253-4060-AE91-AE1D2C1F6546" />
+							<rcd:Column IsNullable="true" Name="studentId" id="_95338475-25F7-49F3-BB43-9D5CF623DF80" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="TaskAssignment_PK" id="_B236D92C-2F9A-4E59-825C-DAEBA47BD1D5">
@@ -15798,10 +15798,10 @@
 							<rcd:Column Name="filePath" id="_7B4AC6F0-CAD9-47F4-871A-CA782919AFAB" />
 							<rcd:Column Name="fileTypeName" id="_76F6E5BA-8B0F-49DF-AD74-9D1CD1C3A0BC" />
 							<rcd:Column IsNullable="true" Name="messageId" id="_970BCFF5-8919-482B-A522-D1B504633296" />
-							<rcd:Column IsNullable="true" Name="photoTitle" id="_A7053C07-22F5-4BA2-A503-B698DF32ACF6" />
-							<rcd:Column IsNullable="true" Name="photoDescription" id="_C9471ACF-218F-4DCD-A4F0-E6E932AF5A07" />
 							<rcd:Column IsNullable="true" Name="photoAlbumId" id="_1F2D25DB-1B86-401A-B163-61E7AA885760" />
+							<rcd:Column IsNullable="true" Name="photoDescription" id="_C9471ACF-218F-4DCD-A4F0-E6E932AF5A07" />
 							<rcd:Column IsNullable="true" Name="photoOrganizationUserId" id="_D482D778-A563-4CDF-B909-D024C7DD3D81" />
+							<rcd:Column IsNullable="true" Name="photoTitle" id="_A7053C07-22F5-4BA2-A503-B698DF32ACF6" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="File_PK" id="_CF63717B-A3B1-441A-99A5-0AA8F166A18D">
@@ -15834,9 +15834,9 @@
 					</rcd:Table>
 					<rcd:Table Name="AssignmentFile" id="_B00C3E08-35D6-434C-8386-CF065639AB52">
 						<rcd:Columns>
-							<rcd:Column Name="instant" id="_9B57D3F1-0AC1-4190-AC93-4BC02B91D2A0" />
-							<rcd:Column Name="studentId" id="_AAE89862-D33A-42D9-A6DF-1297B22085D0" />
 							<rcd:Column Name="fileId" id="_091508DE-DE3F-4C92-9EF2-C3226434B821" />
+							<rcd:Column Name="studentId" id="_AAE89862-D33A-42D9-A6DF-1297B22085D0" />
+							<rcd:Column Name="instant" id="_9B57D3F1-0AC1-4190-AC93-4BC02B91D2A0" />
 							<rcd:Column Name="taskId" id="_4FD28121-E46A-4883-A645-A8CEF5028213" />
 						</rcd:Columns>
 						<rcd:Constraints>
@@ -15879,9 +15879,9 @@
 						<rcd:Columns>
 							<rcd:Column Name="forumPostId" id="_B4D55FDC-F8DA-4694-89DB-96EEB8DFD63D" />
 							<rcd:Column Name="instant" id="_7841CA7B-2932-4BD7-9FE8-64CEEECD9362" />
-							<rcd:Column Name="postTitle" id="_F14661C4-3A80-4F80-92D3-CE80F802AA21" />
-							<rcd:Column Name="postContent" id="_438AE236-E3F5-4D9D-9063-DA7828264539" />
 							<rcd:Column Name="organizationUserId" id="_58FA05ED-3AA3-470F-9A72-2B938D5C8DCB" />
+							<rcd:Column Name="postContent" id="_438AE236-E3F5-4D9D-9063-DA7828264539" />
+							<rcd:Column Name="postTitle" id="_F14661C4-3A80-4F80-92D3-CE80F802AA21" />
 							<rcd:Column IsNullable="true" Name="forumThreadForumId" id="_64376B7B-BCA5-4BED-B78F-97A5F8C87F80" />
 							<rcd:Column IsNullable="true" Name="threadPostForumThreadId" id="_197C4F95-F49B-4B22-903F-88AE1FC307DC" />
 						</rcd:Columns>
@@ -15923,8 +15923,8 @@
 					<rcd:Table Name="PhotoAlbum" id="_AC950C87-81E6-4521-810C-4AA829A94A7B">
 						<rcd:Columns>
 							<rcd:Column Name="photoAlbumId" id="_C6CCAED7-B69A-42FE-85BA-CD89C02BAE89" />
-							<rcd:Column IsNullable="true" Name="organizationUserId" id="_0CF5E736-0BC3-4F8D-9A7A-06E12B2133C2" />
 							<rcd:Column IsNullable="true" Name="nonStudentGroupId" id="_A1F492D1-38D0-40FD-B940-F7C3C3A74506" />
+							<rcd:Column IsNullable="true" Name="organizationUserId" id="_0CF5E736-0BC3-4F8D-9A7A-06E12B2133C2" />
 							<rcd:Column IsNullable="true" Name="tripId" id="_3981A77A-687C-4AE7-B323-5B2C66C0D310" />
 						</rcd:Columns>
 						<rcd:Constraints>
@@ -15979,8 +15979,8 @@
 					</rcd:Table>
 					<rcd:Table Name="NewsletterContainsNewsArticle" id="_A50592EA-326E-40F6-A30E-6056FB2AB802">
 						<rcd:Columns>
-							<rcd:Column Name="newsletterId" id="_43E43615-3393-4783-874E-E7840478D64E" />
 							<rcd:Column Name="newsArticleId" id="_F45FD853-938D-4453-B58D-609C43095F83" />
+							<rcd:Column Name="newsletterId" id="_43E43615-3393-4783-874E-E7840478D64E" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="NewsletterContainsNewsArticle_PK" id="_2C2960A2-10AE-4AC9-82BB-D2E84E13EE7E">
@@ -16028,8 +16028,8 @@
 					<rcd:Table Name="Calendar" id="_46318E81-F69A-4684-A7EF-546D0501388B">
 						<rcd:Columns>
 							<rcd:Column Name="calendarId" id="_18BFCD44-4E37-4719-843B-4CCDA10B5D18" />
-							<rcd:Column IsNullable="true" Name="isSchoolCalendar" id="_19A85DC5-9896-448F-8A76-FFE7A0378DB0" />
 							<rcd:Column IsNullable="true" Name="userId" id="_7890EA19-115E-4F3D-9B1A-314809DCA724" />
+							<rcd:Column IsNullable="true" Name="isSchoolCalendar" id="_19A85DC5-9896-448F-8A76-FFE7A0378DB0" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="Calendar_PK" id="_E73B7A9F-5E21-40E8-B77C-F722C0172A4B">
@@ -16054,26 +16054,26 @@
 					<rcd:Table Name="CalendarEvent" id="_AC8B9865-0BF7-4B53-AC5E-EAC747FBDE49">
 						<rcd:Columns>
 							<rcd:Column Name="calendarEventId" id="_AC3F87C9-E469-40A4-8D2F-BD73DC11D0B7" />
-							<rcd:Column Name="calendarEventTypeName" id="_10796CD1-A51A-4C2A-8102-40B4D210236C" />
-							<rcd:Column Name="startsAtInstant" id="_FDE8E7BA-10E8-423C-9D7A-DA2C07F4D00D" />
-							<rcd:Column Name="endsAtInstant" id="_E2FD1B51-7DAE-4491-BF5E-210AAC32316B" />
-							<rcd:Column Name="calendarEventTitle" id="_2622C246-9E30-4933-9B2F-AC39146F019A" />
-							<rcd:Column IsNullable="true" Name="calendarEventDetails" id="_A51D0670-7387-45E5-AD23-A6AD41DC240A" />
-							<rcd:Column Name="recurrencePatternName" id="_62529110-2C58-4AC3-B425-217E332FDAB1" />
 							<rcd:Column Name="calendarEventPrivacyLevelName" id="_E230179A-A797-4F19-88C4-6CA96A2777D1" />
+							<rcd:Column Name="calendarEventTitle" id="_2622C246-9E30-4933-9B2F-AC39146F019A" />
+							<rcd:Column Name="calendarEventTypeName" id="_10796CD1-A51A-4C2A-8102-40B4D210236C" />
+							<rcd:Column Name="endsAtInstant" id="_E2FD1B51-7DAE-4491-BF5E-210AAC32316B" />
+							<rcd:Column Name="recurrencePatternName" id="_62529110-2C58-4AC3-B425-217E332FDAB1" />
+							<rcd:Column Name="startsAtInstant" id="_FDE8E7BA-10E8-423C-9D7A-DA2C07F4D00D" />
+							<rcd:Column IsNullable="true" Name="calendarEventDetails" id="_A51D0670-7387-45E5-AD23-A6AD41DC240A" />
 							<rcd:Column IsNullable="true" Name="isAllDayEvent" id="_86965705-50CF-45A5-A508-FE364730687D" />
 							<rcd:Column IsNullable="true" Name="nonTaskCalendarEventLocationName" id="_AAA47A0F-B926-4114-B34F-AB46B80C62D5" />
-							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventItineraryType" id="_83602BF9-4EFC-4140-BB0D-A30FCB7F6E21" />
-							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventCityName" id="_CFA9F723-77C3-4473-A758-9F9162C38C25" />
-							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventStateName" id="_C921D878-755F-4B3B-A042-24159D6BF214" />
-							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventCountryCode" id="_32A2C918-71B9-4557-ABD6-4D7FC7BD106A" />
-							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventTripId" id="_6CD62101-5CE6-4F65-BED6-021CD3136148" />
+							<rcd:Column IsNullable="true" Name="taskAssociatedFileId" id="_368C139A-EE68-4C6F-B3A4-4717ABE245BE" />
+							<rcd:Column IsNullable="true" Name="taskClassOrProjectId" id="_3343D43F-1C78-4396-99FA-540672DE80D4" />
 							<rcd:Column IsNullable="true" Name="taskCreationDate" id="_97E4DF1B-A520-45BF-84CF-327FD917348E" />
 							<rcd:Column IsNullable="true" Name="taskDueDate" id="_32C717F2-E250-43DA-9368-4C805C68C395" />
-							<rcd:Column IsNullable="true" Name="taskParentTaskId" id="_ACA83AA8-E1FF-48E8-ACFB-166B989785AE" />
-							<rcd:Column IsNullable="true" Name="taskClassOrProjectId" id="_3343D43F-1C78-4396-99FA-540672DE80D4" />
-							<rcd:Column IsNullable="true" Name="taskAssociatedFileId" id="_368C139A-EE68-4C6F-B3A4-4717ABE245BE" />
 							<rcd:Column IsNullable="true" Name="taskOrganizationUserId" id="_0C6E2C2F-F2AE-4BA3-96C9-985FD03E963F" />
+							<rcd:Column IsNullable="true" Name="taskParentTaskId" id="_ACA83AA8-E1FF-48E8-ACFB-166B989785AE" />
+							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventCityName" id="_CFA9F723-77C3-4473-A758-9F9162C38C25" />
+							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventCountryCode" id="_32A2C918-71B9-4557-ABD6-4D7FC7BD106A" />
+							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventItineraryType" id="_83602BF9-4EFC-4140-BB0D-A30FCB7F6E21" />
+							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventStateName" id="_C921D878-755F-4B3B-A042-24159D6BF214" />
+							<rcd:Column IsNullable="true" Name="tripItineraryCalendarEventTripId" id="_6CD62101-5CE6-4F65-BED6-021CD3136148" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="CalendarEvent_PK" id="_06E5612D-E464-4191-A250-E8C3D52989F0">
@@ -16120,8 +16120,8 @@
 					</rcd:Table>
 					<rcd:Table Name="CalendarHasCalendarEvent" id="_D02EAC9E-0AFB-4194-8081-E29C17696042">
 						<rcd:Columns>
-							<rcd:Column Name="calendarId" id="_0EB401BF-03F5-4858-818F-A2D7BB71DF6E" />
 							<rcd:Column Name="calendarEventId" id="_90A70AF4-2A30-4445-9F77-8C2F4B096958" />
+							<rcd:Column Name="calendarId" id="_0EB401BF-03F5-4858-818F-A2D7BB71DF6E" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="CalendarHasCalendarEvent_PK" id="_9A180791-F26E-4312-AF86-0F2E6AD5A58A">
@@ -16206,8 +16206,8 @@
 						<rcd:Columns>
 							<rcd:Column Name="folderId" id="_3E8015AD-D5E1-4BED-8E97-789702FD6862" />
 							<rcd:Column Name="folderName" id="_EB78F5FE-2C0B-409D-9F62-382D5984B35F" />
-							<rcd:Column IsNullable="true" Name="parentFolderId" id="_DA4EA691-3EB0-4DC5-8B34-D42824DF0B85" />
 							<rcd:Column Name="userId" id="_FD7D4A72-B668-4C84-89B1-E71D990D2F66" />
+							<rcd:Column IsNullable="true" Name="parentFolderId" id="_DA4EA691-3EB0-4DC5-8B34-D42824DF0B85" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="Folder_PK" id="_67A342FE-AE56-4416-86EA-386E0D285829">
@@ -16260,8 +16260,8 @@
 					<rcd:Table Name="NotificationType" id="_07D053EC-A067-4A61-99D1-F3FAE4457D37">
 						<rcd:Columns>
 							<rcd:Column Name="notificationTypeId" id="_7C978A6E-5656-4EE2-B030-5BE52622B4BE" />
-							<rcd:Column Name="notificationTypeName" id="_6E207C20-7C1B-41CD-A49C-882557E8D22C" />
 							<rcd:Column Name="formatString" id="_BC15A57B-1862-4ABA-8436-77BEA8D06032" />
+							<rcd:Column Name="notificationTypeName" id="_6E207C20-7C1B-41CD-A49C-882557E8D22C" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="NotificationType_PK" id="_2DFE8098-8E6E-498A-A3FD-6E2E9A9A3A0D">
@@ -16323,8 +16323,8 @@
 					<rcd:Table Name="SharedDataItem" id="_99D1EDC0-96EC-4FFD-AF0F-642133787E18">
 						<rcd:Columns>
 							<rcd:Column Name="sharedDataItem.id" id="_B23365D1-C2FB-43F8-99D0-A096F69803A0" />
-							<rcd:Column Name="sharedDataItemTypeName" id="_AE26FED5-1ADC-4295-AD05-3C19E10CF51F" />
 							<rcd:Column Name="dataItemName" id="_3542064D-F032-458F-8266-36B5FBA37D0C" />
+							<rcd:Column Name="sharedDataItemTypeName" id="_AE26FED5-1ADC-4295-AD05-3C19E10CF51F" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="SharedDataItem_PK" id="_41F5A554-526A-4B9A-BFC8-630B9BF42F3E">
@@ -16343,15 +16343,15 @@
 					<rcd:Table Name="WritingPiece" id="_78C698DB-5519-48B5-B6E7-CB91226CAEC6">
 						<rcd:Columns>
 							<rcd:Column Name="writingPieceId" id="_62F3571E-E4EA-45FD-9D60-08CFE3A18E9A" />
-							<rcd:Column Name="writingPieceTypeName" id="_E7FC08D1-B9B7-42B2-9A6D-9F63696CDDE3" />
 							<rcd:Column Name="writingPieceBody" id="_373757B2-84E4-4DFE-808B-9182C9505409" />
-							<rcd:Column IsNullable="true" Name="instant" id="_0E078CA5-5CC5-4666-89A5-B4D0F17394CB" />
-							<rcd:Column IsNullable="true" Name="blogEntryOrReflectionWritingPieceTitle" id="_732C7AFA-57C5-4E4B-B59C-223B423BB8B6" />
-							<rcd:Column IsNullable="true" Name="blogEntryOrReflectionOrganizationUserOrStaffId" id="_87FBA034-D5FF-4199-8FF9-DE78704F5648" />
-							<rcd:Column IsNullable="true" Name="blogEntryBlogId" id="_4893CE5C-6A6D-4608-94F8-C29A09E738FB" />
-							<rcd:Column IsNullable="true" Name="blogEntryBlogPrivacyLevelName" id="_B07B764A-441D-424A-A28C-3CB6E9FB0D68" />
+							<rcd:Column Name="writingPieceTypeName" id="_E7FC08D1-B9B7-42B2-9A6D-9F63696CDDE3" />
 							<rcd:Column IsNullable="true" Name="blogCommentBlogEntryId" id="_BF418C14-215E-4EC2-8C1C-3F0E631A6FBD" />
 							<rcd:Column IsNullable="true" Name="blogCommentUserId" id="_A3F10890-BEF4-4DEE-BAA7-9A5D12679E5A" />
+							<rcd:Column IsNullable="true" Name="blogEntryBlogId" id="_4893CE5C-6A6D-4608-94F8-C29A09E738FB" />
+							<rcd:Column IsNullable="true" Name="blogEntryBlogPrivacyLevelName" id="_B07B764A-441D-424A-A28C-3CB6E9FB0D68" />
+							<rcd:Column IsNullable="true" Name="blogEntryOrReflectionOrganizationUserOrStaffId" id="_87FBA034-D5FF-4199-8FF9-DE78704F5648" />
+							<rcd:Column IsNullable="true" Name="blogEntryOrReflectionWritingPieceTitle" id="_732C7AFA-57C5-4E4B-B59C-223B423BB8B6" />
+							<rcd:Column IsNullable="true" Name="instant" id="_0E078CA5-5CC5-4666-89A5-B4D0F17394CB" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="WritingPiece_PK" id="_9C31E11B-CAD1-499B-BBD6-ACD2EEDBD89C">
@@ -16405,8 +16405,8 @@
 					</rcd:Table>
 					<rcd:Table Name="UserHasSharedDataItem" id="_A2D982F5-E5FE-4116-8D43-E28BE3914582">
 						<rcd:Columns>
-							<rcd:Column Name="userId" id="_52856673-7941-4CEC-9306-77A84F6F28C4" />
 							<rcd:Column Name="sharedDataItem" id="_B330C503-CDB0-482C-82C1-FE0DA4393BFB" />
+							<rcd:Column Name="userId" id="_52856673-7941-4CEC-9306-77A84F6F28C4" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" Name="UserHasSharedDataItem_PK" id="_38F2FE0F-3766-4C82-9397-4E422BC50871">

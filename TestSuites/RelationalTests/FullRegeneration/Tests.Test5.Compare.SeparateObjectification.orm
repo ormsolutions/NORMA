@@ -958,7 +958,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_077B1376-3174-4CAC-9C4A-B8245485F67E" AlgorithmVersion="1.008">
 				<ormtooial:AbstractionModel ref="_C50661E8-E857-43F3-A1D2-9EF787A84EFE" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_CC0244D5-F67A-4DE3-8E18-4B16640FB1F1" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.012">
+			<oialtocdb:SchemaGenerationSetting id="_CC0244D5-F67A-4DE3-8E18-4B16640FB1F1" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.014">
 				<oialtocdb:Schema ref="_BDE38DCE-8504-4AC9-9156-A927376B73B6" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -999,7 +999,7 @@
 			</ormDiagram:FactTypeShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="5.7997865492987115, 2.5984720161259918, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_F9C3217F-00CB-4446-ACA7-DCCEE1BCFC74">
 				<ormDiagram:RelativeShapes>
-					<ormDiagram:ReadingShape AbsoluteBounds="5.7997865492987115, 2.9071124184206871, 0.83814603090286255, 0.12950302660465241" IsExpanded="true" id="_57C60697-565A-4596-BA61-FD6A0E6260E6">
+					<ormDiagram:ReadingShape IsExpanded="true" id="_57C60697-565A-4596-BA61-FD6A0E6260E6" AbsoluteBounds="5.7997865492987115, 2.9071124184206871, 0.87422460317611694, 0.12950302660465241">
 						<ormDiagram:Subject ref="_D2C4A28D-4310-4559-ADB6-829D49010602" />
 					</ormDiagram:ReadingShape>
 				</ormDiagram:RelativeShapes>
@@ -1130,9 +1130,9 @@
 				<rcd:Tables>
 					<rcd:Table Name="Birth" id="_F0F96FCF-51AF-47CC-A76D-A589BA8F6A58">
 						<rcd:Columns>
+							<rcd:Column Name="personId" id="_325BF8B8-F869-4DA9-A39B-90A346F1D6F3" />
 							<rcd:Column Name="date" id="_CF6F1A49-9DA6-4255-8BED-58F0651F98DE" />
 							<rcd:Column IsNullable="true" Name="attendingDoctorId" id="_AF6DEDEF-18C1-4895-BA4D-08C1A9B4FA6A" />
-							<rcd:Column Name="personId" id="_325BF8B8-F869-4DA9-A39B-90A346F1D6F3" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" id="_82B9B165-C384-4EC7-900C-6AE647AB8C48" Name="Birth_PK">
@@ -1159,10 +1159,10 @@
 					<rcd:Table Name="Party" id="_6A45AAD7-0036-428D-9606-D61C787C06D6">
 						<rcd:Columns>
 							<rcd:Column Name="partyId" id="_4DC37BE4-ECA3-4D4F-83A3-A0B123E3212A" />
-							<rcd:Column IsNullable="true" Name="personDied" id="_35D58039-484E-4DCF-B725-F3F64A42C5D4" />
-							<rcd:Column IsNullable="true" Name="personDeathDate" id="_47F0F929-EE44-4428-9FB9-A6D751414B09" />
-							<rcd:Column IsNullable="true" Name="partyName" id="_7901A117-1298-47B4-B799-C61C711D3325" />
 							<rcd:Column IsNullable="true" Name="partyMonikerAccuracyLevel" id="_C867ECD3-B1CC-4404-8094-D2D6B25A95E3" />
+							<rcd:Column IsNullable="true" Name="partyName" id="_7901A117-1298-47B4-B799-C61C711D3325" />
+							<rcd:Column IsNullable="true" Name="personDeathDate" id="_47F0F929-EE44-4428-9FB9-A6D751414B09" />
+							<rcd:Column IsNullable="true" Name="personDied" id="_35D58039-484E-4DCF-B725-F3F64A42C5D4" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" id="_AF33C472-6B32-4AB6-A799-A2BA2FE8C28C" Name="Party_PK">

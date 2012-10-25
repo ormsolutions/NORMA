@@ -1,23 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TestReport xmlns="http://schemas.neumont.edu/ORM/SDK/TestReport">
 	<ValidationErrors name="Expect V2=100 Population Mandatory">
-		<ValidationError>'V2' instance '100' in model 'ORMModel1' must participate in FactType 'PopulateMeSV2'.</ValidationError>
+		<ValidationError>'V2' instance '100' in model 'ORMModel1' must participate in fact type 'PopulateMeSV2'.</ValidationError>
 	</ValidationErrors>
 	<Message>Testing IsIndependent and PopulationMandatoryError associated with implied mandatory constraint</Message>
 	<ValidationErrors name="Set IsIndependent, No error expected after explicit transaction" />
 	<ValidationErrors name="Set IsIndependent, No error expected after implicit transaction" />
 	<Message>Testing PopulationMandatoryError by turning on a SimpleMandatory constraint.</Message>
 	<ValidationErrors name="Set IsMandatory, expect new errors for instances 'Tom' and 'Dick'">
-		<ValidationError>'PopulateMe' instance 'Dick' in model 'ORMModel1' must participate in FactType 'PopulateMeSV2'.</ValidationError>
-		<ValidationError>'PopulateMe' instance 'Tom' in model 'ORMModel1' must participate in FactType 'PopulateMeSV2'.</ValidationError>
-		<ValidationError>'V2' instance '100' in model 'ORMModel1' must participate in FactType 'PopulateMeSV2'.</ValidationError>
+		<ValidationError>'PopulateMe' instance 'Dick' in model 'ORMModel1' must participate in fact type 'PopulateMeSV2'.</ValidationError>
+		<ValidationError>'PopulateMe' instance 'Tom' in model 'ORMModel1' must participate in fact type 'PopulateMeSV2'.</ValidationError>
+		<ValidationError>'V2' instance '100' in model 'ORMModel1' must participate in fact type 'PopulateMeSV2'.</ValidationError>
 	</ValidationErrors>
 	<Message>Adding second population row one role at a time</Message>
 	<ValidationErrors name="Add a complete FactTypeInstance for Tom, 1 error remaining for 'Dick'">
-		<ValidationError>'PopulateMe' instance 'Dick' in model 'ORMModel1' must participate in FactType 'PopulateMeSV2'.</ValidationError>
+		<ValidationError>'PopulateMe' instance 'Dick' in model 'ORMModel1' must participate in fact type 'PopulateMeSV2'.</ValidationError>
 	</ValidationErrors>
 	<ValidationErrors name="Add a partial FactTypeInstance for Dick, 1 error remaining for partial FactTypeInstance">
-		<ValidationError>FactType instance 'Dick s ?' in model 'ORMModel1' has a partial population.</ValidationError>
+		<ValidationError>Fact instance 'Dick s ?' in model 'ORMModel1' has a partial population.</ValidationError>
 	</ValidationErrors>
 	<Compare result="pass" />
 </TestReport>

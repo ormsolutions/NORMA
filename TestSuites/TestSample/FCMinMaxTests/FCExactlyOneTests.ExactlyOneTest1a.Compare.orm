@@ -321,10 +321,10 @@
 				</ormDiagram:RelativeShapes>
 				<ormDiagram:Subject ref="_9142CAB7-91EA-42E0-8B66-7B5136FEB4A1" />
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_DE22519D-3AE3-4CCE-A3D1-3BF4645F39CC" AbsoluteBounds="1.7604166666666665, 1.5208333333333333, 0.36792931973934173, 0.35900605320930479">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_DE22519D-3AE3-4CCE-A3D1-3BF4645F39CC" AbsoluteBounds="1.7604166666666665, 1.5208333333333333, 0.33664540469646453, 0.35900605320930479">
 				<ormDiagram:Subject ref="_F39B4363-0CDB-45F0-87F6-CE26A6CEFCDA" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_2B405C29-5077-4FE7-BE48-FA2FC38EEF58" AbsoluteBounds="4.8958333333333321, 1.4791666666666667, 0.36792931973934173, 0.35900605320930479">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_2B405C29-5077-4FE7-BE48-FA2FC38EEF58" AbsoluteBounds="4.8958333333333321, 1.4791666666666667, 0.33664540469646453, 0.35900605320930479">
 				<ormDiagram:Subject ref="_D7250414-0B87-4949-B97A-D949B1A26A15" />
 			</ormDiagram:ObjectTypeShape>
 		</ormDiagram:Shapes>

@@ -533,7 +533,7 @@
 		<comment>ValueRangeOverlapError text with owner place holder. The resulting sentence will be capitablized automatically. {0}=owner information</comment>
 	</data>
 	<data name="ModelError.ValueConstraint.ValueTypeDetachedError.Message" xml:space="preserve">
-		<value>{0} has a value constraint with no associated ValueType.</value>
+		<value>{0} has a value constraint with no associated value type.</value>
 		<comment>ValueConstraintValueTypeDetachedError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
 	</data>
 	<data name="ModelError.ValueRange.MaxValueMismatchError.Message" xml:space="preserve">
@@ -681,7 +681,7 @@
 		<comment>Exception message when an attempt is made to operate on an implied objectification by a method that only accepts explicit objectifications.</comment>
 	</data>
 	<data name="ModelException.ObjectType.EnforceIsIndependentPattern" xml:space="preserve">
-		<value>IsIndependent can only be true on an ObjectType that only participates in mandatory roles relating to its preferred identifier.</value>
+		<value>IsIndependent can apply only to an object type with no mandatory roles that do not relate to its preferred identifier.</value>
 		<comment>Exception message when an attempt is made to set the IsIndependent property on an object type that plays mandatory roles that are not part of its preferred identification scheme.</comment>
 	</data>
 	<data name="ModelException.ObjectType.EnforcePreferredIdentifierForEntityType" xml:space="preserve">
@@ -697,7 +697,7 @@
 		<comment>Exception message when an attempt is made to change the role players of an ObjectTypeHasObjectTypeInstance relationship.</comment>
 	</data>
 	<data name="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse" xml:space="preserve">
-		<value>The IsPrimaryForReadingOrder and IsPrimaryForFactType properties cannot be set to false, set it to true for the new primary reading and this will occur automatically</value>
+		<value>The IsPrimaryForReadingOrder and IsPrimaryForFactType properties cannot be set to false, set these properties to true for the new primary reading and this will occur automatically</value>
 		<comment>Exception message output when an attempt is made to set the IsPrimaryForReadingOrder or IsPrimaryForFactType properties of a Reading to false.</comment>
 	</data>
 	<data name="ModelException.ReferenceMode.AmbiguousName" xml:space="preserve">
@@ -765,7 +765,7 @@
 		<comment>Exception message when an attempt is made to attach SubtypeMetaRole or SuperTypeMetaRole objects to a FactType that is not a SubtypeFact.</comment>
 	</data>
 	<data name="ModelException.SubtypeFact.NotNested" xml:space="preserve">
-		<value>A SubtypeFact cannot be a nested fact type</value>
+		<value>A SubtypeFact cannot be objectified.</value>
 		<comment>Exception message when an attempt is made to nest a SubtypeFact.</comment>
 	</data>
 	<data name="ModelException.SubtypeFact.ProvidesPreferredIdentifierInvalid" xml:space="preserve">
@@ -773,7 +773,7 @@
 		<comment>Exception message when an attempt is made to change the SubtypeFact.ProvidesPreferredIdentifier property to false.</comment>
 	</data>
 	<data name="ModelException.SubtypeFact.RolePlayersTypesNotMixed" xml:space="preserve">
-		<value>The Subtype and Supertype ObjectTypes of a SubtypeFact must either be EntityTypes or ValueTypes, not one of each.</value>
+		<value>The subtype and supertype of a subtyping relationship must either be entity types or value types, not one of each.</value>
 		<comment>Exception message when an attempt is made to mix EntityType and ValueType role players on a SubtypeFact.</comment>
 	</data>
 	<data name="ModelException.SubtypeMetaRole.OnlyAllowsImplicitConstraints" xml:space="preserve">
@@ -793,7 +793,7 @@
 		<comment>Exception message when an attempt is made to constraint a SupertypeMetaRole with a constraint other than the implicit uniqueness constraint, or disjunctive mandatory or exclusion constraints.</comment>
 	</data>
 	<data name="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
-		<value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on binary fact types, and all opposite roles must be attached to the same non-ValueType ObjectType.</value>
+		<value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on binary fact types, and all opposite roles must be attached to the same entity type.</value>
 		<comment>Exception message when an attempt is made to set a uniqueness constraint as a preferred identifier when the preconditions are not met.</comment>
 	</data>
 	<data name="ModelException.ValueTypeInstance.InvalidValueTypeParent" xml:space="preserve">

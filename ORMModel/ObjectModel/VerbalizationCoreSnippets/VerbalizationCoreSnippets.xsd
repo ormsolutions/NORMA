@@ -1049,6 +1049,12 @@ Format: {0} is not {1}</xs:documentation>
 Format: that {0} is not that {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="IsIdentifiedBy">
+					<xs:annotation>
+						<xs:documentation>Description: Used to specify that one instance is identified by the other instance.
+Format: {0} is identified by {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="Acyclicity">
 					<xs:annotation>
 						<xs:documentation>Description: Used to verbalize acyclic ring constraint in the majority of cases.

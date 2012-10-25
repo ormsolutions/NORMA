@@ -391,6 +391,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private static ObjectTypeNameVerbalizationStyle myCurrentVerbalizationObjectTypeNameDisplay = VerbalizationObjectTypeNameDisplay_Default;
 		private ObjectTypeNameVerbalizationStyle myVerbalizationObjectTypeNameDisplay = VerbalizationObjectTypeNameDisplay_Default;
 
+		private const string VerbalizationRemoveObjectTypeNameCharactersOnSeparate_Default = ".:_";
+		private static string myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate = VerbalizationRemoveObjectTypeNameCharactersOnSeparate_Default;
+		private string myVerbalizationRemoveObjectTypeNameCharactersOnSeparate = VerbalizationRemoveObjectTypeNameCharactersOnSeparate_Default;
+
 		private const string CustomVerbalizationSnippets_Default = "";
 		private static string myCurrentCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
 		private string myCustomVerbalizationSnippets = CustomVerbalizationSnippets_Default;
@@ -463,6 +467,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
 			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 			myCurrentVerbalizationObjectTypeNameDisplay = myVerbalizationObjectTypeNameDisplay;
+			myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate = myVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
@@ -492,6 +497,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myVerbalizeFactTypesWithObjectType = myCurrentVerbalizeFactTypesWithObjectType;
 			myVerbalizationHyperlinkTarget = myCurrentVerbalizationHyperlinkTarget;
 			myVerbalizationObjectTypeNameDisplay = myCurrentVerbalizationObjectTypeNameDisplay;
+			myVerbalizationRemoveObjectTypeNameCharactersOnSeparate = myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
 			myCustomVerbalizationSnippets = myCurrentCustomVerbalizationSnippets;
 			myPreferredInternalUniquenessConstraintDisplay = myCurrentPreferredInternalUniquenessConstraintDisplay;
 			myReadingDirectionIndicatorDisplay = myCurrentReadingDirectionIndicatorDisplay;
@@ -512,7 +518,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myCurrentShowDefaultConstraintVerbalization != myShowDefaultConstraintVerbalization ||
 				myCurrentVerbalizeFactTypesWithObjectType != myVerbalizeFactTypesWithObjectType ||
 				myCurrentCustomVerbalizationSnippets != myCustomVerbalizationSnippets ||
-				myCurrentVerbalizationObjectTypeNameDisplay != myVerbalizationObjectTypeNameDisplay;
+				myCurrentVerbalizationObjectTypeNameDisplay != myVerbalizationObjectTypeNameDisplay ||
+				myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate != myVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
 			// Get out early if none of the displayed settings have changed
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
@@ -533,6 +540,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
 				myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 				myCurrentVerbalizationObjectTypeNameDisplay = myVerbalizationObjectTypeNameDisplay;
+				myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate = myVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
 				myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 				myCurrentShowDebugCommands = myShowDebugCommands;
 				myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
@@ -564,6 +572,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
 			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 			myCurrentVerbalizationObjectTypeNameDisplay = myVerbalizationObjectTypeNameDisplay;
+			myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate = myVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
 			myCurrentCustomVerbalizationSnippets = myCustomVerbalizationSnippets;
 			myCurrentPreferredInternalUniquenessConstraintDisplay = myPreferredInternalUniquenessConstraintDisplay;
 			myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
@@ -943,6 +952,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public static ObjectTypeNameVerbalizationStyle CurrentVerbalizationObjectTypeNameDisplay
 		{
 			get { return myCurrentVerbalizationObjectTypeNameDisplay; }
+		}
+
+		/// <summary>
+		/// Current setting for VerbalizationRemoveObjectTypeNameCharactersOnSeparate
+		/// </summary>
+		[DefaultValue(VerbalizationRemoveObjectTypeNameCharactersOnSeparate_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyVerbalizationRemoveObjectTypeNameCharactersOnSeparateDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyVerbalizationRemoveObjectTypeNameCharactersOnSeparateDisplayNameId)]
+		public string VerbalizationRemoveObjectTypeNameCharactersOnSeparate
+		{
+			get { return myVerbalizationRemoveObjectTypeNameCharactersOnSeparate; }
+			set { myVerbalizationRemoveObjectTypeNameCharactersOnSeparate = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for VerbalizationRemoveObjectTypeNameCharactersOnSeparate
+		/// </summary>
+		public static string CurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate
+		{
+			get { return myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate; }
 		}
 
 		/// <summary>

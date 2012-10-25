@@ -615,13 +615,13 @@
 			<orm:VariableLengthTextDataType id="_537BD9E9-D398-4FAB-9754-8393F5ABB753" />
 		</orm:DataTypes>
 		<orm:ModelErrors>
+			<orm:EntityTypeRequiresReferenceSchemeError Name="Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification." id="_4054DE61-228C-4732-B096-3AC161BD64AE">
+				<orm:EntityType ref="_D2163940-1793-440B-8695-D61A34B98478" />
+			</orm:EntityTypeRequiresReferenceSchemeError>
 			<orm:EntityTypeRequiresReferenceSchemeError Name="Entity type 'EntityType5' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification." id="_EEE9F739-1011-440C-89DF-83F55496D16A">
 				<orm:EntityType ref="_A751F3F9-4EDF-4A6A-A88F-ECFE670255A0" />
 			</orm:EntityTypeRequiresReferenceSchemeError>
-			<orm:EntityTypeRequiresReferenceSchemeError Name="Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification." id="_2AC4BA0A-B02D-4B1F-9C8C-59615C287E8F">
-				<orm:EntityType ref="_D2163940-1793-440B-8695-D61A34B98478" />
-			</orm:EntityTypeRequiresReferenceSchemeError>
-			<orm:ValueTypeDetachedError Name="Role '1' of FactType 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated ValueType." id="_51DDD281-54DA-4AAE-91E6-2B814401E1DD">
+			<orm:ValueTypeDetachedError id="_51DDD281-54DA-4AAE-91E6-2B814401E1DD" Name="Role '1' of fact type 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated value type.">
 				<orm:ValueConstraint ref="_610C5A2B-DB1B-40CF-9E76-EF6E8BB11428" />
 			</orm:ValueTypeDetachedError>
 		</orm:ModelErrors>
@@ -642,7 +642,7 @@
 			<ormDiagram:ObjectTypeShape AbsoluteBounds="5.5833331743876142, 3.25, 0.75444459438323974, 0.35900605320930479" IsExpanded="true" id="_F92C7723-5F14-4CBF-94FF-D700C08580A8">
 				<ormDiagram:Subject ref="_94E65D73-5CA8-411F-87C0-48723BA98F0D" />
 			</ormDiagram:ObjectTypeShape>
-			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_229F752D-93CD-4F48-B311-49DFE68DB027" AbsoluteBounds="7.760416666666667, 3.2916667461395264, 0.75444459438323974, 0.35900605320930479">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_229F752D-93CD-4F48-B311-49DFE68DB027" AbsoluteBounds="7.760416666666667, 3.2269152328372, 0.75444459438323974, 0.35900605320930479">
 				<ormDiagram:Subject ref="_CD46FA7D-B17F-49C7-8F52-A213ABD14701" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:ObjectTypeShape AbsoluteBounds="5.4166665077209473, 5.125, 0.75444459438323974, 0.22950302660465241" IsExpanded="true" id="_7E14CB66-D603-400A-A13A-E0EF42722935">

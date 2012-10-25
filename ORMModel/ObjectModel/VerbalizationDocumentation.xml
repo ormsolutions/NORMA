@@ -1552,6 +1552,14 @@ Format: {0} in {1}</statement>
       <constraint name="RoleValueConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="IsIdentifiedBy" replacementCount="2">
+    <statement>Description: Used to specify that one instance is identified by the other instance.
+Format: {0} is identified by {1}</statement>
+    <unformattedSnippet>{0} is identified by {1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="LogicalAndOperator" replacementCount="2">
     <statement>Description: Used to 'and' together exactly two other snippets.
 Format: {0} and {1}</statement>

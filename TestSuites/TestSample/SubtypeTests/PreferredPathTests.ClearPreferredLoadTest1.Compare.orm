@@ -546,7 +546,7 @@
 			<orm:EntityTypeRequiresReferenceSchemeError Name="Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification." id="_A4CE0108-E2B8-4FE6-87C8-899399259451">
 				<orm:EntityType ref="_D2163940-1793-440B-8695-D61A34B98478" />
 			</orm:EntityTypeRequiresReferenceSchemeError>
-			<orm:ValueTypeDetachedError Name="Role '1' of FactType 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated ValueType." id="_846EA609-DBF3-45FC-B2A8-EE339A9DCE57">
+			<orm:ValueTypeDetachedError id="_846EA609-DBF3-45FC-B2A8-EE339A9DCE57" Name="Role '1' of fact type 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated value type.">
 				<orm:ValueConstraint ref="_610C5A2B-DB1B-40CF-9E76-EF6E8BB11428" />
 			</orm:ValueTypeDetachedError>
 		</orm:ModelErrors>

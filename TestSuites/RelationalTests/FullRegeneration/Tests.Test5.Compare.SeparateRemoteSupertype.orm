@@ -994,7 +994,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_F689860F-F598-413B-B7D2-0DD7D4CACE41" AlgorithmVersion="1.008">
 				<ormtooial:AbstractionModel ref="_B774300C-8F49-43EB-AB62-17534D8DBB42" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_0F8EAA5B-2586-41D4-9523-EDE35695503A" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.012">
+			<oialtocdb:SchemaGenerationSetting id="_0F8EAA5B-2586-41D4-9523-EDE35695503A" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.014">
 				<oialtocdb:Schema ref="_EC000843-0D4E-43C1-80E8-527C74F04153" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -1035,7 +1035,7 @@
 			</ormDiagram:FactTypeShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="5.7997865492987115, 2.5984720161259918, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_F9C3217F-00CB-4446-ACA7-DCCEE1BCFC74">
 				<ormDiagram:RelativeShapes>
-					<ormDiagram:ReadingShape AbsoluteBounds="5.7997865492987115, 2.9071124184206871, 0.83814603090286255, 0.12950302660465241" IsExpanded="true" id="_57C60697-565A-4596-BA61-FD6A0E6260E6">
+					<ormDiagram:ReadingShape IsExpanded="true" id="_57C60697-565A-4596-BA61-FD6A0E6260E6" AbsoluteBounds="5.7997865492987115, 2.9071124184206871, 0.87422460317611694, 0.12950302660465241">
 						<ormDiagram:Subject ref="_D2C4A28D-4310-4559-ADB6-829D49010602" />
 					</ormDiagram:ReadingShape>
 				</ormDiagram:RelativeShapes>
@@ -1060,7 +1060,7 @@
 					<ormDiagram:Role ref="_0A0E3D95-7598-43E6-94C5-1C2086A35E5D" />
 				</ormDiagram:RoleDisplayOrder>
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:ObjectTypeShape AbsoluteBounds="1.2395833333333335, 3.3935817405581474, 0.42086034536361694, 0.22950302660465241" IsExpanded="true" id="_CAFE86C5-A498-409B-84CC-5BDCB08C9A57">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_CAFE86C5-A498-409B-84CC-5BDCB08C9A57" AbsoluteBounds="1.2714131673177085, 3.4583332538604736, 0.42086034536361694, 0.22950302660465241">
 				<ormDiagram:Subject ref="_2D4603A6-1D28-4BC7-8D1D-20EF460CD608" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="2.4791667461395264, 3.385140322666615, 0.51388888899236917, 0.30588888899236916" IsExpanded="true" id="_1CB2AB49-9A8A-4C5B-A4C1-0BDE470590B8">
@@ -1171,9 +1171,9 @@
 				<rcd:Tables>
 					<rcd:Table Name="Birth" id="_C1D89926-969D-4032-9D46-0AFCF0625796">
 						<rcd:Columns>
+							<rcd:Column id="_F2DE0324-9DF9-48E6-A824-76934EAD536D" Name="personId" />
 							<rcd:Column Name="date" id="_147CC040-822A-427D-8CD1-B090B8FC1209" />
 							<rcd:Column IsNullable="true" Name="attendingDoctorId" id="_9875A202-858C-4F9D-B571-26811ADF5DD7" />
-							<rcd:Column id="_F2DE0324-9DF9-48E6-A824-76934EAD536D" Name="personId" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" id="_AD8EE2B5-BEE6-4E20-BB42-278B9AA8F4C1" Name="Birth_PK">
@@ -1199,11 +1199,11 @@
 					</rcd:Table>
 					<rcd:Table Name="Party" id="_19B1A907-4F6F-47AF-B857-052340EA5371">
 						<rcd:Columns>
-							<rcd:Column IsNullable="true" Name="personDied" id="_D0A567E4-C605-4AFD-A571-2B734576EF0B" />
-							<rcd:Column IsNullable="true" Name="personDeathDate" id="_3F341253-BB83-4B1C-8089-FD2A6B6BCCC4" />
-							<rcd:Column IsNullable="true" Name="partyName" id="_D692589A-1E0F-46E1-9289-B021EB740406" />
-							<rcd:Column IsNullable="true" Name="partyMonikerAccuracyLevel" id="_CC15DF21-481E-4B13-8AEC-64490F800037" />
 							<rcd:Column Name="partyId" id="_7F24E94E-052A-49C3-8A1E-AE5C8D31F70D" />
+							<rcd:Column IsNullable="true" Name="partyMonikerAccuracyLevel" id="_CC15DF21-481E-4B13-8AEC-64490F800037" />
+							<rcd:Column IsNullable="true" Name="partyName" id="_D692589A-1E0F-46E1-9289-B021EB740406" />
+							<rcd:Column IsNullable="true" Name="personDeathDate" id="_3F341253-BB83-4B1C-8089-FD2A6B6BCCC4" />
+							<rcd:Column IsNullable="true" Name="personDied" id="_D0A567E4-C605-4AFD-A571-2B734576EF0B" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" id="_74F51D79-743D-4729-8630-7F900B2977BE" Name="Party_PK">

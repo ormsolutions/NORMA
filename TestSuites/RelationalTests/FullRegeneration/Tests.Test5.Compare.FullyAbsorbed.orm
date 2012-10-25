@@ -958,7 +958,7 @@
 			<ormtooial:AbstractionModelGenerationSetting id="_953B9230-0B01-406E-B73F-E99E73B31F8D" AlgorithmVersion="1.008">
 				<ormtooial:AbstractionModel ref="_B6DA4F58-8BCF-478E-82AE-C04CD0DD68C9" />
 			</ormtooial:AbstractionModelGenerationSetting>
-			<oialtocdb:SchemaGenerationSetting id="_0C331C48-4E21-4197-8186-4A3769048023" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.012">
+			<oialtocdb:SchemaGenerationSetting id="_0C331C48-4E21-4197-8186-4A3769048023" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.014">
 				<oialtocdb:Schema ref="_77081B66-EB8A-44C5-9D03-DF6573330E4B" />
 			</oialtocdb:SchemaGenerationSetting>
 		</orm:GenerationSettings>
@@ -999,7 +999,7 @@
 			</ormDiagram:FactTypeShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="5.7997865492987115, 2.5984720161259918, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_F9C3217F-00CB-4446-ACA7-DCCEE1BCFC74">
 				<ormDiagram:RelativeShapes>
-					<ormDiagram:ReadingShape AbsoluteBounds="5.7997865492987115, 2.9071124184206871, 0.83814603090286255, 0.12950302660465241" IsExpanded="true" id="_57C60697-565A-4596-BA61-FD6A0E6260E6">
+					<ormDiagram:ReadingShape IsExpanded="true" id="_57C60697-565A-4596-BA61-FD6A0E6260E6" AbsoluteBounds="5.7997865492987115, 2.9071124184206871, 0.87422460317611694, 0.12950302660465241">
 						<ormDiagram:Subject ref="_D2C4A28D-4310-4559-ADB6-829D49010602" />
 					</ormDiagram:ReadingShape>
 				</ormDiagram:RelativeShapes>
@@ -1131,12 +1131,12 @@
 					<rcd:Table Name="Party" id="_A2BE2015-0BEF-4C99-A653-A96180B8BE55">
 						<rcd:Columns>
 							<rcd:Column Name="partyId" id="_20754109-168A-49DD-9F50-A5535546764B" />
-							<rcd:Column IsNullable="true" Name="personDied" id="_7F2F2522-F18B-44B4-A7A6-30505B06708B" />
-							<rcd:Column IsNullable="true" Name="personDateOfBirth" id="_62F7FB65-EEBA-4CAD-9256-AD08D8A7A5F2" />
-							<rcd:Column IsNullable="true" id="_BB4FDBA5-5648-46B7-959B-B5D365B86AA6" Name="personBirthAttendingDoctorId" />
-							<rcd:Column IsNullable="true" Name="personDeathDate" id="_82DC3D35-8A88-4B6D-B123-B571F00B429B" />
-							<rcd:Column IsNullable="true" Name="partyName" id="_C11EB4B1-530E-493C-B0AA-25A9271D1254" />
 							<rcd:Column IsNullable="true" Name="partyMonikerAccuracyLevel" id="_91ABB90B-659A-4F80-AE80-808BDF40F80C" />
+							<rcd:Column IsNullable="true" Name="partyName" id="_C11EB4B1-530E-493C-B0AA-25A9271D1254" />
+							<rcd:Column IsNullable="true" id="_BB4FDBA5-5648-46B7-959B-B5D365B86AA6" Name="personBirthAttendingDoctorId" />
+							<rcd:Column IsNullable="true" Name="personDateOfBirth" id="_62F7FB65-EEBA-4CAD-9256-AD08D8A7A5F2" />
+							<rcd:Column IsNullable="true" Name="personDeathDate" id="_82DC3D35-8A88-4B6D-B123-B571F00B429B" />
+							<rcd:Column IsNullable="true" Name="personDied" id="_7F2F2522-F18B-44B4-A7A6-30505B06708B" />
 						</rcd:Columns>
 						<rcd:Constraints>
 							<rcd:UniquenessConstraint IsPrimary="true" id="_EC4EBD5A-7125-4A7E-8778-36730589865C" Name="Party_PK">

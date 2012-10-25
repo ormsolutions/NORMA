@@ -1630,6 +1630,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private bool myVerbOptionDefaultConstraint = true;
 		private bool myVerbOptionFactTypesWithObjectType = true;
 		private ObjectTypeNameVerbalizationStyle myVerbOptionObjectTypeNameDisplay = ObjectTypeNameVerbalizationStyle.AsIs;
+		private string myVerbOptionRemoveObjectTypeNameCharactersOnSeparate = ".:_";
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.VerbalizationOptions"/>
 		/// </summary>
@@ -1667,22 +1668,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				bool defaultConstraint = OptionsPage.CurrentShowDefaultConstraintVerbalization;
 				bool factTypesWithObjectType = OptionsPage.CurrentVerbalizeFactTypesWithObjectType;
 				ObjectTypeNameVerbalizationStyle nameStyle = OptionsPage.CurrentVerbalizationObjectTypeNameDisplay;
+				string removedCharacters = OptionsPage.CurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
 				IDictionary<string, object> options = myVerbalizationOptions;
 				if (options == null ||
 					combineMandatoryUnique != myVerbOptionCombineMandatoryUnique ||
 					defaultConstraint != myVerbOptionDefaultConstraint ||
 					factTypesWithObjectType != myVerbOptionFactTypesWithObjectType ||
-					nameStyle != myVerbOptionObjectTypeNameDisplay)
+					nameStyle != myVerbOptionObjectTypeNameDisplay ||
+					removedCharacters != myVerbOptionRemoveObjectTypeNameCharactersOnSeparate)
 				{
 					myVerbalizationOptions = options = new Dictionary<string, object>(defaultOptions);
 					options[CoreVerbalizationOption.CombineSimpleMandatoryAndUniqueness] = combineMandatoryUnique;
 					options[CoreVerbalizationOption.ShowDefaultConstraint] = defaultConstraint;
 					options[CoreVerbalizationOption.FactTypesWithObjectType] = factTypesWithObjectType;
 					options[CoreVerbalizationOption.ObjectTypeNameDisplay] = nameStyle;
+					options[CoreVerbalizationOption.RemoveObjectTypeNameCharactersOnSeparate] = removedCharacters;
 					myVerbOptionCombineMandatoryUnique = combineMandatoryUnique;
 					myVerbOptionDefaultConstraint = defaultConstraint;
 					myVerbOptionFactTypesWithObjectType = factTypesWithObjectType;
 					myVerbOptionObjectTypeNameDisplay = nameStyle;
+					myVerbOptionRemoveObjectTypeNameCharactersOnSeparate = removedCharacters;
 				}
 				return options;
 			}

@@ -656,25 +656,25 @@ namespace ORMSolutions.ORMArchitect.Framework
 		}
 		#endregion // IsNumberDecoratedName method
 		#region IsMultiPartName method
-		private static Regex myEmbeddedCapsOrNumberRegex;
+		private static Regex myEmbeddedCapsNumbersOrSymbolsRegex;
 		/// <summary>
 		/// The regular expression used to determine if a string contains
 		/// an embedded capital or number
 		/// </summary>
-		private static Regex EmbeddedCapsOrNumberRegex
+		private static Regex EmbeddedCapsNumbersOrSymbolsRegex
 		{
 			get
 			{
-				Regex retVal = myEmbeddedCapsOrNumberRegex;
+				Regex retVal = myEmbeddedCapsNumbersOrSymbolsRegex;
 				if (retVal == null)
 				{
 					System.Threading.Interlocked.CompareExchange<Regex>(
-						ref myEmbeddedCapsOrNumberRegex,
+						ref myEmbeddedCapsNumbersOrSymbolsRegex,
 						new Regex(
-							@"(?n)(?(\s*\S+?\p{Lu})|\P{Nd}*\p{Nd})",
+							@"(?n)(?(\s*\S+?(\p{Lu}|\p{P}|\p{S}))|\P{Nd}*\p{Nd})",
 							RegexOptions.Compiled),
 						null);
-					retVal = myEmbeddedCapsOrNumberRegex;
+					retVal = myEmbeddedCapsNumbersOrSymbolsRegex;
 				}
 				return retVal;
 			}
@@ -685,7 +685,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// </summary>
 		public static bool IsMultiPartName(string name)
 		{
-			return EmbeddedCapsOrNumberRegex.IsMatch(name);
+			return EmbeddedCapsNumbersOrSymbolsRegex.IsMatch(name);
 		}
 		#endregion // IsMultiPartName method
 		#region MatchNameParts method
@@ -710,18 +710,64 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// 
 		/// If a match has multiple adjacent caps, then the named 'TrailingUpper'
 		/// group will be populated. If a number is represented (including
-		/// trailing lower-case markup), then the 'Numeric' group is populated.</remarks>
+		/// trailing lower-case markup), then the 'Numeric' group is populated.
+		/// 
+		/// Symbol and punctation characters are returned individually (one character
+		/// at a time) in the "PunctuationOrSymbol" group.
+		/// </remarks>
 		private static Regex SplitOnUpperAndNumberRegex
 		{
 			get
 			{
+				#region Commented regex pattern
+				//string commentedPattern = @"(?nx)
+				//# starting at end of last match
+				//\G
+				//# if the next character is punctuation or a symbol
+				//(?(\p{P}|\p{S})
+				//  # capture one special character at a time
+				//  (?<PunctuationOrSymbol>(\p{P}|\p{S}))
+				//|
+				//  # otherwise, if the next character is a number
+				//  (?(\p{Nd})
+				//    # capture this and all adjacent digits
+				//    ((?<Numeric>\p{Nd}+)
+				//    # collect trailing lower case letters in the same capture,
+				//    # as long as they are not directly followed by another digit.
+				//     (?((\p{Ll})+\p{Nd})|\p{Ll}+)?)
+				//  |
+				//    # otherwise, if the next character is upper case
+				//    (?(\p{Lu})
+				//      # collect the upper case character and any
+				//      # following non-uppercase characters that are
+				//      # not digits, punctuation, or symbols.
+				//      (\p{Lu}
+				//       # if the following character is not upper case
+				//       (?(\P{Lu})
+				//         # collect all following non-upper case characters that
+				//         # are not digits, punctuation, or symbols.
+				//         ((?!(\p{Nd}|\p{P}|\p{S}))\P{Lu})*
+				//       |
+				//         # otherwise, keep collecting upper case characters until
+				//         # we get one that is followed by a lower case character.
+				//         (?<TrailingUpper>((?!\p{Lu}\p{Ll})\p{Lu})*))
+				//      )
+				//    |
+				//      # otherwise, collect the next sequence of characters that
+				//      # are not otherwise recognized.
+				//      ((?!(\p{Nd}|\p{P}|\p{S}))\P{Lu})+
+				//    )
+				//  )
+				//)
+				//";
+				#endregion // Commented regex pattern
 				Regex retVal = mySplitOnUpperAndNumberRegex;
 				if (retVal == null)
 				{
 					System.Threading.Interlocked.CompareExchange<Regex>(
 						ref mySplitOnUpperAndNumberRegex,
 						new Regex(
-							@"(?n)\G(?(\p{Nd})((?<Numeric>\p{Nd}+)(?(((?!\p{Nd})\P{Lu})+\p{Nd})|((?!\p{Nd})\P{Lu})+)?)|(?(\P{Lu})((?!\p{Nd})\P{Lu})+|(\p{Lu}(?(\P{Lu})((?!\p{Nd})\P{Lu})+|(?<TrailingUpper>((?!\p{Lu}((?!\p{Nd})\P{Lu}))\p{Lu})*)))))",
+							@"(?n)\G(?(\p{P}|\p{S})(?<PunctuationOrSymbol>(\p{P}|\p{S}))|(?(\p{Nd})((?<Numeric>\p{Nd}+)(?((\p{Ll})+\p{Nd})|\p{Ll}+)?)|(?(\p{Lu})(\p{Lu}(?(\P{Lu})((?!(\p{Nd}|\p{P}|\p{S}))\P{Lu})*|(?<TrailingUpper>((?!\p{Lu}\p{Ll})\p{Lu})*)))|((?!(\p{Nd}|\p{P}|\p{S}))\P{Lu})+)))",
 							RegexOptions.Compiled),
 						null);
 					retVal = mySplitOnUpperAndNumberRegex;
@@ -737,9 +783,11 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// </summary>
 		/// <remarks>Use match.Success and match.NextMatch to iterate the results.
 		/// If a match.Groups contains a "TrailingUpper" group then the name consists
-		/// of multiple adjacent caps. Similarly, if there is a "Numberic" group then
+		/// of multiple adjacent caps. Similarly, if there is a "Numeric" group then
 		/// the name contains a number. Lower case letters immediately after a number
-		/// are returned with the same match as the number.</remarks>
+		/// are returned with the same match as the number. If punctuation or symbol
+		/// characters are found, each character is returned in "PunctuationOrSymbol"
+		/// group.</remarks>
 		public static Match MatchNameParts(string name)
 		{
 			return SplitOnUpperAndNumberRegex.Match(name);

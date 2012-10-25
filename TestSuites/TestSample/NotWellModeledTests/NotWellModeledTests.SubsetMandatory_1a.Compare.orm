@@ -394,7 +394,7 @@
 	</orm:ORMModel>
 	<ormDiagram:ORMDiagram BaseFontName="Tahoma" BaseFontSize="0.0972222238779068" IsCompleteView="false" Name="ORMModel1" id="_2AF534BB-171C-4760-843B-BEF9E29CD609">
 		<ormDiagram:Shapes>
-			<ormDiagram:ObjectTypeShape AbsoluteBounds="1.8583333333333332, 2.556746973395347, 0.36792931973934173, 0.35900605320930479" IsExpanded="true" id="_C5071879-E993-41BF-A45E-920DEC80BFA9">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_C5071879-E993-41BF-A45E-920DEC80BFA9" AbsoluteBounds="1.8583333333333332, 2.556746973395347, 0.33664540469646453, 0.35900605320930479">
 				<ormDiagram:Subject ref="_8A623C48-20D9-4898-BEB5-C797F61E01DB" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="2.8463888888371485, 2.0954752487751338, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_12E15333-E3AD-4844-84C4-BB19BC6EF44C">
@@ -412,7 +412,7 @@
 					<ormDiagram:Role ref="_0EEFFA3B-4C8B-483C-A537-B57CD640138C" />
 				</ormDiagram:RoleDisplayOrder>
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:ObjectTypeShape AbsoluteBounds="3.8692714488763489, 2.556746973395347, 0.36792931973934173, 0.35900605320930479" IsExpanded="true" id="_5BFD4561-873D-4742-B7E8-9FA9777F89FF">
+			<ormDiagram:ObjectTypeShape IsExpanded="true" id="_5BFD4561-873D-4742-B7E8-9FA9777F89FF" AbsoluteBounds="3.8692714488763489, 2.556746973395347, 0.33664540469646453, 0.35900605320930479">
 				<ormDiagram:Subject ref="_FE298464-B8AB-4974-B078-E9799994E91D" />
 			</ormDiagram:ObjectTypeShape>
 			<ormDiagram:FactTypeShape AbsoluteBounds="2.8463888888371485, 3.1047101333194438, 0.38388888899236917, 0.24388888899236916" IsExpanded="true" id="_A29EA134-598D-4E4C-80EB-4623F2B8CB23">

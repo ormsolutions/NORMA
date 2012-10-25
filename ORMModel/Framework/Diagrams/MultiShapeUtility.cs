@@ -115,7 +115,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 
 			if (allowMultipleShapesForChildren)
 			{
-				if (!TargetElementIsOnDiagram(topLevelTransaction, existingParentShape))
+				if (!TargetElementIsOnMergeContextDiagram(topLevelTransaction, existingParentShape))
 				{
 					return CreateAndConfigureChildShape(existingParentShape, childElement);
 				}
@@ -199,11 +199,18 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				}
 			}
 		}
-		private static bool TargetElementIsOnDiagram(Transaction topLevelTransaction, ShapeElement existingParentShape)
+		/// <summary>
+		/// Test if there is a current merge context shape and if it is on the same
+		/// diagram as the existing shape. Returns true if there is no merge context target.
+		/// </summary>
+		/// <returns></returns>
+		private static bool TargetElementIsOnMergeContextDiagram(Transaction topLevelTransaction, ShapeElement existingParentShape)
 		{
-			ShapeElement targetElement;
-			return (((targetElement = DesignSurfaceMergeContext.GetTargetElement(topLevelTransaction) as ShapeElement) != null) &&
-				(targetElement.Diagram == existingParentShape.Diagram));
+			ModelElement targetElement;
+			ShapeElement targetShape;
+			return null == (targetElement = DesignSurfaceMergeContext.GetTargetElement(topLevelTransaction)) ||
+				(null != (targetShape = targetElement as ShapeElement) &&
+				targetShape.Diagram == existingParentShape.Diagram);
 		}
 		private static ShapeElement CreateAndConfigureChildShape(ShapeElement existingParentShape, ModelElement childElement)
 		{

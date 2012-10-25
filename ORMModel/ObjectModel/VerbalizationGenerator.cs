@@ -503,6 +503,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used to verbalize [RolePlayer in Fact], e.g. Person in Person has Age.
 		/// Format: {0} in {1}</remark>
 		InQuantifier,
+		/// <summary>The 'IsIdentifiedBy' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify that one instance is identified by the other instance.
+		/// Format: {0} is identified by {1}</remark>
+		IsIdentifiedBy,
 		/// <summary>The 'LogicalAndOperator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to 'and' together exactly two other snippets.
 		/// Format: {0} and {1}</remark>
@@ -1203,6 +1207,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
+				@"{0}<span class=""quantifier""> is identified by </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -1531,6 +1536,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
+				@"{0}<span class=""quantifier""> is identified by </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -1859,6 +1865,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
+				@"{0}<span class=""quantifier""> is identified by </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -2187,6 +2194,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""logicalOperator"">or </span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
+				@"{0}<span class=""quantifier""> is identified by </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
