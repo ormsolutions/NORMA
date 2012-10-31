@@ -4720,7 +4720,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Member variables
 			#region Constructor
 			/// <summary>
-			/// Create a new <see cref="InlineSubqueryContext"/>
+			/// Create a new <see cref="InlineSubqueryRole"/>
 			/// </summary>
 			/// <param name="parentContext">The context representing the derivation path that invokes this subquery.</param>
 			/// <param name="parentEntryRole">The <see cref="PathedRole"/> in the context path used to invoke an instance of this subquery.</param>
@@ -4830,7 +4830,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Member variables
 			#region Constructor
 			/// <summary>
-			/// Create a new <see cref="InlineSubqueryContext"/>
+			/// Create a new <see cref="InlineSubqueryParameter"/>
 			/// </summary>
 			/// <param name="parentContext">The context representing the derivation path that invokes this subquery.</param>
 			/// <param name="parentEntryRole">The <see cref="PathedRole"/> in the context path used to invoke an instance of this subquery.</param>
@@ -5416,7 +5416,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Create and attach a new variable equality node.
 			/// </summary>
-			/// <param name="equivalentVariableKeys">A list of keys to render as equivlanet</param>
+			/// <param name="equivalentVariableKeys">A list of keys to render as equivalent</param>
 			/// <param name="pathContext">The path context for this node.</param>
 			/// <param name="parentNode">The parent <see cref="VerbalizationPlanNode"/> for the new node.</param>
 			/// <param name="rootNode">A reference to the root node of the chain.</param>
@@ -6478,7 +6478,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			// Populate path variables for this owner and process all role paths in the root (null) path context
 			LinkedNode<object> pendingRequiredVariableKeys = null;
-			InitializeRolePaths(null, null, pathOwner, AddPathProjections(pathOwner), ref pendingRequiredVariableKeys);
+			InitializeRolePaths(null, null, null, pathOwner, AddPathProjections(pathOwner), ref pendingRequiredVariableKeys);
 
 			VerbalizationPlanNode newRootNode = myRootPlanNode;
 			if (newRootNode != null)
@@ -6518,7 +6518,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			BeginQuantificationUsePhase();
 		}
 		private delegate object PathContextCreator(LeadRolePath rolePath);
-		private void InitializeRolePaths(object pathContext, PathContextCreator contextCreator, RolePathOwner pathOwner, IDictionary<LeadRolePath, IList<IList<object>>> equivalentVariableKeysByPath, ref LinkedNode<object> pendingRequiredVariableKeys)
+		private void InitializeRolePaths(object pathContext, PathContextCreator contextCreator, VariableKeyDecorator keyDecorator, RolePathOwner pathOwner, IDictionary<LeadRolePath, IList<IList<object>>> equivalentVariableKeysByPath, ref LinkedNode<object> pendingRequiredVariableKeys)
 		{
 			// Determine owned paths to verbalize
 			// Verbalize in owned/shared order. The LeadRolePathCollection is unordered.
@@ -6573,7 +6573,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							PushSplit(outerContext, VerbalizationPlanBranchType.AndSplit, ref pendingRequiredVariableKeys);
 						}
-						InitializeRolePath(pathContext, pathOwner, filteredPath, ref pendingRequiredVariableKeys);
+						InitializeRolePath(pathContext, pathOwner, filteredPath, keyDecorator, ref pendingRequiredVariableKeys);
 						if (equivalentVariables != null)
 						{
 							int equivalentVariableSetCount = equivalentVariables.Count;
@@ -6591,7 +6591,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		private void InitializeRolePath(object initialPathContext, RolePathOwner pathOwner, LeadRolePath leadRolePath, ref LinkedNode<object> requiredVariableKeys)
+		private void InitializeRolePath(object initialPathContext, RolePathOwner pathOwner, LeadRolePath leadRolePath, VariableKeyDecorator keyDecorator, ref LinkedNode<object> requiredVariableKeys)
 		{
 			LinkedElementCollection<CalculatedPathValue> pathConditions = leadRolePath.CalculatedConditionCollection;
 			int pathConditionCount = pathConditions.Count;
@@ -7045,7 +7045,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
-			AddCalculatedAndConstantProjections(initialPathContext, pathOwner, leadRolePath);
+			AddCalculatedAndConstantProjections(initialPathContext, pathOwner, leadRolePath, keyDecorator);
 			PopConditionalChainNode();
 			if (rootObjectTypeVariable != null &&
 				!rootObjectTypeVariable.HasBeenUsed(myLatestUsePhase, false) &&
@@ -8126,6 +8126,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int localInlineSubqueryRoleBaseIndex = inlineSubqueryRoleBaseIndex;
 			List<InlineSubqueryParameter> localInlineSubqueryParameters = inlineSubqueryParameters;
 			int localInlineSubqueryParameterBaseIndex = inlineSubqueryParameterBaseIndex;
+			VariableKeyDecorator keyDecorator = delegate(object key)
+			{
+				Role role;
+				QueryParameter parameter;
+				int index;
+				if (null != (role = key as Role))
+				{
+					if (-1 != (index = ResolveRoleIndex(queryRoles, role))) // Guard against bogus path
+					{
+						return localInlineSubqueryRoles[localInlineSubqueryRoleBaseIndex + index];
+					}
+				}
+				else if (null != (parameter = key as QueryParameter))
+				{
+					if (-1 != (index = queryParameters.IndexOf(parameter)))
+					{
+						return localInlineSubqueryParameters[localInlineSubqueryParameterBaseIndex + index]; // Guard against bogus path
+					}
+				}
+				return key; // Fallback, shouldn't reach here
+			};
 			IDictionary<LeadRolePath, IList<IList<object>>> equivalentSubqueryProjectionKeysByPath = GenerateRoleAndParameterProjections(
 				subqueryRule,
 				delegate(object key, LeadRolePath forRolePath, ObjectType variableType, RolePathNode correlationNode)
@@ -8143,33 +8164,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						correlationNode = new RolePathNode(correlationNode, innerPathContext);
 					}
 					RolePlayerVariable newVar = RegisterRolePlayerUse(variableType, null, correlationNode, correlationNode);
-					RolePlayerVariableUse? correlateWithVar = GetRolePlayerVariableUse(key);
-					if (correlateWithVar.HasValue)
+					if (!correlationNode.IsEmpty)
 					{
-						CustomCorrelateVariables(correlateWithVar.Value.PrimaryRolePlayerVariable, newVar);
+						RolePlayerVariableUse? correlateWithVar = GetRolePlayerVariableUse(key);
+						if (correlateWithVar.HasValue)
+						{
+							CustomCorrelateVariables(correlateWithVar.Value.PrimaryRolePlayerVariable, newVar);
+						}
 					}
 				},
-				delegate(object key)
-				{
-					Role role;
-					QueryParameter parameter;
-					int index;
-					if (null != (role = key as Role))
-					{
-						if (-1 != (index = ResolveRoleIndex(queryRoles, role))) // Guard against bogus path
-						{
-							return localInlineSubqueryRoles[localInlineSubqueryRoleBaseIndex + index];
-						}
-					}
-					else if (null != (parameter = key as QueryParameter))
-					{
-						if (-1 != (index = queryParameters.IndexOf(parameter)))
-						{
-							return localInlineSubqueryParameters[localInlineSubqueryParameterBaseIndex + index]; // Guard against bogus path
-						}
-					}
-					return key; // Fallback, shouldn't reach here
-				});
+				keyDecorator);
 
 			// Add value constraints and local condition code based on roles in the outer path
 			int currentPathedRoleCount = pathedRoles.Count;
@@ -8294,6 +8298,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					return innerPathContext;
 				},
+				keyDecorator,
 				subqueryRule,
 				equivalentSubqueryProjectionKeysByPath,
 				ref pendingRequiredVariableKeys);
@@ -9133,6 +9138,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return null;
 		}
 		/// <summary>
+		/// A callback for decorating variable keys.
+		/// </summary>
+		/// <param name="key">The key value.</param>
+		/// <returns>The original key or a decorated value.</returns>
+		protected delegate object VariableKeyDecorator(object key);
+		/// <summary>
 		/// Add calculations and constants that are bound directly to a
 		/// head variable registered during <see cref="AddPathProjections"/>
 		/// using the <see cref="ProjectExternalVariable(Object,CalculatedPathValue,Object)"/> and
@@ -9141,7 +9152,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="pathContext">The context representing a use of this path.</param>
 		/// <param name="pathOwner">The <see cref="RolePathOwner"/></param>
 		/// <param name="rolePath">A <see cref="LeadRolePath"/> with associated projections.</param>
-		protected virtual void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath)
+		/// <param name="keyDecorator">A callback function for decorating keys of projected items.</param>
+		protected virtual void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
 		{
 			// Default implementation is empty
 		}
@@ -10435,8 +10447,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						testChildIndex = testChildIndex == 0 ? 1 : 0;
 						int usePhase = CurrentQuantificationUsePhase;
 						object pathContext = node.PathContext;
+						RolePlayerVariableUse? resolvedChildVariableUse;
 						if (testChildIndex >= childPathedRoles.Count || // Indicates a pure existential, we're here because the entry role can possibly be partnered.
-							!GetRolePlayerVariableUse(new RolePathNode(childPathedRoles[testChildIndex], pathContext)).Value.PrimaryRolePlayerVariable.HasBeenUsed(usePhase, true))
+							((resolvedChildVariableUse = GetRolePlayerVariableUse(new RolePathNode(childPathedRoles[testChildIndex], pathContext))).HasValue && !resolvedChildVariableUse.Value.PrimaryRolePlayerVariable.HasBeenUsed(usePhase, true)))
 						{
 							RolePlayerVariableUse variableUse = GetRolePlayerVariableUse(new RolePathNode(entryPathedRole, pathContext)).Value;
 							RolePlayerVariable primaryVariable = variableUse.PrimaryRolePlayerVariable;
@@ -10987,7 +11000,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal;
 		}
 		private delegate void RegisterSubqueryProjectionVariable(object key, LeadRolePath rolePath, ObjectType variableType, RolePathNode correlationNode);
-		private delegate object DecorateSubqueryProjectionKey(object key);
 		/// <summary>
 		/// Register variables required for projection by a subquery object. Helper method to
 		/// ensure consistency in subquery projection processing by <see cref="InitializeRolePath"/> and
@@ -10997,7 +11009,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="variableRegistrar">A callback to register variables.</param>
 		/// <param name="keyDecorator">A callback to translate a projection key (either a role or a parameter) into a decorated key.
 		/// If specified, keys are preprocessed by this call before being passed to the variable registrar.</param>
-		private IDictionary<LeadRolePath, IList<IList<object>>> GenerateRoleAndParameterProjections(RolePathOwner pathOwner, RegisterSubqueryProjectionVariable variableRegistrar, DecorateSubqueryProjectionKey keyDecorator)
+		private IDictionary<LeadRolePath, IList<IList<object>>> GenerateRoleAndParameterProjections(RolePathOwner pathOwner, RegisterSubqueryProjectionVariable variableRegistrar, VariableKeyDecorator keyDecorator)
 		{
 			// Overlay all projection information
 			// Make the QueryDerivationRule optional so that this supports inlining of derived fact types
@@ -11575,7 +11587,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to bind calculation and constant projections
 			/// </summary>
-			protected override void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath)
+			protected override void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
 			{
 				// Overlay projection information
 				RoleSetDerivationProjection projection = RoleSetDerivationProjection.GetLink((RoleProjectedDerivationRule)pathOwner, rolePath);
@@ -11585,13 +11597,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						CalculatedPathValue calculation;
 						PathConstant constant;
+						Role role;
 						if (null != (calculation = roleProjection.ProjectedFromCalculatedValue))
 						{
-							ProjectExternalVariable(roleProjection.ProjectedRole, calculation, pathContext);
+							role = roleProjection.ProjectedRole;
+							ProjectExternalVariable(keyDecorator != null ? keyDecorator(role) : role, calculation, pathContext);
 						}
 						else if (null != (constant = roleProjection.ProjectedFromConstant))
 						{
-							ProjectExternalVariable(roleProjection.ProjectedRole, constant, pathContext);
+							role = roleProjection.ProjectedRole;
+							ProjectExternalVariable(keyDecorator != null ? keyDecorator(role) : role, constant, pathContext);
 						}
 					}
 				}
@@ -11903,9 +11918,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to bind calculation and constant projections
 			/// </summary>
-			protected override void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath)
+			protected override void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
 			{
-				// Overlay projection information
+				// Overlay projection information.
+				// Key decorator is ignored as this is always called top level.
 				ConstraintRoleSequenceJoinPathProjection projection = ConstraintRoleSequenceJoinPathProjection.GetLink((ConstraintRoleSequenceJoinPath)pathOwner, rolePath);
 				if (projection != null)
 				{
@@ -12071,9 +12087,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Override to bind calculation and constant projections
 			/// </summary>
-			protected override void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath)
+			protected override void AddCalculatedAndConstantProjections(object pathContext, RolePathOwner pathOwner, LeadRolePath rolePath, VariableKeyDecorator keyDecorator)
 			{
 				// Overlay projection information
+				// Key decorator is ignored as this is always called top level.
 				ConstraintRoleSequenceJoinPathProjection projection = ConstraintRoleSequenceJoinPathProjection.GetLink((ConstraintRoleSequenceJoinPath)pathOwner, rolePath);
 				if (projection != null)
 				{

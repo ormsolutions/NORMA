@@ -14,7 +14,7 @@
 
 <p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA October 2012 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The October 2012 release adds Visual Studio 2012 support and some enhances some disjunctive mandatory and external uniqueness verbalization patterns, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
+The October 2012 release adds Visual Studio 2012 support, some enhancements to disjunctive mandatory and external uniqueness verbalization patterns, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2>Contents</h2>
 <ul>
@@ -44,8 +44,9 @@ The October 2012 release adds Visual Studio 2012 support and some enhances some 
 
 <hr/>
 <h2>October 2012 CTP Changes</h2>
-<div>The October 2012 CTP release includes all modifications through changeset 1496.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The October 2012 CTP release includes all modifications through changeset 1498.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
+<li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-10">Verbalized object type name separator character removal options</a></li>
 <li>Bug Fixes:
 <ol>
 <li>Crash verbalizing internal uniqueness constraints with no roles (possible from toolbox and with error activation).</li>
@@ -573,6 +574,14 @@ The <strong>Object Type Name Display</strong> option in the <em>Verbalization</e
 <li>
 <a id="VerbalizePossiblePopulationsOption 2012-04" class="new" title="April 2012 CTP: Verbalize possible populations option">2012-04</a>&nbsp;
 The <strong>Possible Populations</strong> option has replaced the <strong>Verbalization Default Constraint</strong> option in the <em>Verbalization</em> section of the <em>ORM Designer</em> tab on the <em>Options</em> page (available on the <em>Tools</em> menu). This option now applies to the possible populations of spanning internal uniqueness constraints in addition to many-to-one binary fact types.
+</li>
+<li>
+<a id="VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-10" class="new" title="October 2012 CTP: Verbalized object type name separator character removal options">2012-10</a>&nbsp;
+As an enhancement to automatic name separation and casing of object type names (see <a href="#VerbalizedObjectTypeNameDisplay 2012-01">Verbalized object type name options</a>), punctuation and symbol characters are recognized in addition to upper cases and numeric characters.
+<ul>
+<li>All symbol and punctuation characters form word boundaries.</li>
+<li>Most special characters remain in the final name and do not get extra spaces around them.</li>
+<li>The new <em>Object Type Name Removed Characters</em> options lists special characters that should be replaced with a space. The default setting replaces the <strong>.:_</strong> (period, colon, and underscore) characters with a space in the final name.</li></ul>
 </li>
 </ol>
 <a href="#The Top">Return to top</a>
