@@ -6052,7 +6052,7 @@
 		</xsl:for-each>
 		<xsl:if test="not($byPassTopLevel)">
 			<xsl:variable name="formatCall">
-				<xsl:variable name="useOutdentFormatter" select="boolean(cvg:IterateSequences[@listStyle='null'][cvg:SequenceJoinPath[@markTrailingOutdentStart='true' or @markTrailingOutdentStart='1']])"/>
+				<xsl:variable name="useOutdentFormatter" select="boolean(cvg:IterateSequences[@listStyle='null'][cvg:SequenceJoinPath[@markTrailingOutdentStart='true' or @markTrailingOutdentStart='1']] or self::*[@applyTrailingOutdentHere='true' or @applyTrailingOutdentHere='1'])"/>
 				<plx:callStatic name="Format" dataTypeName=".string">
 					<xsl:if test="$useOutdentFormatter">
 						<xsl:attribute name="name">
@@ -10073,7 +10073,7 @@
 			<xsl:when test="$isCompositeList">
 				<xsl:variable name="childVariablePrefix" select="concat($useVariablePrefix,$VariableDecorator,'Item')"/>
 				<xsl:variable name="compositeCountVarName" select="concat($useVariablePrefix,'CompositeCount',$VariableDecorator)"/>
-				<xsl:variable name="useOutdentFormatter" select="boolean(cvg:SequenceJoinPath[@markTrailingOutdentStart='true' or @markTrailingOutdentStart='1'])"/>
+				<xsl:variable name="useOutdentFormatter" select="boolean(self::*[not(parent::*[@applyTrailingOutdentHere='true' or @applyTrailingOutdentHere='1'])]/cvg:SequenceJoinPath[@markTrailingOutdentStart='true' or @markTrailingOutdentStart='1'])"/>
 				<plx:local name="{$compositeCountVarName}" dataTypeName=".i4">
 					<plx:initialize>
 						<plx:value type="i4" data="0"/>

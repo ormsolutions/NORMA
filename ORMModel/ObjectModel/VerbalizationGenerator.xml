@@ -200,7 +200,7 @@
 				</ConstrainedRoles>
 				<ConstrainedRoles sign="positive">
 					<Snippet ref="ImpliedModalNecessityOperator">
-						<Snippet ref="Conditional">
+						<Snippet ref="Conditional" applyTrailingOutdentHere="true">
 							<IterateSequences listStyle="CompoundList" pass="first" compositeList="true">
 								<SequenceJoinPath markTrailingOutdentStart="true">
 									<IterateRoles match="constraintRoles" listStyle="null" uniqueFactType="true">

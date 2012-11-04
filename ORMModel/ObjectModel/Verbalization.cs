@@ -10716,10 +10716,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (possibleCorrelationPartners != null)
 			{
+				RolePlayerVariable firstUnpairedSameTypedVariable = null; // With subquery process, we can end up pairing variables of the same type
 				RolePlayerVariable firstUnpairedNormalVariable = null; // Normal meaning not the head
 				RolePlayerVariable firstUnpairedHeadVariable = null;
 				int pairedDuringPhase;
 				RolePlayerVariable floatingRootVariable = myFloatingRootVariable;
+				ObjectType primaryRolePlayer = primaryVariable.RolePlayer;
 				bool unusedFloatingRootVariable = false;
 				foreach (RolePlayerVariable possiblePartner in possibleCorrelationPartners)
 				{
@@ -10737,11 +10739,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							IsPairingUsePhaseInScope(pairedDuringPhase))
 						{
 							// We have an existing pairing, get out
+							firstUnpairedSameTypedVariable = null;
 							firstUnpairedHeadVariable = null;
 							firstUnpairedNormalVariable = null;
 							break;
 						}
-						if (possiblePartner.IsHeadVariable)
+						if (possiblePartner.RolePlayer == primaryRolePlayer)
+						{
+							if (firstUnpairedSameTypedVariable == null)
+							{
+								firstUnpairedSameTypedVariable = possiblePartner;
+							}
+						}
+						else if (possiblePartner.IsHeadVariable)
 						{
 							if (firstUnpairedHeadVariable == null)
 							{
@@ -10758,7 +10768,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						unusedFloatingRootVariable = true;
 					}
 				}
-				return firstUnpairedHeadVariable ?? firstUnpairedNormalVariable ?? (unusedFloatingRootVariable ? floatingRootVariable : null);
+				return firstUnpairedSameTypedVariable ?? firstUnpairedHeadVariable ?? firstUnpairedNormalVariable ?? (unusedFloatingRootVariable ? floatingRootVariable : null);
 			}
 			return null;
 		}

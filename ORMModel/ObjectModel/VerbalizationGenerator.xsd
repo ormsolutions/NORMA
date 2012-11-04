@@ -545,6 +545,11 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
+		<xs:attribute name="applyTrailingOutdentHere" use="optional" type="xs:boolean">
+			<xs:annotation>
+				<xs:documentation>Use with a nested SequenceJoinPath@markTrailingOutdentStart to force outdent resolution in the snippet instead of while the list is generating.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="SnippetLeafTypeWithConditionalMatch">
 		<xs:complexContent>
