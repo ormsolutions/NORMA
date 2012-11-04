@@ -612,10 +612,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						ORMDiagram diagram;
 						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
 						{
-							//add a link shape for each fact type shape on the diagram for the played role
-							foreach (ObjectTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ObjectTypeShape>(diagram, subTypeFact.Subtype))
+							ObjectType subtype = subTypeFact.Subtype;
+							// add a link shape for each object type shape on the diagram for the played role
+							foreach (ObjectTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ObjectTypeShape>(diagram, subtype))
 							{
 								diagram.FixUpLocalDiagram(subTypeFact);
+							}
+							FactType objectifiedFactType;
+							if (null != (objectifiedFactType = subtype.NestedFactType))
+							{
+								foreach (FactTypeShape shapeElement in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(diagram, objectifiedFactType))
+								{
+									diagram.FixUpLocalDiagram(subTypeFact);
+								}
 							}
 						}
 					}

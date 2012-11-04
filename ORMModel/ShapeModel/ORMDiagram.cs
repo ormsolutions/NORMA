@@ -1046,8 +1046,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			else if ((subtypeFact = element as SubtypeFact) != null)
 			{
-				element1 = subtypeFact.Subtype;
-				element2 = subtypeFact.Supertype;
+				element1 = RedirectToDisplayedElement(subtypeFact.Subtype);
+				element2 = RedirectToDisplayedElement(subtypeFact.Supertype);
 			}
 
 			bool isLink = link != null || subtypeFact != null;

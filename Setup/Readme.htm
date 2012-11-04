@@ -44,7 +44,7 @@ The October 2012 release adds Visual Studio 2012 support, some enhancements to d
 
 <hr/>
 <h2>October 2012 CTP Changes</h2>
-<div>The October 2012 CTP release includes all modifications through changeset 1499.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The October 2012 CTP release includes all modifications through changeset 1500.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-10">Verbalized object type name separator character removal options</a></li>
 <li>Bug Fixes:
@@ -58,6 +58,8 @@ The October 2012 release adds Visual Studio 2012 support, some enhancements to d
 <li>Fixed verbalization of external uniqueness and frequency constraints over unary fact types.</li>
 <li>(VS2010) Database import wizard worked from File/New, but not adding a file directly to a project.</li>
 <li>(VS2010) Diagram Spy and other tool windows could end up blank, requiring restart.</li>
+<li>Subtype connectors to or from objectified fact types displayed as object type would sometimes fail to create a shape.</li>
+<li>Subtype connectors with an objectified fact type as the subtype role player were not reconnecting on load.</li>
 </ol>
 </li>
 </ul>
