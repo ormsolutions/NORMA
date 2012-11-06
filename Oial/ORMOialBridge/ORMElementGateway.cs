@@ -36,7 +36,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		}
 		private bool ShouldIgnoreFactType(FactType factType)
 		{
-			return ORMElementGateway.IsElementExcluded(factType) || (null != factType.Objectification && factType.UnaryRole == null);
+			return ORMElementGateway.IsElementExcluded(factType) || factType is QueryBase || (null != factType.Objectification && factType.UnaryRole == null);
 		}
 		#endregion // ORM Error Filtering Methods
 		#region ORMElementGateway class
@@ -191,7 +191,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				// Note that any changes to the list of errors must correspond to changes in
 				// FactTypeErrorAddedRule and FactTypeErrorDeletedRule
 				if (null == factType.InternalUniquenessConstraintRequiredError &&
-					null == factType.ImpliedInternalUniquenessConstraintError)
+					null == factType.ImpliedInternalUniquenessConstraintError &&
+					!(factType is QueryBase))
 				{
 					if (!(factType is SubtypeFact))
 					{
@@ -415,7 +416,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				if (forceCreate ||
 					null == ExcludedORMModelElement.GetAbstractionModel(factType))
 				{
-					if (null == factType.Objectification || factType.UnaryRole != null)
+					if (!(factType is QueryBase) &&
+						(null == factType.Objectification || factType.UnaryRole != null))
 					{
 						new ExcludedORMModelElement(factType, model);
 					}
