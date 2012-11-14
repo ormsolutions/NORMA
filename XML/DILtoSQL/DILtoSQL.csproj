@@ -9,6 +9,7 @@
     <OutputPath>.\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="DDILtoSQLServer_ANSITypes.xslt" />
     <Content Include="TruthValueTestRemover.xslt" />
     <Content Include="DDILtoDB2.xslt" />
     <Content Include="DDILtoMySQL.xslt" />

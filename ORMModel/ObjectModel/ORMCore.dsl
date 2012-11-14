@@ -2468,6 +2468,16 @@
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="CurrentScale" DefaultValue="0" DisplayName="CurrentScale" Kind="CustomStorage" IsBrowsable="false" Id="7C4AF9CE-F083-4AE3-8DC3-0ACA822820E3" Description="The current scale if scale is supported by the current data type, or 0.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="CurrentLength" DefaultValue="0" DisplayName="CurrentLength" Kind="CustomStorage" IsBrowsable="false" Id="B9861BD8-E22B-4036-B844-B982924E4B3C" Description="The current length if length is supported by the current data type, or 0.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 			<Source>
 				<DomainRole Name="ValueType" PropertyName="DataType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueType" Id="3F6D8D0A-CEC5-47EF-8F81-EF25F59593E0">

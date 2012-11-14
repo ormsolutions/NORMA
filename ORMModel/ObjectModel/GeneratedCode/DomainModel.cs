@@ -605,6 +605,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(FactTypeInstance), "NameChanged", FactTypeInstance.NameChangedDomainPropertyId, typeof(FactTypeInstance.NameChangedPropertyHandler)),
 				new DomainMemberInfo(typeof(ValueTypeHasDataType), "Scale", ValueTypeHasDataType.ScaleDomainPropertyId, typeof(ValueTypeHasDataType.ScalePropertyHandler)),
 				new DomainMemberInfo(typeof(ValueTypeHasDataType), "Length", ValueTypeHasDataType.LengthDomainPropertyId, typeof(ValueTypeHasDataType.LengthPropertyHandler)),
+				new DomainMemberInfo(typeof(ValueTypeHasDataType), "CurrentScale", ValueTypeHasDataType.CurrentScaleDomainPropertyId, typeof(ValueTypeHasDataType.CurrentScalePropertyHandler)),
+				new DomainMemberInfo(typeof(ValueTypeHasDataType), "CurrentLength", ValueTypeHasDataType.CurrentLengthDomainPropertyId, typeof(ValueTypeHasDataType.CurrentLengthPropertyHandler)),
 				new DomainMemberInfo(typeof(Objectification), "IsImplied", Objectification.IsImpliedDomainPropertyId, typeof(Objectification.IsImpliedPropertyHandler)),
 				new DomainMemberInfo(typeof(RolePathObjectTypeRoot), "IsNegated", RolePathObjectTypeRoot.IsNegatedDomainPropertyId, typeof(RolePathObjectTypeRoot.IsNegatedPropertyHandler)),
 				new DomainMemberInfo(typeof(PathedRole), "IsNegated", PathedRole.IsNegatedDomainPropertyId, typeof(PathedRole.IsNegatedPropertyHandler)),

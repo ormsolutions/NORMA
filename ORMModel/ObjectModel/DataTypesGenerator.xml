@@ -28,7 +28,7 @@
 		<DataType name="VariableLength" lengthName="">
 			<Comment type="summary">A variable length text data type</Comment>
 		</DataType>
-		<DataType name="LargeLength" lengthName="">
+		<DataType name="LargeLength">
 			<Comment type="summary">A large length text data type</Comment>
 		</DataType>
 	</DataTypeGroup>
@@ -80,7 +80,7 @@
 		<DataType name="VariableLength" lengthName="">
 			<Comment type="summary">A variable length raw data data type</Comment>
 		</DataType>
-		<DataType name="LargeLength" lengthName="">
+		<DataType name="LargeLength">
 			<Comment type="summary">A large length raw data data type</Comment>
 		</DataType>
 		<DataType name="Picture">

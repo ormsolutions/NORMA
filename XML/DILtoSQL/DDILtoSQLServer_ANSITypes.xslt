@@ -31,7 +31,7 @@
 	<xsl:output method="text" encoding="utf-8" indent="no" omit-xml-declaration="yes"/>
 	<xsl:strip-space elements="*"/>
 
-	<xsl:param name="DefaultMaximumStringLength" select="'max'"/>
+	<xsl:param name="DefaultMaximumStringLength" select="'MAX'"/>
 	<xsl:param name="MaximumCharacterNonVaryingStringLength" select="4000"/>
 	<xsl:param name="MaximumBinaryNonVaryingStringLength" select="8000"/>
 	<xsl:param name="DefaultMaximumExactNumericPrecisionAndScale" select="38"/>
@@ -162,66 +162,26 @@
 	<!-- UNDONE: Handle rendering ddt:characterString and ddt:binaryString with @length greater than 4000 and 8000, respectively.-->
 	<!-- In order to do this, we will need to render the length as MAX, and add constraints to enforce the original length requested. -->
 	
-	<xsl:template match="@type[.='CHARACTER']" mode="ForDataType">
-		<xsl:text>nchar</xsl:text>
+	<xsl:template match="@type[.='CHARACTER' or .='CHARACTER VARYING']" mode="ForDataType">
+		<xsl:text>NATIONAL </xsl:text>
+		<xsl:value-of select="."/>
 	</xsl:template>
 
-	<xsl:template match="@type[.='CHARACTER VARYING' or .='CHARACTER LARGE OBJECT']" mode="ForDataType">
-		<xsl:text>nvarchar</xsl:text>
+	<xsl:template match="@type[.='CHARACTER LARGE OBJECT']" mode="ForDataType">
+		<xsl:text>NATIONAL CHARACTER VARYING</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="@type[.='BINARY']" mode="ForDataType">
-		<xsl:text>binary</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="@type[.='BINARY VARYING' or .='BINARY LARGE OBJECT']" mode="ForDataType">
-		<xsl:text>varbinary</xsl:text>
+	<xsl:template match="@type[.='BINARY LARGE OBJECT']" mode="ForDataType">
+		<xsl:text>BINARY VARYING</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="@type[.='DATE' or .='TIME' or .='TIMESTAMP']" mode="ForDataType">
-		<xsl:text>datetime</xsl:text>
+		<xsl:text>DATETIME</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="@type[.='BOOLEAN']" mode="ForDataType">
-		<xsl:text>bit</xsl:text>
+		<xsl:text>BIT</xsl:text>
 	</xsl:template>
-
-	<xsl:template match="@type[.='NUMERIC']" mode="ForDataType">
-		<xsl:text>numeric</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="@type[.='DECIMAL']" mode="ForDataType">
-		<xsl:text>decimal</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="@type[.='TINYINT']" mode="ForDataType">
-		<xsl:text>tinyint</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="@type[.='SMALLINT']" mode="ForDataType">
-		<xsl:text>smallint</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="@type[.='INTEGER']" mode="ForDataType">
-		<xsl:text>int</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="@type[.='BIGINT']" mode="ForDataType">
-		<xsl:text>bigint</xsl:text>
-	</xsl:template>
-
-	<xsl:template match="@type[.='REAL']" mode="ForDataType">
-		<xsl:text>real</xsl:text>
-	</xsl:template>
-	<xsl:template match="@type[.='DOUBLE PRECISION'or .='FLOAT']" mode="ForDataType">
-		<xsl:text>float</xsl:text>
-	</xsl:template>
-	<xsl:template match="ddt:approximateNumeric[@type='DOUBLE PRECISION']" mode="ForDataTypeNumericPrecisionAndScale">
-		<xsl:value-of select="$LeftParen"/>
-		<xsl:text>53</xsl:text>
-		<xsl:value-of select="$RightParen"/>
-	</xsl:template>
-
 
 	<xsl:template match="ddt:booleanLiteral">
 		<xsl:choose>

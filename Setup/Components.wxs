@@ -1022,6 +1022,18 @@
 									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLServer"/>
 									<RegistryValue Type="string" Name="TransformUri" Value="[#DDILtoSQLServer.xslt]"/>
 								</RegistryKey>
+								<File Id="DDILtoSQLServer_ANSITypes.xslt" ShortName="DIL2MSA.xsl" Name="DDILtoSQLServer_ANSITypes.xslt" Source="..\XML\DILtoSQL\DDILtoSQLServer_ANSITypes.xslt"
+									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
+								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoSQLServerANSI">
+									<RegistryValue Type="string" Name="Type" Value="XSLT"/>
+									<RegistryValue Type="string" Name="OfficialName" Value="DDILtoSQLServerANSI"/>
+									<RegistryValue Type="string" Name="DisplayName" Value="DDIL to SQL Server (ANSI Types)"/>
+									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms DDIL to SQL Server-dialect SQL with ANSI data types."/>
+									<RegistryValue Type="string" Name="FileExtension" Value=".SQLServer.sql"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="DDIL"/>
+									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="SQL_SQLServer"/>
+									<RegistryValue Type="string" Name="TransformUri" Value="[#DDILtoSQLServer_ANSITypes.xslt]"/>
+								</RegistryKey>
 								<File Id="DDILtoOracle.xslt" ShortName="DIL2Orac.xsl" Name="DDILtoOracle.xslt" Source="..\XML\DILtoSQL\DDILtoOracle.xslt"
 									DefaultLanguage="0" CompanionFile="DILSupportFunctions.xslt"/>
 								<RegistryKey Root="HKLM" Key="$(var.NORMARegRoot)\Generators\DDILtoOracle">

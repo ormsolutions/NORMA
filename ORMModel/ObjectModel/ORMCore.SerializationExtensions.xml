@@ -453,9 +453,10 @@
 		<se:Link Name="Kind" RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="Kind"/>
 	</se:Element>
 	<se:Element Class="ValueTypeHasDataType" LinkOnly="true">
-		<se:Attribute ID="Scale">
-			<se:RolePlayed ID="ValueType" Name="Scale"/>
-		</se:Attribute>
+		<se:Attribute ID="Scale" WriteStyle="NotWritten"/>
+		<se:Attribute ID="Length" WriteStyle="NotWritten"/>
+		<se:Attribute ID="CurrentScale" Name="Scale" WriteCustomStorage="true"/>
+		<se:Attribute ID="CurrentLength" Name="Length" WriteCustomStorage="true"/>
 		<se:Link RelationshipName="ValueTypeHasUnspecifiedDataTypeError" RoleName="DataTypeNotSpecifiedError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="DataType" Override="true">

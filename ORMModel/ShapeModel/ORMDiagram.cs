@@ -1725,6 +1725,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 
 			DiagramClientView clientView = pointArgs.DiagramClientView;
+			IToolboxService toolboxService;
 			if (clientView.ActiveMouseAction != action &&
 				// UNDONE: We should not need the following line because the current mouse action
 				// should correspond to the current toolbox action. However, Toolbox.SetSelectedToolboxItem
@@ -1733,7 +1734,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				// during a chained mouse action cancels the action.
 				// See corresponding code in ExternalConstraintConnectAction.ChainMouseAction and
 				// InternalUniquenessConstraintConnectAction.ChainMouseAction.
-				(action != null || (activeView != null && activeView.Toolbox.GetSelectedToolboxItem() != null)))
+				(action != null || (null != activeView && null != (toolboxService = activeView.Toolbox) && null != toolboxService.GetSelectedToolboxItem())))
 			{
 				ToolboxUtility.ActivateMouseAction(action, clientView, ((IORMToolServices)this.Store).ServiceProvider);
 			}

@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA October 2012 CTP Readme</title>
+<title>NORMA November 2012 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA October 2012 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA November 2012 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The October 2012 release adds Visual Studio 2012 support, some enhancements to disjunctive mandatory and external uniqueness verbalization patterns, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
+The November 2012 release adds Visual Studio 2012 support, some enhancements to disjunctive mandatory and external uniqueness verbalization patterns, native SQL Server data type handling, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2>Contents</h2>
 <ul>
@@ -43,10 +43,16 @@ The October 2012 release adds Visual Studio 2012 support, some enhancements to d
 </ul>-->
 
 <hr/>
-<h2>October 2012 CTP Changes</h2>
-<div>The October 2012 CTP release includes all modifications through changeset 1500.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<h2>November 2012 CTP Changes</h2>
+<div>The November 2012 CTP release includes all modifications through changeset 1502.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
-<li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-10">Verbalized object type name separator character removal options</a></li>
+<li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-11">Verbalized object type name separator character removal options</a></li>
+<li><a href="#SQL Server Native DataTypes 2012-11">SQL Server Native Data Types</a></li>
+<li>Other Features:
+<ol>
+<li>The <em>ORM Generator Selection</em> dialog no longer offers expansions for generated items when only one generation transform is available. The information lost here is of little use to the user, and suppressing these buttons emphasizes items (such as the SQL Server node) that have more than one available generator.</li>
+</ol>
+</li>
 <li>Bug Fixes:
 <ol>
 <li>Crash verbalizing internal uniqueness constraints with no roles (possible from toolbox and with error activation).</li>
@@ -60,6 +66,8 @@ The October 2012 release adds Visual Studio 2012 support, some enhancements to d
 <li>(VS2010) Diagram Spy and other tool windows could end up blank, requiring restart.</li>
 <li>Subtype connectors to or from objectified fact types displayed as object type would sometimes fail to create a shape.</li>
 <li>Subtype connectors with an objectified fact type as the subtype role player were not reconnecting on load.</li>
+<li>Length and scale information could be saved for a data type that does not support these fields. They are still kept in memory so that stepping off and back to a data type will not lose the information, but these values are no longer written to disk. The additional unexpected data was causing occasional problems generation data type information.</li>
+<li>Various mouse and keyboards patterns that resulted in no active toolbox item, combined with moving the mouse in and out of the ORM Context Window, could lead to a Visual Studio crash and required restart.</li>
 </ol>
 </li>
 </ul>
@@ -578,7 +586,7 @@ The <strong>Object Type Name Display</strong> option in the <em>Verbalization</e
 The <strong>Possible Populations</strong> option has replaced the <strong>Verbalization Default Constraint</strong> option in the <em>Verbalization</em> section of the <em>ORM Designer</em> tab on the <em>Options</em> page (available on the <em>Tools</em> menu). This option now applies to the possible populations of spanning internal uniqueness constraints in addition to many-to-one binary fact types.
 </li>
 <li>
-<a id="VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-10" class="new" title="October 2012 CTP: Verbalized object type name separator character removal options">2012-10</a>&nbsp;
+<a id="VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-11" class="new" title="October 2012 CTP: Verbalized object type name separator character removal options">2012-11</a>&nbsp;
 As an enhancement to automatic name separation and casing of object type names (see <a href="#VerbalizedObjectTypeNameDisplay 2012-01">Verbalized object type name options</a>), punctuation and symbol characters are recognized in addition to upper cases and numeric characters.
 <ul>
 <li>All symbol and punctuation characters form word boundaries.</li>
@@ -742,6 +750,10 @@ Prior to this release, regenerating the relational schema (a frequent occurrence
 </li>
 </ul>
 <br />Opening and saving files with the relational extensions enabled will automatically update to use the new column orders. Generated DDL will also be updated when the file is saved.
+</li>
+<li><a id="SQL Server Native DataTypes 2012-11" class="new" title="November 2012 CTP: SQL Server Native Data Types">2012-11</a>&nbsp;
+Prior to this release, the DDL generated for SQL Server used ANSI standard data type names, but these are not supported by default in SQL Server 2012. The default has now been changed to use native SQL Server data type names. The generator that produces ANSI data types is still included. To use the ANSI types, expand the SQL_SQLServer node in the <em>ORM Generator Settings</em> dialog and choose <em>DDIL to SQL Server (ANSI Types)</em> instead of the default <em>DDIL to SQL Server</em>.
+<br />You will need to open and save a model file to see the new data types, or right-click the .ORM file in the Solution Explorer and choose the 'Run Custom Tool' menu item.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>

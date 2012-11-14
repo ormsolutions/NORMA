@@ -283,14 +283,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return invariantValue1.CompareTo(invariantValue2);
 		}
-		/// <summary>Show the Length property with this DataType</summary>
-		public override string LengthName
-		{
-			get
-			{
-				return "";
-			}
-		}
 	}
 	/// <summary>A signed integer numeric data type</summary>
 	public partial class SignedIntegerNumericDataType
@@ -1894,14 +1886,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return DataTypeRangeSupport.None;
-			}
-		}
-		/// <summary>Show the Length property with this DataType</summary>
-		public override string LengthName
-		{
-			get
-			{
-				return "";
 			}
 		}
 	}

@@ -541,7 +541,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 
 			public override bool IsExpandable(int row, int column)
 			{
-				return TranslateRow(ref row) == RowStyle.Generator;
+				return TranslateRow(ref row) == RowStyle.Generator &&
+					this._branches.Values[row].VisibleItemCount != 1;
 			}
 			#region IMultiColumnBranch Members
 			int IMultiColumnBranch.ColumnCount

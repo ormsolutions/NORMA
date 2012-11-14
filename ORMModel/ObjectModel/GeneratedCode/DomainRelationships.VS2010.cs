@@ -1570,6 +1570,188 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region CurrentScale domain property code
+		
+		/// <summary>
+		/// CurrentScale domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CurrentScaleDomainPropertyId = new global::System.Guid(0x7c4af9ce, 0xf083, 0x4ae3, 0x8d, 0xc3, 0x0a, 0xca, 0x82, 0x28, 0x20, 0xe3);
+		
+		/// <summary>
+		/// Gets or sets the value of CurrentScale domain property.
+		/// The current scale if scale is supported by the current data type, or 0.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType/CurrentScale.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType/CurrentScale.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("7c4af9ce-f083-4ae3-8dc3-0aca822820e3")]
+		public global::System.Int32 CurrentScale
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return CurrentScalePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CurrentScalePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueTypeHasDataType.CurrentScale domain property.
+		/// </summary>
+		internal sealed partial class CurrentScalePropertyHandler : DslModeling::DomainPropertyValueHandler<ValueTypeHasDataType, global::System.Int32>
+		{
+			private CurrentScalePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueTypeHasDataType.CurrentScale domain property value handler.
+			/// </summary>
+			public static readonly CurrentScalePropertyHandler Instance = new CurrentScalePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueTypeHasDataType.CurrentScale domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CurrentScaleDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(ValueTypeHasDataType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for CurrentScale because its Kind is
+				// set to CustomStorage. Please provide the GetCurrentScaleValue()
+				// method on the domain class.
+				return element.GetCurrentScaleValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueTypeHasDataType element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for CurrentScale because its Kind is
+					// set to CustomStorage. Please provide the SetCurrentScaleValue()
+					// method on the domain class.
+					element.SetCurrentScaleValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region CurrentLength domain property code
+		
+		/// <summary>
+		/// CurrentLength domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CurrentLengthDomainPropertyId = new global::System.Guid(0xb9861bd8, 0xe22b, 0x4036, 0xb8, 0x44, 0xb9, 0x82, 0x92, 0x4e, 0x4b, 0x3c);
+		
+		/// <summary>
+		/// Gets or sets the value of CurrentLength domain property.
+		/// The current length if length is supported by the current data type, or 0.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType/CurrentLength.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType/CurrentLength.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("b9861bd8-e22b-4036-b844-b982924e4b3c")]
+		public global::System.Int32 CurrentLength
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return CurrentLengthPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CurrentLengthPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueTypeHasDataType.CurrentLength domain property.
+		/// </summary>
+		internal sealed partial class CurrentLengthPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueTypeHasDataType, global::System.Int32>
+		{
+			private CurrentLengthPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueTypeHasDataType.CurrentLength domain property value handler.
+			/// </summary>
+			public static readonly CurrentLengthPropertyHandler Instance = new CurrentLengthPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueTypeHasDataType.CurrentLength domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CurrentLengthDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(ValueTypeHasDataType element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for CurrentLength because its Kind is
+				// set to CustomStorage. Please provide the GetCurrentLengthValue()
+				// method on the domain class.
+				return element.GetCurrentLengthValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueTypeHasDataType element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for CurrentLength because its Kind is
+					// set to CustomStorage. Please provide the SetCurrentLengthValue()
+					// method on the domain class.
+					element.SetCurrentLengthValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Accessors for roles that this REL plays in other RELs
 		#region DataTypeNotSpecifiedError opposite domain role accessor
 		/// <summary>

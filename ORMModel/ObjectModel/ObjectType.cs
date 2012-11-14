@@ -4978,6 +4978,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetIndirectModelErrorOwnerElementLinkRoles();
 		}
 		#endregion // IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		#region Custom property handlers
+		private int GetCurrentScaleValue()
+		{
+			return DataType.ScaleName != null ? Scale : 0;
+		}
+		private void SetCurrentScaleValue(int value)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Scale = value;
+			}
+		}
+		private int GetCurrentLengthValue()
+		{
+			return DataType.LengthName != null ? Length : 0;
+		}
+		private void SetCurrentLengthValue(int value)
+		{
+			if (!Store.InUndoRedoOrRollback)
+			{
+				Length = value;
+			}
+		}
+		#endregion // Custom property handlers
 	}
 	#endregion // ValueTypeHasDataType class
 	#region EntityTypeRequiresReferenceSchemeError class

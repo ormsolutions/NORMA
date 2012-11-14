@@ -2669,11 +2669,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (domainPropertyInfo.Id == ValueTypeHasDataType.ScaleDomainPropertyId)
 			{
-				if (rolePlayedInfo.Id == ValueTypeHasDataType.ValueTypeDomainRoleId)
-				{
-					return new CustomSerializedPropertyInfo(null, "Scale", null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
-				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == ValueTypeHasDataType.LengthDomainPropertyId)
+			{
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == ValueTypeHasDataType.CurrentScaleDomainPropertyId)
+			{
+				return new CustomSerializedPropertyInfo(null, "Scale", null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ValueTypeHasDataType.CurrentLengthDomainPropertyId)
+			{
+				return new CustomSerializedPropertyInfo(null, "Length", null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			return CustomSerializedPropertyInfo.Default;
 		}
@@ -2727,7 +2735,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (customSerializedAttributes == null)
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
-				customSerializedAttributes.Add("Scale", ValueTypeHasDataType.ScaleDomainPropertyId);
+				customSerializedAttributes.Add("Scale", ValueTypeHasDataType.CurrentScaleDomainPropertyId);
+				customSerializedAttributes.Add("Length", ValueTypeHasDataType.CurrentLengthDomainPropertyId);
 				ValueTypeHasDataType.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
