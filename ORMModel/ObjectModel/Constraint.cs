@@ -886,10 +886,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 			}
 			/// <summary>
-			/// Process elements by added an FactConstraint for
-			/// each roleset
+			/// Process elements by adding an FactSetConstraint for fact type
+			/// associated with one or more roles in this constraint.
 			/// </summary>
-			/// <param name="element">An ExternalConstraint element</param>
+			/// <param name="element">A SetConstraint element</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(SetConstraint element, Store store, INotifyElementAdded notifyAdded)
@@ -897,66 +897,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ReadOnlyCollection<ModelHasSetConstraint> links = DomainRoleInfo.GetElementLinks<ModelHasSetConstraint>(element, ModelHasSetConstraint.SetConstraintDomainRoleId);
 				IConstraint constraint = element as IConstraint;
 				int linksCount = links.Count;
-				for (int i = 0; i < linksCount; ++i)
-				{
-					EnsureFactConstraintForRoleSequence(links[i]);
-				}
-				ReadOnlyCollection<FactSetConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetConstraint>(element, FactSetConstraint.SetConstraintDomainRoleId);
-				int factLinksCount = factLinks.Count;
 				// Validate subtype constraint patterns before sending additional element added notifications.
 				// The XML schema is current very lax on exclusion constraints on Sub/SupertypeMetaRoles, so
 				// any constraints on any combination of roles/metaroles load successfully. Eliminate any
 				// constraints with patterns that will raise exceptions inside the tool.
 				if (!constraint.ConstraintIsInternal && constraint.ConstraintType != ConstraintType.ImpliedMandatory)
 				{
-					bool seenSubtypeFact = false;
-					bool invalidSubtypeConstraint = false;
-					for (int j = 0; j < factLinksCount; ++j)
+					foreach (Role role in element.RoleCollection)
 					{
-						FactSetConstraint factLink = factLinks[j];
-						if (factLink.FactType is SubtypeFact)
+						if (role.FactType is SubtypeFact)
 						{
-							if (!seenSubtypeFact)
+							if (!(role is SupertypeMetaRole) ||
+								constraint.ConstraintType != ConstraintType.DisjunctiveMandatory)
 							{
-								if (j > 0)
-								{
-									invalidSubtypeConstraint = true;
-								}
-								seenSubtypeFact = true;
-								if (constraint.ConstraintType == ConstraintType.SimpleMandatory)
-								{
-									invalidSubtypeConstraint = true;
-									break;
-								}
-							}
-							LinkedElementCollection<ConstraintRoleSequenceHasRole> roleLinks = factLink.ConstrainedRoleCollection;
-							if (roleLinks.Count != 1 || !(roleLinks[0].Role is SupertypeMetaRole))
-							{
-								invalidSubtypeConstraint = true;
-								break;
+								// All of the relationships we're dealing with here have delete
+								// progation set, so we do not need additional rules or code to
+								// remove the elements.
+								element.Delete();
+								return;
 							}
 						}
-						else if (seenSubtypeFact)
-						{
-							invalidSubtypeConstraint = true;
-							break;
-						}
-					}
-					if (invalidSubtypeConstraint)
-					{
-						// All of the relationships we're dealing with here have delete
-						// progation set, so we do not need additional rules or code to
-						// remove the elements.
-						element.Delete();
-						return;
 					}
 				}
-				for (int j = 0; j < factLinksCount; ++j)
+				for (int i = 0; i < linksCount; ++i)
+				{
+					EnsureFactConstraintForRoleSequence(links[i]);
+				}
+				foreach (FactSetConstraint factLink in DomainRoleInfo.GetElementLinks<FactSetConstraint>(element, FactSetConstraint.SetConstraintDomainRoleId))
 				{
 					// Notify that the link was added. Note that we set
 					// addLinks to true here because we expect ExternalRoleConstraint
 					// links to be attached to each FactConstraint
-					notifyAdded.ElementAdded(factLinks[j], true);
+					notifyAdded.ElementAdded(factLink, true);
 				}
 			}
 		}
@@ -2019,61 +1991,71 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 			}
 			/// <summary>
-			/// Process elements by added an FactConstraint for
-			/// each roleset
+			/// Process elements by added an FactSetComparisonConstraint for each
+			/// fact type associated with one or more roles in the constraint arguments.
 			/// </summary>
-			/// <param name="element">An ExternalConstraint element</param>
+			/// <param name="element">A SetComparisonConstraint element</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(SetComparisonConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
 				ReadOnlyCollection<SetComparisonConstraintHasRoleSequence> links = DomainRoleInfo.GetElementLinks<SetComparisonConstraintHasRoleSequence>(element, SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId);
 				int linksCount = links.Count;
-				for (int i = 0; i < linksCount; ++i)
-				{
-					EnsureFactConstraintForRoleSequence(links[i]);
-				}
-				ReadOnlyCollection<FactSetComparisonConstraint> factLinks = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(element, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
-				int factLinksCount = factLinks.Count;
+
 				// Validate subtype constraint patterns before sending additional element added notifications.
 				// The XML schema is current very lax on exclusion constraints on Sub/SupertypeMetaRoles, so
 				// any constraints on any combination of roles/metaroles load successfully. Eliminate any
 				// constraints with patterns that will raise exceptions inside the tool.
-				bool seenSubtypeFact = false;
-				bool invalidSubtypeConstraint = false;
-				for (int j = 0; j < factLinksCount; ++j)
+				// We allow the following patterns involving subtypes, and assume all external constraints
+				// on a subtype are attached to the supertype role, not the subset role:
+				// 1) Single-column exclusion between subtypes and other role types
+				// 2) Single-column subset from subtype to a role on the supertype or a direct or indirect supertype (not illegal, part of validation).
+				// Note that mandatory constraints are handling elsewhere. Theoretically some multi-column combinations
+				// may also be valid, but these would be extremely obscure patterns and we disallow them for now.
+				// Equality constraints and subtypes from a role to a subtype mean that the role should be moved to the subtype
+				// instead of being constrained on the supertype.
+				bool seenSubtype = false;
+				bool invalidSubtypePattern = false;
+				bool firstSequence = true;
+				int maxArity = 0;
+				ConstraintType constraintType = (element as IConstraint).ConstraintType;
+				for (int i = 0; i < linksCount; ++i)
 				{
-					FactSetComparisonConstraint factLink = factLinks[j];
-					if (factLink.FactType is SubtypeFact)
+					LinkedElementCollection<Role> roles = links[i].RoleSequence.RoleCollection;
+					int roleCount = roles.Count;
+					if (maxArity < roleCount)
 					{
-						if (!seenSubtypeFact)
+						maxArity = roleCount;
+					}
+					if (seenSubtype && roleCount > 1)
+					{
+						invalidSubtypePattern = true;
+						break;
+					}
+					for (int j = 0; j < roleCount; ++j)
+					{
+						Role role = roles[j];
+						if (role.FactType is SubtypeFact)
 						{
-							if (j > 0)
+							if (j != 0 ||
+								maxArity > 1 ||
+								!(role is SupertypeMetaRole) ||
+								constraintType == ConstraintType.Equality ||
+								(constraintType == ConstraintType.Subset && !firstSequence))
 							{
-								invalidSubtypeConstraint = true;
-							}
-							seenSubtypeFact = true;
-							if ((element as IConstraint).ConstraintType != ConstraintType.Exclusion)
-							{
-								invalidSubtypeConstraint = true;
+								invalidSubtypePattern = true;
 								break;
 							}
-						}
-						LinkedElementCollection<ConstraintRoleSequenceHasRole> roleLinks = factLink.ConstrainedRoleCollection;
-						int roleLinksCount = roleLinks.Count;
-						if (roleLinks.Count != 1 || !(roleLinks[0].Role is SupertypeMetaRole))
-						{
-							invalidSubtypeConstraint = true;
-							break;
+							seenSubtype = true;
 						}
 					}
-					else if (seenSubtypeFact)
+					firstSequence = false;
+					if (invalidSubtypePattern)
 					{
-						invalidSubtypeConstraint = true;
 						break;
 					}
 				}
-				if (invalidSubtypeConstraint)
+				if (invalidSubtypePattern)
 				{
 					// All of the relationships we're dealing with here have delete
 					// progation set, so we do not need additional rules or code to
@@ -2081,36 +2063,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					element.Delete();
 					return;
 				}
-				else if (seenSubtypeFact)
+				for (int i = 0; i < linksCount; ++i)
 				{
-					LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = element.RoleSequenceCollection;
-					if (factLinksCount != sequences.Count)
-					{
-						// All of the roles pass muster, but they are arranged in an
-						// invalid pattern. The exclusion constraint must be single
-						// column to be valid. Break down and rebuild the constraint
-						// using supertype roles from the subtype facts.
-						SubtypeFact[] subtypeFacts = new SubtypeFact[factLinksCount];
-						for (int j = 0; j < factLinksCount; ++j)
-						{
-							subtypeFacts[j] = (SubtypeFact)factLinks[j].FactType;
-						}
-						sequences.Clear();
-						for (int j = 0; j < factLinksCount; ++j)
-						{
-							SetComparisonConstraintRoleSequence sequence = new SetComparisonConstraintRoleSequence(store);
-							sequence.RoleCollection.Add(subtypeFacts[j].SupertypeRole);
-							EnsureFactConstraintForRoleSequence(new SetComparisonConstraintHasRoleSequence(element, sequence));
-						}
-						factLinks = DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(element, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
-					}
+					EnsureFactConstraintForRoleSequence(links[i]);
 				}
-				for (int j = 0; j < factLinksCount; ++j)
+				foreach (FactSetComparisonConstraint factLink in DomainRoleInfo.GetElementLinks<FactSetComparisonConstraint>(element, FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId))
 				{
 					// Notify that the link was added. Note that we set
 					// addLinks to true here because we expect ExternalRoleConstraint
 					// links to be attached to each FactConstraint
-					notifyAdded.ElementAdded(factLinks[j], true);
+					notifyAdded.ElementAdded(factLink, true);
 				}
 			}
 		}
@@ -2297,17 +2259,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Debug.Assert(0 != (((IConstraint)this).RoleSequenceStyles & RoleSequenceStyles.CompatibleColumns)); // All multi column externals support column compatibility
 			CompatibleRolePlayerTypeError compatibleError;
+			// Subset constraints from a supertype role to a normal role have a stronger compabitility requirement, namely that
+			// the role player of the normal role must be the same as or a supertype of the supertype. The triggers to check this
+			// rule are exactly the same as the compatibility checks, so we do it inline here.
+			SubsetConstraint subsetConstraint = this as SubsetConstraint;
 			Store store = Store;
 
 			//We don't want to display the error if arity error present or toofeworTooMany sequence errors are present
 			if (tooFewOrTooManySequencesOrArity)
 			{
 				CompatibleRolePlayerTypeErrorCollection.Clear();
+				if (subsetConstraint != null)
+				{
+					subsetConstraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError = null;
+				}
 			}
 			else
 			{
 				LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = RoleSequenceCollection;
 				int sequenceCount = sequences.Count;
+				bool hasSubtypeSubsetError = false;
+				SupertypeMetaRole supertypeRole = null;
 
 				if (sequenceCount > 1)
 				{
@@ -2345,6 +2317,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									// Store the first role player. We won't populate until
 									// we're sure we need to.
 									firstRolePlayer = currentRolePlayer;
+									if (subsetConstraint != null &&
+										column == 0 &&
+										sequence == 0)
+									{
+										supertypeRole = currentRole as SupertypeMetaRole;
+									}
 								}
 								else
 								{
@@ -2390,6 +2368,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											}
 										}
 									}
+									else if (supertypeRole != null &&
+											column == 0 &&
+											sequence == 1 &&
+											!superTypesCache.Contains(currentRolePlayer))
+									{
+										// Don't set if not compatible.
+										hasSubtypeSubsetError = true;
+									}
 								}
 							}
 						}
@@ -2404,6 +2390,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					CompatibleRolePlayerTypeErrorCollection.Clear();
+				}
+				if (subsetConstraint != null)
+				{
+					SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError subtypeError = subsetConstraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError;
+					if (hasSubtypeSubsetError)
+					{
+						if (subtypeError == null)
+						{
+							subtypeError = new SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(store);
+							subtypeError.SubsetConstraint = subsetConstraint;
+							subtypeError.Model = Model;
+							subtypeError.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(subtypeError, true);
+							}
+						}
+					}
+					else if (subtypeError != null)
+					{
+						subtypeError.Delete();
+					}
 				}
 			}
 		}
@@ -3124,7 +3132,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// DeletingRule: typeof(ConstraintRoleSequence)
 		/// </summary>
-		private static void SetComparisonConstraintHasRoleDeletingRule(ElementDeletingEventArgs e)
+		private static void SetComparisonConstraintHasRoleSequenceDeletingRule(ElementDeletingEventArgs e)
 		{
 			ConstraintRoleSequence sequence = (ConstraintRoleSequence)e.ModelElement;
 			SetComparisonConstraint curSetComparisonConstraint = sequence.Constraint as SetComparisonConstraint;
@@ -3135,6 +3143,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					HandleConstraintDeleting(null, curSetComparisonConstraint);
 				}
+			}
+		}
+		/// <summary>
+		/// DeletingRule: typeof(ConstraintRoleSequence)
+		/// </summary>
+		private static void SetComparisonRoleSequenceDeletingRule(ElementDeletingEventArgs e)
+		{
+			ConstraintRoleSequence sequence = (ConstraintRoleSequence)e.ModelElement;
+			SetComparisonConstraint curSetComparisonConstraint = sequence.Constraint as SetComparisonConstraint;
+
+			if (curSetComparisonConstraint != null)
+			{
+				if (curSetComparisonConstraint.IsDeleting)
+				{
+					HandleConstraintDeleting(null, curSetComparisonConstraint);
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(SetComparisonConstraintHasRoleSequence)
+		/// </summary>
+		private static void SetComparisonRoleSequencePositionChangedRule(RolePlayerOrderChangedEventArgs e)
+		{
+			SubsetConstraint subsetConstraint;
+			if (e.SourceDomainRole.Id == SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId &&
+				null != (subsetConstraint = e.SourceElement as SubsetConstraint))
+			{
+				DelayValidateConstraintPatternError(subsetConstraint);
 			}
 		}
 		/// <summary>
@@ -3519,7 +3555,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ValidateConstraintPatternErrorWithKnownConstraint(notifyAdded, constraint, IntersectingConstraintPattern.None, null);
 			}
 		}
-		private static void ValidateConstraintPatternErrorWithKnownConstraint(INotifyElementAdded notifyAdded,	IConstraint currentConstraint, IntersectingConstraintPattern pattern, List<IConstraint> constraintsAlreadyValidated)
+		private static void ValidateConstraintPatternErrorWithKnownConstraint(INotifyElementAdded notifyAdded, IConstraint currentConstraint, IntersectingConstraintPattern pattern, List<IConstraint> constraintsAlreadyValidated)
 		{
 			#region Declare and Assign necessary variables
 			if (constraintsAlreadyValidated != null)
@@ -9353,6 +9389,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Accessor Properties
 	}
 	#endregion // CompatibleRolePlayerTypeError class
+	#region SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
+	public partial class SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError
+	{
+		#region Base overrides
+		/// <summary>
+		/// Generate text for the error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			SubsetConstraint constraint = SubsetConstraint;
+			string constraintName = (constraint != null) ? constraint.Name : "";
+			string modelName = this.Model.Name;
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError, constraintName, modelName);
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion // Base overrides
+	}
+	#endregion // SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError class
 	#region JoinPathRequiredError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class JoinPathRequiredError
@@ -9778,10 +9842,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ErrorText = String.Format(CultureInfo.InvariantCulture,
-				ResourceStrings.ModelErrorNotWellModeledSubsetAndMandatoryError,
-				SubsetConstraint.Name, MandatoryConstraint.Name,
-				Model.Name);
+			SubsetConstraint subset = SubsetConstraint;
+			MandatoryConstraint mandatory = MandatoryConstraint;
+			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorNotWellModeledSubsetAndMandatoryError, (subset != null) ? subset.Name : "", (mandatory != null) ? mandatory.Name : "", Model.Name);
 		}
 		/// <summary>
 		/// Regenerate the error text when the model name changes
@@ -10568,6 +10631,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (notWellModeled != null)
 				{
 					yield return notWellModeled;
+				}
+				SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError badSubtypePattern = SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError;
+				if (badSubtypePattern != null)
+				{
+					yield return badSubtypePattern;
 				}
 			}
 		}

@@ -110,9 +110,12 @@
 			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
-			<arg:DeletingRule methodName="SetComparisonConstraintHasRoleDeletingRule">
+			<arg:DeletingRule methodName="SetComparisonRoleSequenceDeletingRule">
 				<arg:RuleOn targetType="ConstraintRoleSequence"/>
 			</arg:DeletingRule>
+			<arg:RolePlayerPositionChangeRule methodName="SetComparisonRoleSequencePositionChangedRule">
+				<arg:RuleOn targetType="SetComparisonConstraintHasRoleSequence"/>
+			</arg:RolePlayerPositionChangeRule>
 			<arg:DeletingRule methodName="SetConstraintDeletingRule">
 				<arg:RuleOn targetType="SetConstraint"/>
 			</arg:DeletingRule>
@@ -1410,6 +1413,9 @@
 			<arg:AddRule methodName="LimitSubtypeSetComparisonConstraintSequenceAddRule">
 				<arg:RuleOn targetType="SetComparisonConstraintHasRoleSequence"/>
 			</arg:AddRule>
+			<arg:RolePlayerPositionChangeRule methodName="LimitSubtypeSetComparisonConstraintSequenceReorderRule">
+				<arg:RuleOn targetType="SetComparisonConstraintHasRoleSequence"/>
+			</arg:RolePlayerPositionChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="UniquenessConstraint">
 			<arg:AddRule methodName="NMinusOneConstraintAddRule">

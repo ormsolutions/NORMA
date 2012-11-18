@@ -44,10 +44,12 @@ The November 2012 release adds Visual Studio 2012 support, some enhancements to 
 
 <hr/>
 <h2>November 2012 CTP Changes</h2>
-<div>The November 2012 CTP release includes all modifications through changeset 1502.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The November 2012 CTP release includes all modifications through changeset 1503.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-11">Verbalized object type name separator character removal options</a></li>
-<li><a href="#SQL Server Native DataTypes 2012-11">SQL Server Native Data Types</a></li>
+<li><a href="#SQLServerNativeDataTypes 2012-11">SQL Server Native Data Types</a></li>
+<li><a href="#ExtendedSubtypeConstraintCombinations 2012-11">Extended Subtyping Constraint Combinations</a></li>
+
 <li>Other Features:
 <ol>
 <li>The <em>ORM Generator Selection</em> dialog no longer offers expansions for generated items when only one generation transform is available. The information lost here is of little use to the user, and suppressing these buttons emphasizes items (such as the SQL Server node) that have more than one available generator.</li>
@@ -68,6 +70,9 @@ The November 2012 release adds Visual Studio 2012 support, some enhancements to 
 <li>Subtype connectors with an objectified fact type as the subtype role player were not reconnecting on load.</li>
 <li>Length and scale information could be saved for a data type that does not support these fields. They are still kept in memory so that stepping off and back to a data type will not lose the information, but these values are no longer written to disk. The additional unexpected data was causing occasional problems generation data type information.</li>
 <li>Various mouse and keyboards patterns that resulted in no active toolbox item, combined with moving the mouse in and out of the ORM Context Window, could lead to a Visual Studio crash and required restart.</li>
+<li>Changing the reference mode kind of a custom reference mode (in the <em>ORM Reference Mode Editor</em> tool window) would not automatically create or remove the needed value types. For example, a <em>General</em> reference mode kind uses one value type for all identified entity types, while a <em>Popular</em> kind uses one value type per entity type. Switch from general to popular will now create new value types (instead of just renaming one), and switching from popular to general may delete value types.</li>
+<li>The <em>ExpandRefMode</em> property on object type shapes was automatically set to <em>False</em> when a reference mode was deleted then re-added. This propery may change to <em>True</em> in this case if the reference mode fact type is displayed on the diagram, but will no longer clear automatically.</li>
+<li>An outdated validation error indicating a poor modeling choice with overlapping subset and mandatory constraints could get stuck in the model file, preventing future load. These files will now load with the shift key down (skipping schema validation), and the problem should no longer occur. Note that the orm:ModelErrors section can always be hand-deleted from the .ORM file because it regenerates on load.</li>
 </ol>
 </li>
 </ul>
@@ -692,6 +697,14 @@ The addition of these three ring types greatly increases the total number of sim
 </ul>
 Designing consistent glyphs for the new combinations required some minor display modifications to published ring display: the tick mark for <em>irreflexive</em> has been moved from the bottom of the shape to directly opposite the dot, the interior circle for <em>symmetric+irreflexive</em> has been moved to the left edge of the symmetric oval and shares the left dot, and an interior tick mark has been added to <em>purely reflexive</em> to distinguish it from <em>reflexive</em> and visually indicate the <em>and no other</em> part of this ring type.
 </li>
+<li><a id="ExtendedSubtypeConstraintCombinations 2012-11" class="new" title="November 2012 CTP: Extended Subtyping Constraint Combinations">2012-11</a>&nbsp;
+Selected external constraints can now be connected simultaneously to a subtyping relationship and a normal role. The following constraint combinations are supported:
+<ul>
+<li>External mandatory constraints (both inclusive and exclusive).</li>
+<li>Exclusion constraints with one column. If a subtyping relationship is included in a new exclusion constraint in the constraint editor, then it is assumed that this is a single-column constraint and the displayed numbers refer to the row number, not the column number. Reactivating an exclusion constraint that includes a subtype will fix the editor in single-column mode, so you must remove the subtype relationship (control-click the subtype line), commit (double-click on a remaining role), and reactivate a constrained role to reenter normal multi-column set comparison constraint editing mode.</li>
+<li>Subset constraints from a subtyping relationship to a single role. The editing behavior is the same as with an exclusion constraint. The editor will allow selection of a subtyping relationship only on the first click, and menu items to reorder the role sequences are disabled.</li>
+</ul>
+Other set comparison constraints (equality and subset from a role to a subtype relationship) were intentionally omitted. Both of these constructs indicate that instance playing the role is always the subtype of the subtyping relationship. The correct model in this case should change the role player to the subtype instead of the supertype. Adding a subset constraint from a subtyping relationship to a role on the relationship subtype (or another of its subtypes) indicates a similar situation, so a new validation error is generated in this case.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -751,7 +764,7 @@ Prior to this release, regenerating the relational schema (a frequent occurrence
 </ul>
 <br />Opening and saving files with the relational extensions enabled will automatically update to use the new column orders. Generated DDL will also be updated when the file is saved.
 </li>
-<li><a id="SQL Server Native DataTypes 2012-11" class="new" title="November 2012 CTP: SQL Server Native Data Types">2012-11</a>&nbsp;
+<li><a id="SQLServerNativeDataTypes 2012-11" class="new" title="November 2012 CTP: SQL Server Native Data Types">2012-11</a>&nbsp;
 Prior to this release, the DDL generated for SQL Server used ANSI standard data type names, but these are not supported by default in SQL Server 2012. The default has now been changed to use native SQL Server data type names. The generator that produces ANSI data types is still included. To use the ANSI types, expand the SQL_SQLServer node in the <em>ORM Generator Settings</em> dialog and choose <em>DDIL to SQL Server (ANSI Types)</em> instead of the default <em>DDIL to SQL Server</em>.
 <br />You will need to open and save a model file to see the new data types, or right-click the .ORM file in the Solution Explorer and choose the 'Run Custom Tool' menu item.
 </li>

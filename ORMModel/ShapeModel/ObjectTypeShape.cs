@@ -671,22 +671,33 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Debug.Assert(constraint != null); // Check before call
 			Debug.Assert(preferredIdentifierFor != null); // Check before call
 			FactType identifyingFactType = constraint.FactTypeCollection[0];
+			ObjectTypePlaysRole rolePlayerLink = null;
 			//Get the object that represents the item with the preferred identifier. 
 			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(preferredIdentifierFor))
 			{
 				ObjectTypeShape objectShape;
 				ObjectifiedFactTypeNameShape objectifiedShape;
+				if (rolePlayerLink == null)
+				{
+					Role oppositeRole;
+					if (null == (oppositeRole = constraint.RoleCollection[0].OppositeRole as Role) ||
+						null == (rolePlayerLink = ObjectTypePlaysRole.GetLink(oppositeRole, preferredIdentifierFor)))
+					{
+						return;
+					}
+				}
 				if (null != (objectShape = pel as ObjectTypeShape))
 				{
 					//If there is a fact shape and it is visible then we need to 
 					//set ExpandRefMode to true, otherwise set it to false.
-					FactTypeShape factShape = (objectShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(identifyingFactType);
-					bool newValue = factShape != null && factShape.IsVisible;
-					if (objectShape.ExpandRefMode != newValue)
+					//preferredIdentifierFor.
+					FactTypeShape factShape = MultiShapeUtility.FindNearestShapeForElement(null, objectShape, identifyingFactType, rolePlayerLink) as FactTypeShape;
+					if (factShape != null &&
+						!objectShape.ExpandRefMode)
 					{
-						objectShape.ExpandRefMode = newValue;
+						objectShape.ExpandRefMode = true;
 					}
-					else
+					else if (!objectShape.ExpandRefMode)
 					{
 						SizeD oldSize = objectShape.Size;
 						objectShape.AutoResize();
@@ -698,13 +709,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				else if (null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape))
 				{
-					FactTypeShape factShape = (objectifiedShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(identifyingFactType);
-					bool newValue = factShape != null && factShape.IsVisible;
-					if (objectifiedShape.ExpandRefMode != newValue)
+					FactTypeShape factShape = MultiShapeUtility.FindNearestShapeForElement(null, objectifiedShape, identifyingFactType, rolePlayerLink) as FactTypeShape;
+					if (factShape != null &&
+						!objectifiedShape.ExpandRefMode)
 					{
-						objectifiedShape.ExpandRefMode = newValue;
+						objectifiedShape.ExpandRefMode = true;
 					}
-					else
+					else if (!objectifiedShape.ExpandRefMode)
 					{
 						SizeD oldSize = objectifiedShape.Size;
 						objectifiedShape.AutoResize();
@@ -725,13 +736,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (factTypeShape != null &&
 						factTypeShape.DisplayAsObjectType)
 					{
-						FactTypeShape identifyingFactTypeShape = (factTypeShape.Diagram as ORMDiagram).FindShapeForElement<FactTypeShape>(identifyingFactType);
-						bool newValue = identifyingFactTypeShape != null && identifyingFactTypeShape.IsVisible;
-						if (factTypeShape.ExpandRefMode != newValue)
+						FactTypeShape identifyingFactTypeShape = MultiShapeUtility.FindNearestShapeForElement(null, factTypeShape, identifyingFactType, rolePlayerLink) as FactTypeShape;
+						if (identifyingFactTypeShape != null &&
+							!factTypeShape.ExpandRefMode)
 						{
-							factTypeShape.ExpandRefMode = newValue;
+							factTypeShape.ExpandRefMode = true;
 						}
-						else
+						else if (!factTypeShape.ExpandRefMode)
 						{
 							SizeD oldSize = factTypeShape.Size;
 							factTypeShape.AutoResize();
@@ -833,14 +844,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				int constraintsCount = sequences.Count;
 				for (int j = 0; j < constraintsCount; ++j)
 				{
-					UniquenessConstraint iuc = sequences[j] as UniquenessConstraint;
-					if (iuc != null && iuc.IsInternal)
+					UniquenessConstraint iuc;
+					ObjectType preferredFor;
+					if (null != (iuc = sequences[j] as UniquenessConstraint) &&
+						iuc.IsInternal &&
+						iuc.Modality == ConstraintModality.Alethic &&
+						null != (preferredFor = iuc.PreferredIdentifierFor) &&
+						iuc.RoleCollection.Count == 1)
 					{
-						ObjectType preferredFor = iuc.PreferredIdentifierFor;
-						if (preferredFor != null)
-						{
-							EnsureRefModeExpanded(iuc, preferredFor);
-						}
+						EnsureRefModeExpanded(iuc, preferredFor);
 					}
 				}
 			}
@@ -895,13 +907,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				for (int i = 0; i < constraintsCount; ++i)
 				{
 					UniquenessConstraint iuc = sequences[i] as UniquenessConstraint;
-					if (iuc != null && iuc.IsInternal)
+					ObjectType preferredFor;
+					if (null != (iuc = sequences[i] as UniquenessConstraint) &&
+						iuc.IsInternal &&
+						iuc.Modality == ConstraintModality.Alethic &&
+						null != (preferredFor = iuc.PreferredIdentifierFor) &&
+						iuc.RoleCollection.Count == 1)
 					{
-						ObjectType preferredFor = iuc.PreferredIdentifierFor;
-						if (preferredFor != null)
-						{
-							EnsureRefModeExpanded(iuc, preferredFor);
-						}
+						EnsureRefModeExpanded(iuc, preferredFor);
 					}
 				}
 			}
@@ -982,7 +995,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							if (null != (iuc = sequences[i] as UniquenessConstraint) &&
 								iuc.IsInternal &&
 								iuc.Modality == ConstraintModality.Alethic &&
-								null != (preferredFor = iuc.PreferredIdentifierFor))
+								null != (preferredFor = iuc.PreferredIdentifierFor) &&
+								iuc.RoleCollection.Count == 1)
 							{
 								if (switchToValueType)
 								{
@@ -1007,14 +1021,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					int constraintsCount = sequences.Count;
 					for (int i = 0; i < constraintsCount; ++i)
 					{
-						UniquenessConstraint iuc = sequences[i] as UniquenessConstraint;
-						if (iuc != null && iuc.IsInternal)
+						UniquenessConstraint iuc;
+						ObjectType preferredFor;
+						if (null != (iuc = sequences[i] as UniquenessConstraint) &&
+							iuc.IsInternal &&
+							iuc.Modality == ConstraintModality.Alethic &&
+							null != (preferredFor = iuc.PreferredIdentifierFor) &&
+							iuc.RoleCollection.Count == 1)
 						{
-							ObjectType preferredFor = iuc.PreferredIdentifierFor;
-							if (preferredFor != null)
-							{
-								EnsureRefModeExpanded(iuc, preferredFor);
-							}
+							EnsureRefModeExpanded(iuc, preferredFor);
 						}
 					}
 					foreach (ConstraintRoleSequence sequence in ((Role)e.OldRolePlayer).ConstraintRoleSequenceCollection)

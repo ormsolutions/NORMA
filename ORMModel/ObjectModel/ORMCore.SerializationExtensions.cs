@@ -298,6 +298,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("PreferredIdentifierRequiresMandatoryError", PreferredIdentifierRequiresMandatoryError.DomainClassId);
 				classNameMap.Add("CompatibleSupertypesError", CompatibleSupertypesError.DomainClassId);
 				classNameMap.Add("CompatibleRolePlayerTypeError", CompatibleRolePlayerTypeError.DomainClassId);
+				classNameMap.Add("SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError", SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.DomainClassId);
 				classNameMap.Add("JoinPathRequiredError", JoinPathRequiredError.DomainClassId);
 				classNameMap.Add("RolePlayerRequiredError", RolePlayerRequiredError.DomainClassId);
 				classNameMap.Add("FrequencyConstraintViolatedByUniquenessConstraintError", FrequencyConstraintViolatedByUniquenessConstraintError.DomainClassId);
@@ -8309,7 +8310,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == SetComparisonConstraintHasExclusionContradictsSubsetError.ExclusionContradictsSubsetErrorDomainRoleId || roleId == SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.NotWellModeledSubsetAndMandatoryErrorDomainRoleId)
+			if (roleId == SetComparisonConstraintHasExclusionContradictsSubsetError.ExclusionContradictsSubsetErrorDomainRoleId || roleId == SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.NotWellModeledSubsetAndMandatoryErrorDomainRoleId || roleId == SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorDomainRoleId)
 			{
 				return CustomSerializedElementInfo.NotWritten;
 			}
@@ -8338,6 +8339,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
 				domainRole = domainDataDirectory.FindDomainRole(SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.NotWellModeledSubsetAndMandatoryErrorDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -13396,6 +13399,68 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // CompatibleRolePlayerTypeError serialization
+	#region SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError serialization
+	partial class SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SubsetConstraintDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "SubsetConstraint", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SubsetConstraintDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|SubsetConstraint", match);
+				SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError serialization
 	#region JoinPathRequiredError serialization
 	partial class JoinPathRequiredError : ICustomSerializedElement
 	{

@@ -96,17 +96,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if ((isFactTypeShape = targetShapeElement is FactTypeShape) || targetShapeElement is SubtypeLink)
 					{
 						ExternalConstraintConnectAction action = (sourceShapeElement.Diagram as ORMDiagram).ExternalConstraintConnectAction;
-						if (action != null)
-						{
-							if (action.mySubtypeConnection)
-							{
-								retVal = !isFactTypeShape;
-							}
-							else if (isFactTypeShape || (action.myAllowSubtypeConnection && action.SelectedRoleCollection.Count == 0))
-							{
-								retVal = true;
-							}
-						}
+						retVal = action != null &&
+							((action.mySubtypeConnection && !action.mySubtypeAnchoredSubset) || isFactTypeShape || action.myAllowSubtypeConnection);
 					}
 					else
 					{
@@ -328,7 +319,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static Cursor mySearchingCursor = new Cursor(typeof(ExternalConstraintConnectAction), "ConnectExternalConstraintSearching.cur");
 		private ConstraintRoleSequence myConstraintRoleSequence;
 		private bool mySubtypeConnection;
+		private bool mySubtypeAnchoredSubset;
+		private bool myOriginalSubtypeAnchoredSubset;
 		private bool myAllowSubtypeConnection;
+		private bool myOriginalAllowSubtypeConnection;
+		private int mySelectedSupertypeRoleCount;
 		private IList<Role> myInitialSelectedRoles;
 		private IList<Role> mySelectedRoles;
 		private ExternalConstraintShape mySourceShape;
@@ -473,27 +468,42 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						mySourceShape = constraintShape;
 						IConstraint activeConstraint = constraintShape.AssociatedConstraint;
 						myActiveConstraint = activeConstraint;
+						LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences;
+						mySubtypeAnchoredSubset = false;
+						myAllowSubtypeConnection = false;
 						switch (activeConstraint.ConstraintType)
 						{
 							case ConstraintType.DisjunctiveMandatory:
 								// This setting is refined later
 								myAllowSubtypeConnection = true;
 								break;
+							case ConstraintType.Subset:
+								// Allow a single-column subset constraint from a column to a role,
+								// but not to another subtype.
+								sequences = ((SubsetConstraint)activeConstraint).RoleSequenceCollection;
+								if (sequences.Count == 0)
+								{
+									myAllowSubtypeConnection = true;
+								}
+								else
+								{
+									LinkedElementCollection<Role> sequenceRoles = sequences[0].RoleCollection;
+									mySubtypeAnchoredSubset = sequenceRoles.Count == 1 && sequenceRoles[0] is SupertypeMetaRole;
+								}
+								break;
 							case ConstraintType.Exclusion:
 								ExclusionConstraint exclusion = (ExclusionConstraint)activeConstraint;
-								// If the exclusion constraint is currently attached to any fact types
-								// that are not subtype facts, then we cannot allow a subtype connection.
-								LinkedElementCollection<FactType> exclusionFactTypes = exclusion.FactTypeCollection;
-								myAllowSubtypeConnection = (exclusionFactTypes.Count == 0) ? true : exclusionFactTypes[0] is SubtypeFact;
-								break;
-							default:
-								myAllowSubtypeConnection = false;
+								sequences = exclusion.RoleSequenceCollection;
+								// Allow subtypes to be included in any single column exclusion constraint
+								myAllowSubtypeConnection = sequences.Count == 0 || (sequences[0].RoleCollection.Count == 1 && exclusion.ArityMismatchError == null);
 								break;
 						}
 						if (null != (ormDiagram = mySourceShape.Diagram as ORMDiagram))
 						{
 							ormDiagram.StickyObject = constraintShape;
 						}
+						myOriginalAllowSubtypeConnection = myAllowSubtypeConnection;
+						myOriginalSubtypeAnchoredSubset = mySubtypeAnchoredSubset;
 					}
 				}
 				else if (null != (role = currentElement as Role))
@@ -515,9 +525,43 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						{
 							forceRedraw = true;
 							roles.RemoveAt(roleIndex);
-							redrawIndexBound = roles.Count;
-							if (roles.Count == 0 && mySubtypeConnection && InitialRoles.Count == 0)
+							bool removedLastSupertypeRole = false;
+							if (isSupertypeRole)
 							{
+								removedLastSupertypeRole = (--mySelectedSupertypeRoleCount == 0);
+							}
+							redrawIndexBound = roles.Count;
+							int roleCount = roles.Count;
+							if (roleCount == 0)
+							{
+								if (mySubtypeConnection && InitialRoles.Count == 0)
+								{
+									mySubtypeConnection = false;
+									if (myActiveConstraint.ConstraintType == ConstraintType.Subset)
+									{
+										mySubtypeAnchoredSubset = false;
+										myAllowSubtypeConnection = true;
+									}
+								}
+								else if (myActiveConstraint.ConstraintType == ConstraintType.Subset)
+								{
+									myAllowSubtypeConnection = myOriginalAllowSubtypeConnection;
+									mySubtypeAnchoredSubset = myOriginalSubtypeAnchoredSubset;
+								}
+							}
+							else if (roleCount == 1 && roleIndex == 0 && mySubtypeAnchoredSubset)
+							{
+								myAllowSubtypeConnection = false;
+								mySubtypeAnchoredSubset = false;
+								if (InitialRoles.Count == 0)
+								{
+									mySubtypeConnection = false;
+								}
+							}
+							else if (removedLastSupertypeRole && InitialRoles.Count == 0)
+							{
+								myAllowSubtypeConnection = myOriginalAllowSubtypeConnection;
+								mySubtypeAnchoredSubset = myOriginalSubtypeAnchoredSubset;
 								mySubtypeConnection = false;
 							}
 						}
@@ -527,24 +571,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						bool allowAdd = false;
 						if (mySubtypeConnection)
 						{
-							allowAdd = isSupertypeRole;
+							allowAdd = myAllowSubtypeConnection || !isSupertypeRole;
 						}
 						else if (isSupertypeRole)
 						{
-							if (roles.Count == 0 && InitialRoles.Count == 0 && myAllowSubtypeConnection)
+							if (myAllowSubtypeConnection && mySelectedSupertypeRoleCount == 0)
 							{
 								mySubtypeConnection = true;
+								if (myActiveConstraint.ConstraintType == ConstraintType.Subset)
+								{
+									myAllowSubtypeConnection = false;
+									mySubtypeAnchoredSubset = true;
+								}
 								allowAdd = true;
 							}
 						}
 						else
 						{
+							if (myAllowSubtypeConnection && myActiveConstraint.ConstraintType == ConstraintType.Subset)
+							{
+								myAllowSubtypeConnection = false;
+							}
 							allowAdd = true;
 						}
 						if (allowAdd)
 						{
 							forceRedraw = true;
 							roles.Add(role);
+							if (isSupertypeRole)
+							{
+								++mySelectedSupertypeRoleCount;
+							}
 						}
 						else
 						{
@@ -730,40 +787,89 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				IList<Role> selectedRoleCollection = SelectedRoleCollection;
 				IList<Role> initialRoles = InitialRoles;
 				bool firstRole = true;
-				foreach (Role r in roleCollection)
+				int supertypeRoleCount = 0;
+				bool forceAsColumnForSubtype = false;
+				foreach (Role role in roleCollection)
 				{
-					if (firstRole && r is SupertypeMetaRole)
+					if (firstRole)
 					{
 						firstRole = false;
-						mySubtypeConnection = true;
 						SetComparisonConstraintRoleSequence comparisonSequence = value as SetComparisonConstraintRoleSequence;
 						if (comparisonSequence != null)
 						{
 							SetComparisonConstraint constraint = comparisonSequence.ExternalConstraint;
-							LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = constraint.RoleSequenceCollection;
-							int sequenceCount = sequences.Count;
-							for (int i = 0; i < sequenceCount; ++i)
+							LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = null;
+							LinkedElementCollection<Role> sequenceRoles;
+							int sequenceCount = 0;
+							switch (((IConstraint)constraint).ConstraintType)
 							{
-								LinkedElementCollection<Role> roles = sequences[i].RoleCollection;
-								if (roles.Count > 0)
-								{
-									Role r1 = roles[0];
-									selectedRoleCollection.Add(r1);
-									initialRoles.Add(r1);
-								}
+								case ConstraintType.Subset:
+									sequences = constraint.RoleSequenceCollection;
+									sequenceCount = sequences.Count;
+									forceAsColumnForSubtype = sequenceCount != 0 &&
+										(sequenceRoles = sequences[0].RoleCollection).Count == 1 &&
+										sequenceRoles[0] is SupertypeMetaRole;
+									break;
+								case ConstraintType.Exclusion:
+									sequences = constraint.RoleSequenceCollection;
+									sequenceCount = sequences.Count;
+									for (int i = 0; i < sequenceCount && !forceAsColumnForSubtype; ++i)
+									{
+										foreach (Role constraintRole in sequences[i].RoleCollection)
+										{
+											if (constraintRole is SupertypeMetaRole)
+											{
+												forceAsColumnForSubtype = true;
+												break;
+											}
+										}
+
+									}
+									break;
 							}
-							break;
+							if (forceAsColumnForSubtype)
+							{
+								for (int i = 0; i < sequenceCount; ++i)
+								{
+									LinkedElementCollection<Role> roles = sequences[i].RoleCollection;
+									if (roles.Count > 0)
+									{
+										Role columnRole = roles[0];
+										selectedRoleCollection.Add(columnRole);
+										initialRoles.Add(columnRole);
+										if (columnRole is SupertypeMetaRole)
+										{
+											++supertypeRoleCount;
+										}
+									}
+								}
+								break;
+							}
+						}
+						else
+						{
+							forceAsColumnForSubtype = value is MandatoryConstraint;
 						}
 					}
-					Role roleToAdd = r;
+					Role roleToAdd = role;
 					ObjectType rolePlayer;
-					if (null != (rolePlayer = r.RolePlayer) &&
+					if (null != (rolePlayer = role.RolePlayer) &&
 						rolePlayer.IsImplicitBooleanValue)
 					{
-						roleToAdd = r.OppositeRole.Role;
+						roleToAdd = role.OppositeRole.Role;
+					}
+					if (forceAsColumnForSubtype &&
+						roleToAdd is SupertypeMetaRole)
+					{
+						++supertypeRoleCount;
 					}
 					selectedRoleCollection.Add(roleToAdd);
 					initialRoles.Add(roleToAdd);
+				}
+				mySelectedSupertypeRoleCount = supertypeRoleCount;
+				if (supertypeRoleCount != 0)
+				{
+					mySubtypeConnection = true;
 				}
 			}
 			get

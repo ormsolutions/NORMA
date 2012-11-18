@@ -1125,6 +1125,7 @@
 	<se:Element Class="SubsetConstraint" SortChildElements="true" Override="true">
 		<se:Link RelationshipName="SetComparisonConstraintHasExclusionContradictsSubsetError" RoleName="ExclusionContradictsSubsetError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="SubsetConstraintHasNotWellModeledSubsetAndMandatoryError" RoleName="NotWellModeledSubsetAndMandatoryError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" RoleName="SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="RingConstraint" Override="true">
 		<se:Attribute ID="RingType" Name="Type"/>
@@ -1764,6 +1765,9 @@
 		</se:Attribute>
 		<se:Link RelationshipName="SetComparisonConstraintHasCompatibleRolePlayerTypeError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
 		<se:Link RelationshipName="SetConstraintHasCompatibleRolePlayerTypeError" RoleName="SetConstraint" Name="SetConstraint"/>
+	</se:Element>
+	<se:Element Class="SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" Override="true">
+		<se:Link RelationshipName="SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" RoleName="SubsetConstraint" Name="SubsetConstraint"/>
 	</se:Element>
 	<se:Element Class="JoinPathRequiredError" Override="true">
 		<se:Link RelationshipName="ConstraintRoleSequenceHasJoinPathRequiredError" RoleName="RoleSequence" Name="ConstraintRoleSequence"/>

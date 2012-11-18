@@ -364,9 +364,8 @@
 	<ResourceString name="ModelExceptionSubtypeFactProvidesPreferredIdentifierInvalid" model="Model" resourceName="ModelException.SubtypeFact.ProvidesPreferredIdentifierInvalid"/>
 	<ResourceString name="ModelExceptionSubtypeFactCycle" model="Model" resourceName="ModelException.SubtypeFact.Cycle"/>
 	<ResourceString name="ModelExceptionSubtypeMetaRoleOnlyAllowsImplicitConstraints" model="Model" resourceName="ModelException.SubtypeMetaRole.OnlyAllowsImplicitConstraints"/>
-	<ResourceString name="ModelExceptionSupertypeMetaRoleDisjunctiveMandatoryMustContainOnlySupertypeMetaRoles" model="Model" resourceName="ModelException.SupertypeMetaRole.DisjunctiveMandatoryMustContainOnlySupertypeMetaRoles"/>
-	<ResourceString name="ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles" model="Model" resourceName="ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles"/>
-	<ResourceString name="ModelExceptionSupertypeMetaRoleOnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints" model="Model" resourceName="ModelException.SupertypeMetaRole.OnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints"/>
+	<ResourceString name="ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumn" model="Model" resourceName="ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumn"/>
+	<ResourceString name="ModelExceptionSupertypeMetaRoleUnsupportedConstraintType" model="Model" resourceName="ModelException.SupertypeMetaRole.UnsupportedConstraintType"/>
 	<ResourceString name="ModelReferenceModePickerFormatString" model="Model" resourceName="ModelReferenceModePicker.FormatString"/>
 	<ResourceString name="ModelErrorReadingTooFewRolesMessage" model="Model" resourceName="ModelError.Reading.TooFewRoles.Message"/>
 	<ResourceString name="ModelErrorReadingRequiresUserModificationMessage" model="Model" resourceName="ModelError.Reading.RequiresUserModification.Message"/>
@@ -417,6 +416,7 @@
 	<ResourceString name="ModelErrorConstraintRoleSequenceJoinPathRequiredError" model="Model" resourceName="ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text"/>
 	<ResourceString name="ModelErrorSetConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text"/>
 	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text"/>
+	<ResourceString name="ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" model="Model" resourceName="ModelError.Constraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Text"/>
 	<ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message"/>
 	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesError" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message"/>
 	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message"/>

@@ -901,6 +901,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										else if (i == (sequenceCount - 1))
 										{
 											enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceDown;
+											if (constraint.ConstraintType == ConstraintType.Subset)
+											{
+												LinkedElementCollection<Role> subsetRoles = roleSequences[0].RoleCollection;
+												if (subsetRoles.Count == 1 &&
+													subsetRoles[0] is SupertypeMetaRole)
+												{
+													// Supertype role of a single-column subset constraint must be
+													// in the first (subset) sequence of the constraint, don't allow
+													// movement.
+													enabledCommands &= ~ORMDesignerCommands.MoveRoleSequenceUp;
+												}
+											}
 										}
 										break;
 									}

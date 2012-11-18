@@ -1694,6 +1694,14 @@
     <value>Column</value>
     <comment>DisplayName for DomainProperty &apos;Column&apos; on DomainClass &apos;CompatibleRolePlayerTypeError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.DisplayName" xml:space="preserve">
+    <value>Superset Role on Subtype Subset Constraint Not a Subtype</value>
+    <comment>DisplayName for DomainClass &apos;SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.JoinPathRequiredError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;JoinPathRequiredError&apos;</comment>
@@ -4699,6 +4707,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError/CompatibleRolePlayerTypeError.PropertyDisplayName" xml:space="preserve">
     <value>Set Comparison Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;CompatibleRolePlayerTypeError&apos; on DomainRelationship &apos;SetComparisonConstraintHasCompatibleRolePlayerTypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError</value>
+    <comment>Description for DomainClass &apos;SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.DisplayName" xml:space="preserve">
+    <value>Subset Constraint Has Superset Role Of Subtype Subset Constraint Not Subtype Error</value>
+    <comment>DisplayName for DomainClass &apos;SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SubsetConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SubsetConstraint</value>
+    <comment>Description for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SubsetConstraint.DisplayName" xml:space="preserve">
+    <value>SubsetConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SubsetConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Superset Role Of Subtype Subset Constraint Not Subtype Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SubsetConstraint&apos; on DomainRelationship &apos;SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError</value>
+    <comment>Description for DomainRole &apos;SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos; on DomainRelationship &apos;SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.DisplayName" xml:space="preserve">
+    <value>SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError</value>
+    <comment>DisplayName for DomainRole &apos;SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos; on DomainRelationship &apos;SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.PropertyDisplayName" xml:space="preserve">
+    <value>Subset Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos; on DomainRelationship &apos;SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraintHasCompatibleRolePlayerTypeError</value>

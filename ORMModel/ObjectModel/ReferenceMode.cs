@@ -241,7 +241,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								{
 									foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(null, null))
 									{
-										entity.RenameReferenceMode(mode.GenerateValueTypeName(entity.Name, upgradeToFormatString, mode.Name));
+										entity.RenameReferenceMode(mode.GenerateValueTypeName(entity.Name, upgradeToFormatString, mode.Name), upgradeToKind.ReferenceModeType != ReferenceModeType.Popular);
 									}
 								}
 							}
@@ -363,9 +363,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					++decoratorIndex;
 					newModeName = modeName + decoratorIndex.ToString();
 				}
+				bool canShareValueType = mode.Kind.ReferenceModeType != ReferenceModeType.Popular;
 				foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(null, null))
 				{
-					entity.RenameReferenceMode(mode.GenerateValueTypeName(entity.Name, mode.FormatString, newModeName));
+					entity.RenameReferenceMode(mode.GenerateValueTypeName(entity.Name, mode.FormatString, newModeName), canShareValueType);
 				}
 				// Treat the new name as an intrinsic, add in case it conflicts with a later
 				// mode with the same name.
@@ -817,10 +818,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							continue;
 						}
 					}
+					bool canShareValueType = customReferenceMode.Kind.ReferenceModeType != ReferenceModeType.Popular;
 					foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(oldFormatString, null))
 					{
 						string newName = mode.GenerateValueTypeName(entity.Name);
-						entity.RenameReferenceMode(newName);
+						entity.RenameReferenceMode(newName, canShareValueType);
 					}
 				}
 			}
@@ -951,10 +953,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					oldFormatString = mode.Kind.FormatString;
 				}
 
+				bool canShareValueType = mode.Kind.ReferenceModeType != ReferenceModeType.Popular;
 				foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(oldFormatString, null))
 				{
 					string newName = mode.GenerateValueTypeName(entity.Name);
-					entity.RenameReferenceMode(newName);
+					entity.RenameReferenceMode(newName, canShareValueType);
 				}
 			}
 			else if (attributeId == NameDomainPropertyId)
@@ -964,10 +967,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					string oldRefModeName = (string)e.OldValue;
 
+					bool canShareValueType = mode.Kind.ReferenceModeType != ReferenceModeType.Popular;
 					foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(null, oldRefModeName))
 					{
 						string newName = mode.GenerateValueTypeName(entity.Name);
-						entity.RenameReferenceMode(newName);
+						entity.RenameReferenceMode(newName, canShareValueType);
 					}
 				}
 			}
@@ -1132,10 +1136,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					customReferenceMode.CustomFormatString = "";
 
+					//List<ObjectType> entityTypes = null; // Snapshot all entities before walking any of them
+					//foreach (ObjectType entity in customReferenceMode.AssociatedEntityTypeCollection(oldFormatString, null))
+					//{
+					//    (entityTypes ?? (entityTypes = new List<ObjectType>())).Add(entity);
+					//}
+					//if (entityTypes != null)
+					//{
+					//    bool canShareValueType = newKind.ReferenceModeType != ReferenceModeType.Popular;
+					//    foreach (ObjectType entity in entityTypes)
+					//    {
+					//        entity.RenameReferenceMode(customReferenceMode.GenerateValueTypeName(entity.Name), canShareValueType);
+					//    }
+					//}
+
+					bool canShareValueType = newKind.ReferenceModeType != ReferenceModeType.Popular;
 					foreach (ObjectType entity in customReferenceMode.AssociatedEntityTypeCollection(oldFormatString, null))
 					{
-						string newName = customReferenceMode.GenerateValueTypeName(entity.Name);
-						entity.RenameReferenceMode(newName);
+						entity.RenameReferenceMode(customReferenceMode.GenerateValueTypeName(entity.Name), canShareValueType);
 					}
 				}
 				else if (mode is IntrinsicReferenceMode)

@@ -710,8 +710,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		///  Utility function to change the name of an existing reference mode.
 		/// </summary>
-		/// <param name="valueTypeName"></param>
-		public void RenameReferenceMode(string valueTypeName)
+		/// <param name="valueTypeName">The new name for the reference mode value type.</param>
+		/// <param name="shareReferenceModeValueType">True if the reference mode value type can be shared with
+		/// other entity types with a reference mode pattern that also uses this value type.</param>
+		public void RenameReferenceMode(string valueTypeName, bool shareReferenceModeValueType)
 		{
 			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
 			LinkedElementCollection<Role> constraintRoles;
@@ -726,14 +728,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ObjectType valueType = FindValueType(valueTypeName, model);
 			Role constrainedRole = constraintRoles[0];
 			ObjectType identifyingValueType;
-			bool valueTypeNotShared = !IsValueTypeShared(preferredConstraint, true, out identifyingValueType);
-			if (valueTypeNotShared && valueType == null)
+			bool valueTypeNotShared = !IsValueTypeShared(preferredConstraint, shareReferenceModeValueType, out identifyingValueType);
+			if (valueTypeNotShared &&
+				valueType == null &&
+				null != (valueType = constrainedRole.RolePlayer) &&
+				valueType.IsValueType)
 			{
-				valueType = constrainedRole.RolePlayer;
-				if (valueType.IsValueType)
-				{
-					valueType.Name = valueTypeName;
-				}
+				valueType.Name = valueTypeName;
 			}
 			else
 			{
@@ -911,7 +912,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				LinkedElementCollection<Role> constraintRoles = preferredConstraint.RoleCollection;
 				ObjectType valueType;
 				Role knownRole;
-				if (constraintRoles.Count == 1 && (valueType = (knownRole = constraintRoles[0]).RolePlayer).IsValueType)
+				if (constraintRoles.Count == 1 &&
+					null != (valueType = (knownRole = constraintRoles[0]).RolePlayer) &&
+					valueType.IsValueType)
 				{
 					identifyingValueType = valueType;
 					// Consider a value type to be shared if it participates in more than
@@ -1880,7 +1883,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				UniquenessConstraint prefConstraint = objectType.PreferredIdentifier;
 
-				if (prefConstraint != null && prefConstraint.IsInternal)
+				if (prefConstraint != null &&
+					prefConstraint.IsInternal &&
+					prefConstraint.RoleCollection.Count == 1)
 				{
 					string newValue = (string)e.NewValue;
 					string oldValue = (string)e.OldValue;
@@ -1896,7 +1901,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 						if (name != oldReferenceModeName)
 						{
-							objectType.RenameReferenceMode(name);
+							objectType.RenameReferenceMode(name, false);
 						}
 					}
 				}
@@ -2014,7 +2019,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (haveNew)
 				{
-					objectType.RenameReferenceMode(name);
+					objectType.RenameReferenceMode(name, false);
 				}
 				else
 				{

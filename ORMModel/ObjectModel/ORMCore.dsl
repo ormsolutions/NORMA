@@ -1534,6 +1534,12 @@
 			</Properties>
 		</DomainClass>
 
+		<DomainClass Name="SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1649968F-396D-484E-AB69-0FCD0453EF19" DisplayName="Superset Role on Subtype Subset Constraint Not a Subtype" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="JoinPathRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="153C3FF6-A7F9-4D82-8B6B-8A61D3F40889" DisplayName="Join Required for Multiple Fact Types" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -3216,14 +3222,14 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="NotWellModeledSubsetAndMandatoryError" PropertyName="SubsetConstraint" Multiplicity="One" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NotWellModeledSubsetAndMandatoryError" Id="D48F7913-B297-4D19-833C-811194FAE9FA">
+				<DomainRole Name="NotWellModeledSubsetAndMandatoryError" PropertyName="SubsetConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="NotWellModeledSubsetAndMandatoryError" Id="D48F7913-B297-4D19-833C-811194FAE9FA">
 					<RolePlayer>
 						<DomainClassMoniker Name="NotWellModeledSubsetAndMandatoryError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
-
+		
 		<DomainRelationship Name="MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="475557A9-6E11-4D1C-A5A0-9D06DAED3EE5">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
@@ -3236,7 +3242,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="NotWellModeledSubsetAndMandatoryError" PropertyName="MandatoryConstraint" Multiplicity="One"  PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="NotWellModeledSubsetAndMandatoryError" Id="1D06C86D-F4D2-4D52-94CB-05B0625B5AA0">
+				<DomainRole Name="NotWellModeledSubsetAndMandatoryError" PropertyName="MandatoryConstraint" Multiplicity="One"  PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="NotWellModeledSubsetAndMandatoryError" Id="1D06C86D-F4D2-4D52-94CB-05B0625B5AA0">
 					<RolePlayer>
 						<DomainClassMoniker Name="NotWellModeledSubsetAndMandatoryError"/>
 					</RolePlayer>
@@ -3670,6 +3676,26 @@
 				<DomainRole Name="CompatibleRolePlayerTypeError" PropertyName="SetComparisonConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CompatibleRolePlayerTypeError" Id="159EB571-D8E0-495E-9F51-85EABCF95F0C">
 					<RolePlayer>
 						<DomainClassMoniker Name="CompatibleRolePlayerTypeError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="15CE0DCF-338D-4B42-8CF3-7D4D144CA320">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="SubsetConstraint" PropertyName="SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SubsetConstraint" Id="BE759467-09E0-43FC-9AB2-430CACF908AB">
+					<RolePlayer>
+						<DomainClassMoniker Name="SubsetConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" PropertyName="SubsetConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" Id="9464F522-E9A9-4E9D-8958-D24D5116C523">
+					<RolePlayer>
+						<DomainClassMoniker Name="SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

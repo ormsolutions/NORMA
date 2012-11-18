@@ -10771,7 +10771,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SubsetConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SubsetConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("d48f7913-b297-4d19-833c-811194fae9fa")]
 		public virtual NotWellModeledSubsetAndMandatoryError NotWellModeledSubsetAndMandatoryError
 		{
@@ -11076,7 +11076,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "MandatoryConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "MandatoryConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError/NotWellModeledSubsetAndMandatoryError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("1d06c86d-f4d2-4d52-94cb-05b0625b5aa0")]
 		public virtual NotWellModeledSubsetAndMandatoryError NotWellModeledSubsetAndMandatoryError
 		{
@@ -17224,6 +17224,311 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasCompatibleRolePlayerTypeError link in links )
 			{
 				if ( target.Equals(link.CompatibleRolePlayerTypeError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("15ce0dcf-338d-4b42-8cf3-7d4d144ca320")]
+	public partial class SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x15ce0dcf, 0x338d, 0x4b42, 0x8c, 0xf3, 0x7d, 0x4d, 0x14, 0x4c, 0xa3, 0x20);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError link in the same Partition as the given SubsetConstraint
+		/// </summary>
+		/// <param name="source">SubsetConstraint to use as the source of the relationship.</param>
+		/// <param name="target">SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError to use as the target of the relationship.</param>
+		public SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(SubsetConstraint source, SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SubsetConstraintDomainRoleId, source), new DslModeling::RoleAssignment(SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region SubsetConstraint domain role code
+		
+		/// <summary>
+		/// SubsetConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SubsetConstraintDomainRoleId = new global::System.Guid(0xbe759467, 0x09e0, 0x43fc, 0x9a, 0xb2, 0x43, 0x0c, 0xac, 0xf9, 0x08, 0xab);
+		
+		/// <summary>
+		/// DomainRole SubsetConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SubsetConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SubsetConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SubsetConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SubsetConstraint.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("be759467-09e0-43fc-9ab2-430cacf908ab")]
+		public virtual SubsetConstraint SubsetConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SubsetConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, SubsetConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SubsetConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SubsetConstraint of a SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError
+		/// <summary>
+		/// Gets SubsetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SubsetConstraint GetSubsetConstraint(SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorDomainRoleId) as SubsetConstraint;
+		}
+		
+		/// <summary>
+		/// Sets SubsetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSubsetConstraint(SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError element, SubsetConstraint newSubsetConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorDomainRoleId, newSubsetConstraint);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing SubsetConstraint domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SubsetConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SubsetConstraint = (SubsetConstraint)value;
+			}
+		}
+		
+		#endregion
+		#region SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError domain role code
+		
+		/// <summary>
+		/// SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorDomainRoleId = new global::System.Guid(0x9464f522, 0xe9a9, 0x4e9d, 0x89, 0x58, 0xd2, 0x4d, 0x51, 0x16, 0xc5, 0x23);
+		
+		/// <summary>
+		/// DomainRole SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SubsetConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError/SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("9464f522-e9a9-4e9d-8958-d24d5116c523")]
+		public virtual SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError)DslModeling::DomainRoleInfo.GetRolePlayer(this, SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError of a SubsetConstraint
+		/// <summary>
+		/// Gets SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError GetSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(SubsetConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, SubsetConstraintDomainRoleId) as SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError;
+		}
+		
+		/// <summary>
+		/// Sets SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(SubsetConstraint element, SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError newSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, SubsetConstraintDomainRoleId, newSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError = (SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError)value;
+			}
+		}
+		
+		#endregion
+		#region SubsetConstraint link accessor
+		/// <summary>
+		/// Get the SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError link to a SubsetConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError GetLinkToSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraint subsetConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError>(subsetConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SubsetConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SubsetConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError link accessor
+		/// <summary>
+		/// Get the SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError link to a SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError GetLinkToSubsetConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError supersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError>(supersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError instance accessors
+		
+		/// <summary>
+		/// Get any SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError links between a given SubsetConstraint and a SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SubsetConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError link in links )
+			{
+				if ( target.Equals(link.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError link between a given SubsetConstraintand a SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.SubsetConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubsetConstraintHasSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError link in links )
+			{
+				if ( target.Equals(link.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError) )
 				{
 					return link;
 				}

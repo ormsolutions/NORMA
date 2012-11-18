@@ -65,7 +65,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ConstraintRoleSequence).GetNestedType("RolePlayerAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("RolePlayerDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("RolePlayerRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ConstraintRoleSequence).GetNestedType("SetComparisonConstraintHasRoleDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("SetComparisonRoleSequenceDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ConstraintRoleSequence).GetNestedType("SetComparisonRoleSequencePositionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("SetConstraintDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequenceJoinPath).GetNestedType("ConstraintRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequenceJoinPath).GetNestedType("ConstraintRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -457,6 +458,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(SubtypeFact).GetNestedType("LimitSubtypeRolesAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("LimitSubtypeRolesDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(SubtypeFact).GetNestedType("LimitSubtypeSetComparisonConstraintSequenceAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(SubtypeFact).GetNestedType("LimitSubtypeSetComparisonConstraintSequenceReorderRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneConstraintAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneConstraintRoleAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneConstraintRoleDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -520,7 +522,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 452; ++i)
+			for (int i = 0; i < 454; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -1322,10 +1324,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ConstraintRoleSequence), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class SetComparisonConstraintHasRoleDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
+		private sealed class SetComparisonRoleSequenceDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public SetComparisonConstraintHasRoleDeletingRuleClass()
+			public SetComparisonRoleSequenceDeletingRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -1335,16 +1337,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// /// <summary>
 			/// /// DeletingRule: typeof(ConstraintRoleSequence)
 			/// /// </summary>
-			/// private static void SetComparisonConstraintHasRoleDeletingRule(ElementDeletingEventArgs e)
+			/// private static void SetComparisonRoleSequenceDeletingRule(ElementDeletingEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonConstraintHasRoleDeletingRule");
-				ConstraintRoleSequence.SetComparisonConstraintHasRoleDeletingRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonConstraintHasRoleDeletingRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonRoleSequenceDeletingRule");
+				ConstraintRoleSequence.SetComparisonRoleSequenceDeletingRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonRoleSequenceDeletingRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SetComparisonRoleSequencePositionChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SetComparisonRoleSequencePositionChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence
+			/// /// <summary>
+			/// /// RolePlayerPositionChangeRule: typeof(SetComparisonConstraintHasRoleSequence)
+			/// /// </summary>
+			/// private static void SetComparisonRoleSequencePositionChangedRule(RolePlayerOrderChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonRoleSequencePositionChangedRule");
+				ConstraintRoleSequence.SetComparisonRoleSequencePositionChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonRoleSequencePositionChangedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraint), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
@@ -11738,6 +11766,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceAddRule");
 				SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceAddRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasRoleSequence), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class LimitSubtypeSetComparisonConstraintSequenceReorderRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerPositionChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public LimitSubtypeSetComparisonConstraintSequenceReorderRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact
+			/// /// <summary>
+			/// /// RolePlayerPositionChangeRule: typeof(SetComparisonConstraintHasRoleSequence)
+			/// /// </summary>
+			/// private static void LimitSubtypeSetComparisonConstraintSequenceReorderRule(RolePlayerOrderChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceReorderRule");
+				SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceReorderRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceReorderRule");
 			}
 		}
 	}

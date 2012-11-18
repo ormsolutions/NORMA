@@ -29,6 +29,21 @@
 				<DomainClassMoniker Name="NodeShape"/>
 			</BaseClass>
 		</DomainClass>
+		<DomainClass Name="Compartment" Namespace="Microsoft.VisualStudio.Modeling.Diagrams" Id="CF908511-03D6-4D10-B53A-DDDC44D66A9A" DisplayName="Compartment" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="NodeShape"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ListCompartment" Namespace="Microsoft.VisualStudio.Modeling.Diagrams" Id="F869CFDF-04A5-4D22-A97E-7EC5BCA2096E" DisplayName="ListCompartment" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="Compartment"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ElementListCompartment" Namespace="Microsoft.VisualStudio.Modeling.Diagrams" Id="AFF8951D-DCD5-4E68-A3A1-DB963399CBF7" DisplayName="ElementListCompartment" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ListCompartment"/>
+			</BaseClass>
+		</DomainClass>
 	</Classes>
 
 	<XmlSerializationBehavior Name="CoreDesignSurfaceDomainModelSerializationBehavior" Namespace=""/>

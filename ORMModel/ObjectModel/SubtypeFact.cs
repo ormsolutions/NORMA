@@ -211,13 +211,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeConstraintAndRolePatternFixed);
 		}
-		private static void ThrowInvalidDisjunctiveMandatorySubtypeConstraint()
-		{
-			throw new InvalidOperationException(ResourceStrings.ModelExceptionSupertypeMetaRoleDisjunctiveMandatoryMustContainOnlySupertypeMetaRoles);
-		}
 		private static void ThrowInvalidExclusionSubtypeConstraint()
 		{
-			throw new InvalidOperationException(ResourceStrings.ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles);
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumn);
 		}
 		private static void ThrowInvalidSubtypeMetaRoleConstraint()
 		{
@@ -225,7 +221,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private static void ThrowInvalidSupertypeMetaRoleConstraint()
 		{
-			throw new InvalidOperationException(ResourceStrings.ModelExceptionSupertypeMetaRoleOnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints);
+			throw new InvalidOperationException(ResourceStrings.ModelExceptionSupertypeMetaRoleUnsupportedConstraintType);
 		}
 		/// <summary>
 		/// AddRule: typeof(FactSetConstraint)
@@ -350,11 +346,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						invalidConstraintOnSubtypeRole = true;
 					}
-					else if (constraint.ConstraintType == ConstraintType.DisjunctiveMandatory)
-					{
-						FrameworkDomainModel.DelayValidateElement(ic, DelayValidateDisjunctiveMandatorySupertypeOnly);
-					}
-					else
+					else if (constraint.ConstraintType != ConstraintType.DisjunctiveMandatory)
 					{
 						invalidConstraintOnSupertypeRole = true;
 					}
@@ -368,13 +360,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					constraint = externalSequence.Constraint;
 					if (constraint != null)
 					{
-						if (constraint.ConstraintType == ConstraintType.Exclusion)
+						switch (constraint.ConstraintType)
 						{
-							FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
-						}
-						else
-						{
-							invalidConstraintOnSupertypeRole = true;
+							case ConstraintType.Exclusion:
+								FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateSupertypeExclusionSingleColumnOnly);
+								break;
+							case ConstraintType.Subset:
+								FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateSupertypeSubsetPattern);
+								break;
+							default:
+								invalidConstraintOnSupertypeRole = true;
+								break;
 						}
 					}
 				}
@@ -391,79 +387,87 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				switch (constraint.ConstraintType)
 				{
-					case ConstraintType.DisjunctiveMandatory:
-						FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateDisjunctiveMandatorySupertypeOnly);
-						break;
 					case ConstraintType.Exclusion:
-						FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateExclusionSupertypeOnly);
+						FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateSupertypeExclusionSingleColumnOnly);
 						break;
-				}
-			}
-		}
-		/// <summary>
-		/// Validator callback for mixed disjunctive mandatory constraint type exception
-		/// </summary>
-		private static void DelayValidateDisjunctiveMandatorySupertypeOnly(ModelElement element)
-		{
-			MandatoryConstraint constraint = (MandatoryConstraint)element;
-			if (!constraint.IsDeleted)
-			{
-				LinkedElementCollection<Role> roles = constraint.RoleCollection;
-				bool seenSupertypeMetaRole = false;
-				int roleCount = roles.Count;
-				for (int i = 0; i < roleCount; ++i)
-				{
-					if (roles[i] is SupertypeMetaRole)
-					{
-						if (i > 0 && !seenSupertypeMetaRole)
-						{
-							ThrowInvalidDisjunctiveMandatorySubtypeConstraint();
-						}
-						seenSupertypeMetaRole = true;
-					}
-					else if (seenSupertypeMetaRole)
-					{
-						ThrowInvalidDisjunctiveMandatorySubtypeConstraint();
-					}
+					case ConstraintType.Subset:
+						FrameworkDomainModel.DelayValidateElement((ModelElement)constraint, DelayValidateSupertypeSubsetPattern);
+						break;
 				}
 			}
 		}
 		/// <summary>
 		/// Validator callback for mixed exclusion constraint type exception
 		/// </summary>
-		private static void DelayValidateExclusionSupertypeOnly(ModelElement element)
+		private static void DelayValidateSupertypeExclusionSingleColumnOnly(ModelElement element)
 		{
 			ExclusionConstraint constraint = (ExclusionConstraint)element;
 			if (!constraint.IsDeleted)
 			{
-				ReadOnlyCollection<FactConstraint> factConstraints = constraint.FactConstraintCollection;
-				int factConstraintCount = factConstraints.Count;
 				bool seenSupertypeMetaRole = false;
-				for (int i = 0; i < factConstraintCount; ++i)
+				int maxArity = 0;
+				foreach (SetComparisonConstraintRoleSequence sequence in constraint.RoleSequenceCollection)
 				{
-					FactConstraint factConstraint = factConstraints[i];
-					LinkedElementCollection<ConstraintRoleSequenceHasRole> roleLinks = factConstraint.ConstrainedRoleCollection;
-					int roleLinkCount = roleLinks.Count;
-					for (int j = 0; j < roleLinkCount; ++j)
+					LinkedElementCollection<Role> constrainedRoles = sequence.RoleCollection;
+					int roleCount = constrainedRoles.Count;
+					if (roleCount > 1 && seenSupertypeMetaRole)
 					{
-						if (roleLinks[j].Role is SupertypeMetaRole)
+						ThrowInvalidExclusionSubtypeConstraint();
+					}
+					if (roleCount > maxArity)
+					{
+						maxArity = roleCount;
+					}
+					for (int i = 0; i < roleCount; ++i)
+					{
+						if (constrainedRoles[i] is SupertypeMetaRole)
 						{
-							if (!seenSupertypeMetaRole && (i > 0 || j > 0))
+							if (roleCount > 1)
 							{
 								ThrowInvalidExclusionSubtypeConstraint();
 							}
 							seenSupertypeMetaRole = true;
 						}
-						else if (seenSupertypeMetaRole)
-						{
-							ThrowInvalidExclusionSubtypeConstraint();
-						}
 					}
 				}
-				// Final check to enforce single column uniqueness only
-				if (seenSupertypeMetaRole && factConstraintCount != constraint.RoleSequenceCollection.Count)
+			}
+		}
+		/// <summary>
+		/// Validator callback for mixed subset constraint. Validates that a subset involving
+		/// a supertype role is single-column and from a subtype to a normal role.
+		/// </summary>
+		private static void DelayValidateSupertypeSubsetPattern(ModelElement element)
+		{
+			SubsetConstraint constraint = (SubsetConstraint)element;
+			if (!constraint.IsDeleted)
+			{
+				bool seenSupertypeMetaRole = false;
+				int maxArity = 0;
+				bool firstSequence = true;
+				foreach (SetComparisonConstraintRoleSequence sequence in constraint.RoleSequenceCollection)
 				{
-					ThrowInvalidExclusionSubtypeConstraint();
+					LinkedElementCollection<Role> constrainedRoles = sequence.RoleCollection;
+					int roleCount = constrainedRoles.Count;
+					if (roleCount > 1 && seenSupertypeMetaRole)
+					{
+						ThrowInvalidSupertypeMetaRoleConstraint();
+					}
+					if (roleCount > maxArity)
+					{
+						maxArity = roleCount;
+					}
+					for (int i = 0; i < roleCount; ++i)
+					{
+						if (constrainedRoles[i] is SupertypeMetaRole)
+						{
+							if (roleCount > 1 || !firstSequence)
+							{
+								ThrowInvalidSupertypeMetaRoleConstraint();
+							}
+							seenSupertypeMetaRole = true;
+						}
+					}
+					firstSequence = false;
 				}
 			}
 		}
@@ -482,7 +486,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				SetComparisonConstraint constraint = link.ExternalConstraint;
 				bool isExclusion = constraint is ExclusionConstraint;
-				bool addDelayValidate = false;
+				bool isSubset = !isExclusion && constraint is SubsetConstraint;
+				bool addExclusionDelayValidate = false;
+				bool addSubtypeDelayValidate = false;
 				for (int i = 0; i < roleCount; ++i)
 				{
 					Role untypedRole = roles[i];
@@ -492,17 +498,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else if (isExclusion)
 					{
-						addDelayValidate = true;
+						addExclusionDelayValidate = true;
+					}
+					else if (isSubset)
+					{
+						addSubtypeDelayValidate = true;
 					}
 					else if (untypedRole is SupertypeMetaRole)
 					{
 						ThrowInvalidSupertypeMetaRoleConstraint();
 					}
 				}
-				if (addDelayValidate)
+				if (addExclusionDelayValidate)
 				{
-					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateExclusionSupertypeOnly);
+					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateSupertypeExclusionSingleColumnOnly);
 				}
+				else if (addSubtypeDelayValidate)
+				{
+					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateSupertypeSubsetPattern);
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerPositionChangeRule: typeof(SetComparisonConstraintHasRoleSequence)
+		/// Validate subtype subset constraint patterns when role sequences are reordered.
+		/// </summary>
+		private static void LimitSubtypeSetComparisonConstraintSequenceReorderRule(RolePlayerOrderChangedEventArgs e)
+		{
+			SubsetConstraint constraint;
+			if (e.SourceDomainRole.Id == SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId &&
+				null != (constraint = e.SourceElement as SubsetConstraint))
+			{
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateSupertypeSubsetPattern);
 			}
 		}
 		/// <summary>

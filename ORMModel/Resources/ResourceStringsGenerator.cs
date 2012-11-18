@@ -2506,28 +2506,20 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SubtypeMetaRole.OnlyAllowsImplicitConstraints");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same DisjunctiveMandatory constraint.</summary>
-		public static string ModelExceptionSupertypeMetaRoleDisjunctiveMandatoryMustContainOnlySupertypeMetaRoles
+		/// <summary>Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same multi-column Exclusion constraint.</summary>
+		public static string ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumn
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SupertypeMetaRole.DisjunctiveMandatoryMustContainOnlySupertypeMetaRoles");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumn");
 			}
 		}
-		/// <summary>Exception message when an attempt is made to mix Roles and SupertypeMetaRoles in the same Exclusion constraint or to constraint SubtypeFacts with a multi-column Exclusion constraint.</summary>
-		public static string ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles
+		/// <summary>Exception message when an attempt is made to constraint a SupertypeMetaRole with a constraint other than the implicit uniqueness constraint, disjunctive mandatory, single-column exclusion, or (subset role of) single-column subset constraints.</summary>
+		public static string ModelExceptionSupertypeMetaRoleUnsupportedConstraintType
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumnAndContainOnlySupertypeMetaRoles");
-			}
-		}
-		/// <summary>Exception message when an attempt is made to constraint a SupertypeMetaRole with a constraint other than the implicit uniqueness constraint, or disjunctive mandatory or exclusion constraints.</summary>
-		public static string ModelExceptionSupertypeMetaRoleOnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints
-		{
-			get
-			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SupertypeMetaRole.OnlyAllowsImplicitDisjunctiveMandatoryAndExclusionConstraints");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.SupertypeMetaRole.UnsupportedConstraintType");
 			}
 		}
 		/// <summary>The format string for the reference mode display text in the reference mode picker</summary>
@@ -2937,6 +2929,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text");
+			}
+		}
+		/// <summary>When a subset constraint goes from a subtype relationship to an normal role, the role player must not be a subtype of the role player for that role. This would indicates that the supertype must be a subset of one of its subtypes. Replacement field {0} is the constraint name, {1} is the model name.</summary>
+		public static string ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Text");
 			}
 		}
 		/// <summary>Model validation error text displayed when a role does not have a specified role player. {0}=error display context for role.</summary>
