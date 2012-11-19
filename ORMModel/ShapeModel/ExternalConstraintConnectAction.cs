@@ -756,6 +756,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			myPendingOnClickedAction = OnClickedAction.Normal;
 			mySubtypeConnection = false;
 			myAllowSubtypeConnection = false;
+			myOriginalAllowSubtypeConnection = false;
+			mySubtypeAnchoredSubset = false;
+			myOriginalSubtypeAnchoredSubset = false;
+			mySelectedSupertypeRoleCount = 0;
 			FactTypeShape.ActiveExternalConstraintConnectAction = null;
 		}
 		/// <summary>
