@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA November 2012 CTP Readme</title>
+<title>NORMA December 2012 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA November 2012 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA December 2012 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The November 2012 release adds Visual Studio 2012 support, new constraint connections between a subtyping relationship and normal roles, some enhancements to disjunctive mandatory and external uniqueness verbalization patterns, native SQL Server data type handling, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
+The December 2012 release adds Visual Studio 2012 support, new constraint connections between a subtyping relationship and normal roles, some enhancements to disjunctive mandatory and external uniqueness verbalization patterns, native SQL Server data type handling, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2>Contents</h2>
 <ul>
@@ -43,12 +43,12 @@ The November 2012 release adds Visual Studio 2012 support, new constraint connec
 </ul>-->
 
 <hr/>
-<h2>November 2012 CTP Changes</h2>
-<div>The November 2012 CTP release includes all modifications through changeset 1504.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<h2>December 2012 CTP Changes</h2>
+<div>The December 2012 CTP release includes all modifications through changeset 1505.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
-<li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-11">Verbalized object type name separator character removal options</a></li>
-<li><a href="#SQLServerNativeDataTypes 2012-11">SQL Server Native Data Types</a></li>
-<li><a href="#ExtendedSubtypeConstraintCombinations 2012-11">Extended Subtyping Constraint Combinations</a></li>
+<li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-12">Verbalized object type name separator character removal options</a></li>
+<li><a href="#SQLServerNativeDataTypes 2012-12">SQL Server Native Data Types</a></li>
+<li><a href="#ExtendedSubtypeConstraintCombinations 2012-12">Extended Subtyping Constraint Combinations</a></li>
 
 <li>Other Features:
 <ol>
@@ -73,6 +73,8 @@ The November 2012 release adds Visual Studio 2012 support, new constraint connec
 <li>Changing the reference mode kind of a custom reference mode (in the <em>ORM Reference Mode Editor</em> tool window) would not automatically create or remove the needed value types. For example, a <em>General</em> reference mode kind uses one value type for all identified entity types, while a <em>Popular</em> kind uses one value type per entity type. Switch from general to popular will now create new value types (instead of just renaming one), and switching from popular to general may delete value types.</li>
 <li>The <em>ExpandRefMode</em> property on object type shapes was automatically set to <em>False</em> when a reference mode was deleted then re-added. This propery may change to <em>True</em> in this case if the reference mode fact type is displayed on the diagram, but will no longer clear automatically.</li>
 <li>An outdated validation error indicating a poor modeling choice with overlapping subset and mandatory constraints could get stuck in the model file, preventing future load. These files will now load with the shift key down (skipping schema validation), and the problem should no longer occur. Note that the orm:ModelErrors section can always be hand-deleted from the .ORM file because it regenerates on load.</li>
+<li>Selecting two or more exclusion or mandatory constraints and opening a context menu failed determine the available of the exclusive-or coupling command.</li>
+<li>Some set comparison overlap validation was dependent on the order the constraints were added to the model and failed to display an overlap implication errors.</li>
 </ol>
 </li>
 </ul>
@@ -591,7 +593,7 @@ The <strong>Object Type Name Display</strong> option in the <em>Verbalization</e
 The <strong>Possible Populations</strong> option has replaced the <strong>Verbalization Default Constraint</strong> option in the <em>Verbalization</em> section of the <em>ORM Designer</em> tab on the <em>Options</em> page (available on the <em>Tools</em> menu). This option now applies to the possible populations of spanning internal uniqueness constraints in addition to many-to-one binary fact types.
 </li>
 <li>
-<a id="VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-11" class="new" title="October 2012 CTP: Verbalized object type name separator character removal options">2012-11</a>&nbsp;
+<a id="VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-12" class="new" title="October 2012 CTP: Verbalized object type name separator character removal options">2012-12</a>&nbsp;
 As an enhancement to automatic name separation and casing of object type names (see <a href="#VerbalizedObjectTypeNameDisplay 2012-01">Verbalized object type name options</a>), punctuation and symbol characters are recognized in addition to upper cases and numeric characters.
 <ul>
 <li>All symbol and punctuation characters form word boundaries.</li>
@@ -697,7 +699,7 @@ The addition of these three ring types greatly increases the total number of sim
 </ul>
 Designing consistent glyphs for the new combinations required some minor display modifications to published ring display: the tick mark for <em>irreflexive</em> has been moved from the bottom of the shape to directly opposite the dot, the interior circle for <em>symmetric+irreflexive</em> has been moved to the left edge of the symmetric oval and shares the left dot, and an interior tick mark has been added to <em>purely reflexive</em> to distinguish it from <em>reflexive</em> and visually indicate the <em>and no other</em> part of this ring type.
 </li>
-<li><a id="ExtendedSubtypeConstraintCombinations 2012-11" class="new" title="November 2012 CTP: Extended Subtyping Constraint Combinations">2012-11</a>&nbsp;
+<li><a id="ExtendedSubtypeConstraintCombinations 2012-12" class="new" title="December 2012 CTP: Extended Subtyping Constraint Combinations">2012-12</a>&nbsp;
 Selected external constraints can now be connected simultaneously to a subtyping relationship and a normal role. The following constraint combinations are supported:
 <ul>
 <li>External mandatory constraints (both inclusive and exclusive).</li>
@@ -764,7 +766,7 @@ Prior to this release, regenerating the relational schema (a frequent occurrence
 </ul>
 <br />Opening and saving files with the relational extensions enabled will automatically update to use the new column orders. Generated DDL will also be updated when the file is saved.
 </li>
-<li><a id="SQLServerNativeDataTypes 2012-11" class="new" title="November 2012 CTP: SQL Server Native Data Types">2012-11</a>&nbsp;
+<li><a id="SQLServerNativeDataTypes 2012-12" class="new" title="December 2012 CTP: SQL Server Native Data Types">2012-12</a>&nbsp;
 Prior to this release, the DDL generated for SQL Server used ANSI standard data type names, but these are not supported by default in SQL Server 2012. The default has now been changed to use native SQL Server data type names. The generator that produces ANSI data types is still included. To use the ANSI types, expand the SQL_SQLServer node in the <em>ORM Generator Settings</em> dialog and choose <em>DDIL to SQL Server (ANSI Types)</em> instead of the default <em>DDIL to SQL Server</em>.
 <br />You will need to open and save a model file to see the new data types, or right-click the .ORM file in the Solution Explorer and choose the 'Run Custom Tool' menu item.
 </li>

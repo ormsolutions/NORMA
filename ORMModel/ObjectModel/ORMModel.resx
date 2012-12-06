@@ -316,9 +316,13 @@
 		<value>Frequency constraint '{0}' in model '{1}' is violated by a Uniqueness constraint on the same roles.</value>
 		<comment>Model validation error text used when a frequency constraint is places on the same roles as a uniqueness constraint. {0}=constraint name {1}=model name</comment>
 	</data>
-	<data name="ModelError.Constraint.ImplicationError.Text" xml:space="preserve">
+	<data name="ModelError.Constraint.ImplicationError.ImpliedBySubsetText" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' is implied by at least one constraint of the same type attached to a subset of the same roles.</value>
-		<comment>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</comment>
+		<comment>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a subset of the constraint roles.</comment>
+	</data>
+	<data name="ModelError.Constraint.ImplicationError.ImpliedBySupersetText" xml:space="preserve">
+		<value>Constraint '{0}' in model '{1}' is implied by at least one constraint of the same type attached to a superset of the same roles.</value>
+		<comment>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a superset of the constraint roles.</comment>
 	</data>
 	<data name="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text" xml:space="preserve">
 		<value>Subset constraint '{0}' and mandatory constraint '{1}' in model '{2}' are not well-modeled. Suggested ways to fix: (1) Delete the mandatory constraint. (2) Add another mandatory constraint on the superset role. (3) Delete the subset constraint.</value>

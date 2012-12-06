@@ -1495,7 +1495,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 						}
 					}
-					Guid domainRoleErrorId = validationInfo.DomainRoleToError.Value;
+					Guid? domainRoleInfo = validationInfo.DomainRoleToError;
+					Guid domainRoleErrorId = domainRoleInfo.HasValue ? domainRoleInfo.Value : validationInfo.IntersectingDomainRoleToError.Value;
 					Store store = Store;
 					ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(this, domainRoleErrorId);
 					if (hasError)
@@ -3656,13 +3657,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 
 				//Get these GUIDs from data
-				DomainRoleInfo towardsErrorRoleInfo = null;
 				ModelError error = null;
 				Guid? domainRoleErrorId = validationInfo.DomainRoleToError;
 				if (domainRoleErrorId.HasValue)
 				{
-					towardsErrorRoleInfo = store.DomainDataDirectory.GetDomainRole(domainRoleErrorId.Value);
-					error = (ModelError)towardsErrorRoleInfo.GetLinkedElement((ModelElement)currentConstraint);
+					error = (ModelError)store.DomainDataDirectory.GetDomainRole(domainRoleErrorId.Value).GetLinkedElement((ModelElement)currentConstraint);
 				}
 
 				//This variable is used in the code for each validation pattern; but it will be reset
@@ -4271,13 +4270,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Validates the SetComparisonConstraint Subset Pattern
 		/// </summary>
-		/// <param name="setComparsionConstraint">The constraint that might be a subset of another constraint, which
+		/// <param name="setComparisonConstraint">The constraint that might be a subset of another constraint, which
 		/// would result in an error</param>
 		/// <param name="notifyAdded"></param>
 		/// <param name="validationInfo">Validation information of the current constraint</param>
 		/// <param name="constraintSequences">Sequences linked to the constraint</param>
 		private static void ValidateSetComparisonConstraintSubsetPattern(
-			SetComparisonConstraint setComparsionConstraint,
+			SetComparisonConstraint setComparisonConstraint,
 			INotifyElementAdded notifyAdded,
 			IntersectingConstraintValidation validationInfo,
 			LinkedElementCollection<SetComparisonConstraintRoleSequence> constraintSequences)
@@ -4289,7 +4288,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 
 			#region Validation Code
-			ConstraintModality currentModality = setComparsionConstraint.Modality;
+			ConstraintModality currentModality = setComparisonConstraint.Modality;
 			List<IConstraint> constraintsToCheck = null;
 			for (int iConstraintSequence = 0; iConstraintSequence < constraintSequenceCount; ++iConstraintSequence)
 			{
@@ -4305,7 +4304,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						ConstraintRoleSequence eligibleSequence = eligibleSequences[k];
 						IConstraint intersectingConstraint = eligibleSequence.Constraint;
-						if (intersectingConstraint != setComparsionConstraint &&
+						if (intersectingConstraint != setComparisonConstraint &&
 							validationInfo.TestModality(currentModality, intersectingConstraint.Modality) &&
 							(validationInfo.ConstraintTypesInPotentialConflict as IList<ConstraintType>).Contains(intersectingConstraint.ConstraintType))
 						{
@@ -4395,10 +4394,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			#region Handling the error
 			int constraintsInErrorCount = (constraintsInError == null) ? 0 : constraintsInError.Count;
-			Guid domainRoleErrorId = validationInfo.DomainRoleToError.Value;
-			Store store = setComparsionConstraint.Store;
-			DomainRoleInfo constraintRoleInfo = store.DomainDataDirectory.FindDomainRole(domainRoleErrorId);
-			DomainRoleInfo errorRoleInfo = constraintRoleInfo.OppositeDomainRole;
+			Guid? nullableDomainRoleInfo = validationInfo.DomainRoleToError;
+			bool errorOnIntersectingConstraint;
+			if (errorOnIntersectingConstraint = !nullableDomainRoleInfo.HasValue)
+			{
+				nullableDomainRoleInfo = validationInfo.IntersectingDomainRoleToError;
+			}
+			Guid domainRoleErrorId = nullableDomainRoleInfo.Value;
+			Store store = setComparisonConstraint.Store;
+			DomainRoleInfo errorRoleInfo = store.DomainDataDirectory.GetDomainRole(domainRoleErrorId).OppositeDomainRole.OppositeDomainRole;
 
 			Multiplicity errorToItsConstraintsMultiplicity = errorRoleInfo.Multiplicity;
 			DomainClassInfo errorType = errorRoleInfo.RolePlayer;
@@ -4406,10 +4410,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (errorToItsConstraintsMultiplicity == Multiplicity.OneMany ||
 				errorToItsConstraintsMultiplicity == Multiplicity.ZeroMany)
 			{
+				// UNDONE: This does not handle the IntersectingDomainRoleToError. This construct isn't used in
+				// pattern data that triggers this case, but may be in the future.
+
 				//If the multiplicity is one-to-many ot zero-to-many: all constraintsInError found need to be attached
 				//to the error
 
-				ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(setComparsionConstraint, domainRoleErrorId);
+				ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(setComparisonConstraint, domainRoleErrorId);
 				if (constraintsInErrorCount != 0)
 				{
 					//For this pattern: there can be an error only if there are more than one sequences on
@@ -4418,7 +4425,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						//Updating error object
 						Hashtable constraints = new Hashtable();
-						constraints.Add(setComparsionConstraint, domainRoleErrorId);
+						constraints.Add(setComparisonConstraint, domainRoleErrorId);
 
 						foreach (IConstraint c in constraintsInError)
 						{
@@ -4429,7 +4436,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 
 						//Need to attach the error to all: the current constraint and all constraints, which were found to conflict with it
-						HandleError(store, false, ref error, domainRoleErrorId, notifyAdded, setComparsionConstraint);
+						HandleError(store, false, ref error, domainRoleErrorId, notifyAdded, setComparisonConstraint);
 						HandleError(store, true, ref error, domainRoleErrorId, notifyAdded, constraintsInError);
 					}
 				}
@@ -4449,31 +4456,47 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				//If the multiplicity is one-to-one ot zero-to-one: each constraint found to conflict needs to be
 				//attached to the appropriate error
+				bool hasError = false;
 
 				for (int iConstraintInPotentialConflict = 0; iConstraintInPotentialConflict < constraintsToCheckCount; ++iConstraintInPotentialConflict)
 				{
 					IConstraint curConstraint = constraintsToCheck[iConstraintInPotentialConflict];
-					ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement((ModelElement)curConstraint, domainRoleErrorId);
-
-					if (constraintsInError != null && constraintsInError.Contains(curConstraint))
+					if (errorOnIntersectingConstraint)
 					{
-						//For this pattern: there can be an error only if there are more than one sequences on
-						//the constraint 
-						if (constraintSequenceCount > 1)
+						ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement((ModelElement)curConstraint, domainRoleErrorId);
+
+						if (constraintsInError != null && constraintsInError.Contains(curConstraint))
 						{
-							//Attach the error only to the current constraint
-							HandleError(store, true, ref error, domainRoleErrorId, notifyAdded, curConstraint);
+							//For this pattern: there can be an error only if there are more than one sequences on
+							//the constraint 
+							if (constraintSequenceCount > 1)
+							{
+								//Attach the error only to the current constraint
+								HandleError(store, true, ref error, domainRoleErrorId, notifyAdded, curConstraint);
+							}
+						}
+						else if (error != null) //there was an error but not anymore
+						{
+							error.Delete();
 						}
 					}
-					else if (error != null) //there was an error but not anymore
+					else if (constraintSequenceCount > 1 &&
+						constraintsInError != null &&
+						constraintsInError.Contains(curConstraint))
 					{
-						error.Delete();
+						hasError = true;
+						break;
 					}
 				}
-				if (constraintsInErrorCount == 0)
+
+				if (!errorOnIntersectingConstraint)
 				{
-					ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(setComparsionConstraint, domainRoleErrorId);
-					if (error != null)
+					ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(setComparisonConstraint, domainRoleErrorId);
+					if (hasError)
+					{
+						HandleError(store, true, ref error, domainRoleErrorId, notifyAdded, setComparisonConstraint);
+					}
+					else if (error != null)
 					{
 						error.Delete();
 					}
@@ -9631,11 +9654,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			string errorName;
+			bool impliedBySuperset = false;
 			//Do not know whether the underlying constraint is Set or SetComparison
 			//The error has property for each
 			if (this.SetComparisonConstraint != null)
 			{
 				errorName = SetComparisonConstraint.Name;
+				impliedBySuperset = true;
 				Debug.Assert(SetConstraint == null);
 			}
 			else
@@ -9643,7 +9668,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				errorName = SetConstraint.Name;
 			}
 
-			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintImplication, errorName, Model.Name);
+			ErrorText = String.Format(CultureInfo.InvariantCulture, impliedBySuperset ? ResourceStrings.ModelErrorConstraintImplicationBySuperset : ResourceStrings.ModelErrorConstraintImplicationBySubset, errorName, Model.Name);
 		}
 		/// <summary>
 		/// Regenerate error text when the constraint name or model name changes
@@ -10125,8 +10150,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
-					SetConstraintHasImplicationError.SetConstraintDomainRoleId,
 					null,
+					SetConstraintHasImplicationError.SetConstraintDomainRoleId,
 					ConstraintType.InternalUniqueness,
 					ConstraintType.ExternalUniqueness),
 		};
@@ -10345,6 +10370,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static readonly IntersectingConstraintValidation[] myIntersectingValidationInfo = new IntersectingConstraintValidation[]
 			{
 				//Implication
+				// UNDONE: There are two types of 'subset' than can occur with an exclusion constraint. The
+				// first is where an exclusion constraint where the implied constraint has a subset of equivalent
+				// arguments to another constraint. In this case, the constraint with more rows implies the smaller.
+				// The second case occurs when the argument length is shorter in one case than the other. For an
+				// equality constraint, the pair (or longer) arguments implies the shorter arguments. However, for an
+				// exclusion constraint, the implication is reversed. By trying to cover both of these cases in the
+				// same pattern we're running into trouble.
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetComparisonConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
@@ -10452,8 +10484,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetConstraintSubset,
 					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
-					SetConstraintHasImplicationError.SetConstraintDomainRoleId,
 					null,
+					SetConstraintHasImplicationError.SetConstraintDomainRoleId,
 					ConstraintType.SimpleMandatory,
 					ConstraintType.DisjunctiveMandatory),
 				

@@ -1012,12 +1012,20 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text");
 			}
 		}
-		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles.</summary>
-		public static string ModelErrorConstraintImplication
+		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a subset of the constraint roles.</summary>
+		public static string ModelErrorConstraintImplicationBySubset
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.ImpliedBySubsetText");
+			}
+		}
+		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a superset of the constraint roles.</summary>
+		public static string ModelErrorConstraintImplicationBySuperset
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.ImpliedBySupersetText");
 			}
 		}
 		/// <summary>Model validation error text when a single-column equality constraint is put on a set of mandatory roles.</summary>

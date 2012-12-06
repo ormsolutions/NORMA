@@ -1171,6 +1171,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									break;
 								}
+								bool ambiguous = false;
 								switch (testConstraint.ConstraintType)
 								{
 									case ConstraintType.DisjunctiveMandatory:
@@ -1178,16 +1179,30 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										{
 											mandatory = (MandatoryConstraint)testConstraint;
 										}
+										else
+										{
+											ambiguous = true;
+											mandatory = null;
+										}
 										break;
 									case ConstraintType.Exclusion:
 										if (exclusion == null)
 										{
 											exclusion = (ExclusionConstraint)testConstraint;
 										}
+										else
+										{
+											ambiguous = true;
+											exclusion = null;
+										}
 										break;
 								}
+								if (ambiguous)
+								{
+									break;
+								}
 							}
-							if (null == mandatory && null == exclusion)
+							if (null == mandatory || null == exclusion)
 							{
 								disable = hide = true;
 							}
