@@ -3697,11 +3697,7 @@
 			<plx:passParam>
 				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
 					<plx:passParam>
-						<plx:callInstance name="Name" type="property">
-							<plx:callObject>
-								<xsl:copy-of select="$ObjectTypeExpression"/>
-							</plx:callObject>
-						</plx:callInstance>
+						<xsl:copy-of select="$ObjectTypeExpression"/>
 					</plx:passParam>
 					<plx:passParam>
 						<plx:callInstance name="VerbalizationOptions" type="property">
@@ -3741,11 +3737,7 @@
 			<plx:passParam>
 				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
 					<plx:passParam>
-						<plx:callInstance name="Name" type="property">
-							<plx:callObject>
-								<xsl:copy-of select="$ObjectTypeExpression"/>
-							</plx:callObject>
-						</plx:callInstance>
+						<xsl:copy-of select="$ObjectTypeExpression"/>
 					</plx:passParam>
 					<plx:passParam>
 						<plx:callInstance name="VerbalizationOptions" type="property">
@@ -5590,19 +5582,15 @@
 		<xsl:param name="IteratorVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
 		<xsl:variable name="SnippetTypeVariable" select="concat($VariablePrefix, 'SnippetType', $VariableDecorator)"/>
-		<xsl:variable name="conditionFragment">
-			<xsl:call-template name="ConditionalMatchCondition">
+		<xsl:variable name="snippetConditionsFragment">
+			<xsl:call-template name="ProcessSnippetConditions">
+				<xsl:with-param name="Snippets" select="cvg:Snippet"/>
+				<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
+				<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
+				<xsl:with-param name="SnippetTypeVariable" select="$SnippetTypeVariable"/>
 				<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="condition" select="exsl:node-set($conditionFragment)/child::*"/>
-		<xsl:call-template name="ProcessSnippetConditions">
-			<xsl:with-param name="Snippets" select="cvg:Snippet"/>
-			<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
-			<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
-			<xsl:with-param name="SnippetTypeVariable" select="$SnippetTypeVariable"/>
-			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
-		</xsl:call-template>
 		<xsl:call-template name="ProcessSnippet">
 			<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
 			<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
@@ -5612,6 +5600,7 @@
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
 			<xsl:with-param name="ReplacementContents" select="cvg:SnippetReplacements/child::*"/>
 			<xsl:with-param name="SnippetTypeVariable" select="$SnippetTypeVariable"/>
+			<xsl:with-param name="InjectPreliminaryBodyContents" select="exsl:node-set($snippetConditionsFragment)/child::*"/>
 		</xsl:call-template>
 	</xsl:template>
 
@@ -5949,6 +5938,7 @@
 		<xsl:param name="ReplacementContents" select="child::*"/>
 		<xsl:param name="SnippetTypeVariable" select="''"/>
 		<xsl:param name="ConditionalMatch" select="@conditionalMatch"/>
+		<xsl:param name="InjectPreliminaryBodyContents"/>
 		<xsl:param name="InjectSnippetFormatArgument"/>
 		<xsl:variable name="useVariablePrefixFragment">
 			<xsl:choose>
@@ -5975,6 +5965,9 @@
 			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:branch><plx:condition>]]></xsl:text>
 			<xsl:copy-of select="$condition"/>
 			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:condition>]]></xsl:text>
+		</xsl:if>
+		<xsl:if test="$InjectPreliminaryBodyContents">
+			<xsl:copy-of select="$InjectPreliminaryBodyContents"/>
 		</xsl:if>
 		<xsl:call-template name="ConditionalBlockContext"/>
 		<xsl:if test="$TopLevel">
@@ -6187,11 +6180,7 @@
 			<plx:right>
 				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
 					<plx:passParam>
-						<plx:callInstance name="Name" type="property">
-							<plx:callObject>
-								<plx:callThis name="ValueType" type="property"/>
-							</plx:callObject>
-						</plx:callInstance>
+						<plx:callThis name="ValueType" type="property"/>
 					</plx:passParam>
 					<plx:passParam>
 						<plx:callInstance name="VerbalizationOptions" type="property">
@@ -6278,6 +6267,7 @@
 		<!-- Add some helpers so we can call this from other constructs -->
 		<xsl:param name="NameExpression"/>
 		<xsl:param name="IsObjectType" select="@isObjectType='true'"/>
+		<xsl:variable name="ObjectTypeAccessor" select="string(@objectTypeAccessor)"/>
 		<xsl:variable name="useVariablePrefixFragment">
 			<xsl:choose>
 				<xsl:when test="$VariablePrefix">
@@ -6298,11 +6288,14 @@
 						<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
 							<plx:passParam>
 								<xsl:choose>
+									<xsl:when test="$ObjectTypeAccessor">
+										<plx:callThis name="{$ObjectTypeAccessor}" type="property"/>
+									</xsl:when>
 									<xsl:when test="$NameExpression">
 										<xsl:copy-of select="$NameExpression"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<plx:callThis name="Name" type="property"/>
+										<plx:thisKeyword/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</plx:passParam>
@@ -6390,6 +6383,8 @@
 			<plx:right>
 				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
 					<plx:passParam>
+						<!-- preferredFor is guaranteed to be an entity type, pass the name directly to avoid
+						testing the value type for being a reference mode. -->
 						<plx:callInstance name="Name" type="property">
 							<plx:callObject>
 								<plx:nameRef name="preferredFor"/>
@@ -6450,6 +6445,8 @@
 			<plx:right>
 				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
 					<plx:passParam>
+						<!-- subtype is guaranteed to be an entity type, pass the name directly to avoid
+						testing the value type for being a reference mode. -->
 						<plx:callInstance name="Name" type="property">
 							<plx:callObject>
 								<plx:nameRef name="subtype"/>
@@ -6477,11 +6474,9 @@
 			<plx:right>
 				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
 					<plx:passParam>
-						<plx:callInstance name="Name" type="property">
-							<plx:callObject>
-								<plx:nameRef name="supertype"/>
-							</plx:callObject>
-						</plx:callInstance>
+						<!-- supertype is guaranteed to be an entity type, pass the name directly to avoid
+						testing the value type for being a reference mode. -->
+						<plx:nameRef name="supertype"/>
 					</plx:passParam>
 					<plx:passParam>
 						<plx:callInstance name="VerbalizationOptions" type="property">
@@ -6873,11 +6868,7 @@
 			<plx:right>
 				<plx:callStatic name="NormalizeObjectTypeName" dataTypeName="VerbalizationHelper">
 					<plx:passParam>
-						<plx:callInstance name="Name" type="property">
-							<plx:callObject>
-								<plx:callThis name="ValueType" type="property"/>
-							</plx:callObject>
-						</plx:callInstance>
+						<plx:callThis name="ValueType" type="property"/>
 					</plx:passParam>
 					<plx:passParam>
 						<plx:callInstance name="VerbalizationOptions" type="property">
@@ -8632,6 +8623,20 @@
 									<plx:nameRef name="derivationRule"/>
 								</plx:passParam>
 							</plx:callInstance>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='DerivationRuleIsPartial'">
+					<plx:binaryOperator type="equality">
+						<plx:left>
+							<plx:callInstance name="DerivationCompleteness" type="property">
+								<plx:callObject>
+									<plx:nameRef name="derivationRule"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callStatic dataTypeName="DerivationCompleteness" name="PartiallyDerived" type="field"/>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>

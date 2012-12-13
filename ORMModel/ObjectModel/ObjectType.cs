@@ -4916,30 +4916,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region NearestValueConstraintVerbalizer class
 		private partial class NearestValueConstraintVerbalizer
 		{
-			private ObjectType myParentObject;
+			private ObjectType myParentObjectType;
 			private ValueConstraint myValueConstraint;
-			public void Initialize(ObjectType parentObject, ValueConstraint valueConstraint)
+			public void Initialize(ObjectType parentObjectType, ValueConstraint valueConstraint)
 			{
-				myParentObject = parentObject;
+				myParentObjectType = parentObjectType;
 				myValueConstraint = valueConstraint;
 			}
 			private void DisposeHelper()
 			{
-				myParentObject = null;
+				myParentObjectType = null;
 				myValueConstraint = null;
 			}
-			private string Name
+			private ObjectType ParentObjectType
 			{
 				get
 				{
-					return myParentObject.Name;
+					return myParentObjectType;
 				}
 			}
 			private Guid Id
 			{
 				get
 				{
-					return myParentObject.Id;
+					return myParentObjectType.Id;
 				}
 			}
 			private bool IsText

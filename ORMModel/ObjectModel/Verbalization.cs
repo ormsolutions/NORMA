@@ -2640,59 +2640,244 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // VerbalizeElement methods
 		#region NormalizeObjectTypeName method
 		/// <summary>
-		/// Get an object type name based on the current user settings
+		/// A regex pattern to match both replacement fields and preceding text text with replacement fields.
 		/// </summary>
-		/// <param name="originalName">The namd as entered in the model.</param>
+		private static Regex myFormatStringSeparator;
+		private static Regex FormatStringSeparator
+		{
+			get
+			{
+				Regex retVal = myFormatStringSeparator;
+				if (retVal == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myFormatStringSeparator,
+						new Regex(
+							@"(?n)\G(?<Before>.*?)((?<!\{)\{)(?<ReplaceIndex>\d+)(\}(?!\}))",
+							RegexOptions.Compiled),
+						null);
+					retVal = myFormatStringSeparator;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// A regex pattern to determine if a character is symbol or punctuation
+		/// </summary>
+		private static Regex myIsPunctuationOrSymbol;
+		private static Regex IsPunctuationOrSymbol
+		{
+			get
+			{
+				Regex retVal = myIsPunctuationOrSymbol;
+				if (retVal == null)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(
+						ref myIsPunctuationOrSymbol,
+						new Regex(
+							@"\p{P}|\p{S}",
+							RegexOptions.Compiled),
+						null);
+					retVal = myIsPunctuationOrSymbol;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Get an object type name based on the current user settings.
+		/// </summary>
+		/// <param name="originalName">The name as entered in the model.</param>
 		/// <param name="verbalizationOptions">The context verbalization options</param>
 		/// <returns>The name adjusted according to the current user settings.</returns>
 		public static string NormalizeObjectTypeName(string originalName, IDictionary<string, object> verbalizationOptions)
 		{
+			return NormalizeObjectTypeName(null, originalName, verbalizationOptions);
+		}
+		/// <summary>
+		/// Get an object type name based on the current user settings. If the object type
+		/// is a reference mode value type, then it will be broken into its constituent parts,
+		/// which will then be treated as separate words.
+		/// </summary>
+		/// <param name="objectType">The object type to name.</param>
+		/// <param name="verbalizationOptions">The context verbalization options</param>
+		/// <returns>The name adjusted according to the current user settings.</returns>
+		public static string NormalizeObjectTypeName(ObjectType objectType, IDictionary<string, object> verbalizationOptions)
+		{
+			return NormalizeObjectTypeName(objectType, null, verbalizationOptions);
+		}
+		/// <summary>
+		/// Get an object type name based on the current user settings
+		/// </summary>
+		/// <param name="objectType">The object type to get the name from. If the object type is a
+		/// reference mode value type, then it is treated as multiple names.</param>
+		/// <param name="originalName">The name as entered in the model.</param>
+		/// <param name="verbalizationOptions">The context verbalization options</param>
+		/// <returns>The name adjusted according to the current user settings.</returns>
+		private static string NormalizeObjectTypeName(ObjectType objectType, string originalName, IDictionary<string, object> verbalizationOptions)
+		{
 			ObjectTypeNameVerbalizationStyle style = (ObjectTypeNameVerbalizationStyle)verbalizationOptions[CoreVerbalizationOption.ObjectTypeNameDisplay];
+			string removeSeparatedCharacters = style != ObjectTypeNameVerbalizationStyle.AsIs ? (string)verbalizationOptions[CoreVerbalizationOption.RemoveObjectTypeNameCharactersOnSeparate] : null;
+			bool spacePending = false;
+			bool makeLower = style == ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithLower;
+			return NormalizeObjectTypeName(
+				objectType,
+				originalName,
+				style,
+				(removeSeparatedCharacters != null && removeSeparatedCharacters.Length == 0) ? null : removeSeparatedCharacters,
+				null,
+				ref spacePending,
+				ref makeLower);
+		}
+		/// <summary>
+		/// Get an object type name based on the current user settings
+		/// </summary>
+		/// <param name="objectType">The object type to get the name from. If the object type is a
+		/// reference mode value type, then it is treated as multiple names.</param>
+		/// <param name="originalName">The name as entered in the model.</param>
+		/// <param name="style">The verbalization style for this name. Pre-extracted from the <paramref name="verbalizationOptions"/>, or
+		/// set explicitly when processing different parts of composite generated object type names.</param>
+		/// <param name="removeSeparatedCharacters">A list of characters to remove from the generated name and treat as spaces. Used when separating combined names.</param>
+		/// <param name="builder">A string builder to append new names to. Can be null on first call, in which case a string is returned.</param>
+		/// <param name="spacePending">A space should be added before the next text part. Used with recursive calls when the style has spaces between the names. Initially false.</param>
+		/// <param name="makeLower">The initial text should be lower cased. Used with combined names with a lead lower case letter. Initially false.</param>
+		/// <returns>The name adjusted according to the current user settings, or null if a StringBuilder was specified.</returns>
+		private static string NormalizeObjectTypeName(ObjectType objectType, string originalName, ObjectTypeNameVerbalizationStyle style, string removeSeparatedCharacters, StringBuilder builder, ref bool spacePending, ref bool makeLower)
+		{
+			if (originalName == null)
+			{
+				originalName = objectType.Name;
+				if (style != ObjectTypeNameVerbalizationStyle.AsIs &&
+					objectType.IsValueType)
+				{
+					// See if this is part of a reference mode pattern
+					ORMModel model = null;
+					foreach (Role role in objectType.PlayedRoleCollection)
+					{
+						foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
+						{
+							UniquenessConstraint pid;
+							ObjectType preferredFor;
+							ReferenceMode mode;
+							if (null != (pid = sequence as UniquenessConstraint) &&
+								pid.IsInternal &&
+								pid.Modality == ConstraintModality.Alethic &&
+								null != (preferredFor = pid.PreferredIdentifierFor) &&
+								pid.RoleCollection.Count == 1 &&
+								null != (mode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(originalName, preferredFor.Name, model ?? (model = objectType.Model))))
+							{
+								ReferenceModeType modeType = mode.Kind.ReferenceModeType;
+								if (modeType == ReferenceModeType.General)
+								{
+									return NormalizeObjectTypeName(null, originalName, style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+								}
+								else
+								{
+									string modeFormatString = mode.FormatString;
+									Match match = FormatStringSeparator.Match(modeFormatString);
+									if (match.Success) // Sanity check, should always be true, don't bother about breaking loop if not
+									{
+										int trailingTextIndex = 0;
+										bool returnText;
+										if (returnText = (builder == null))
+										{
+											builder = new StringBuilder();
+										}
+										while (match.Success)
+										{
+											GroupCollection groups = match.Groups;
+											string before = groups["Before"].Value;
+											if (before.Length != 0)
+											{
+												NormalizeObjectTypeName(null, before, style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+											}
+											switch (int.Parse(groups["ReplaceIndex"].Value))
+											{
+												case 0:
+													NormalizeObjectTypeName(null, preferredFor.Name, style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+													break;
+												case 1:
+													string modeName = mode.Name;
+													if (modeType == ReferenceModeType.UnitBased)
+													{
+														if (style == ObjectTypeNameVerbalizationStyle.SeparateCombinedNames &&
+															spacePending)
+														{
+															builder.Append(" ");
+														}
+														builder.Append(modeName);
+														makeLower = false;
+														spacePending = true;
+													}
+													else
+													{
+														NormalizeObjectTypeName(null, modeName, style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+													}
+													break;
+											}
+											trailingTextIndex += match.Length;
+											match = match.NextMatch();
+										}
+										if (trailingTextIndex < modeFormatString.Length)
+										{
+											NormalizeObjectTypeName(null, modeFormatString.Substring(trailingTextIndex), style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+										}
+										return returnText ? builder.ToString() : null;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 			switch (style)
 			{
 				case ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithLower:
 				case ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithUpper:
 					{
-						bool makeLower = style == ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithLower;
 						Match match = Utility.MatchNameParts(originalName);
-						StringBuilder sb = new StringBuilder();
+						bool returnText;
+						if (returnText = (builder == null))
+						{
+							builder = new StringBuilder();
+						}
 						while (match.Success)
 						{
 							string matchText = match.Value;
 							GroupCollection groups = match.Groups;
 							if (groups["TrailingUpper"].Success)
 							{
-								sb.Append(matchText);
+								builder.Append(matchText);
 								makeLower = false;
 							}
 							else if (groups["PunctuationOrSymbol"].Success)
 							{
-								sb.Append(matchText);
-								// Leave the upper/lower state alone until we see something other than a symbol
+								if (removeSeparatedCharacters == null || !removeSeparatedCharacters.Contains(matchText))
+								{
+									builder.Append(matchText);
+									// Leave the upper/lower state alone until we see something other than a symbol
+								}
 							}
 							else if (makeLower)
 							{
 								makeLower = false;
-								sb.Append(Utility.LowerCaseFirstLetter(matchText));
+								builder.Append(Utility.LowerCaseFirstLetter(matchText));
 							}
 							else
 							{
-								sb.Append(Utility.UpperCaseFirstLetter(matchText));
+								builder.Append(Utility.UpperCaseFirstLetter(matchText));
 							}
 							match = match.NextMatch();
 						}
-						return sb.ToString();
+						return returnText ? builder.ToString() : null;
 					}
 				case ObjectTypeNameVerbalizationStyle.SeparateCombinedNames:
 					if (Utility.IsMultiPartName(originalName))
 					{
-						string removeSeparatedCharacters = (string)verbalizationOptions[CoreVerbalizationOption.RemoveObjectTypeNameCharactersOnSeparate];
-						if (removeSeparatedCharacters != null && removeSeparatedCharacters.Length == 0)
+						bool returnText;
+						if (returnText = (builder == null))
 						{
-							removeSeparatedCharacters = null;
+							builder = new StringBuilder();
 						}
-						bool spacePending = false;
-						StringBuilder sb = new StringBuilder();
 						Match match = Utility.MatchNameParts(originalName);
 						while (match.Success)
 						{
@@ -2703,43 +2888,86 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								// Multiple caps, leave as is
 								if (spacePending)
 								{
-									sb.Append(" ");
+									builder.Append(" ");
 								}
-								sb.Append(matchText);
+								builder.Append(matchText);
 								spacePending = true;
 							}
 							else if (groups["PunctuationOrSymbol"].Success)
 							{
 								// This returns a single symbol. Either append it or do nothing
-								// and leav the space pending setting untouched.
+								// and leave the space pending setting untouched.
 								if (removeSeparatedCharacters == null || !removeSeparatedCharacters.Contains(matchText))
 								{
-									sb.Append(matchText);
+									builder.Append(matchText);
 									spacePending = false;
 								}
 							}
 							else if (groups["Numeric"].Success)
 							{
 								// No space added, no casing
-								sb.Append(matchText);
+								builder.Append(matchText);
 								spacePending = true;
 							}
 							else
 							{
 								if (spacePending)
 								{
-									sb.Append(" ");
+									builder.Append(" ");
 								}
-								sb.Append(Utility.LowerCaseFirstLetter(matchText));
+								builder.Append(Utility.LowerCaseFirstLetter(matchText));
 								spacePending = true;
 							}
 							match = match.NextMatch();
 						}
-						return sb.ToString();
+						return returnText ? builder.ToString() : null;
 					}
+					else if (originalName.Length == 1 &&
+						IsPunctuationOrSymbol.Match(originalName).Success)
+					{
+						// Case is not caught by 'IsMultiPartName', but spacing is different than
+						// the non-symbol case.
+						if (removeSeparatedCharacters == null || !removeSeparatedCharacters.Contains(originalName))
+						{
+							spacePending = false; // Don't space around symbols, ignore current spacePending value
+							if (builder != null)
+							{
+								builder.Append(originalName);
+								return null;
+							}
+							return originalName;
+						}
+						if (spacePending)
+						{
+							spacePending = false;
+							if (builder != null)
+							{
+								builder.Append(" ");
+								return null;
+							}
+							return " ";
+						}
+						return builder != null ? null : "";
+					}
+					else if (builder != null)
+					{
+						if (spacePending)
+						{
+							builder.Append(" ");
+						}
+						builder.Append(Utility.LowerCaseFirstLetter(originalName));
+						spacePending = true;
+						return null;
+					}
+					spacePending = true;
 					return Utility.LowerCaseFirstLetter(originalName);
 				//case ObjectTypeNameVerbalizationStyle.AsIs:
 				default:
+					if (builder != null)
+					{
+						builder.Append(originalName);
+						return null;
+					}
 					return originalName;
 			}
 		}

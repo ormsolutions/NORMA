@@ -93,6 +93,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="FullFactTypeDerivation"><![CDATA[<span class="quantifier">*</span>{0} <span class="quantifier">if and only if</span><br/>{1}<br/>]]></Snippet>
 			<Snippet type="PartialFactTypeDerivation"><![CDATA[<span class="quantifier">+</span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
 			<Snippet type="FullSubtypeDerivation"><![CDATA[<span class="quantifier">*Each</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
+			<Snippet type="PartialSubtypeDerivation"><![CDATA[<span class="quantifier">+Each derived</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
 			<Snippet type="QueryParameterContainer"><![CDATA[<span class="quantifier">given</span> {0} ]]></Snippet>
 			<Snippet type="QueryNamedParameter"><![CDATA[{1}<span class="logicalOperator">=</span>{0}]]></Snippet>
 			<Snippet type="QueryUnnamedParameter"><![CDATA[{0}]]></Snippet>

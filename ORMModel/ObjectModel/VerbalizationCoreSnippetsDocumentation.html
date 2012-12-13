@@ -925,6 +925,9 @@
                 <a href="#PartialFactTypeDerivation">PartialFactTypeDerivation</a>
               </li>
               <li>
+                <a href="#PartialSubtypeDerivation">PartialSubtypeDerivation</a>
+              </li>
+              <li>
                 <a href="#PeriodSeparator">PeriodSeparator</a>
               </li>
               <li>
@@ -3940,7 +3943,7 @@ Replacement: {0}=error text,{1}=error id
           <div class="snippetStatement">
             <strong>Description: </strong> Used to specify a fully derived subtype derivation rule.
 <br />
-            <strong>Format: </strong> each {0} is {1}</div>
+            <strong>Format: </strong> *each {0} is {1}</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
@@ -6647,6 +6650,23 @@ Note that VariableExistence can be used with a negated quantifier if the negated
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">+{0} if{1}</pre>
+            </div>
+          </div>
+        </div>
+        <div id="PartialSubtypeDerivation" class="snippet">
+          <span class="snippetHeader">
+            <a name="PartialSubtypeDerivation" id="PartialSubtypeDerivation">PartialSubtypeDerivation</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify a partially derived subtype derivation rule.
+<br />
+            <strong>Format: </strong> +each derived {0} is {1}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">+Each derived {0} is {1}</pre>
             </div>
           </div>
         </div>

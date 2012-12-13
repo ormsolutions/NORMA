@@ -79,10 +79,14 @@
 					</Snippet>
 				</SnippetReplacements>
 			</ConditionalSnippet>
-			<Snippet ref="FullSubtypeDerivation" conditionalMatch="HasVerbalizableSubtypeDerivationPath">
-				<ProvidedRolePlayer rolePlayerKey="DerivationRule"/>
-				<DerivationPath/>
-			</Snippet>
+			<ConditionalSnippet conditionalMatch="HasVerbalizableSubtypeDerivationPath">
+				<Snippet conditionalMatch="DerivationRuleIsPartial" ref="PartialSubtypeDerivation"/>
+				<Snippet ref="FullSubtypeDerivation"/>
+				<SnippetReplacements>
+					<ProvidedRolePlayer rolePlayerKey="DerivationRule"/>
+					<DerivationPath/>
+				</SnippetReplacements>
+			</ConditionalSnippet>
 			<ErrorReportHere/>
 			<Snippet ref="ObjectifiesFactTypeVerbalization" conditionalMatch="IsObjectifiedFactType" conditionalBlockContext="ObjectifiedFactType">
 				<Snippet ref="ObjectType">
@@ -1343,7 +1347,7 @@
 					<Snippet ref="MultiValueValueConstraint"/>
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
-							<ContextName isObjectType="true"/>
+							<ContextName isObjectType="true" objectTypeAccessor="ParentObjectType"/>
 							<ContextId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">

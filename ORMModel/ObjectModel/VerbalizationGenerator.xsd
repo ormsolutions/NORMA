@@ -617,6 +617,11 @@
 							<xs:documentation>True if there is a path-based subtype verbalization available for an object type.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
+					<xs:enumeration value="DerivationRuleIsPartial">
+						<xs:annotation>
+							<xs:documentation>True if a path-based derivation rule has partial derivation completeness. Assumes that a derivation rule is already defined and in context.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 					<xs:enumeration value="HasPortableDataType">
 						<xs:annotation>
 							<xs:documentation>True if the current object type has portable data type.</xs:documentation>
@@ -1165,6 +1170,11 @@
 				<xs:documentation>Specify if object type name normalization should be applied.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="objectTypeAccessor" use="optional" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The name of a property (from the 'this' context) that can be used to retrieve the object type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="ObjectifyingInstanceIdentifierNameType">
 		<xs:annotation>
@@ -1464,7 +1474,7 @@
 		</xs:annotation>
 		<xs:choice maxOccurs="unbounded">
 			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
-			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetTypeWithConditionalMatch" />
 			<xs:element name="ErrorReportHere" type="ErrorReportHereType"/>
 		</xs:choice>
 	</xs:complexType>

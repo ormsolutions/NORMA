@@ -2002,7 +2002,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", string.Empty)))
 				{
 					FinalShapeDeleteBehavior finalDeleteBehavior = OptionsPage.CurrentFinalShapeDeleteBehavior;
-					bool testMelDeletion = finalDeleteBehavior != FinalShapeDeleteBehavior.DeleteShapeOnly;
+					bool testMelDeletion = finalDeleteBehavior != FinalShapeDeleteBehavior.DeleteShapeOnly &&
+						ORMDesignerCommands.None != (myEnabledCommands & (ORMDesignerCommands.Delete | ORMDesignerCommands.DeleteAny));
 					IList selectedElements = view.SelectedElements;
 					for (int i = selectedElements.Count - 1; i >= 0; i--)
 					{

@@ -818,7 +818,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							continue;
 						}
 					}
-					bool canShareValueType = customReferenceMode.Kind.ReferenceModeType != ReferenceModeType.Popular;
+					bool canShareValueType = mode.Kind.ReferenceModeType != ReferenceModeType.Popular;
 					foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(oldFormatString, null))
 					{
 						string newName = mode.GenerateValueTypeName(entity.Name);

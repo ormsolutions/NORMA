@@ -1155,7 +1155,7 @@ Format: *{0} if and only if {1}</statement>
   </snippet>
   <snippet name="FullSubtypeDerivation" replacementCount="2">
     <statement>Description: Used to specify a fully derived subtype derivation rule.
-Format: each {0} is {1}</statement>
+Format: *each {0} is {1}</statement>
     <unformattedSnippet>*Each {0} is {1}</unformattedSnippet>
     <contains />
     <containedIn />
@@ -2282,6 +2282,14 @@ Format negative: more than one {0}
     <statement>Description: Used to specify a partially derived fact type with its derivation rule.
 Format: +{0} if {1}</statement>
     <unformattedSnippet>+{0} if{1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="PartialSubtypeDerivation" replacementCount="2">
+    <statement>Description: Used to specify a partially derived subtype derivation rule.
+Format: +each derived {0} is {1}</statement>
+    <unformattedSnippet>+Each derived {0} is {1}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
