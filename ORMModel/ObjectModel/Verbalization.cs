@@ -2734,8 +2734,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="objectType">The object type to get the name from. If the object type is a
 		/// reference mode value type, then it is treated as multiple names.</param>
 		/// <param name="originalName">The name as entered in the model.</param>
-		/// <param name="style">The verbalization style for this name. Pre-extracted from the <paramref name="verbalizationOptions"/>, or
-		/// set explicitly when processing different parts of composite generated object type names.</param>
+		/// <param name="style">The verbalization style for this name.</param>
 		/// <param name="removeSeparatedCharacters">A list of characters to remove from the generated name and treat as spaces. Used when separating combined names.</param>
 		/// <param name="builder">A string builder to append new names to. Can be null on first call, in which case a string is returned.</param>
 		/// <param name="spacePending">A space should be added before the next text part. Used with recursive calls when the style has spaces between the names. Initially false.</param>
