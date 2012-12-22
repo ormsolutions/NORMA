@@ -78,20 +78,81 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 				Stream currentStream = null;
 				Stream newStream = null;
+				Stream modifiedStream = null;
 				try
 				{
 					Object streamObj;
-					(docData as EnvDTE.IExtensibleObject).GetAutomationObject("ORMXmlStream", null, out streamObj);
+					EnvDTE.IExtensibleObject docDataExtender = (EnvDTE.IExtensibleObject)docData;
+					docDataExtender.GetAutomationObject("ORMXmlStream", null, out streamObj);
 					currentStream = streamObj as Stream;
 
 					Debug.Assert(currentStream != null);
 
-					newStream = ExtensionLoader.CleanupStream(currentStream, extensionLoader.StandardDomainModels, checkedTypes.Values, null);
+					// Allow each domain model that is being removed to run custom code immediately before the
+					// unload process.
+					Transaction customUnloadTransaction = null;
+					Store store = docData.Store;
+					try
+					{
+						IDomainModelUnloading[] unloadingModels = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDomainModelUnloading>();
+						if (unloadingModels != null)
+						{
+							for (int i = 0; i < unloadingModels.Length; ++i)
+							{
+								IDomainModelUnloading unloadingModel = unloadingModels[i];
+								ICustomSerializedDomainModel serializedModel;
+								if (null != (serializedModel = unloadingModel as ICustomSerializedDomainModel))
+								{
+									string[,] namespaceInfo = serializedModel.GetCustomElementNamespaces();
+									int namespaceCount = namespaceInfo.GetLength(0);
+									int j = 0;
+									for (; j < namespaceCount; ++j)
+									{
+										if (checkedTypes.ContainsKey(namespaceInfo[j, 1]))
+										{
+											break;
+										}
+									}
+									if (j == namespaceCount)
+									{
+										// Extension domain model is not in the pending set, go ahead and run
+										// the custom code to unload it cleanly.
+										if (customUnloadTransaction == null)
+										{
+											customUnloadTransaction = store.TransactionManager.BeginTransaction("Domain Models Unloading"); // String not localized, won't be displayed on either success or failure
+										}
+										unloadingModel.DomainModelUnloading(store);
+									}
+								}
+							}
+						}
+					}
+					finally
+					{
+						if (customUnloadTransaction != null)
+						{
+							if (customUnloadTransaction.HasPendingChanges)
+							{
+								customUnloadTransaction.Commit();
+
+								// Get the modified stream
+								docDataExtender.GetAutomationObject("ORMXmlStream", null, out streamObj);
+								modifiedStream = streamObj as Stream;
+							}
+							customUnloadTransaction.Dispose();
+						}
+					}
+
+					newStream = ExtensionLoader.CleanupStream(modifiedStream ?? currentStream, extensionLoader.StandardDomainModels, checkedTypes.Values, null);
 					docData.ReloadFromStream(newStream, currentStream);
 				}
 				finally
 				{
 					if (currentStream != null)
+					{
+						currentStream.Dispose();
+					}
+					if (modifiedStream != null)
 					{
 						currentStream.Dispose();
 					}

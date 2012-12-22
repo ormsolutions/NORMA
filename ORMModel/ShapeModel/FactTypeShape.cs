@@ -3196,7 +3196,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					else if (objectType.DerivationRule != null && objectType.IsSubtype) // Note that subtypes are never independent
 					{
-						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeDerivedSubtypeFormatString, retVal);
+						string derivationDecorator = null;
+						switch (objectType.DerivationStorageDisplay)
+						{
+							case DerivationExpressionStorageType.Derived:
+								derivationDecorator = ResourceStrings.ObjectTypeShapeDerivationDecoratorFullyDerived;
+								break;
+							case DerivationExpressionStorageType.DerivedAndStored:
+								derivationDecorator = ResourceStrings.ObjectTypeShapeDerivationDecoratorFullyDerivedAndStored;
+								break;
+							case DerivationExpressionStorageType.PartiallyDerived:
+								derivationDecorator = ResourceStrings.ObjectTypeShapeDerivationDecoratorPartiallyDerived;
+								break;
+							case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+								derivationDecorator = ResourceStrings.ObjectTypeShapeDerivationDecoratorPartiallyDerivedAndStored;
+								break;
+						}
+						if (derivationDecorator != null)
+						{
+							retVal = string.Format(CultureInfo.InvariantCulture, derivationDecorator, retVal);
+						}
 					}
 				}
 				return retVal;
@@ -7189,11 +7208,35 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					if (refModeString.Length != 0)
 					{
-						formatString = independent ?
-							ResourceStrings.ObjectifiedFactTypeNameShapeRefModeIndependentFormatString :
-							derived ?
-								ResourceStrings.ObjectifiedFactTypeNameShapeRefModeDerivedSubtypeFormatString :
-								ResourceStrings.ObjectifiedFactTypeNameShapeRefModeFormatString;
+						if (independent)
+						{
+							formatString = ResourceStrings.ObjectifiedFactTypeNameShapeRefModeIndependentFormatString;
+						}
+						else if (derived)
+						{
+							switch (objectType.DerivationStorageDisplay)
+							{
+								case DerivationExpressionStorageType.Derived:
+									formatString = ResourceStrings.ObjectifiedFactTypeNameShapeRefModeFullyDerivedSubtypeFormatString;
+									break;
+								case DerivationExpressionStorageType.DerivedAndStored:
+									formatString = ResourceStrings.ObjectifiedFactTypeNameShapeRefModeFullyDerivedAndStoredSubtypeFormatString;
+									break;
+								case DerivationExpressionStorageType.PartiallyDerived:
+									formatString = ResourceStrings.ObjectifiedFactTypeNameShapeRefModePartiallyDerivedSubtypeFormatString;
+									break;
+								case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+									formatString = ResourceStrings.ObjectifiedFactTypeNameShapeRefModePartiallyDerivedAndStoredSubtypeFormatString;
+									break;
+								default:
+									formatString = ResourceStrings.ObjectifiedFactTypeNameShapeRefModeFormatString;
+									break;
+							}
+						}
+						else
+						{
+							formatString = ResourceStrings.ObjectifiedFactTypeNameShapeRefModeFormatString;
+						}
 					}
 					else if (independent)
 					{
@@ -7201,7 +7244,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					else if (derived)
 					{
-						formatString = ResourceStrings.ObjectifiedFactTypeNameShapeDerivedSubtypeFormatString;
+						switch (objectType.DerivationStorageDisplay)
+						{
+							case DerivationExpressionStorageType.Derived:
+								formatString = ResourceStrings.ObjectifiedFactTypeNameShapeDerivationDecoratorFullyDerived;
+								break;
+							case DerivationExpressionStorageType.DerivedAndStored:
+								formatString = ResourceStrings.ObjectifiedFactTypeNameShapeDerivationDecoratorFullyDerivedAndStored;
+								break;
+							case DerivationExpressionStorageType.PartiallyDerived:
+								formatString = ResourceStrings.ObjectifiedFactTypeNameShapeDerivationDecoratorPartiallyDerived;
+								break;
+							case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+								formatString = ResourceStrings.ObjectifiedFactTypeNameShapeDerivationDecoratorPartiallyDerivedAndStored;
+								break;
+							default:
+								formatString = ResourceStrings.ObjectifiedFactTypeNameShapeStandardFormatString;
+								break;
+						}
 					}
 					else
 					{

@@ -80,4 +80,22 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		IFreeFormCommandProvider<ContextType> GetFreeFormCommandProvider(ContextType context, object targetElement);
 	}
 	#endregion // IFreeFormCommandProviderService interface
+	#region IDomainModelUnloading interface
+	/// <summary>
+	/// Implement this interface on any domain model that supports <see cref="ICustomSerializedDomainModel"/>
+	/// to get a callback immediately before a domain model is unloaded. The callback is intended to remove
+	/// implicitly added elements in other domain models as the elements serialized by the implementing
+	/// domain model will be automatically removed.
+	/// </summary>
+	public interface IDomainModelUnloading
+	{
+		/// <summary>
+		/// Modify the provided <see cref="Store"/> by removing any implicitly created
+		/// elements in other domain models prior to this domain model being unloaded.
+		/// A <see cref="Transaction"/> will be active when this is called.
+		/// </summary>
+		/// <param name="store">The store this domain model is currently loaded into.</param>
+		void DomainModelUnloading(Store store);
+	}
+	#endregion // IDomainModelUnloading interface
 }

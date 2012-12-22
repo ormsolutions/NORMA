@@ -354,23 +354,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 			for (int i = 0; i < itemCount; i++)
 			{
-				DomainClassInfo diagramInfo = (DomainClassInfo)items[i].Tag;
+				object[] itemInfo = (object[])items[i].Tag;
+				DomainClassInfo diagramInfo = (DomainClassInfo)itemInfo[1];
 				ReadOnlyCollection<ModelElement> modelElements = partition.ElementDirectory.FindElements(diagramInfo);
-
-				object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), false);
-				if (attributes.Length > 0)
+				DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)itemInfo[0];
+				if (modelElements.Count > 0 & (attribute.DiagramOption & DiagramMenuDisplayOptions.AllowMultiple) == 0)
 				{
-					DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
-					if (modelElements.Count > 0 & (attribute.DiagramOption & DiagramMenuDisplayOptions.AllowMultiple) == 0)
-					{
-						//DISABLE NEW
-						items[i].Enabled = false;
-					}
-					else
-					{
-						//ENABLE NEW
-						items[i].Enabled = true;
-					}
+					//DISABLE NEW
+					items[i].Enabled = false;
+				}
+				else
+				{
+					//ENABLE NEW
+					items[i].Enabled = true;
 				}
 			}
 
@@ -423,17 +419,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-		private void ContextMenuNewPageORMClick(object sender, EventArgs e)
-		{
-			Store store = base.DocData.Store;
-			using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.DiagramCommandNewPage.Replace("&", "")))
-			{
-				ReadOnlyCollection<ORMModel> models = store.ElementDirectory.FindElements<ORMModel>();
-				ORMDiagram diagram = new ORMDiagram(store);
-				diagram.Associate(models.Count > 0 ? (ModelElement)models[0] : new ORMModel(store));
-				t.Commit();
-			}
-		}
 		private void ContextMenuNewPageClick(object sender, EventArgs e)
 		{
 			ToolStripMenuItem menuItem = sender as ToolStripMenuItem;
@@ -442,10 +427,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Store store = base.DocData.Store;
 				using (Transaction t = store.TransactionManager.BeginTransaction(menuItem.Text.Replace("&", string.Empty)))
 				{
-					DomainClassInfo diagramInfo = menuItem.Tag as DomainClassInfo;
-					if (diagramInfo != null)
+					object[] itemInfo;
+					if (null != (itemInfo = menuItem.Tag as object[]))
 					{
+						DomainClassInfo diagramInfo = (DomainClassInfo)itemInfo[1];
+						DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)itemInfo[0];
+						IDiagramInitialization initializer = attribute.CreateInitializer(diagramInfo.ImplementationClass);
 						Diagram newDiagram = (Diagram)store.ElementFactory.CreateElement(diagramInfo);
+						if (initializer != null)
+						{
+							initializer.InitializeDiagram(newDiagram);
+						}
 						Diagram selectedDiagram;
 						DiagramDisplay displayContainer;
 						LinkedElementCollection<Diagram> diagramOrder;
@@ -545,7 +537,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							base.RegisterImageForDiagramType(diagramInfo.ImplementationClass, image);
 						}
 						ToolStripMenuItem newDiagramMenuItem = new ToolStripMenuItem(name, image, ContextMenuNewPageClick);
-						newDiagramMenuItem.Tag = diagramInfo;
+						newDiagramMenuItem.Tag = new object[] { attribute, diagramInfo };
 						items.Add(newDiagramMenuItem);
 					}
 				}

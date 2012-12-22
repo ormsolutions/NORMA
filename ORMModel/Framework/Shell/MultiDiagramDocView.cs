@@ -633,10 +633,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				Store store = this.Store;
 				if (null != store.FindDomainModel(DiagramDisplayDomainModel.DomainModelId))
 				{
-					IPropertyProviderService providerService = ((IFrameworkServices)store).PropertyProviderService;
-					if (providerService != null)
+					if (0 != (reasons & EventSubscriberReasons.ModelStateEvents))
 					{
-						providerService.AddOrRemovePropertyProvider(typeof(Diagram), DiagramDisplay.ProvideDiagramProperties, true, action);
+						IPropertyProviderService providerService = ((IFrameworkServices)store).PropertyProviderService;
+						if (providerService != null)
+						{
+							providerService.AddOrRemovePropertyProvider(typeof(Diagram), DiagramDisplay.ProvideDiagramProperties, true, action);
+						}
 					}
 					if (0 != (reasons & EventSubscriberReasons.UserInterfaceEvents))
 					{

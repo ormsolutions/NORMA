@@ -31,9 +31,37 @@ using ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge;
 
 namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
-	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(RelationalDiagram), RelationalDiagram.NameResourceName, "Diagram.TabImage", "Diagram.BrowserImage")]
+	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(RelationalDiagram), RelationalDiagram.NameResourceName, "Diagram.TabImage", "Diagram.BrowserImage", NestedDiagramInitializerTypeName="DiagramInitializer")]
 	partial class RelationalDiagram
 	{
+		#region DiagramInitializer class
+		/// <summary>
+		/// Perform custom initialization for newly loaded or freshly created diagram.
+		/// </summary>
+		private class DiagramInitializer : IDiagramInitialization
+		{
+			#region IDiagramInitialization Implementation
+			bool IDiagramInitialization.CreateRequiredDiagrams(Store store)
+			{
+				// Use the default implementation: create a new diagram of the given type
+				// and call InitializeDiagram.
+				return false;
+			}
+			void IDiagramInitialization.InitializeDiagram(Diagram diagram)
+			{
+				if (null == diagram.Subject)
+				{
+					Store store = diagram.Store;
+					ReadOnlyCollection<Catalog> catalogs = store.ElementDirectory.FindElements<Catalog>(false);
+					if (catalogs.Count != 0)
+					{
+						diagram.Associate(catalogs[0]);
+					}
+				}
+			}
+			#endregion // IDiagramInitialization Implementation
+		}
+		#endregion // DiagramInitializer class
 		private const string NameResourceName = "Diagram.MenuDisplayName";
 
 		/// <summary>
@@ -55,18 +83,6 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			: base(partition, propertyAssignments)
 		{
 			this.Name = ORMSolutions.ORMArchitect.Framework.Design.ResourceAccessor<RelationalDiagram>.ResourceManager.GetString(NameResourceName);
-		}
-		public override void OnInitialize()
-		{
-			base.OnInitialize();
-			if (this.Subject == null)
-			{
-				ReadOnlyCollection<Catalog> modelElements = this.Store.DefaultPartition.ElementDirectory.FindElements<Catalog>();
-				if (modelElements.Count != 0)
-				{
-					this.Associate(modelElements[0]);
-				}
-			}
 		}
 		/// <summary>
 		/// Customize childshape create to set an initial location for a <see cref="TableShape"/>

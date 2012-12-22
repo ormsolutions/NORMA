@@ -1180,7 +1180,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			return null;
+			object retVal = null;
+			Dictionary<object, object> contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			if (!contextInfo.ContainsKey(NamedElementDictionary.DefaultAllowDuplicateNamesKey) &&
+				contextInfo.ContainsKey(ORMModel.AllowDuplicateNamesKey))
+			{
+				// Use their value so they don't have to look up ours again
+				retVal = NamedElementDictionary.AllowDuplicateNamesKey;
+			}
+			return retVal;
 		}
 		#endregion // INamedElementDictionaryParent implementation
 		#region Rules to remove duplicate name errors

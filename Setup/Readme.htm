@@ -44,7 +44,7 @@ The December 2012 release adds Visual Studio 2012 support, new constraint connec
 
 <hr/>
 <h2>December 2012 CTP Changes</h2>
-<div>The December 2012 CTP release includes all modifications through changeset 1507.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The December 2012 CTP release includes all modifications through changeset 1508.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2012-12">Verbalized object type name separator character removal options</a></li>
 <li><a href="#SQLServerNativeDataTypes 2012-12">SQL Server Native Data Types</a></li>
@@ -53,7 +53,7 @@ The December 2012 release adds Visual Studio 2012 support, new constraint connec
 <li>Other Features:
 <ol>
 <li>The <em>ORM Generator Selection</em> dialog no longer offers expansions for generated items when only one generation transform is available. The information lost here is of little use to the user, and suppressing these buttons emphasizes items (such as the SQL Server node) that have more than one available generator.</li>
-<li>Object type name verbalization has been enhanced to recognize reference mode patterns as separate names, regardless of casing. If you use the <em>ORM Reference Mode Editor</em> to change the <em>Value Type Name Format</em> field for the <em>Popular</em> reference mode kind to <em>{EntityTypeName}{ReferenceModeName}</em> instead of the default <em>{EntityTypeName}_{ReferenceModeName}</em>, then an entity type with a reference mode of <em>Country(.code)</em> generates a value type called <em>Countrycode</em>. Previously, this would be shown as single name by the verbalizer (because 'code' is not upper cased), but will now be treated as distinct words because of the matching reference mode pattern.</li>
+<li>Object type name verbalization has been enhanced to recognize reference mode patterns as separate names, regardless of casing. If you use the <em>ORM Reference Mode Editor</em> to change the <em>Value Type Name Format</em> field for the <em>Popular</em> reference mode kind to <em>{EntityTypeName}{ReferenceModeName}</em> instead of the default <em>{EntityTypeName}_{ReferenceModeName}</em>, then an entity type with a reference mode of <em>Country(.code)</em> generates a value type called <em>Countrycode</em>. Previously, this would be shown as single name when normalized or expanded by the verbalizer (because 'code' is not upper cased), but will now be treated as distinct words because of the matching reference mode pattern.</li>
 </ol>
 </li>
 <li>Bug Fixes:
@@ -77,6 +77,8 @@ The December 2012 release adds Visual Studio 2012 support, new constraint connec
 <li>Selecting two or more exclusion or mandatory constraints and opening a context menu failed determine the available of the exclusive-or coupling command.</li>
 <li>Some set comparison overlap validation was dependent on the order the constraints were added to the model and failed to display an overlap implication errors.</li>
 <li>Verbalization of partially derived subtypes displayed the same as fully derived subtypes.</li>
+<li>Diagram display of derived subtypes did not show different text decorators for partially derived and stored derivations. These are now consistent with derived fact types.</li>
+<li>Adding or removing extensions could cause some previously document services to do nothing or crash when used after the reload. Applies to cross-model drag, model error activation, and layout services.</li>
 </ol>
 </li>
 </ul>

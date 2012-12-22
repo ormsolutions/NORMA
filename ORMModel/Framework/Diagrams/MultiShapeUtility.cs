@@ -75,11 +75,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		#region FixUpChildShapes
 		/// <summary>
 		/// If present in the <see cref="TransactionContext.ContextInfo"/> for the top-level <see cref="Transaction"/>,
-		/// <see cref="FixUpChildShapes"/> will add a new <see cref="ShapeElement"/>, even if one already
+		/// <see cref="FixUpChildShapes"/> will allow addition of a new <see cref="ShapeElement"/>, even if one already
+		/// exists on the <see cref="Diagram"/> for the <see cref="ModelElement"/> being processed, as long as
+		/// <see cref="ShapeElement.ShouldAddShapeForElement"/> returns <see langword="true"/>. Generally, this is
+		/// used during rule processing where additional shapes are allowed by not required. To force a new shape
+		/// to be created use the <see cref="ForceMultipleShapes"/> flag instead.
+		/// </summary>
+		public static readonly object AllowMultipleShapes = new object();
+		/// <summary>
+		/// If present in the <see cref="TransactionContext.ContextInfo"/> for the top-level <see cref="Transaction"/>,
+		/// <see cref="FixUpChildShapes"/> will always a new <see cref="ShapeElement"/>, even if one already
 		/// exists on the <see cref="Diagram"/> for the <see cref="ModelElement"/> being processed, as long as
 		/// <see cref="ShapeElement.ShouldAddShapeForElement"/> returns <see langword="true"/>.
 		/// </summary>
-		public static readonly object AllowMultipleShapes = new object();
+		public static readonly object ForceMultipleShapes = new object();
 		/// <summary>
 		/// An alternative to <see cref="ShapeElement.FixUpChildShapes"/> that supports multiple shapes
 		/// </summary>
@@ -111,7 +120,18 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 
 			Transaction currentTransaction = store.TransactionManager.CurrentTransaction;
 			Transaction topLevelTransaction = currentTransaction.TopLevelTransaction;
-			bool allowMultipleShapesForChildren =!(childElement is IReconfigureableLink) && topLevelTransaction.Context.ContextInfo.ContainsKey(AllowMultipleShapes);
+			bool forceMultipleShapesForChildren;
+			bool allowMultipleShapesForChildren;
+			if (!(childElement is IReconfigureableLink))
+			{
+				Dictionary<object, object> contextInfo = topLevelTransaction.Context.ContextInfo;
+				forceMultipleShapesForChildren = contextInfo.ContainsKey(ForceMultipleShapes);
+				allowMultipleShapesForChildren = forceMultipleShapesForChildren || contextInfo.ContainsKey(AllowMultipleShapes);
+			}
+			else
+			{
+				allowMultipleShapesForChildren = forceMultipleShapesForChildren = false;
+			}
 
 			if (allowMultipleShapesForChildren)
 			{
@@ -149,8 +169,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				}
 			}
 
-			if (allowMultipleShapesForChildren &&
-				(existingChildShape == null || existingChildShape is LinkShape || existingChildShape.ParentShape != existingParentShape))
+			if (forceMultipleShapesForChildren ||
+				(allowMultipleShapesForChildren &&
+				(existingChildShape == null || existingChildShape is LinkShape || existingChildShape.ParentShape != existingParentShape)))
 			{
 				if (unparentedChildShape == null)
 				{

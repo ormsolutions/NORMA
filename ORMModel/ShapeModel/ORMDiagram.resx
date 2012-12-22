@@ -237,7 +237,11 @@
     <value>../Resources/DiagramBrowserImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment xml:space="preserve">The image shown on the model browser for ORM diagrams.</comment>
   </data>
-  <data name="Diagram.TabImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+	<data name="Diagram.MenuDisplayName">
+		<value xml:space="preserve">ORM Diagram</value>
+		<comment xml:space="preserve">The context menu command name for creating a new ORM diagram.</comment>
+	</data>
+	<data name="Diagram.TabImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../Resources/DiagramTabImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment xml:space="preserve">The image shown on the tab for ORM diagrams.</comment>
   </data>
@@ -567,9 +571,21 @@
     <value xml:space="preserve">Move Role Sequence Up</value>
     <comment xml:space="preserve">The transaction name used for moving a role sequence up in a multi column external uniqueness constraint. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
-  <data name="ObjectTypeShape.DerivedSubtypeFormatString">
+  <data name="ObjectTypeShape.DerivationDecoratorFullyDerived">
     <value xml:space="preserve">{0} *</value>
-    <comment xml:space="preserve">The string used to display that a subtype object is derived.</comment>
+    <comment xml:space="preserve">The string used to display that a subtype object is fully derived.</comment>
+  </data>
+  <data name="ObjectTypeShape.DerivationDecoratorFullyDerivedAndStored">
+    <value xml:space="preserve">{0} **</value>
+    <comment xml:space="preserve">The string used to display that a subtype object is fully derived and stored.</comment>
+  </data>
+  <data name="ObjectTypeShape.DerivationDecoratorPartiallyDerived">
+    <value xml:space="preserve">{0} +</value>
+    <comment xml:space="preserve">The string used to display that a subtype object is partially derived.</comment>
+  </data>
+  <data name="ObjectTypeShape.DerivationDecoratorPartiallyDerivedAndStored">
+    <value xml:space="preserve">{0} +*</value>
+    <comment xml:space="preserve">The string used to display that a subtype object is partially derived and stored.</comment>
   </data>
   <data name="ObjectTypeShape.IndependentFormatString">
     <value xml:space="preserve">{0} !</value>
@@ -579,17 +595,41 @@
     <value xml:space="preserve">({0})</value>
     <comment xml:space="preserve">The string used to display a reference mode.</comment>
   </data>
-  <data name="ObjectifiedFactTypeNameShape.DerivedSubtypeFormatString">
+  <data name="ObjectifiedFactTypeNameShape.DerivationDecoratorFullyDerived">
     <value xml:space="preserve">"{0} *"</value>
-    <comment xml:space="preserve">The string used to display an objectified type that is a derived subtype.</comment>
+    <comment xml:space="preserve">The string used to display an objectified type that is a fully derived subtype.</comment>
+  </data>
+  <data name="ObjectifiedFactTypeNameShape.DerivationDecoratorFullyDerivedAndStored">
+    <value xml:space="preserve">"{0} **"</value>
+    <comment xml:space="preserve">The string used to display an objectified type that is a fully derived and stored subtype.</comment>
+  </data>
+	<data name="ObjectifiedFactTypeNameShape.DerivationDecoratorPartiallyDerived">
+    <value xml:space="preserve">"{0} +"</value>
+    <comment xml:space="preserve">The string used to display an objectified type that is a partially derived subtype.</comment>
+  </data>
+  <data name="ObjectifiedFactTypeNameShape.DerivationDecoratorPartiallyDerivedAndStored">
+    <value xml:space="preserve">"{0} +*"</value>
+    <comment xml:space="preserve">The string used to display an objectified type that is a partially derived and stored subtype.</comment>
   </data>
   <data name="ObjectifiedFactTypeNameShape.IndependentFormatString">
     <value xml:space="preserve">"{0} !"</value>
     <comment xml:space="preserve">The string used to display an objectified type name for an independent object.</comment>
   </data>
-  <data name="ObjectifiedFactTypeNameShape.RefModeDerivedSubtypeFormatString">
+  <data name="ObjectifiedFactTypeNameShape.RefModeFullyDerivedSubtypeFormatString">
     <value xml:space="preserve">"{0} ({1})*"</value>
-    <comment xml:space="preserve">The string used to display an objectified type name for an derived subtype with a reference mode.</comment>
+    <comment xml:space="preserve">The string used to display an objectified type name for a fully derived subtype with a reference mode.</comment>
+  </data>
+  <data name="ObjectifiedFactTypeNameShape.RefModeFullyDerivedAndStoredSubtypeFormatString">
+    <value xml:space="preserve">"{0} ({1})**"</value>
+    <comment xml:space="preserve">The string used to display an objectified type name for a fully derived and stored subtype with a reference mode.</comment>
+  </data>
+  <data name="ObjectifiedFactTypeNameShape.RefModePartiallyDerivedSubtypeFormatString">
+    <value xml:space="preserve">"{0} ({1})+"</value>
+    <comment xml:space="preserve">The string used to display an objectified type name for a partiall derived subtype with a reference mode.</comment>
+  </data>
+  <data name="ObjectifiedFactTypeNameShape.RefModePartiallyDerivedAndStoredSubtypeFormatString">
+    <value xml:space="preserve">"{0} ({1})+*"</value>
+    <comment xml:space="preserve">The string used to display an objectified type name for a partially derived and stored subtype with a reference mode.</comment>
   </data>
   <data name="ObjectifiedFactTypeNameShape.RefModeIndependentFormatString">
     <value xml:space="preserve">"{0} ({1})!"</value>
@@ -859,15 +899,15 @@
     <value xml:space="preserve">The constraint display color of all grouped constraints with deontic modality</value>
     <comment xml:space="preserve">The description of the dynamic deontic constraint color.</comment>
   </data>
-	<data name="ORMDiagramDynamicColor.FloatingText">
-		<value xml:space="preserve">FloatingText</value>
-		<comment xml:space="preserve">The display name for the dynamic floating text color.</comment>
-	</data>
-	<data name="ORMDiagramDynamicColor.FloatingText.Description">
-		<value xml:space="preserve">The display color for floating text elements. Displayed the diagram background.</value>
-		<comment xml:space="preserve">The description of the dynamic floating text color.</comment>
-	</data>
-	<data name="ORMDiagramDynamicColor.ForegroundGraphics">
+  <data name="ORMDiagramDynamicColor.FloatingText">
+    <value xml:space="preserve">FloatingText</value>
+    <comment xml:space="preserve">The display name for the dynamic floating text color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.FloatingText.Description">
+    <value xml:space="preserve">The display color for floating text elements. Displayed the diagram background.</value>
+    <comment xml:space="preserve">The description of the dynamic floating text color.</comment>
+  </data>
+  <data name="ORMDiagramDynamicColor.ForegroundGraphics">
     <value xml:space="preserve">Foreground</value>
     <comment xml:space="preserve">The display name for the dynamic foreground graphics color.</comment>
   </data>
@@ -915,11 +955,27 @@
     <value xml:space="preserve">[{0}]</value>
     <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is attached.</comment>
   </data>
-	<data name="ReadingShape.AttachedDuplicateRoleDisplay">
-		<value xml:space="preserve">[{0}{1:d}]</value>
-		<comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is attached and the role player is duplicated in the reading. Replacement fields: {0}=role player name, {1}=displayed role index.</comment>
-	</data>
-	<data name="ReadingShape.Ellipsis">
+  <data name="ReadingShape.AttachedDuplicateRoleDisplay">
+    <value xml:space="preserve">[{0}{1:d}]</value>
+    <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is attached and the role player is duplicated in the reading. Replacement fields: {0}=role player name, {1}=displayed role index.</comment>
+  </data>
+  <data name="ReadingShape.DerivationDecoratorFullyDerived">
+    <value xml:space="preserve">{0} *</value>
+    <comment xml:space="preserve">The format string used to display an indicator for a fully derived (not stored) fact type.</comment>
+  </data>
+  <data name="ReadingShape.DerivationDecoratorFullyDerivedAndStored">
+    <value xml:space="preserve">{0} **</value>
+    <comment xml:space="preserve">The format string used to display an indicator for a fully derived and stored fact type.</comment>
+  </data>
+  <data name="ReadingShape.DerivationDecoratorPartiallyDerived">
+    <value xml:space="preserve">{0} +</value>
+    <comment xml:space="preserve">The format string used to display an indicator for a partially derived (not stored) fact type.</comment>
+  </data>
+  <data name="ReadingShape.DerivationDecoratorPartiallyDerivedAndStored">
+    <value xml:space="preserve">{0} +*</value>
+    <comment xml:space="preserve">The format string used to display an indicator for a partially derived and stored fact type.</comment>
+  </data>
+  <data name="ReadingShape.Ellipsis">
     <value xml:space="preserve">…</value>
     <comment xml:space="preserve">The character to use as the object placeholder in a ReadingShape.</comment>
   </data>

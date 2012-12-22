@@ -32,9 +32,37 @@ using Barker = ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 
 namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
-	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(BarkerERDiagram), BarkerERDiagram.NameResourceName, "Diagram.TabImage", "Diagram.BrowserImage")]
+	[DiagramMenuDisplay(DiagramMenuDisplayOptions.BlockRename | DiagramMenuDisplayOptions.Required, typeof(BarkerERDiagram), BarkerERDiagram.NameResourceName, "Diagram.TabImage", "Diagram.BrowserImage", NestedDiagramInitializerTypeName="DiagramInitializer")]
 	partial class BarkerERDiagram
 	{
+		#region DiagramInitializer class
+		/// <summary>
+		/// Perform custom initialization for newly loaded or freshly created diagram.
+		/// </summary>
+		private class DiagramInitializer : IDiagramInitialization
+		{
+			#region IDiagramInitialization Implementation
+			bool IDiagramInitialization.CreateRequiredDiagrams(Store store)
+			{
+				// Use the default implementation: create a new diagram of the given type
+				// and call InitializeDiagram.
+				return false;
+			}
+			void IDiagramInitialization.InitializeDiagram(Diagram diagram)
+			{
+				if (null == diagram.Subject)
+				{
+					Store store = diagram.Store;
+					ReadOnlyCollection<BarkerErModel> barkerModels = store.ElementDirectory.FindElements<BarkerErModel>(false);
+					if (barkerModels.Count != 0)
+					{
+						diagram.Associate(barkerModels[0]);
+					}
+				}
+			}
+			#endregion // IDiagramInitialization Implementation
+		}
+		#endregion // DiagramInitializer class
 		private const string NameResourceName = "Diagram.MenuDisplayName";
 
 		/// <summary>
@@ -57,18 +85,6 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 		{
 			this.Name = ORMSolutions.ORMArchitect.Framework.Design.ResourceAccessor<BarkerERDiagram>.ResourceManager.GetString(NameResourceName);
 			NodeToNodeClearance = new SizeD(1.75, 1.75);
-		}
-		public override void OnInitialize()
-		{
-			base.OnInitialize();
-			if (this.Subject == null)
-			{
-				ReadOnlyCollection<BarkerErModel> modelElements = this.Store.DefaultPartition.ElementDirectory.FindElements<BarkerErModel>();
-				if (modelElements.Count != 0)
-				{
-					this.Associate(modelElements[0]);
-				}
-			}
 		}
 		/// <summary>
 		/// Customize childshape create to set an initial location for a <see cref="BarkerEntityShape"/>

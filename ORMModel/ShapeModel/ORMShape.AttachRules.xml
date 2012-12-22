@@ -142,6 +142,9 @@
 			<arg:AddRule methodName="SubtypeDerivationRuleAddedRule">
 				<arg:RuleOn targetType="SubtypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
 			</arg:AddRule>
+			<arg:ChangeRule methodName="SubtypeDerivationRuleChangedRule">
+				<arg:RuleOn targetType="SubtypeDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
+			</arg:ChangeRule>
 			<arg:DeleteRule methodName="SubtypeDerivationRuleDeletedRule">
 				<arg:RuleOn targetType="SubtypeHasDerivationRule" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AutoLayoutShapesRulePriority"/>
 			</arg:DeleteRule>

@@ -467,7 +467,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			myDisplayText = null;
 		}
 		/// <summary>
-		/// Check to see if FactType Derivation symbols should be appended to the display text
+		/// Check to see if FactType Derivation symbols should be formatted with the display
+		/// text as input to produce derivation symbols.
 		/// </summary>
 		private static string GetDerivationDecorator(FactType factType)
 		{
@@ -476,21 +477,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				if (null != factType.DerivationRule)
 				{
-					// UNDONE: Localize the derived fact marks. This should probably be a format expression, not just an append
 					DerivationExpressionStorageType storage = factType.DerivationStorageDisplay;
 					switch (factType.DerivationStorageDisplay)
 					{
 						case DerivationExpressionStorageType.Derived:
-							retVal = " *";
+							retVal = ResourceStrings.ReadingShapeDerivationDecoratorFullyDerived;
 							break;
 						case DerivationExpressionStorageType.DerivedAndStored:
-							retVal = " **";
+							retVal = ResourceStrings.ReadingShapeDerivationDecoratorFullyDerivedAndStored;
 							break;
 						case DerivationExpressionStorageType.PartiallyDerived:
-							retVal = " +"; // previously " *—";
+							retVal = ResourceStrings.ReadingShapeDerivationDecoratorPartiallyDerived;
 							break;
 						case DerivationExpressionStorageType.PartiallyDerivedAndStored:
-							retVal = " +*";
+							retVal = ResourceStrings.ReadingShapeDerivationDecoratorPartiallyDerivedAndStored;
 							break;
 						default:
 							Debug.Fail("Unknown derivation storage type");
@@ -545,7 +545,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				if (myDisplayText == null)
+				string retVal = myDisplayText;
+				if (retVal == null)
 				{
 					FactTypeShape factShape;
 					FactType factType;
@@ -557,8 +558,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						return "";
 					}
-					string derivationDecorator = GetDerivationDecorator(factType);
-					string retVal = null;
 					bool doNamedReplacement = false;
 					ReadingOrder defaultOrder = readingOrders[0];
 					LinkedElementCollection<RoleBase> orderedRoles = defaultOrder.RoleCollection;
@@ -621,9 +620,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						retVal = string.Concat(
 							EllipsizeReadingFormatString(firstOrder.ReadingText, roleCount),
 							ResourceStrings.ReadingShapeReadingSeparator,
-							EllipsizeReadingFormatString(secondOrder.ReadingText, roleCount),
-							derivationDecorator);
-						derivationDecorator = null;
+							EllipsizeReadingFormatString(secondOrder.ReadingText, roleCount));
 					}
 					if (doNamedReplacement)
 					{
@@ -680,13 +677,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						retVal = string.Format(CultureInfo.InvariantCulture, (readingFormatString == null) ? defaultOrder.ReadingText : readingFormatString, roleTranslator);
 					}
-					if (derivationDecorator != null)
+					string derivationDecorator;
+					if (null != (derivationDecorator = GetDerivationDecorator(factType)))
 					{
-						retVal += derivationDecorator;
+						retVal = string.Format(CultureInfo.InvariantCulture, derivationDecorator, retVal);
 					}
 					myDisplayText = retVal;
 				}
-				return myDisplayText;
+				return retVal;
 			}
 		}
 		/// <summary>

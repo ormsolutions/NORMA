@@ -61,50 +61,54 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			None = 0,
 			/// <summary>
-			/// Post load events have been registered with the store.
-			/// </summary>
-			AddedPostLoadEvents = 1,
-			/// <summary>
 			/// Pre load events have been registered with the store.
 			/// </summary>
-			AddedPreLoadEvents = 2,
+			AddedPreLoadEvents = 1,
+			/// <summary>
+			/// Post deserialization events have been registered with the store.
+			/// </summary>
+			AddedPostDeserializationEvents = 2,
+			/// <summary>
+			/// Post load events have been registered with the store.
+			/// </summary>
+			AddedPostLoadEvents = 4,
 			/// <summary>
 			/// Survey events have been registered with the store.
 			/// </summary>
-			AddedSurveyQuestionEvents = 4,
+			AddedSurveyQuestionEvents = 8,
 			/// <summary>
 			/// The file was imported with format modifications from
 			/// a previous format, and the user has chosen to disallow
 			/// the save command.
 			/// </summary>
-			SaveDisabled = 8,
+			SaveDisabled = 0x10,
 			/// <summary>
 			/// The error display was modified during a transaction. Update
 			/// the task list and corresponding diagram display to show
 			/// the current display settings.
 			/// </summary>
-			ErrorDisplayModified = 0x10,
+			ErrorDisplayModified = 0x20,
 			/// <summary>
 			/// The file has been reloaded and the undo stack cleared. The
 			/// file should be shown as dirty even with an empty stack.
 			/// </summary>
-			UndoStackRemoved = 0x20,
+			UndoStackRemoved = 0x40,
 			/// <summary>
 			/// An attempt to load with modified extensions has failed. Reload
 			/// the old state then show the exception.
 			/// </summary>
-			RethrowLoadDocDataException = 0x40,
+			RethrowLoadDocDataException = 0x80,
 			/// <summary>
 			/// Do not forward the OnDocumentReloading method to the base
 			/// during a reload of a failed extension modification.
 			/// </summary>
-			IgnoreDocumentReloading = 0x80,
+			IgnoreDocumentReloading = 0x100,
 			/// <summary>
 			/// The <see cref="ORMModel"/> and <see cref="ORMDiagram"/> names
 			/// replacement fields should be checked and replaced with the
 			/// full file name once it is known if the names are set to '$fileinputname$'.
 			/// </summary>
-			ReplaceFileInputNames = 0x100,
+			ReplaceFileInputNames = 0x200,
 			// Other flags here, add instead of lots of bool variables
 		}
 		private PrivateFlags myFlags;
@@ -352,6 +356,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				// so that a new instance will be created with the new Store next time it is needed
 				this.myPropertyProviderService = null;
 				this.myTypedDomainModelProviderCache = null;
+				this.myCopyClosureManager = null;
+				this.myModelErrorActivatorService = null;
+				this.myLayoutEngines = null;
 
 				this.RemoveModelingEventHandlers(isReload);
 
@@ -599,6 +606,73 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				SetFlag(PrivateFlags.ReplaceFileInputNames, true);
 			}
+			this.AddPostDeserializationModelingEventHandlers(isReload);
+
+			// With load complete, all rules turned on, and all event listeners in place, we can now
+			// go through each diagram type, look for the 'Required' setting on the DiagramMenuDisplay attribute, and
+			// perform standard (create a single diagram) or custom initialization as needed.
+			Store store = this.Store;
+			using (Transaction t = store.TransactionManager.BeginTransaction())
+			{
+				IList<Diagram> existingDiagrams = store.ElementDirectory.FindElements<Diagram>(true);
+				int existingDiagramCount = existingDiagrams.Count;
+				ReadOnlyCollection<DomainClassInfo> possibleDiagramTypes = store.DomainDataDirectory.FindDomainClass(Diagram.DomainClassId).AllDescendants;
+				int possibleDiagramTypeCount = possibleDiagramTypes.Count;
+				for (int i = 0; i < possibleDiagramTypeCount; ++i)
+				{
+					DomainClassInfo diagramInfo = possibleDiagramTypes[i];
+					Type testType = diagramInfo.ImplementationClass;
+					if (!testType.IsAbstract)
+					{
+						object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), false);
+						if (attributes.Length > 0)
+						{
+							DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
+							IDiagramInitialization initializer = attribute.CreateInitializer(testType);
+							if ((attribute.DiagramOption & DiagramMenuDisplayOptions.Required) != 0 ||
+								initializer != null)
+							{
+								bool haveExistingDiagram = false;
+								for (int j = 0; j < existingDiagramCount; ++j)
+								{
+									if (existingDiagrams[j].GetType() == testType)
+									{
+										haveExistingDiagram = true;
+										if (initializer != null)
+										{
+											initializer.InitializeDiagram(existingDiagrams[j]);
+										}
+										else
+										{
+											break;
+										}
+									}
+								}
+
+								if (!haveExistingDiagram)
+								{
+									//A diagram does not exist for this required diagram type.
+									//Create one.
+									if (initializer == null || !initializer.CreateRequiredDiagrams(store))
+									{
+										Diagram newDiagram = (Diagram)store.ElementFactory.CreateElement(diagramInfo);
+										if (initializer != null)
+										{
+											initializer.InitializeDiagram(newDiagram);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				if (t.HasPendingChanges)
+				{
+					t.Commit();
+					this.FlushUndoManager();
+				}
+			}
+
 			this.AddPostLoadModelingEventHandlers(isReload);
 			SetFlag(PrivateFlags.UndoStackRemoved, false);
 			return retVal;
@@ -653,53 +727,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				catch (XmlSchemaValidationException ex)
 				{
 					throw new XmlSchemaValidationException(string.Format(CultureInfo.CurrentCulture, ResourceStrings.SchemaValidationFailureInstructions, ex.Message), ex);
-				}
-			}
-
-			foreach (ORMDiagram diagram in store.ElementDirectory.FindElements<ORMDiagram>(true))
-			{
-				if (diagram.AutoPopulateShapes)
-				{
-					diagram.AutoPopulateShapes = false;
-					ORMDesignerCommandManager.AutoLayoutDiagram(diagram, diagram.NestedChildShapes, true);
-				}
-			}
-
-			// Go through each diagram type, look for the 'Required' setting on the DiagramMenuDisplay attribute, and
-			// create a diagram if needed.
-			IList<Diagram> existingDiagrams = store.ElementDirectory.FindElements<Diagram>(true);
-			int existingDiagramCount = existingDiagrams.Count;
-			ReadOnlyCollection<DomainClassInfo> possibleDiagramTypes = store.DomainDataDirectory.FindDomainClass(Diagram.DomainClassId).AllDescendants;
-			int possibleDiagramTypeCount = possibleDiagramTypes.Count;
-			for (int i = 0; i < possibleDiagramTypeCount; ++i)
-			{
-				DomainClassInfo diagramInfo = possibleDiagramTypes[i];
-				Type testType = diagramInfo.ImplementationClass;
-				if (!testType.IsAbstract)
-				{
-					object[] attributes = diagramInfo.ImplementationClass.GetCustomAttributes(typeof(DiagramMenuDisplayAttribute), false);
-					if (attributes.Length > 0)
-					{
-						DiagramMenuDisplayAttribute attribute = (DiagramMenuDisplayAttribute)attributes[0];
-						if ((attribute.DiagramOption & DiagramMenuDisplayOptions.Required) != 0)
-						{
-							int j = 0;
-							for (; j < existingDiagramCount; ++j)
-							{
-								if (existingDiagrams[j].GetType() == testType)
-								{
-									break;
-								}
-							}
-
-							if (j == existingDiagramCount)
-							{
-								//A diagram does not exist for this required diagram type.
-								//Create one.
-								store.ElementFactory.CreateElement(diagramInfo);
-							}
-						}
-					}
 				}
 			}
 		}
@@ -837,8 +864,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			SetFlag(PrivateFlags.AddedPreLoadEvents, true);
 		}
 		/// <summary>
-		/// Attach model events. Adds NamedElementDictionary handling
-		/// to the document's primary store.
+		/// Attach model events for model interaction but no view interaction.
+		/// </summary>
+		protected virtual void AddPostDeserializationModelingEventHandlers(bool isReload)
+		{
+			Store store = Store;
+			ModelingEventManager eventManager = ModelingEventManager.GetModelingEventManager(store);
+			EventSubscriberReasons reasons = EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents;
+			if (isReload)
+			{
+				reasons |= EventSubscriberReasons.DocumentReloading;
+			}
+			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
+			{
+				subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
+			}
+			ManageErrorReportingEvents(eventManager, EventHandlerAction.Add);
+			SetFlag(PrivateFlags.AddedPostDeserializationEvents, true);
+		}
+		/// <summary>
+		/// Attach view-interaction event handlers.
 		/// </summary>
 		protected virtual void AddPostLoadModelingEventHandlers(bool isReload)
 		{
@@ -853,10 +898,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				reasons |= EventSubscriberReasons.DocumentReloading;
 			}
-			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
-			{
-				subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Add);
-			}
 			foreach (ModelingDocView docView in DocViews)
 			{
 				IModelingEventSubscriber subscriber = docView as IModelingEventSubscriber;
@@ -866,7 +907,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			ReloadSurveyTree(isReload);
-			ManageErrorReportingEvents(eventManager, EventHandlerAction.Add);
 			ManageTabRestoreEvents(eventManager, EventHandlerAction.Add);
 			SetFlag(PrivateFlags.AddedPostLoadEvents, true);
 		}
@@ -877,10 +917,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		protected virtual void RemoveModelingEventHandlers(bool isReload)
 		{
 			bool addedPreLoad = GetFlag(PrivateFlags.AddedPreLoadEvents);
+			bool addedPostDeserialization = GetFlag(PrivateFlags.AddedPostDeserializationEvents);
 			bool addedPostLoad = GetFlag(PrivateFlags.AddedPostLoadEvents);
 			bool addedSurveyQuestion = GetFlag(PrivateFlags.AddedSurveyQuestionEvents);
-			SetFlag(PrivateFlags.AddedPreLoadEvents | PrivateFlags.AddedPostLoadEvents | PrivateFlags.AddedSurveyQuestionEvents, false);
-			if (!addedPreLoad && !addedPostLoad && !addedSurveyQuestion)
+			SetFlag(PrivateFlags.AddedPreLoadEvents | PrivateFlags.AddedPostDeserializationEvents | PrivateFlags.AddedPostLoadEvents | PrivateFlags.AddedSurveyQuestionEvents, false);
+			if (!addedPreLoad && !addedPostLoad && !addedPostDeserialization && !addedSurveyQuestion)
 			{
 				return;
 			}
@@ -895,7 +936,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				reasons |= EventSubscriberReasons.DocumentLoading;
 			}
-			if (addedPostLoad)
+			if (addedPostLoad || addedPostDeserialization)
 			{
 				reasons |= EventSubscriberReasons.DocumentLoaded;
 			}
@@ -903,23 +944,29 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				reasons |= EventSubscriberReasons.SurveyQuestionEvents;
 			}
-			foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
+			if (addedPreLoad || addedPostDeserialization)
 			{
-				subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Remove);
-			}
-			foreach (ModelingDocView docView in DocViews)
-			{
-				IModelingEventSubscriber subscriber = docView as IModelingEventSubscriber;
-				if (subscriber != null)
+				foreach (IModelingEventSubscriber subscriber in Utility.EnumerateDomainModels<IModelingEventSubscriber>(Store.DomainModels))
 				{
 					subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Remove);
 				}
 			}
-			UnloadSurveyTree();
+			if (addedPostDeserialization)
+			{
+				ManageErrorReportingEvents(eventManager, EventHandlerAction.Remove);
+			}
 			if (addedPostLoad)
 			{
+				foreach (ModelingDocView docView in DocViews)
+				{
+					IModelingEventSubscriber subscriber = docView as IModelingEventSubscriber;
+					if (subscriber != null)
+					{
+						subscriber.ManageModelingEventHandlers(eventManager, reasons, EventHandlerAction.Remove);
+					}
+				}
+				UnloadSurveyTree();
 				ManageTabRestoreEvents(eventManager, EventHandlerAction.Remove);
-				ManageErrorReportingEvents(eventManager, EventHandlerAction.Remove);
 				if (!isReload)
 				{
 					SystemEvents.UserPreferenceChanged -= new UserPreferenceChangedEventHandler(CultureChangedEvent);

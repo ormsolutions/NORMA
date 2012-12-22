@@ -64,9 +64,43 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	public interface IAutoCreatedSelectableShape
 	{
 	}
-	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "UNDONE", "Diagram.TabImage", "Diagram.BrowserImage")]
+	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "Diagram.MenuDisplayName", "Diagram.TabImage", "Diagram.BrowserImage", NestedDiagramInitializerTypeName="DiagramInitializer")]
 	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements
 	{
+		#region DiagramInitializer class
+		/// <summary>
+		/// Perform custom initialization for newly loaded or freshly created diagram.
+		/// </summary>
+		private class DiagramInitializer : IDiagramInitialization
+		{
+			#region IDiagramInitialization Implementation
+			bool IDiagramInitialization.CreateRequiredDiagrams(Store store)
+			{
+				// Use the default implementation: create a new diagram of the given type
+				// and call InitializeDiagram.
+				return false;
+			}
+			void IDiagramInitialization.InitializeDiagram(Diagram diagram)
+			{
+				if (null == diagram.Subject)
+				{
+					Store store = diagram.Store;
+					ReadOnlyCollection<ORMModel> models = store.ElementDirectory.FindElements<ORMModel>(false);
+					if (models.Count != 0)
+					{
+						diagram.Associate(models[0]);
+					}
+				}
+				ORMDiagram ormDiagram = (ORMDiagram)diagram;
+				if (ormDiagram.AutoPopulateShapes)
+				{
+					ormDiagram.AutoPopulateShapes = false;
+					ORMDesignerCommandManager.AutoLayoutDiagram(diagram, diagram.NestedChildShapes, true);
+				}
+			}
+			#endregion // IDiagramInitialization Implementation
+		}
+		#endregion // DiagramInitializer class
 		#region Constructors
 		/// <summary>Constructor.</summary>
 		/// <param name="store"><see cref="Store"/> where new element is to be created.</param>
@@ -146,7 +180,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			Store store = Store;
 			Guid startTransactionId = store.UndoManager.TopmostUndoableTransaction;
-			if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition, ORMPlacementOption.AllowMultipleShapes, null, null))
+			if (PlaceORMElementOnDiagram(dataObject, null, e.MousePosition, ORMPlacementOption.CreateNewShape, null, null))
 			{
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
@@ -255,11 +289,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <param name="dataObject">The dataObject containing the element to place. If this is set, elementToPlace must be null.</param>
 		/// <param name="elementToPlace">The the element to place. If this is set, dataObject must be null.</param>
 		/// <param name="elementPosition">An initial position for the element</param>
-		/// <param name="placementOptions">Controls the actions by this method</param>
+		/// <param name="placementOption">Controls the actions by this method</param>
 		/// <param name="beforeStandardFixupCallback">A <see cref="FixupNewShape"/> callback used to configure the shape before standard processing is applied</param>
 		/// <param name="afterStandardFixupCallback">A <see cref="FixupNewShape"/> callback used to configure the shape after standard processing is applied</param>
 		/// <returns>true if the element was placed</returns>
-		public bool PlaceORMElementOnDiagram(IDataObject dataObject, ModelElement elementToPlace, PointD elementPosition, ORMPlacementOption placementOptions, FixupNewShape beforeStandardFixupCallback, FixupNewShape afterStandardFixupCallback)
+		public bool PlaceORMElementOnDiagram(IDataObject dataObject, ModelElement elementToPlace, PointD elementPosition, ORMPlacementOption placementOption, FixupNewShape beforeStandardFixupCallback, FixupNewShape afterStandardFixupCallback)
 		{
 			Debug.Assert((dataObject == null) ^ (elementToPlace == null), "Pass in dataObject or elementToPlace");
 			bool retVal = false;
@@ -344,10 +378,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						DropTargetContext.Set(transaction.TopLevelTransaction, Id, elementPosition, null);
 					}
-					Dictionary<object, object> topLevelContextInfo = transaction.TopLevelTransaction.Context.ContextInfo;
-					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
+					Dictionary<object, object> topLevelContextInfo = null;
+					object placementKey;
+					switch (placementOption)
 					{
-						topLevelContextInfo.Add(MultiShapeUtility.AllowMultipleShapes, null);
+						case ORMPlacementOption.AllowMultipleShapes:
+							placementKey = MultiShapeUtility.AllowMultipleShapes;
+							break;
+						case ORMPlacementOption.CreateNewShape:
+							placementKey = MultiShapeUtility.ForceMultipleShapes;
+							break;
+						default:
+							placementKey = null;
+							break;
+					}
+					if (placementKey != null)
+					{
+						(topLevelContextInfo = transaction.TopLevelTransaction.Context.ContextInfo).Add(placementKey, null);
 					}
 					IDictionary<Guid, ModelElement> integratedElements = null;
 					if (crossStoreCopy)
@@ -428,9 +475,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							afterStandardFixupCallback(element, shapeElement);
 						}
 					}
-					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
+					if (placementKey != null)
 					{
-						topLevelContextInfo.Remove(MultiShapeUtility.AllowMultipleShapes);
+						topLevelContextInfo.Remove(placementKey);
 					}
 					if (transaction.HasPendingChanges)
 					{
@@ -438,7 +485,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						storeChange = true;
 					}
 				}
-				if (!storeChange && placementOptions == ORMPlacementOption.SelectIfNotPlaced)
+				if (!storeChange && placementOption == ORMPlacementOption.SelectIfNotPlaced)
 				{
 					DiagramView selectOnView = ActiveDiagramView;
 					ShapeElement shape = null;
@@ -463,10 +510,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		/// <param name="elementToPlace">The the element to place.</param>
 		/// <param name="elementPosition">An initial position for the element</param>
-		/// <param name="placementOptions">Controls the actions by this method</param>
+		/// <param name="placementOption">Controls the actions by this method</param>
 		/// <param name="fixupShapeCallback">A <see cref="FixupNewShape"/> callback used to configure the shape</param>
 		/// <returns>true if the element was placed</returns>
-		public bool PlaceElementOnDiagram(ModelElement elementToPlace, PointD elementPosition, ORMPlacementOption placementOptions, FixupNewShape fixupShapeCallback)
+		public bool PlaceElementOnDiagram(ModelElement elementToPlace, PointD elementPosition, ORMPlacementOption placementOption, FixupNewShape fixupShapeCallback)
 		{
 			bool retVal = false;
 			if (elementToPlace != null)
@@ -478,10 +525,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						DropTargetContext.Set(transaction.TopLevelTransaction, Id, elementPosition, null);
 					}
-					Dictionary<object, object> topLevelContextInfo = transaction.TopLevelTransaction.Context.ContextInfo;
-					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
+					Dictionary<object, object> topLevelContextInfo = null;
+					object placementKey;
+					switch (placementOption)
 					{
-						topLevelContextInfo.Add(MultiShapeUtility.AllowMultipleShapes, null);
+						case ORMPlacementOption.AllowMultipleShapes:
+							placementKey = MultiShapeUtility.AllowMultipleShapes;
+							break;
+						case ORMPlacementOption.CreateNewShape:
+							placementKey = MultiShapeUtility.ForceMultipleShapes;
+							break;
+						default:
+							placementKey = null;
+							break;
+					}
+					if (placementKey != null)
+					{
+						(topLevelContextInfo = transaction.TopLevelTransaction.Context.ContextInfo).Add(placementKey, null);
 					}
 					ShapeElement shapeElement = FixUpLocalDiagram(elementToPlace);
 					if (clearContext)
@@ -492,9 +552,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						fixupShapeCallback(elementToPlace, shapeElement);
 					}
-					if (placementOptions == ORMPlacementOption.AllowMultipleShapes)
+					if (placementKey != null)
 					{
-						topLevelContextInfo.Remove(MultiShapeUtility.AllowMultipleShapes);
+						topLevelContextInfo.Remove(placementKey);
 					}
 					if (transaction.HasPendingChanges)
 					{
@@ -502,7 +562,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						retVal = true;
 					}
 				}
-				if (!retVal && placementOptions == ORMPlacementOption.SelectIfNotPlaced)
+				if (!retVal && placementOption == ORMPlacementOption.SelectIfNotPlaced)
 				{
 					DiagramView selectOnView = ActiveDiagramView;
 					ShapeElement shape = null;
@@ -1442,25 +1502,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			return null;
 		}
-		///// <summary>
-		///// Locate all existing shapes on this diagram corresponding to this element
-		///// </summary>
-		///// <param name="element">The element to search</param>
-		///// <returns>An IEnumerable for enumeration through all existing shapes</returns>
-		//public IEnumerable<ShapeElement> FindAllShapesForElement(ModelElement element)
-		//{
-		//    return FindAllShapesForElement<ShapeElement>(element, false);
-		//}
-		///// <summary>
-		///// Locate all existing shapes on this diagram corresponding to this element
-		///// </summary>
-		///// <param name="element">The element to search</param>
-		///// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true</param>
-		///// <returns>An IEnumerable for enumeration through all existing shapes</returns>
-		//public IEnumerable<ShapeElement> FindAllShapesForElement(ModelElement element, bool filterDeleting)
-		//{
-		//    return FindAllShapesForElement<ShapeElement>(element, filterDeleting);
-		//}
 		/// <summary>
 		/// Determines if an element has a shape on this diagram.
 		/// </summary>
@@ -1491,14 +1532,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			base.OnInitialize();
 			this.RoutingStyle = VGRoutingStyle.VGRouteNone;
-			if (this.Subject == null)
-			{
-				ReadOnlyCollection<ORMModel> modelElements = this.Store.DefaultPartition.ElementDirectory.FindElements<ORMModel>();
-				if (modelElements.Count > 0)
-				{
-					this.Associate(modelElements[0]);
-				}
-			}
 		}
 		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
 		public override ShapeElement FixUpChildShapes(ModelElement childElement)
@@ -3441,9 +3474,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		SelectIfNotPlaced = 1,
 		/// <summary>
-		/// Always add a new <see cref="ShapeElement"/> for the <see cref="ModelElement"/>.
+		/// Allow addition of a new <see cref="ShapeElement"/> for the <see cref="ModelElement"/>.
 		/// </summary>
 		AllowMultipleShapes = 2,
+		/// <summary>
+		/// Force create of a new <see cref="ShapeElement"/> for the <see cref="ModelElement"/>
+		/// </summary>
+		CreateNewShape = 3,
 	}
 	#endregion // ORMPlacementOption enum
 	#region ORMDiagramBase class

@@ -46,10 +46,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			resources.ApplyResources(this.lvExtensions, "lvExtensions");
 			this.lvExtensions.CheckBoxes = true;
 			this.lvExtensions.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-			this.columnHeader4,
-			this.columnHeader5,
-			this.columnHeader6});
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6});
 			this.lvExtensions.Name = "lvExtensions";
+			this.lvExtensions.ShowItemToolTips = true;
 			this.lvExtensions.UseCompatibleStateImageBehavior = false;
 			this.lvExtensions.View = System.Windows.Forms.View.Details;
 			// 

@@ -1063,6 +1063,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		/// <summary>
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AutoLayoutShapesRulePriority;
+		/// </summary>
+		private static void SubtypeDerivationRuleChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid propertyId = e.DomainProperty.Id;
+			if (propertyId == SubtypeDerivationRule.DerivationCompletenessDomainPropertyId ||
+				propertyId == SubtypeDerivationRule.DerivationStorageDomainPropertyId)
+			{
+				SubtypeDerivationRule derivationRule = (SubtypeDerivationRule)e.ModelElement;
+				ObjectType subtype;
+				if (!derivationRule.IsDeleted &&
+					null != (subtype = derivationRule.Subtype))
+				{
+					ResizeAssociatedShapes(subtype);
+				}
+			}
+		}
+		/// <summary>
 		/// ChangeRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.ObjectTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 		/// </summary>
 		private static void ConnectionPropertyChangeRule(ElementPropertyChangedEventArgs e)
@@ -1234,7 +1252,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					else if (objectType.DerivationRule != null && objectType.IsSubtype) // Note that subtypes are never independent
 					{
-						retVal = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ObjectTypeShapeDerivedSubtypeFormatString, retVal);
+						string derivationDecorator = null;
+						switch (objectType.DerivationStorageDisplay)
+						{
+							case DerivationExpressionStorageType.Derived:
+								derivationDecorator = ResourceStrings.ObjectTypeShapeDerivationDecoratorFullyDerived;
+								break;
+							case DerivationExpressionStorageType.DerivedAndStored:
+								derivationDecorator = ResourceStrings.ObjectTypeShapeDerivationDecoratorFullyDerivedAndStored;
+								break;
+							case DerivationExpressionStorageType.PartiallyDerived:
+								derivationDecorator = ResourceStrings.ObjectTypeShapeDerivationDecoratorPartiallyDerived;
+								break;
+							case DerivationExpressionStorageType.PartiallyDerivedAndStored:
+								derivationDecorator = ResourceStrings.ObjectTypeShapeDerivationDecoratorPartiallyDerivedAndStored;
+								break;
+						}
+						if (derivationDecorator != null)
+						{
+							retVal = string.Format(CultureInfo.InvariantCulture, derivationDecorator, retVal);
+						}
 					}
 				}
 				return retVal;

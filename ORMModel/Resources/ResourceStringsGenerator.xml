@@ -399,17 +399,30 @@
 	<ResourceString name="ValueConstraintValueDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.ValueDelimiter"/>
 	<ResourceString name="ValueConstraintValueRangeRegexPattern" model="Model" resourceName="ObjectModel.ValueConstraint.ValueRangeRegexPattern"/>
 	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhrases" model="Model" resourceName="ModelError.RecognizedPhrase.DuplicateNameError.Message"/>
-	<ResourceString name="ObjectTypeShapeDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectTypeShape.DerivedSubtypeFormatString"/>
+	<ResourceString name="ObjectTypeShapeDerivationDecoratorFullyDerived" model="Diagram" resourceName="ObjectTypeShape.DerivationDecoratorFullyDerived"/>
+	<ResourceString name="ObjectTypeShapeDerivationDecoratorFullyDerivedAndStored" model="Diagram" resourceName="ObjectTypeShape.DerivationDecoratorFullyDerivedAndStored"/>
+	<ResourceString name="ObjectTypeShapeDerivationDecoratorPartiallyDerived" model="Diagram" resourceName="ObjectTypeShape.DerivationDecoratorPartiallyDerived"/>
+	<ResourceString name="ObjectTypeShapeDerivationDecoratorPartiallyDerivedAndStored" model="Diagram" resourceName="ObjectTypeShape.DerivationDecoratorPartiallyDerivedAndStored"/>
 	<ResourceString name="ObjectTypeShapeIndependentFormatString" model="Diagram" resourceName="ObjectTypeShape.IndependentFormatString"/>
 	<ResourceString name="ObjectTypeShapeReferenceModeFormatString" model="Diagram" resourceName="ObjectTypeShape.ReferenceModeFormatString"/>
-	<ResourceString name="ObjectifiedFactTypeNameShapeDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.DerivedSubtypeFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeDerivationDecoratorFullyDerived" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.DerivationDecoratorFullyDerived"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeDerivationDecoratorFullyDerivedAndStored" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.DerivationDecoratorFullyDerivedAndStored"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeDerivationDecoratorPartiallyDerived" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.DerivationDecoratorPartiallyDerived"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeDerivationDecoratorPartiallyDerivedAndStored" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.DerivationDecoratorPartiallyDerivedAndStored"/>
 	<ResourceString name="ObjectifiedFactTypeNameShapeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.IndependentFormatString"/>
-	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeDerivedSubtypeFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeFullyDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeFullyDerivedSubtypeFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeFullyDerivedAndStoredSubtypeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeFullyDerivedAndStoredSubtypeFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeRefModePartiallyDerivedSubtypeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModePartiallyDerivedSubtypeFormatString"/>
+	<ResourceString name="ObjectifiedFactTypeNameShapeRefModePartiallyDerivedAndStoredSubtypeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModePartiallyDerivedAndStoredSubtypeFormatString"/>
 	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeIndependentFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeIndependentFormatString"/>
 	<ResourceString name="ObjectifiedFactTypeNameShapeRefModeFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.RefModeFormatString"/>
 	<ResourceString name="ObjectifiedFactTypeNameShapeStandardFormatString" model="Diagram" resourceName="ObjectifiedFactTypeNameShape.StandardFormatString"/>
 	<ResourceString name="ReadingShapeReadingSeparator" model="Diagram" resourceName="ReadingShape.ReadingSeparator"/>
 	<ResourceString name="ReadingShapeEllipsis" model="Diagram" resourceName="ReadingShape.Ellipsis"/>
+	<ResourceString name="ReadingShapeDerivationDecoratorFullyDerived" model="Diagram" resourceName="ReadingShape.DerivationDecoratorFullyDerived"/>
+	<ResourceString name="ReadingShapeDerivationDecoratorFullyDerivedAndStored" model="Diagram" resourceName="ReadingShape.DerivationDecoratorFullyDerivedAndStored"/>
+	<ResourceString name="ReadingShapeDerivationDecoratorPartiallyDerived" model="Diagram" resourceName="ReadingShape.DerivationDecoratorPartiallyDerived"/>
+	<ResourceString name="ReadingShapeDerivationDecoratorPartiallyDerivedAndStored" model="Diagram" resourceName="ReadingShape.DerivationDecoratorPartiallyDerivedAndStored"/>
 	<ResourceString name="ReadingShapeAttachedRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedRoleDisplay"/>
 	<ResourceString name="ReadingShapeAttachedDuplicateRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedDuplicateRoleDisplay"/>
 	<ResourceString name="ReadingShapeUnattachedRoleDisplay" model="Diagram" resourceName="ReadingShape.UnattachedRoleDisplay"/>

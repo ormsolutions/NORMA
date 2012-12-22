@@ -132,13 +132,13 @@
     <value>Name</value>
   </data>
   <data name="columnHeader5.Width" type="System.Int32, mscorlib">
-    <value>155</value>
+    <value>257</value>
   </data>
   <data name="columnHeader6.Text" xml:space="preserve">
     <value>Description</value>
   </data>
   <data name="columnHeader6.Width" type="System.Int32, mscorlib">
-    <value>325</value>
+    <value>370</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lvExtensions.Location" type="System.Drawing.Point, System.Drawing">

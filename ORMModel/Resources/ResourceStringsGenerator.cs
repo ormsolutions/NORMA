@@ -2795,12 +2795,36 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RecognizedPhrase.DuplicateNameError.Message");
 			}
 		}
-		/// <summary>The string used to display that a subtype object is derived.</summary>
-		public static string ObjectTypeShapeDerivedSubtypeFormatString
+		/// <summary>The string used to display that a subtype object is fully derived.</summary>
+		public static string ObjectTypeShapeDerivationDecoratorFullyDerived
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.DerivedSubtypeFormatString");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.DerivationDecoratorFullyDerived");
+			}
+		}
+		/// <summary>The string used to display that a subtype object is fully derived and stored.</summary>
+		public static string ObjectTypeShapeDerivationDecoratorFullyDerivedAndStored
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.DerivationDecoratorFullyDerivedAndStored");
+			}
+		}
+		/// <summary>The string used to display that a subtype object is partially derived.</summary>
+		public static string ObjectTypeShapeDerivationDecoratorPartiallyDerived
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.DerivationDecoratorPartiallyDerived");
+			}
+		}
+		/// <summary>The string used to display that a subtype object is partially derived and stored.</summary>
+		public static string ObjectTypeShapeDerivationDecoratorPartiallyDerivedAndStored
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.DerivationDecoratorPartiallyDerivedAndStored");
 			}
 		}
 		/// <summary>The string used to display that an object is independent.</summary>
@@ -2819,12 +2843,36 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectTypeShape.ReferenceModeFormatString");
 			}
 		}
-		/// <summary>The string used to display an objectified type that is a derived subtype.</summary>
-		public static string ObjectifiedFactTypeNameShapeDerivedSubtypeFormatString
+		/// <summary>The string used to display an objectified type that is a fully derived subtype.</summary>
+		public static string ObjectifiedFactTypeNameShapeDerivationDecoratorFullyDerived
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.DerivedSubtypeFormatString");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.DerivationDecoratorFullyDerived");
+			}
+		}
+		/// <summary>The string used to display an objectified type that is a fully derived and stored subtype.</summary>
+		public static string ObjectifiedFactTypeNameShapeDerivationDecoratorFullyDerivedAndStored
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.DerivationDecoratorFullyDerivedAndStored");
+			}
+		}
+		/// <summary>The string used to display an objectified type that is a partially derived subtype.</summary>
+		public static string ObjectifiedFactTypeNameShapeDerivationDecoratorPartiallyDerived
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.DerivationDecoratorPartiallyDerived");
+			}
+		}
+		/// <summary>The string used to display an objectified type that is a partially derived and stored subtype.</summary>
+		public static string ObjectifiedFactTypeNameShapeDerivationDecoratorPartiallyDerivedAndStored
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.DerivationDecoratorPartiallyDerivedAndStored");
 			}
 		}
 		/// <summary>The string used to display an objectified type name for an independent object.</summary>
@@ -2835,12 +2883,36 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.IndependentFormatString");
 			}
 		}
-		/// <summary>The string used to display an objectified type name for an derived subtype with a reference mode.</summary>
-		public static string ObjectifiedFactTypeNameShapeRefModeDerivedSubtypeFormatString
+		/// <summary>The string used to display an objectified type name for a fully derived subtype with a reference mode.</summary>
+		public static string ObjectifiedFactTypeNameShapeRefModeFullyDerivedSubtypeFormatString
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModeDerivedSubtypeFormatString");
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModeFullyDerivedSubtypeFormatString");
+			}
+		}
+		/// <summary>The string used to display an objectified type name for a fully derived and stored subtype with a reference mode.</summary>
+		public static string ObjectifiedFactTypeNameShapeRefModeFullyDerivedAndStoredSubtypeFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModeFullyDerivedAndStoredSubtypeFormatString");
+			}
+		}
+		/// <summary>The string used to display an objectified type name for a partiall derived subtype with a reference mode.</summary>
+		public static string ObjectifiedFactTypeNameShapeRefModePartiallyDerivedSubtypeFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModePartiallyDerivedSubtypeFormatString");
+			}
+		}
+		/// <summary>The string used to display an objectified type name for a partially derived and stored subtype with a reference mode.</summary>
+		public static string ObjectifiedFactTypeNameShapeRefModePartiallyDerivedAndStoredSubtypeFormatString
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ObjectifiedFactTypeNameShape.RefModePartiallyDerivedAndStoredSubtypeFormatString");
 			}
 		}
 		/// <summary>The string used to display an objectified type name for an independent object with a reference mode.</summary>
@@ -2881,6 +2953,38 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.Ellipsis");
+			}
+		}
+		/// <summary>The format string used to display an indicator for a fully derived (not stored) fact type.</summary>
+		public static string ReadingShapeDerivationDecoratorFullyDerived
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.DerivationDecoratorFullyDerived");
+			}
+		}
+		/// <summary>The format string used to display an indicator for a fully derived and stored fact type.</summary>
+		public static string ReadingShapeDerivationDecoratorFullyDerivedAndStored
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.DerivationDecoratorFullyDerivedAndStored");
+			}
+		}
+		/// <summary>The format string used to display an indicator for a partially derived (not stored) fact type.</summary>
+		public static string ReadingShapeDerivationDecoratorPartiallyDerived
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.DerivationDecoratorPartiallyDerived");
+			}
+		}
+		/// <summary>The format string used to display an indicator for a partially derived and stored fact type.</summary>
+		public static string ReadingShapeDerivationDecoratorPartiallyDerivedAndStored
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ReadingShape.DerivationDecoratorPartiallyDerivedAndStored");
 			}
 		}
 		/// <summary>The string used to display a reading with a non-primary order when the role is attached.</summary>
