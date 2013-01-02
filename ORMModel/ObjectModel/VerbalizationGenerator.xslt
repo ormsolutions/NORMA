@@ -745,10 +745,56 @@
 														</plx:binaryOperator>
 													</plx:condition>
 													<plx:left>
-														<plx:callStatic name="FullFactTypeDerivation" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+														<plx:inlineStatement dataTypeName="CoreVerbalizationSnippetType">
+															<plx:conditionalOperator>
+																<plx:condition>
+																	<plx:binaryOperator type="equality">
+																		<plx:left>
+																			<plx:callInstance name="DerivationStorage" type="property">
+																				<plx:callObject>
+																					<plx:nameRef name="derivationRule"/>
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:left>
+																		<plx:right>
+																			<plx:callStatic name="Stored" type="field" dataTypeName="DerivationStorage"/>
+																		</plx:right>
+																	</plx:binaryOperator>
+																</plx:condition>
+																<plx:left>
+																	<plx:callStatic name="FullFactTypeStoredDerivation" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+																</plx:left>
+																<plx:right>
+																	<plx:callStatic name="FullFactTypeDerivation" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+																</plx:right>
+															</plx:conditionalOperator>
+														</plx:inlineStatement>
 													</plx:left>
 													<plx:right>
-														<plx:callStatic name="PartialFactTypeDerivation" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+														<plx:inlineStatement dataTypeName="CoreVerbalizationSnippetType">
+															<plx:conditionalOperator>
+																<plx:condition>
+																	<plx:binaryOperator type="equality">
+																		<plx:left>
+																			<plx:callInstance name="DerivationStorage" type="property">
+																				<plx:callObject>
+																					<plx:nameRef name="derivationRule"/>
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:left>
+																		<plx:right>
+																			<plx:callStatic name="Stored" type="field" dataTypeName="DerivationStorage"/>
+																		</plx:right>
+																	</plx:binaryOperator>
+																</plx:condition>
+																<plx:left>
+																	<plx:callStatic name="PartialFactTypeStoredDerivation" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+																</plx:left>
+																<plx:right>
+																	<plx:callStatic name="PartialFactTypeDerivation" type="field" dataTypeName="CoreVerbalizationSnippetType"/>
+																</plx:right>
+															</plx:conditionalOperator>
+														</plx:inlineStatement>
 													</plx:right>
 												</plx:conditionalOperator>
 											</plx:inlineStatement>
@@ -851,12 +897,18 @@
 						<xsl:with-param name="TopLevel" select="true()"/>
 					</xsl:apply-templates>
 				</plx:fallbackBranch>
-				<plx:pragma type="closeRegion" data="Pattern Matches"/>
 				<xsl:call-template name="CheckErrorConditions">
 					<xsl:with-param name="Primary" select="false()"/>
 					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
 					<xsl:with-param name="BeginVerbalization" select="true()"/>
 				</xsl:call-template>
+				<!-- Pick up other associated phrases associated with the fact type. -->
+				<xsl:apply-templates select="child::cvg:*" mode="ConstraintVerbalization">
+					<xsl:with-param name="TopLevel" select="true()"/>
+					<!-- Verbalize as secondary snippets. Verbalization has already begun. -->
+					<xsl:with-param name="IsSecondary" select="true()"/>
+				</xsl:apply-templates>
+				<plx:pragma type="closeRegion" data="Pattern Matches"/>
 				<plx:return>
 					<plx:trueKeyword/>
 				</plx:return>
@@ -5578,6 +5630,7 @@
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'variableSnippet'"/>
 		<xsl:param name="TopLevel" select="false()"/>
+		<xsl:param name="IsSecondary" select="false()"/>
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
@@ -5595,6 +5648,7 @@
 			<xsl:with-param name="VariableDecorator" select="$VariableDecorator"/>
 			<xsl:with-param name="VariablePrefix" select="$VariablePrefix"/>
 			<xsl:with-param name="TopLevel" select="$TopLevel"/>
+			<xsl:with-param name="IsSecondary" select="$IsSecondary"/>
 			<xsl:with-param name="IteratorContext" select="$IteratorContext"/>
 			<xsl:with-param name="IteratorVariableName" select="$IteratorVariableName"/>
 			<xsl:with-param name="PatternGroup" select="$PatternGroup"/>
@@ -5932,6 +5986,7 @@
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="''"/>
 		<xsl:param name="TopLevel" select="false()"/>
+		<xsl:param name="IsSecondary" select="false()"/>
 		<xsl:param name="IteratorContext" select="''"/>
 		<xsl:param name="IteratorVariableName" select="''"/>
 		<xsl:param name="PatternGroup"/>
@@ -5972,10 +6027,10 @@
 		<xsl:call-template name="ConditionalBlockContext"/>
 		<xsl:if test="$TopLevel">
 			<xsl:choose>
-				<xsl:when test="position()&gt;1">
+				<xsl:when test="position()&gt;1 or $IsSecondary">
 					<xsl:variable name="precedingConditions" select="preceding-sibling::*[@conditionalMatch]"/>
 					<xsl:choose>
-						<xsl:when test="position()-1=count($precedingConditions)">
+						<xsl:when test="(position()!=1) and (position()-1=count($precedingConditions))">
 							<xsl:variable name="expandedConditionsFragment">
 								<xsl:for-each select="$precedingConditions">
 									<xsl:call-template name="ConditionalMatchCondition">
@@ -6020,14 +6075,16 @@
 			</xsl:choose>
 		</xsl:if>
 
-		<plx:local name="{$useVariablePrefix}{$FormatVariablePart}{$VariableDecorator}" dataTypeName=".string">
-			<plx:initialize>
-				<xsl:call-template name="SnippetFor">
-					<xsl:with-param name="SnippetType" select="@ref"/>
-					<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
-				</xsl:call-template>
-			</plx:initialize>
-		</plx:local>
+		<xsl:if test="not(self::cvg:ConditionalSnippet and not($ReplacementContents))">
+			<plx:local name="{$useVariablePrefix}{$FormatVariablePart}{$VariableDecorator}" dataTypeName=".string">
+				<plx:initialize>
+					<xsl:call-template name="SnippetFor">
+						<xsl:with-param name="SnippetType" select="@ref"/>
+						<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
+					</xsl:call-template>
+				</plx:initialize>
+			</plx:local>
+		</xsl:if>
 		<xsl:for-each select="$ReplacementContents">
 			<plx:local name="{$useVariablePrefix}{$VariableDecorator}{$ReplaceVariablePart}{position()}" dataTypeName=".string">
 				<plx:initialize>
@@ -6045,60 +6102,70 @@
 		</xsl:for-each>
 		<xsl:if test="not($byPassTopLevel)">
 			<xsl:variable name="formatCall">
-				<xsl:variable name="useOutdentFormatter" select="boolean(cvg:IterateSequences[@listStyle='null'][cvg:SequenceJoinPath[@markTrailingOutdentStart='true' or @markTrailingOutdentStart='1']] or self::*[@applyTrailingOutdentHere='true' or @applyTrailingOutdentHere='1'])"/>
-				<plx:callStatic name="Format" dataTypeName=".string">
-					<xsl:if test="$useOutdentFormatter">
-						<xsl:attribute name="name">
-							<xsl:text>FormatResolveOutdent</xsl:text>
-						</xsl:attribute>
-						<xsl:attribute name="dataTypeName">
-							<xsl:text>RolePathVerbalizer</xsl:text>
-						</xsl:attribute>
-					</xsl:if>
-					<plx:passParam>
-						<plx:callInstance name="FormatProvider" type="property">
-							<plx:callObject>
-								<plx:nameRef type="parameter" name="writer"/>
-							</plx:callObject>
-						</plx:callInstance>
-					</plx:passParam>
-					<xsl:if test="$useOutdentFormatter">
-						<plx:passParam>
-							<plx:nullKeyword/>
-						</plx:passParam>
-						<plx:passParam>
-							<plx:callInstance name="NewLine" type="property">
-								<plx:callObject>
-									<plx:nameRef type="parameter" name="writer"/>
-								</plx:callObject>
-							</plx:callInstance>
-						</plx:passParam>
-					</xsl:if>
-					<plx:passParam>
-						<plx:nameRef name="{$useVariablePrefix}{$FormatVariablePart}{$VariableDecorator}"/>
-					</plx:passParam>
-					<xsl:if test="$InjectSnippetFormatArgument">
-						<plx:passParam>
-							<xsl:copy-of select="$InjectSnippetFormatArgument"/>
-						</plx:passParam>
-					</xsl:if>
-					<xsl:choose>
-						<xsl:when test="$ReplacementContents">
-							<xsl:for-each select="$ReplacementContents">
+				<xsl:choose>
+					<xsl:when test="self::cvg:ConditionalSnippet and not($ReplacementContents)">
+						<xsl:call-template name="SnippetFor">
+							<xsl:with-param name="SnippetType" select="@ref"/>
+							<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:variable name="useOutdentFormatter" select="boolean(cvg:IterateSequences[@listStyle='null'][cvg:SequenceJoinPath[@markTrailingOutdentStart='true' or @markTrailingOutdentStart='1']] or self::*[@applyTrailingOutdentHere='true' or @applyTrailingOutdentHere='1'])"/>
+						<plx:callStatic name="Format" dataTypeName=".string">
+							<xsl:if test="$useOutdentFormatter">
+								<xsl:attribute name="name">
+									<xsl:text>FormatResolveOutdent</xsl:text>
+								</xsl:attribute>
+								<xsl:attribute name="dataTypeName">
+									<xsl:text>RolePathVerbalizer</xsl:text>
+								</xsl:attribute>
+							</xsl:if>
+							<plx:passParam>
+								<plx:callInstance name="FormatProvider" type="property">
+									<plx:callObject>
+										<plx:nameRef type="parameter" name="writer"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:passParam>
+							<xsl:if test="$useOutdentFormatter">
 								<plx:passParam>
-									<plx:nameRef name="{$useVariablePrefix}{$VariableDecorator}{$ReplaceVariablePart}{position()}"/>
+									<plx:nullKeyword/>
 								</plx:passParam>
-							</xsl:for-each>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:for-each select="child::*">
 								<plx:passParam>
-									<plx:nameRef name="{$useVariablePrefix}{$VariableDecorator}{$ReplaceVariablePart}{position()}"/>
+									<plx:callInstance name="NewLine" type="property">
+										<plx:callObject>
+											<plx:nameRef type="parameter" name="writer"/>
+										</plx:callObject>
+									</plx:callInstance>
 								</plx:passParam>
-							</xsl:for-each>
-						</xsl:otherwise>
-					</xsl:choose>
-				</plx:callStatic>
+							</xsl:if>
+							<plx:passParam>
+								<plx:nameRef name="{$useVariablePrefix}{$FormatVariablePart}{$VariableDecorator}"/>
+							</plx:passParam>
+							<xsl:if test="$InjectSnippetFormatArgument">
+								<plx:passParam>
+									<xsl:copy-of select="$InjectSnippetFormatArgument"/>
+								</plx:passParam>
+							</xsl:if>
+							<xsl:choose>
+								<xsl:when test="$ReplacementContents">
+									<xsl:for-each select="$ReplacementContents">
+										<plx:passParam>
+											<plx:nameRef name="{$useVariablePrefix}{$VariableDecorator}{$ReplaceVariablePart}{position()}"/>
+										</plx:passParam>
+									</xsl:for-each>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:for-each select="child::*">
+										<plx:passParam>
+											<plx:nameRef name="{$useVariablePrefix}{$VariableDecorator}{$ReplaceVariablePart}{position()}"/>
+										</plx:passParam>
+									</xsl:for-each>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:callStatic>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:variable>
 			<xsl:choose>
 				<xsl:when test="$TopLevel">
@@ -8626,6 +8693,34 @@
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>
+				<xsl:when test="$ConditionalMatch='HasStoredDerivationRule'">
+					<plx:binaryOperator type="booleanAnd">
+						<plx:left>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:nameRef name="derivationRule"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="equality">
+								<plx:left>
+									<plx:callInstance name="DerivationStorage" type="property">
+										<plx:callObject>
+											<plx:nameRef name="derivationRule"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic dataTypeName="DerivationStorage" name="Stored" type="field"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
 				<xsl:when test="$ConditionalMatch='DerivationRuleIsPartial'">
 					<plx:binaryOperator type="equality">
 						<plx:left>
@@ -8637,6 +8732,52 @@
 						</plx:left>
 						<plx:right>
 							<plx:callStatic dataTypeName="DerivationCompleteness" name="PartiallyDerived" type="field"/>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='DerivationRuleIsStored'">
+					<plx:binaryOperator type="equality">
+						<plx:left>
+							<plx:callInstance name="DerivationStorage" type="property">
+								<plx:callObject>
+									<plx:nameRef name="derivationRule"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:callStatic dataTypeName="DerivationStorage" name="Stored" type="field"/>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='DerivationRuleIsPartialAndStored'">
+					<plx:binaryOperator type="booleanAnd">
+						<plx:left>
+							<plx:binaryOperator type="equality">
+								<plx:left>
+									<plx:callInstance name="DerivationCompleteness" type="property">
+										<plx:callObject>
+											<plx:nameRef name="derivationRule"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic dataTypeName="DerivationCompleteness" name="PartiallyDerived" type="field"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="equality">
+								<plx:left>
+									<plx:callInstance name="DerivationStorage" type="property">
+										<plx:callObject>
+											<plx:nameRef name="derivationRule"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic dataTypeName="DerivationStorage" name="Stored" type="field"/>
+								</plx:right>
+							</plx:binaryOperator>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>

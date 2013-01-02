@@ -91,9 +91,17 @@ You must not remove this notice, or any other, from this software.
 
 			<!-- Snippets related to derivation rules and join paths -->
 			<Snippet type="FullFactTypeDerivation"><![CDATA[<span class="quantifier">*</span>{0} <span class="quantifier">if and only if</span><br/>{1}<br/>]]></Snippet>
-			<Snippet type="PartialFactTypeDerivation"><![CDATA[<span class="quantifier">+</span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
+			<Snippet type="FullFactTypeStoredDerivation"><![CDATA[<span class="quantifier">**</span>{0} <span class="quantifier">if and only if</span><br/>{1}<br/>]]></Snippet>
+			<Snippet type="FullStoredFactTypeDescription"><![CDATA[<span class="indent"><span class="quantifier">instances of this fact type are stored immediately after they are derived</span></span>]]></Snippet>
+			<Snippet type="PartialFactTypeDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">+</sup></span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
+			<Snippet type="PartialFactTypeStoredDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">++</sup></span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
+			<Snippet type="PartialStoredFactTypeDescription"><![CDATA[<span class="indent"><span class="quantifier">derived instances of this fact type are also stored immediately after they are derived</span></span>]]></Snippet>
 			<Snippet type="FullSubtypeDerivation"><![CDATA[<span class="quantifier">*Each</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
-			<Snippet type="PartialSubtypeDerivation"><![CDATA[<span class="quantifier">+Each derived</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
+			<Snippet type="FullSubtypeStoredDerivation"><![CDATA[<span class="quantifier">**Each</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
+			<Snippet type="FullStoredSubtypeDescription"><![CDATA[<span class="smallIndent"><span class="quantifier">instances of this subtype are stored immediately after they are derived</span></span>]]></Snippet>
+			<Snippet type="PartialSubtypeDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">+</sup>each derived</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
+			<Snippet type="PartialSubtypeStoredDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">++</sup>each derived</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
+			<Snippet type="PartialStoredSubtypeDescription"><![CDATA[<span class="smallIndent"><span class="quantifier">derived instances of this subtype are also stored immediately after they are derived</span></span>]]></Snippet>
 			<Snippet type="QueryParameterContainer"><![CDATA[<span class="quantifier">given</span> {0} ]]></Snippet>
 			<Snippet type="QueryNamedParameter"><![CDATA[{1}<span class="logicalOperator">=</span>{0}]]></Snippet>
 			<Snippet type="QueryUnnamedParameter"><![CDATA[{0}]]></Snippet>

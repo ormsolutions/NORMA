@@ -1153,10 +1153,42 @@ Format: *{0} if and only if {1}</statement>
     <containedIn />
     <usedBy />
   </snippet>
+  <snippet name="FullFactTypeStoredDerivation" replacementCount="2">
+    <statement>Description: Used to specify a fully derived (and stored) fact type with its derivation rule.
+Format: **{0} if and only if {1}</statement>
+    <unformattedSnippet>**{0} if and only if{1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FullStoredFactTypeDescription" replacementCount="0">
+    <statement>Description: A textual specification of stored derivation for a fully derived fact type.
+instances of this fact type are stored immediately after they are derived</statement>
+    <unformattedSnippet>instances of this fact type are stored immediately after they are derived</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FullStoredSubtypeDescription" replacementCount="0">
+    <statement>Description: A textual specification of stored derivation for a fully derived subtype.
+instances of this subtype are stored immediately after they are derived</statement>
+    <unformattedSnippet>instances of this subtype are stored immediately after they are derived</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="FullSubtypeDerivation" replacementCount="2">
     <statement>Description: Used to specify a fully derived subtype derivation rule.
 Format: *each {0} is {1}</statement>
     <unformattedSnippet>*Each {0} is {1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="FullSubtypeStoredDerivation" replacementCount="2">
+    <statement>Description: Used to specify a fully derived (and stored) subtype derivation rule.
+Format: **each {0} is {1}</statement>
+    <unformattedSnippet>**Each {0} is {1}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -1174,8 +1206,7 @@ Format: *each {0} is {1}</statement>
     </usedBy>
   </snippet>
   <snippet name="GroupExclusion" replacementCount="1">
-    <statement>Description: Assert group exclusion. Format: at most one of the following holds: {0}
-						</statement>
+    <statement>Description: Assert group exclusion. Format: at most one of the following holds: {0}</statement>
     <unformattedSnippet>at most one of the following holds: {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -2184,8 +2215,7 @@ Format negative: {0} occurs more than once in the same population of {1}</statem
   <snippet name="OneQuantifier" replacementCount="1">
     <statement>Description: Used for 'at most one' or 'more than one' before an object.
 Format positive: at most one {0}
-Format negative: more than one {0}
-						</statement>
+Format negative: more than one {0}</statement>
     <unformattedSnippet>at most one {0}</unformattedSnippet>
     <contains />
     <containedIn>
@@ -2286,10 +2316,42 @@ Format: +{0} if {1}</statement>
     <containedIn />
     <usedBy />
   </snippet>
+  <snippet name="PartialFactTypeStoredDerivation" replacementCount="2">
+    <statement>Description: Used to specify a partially derived (and stored) fact type with its derivation rule.
+Format: ++{0} if {1}</statement>
+    <unformattedSnippet>++{0} if{1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="PartialStoredFactTypeDescription" replacementCount="0">
+    <statement>Description: A textual specification of stored derivation for a partially derived fact type.
+derived instances of this fact type are also stored immediately after they are derived</statement>
+    <unformattedSnippet>derived instances of this fact type are also stored immediately after they are derived</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="PartialStoredSubtypeDescription" replacementCount="0">
+    <statement>Description: A textual specification of stored derivation for a partially derived subtype.
+derived instances of this subtype are also stored immediately after they are derived</statement>
+    <unformattedSnippet>derived instances of this subtype are also stored immediately after they are derived</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="PartialSubtypeDerivation" replacementCount="2">
     <statement>Description: Used to specify a partially derived subtype derivation rule.
 Format: +each derived {0} is {1}</statement>
-    <unformattedSnippet>+Each derived {0} is {1}</unformattedSnippet>
+    <unformattedSnippet>+each derived {0} is {1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="PartialSubtypeStoredDerivation" replacementCount="2">
+    <statement>Description: Used to specify a partially derived (and stored) subtype derivation rule.
+Format: ++each derived {0} is {1}</statement>
+    <unformattedSnippet>++each derived {0} is {1}</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -2412,7 +2474,7 @@ Format: {0}select {1} where {2}</statement>
   </snippet>
   <snippet name="ReferenceScheme" replacementCount="2">
     <statement>Description: Used to enclose and format a reference scheme replacement in brackets.
-							Format:	{0}({1})</statement>
+Format:	{0}({1})</statement>
     <unformattedSnippet>{0}({1})</unformattedSnippet>
     <contains />
     <containedIn>

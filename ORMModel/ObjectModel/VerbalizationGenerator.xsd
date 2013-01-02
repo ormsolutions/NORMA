@@ -617,9 +617,24 @@
 							<xs:documentation>True if there is a path-based subtype verbalization available for an object type.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
+					<xs:enumeration value="HasStoredDerivationRule">
+						<xs:annotation>
+							<xs:documentation>True if there is a derivation rule defined that has a 'stored' setting.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 					<xs:enumeration value="DerivationRuleIsPartial">
 						<xs:annotation>
 							<xs:documentation>True if a path-based derivation rule has partial derivation completeness. Assumes that a derivation rule is already defined and in context.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DerivationRuleIsStored">
+						<xs:annotation>
+							<xs:documentation>True if a path-based derivation rule is stored. Assumes that a derivation rule is already defined and in context.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DerivationRuleIsPartialAndStored">
+						<xs:annotation>
+							<xs:documentation>True if a path-based derivation rule has partial derivation completeness and is stored. Assumes that a derivation rule is already defined and in context.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
 					<xs:enumeration value="HasPortableDataType">
@@ -1425,8 +1440,12 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:attributeGroup>
-	<xs:complexType name="FactConstructType">
-		<!-- Nothing here yet, this is for the top-level verbalization of a Fact -->
+	<xs:complexType name="FactTypeConstructType">
+		<!-- Allow other secondary snippets to be included here. These come after the error reports. -->
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetTypeWithConditionalMatch" />
+		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="SnippetContainerType" abstract="true">
 		<xs:choice maxOccurs="unbounded">
@@ -2002,7 +2021,7 @@
 				<xs:element name="Constructs" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:all>
-							<xs:element name="FactType" type="FactConstructType"/>
+							<xs:element name="FactType" type="FactTypeConstructType"/>
 							<xs:element name="SubtypeFact" type="SubtypeConstructType"/>
 							<xs:element name="Constraints" type="ConstraintsConstructType"/>
 							<xs:element name="SampleInstances" type="SampleInstancesConstructType"/>

@@ -29,7 +29,12 @@
 			</Snippet>
 		</ORMModel>
 		<!-- Generate FactType verbalization along with constraints -->
-		<FactType/>
+		<FactType>
+			<ConditionalSnippet conditionalMatch="HasStoredDerivationRule">
+				<Snippet conditionalMatch="DerivationRuleIsPartial" ref="PartialStoredFactTypeDescription"/>
+				<Snippet ref="FullStoredFactTypeDescription"/>
+			</ConditionalSnippet>
+		</FactType>
 		<SubtypeFact>
 			<Snippet ref="ImpliedModalNecessityOperator" conditionalBlockContext="SubtypeFactRolePlayers">
 				<Snippet ref="SubtypeMetaReading">
@@ -80,7 +85,9 @@
 				</SnippetReplacements>
 			</ConditionalSnippet>
 			<ConditionalSnippet conditionalMatch="HasVerbalizableSubtypeDerivationPath">
+				<Snippet conditionalMatch="DerivationRuleIsPartialAndStored" ref="PartialSubtypeStoredDerivation"/>
 				<Snippet conditionalMatch="DerivationRuleIsPartial" ref="PartialSubtypeDerivation"/>
+				<Snippet conditionalMatch="DerivationRuleIsStored" ref="FullSubtypeStoredDerivation"/>
 				<Snippet ref="FullSubtypeDerivation"/>
 				<SnippetReplacements>
 					<ProvidedRolePlayer rolePlayerKey="DerivationRule"/>
@@ -114,6 +121,10 @@
 			<Snippet ref="PortableDataTypeVerbalization" conditionalMatch="HasPortableDataType">
 				<PortableDataType/>
 			</Snippet>
+			<ConditionalSnippet conditionalMatch="HasStoredDerivationRule">
+				<Snippet conditionalMatch="DerivationRuleIsPartial" ref="PartialStoredSubtypeDescription"/>
+				<Snippet ref="FullStoredSubtypeDescription"/>
+			</ConditionalSnippet>
 			<Snippet ref="SelfReference" conditionalMatch="VerbalizeFactTypesWithBrowserObjectType">
 				<IterateRoles match="playedRoles" listStyle="FactTypeList" verifyCanVerbalizeFactType="true" uniqueFactType="true">
 					<Fact subtypeMetaReading="true" closeSentence="true"/>

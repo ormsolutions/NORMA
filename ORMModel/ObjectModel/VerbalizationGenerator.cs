@@ -380,16 +380,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used to specify a fully derived fact type with its derivation rule.
 		/// Format: *{0} if and only if {1}</remark>
 		FullFactTypeDerivation,
+		/// <summary>The 'FullFactTypeStoredDerivation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify a fully derived (and stored) fact type with its derivation rule.
+		/// Format: **{0} if and only if {1}</remark>
+		FullFactTypeStoredDerivation,
+		/// <summary>The 'FullStoredFactTypeDescription' simple snippet value.</summary>
+		/// <remark>Description: A textual specification of stored derivation for a fully derived fact type.
+		/// instances of this fact type are stored immediately after they are derived</remark>
+		FullStoredFactTypeDescription,
+		/// <summary>The 'FullStoredSubtypeDescription' simple snippet value.</summary>
+		/// <remark>Description: A textual specification of stored derivation for a fully derived subtype.
+		/// instances of this subtype are stored immediately after they are derived</remark>
+		FullStoredSubtypeDescription,
 		/// <summary>The 'FullSubtypeDerivation' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to specify a fully derived subtype derivation rule.
 		/// Format: *each {0} is {1}</remark>
 		FullSubtypeDerivation,
+		/// <summary>The 'FullSubtypeStoredDerivation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify a fully derived (and stored) subtype derivation rule.
+		/// Format: **each {0} is {1}</remark>
+		FullSubtypeStoredDerivation,
 		/// <summary>The 'GroupEquality' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Assert group equality. Format: all or none of the following hold: {0}</remark>
 		GroupEquality,
 		/// <summary>The 'GroupExclusion' format string snippet. Contains 1 replacement field.</summary>
-		/// <remark>Description: Assert group exclusion. Format: at most one of the following holds: {0}
-		/// 						</remark>
+		/// <remark>Description: Assert group exclusion. Format: at most one of the following holds: {0}</remark>
 		GroupExclusion,
 		/// <summary>The 'GroupExclusiveOr' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Assert group exclusive-or. Format: exactly one of the following holds: {0}</remark>
@@ -730,8 +745,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'OneQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used for 'at most one' or 'more than one' before an object.
 		/// Format positive: at most one {0}
-		/// Format negative: more than one {0}
-		/// 						</remark>
+		/// Format negative: more than one {0}</remark>
 		OneQuantifier,
 		/// <summary>The 'OrLeadListClose' simple snippet value.</summary>
 		/// <remark/>
@@ -770,10 +784,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used to specify a partially derived fact type with its derivation rule.
 		/// Format: +{0} if {1}</remark>
 		PartialFactTypeDerivation,
+		/// <summary>The 'PartialFactTypeStoredDerivation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify a partially derived (and stored) fact type with its derivation rule.
+		/// Format: ++{0} if {1}</remark>
+		PartialFactTypeStoredDerivation,
+		/// <summary>The 'PartialStoredFactTypeDescription' simple snippet value.</summary>
+		/// <remark>Description: A textual specification of stored derivation for a partially derived fact type.
+		/// derived instances of this fact type are also stored immediately after they are derived</remark>
+		PartialStoredFactTypeDescription,
+		/// <summary>The 'PartialStoredSubtypeDescription' simple snippet value.</summary>
+		/// <remark>Description: A textual specification of stored derivation for a partially derived subtype.
+		/// derived instances of this subtype are also stored immediately after they are derived</remark>
+		PartialStoredSubtypeDescription,
 		/// <summary>The 'PartialSubtypeDerivation' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to specify a partially derived subtype derivation rule.
 		/// Format: +each derived {0} is {1}</remark>
 		PartialSubtypeDerivation,
+		/// <summary>The 'PartialSubtypeStoredDerivation' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used to specify a partially derived (and stored) subtype derivation rule.
+		/// Format: ++each derived {0} is {1}</remark>
+		PartialSubtypeStoredDerivation,
 		/// <summary>The 'PeriodSeparator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to delimit two snippet replacements by a snippet.
 		/// Format:	{0}.{1}</remark>
@@ -820,7 +850,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ReferenceModeVerbalization,
 		/// <summary>The 'ReferenceScheme' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to enclose and format a reference scheme replacement in brackets.
-		/// 							Format:	{0}({1})</remark>
+		/// Format:	{0}({1})</remark>
 		ReferenceScheme,
 		/// <summary>The 'ReferenceSchemeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes the way in which an object is referenced. Format: Reference Scheme: {0}</remark>
@@ -1173,7 +1203,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
 				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
+				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
+				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -1292,8 +1326,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
 				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">or</span> ",
-				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
-				@"<span class=""quantifier"">+Each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
+				@"<span class=""indent""><span class=""quantifier"">derived instances of this fact type are also stored immediately after they are derived</span></span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">derived instances of this subtype are also stored immediately after they are derived</span></span>",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"{0} <span class=""quantifier"">who is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
@@ -1503,7 +1541,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
 				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
+				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
+				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -1622,8 +1664,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
 				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">or</span> ",
-				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
-				@"<span class=""quantifier"">+Each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
+				@"<span class=""indent""><span class=""quantifier"">derived instances of this fact type are also stored immediately after they are derived</span></span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">derived instances of this subtype are also stored immediately after they are derived</span></span>",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"{0} <span class=""quantifier"">who is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
@@ -1833,7 +1879,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
 				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
+				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
+				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -1952,8 +2002,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
 				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">or</span> ",
-				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
-				@"<span class=""quantifier"">+Each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
+				@"<span class=""indent""><span class=""quantifier"">derived instances of this fact type are also stored immediately after they are derived</span></span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">derived instances of this subtype are also stored immediately after they are derived</span></span>",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"{0} <span class=""quantifier"">who is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
@@ -2163,7 +2217,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">{1} instances of</span> {0}",
 				@"<span class=""quantifier"">{0} times</span>",
 				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
+				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
+				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -2282,8 +2340,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""smallIndent""><span class=""quantifier"">and</span> ",
 				@"<br/><span class=""smallIndent"">",
 				@"<br/><span class=""quantifier"">or</span> ",
-				@"<span class=""quantifier"">+</span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
-				@"<span class=""quantifier"">+Each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
+				@"<span class=""indent""><span class=""quantifier"">derived instances of this fact type are also stored immediately after they are derived</span></span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">derived instances of this subtype are also stored immediately after they are derived</span></span>",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"{0} <span class=""quantifier"">who is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
@@ -2608,7 +2670,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, false, isNegative), predicatePartFormatString);
 				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippets.GetSnippet(derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived ? CoreVerbalizationSnippetType.FullFactTypeDerivation : CoreVerbalizationSnippetType.PartialFactTypeDerivation, false, false), hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, delegate(RoleBase replaceRole, string hyphenBindingFormatString)
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippets.GetSnippet(derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived ? derivationRule.DerivationStorage == DerivationStorage.Stored ? CoreVerbalizationSnippetType.FullFactTypeStoredDerivation : CoreVerbalizationSnippetType.FullFactTypeDerivation : derivationRule.DerivationStorage == DerivationStorage.Stored ? CoreVerbalizationSnippetType.PartialFactTypeStoredDerivation : CoreVerbalizationSnippetType.PartialFactTypeDerivation, false, false), hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, delegate(RoleBase replaceRole, string hyphenBindingFormatString)
 					{
 						return pathVerbalizer.RenderAssociatedRolePlayer(replaceRole, hyphenBindingFormatString, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead);
 					}), pathVerbalizer.RenderPathVerbalization(derivationRule, null)), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, false, isNegative));
@@ -2636,7 +2698,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
 				FactType.WriteVerbalizerSentence(writer, hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
-			#endregion // Pattern Matches
 			#region Error report
 			if (errorOwner != null)
 			{
@@ -2666,6 +2727,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			#endregion // Error report
+			if (derivationRule != null && derivationRule.DerivationStorage == DerivationStorage.Stored)
+			{
+				CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
+				if (derivationRule.DerivationCompleteness == DerivationCompleteness.PartiallyDerived)
+				{
+					variableSnippetSnippetType1 = CoreVerbalizationSnippetType.PartialStoredFactTypeDescription;
+				}
+				else
+				{
+					variableSnippetSnippetType1 = CoreVerbalizationSnippetType.FullStoredFactTypeDescription;
+				}
+				writer.WriteLine();
+				FactType.WriteVerbalizerSentence(writer, snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			#endregion // Pattern Matches
 			return true;
 		}
 		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
@@ -3135,9 +3211,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if ((derivationRule = this.DerivationRule) != null && (pathVerbalizer = RolePathVerbalizer.Create(derivationRule, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider))).HasPathVerbalization(derivationRule))
 			{
 				CoreVerbalizationSnippetType variableSnippetSnippetType2 = 0;
-				if (derivationRule.DerivationCompleteness == DerivationCompleteness.PartiallyDerived)
+				if (derivationRule.DerivationCompleteness == DerivationCompleteness.PartiallyDerived && derivationRule.DerivationStorage == DerivationStorage.Stored)
+				{
+					variableSnippetSnippetType2 = CoreVerbalizationSnippetType.PartialSubtypeStoredDerivation;
+				}
+				else if (derivationRule.DerivationCompleteness == DerivationCompleteness.PartiallyDerived)
 				{
 					variableSnippetSnippetType2 = CoreVerbalizationSnippetType.PartialSubtypeDerivation;
+				}
+				else if (derivationRule.DerivationStorage == DerivationStorage.Stored)
+				{
+					variableSnippetSnippetType2 = CoreVerbalizationSnippetType.FullSubtypeStoredDerivation;
 				}
 				else
 				{
@@ -3332,11 +3416,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				snippet8Replace1 = this.DataType.ToString();
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat8, snippet8Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
+			if (derivationRule != null && derivationRule.DerivationStorage == DerivationStorage.Stored)
+			{
+				CoreVerbalizationSnippetType variableSnippetSnippetType9 = 0;
+				if (derivationRule.DerivationCompleteness == DerivationCompleteness.PartiallyDerived)
+				{
+					variableSnippetSnippetType9 = CoreVerbalizationSnippetType.PartialStoredSubtypeDescription;
+				}
+				else
+				{
+					variableSnippetSnippetType9 = CoreVerbalizationSnippetType.FullStoredSubtypeDescription;
+				}
+				writer.WriteLine();
+				FactType.WriteVerbalizerSentence(writer, snippets.GetSnippet(variableSnippetSnippetType9, isDeontic, isNegative), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
 			if ((bool)verbalizationContext.VerbalizationOptions[CoreVerbalizationOption.FactTypesWithObjectType] && verbalizationContext.VerbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName)
 			{
 				writer.WriteLine();
-				string snippetFormat9 = snippets.GetSnippet(CoreVerbalizationSnippetType.SelfReference, isDeontic, isNegative);
-				string snippet9Replace1 = null;
+				string snippetFormat10 = snippets.GetSnippet(CoreVerbalizationSnippetType.SelfReference, isDeontic, isNegative);
+				string snippet10Replace1 = null;
 				if (sbTemp == null)
 				{
 					sbTemp = new StringBuilder();
@@ -3347,21 +3445,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				LinkedElementCollection<Role> playedRoles = this.PlayedRoleCollection;
 				int playedRoleCount = playedRoles.Count;
-				FactType[] snippet9ReplaceUniqueFactTypes1 = new FactType[playedRoleCount];
-				FactType snippet9ReplaceTestUniqueFactType1;
-				int snippet9ReplaceFilteredIter1;
-				int snippet9ReplaceFilteredCount1 = 0;
-				for (snippet9ReplaceFilteredIter1 = 0; snippet9ReplaceFilteredIter1 < playedRoleCount; ++snippet9ReplaceFilteredIter1)
+				FactType[] snippet10ReplaceUniqueFactTypes1 = new FactType[playedRoleCount];
+				FactType snippet10ReplaceTestUniqueFactType1;
+				int snippet10ReplaceFilteredIter1;
+				int snippet10ReplaceFilteredCount1 = 0;
+				for (snippet10ReplaceFilteredIter1 = 0; snippet10ReplaceFilteredIter1 < playedRoleCount; ++snippet10ReplaceFilteredIter1)
 				{
-					RoleBase primaryRole = playedRoles[snippet9ReplaceFilteredIter1];
-					if (primaryRole.FactType.ReadingRequiredError == null && Array.IndexOf(snippet9ReplaceUniqueFactTypes1, snippet9ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					RoleBase primaryRole = playedRoles[snippet10ReplaceFilteredIter1];
+					if (primaryRole.FactType.ReadingRequiredError == null && Array.IndexOf(snippet10ReplaceUniqueFactTypes1, snippet10ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
 					{
-						snippet9ReplaceUniqueFactTypes1[snippet9ReplaceFilteredIter1] = snippet9ReplaceTestUniqueFactType1;
-						++snippet9ReplaceFilteredCount1;
+						snippet10ReplaceUniqueFactTypes1[snippet10ReplaceFilteredIter1] = snippet10ReplaceTestUniqueFactType1;
+						++snippet10ReplaceFilteredCount1;
 					}
 				}
-				Array.Clear(snippet9ReplaceUniqueFactTypes1, 0, snippet9ReplaceUniqueFactTypes1.Length);
-				snippet9ReplaceFilteredIter1 = 0;
+				Array.Clear(snippet10ReplaceUniqueFactTypes1, 0, snippet10ReplaceUniqueFactTypes1.Length);
+				snippet10ReplaceFilteredIter1 = 0;
 				for (int RoleIter1 = 0; RoleIter1 < playedRoleCount; ++RoleIter1)
 				{
 					RoleBase primaryRole = playedRoles[RoleIter1];
@@ -3393,17 +3491,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						basicRoleReplacements[i] = basicReplacement;
 					}
-					if (primaryRole.FactType.ReadingRequiredError == null && Array.IndexOf(snippet9ReplaceUniqueFactTypes1, snippet9ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					if (primaryRole.FactType.ReadingRequiredError == null && Array.IndexOf(snippet10ReplaceUniqueFactTypes1, snippet10ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
 					{
-						snippet9ReplaceUniqueFactTypes1[RoleIter1] = snippet9ReplaceTestUniqueFactType1;
+						snippet10ReplaceUniqueFactTypes1[RoleIter1] = snippet10ReplaceTestUniqueFactType1;
 						CoreVerbalizationSnippetType listSnippet;
-						if (snippet9ReplaceFilteredIter1 == 0)
+						if (snippet10ReplaceFilteredIter1 == 0)
 						{
 							listSnippet = CoreVerbalizationSnippetType.FactTypeListOpen;
 						}
-						else if (snippet9ReplaceFilteredIter1 == snippet9ReplaceFilteredCount1 - 1)
+						else if (snippet10ReplaceFilteredIter1 == snippet10ReplaceFilteredCount1 - 1)
 						{
-							if (snippet9ReplaceFilteredIter1 == 1)
+							if (snippet10ReplaceFilteredIter1 == 1)
 							{
 								listSnippet = CoreVerbalizationSnippetType.FactTypeListPairSeparator;
 							}
@@ -3419,24 +3517,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
 						if (parentSubtypeFact != null)
 						{
-							snippet9Replace1 = FactType.CreateVerbalizerSentence(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.SubtypeMetaReading, isDeontic, false), basicRoleReplacements[0], basicRoleReplacements[1], parentFact.Id.ToString("D")), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+							snippet10Replace1 = FactType.CreateVerbalizerSentence(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.SubtypeMetaReading, isDeontic, false), basicRoleReplacements[0], basicRoleReplacements[1], parentFact.Id.ToString("D")), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 						}
 						else
 						{
 							reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 							hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
-							snippet9Replace1 = FactType.CreateVerbalizerSentence(hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+							snippet10Replace1 = FactType.CreateVerbalizerSentence(hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 						}
-						sbTemp.Append(snippet9Replace1);
-						if (snippet9ReplaceFilteredIter1 == snippet9ReplaceFilteredCount1 - 1)
+						sbTemp.Append(snippet10Replace1);
+						if (snippet10ReplaceFilteredIter1 == snippet10ReplaceFilteredCount1 - 1)
 						{
 							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.FactTypeListClose, isDeontic, isNegative));
 						}
-						++snippet9ReplaceFilteredIter1;
+						++snippet10ReplaceFilteredIter1;
 					}
 				}
-				snippet9Replace1 = sbTemp.ToString();
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat9, snippet9Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				snippet10Replace1 = sbTemp.ToString();
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat10, snippet10Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			#endregion // Pattern Matches
 			return true;

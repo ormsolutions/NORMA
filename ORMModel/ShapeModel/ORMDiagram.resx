@@ -584,7 +584,7 @@
     <comment xml:space="preserve">The string used to display that a subtype object is partially derived.</comment>
   </data>
   <data name="ObjectTypeShape.DerivationDecoratorPartiallyDerivedAndStored">
-    <value xml:space="preserve">{0} +*</value>
+    <value xml:space="preserve">{0} ++</value>
     <comment xml:space="preserve">The string used to display that a subtype object is partially derived and stored.</comment>
   </data>
   <data name="ObjectTypeShape.IndependentFormatString">
@@ -608,7 +608,7 @@
     <comment xml:space="preserve">The string used to display an objectified type that is a partially derived subtype.</comment>
   </data>
   <data name="ObjectifiedFactTypeNameShape.DerivationDecoratorPartiallyDerivedAndStored">
-    <value xml:space="preserve">"{0} +*"</value>
+    <value xml:space="preserve">"{0} ++"</value>
     <comment xml:space="preserve">The string used to display an objectified type that is a partially derived and stored subtype.</comment>
   </data>
   <data name="ObjectifiedFactTypeNameShape.IndependentFormatString">
@@ -628,7 +628,7 @@
     <comment xml:space="preserve">The string used to display an objectified type name for a partiall derived subtype with a reference mode.</comment>
   </data>
   <data name="ObjectifiedFactTypeNameShape.RefModePartiallyDerivedAndStoredSubtypeFormatString">
-    <value xml:space="preserve">"{0} ({1})+*"</value>
+    <value xml:space="preserve">"{0} ({1})++"</value>
     <comment xml:space="preserve">The string used to display an objectified type name for a partially derived and stored subtype with a reference mode.</comment>
   </data>
   <data name="ObjectifiedFactTypeNameShape.RefModeIndependentFormatString">
@@ -972,7 +972,7 @@
     <comment xml:space="preserve">The format string used to display an indicator for a partially derived (not stored) fact type.</comment>
   </data>
   <data name="ReadingShape.DerivationDecoratorPartiallyDerivedAndStored">
-    <value xml:space="preserve">{0} +*</value>
+    <value xml:space="preserve">{0} ++</value>
     <comment xml:space="preserve">The format string used to display an indicator for a partially derived and stored fact type.</comment>
   </data>
   <data name="ReadingShape.Ellipsis">

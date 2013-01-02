@@ -579,8 +579,7 @@ Format: this association with {0}provides the preferred identification scheme fo
 				</xs:enumeration>
 				<xs:enumeration value="GroupExclusion">
 					<xs:annotation>
-						<xs:documentation>Description: Assert group exclusion. Format: at most one of the following holds: {0}
-						</xs:documentation>
+						<xs:documentation>Description: Assert group exclusion. Format: at most one of the following holds: {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="MultilineIndentedCompoundListOpen">
@@ -629,8 +628,7 @@ Format negative: {0} occurs more than once in the same population of {1}</xs:doc
 					<xs:annotation>
 						<xs:documentation>Description: Used for 'at most one' or 'more than one' before an object.
 Format positive: at most one {0}
-Format negative: more than one {0}
-						</xs:documentation>
+Format negative: more than one {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="PeriodSeparator">
@@ -642,7 +640,7 @@ Format:	{0}.{1}</xs:documentation>
 				<xs:enumeration value="ReferenceScheme">
 					<xs:annotation>
 						<xs:documentation>Description: Used to enclose and format a reference scheme replacement in brackets.
-							Format:	{0}({1})</xs:documentation>
+Format:	{0}({1})</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="SingleValueValueConstraint">
@@ -1079,10 +1077,34 @@ Format: it is not true that {0} is indirectly related to {1} by repeatedly apply
 Format: *{0} if and only if {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="FullFactTypeStoredDerivation">
+					<xs:annotation>
+						<xs:documentation>Description: Used to specify a fully derived (and stored) fact type with its derivation rule.
+Format: **{0} if and only if {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FullStoredFactTypeDescription">
+					<xs:annotation>
+						<xs:documentation>Description: A textual specification of stored derivation for a fully derived fact type.
+instances of this fact type are stored immediately after they are derived</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="PartialFactTypeDerivation">
 					<xs:annotation>
 						<xs:documentation>Description: Used to specify a partially derived fact type with its derivation rule.
 Format: +{0} if {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="PartialFactTypeStoredDerivation">
+					<xs:annotation>
+						<xs:documentation>Description: Used to specify a partially derived (and stored) fact type with its derivation rule.
+Format: ++{0} if {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="PartialStoredFactTypeDescription">
+					<xs:annotation>
+						<xs:documentation>Description: A textual specification of stored derivation for a partially derived fact type.
+derived instances of this fact type are also stored immediately after they are derived</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FullSubtypeDerivation">
@@ -1091,10 +1113,34 @@ Format: +{0} if {1}</xs:documentation>
 Format: *each {0} is {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="FullSubtypeStoredDerivation">
+					<xs:annotation>
+						<xs:documentation>Description: Used to specify a fully derived (and stored) subtype derivation rule.
+Format: **each {0} is {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="FullStoredSubtypeDescription">
+					<xs:annotation>
+						<xs:documentation>Description: A textual specification of stored derivation for a fully derived subtype.
+instances of this subtype are stored immediately after they are derived</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="PartialSubtypeDerivation">
 					<xs:annotation>
 						<xs:documentation>Description: Used to specify a partially derived subtype derivation rule.
 Format: +each derived {0} is {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="PartialSubtypeStoredDerivation">
+					<xs:annotation>
+						<xs:documentation>Description: Used to specify a partially derived (and stored) subtype derivation rule.
+Format: ++each derived {0} is {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="PartialStoredSubtypeDescription">
+					<xs:annotation>
+						<xs:documentation>Description: A textual specification of stored derivation for a partially derived subtype.
+derived instances of this subtype are also stored immediately after they are derived</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="RolePathHeaderListDirective">

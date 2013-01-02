@@ -565,7 +565,19 @@
                 <a href="#FullFactTypeDerivation">FullFactTypeDerivation</a>
               </li>
               <li>
+                <a href="#FullFactTypeStoredDerivation">FullFactTypeStoredDerivation</a>
+              </li>
+              <li>
+                <a href="#FullStoredFactTypeDescription">FullStoredFactTypeDescription</a>
+              </li>
+              <li>
+                <a href="#FullStoredSubtypeDescription">FullStoredSubtypeDescription</a>
+              </li>
+              <li>
                 <a href="#FullSubtypeDerivation">FullSubtypeDerivation</a>
+              </li>
+              <li>
+                <a href="#FullSubtypeStoredDerivation">FullSubtypeStoredDerivation</a>
               </li>
               <li>
                 <a href="#GroupEquality">GroupEquality</a>
@@ -925,7 +937,19 @@
                 <a href="#PartialFactTypeDerivation">PartialFactTypeDerivation</a>
               </li>
               <li>
+                <a href="#PartialFactTypeStoredDerivation">PartialFactTypeStoredDerivation</a>
+              </li>
+              <li>
+                <a href="#PartialStoredFactTypeDescription">PartialStoredFactTypeDescription</a>
+              </li>
+              <li>
+                <a href="#PartialStoredSubtypeDescription">PartialStoredSubtypeDescription</a>
+              </li>
+              <li>
                 <a href="#PartialSubtypeDerivation">PartialSubtypeDerivation</a>
+              </li>
+              <li>
+                <a href="#PartialSubtypeStoredDerivation">PartialSubtypeStoredDerivation</a>
               </li>
               <li>
                 <a href="#PeriodSeparator">PeriodSeparator</a>
@@ -3936,6 +3960,57 @@ Replacement: {0}=error text,{1}=error id
             </div>
           </div>
         </div>
+        <div id="FullFactTypeStoredDerivation" class="snippet">
+          <span class="snippetHeader">
+            <a name="FullFactTypeStoredDerivation" id="FullFactTypeStoredDerivation">FullFactTypeStoredDerivation</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify a fully derived (and stored) fact type with its derivation rule.
+<br />
+            <strong>Format: </strong> **{0} if and only if {1}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">**{0} if and only if{1}</pre>
+            </div>
+          </div>
+        </div>
+        <div id="FullStoredFactTypeDescription" class="snippet">
+          <span class="snippetHeader">
+            <a name="FullStoredFactTypeDescription" id="FullStoredFactTypeDescription">FullStoredFactTypeDescription</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> A textual specification of stored derivation for a fully derived fact type.
+instances of this fact type are stored immediately after they are derived<br />
+          </div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">instances of this fact type are stored immediately after they are derived</pre>
+            </div>
+          </div>
+        </div>
+        <div id="FullStoredSubtypeDescription" class="snippet">
+          <span class="snippetHeader">
+            <a name="FullStoredSubtypeDescription" id="FullStoredSubtypeDescription">FullStoredSubtypeDescription</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> A textual specification of stored derivation for a fully derived subtype.
+instances of this subtype are stored immediately after they are derived<br />
+          </div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">instances of this subtype are stored immediately after they are derived</pre>
+            </div>
+          </div>
+        </div>
         <div id="FullSubtypeDerivation" class="snippet">
           <span class="snippetHeader">
             <a name="FullSubtypeDerivation" id="FullSubtypeDerivation">FullSubtypeDerivation</a>
@@ -3950,6 +4025,23 @@ Replacement: {0}=error text,{1}=error id
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">*Each {0} is {1}</pre>
+            </div>
+          </div>
+        </div>
+        <div id="FullSubtypeStoredDerivation" class="snippet">
+          <span class="snippetHeader">
+            <a name="FullSubtypeStoredDerivation" id="FullSubtypeStoredDerivation">FullSubtypeStoredDerivation</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify a fully derived (and stored) subtype derivation rule.
+<br />
+            <strong>Format: </strong> **each {0} is {1}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">**Each {0} is {1}</pre>
             </div>
           </div>
         </div>
@@ -3992,8 +4084,7 @@ Replacement: {0}=error text,{1}=error id
           </span>
           <div class="snippetStatement">
             <strong>Description: </strong> Assert group exclusion. <br />
-            <strong>Format: </strong> at most one of the following holds: {0}
-						</div>
+            <strong>Format: </strong> at most one of the following holds: {0}</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>1</div>
           <div class="snippetUnformattedText">
@@ -6653,6 +6744,57 @@ Note that VariableExistence can be used with a negated quantifier if the negated
             </div>
           </div>
         </div>
+        <div id="PartialFactTypeStoredDerivation" class="snippet">
+          <span class="snippetHeader">
+            <a name="PartialFactTypeStoredDerivation" id="PartialFactTypeStoredDerivation">PartialFactTypeStoredDerivation</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify a partially derived (and stored) fact type with its derivation rule.
+<br />
+            <strong>Format: </strong> ++{0} if {1}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">++{0} if{1}</pre>
+            </div>
+          </div>
+        </div>
+        <div id="PartialStoredFactTypeDescription" class="snippet">
+          <span class="snippetHeader">
+            <a name="PartialStoredFactTypeDescription" id="PartialStoredFactTypeDescription">PartialStoredFactTypeDescription</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> A textual specification of stored derivation for a partially derived fact type.
+derived instances of this fact type are also stored immediately after they are derived<br />
+          </div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">derived instances of this fact type are also stored immediately after they are derived</pre>
+            </div>
+          </div>
+        </div>
+        <div id="PartialStoredSubtypeDescription" class="snippet">
+          <span class="snippetHeader">
+            <a name="PartialStoredSubtypeDescription" id="PartialStoredSubtypeDescription">PartialStoredSubtypeDescription</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> A textual specification of stored derivation for a partially derived subtype.
+derived instances of this subtype are also stored immediately after they are derived<br />
+          </div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">derived instances of this subtype are also stored immediately after they are derived</pre>
+            </div>
+          </div>
+        </div>
         <div id="PartialSubtypeDerivation" class="snippet">
           <span class="snippetHeader">
             <a name="PartialSubtypeDerivation" id="PartialSubtypeDerivation">PartialSubtypeDerivation</a>
@@ -6666,7 +6808,24 @@ Note that VariableExistence can be used with a negated quantifier if the negated
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">+Each derived {0} is {1}</pre>
+              <pre class="unformattedSnippetDecorator">+each derived {0} is {1}</pre>
+            </div>
+          </div>
+        </div>
+        <div id="PartialSubtypeStoredDerivation" class="snippet">
+          <span class="snippetHeader">
+            <a name="PartialSubtypeStoredDerivation" id="PartialSubtypeStoredDerivation">PartialSubtypeStoredDerivation</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Used to specify a partially derived (and stored) subtype derivation rule.
+<br />
+            <strong>Format: </strong> ++each derived {0} is {1}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">++each derived {0} is {1}</pre>
             </div>
           </div>
         </div>
@@ -6962,7 +7121,7 @@ different types that represent the same instance where the first variable is an 
           </span>
           <div class="snippetStatement">
             <strong>Description: </strong> Used to enclose and format a reference scheme replacement in brackets.
-							<br />
+<br />
             <strong>Format: </strong>	{0}({1})</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
