@@ -23,18 +23,19 @@
 // #define CUSTOMSORT
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework;
-using System.Collections;
-using System.Diagnostics;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 
 namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
-	partial class TableShape
+	partial class TableShape : IRecognizedSharedPresentationType
 	{
 		#region Customize Appearance
 		/// <summary>
@@ -329,6 +330,25 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		}
 #endif // CUSTOMSORT
 		#endregion // Customize Column Order
+		#region IRecognizedSharedPresentationType Implementation
+		/// <summary>
+		/// Allow 'select on diagram' to work with other relational shape models
+		/// </summary>
+		protected static string SharedPresentationTypeKey
+		{
+			get
+			{
+				return "RelationalTableShape";
+			}
+		}
+		string IRecognizedSharedPresentationType.SharedPresentationTypeKey
+		{
+			get
+			{
+				return SharedPresentationTypeKey;
+			}
+		}
+		#endregion // IRecognizedSharedPresentationType Implementation
 		#region Event Management
 		/// <summary>
 		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="TableShape"/>s.

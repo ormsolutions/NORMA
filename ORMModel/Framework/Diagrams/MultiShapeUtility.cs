@@ -1291,7 +1291,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// Determines if a the model element backing the shape element
 		/// is represented by a shape of the same type elsewhere in the presentation
 		/// layer. If a derived shape displays multiple presentations, they should
-		/// implement the<see cref="IDisplayMultiplePresentations"/> interface.
+		/// implement the <see cref="IDisplayMultiplePresentations"/> interface.
+		/// Shapes of different types can also included if both the context and
+		/// target shapes implement <see cref="IRecognizedSharedPresentationType"/>
 		/// </summary>
 		public static bool ElementHasMultiplePresentations(ShapeElement shapeElement)
 		{
@@ -1305,10 +1307,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 				{
 					Partition shapePartition = shapeElement.Partition;
 					Type thisType = shapeElement.GetType();
+					IRecognizedSharedPresentationType sharedType = shapeElement as IRecognizedSharedPresentationType;
+					string sharedKey = sharedType == null ? null : sharedType.SharedPresentationTypeKey;
 					for (int i = 0; i < pelCount; ++i)
 					{
 						PresentationElement pel = presentationElements[i];
-						if (shapeElement != pel && shapePartition == pel.Partition && thisType.IsAssignableFrom(pel.GetType()))
+						IRecognizedSharedPresentationType sharedPelType;
+						if (shapeElement != pel &&
+							shapePartition == pel.Partition &&
+							(sharedKey == null ?
+								thisType.IsAssignableFrom(pel.GetType()) :
+								(null != (sharedPelType = pel as IRecognizedSharedPresentationType) && sharedPelType.SharedPresentationTypeKey == sharedKey)))
 						{
 							return true;
 						}
@@ -1341,11 +1350,29 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 					Diagram visitedDiagram = null;
 
 					Partition shapePartition = (shapeElement != null) ? shapeElement.Partition : modelElement.Partition;
-					Type thisType = (shapeElement != null) ? shapeElement.GetType() : typeof(ShapeElement);
+					Type thisType;
+					string sharedKey = null;
+					if (shapeElement != null)
+					{
+						thisType = shapeElement.GetType();
+						IRecognizedSharedPresentationType sharedType;
+						if (null != (sharedType = shapeElement as IRecognizedSharedPresentationType))
+						{
+							sharedKey = sharedType.SharedPresentationTypeKey;
+						}
+					}
+					else
+					{
+						thisType = typeof(ShapeElement);
+					}
 					for (int i = 0; i < pelCount; ++i)
 					{
 						PresentationElement pel = presentationElements[i];
-						if (shapePartition == pel.Partition && thisType.IsAssignableFrom(pel.GetType()))
+						IRecognizedSharedPresentationType sharedPelType;
+						if (shapePartition == pel.Partition &&
+							(sharedKey == null ?
+								thisType.IsAssignableFrom(pel.GetType()) :
+								(null != (sharedPelType = pel as IRecognizedSharedPresentationType) && sharedPelType.SharedPresentationTypeKey == sharedKey)))
 						{
 							ShapeElement sel = pel as ShapeElement;
 							Diagram selDiagram = sel.Diagram;
@@ -1474,10 +1501,26 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 	/// than one presentation is visible. Derived shapes should
 	/// use the <see cref="MultiShapeUtility.ElementHasMultiplePresentations"/>
 	/// method to determine when multiple presentations should be displayed.
+	/// The default behavior requires that the diagram types be exactly the
+	/// same. To match shapes across different diagram types, both diagram
+	/// types should also implement <see cref="IRecognizedSharedPresentationType"/>,
+	/// which derives from this interface.
 	/// </summary>
 	public interface IDisplayMultiplePresentations
 	{
 		// No methods
+	}
+	/// <summary>
+	/// An extension to <see cref="IDisplayMultiplePresentations"/> to allow shapes of
+	/// different types to be included in the 'Select on Diagram' list. All shared types
+	/// must returned the same type key to enable cross-navigation.
+	/// </summary>
+	public interface IRecognizedSharedPresentationType : IDisplayMultiplePresentations
+	{
+		/// <summary>
+		/// Return a string indicating a named type
+		/// </summary>
+		string SharedPresentationTypeKey { get;}
 	}
 	#endregion //Interfaces
 }

@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -56,7 +57,19 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 					ReadOnlyCollection<BarkerErModel> barkerModels = store.ElementDirectory.FindElements<BarkerErModel>(false);
 					if (barkerModels.Count != 0)
 					{
-						diagram.Associate(barkerModels[0]);
+						BarkerErModel model = barkerModels[0];
+						diagram.Associate(model);
+						foreach (EntityType entity in model.EntityTypeCollection)
+						{
+							Diagram.FixUpDiagram(model, entity);
+						}
+						foreach (BarkerErModelContainsBinaryAssociation link in store.ElementDirectory.FindElements<BarkerErModelContainsBinaryAssociation>(false))
+						{
+							if (link.BarkerErModel == model)
+							{
+								FixUpDiagram(model, link);
+							}
+						}
 					}
 				}
 			}

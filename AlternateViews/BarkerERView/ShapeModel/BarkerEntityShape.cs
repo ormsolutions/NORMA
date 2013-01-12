@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -15,19 +16,20 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework;
-using System.Collections;
-using System.Diagnostics;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 using Barker = ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 
 namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
-	partial class BarkerEntityShape
+	partial class BarkerEntityShape : IRecognizedSharedPresentationType
 	{
 		#region Customize Appearance
 		/// <summary>
@@ -328,6 +330,25 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 			return retVal;
 		}
 		#endregion // Customize Column Order
+		#region IRecognizedSharedPresentationType Implementation
+		/// <summary>
+		/// Allow 'select on diagram' to work with other relational shape models
+		/// </summary>
+		protected static string SharedPresentationTypeKey
+		{
+			get
+			{
+				return "EntityRelationalEntityShape";
+			}
+		}
+		string IRecognizedSharedPresentationType.SharedPresentationTypeKey
+		{
+			get
+			{
+				return SharedPresentationTypeKey;
+			}
+		}
+		#endregion // IRecognizedSharedPresentationType Implementation
 		#region Event Management
 		/// <summary>
 		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="BarkerEntityShape"/>s.

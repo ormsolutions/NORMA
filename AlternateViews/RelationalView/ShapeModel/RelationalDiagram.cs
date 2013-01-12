@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -55,7 +56,24 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 					ReadOnlyCollection<Catalog> catalogs = store.ElementDirectory.FindElements<Catalog>(false);
 					if (catalogs.Count != 0)
 					{
-						diagram.Associate(catalogs[0]);
+						Catalog catalog = catalogs[0];
+						diagram.Associate(catalog);
+						foreach (Schema schema in catalog.SchemaCollection)
+						{
+							foreach (Table table in schema.TableCollection)
+							{
+								Diagram.FixUpDiagram(catalog, table);
+							}
+							foreach (ReferenceConstraintTargetsTable fkLink in store.ElementDirectory.FindElements<ReferenceConstraintTargetsTable>(false))
+							{
+								Table sourceTable;
+								if (null != (sourceTable = fkLink.ReferenceConstraint.SourceTable) &&
+									schema == sourceTable.Schema)
+								{
+									Diagram.FixUpDiagram(catalog, fkLink);
+								}
+							}
+						}
 					}
 				}
 			}
