@@ -1297,7 +1297,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("87ddaeda-1fd8-4433-bb1e-7482c7f471a7")]
-	public partial class SubtypeLink : global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape
+	public partial class SubtypeLink : global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDirectBinaryLinkShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;

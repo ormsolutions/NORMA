@@ -312,6 +312,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 			}
 		}
+		/// <summary>
+		/// Set ZOrder layer
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				return base.ZOrder + ZOrderLayer.ConstraintConnectors;
+			}
+		}
 		#endregion // Customize appearance
 		#region IDynamicColorGeometryHost Implementation
 		/// <summary>

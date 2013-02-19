@@ -61,6 +61,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return DiagramPens.ConnectionLine;
 			}
 		}
+		/// <summary>
+		/// Set ZOrder layer
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				return base.ZOrder + ZOrderLayer.ConstraintConnectors;
+			}
+		}
 		#endregion // Customize appearance
 		#region IDynamicColorGeometryHost Implementation
 		/// <summary>

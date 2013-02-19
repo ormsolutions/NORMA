@@ -53,6 +53,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			brushSettings.Color = colorService.GetForeColor(ORMDesignerColor.Constraint);
 			classStyleSet.AddBrush(ValueRangeTextBrush, DiagramBrushes.ShapeBackground, brushSettings);
 		}
+		/// <summary>
+		/// Set ZOrder layer
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				return base.ZOrder + ZOrderLayer.ValueConstraintShapes;
+			}
+		}
 		#endregion // Customize appearance
 		#region IDynamicColorGeometryHost Implementation
 		/// <summary>

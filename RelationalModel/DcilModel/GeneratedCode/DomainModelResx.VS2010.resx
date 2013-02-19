@@ -173,6 +173,22 @@
     <value>DefaultColumnOrder</value>
     <comment>DisplayName for DomainProperty &apos;DefaultColumnOrder&apos; on DomainClass &apos;Schema&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/CustomName.Description" xml:space="preserve">
+    <value>The generated schema name is modified by the user.</value>
+    <comment>Description for DomainProperty &apos;CustomName&apos; on DomainClass &apos;Schema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/CustomName.DisplayName" xml:space="preserve">
+    <value>Custom Name</value>
+    <comment>DisplayName for DomainProperty &apos;CustomName&apos; on DomainClass &apos;Schema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/EditName.Description" xml:space="preserve">
+    <value>The name of the schema.</value>
+    <comment>Description for DomainProperty &apos;EditName&apos; on DomainClass &apos;Schema&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/EditName.DisplayName" xml:space="preserve">
+    <value>Name</value>
+    <comment>DisplayName for DomainProperty &apos;EditName&apos; on DomainClass &apos;Schema&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table.Description" xml:space="preserve">
     <value>Equivalent to a &apos;TABLE&apos; in the SQL Standard.</value>
     <comment>Description for DomainClass &apos;Table&apos;</comment>

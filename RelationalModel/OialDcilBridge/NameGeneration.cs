@@ -165,10 +165,25 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			/// </summary>
 			public static void GenerateAllNames(Schema schema, SchemaCustomization customization)
 			{
+				// Verify the schema name
+				string customSchemaName = customization.CustomizedSchemaName;
+				if (customSchemaName == null)
+				{
+					AbstractionModel abstraction;
+					if (null != (abstraction = SchemaIsForAbstractionModel.GetAbstractionModel(schema)))
+					{
+						customSchemaName = abstraction.Name;
+					}
+				}
+				if (customSchemaName != null)
+				{
+					schema.Name = customSchemaName;
+				}
+
 				IDatabaseNameGenerator nameGenerator = new DefaultDatabaseNameGenerator(schema.Store);
 				UniqueNameGenerator uniqueChecker = new UniqueNameGenerator();
 				if (customization != null &&
-					customization.IsEmpty)
+					!customization.CustomizesTablesOrColumns)
 				{
 					customization = null;
 				}

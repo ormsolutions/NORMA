@@ -158,6 +158,42 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
+	/// DomainClass ORMDirectBinaryLinkShape
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDirectBinaryLinkShape
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDirectBinaryLinkShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDirectBinaryLinkShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("c9d051cc-a90b-468f-891d-62bde679922f")]
+	public abstract partial class ORMDirectBinaryLinkShape : ORMBaseBinaryLinkShape
+	{
+		
+		#region Connector styles
+		#endregion
+		
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ORMDirectBinaryLinkShape domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc9d051cc, 0xa90b, 0x468f, 0x89, 0x1d, 0x62, 0xbd, 0xe6, 0x79, 0x92, 0x2f);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected ORMDirectBinaryLinkShape(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
 	/// DomainClass RolePlayerLink
 	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink
 	/// </summary>
@@ -166,7 +202,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("2b3f0aae-b1b1-4727-8862-5c34b494b499")]
-	public partial class RolePlayerLink : ORMBaseBinaryLinkShape
+	public partial class RolePlayerLink : ORMDirectBinaryLinkShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;
@@ -400,7 +436,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("8815e6d8-238b-422c-a4b3-29fdc8de9ea5")]
-	public partial class ExternalConstraintLink : ORMBaseBinaryLinkShape
+	public partial class ExternalConstraintLink : ORMDirectBinaryLinkShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;
@@ -517,7 +553,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("374e43c3-c294-49c4-8a61-3c3ca5fc86e8")]
-	public partial class ValueRangeLink : ORMBaseBinaryLinkShape
+	public partial class ValueRangeLink : ORMDirectBinaryLinkShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;
@@ -634,7 +670,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("21e7c585-bc80-446f-8517-bc4fd465971f")]
-	public partial class ModelNoteLink : ORMBaseBinaryLinkShape
+	public partial class ModelNoteLink : ORMDirectBinaryLinkShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;

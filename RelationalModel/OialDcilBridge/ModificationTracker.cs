@@ -234,7 +234,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				{
 					AbstractionModel abstractionModel = (AbstractionModel)e.ModelElement;
 					Schema schema = SchemaIsForAbstractionModel.GetSchema(abstractionModel);
-					if (schema != null)
+					if (schema != null &&
+						!schema.CustomName)
 					{
 						schema.Name = abstractionModel.Name;
 					}
@@ -348,11 +349,37 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			/// </summary>
 			private static void SchemaChangedRule(ElementPropertyChangedEventArgs e)
 			{
-				if (e.DomainProperty.Id == Schema.DefaultColumnOrderDomainPropertyId)
+				Guid propertyId = e.DomainProperty.Id;
+				Schema schema;
+				SchemaCustomization customization;
+				if (propertyId == Schema.DefaultColumnOrderDomainPropertyId)
 				{
 					// Note that this does not affect custom ordering, so there is nothing to
 					// record in the schema customizations
 					ValidateSchemaNamesChanged((Schema)e.ModelElement);
+				}
+				else if (propertyId == Schema.CustomNameDomainPropertyId)
+				{
+					schema = (Schema)e.ModelElement;
+					if (null != (customization = SchemaCustomization.GetCustomization(schema)))
+					{
+						customization.CustomizeSchemaName(schema, (bool)e.NewValue ? schema.Name : null);
+						// Don't use the full ValidateSchemaNamesChanged, which rebuilds the customization
+						// object and regenerates all names.
+						FrameworkDomainModel.DelayValidateElement(schema, DelayValidateSchemaNameChanged);
+					}
+				}
+				else if (propertyId == Schema.NameDomainPropertyId)
+				{
+					schema = (Schema)e.ModelElement;
+					if (schema.CustomName &&
+						null != (customization = SchemaCustomization.GetCustomization(schema)))
+					{
+						customization.CustomizeSchemaName(schema, (string)e.NewValue);
+						// Don't use the full ValidateSchemaNamesChanged, which rebuilds the customization
+						// object and regenerates all names.
+						FrameworkDomainModel.DelayValidateElement(schema, DelayValidateSchemaNameChanged);
+					}
 				}
 			}
 			/// <summary>
@@ -664,6 +691,38 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					SchemaCustomization customization = SchemaCustomization.SetCustomization(schema, null);
 					NameGeneration.GenerateAllNames(schema, customization);
 					SchemaCustomization.SetCustomization(schema, new SchemaCustomization(schema));
+				}
+			}
+			/// <summary>
+			/// A lightweight version of the previous routine that just updates
+			/// the schema name instead of all names.
+			/// </summary>
+			[DelayValidatePriority(30, DomainModelType = typeof(AbstractionDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void DelayValidateSchemaNameChanged(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					Schema schema = (Schema)element;
+					// Disable customization tracking during any name change to
+					// avoid redundant processing.
+					SchemaCustomization customization = SchemaCustomization.SetCustomization(schema, null);
+					AbstractionModel abstractionModel;
+					string schemaName;
+					if (customization != null &&
+						null != (schemaName = customization.CustomizedSchemaName))
+					{
+						schema.Name = schemaName;
+					}
+					else if (null != (abstractionModel = SchemaIsForAbstractionModel.GetAbstractionModel(schema)))
+					{
+						schema.Name = abstractionModel.Name;
+					}
+					if (customization != null)
+					{
+						// Don't regenerate the customization object for a schema name change,
+						// just use the previous settings.
+						SchemaCustomization.SetCustomization(schema, customization);
+					}
 				}
 			}
 			#endregion // Name modification rules

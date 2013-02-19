@@ -3355,6 +3355,30 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.Command.DeletePage");
 			}
 		}
+		/// <summary>Display name for the Diagram.Name property shown in the properties window with a diagram selection.</summary>
+		public static string DiagramPropertiesDiagramNameDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.Properties.DiagramName.Description");
+			}
+		}
+		/// <summary>Display name for the Diagram.Name property shown in the properties window with a diagram selection.</summary>
+		public static string DiagramPropertiesDiagramNameDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.Properties.DiagramName.DisplayName");
+			}
+		}
+		/// <summary>Display name for the ORMModel.Name property shown in the properties window with a diagram selection. Note that we use the native description here, so there is no corresponding description.</summary>
+		public static string DiagramPropertiesModelNameDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "Diagram.Properties.ModelName.DisplayName");
+			}
+		}
 		/// <summary>The format string used to combine the sequence and column numbers in the role box of an active set (multicolumn) constraint.</summary>
 		public static string SetConstraintStickyRoleFormatString
 		{

@@ -96,6 +96,39 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			}
 			return sb.ToString();
 		}
+		/// <summary>
+		/// Amp up the z-order when a connector is highlighted
+		/// so that covered lines jump to the top and are easily
+		/// visible.
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				Diagram diagram;
+				DiagramView diagramView;
+				DiagramClientView clientView;
+				HighlightedShapesCollection highlightedShapes;
+				if (null != (diagram = Diagram) &&
+					null != (diagramView = diagram.ActiveDiagramView) &&
+					null != (clientView = diagramView.DiagramClientView) &&
+					null != (highlightedShapes = clientView.HighlightedShapes))
+				{
+					foreach (DiagramItem item in highlightedShapes)
+					{
+						if (this == item.Shape)
+						{
+							return base.ZOrder + 100000d;
+						}
+					}
+				}
+				return base.ZOrder;
+			}
+			set
+			{
+				base.ZOrder = value;
+			}
+		}
 		#endregion // Customize appearance
 	}
 }

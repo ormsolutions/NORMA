@@ -207,6 +207,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 	/// DomainClass Schema
 	/// Equivalent to a 'SCHEMA' in the SQL Standard.
 	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<Schema, Design.SchemaTypeDescriptor<Schema>>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -410,6 +411,185 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.defaultColumnOrderPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region CustomName domain property code
+		
+		/// <summary>
+		/// CustomName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid CustomNameDomainPropertyId = new global::System.Guid(0x9768cf92, 0x384d, 0x4202, 0x86, 0x80, 0xe5, 0x99, 0xad, 0x24, 0x73, 0x6d);
+		
+		/// <summary>
+		/// Storage for CustomName
+		/// </summary>
+		private global::System.Boolean customNamePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of CustomName domain property.
+		/// The generated schema name is modified by the user.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/CustomName.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/CustomName.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("9768cf92-384d-4202-8680-e599ad24736d")]
+		public global::System.Boolean CustomName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return customNamePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				CustomNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Schema.CustomName domain property.
+		/// </summary>
+		internal sealed partial class CustomNamePropertyHandler : DslModeling::DomainPropertyValueHandler<Schema, global::System.Boolean>
+		{
+			private CustomNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Schema.CustomName domain property value handler.
+			/// </summary>
+			public static readonly CustomNamePropertyHandler Instance = new CustomNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Schema.CustomName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return CustomNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(Schema element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.customNamePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Schema element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.customNamePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region EditName domain property code
+		
+		/// <summary>
+		/// EditName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid EditNameDomainPropertyId = new global::System.Guid(0x42bfd5fc, 0x04dc, 0x4c35, 0xb4, 0x2f, 0x40, 0xc9, 0x1f, 0x7b, 0x36, 0x35);
+		
+		/// <summary>
+		/// Gets or sets the value of EditName domain property.
+		/// The name of the schema.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/EditName.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Schema/EditName.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("42bfd5fc-04dc-4c35-b42f-40c91f7b3635")]
+		public global::System.String EditName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return EditNamePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				EditNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Schema.EditName domain property.
+		/// </summary>
+		internal sealed partial class EditNamePropertyHandler : DslModeling::DomainPropertyValueHandler<Schema, global::System.String>
+		{
+			private EditNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Schema.EditName domain property value handler.
+			/// </summary>
+			public static readonly EditNamePropertyHandler Instance = new EditNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Schema.EditName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return EditNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(Schema element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for EditName because its Kind is
+				// set to CustomStorage. Please provide the GetEditNameValue()
+				// method on the domain class.
+				return element.GetEditNameValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Schema element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for EditName because its Kind is
+					// set to CustomStorage. Please provide the SetEditNameValue()
+					// method on the domain class.
+					element.SetEditNameValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}

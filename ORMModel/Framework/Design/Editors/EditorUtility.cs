@@ -404,13 +404,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// wrapping the base descriptor with another property descriptor instance.
 		/// </summary>
 		/// <param name="basedOnDescriptor">The original descriptor.</param>
+		/// <param name="descriptorName">A customized descriptor name. It this is <see langword="null"/>, then the name is read from <paramref name="basedOnDescriptor"/>.</param>
 		/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
 		/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
 		/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
 		/// <returns>A wrapper <see cref="PropertyDescriptor"/></returns>
-		public static PropertyDescriptor ModifyPropertyDescriptorDisplay(PropertyDescriptor basedOnDescriptor, string displayName, string description, string category)
+		public static PropertyDescriptor ModifyPropertyDescriptorDisplay(PropertyDescriptor basedOnDescriptor, string descriptorName, string displayName, string description, string category)
 		{
-			return new DisplayModifiedPropertyDescriptor(basedOnDescriptor, displayName, description, category);
+			return new DisplayModifiedPropertyDescriptor(basedOnDescriptor, descriptorName, displayName, description, category);
 		}
 		/// <summary>
 		/// Modify the display settings for a <see cref="PropertyDescriptor"/> by
@@ -418,18 +419,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// </summary>
 		/// <param name="descriptorCollection">A collection of descriptors.</param>
 		/// <param name="propertyName">The non-localized name of the property to modify.</param>
+		/// <param name="newDescriptorName">A customized descriptor name. It this is <see langword="null"/>, then the <paramref name="propertyName"/> is used.
+		/// Setting this changes the lookup name for the property.</param>
 		/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
 		/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
 		/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
 		/// <returns>A wrapper <see cref="PropertyDescriptor"/></returns>
-		public static void ModifyPropertyDescriptorDisplay(PropertyDescriptorCollection descriptorCollection, string propertyName, string displayName, string description, string category)
+		public static void ModifyPropertyDescriptorDisplay(PropertyDescriptorCollection descriptorCollection, string propertyName, string newDescriptorName, string displayName, string description, string category)
 		{
 			PropertyDescriptor descriptor;
 			if (descriptorCollection != null &&
 				null != (descriptor = descriptorCollection[propertyName]))
 			{
 				descriptorCollection.Remove(descriptor);
-				descriptorCollection.Add(ModifyPropertyDescriptorDisplay(descriptor, displayName, description, category));
+				descriptorCollection.Add(ModifyPropertyDescriptorDisplay(descriptor, newDescriptorName, displayName, description, category));
 			}
 		}
 		/// <summary>
@@ -448,11 +451,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			/// Create a wrapped descriptor
 			/// </summary>
 			/// <param name="modifyDescriptor">The descriptor to wrap.</param>
+			/// <param name="descriptorName">A customized descriptor name. It this is <see langword="null"/>, then the name is read from <paramref name="modifyDescriptor"/>.</param>
 			/// <param name="displayName">The modified display name. If this is <see langword="null"/>, then the original display name is used.</param>
 			/// <param name="description">The modified description. If this is <see langword="null"/>, then the original description is used.</param>
 			/// <param name="category">The modified category. If this is <see langword="null"/>, then the original category is used.</param>
-			public DisplayModifiedPropertyDescriptor(PropertyDescriptor modifyDescriptor, string displayName, string description, string category)
-				: base(modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
+			public DisplayModifiedPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category)
+				: base(descriptorName ?? modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
 			{
 				myInner = modifyDescriptor;
 				myDisplayName = displayName;
@@ -574,6 +578,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// must implement <see cref="IElementReference"/> and return a subtype of ModelElement.</param>
 		/// <param name="propertyName">The name of the property in the class.</param>
 		/// <param name="propertyType">The type of the property.</param>
+		/// <param name="descriptorName">A customized descriptor name. It this is <see langword="null"/>,
+		/// then the name is read from the wrapped property descriptor.</param>
 		/// <param name="displayName">The display name for the property. If this is <see langword="null"/>,
 		/// then the normal property descriptor display name mechanism is used to retrieve the property name.
 		/// This provides a simpler approach than setting <see cref="DisplayNameAttribute"/> attributes
@@ -588,9 +594,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// for each property.</param>
 		/// <returns>A <see cref="PropertyDescriptor"/> that can be used similarly to an <see cref="ElementPropertyDescriptor"/>.
 		/// Setting and resetting values with this descriptor will automatically create the appropriate <see cref="Transaction"/>.</returns>
-		public static PropertyDescriptor ReflectStoreEnabledPropertyDescriptor(Type componentType, string propertyName, Type propertyType, string displayName, string description, string category)
+		public static PropertyDescriptor ReflectStoreEnabledPropertyDescriptor(Type componentType, string propertyName, Type propertyType, string descriptorName, string displayName, string description, string category)
 		{
-			return new StoreEnabledPropertyDescriptor(TypeDescriptor.CreateProperty(componentType, propertyName, propertyType), displayName, description, category);
+			return new StoreEnabledPropertyDescriptor(TypeDescriptor.CreateProperty(componentType, propertyName, propertyType), descriptorName, displayName, description, category);
 		}
 		#endregion // ReflectStoreEnabledPropertyDescriptor
 		#region RedirectPropertyDescriptor
@@ -925,11 +931,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// or implement <see cref="IElementReference"/> and return a ModelElement.
 		/// </summary>
 		/// <param name="modifyDescriptor">A standard property descriptor to wrap.</param>
+		/// <param name="descriptorName">A customized descriptor name. It this is <see langword="null"/>, then the name is read from <paramref name="modifyDescriptor"/>.</param>
 		/// <param name="displayName">A customized display name. If this is <see langword="null"/>, then the original display name is used.</param>
 		/// <param name="description">A customized description. If this is <see langword="null"/>, then the original description is used.</param>
 		/// <param name="category">A customized category. If this is <see langword="null"/>, then the original category is used.</param>
-		public StoreEnabledPropertyDescriptor(PropertyDescriptor modifyDescriptor, string displayName, string description, string category)
-			: base(modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
+		public StoreEnabledPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category)
+			: base(descriptorName ?? modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
 		{
 			myInner = modifyDescriptor;
 			myDisplayName = displayName;
@@ -1174,11 +1181,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// <see cref="ModelElement"/> components to the provided descriptor.
 		/// </summary>
 		/// <param name="modifyDescriptor">A standard property descriptor to wrap.</param>
+		/// <param name="descriptorName">A customized descriptor name. It this is <see langword="null"/>, then the name is read from <paramref name="modifyDescriptor"/>.</param>
 		/// <param name="displayName">A customized display name. If this is <see langword="null"/>, then the original display name is used.</param>
 		/// <param name="description">A customized description. If this is <see langword="null"/>, then the original description is used.</param>
 		/// <param name="category">A customized category. If this is <see langword="null"/>, then the original category is used.</param>
-		public StoreEnabledReadOnlyPropertyDescriptor(PropertyDescriptor modifyDescriptor, string displayName, string description, string category)
-			: base(modifyDescriptor, displayName, description, category)
+		public StoreEnabledReadOnlyPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category)
+			: base(modifyDescriptor, descriptorName, displayName, description, category)
 		{
 		}
 		#endregion // Constructor

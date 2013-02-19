@@ -70,6 +70,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				typeof(FactTypeShapeHasRoleDisplayOrder),
 				typeof(ORMDiagram),
 				typeof(ORMBaseBinaryLinkShape),
+				typeof(ORMDirectBinaryLinkShape),
 				typeof(RolePlayerLink),
 				typeof(RolePlayerProxyLink),
 				typeof(ExternalConstraintLink),
@@ -149,7 +150,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(22);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(23);
 				createElementMap.Add(typeof(ORMDiagram), 0);
 				createElementMap.Add(typeof(RolePlayerLink), 1);
 				createElementMap.Add(typeof(RolePlayerProxyLink), 2);

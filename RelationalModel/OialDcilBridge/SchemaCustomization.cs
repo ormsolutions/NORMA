@@ -165,6 +165,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		}
 		#endregion // TableInfo struct
 		#region Member Variables
+		private string myCustomSchemaName = null;
 		private Dictionary<Guid, TableInfo> myTableData = null;
 		private Dictionary<ColumnKey, ColumnInfo> myColumnData = null;
 		private List<Guid> myIdList;
@@ -184,6 +185,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			List<Guid> idList = new List<Guid>();
 			if (schema != null)
 			{
+				if (schema.CustomName)
+				{
+					myCustomSchemaName = schema.Name;
+				}
 				columnData = new Dictionary<ColumnKey, ColumnInfo>();
 				Guid tableKey;
 				foreach (Table table in schema.TableCollection)
@@ -280,6 +285,23 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			return prev;
 		}
 		/// <summary>
+		/// Record or remove a current customization for the schema name.
+		/// </summary>
+		/// <param name="schema">The <see cref="Schema"/> to customize.</param>
+		/// <param name="name">The custom name, or <see langword="null"/> to clear
+		/// any customization.</param>
+		public void CustomizeSchemaName(Schema schema, string name)
+		{
+			if (string.IsNullOrEmpty(name))
+			{
+				myCustomSchemaName = null;
+			}
+			else
+			{
+				myCustomSchemaName = name;
+			}
+		}
+		/// <summary>
 		/// Record or remove a current customization for a table name.
 		/// </summary>
 		/// <param name="table">The <see cref="Table"/> to customize.</param>
@@ -323,6 +345,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			else if (name != null)
 			{
 				tableData[tableKey] = TableInfo.Empty.SetName(name);
+			}
+		}
+		/// <summary>
+		/// Get the customized schema name, if any, for these schema modifications.
+		/// </summary>
+		public string CustomizedSchemaName
+		{
+			get
+			{
+				return myCustomSchemaName;
 			}
 		}
 		/// <summary>
@@ -493,15 +525,15 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			return FindColumnInfo(column, out info) ? info.Position : -1;
 		}
 		/// <summary>
-		/// Test if there are any current customizations
+		/// Test if there are any current customizations for tables and columns
 		/// </summary>
-		public bool IsEmpty
+		public bool CustomizesTablesOrColumns
 		{
 			get
 			{
 				Dictionary<Guid, TableInfo> tableData;
 				Dictionary<ColumnKey, ColumnInfo> columnData;
-				return !((null != (tableData = myTableData) && tableData.Count != 0) || (null != (columnData = myColumnData) && columnData.Count != 0));
+				return (null != (tableData = myTableData) && tableData.Count != 0) || (null != (columnData = myColumnData) && columnData.Count != 0);
 			}
 		}
 		#endregion // Public accessor methods
@@ -524,6 +556,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			DomainDataDirectory dataDir = store.DomainDataDirectory;
 			eventManager.AddOrRemoveHandler(dataDir.FindDomainClass(Column.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(ColumnPropertyChanged), action);
 			eventManager.AddOrRemoveHandler(dataDir.FindDomainClass(Table.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(TablePropertyChanged), action);
+			eventManager.AddOrRemoveHandler(dataDir.FindDomainClass(Schema.DomainClassId), new EventHandler<ElementPropertyChangedEventArgs>(SchemaPropertyChanged), action);
 			eventManager.AddOrRemoveHandler(dataDir.FindDomainRole(TableContainsColumn.ColumnDomainRoleId), new EventHandler<RolePlayerOrderChangedEventArgs>(ColumnOrderChanged), action);
 		}
 		private static void ColumnPropertyChanged(object sender, ElementPropertyChangedEventArgs e)
@@ -532,14 +565,14 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			// Name changed, CustomName set->update schema customization
 			// CustomName changed: add or remove customization
 			ModelElement element = e.ModelElement;
-			Column column = null;
-			Table table;
-			Schema schema;
-			SchemaCustomization customization;
-			string updatedName = null;
-			bool customNameChanged = false;
 			if (!element.IsDeleted)
 			{
+				Column column = null;
+				Table table;
+				Schema schema;
+				SchemaCustomization customization;
+				string updatedName = null;
+				bool customNameChanged = false;
 				Guid propertyId = e.DomainProperty.Id;
 				if (propertyId == Column.NameDomainPropertyId)
 				{
@@ -565,6 +598,44 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					null != (customization = SchemaCustomization.GetCustomization(schema)))
 				{
 					customization.CustomizeColumnName(column, updatedName);
+				}
+			}
+		}
+		private static void SchemaPropertyChanged(object sender, ElementPropertyChangedEventArgs e)
+		{
+			// Transitions:
+			// Name changed, CustomName set->update schema customization
+			// CustomName changed: add or remove customization
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted)
+			{
+				Schema schema = null;
+				SchemaCustomization customization;
+				string updatedName = null;
+				bool customNameChanged = false;
+				Guid propertyId = e.DomainProperty.Id;
+				if (propertyId == Schema.NameDomainPropertyId)
+				{
+					schema = (Schema)element;
+					if (schema.CustomName)
+					{
+						updatedName = schema.Name;
+						customNameChanged = true;
+					}
+				}
+				else if (propertyId == Schema.CustomNameDomainPropertyId)
+				{
+					schema = (Schema)element;
+					if (schema.CustomName)
+					{
+						updatedName = schema.Name;
+					}
+					customNameChanged = true;
+				}
+				if (customNameChanged &&
+					null != (customization = SchemaCustomization.GetCustomization(schema)))
+				{
+					customization.CustomizeSchemaName(schema, updatedName);
 				}
 			}
 		}

@@ -43,17 +43,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			classStyleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);
 		}
 		/// <summary>
-		/// Display comment lines behind all others
+		/// Set ZOrder layer
 		/// </summary>
 		public override double ZOrder
 		{
 			get
 			{
-				return 0;
-			}
-			set
-			{
-				// Don't set
+				return base.ZOrder + ZOrderLayer.NoteConnectors;
 			}
 		}
 		#endregion // Customize appearance

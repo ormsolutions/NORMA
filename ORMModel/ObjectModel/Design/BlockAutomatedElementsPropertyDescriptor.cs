@@ -91,11 +91,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// Create a new <see cref="AutomatedElementFilterCustomPropertyDescriptor"/>
 		/// </summary>
 		/// <param name="modifyDescriptor">A standard property descriptor to wrap.</param>
+		/// <param name="descriptorName">A customized descriptor name. It this is <see langword="null"/>, then the name is read from <paramref name="modifyDescriptor"/>.</param>
 		/// <param name="displayName">A customized display name. If this is <see langword="null"/>, then the original display name is used.</param>
 		/// <param name="description">A customized description. If this is <see langword="null"/>, then the original description is used.</param>
 		/// <param name="category">A customized category. If this is <see langword="null"/>, then the original category is used.</param>
-		public AutomatedElementFilterCustomPropertyDescriptor(PropertyDescriptor modifyDescriptor, string displayName, string description, string category)
-			: base(modifyDescriptor, displayName, description, category)
+		public AutomatedElementFilterCustomPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category)
+			: base(modifyDescriptor, descriptorName, displayName, description, category)
 		{
 		}
 		/// <summary>

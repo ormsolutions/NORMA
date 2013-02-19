@@ -125,5 +125,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			// derived text field.
 			return new AutoSizeTextField(fieldName);
 		}
+		/// <summary>
+		/// Set ZOrder layer
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				return base.ZOrder + ZOrderLayer.FloatingTextShapes;
+			}
+		}
 	}
 }

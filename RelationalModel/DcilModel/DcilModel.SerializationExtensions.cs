@@ -374,6 +374,14 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == Schema.CustomNameDomainPropertyId)
+			{
+				if (!this.CustomName)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			return CustomSerializedPropertyInfo.Default;
 		}
 		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
@@ -436,6 +444,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
 				customSerializedAttributes.Add("DefaultColumnOrder", Schema.DefaultColumnOrderDomainPropertyId);
+				customSerializedAttributes.Add("CustomName", Schema.CustomNameDomainPropertyId);
 				Schema.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
@@ -648,7 +657,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			Guid roleId = rolePlayedInfo.Id;
 			if (roleId == ReferenceConstraintTargetsTable.ReferenceConstraintDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -851,17 +860,9 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == UniquenessConstraintIncludesColumn.UniquenessConstraintDomainRoleId)
+			if (roleId == UniquenessConstraintIncludesColumn.UniquenessConstraintDomainRoleId || roleId == ColumnReference.TargetColumnDomainRoleId || roleId == ColumnReference.SourceColumnDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ColumnReference.TargetColumnDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ColumnReference.SourceColumnDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -1133,7 +1134,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			}
 			if (roleId == ReferenceConstraintTargetsUniquenessConstraint.ReferenceConstraintDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -1452,7 +1453,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			Guid roleId = rolePlayedInfo.Id;
 			if (roleId == ReferenceConstraintContainsColumnReference.ReferenceConstraintDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}

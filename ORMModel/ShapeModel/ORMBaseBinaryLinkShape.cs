@@ -33,11 +33,27 @@ using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
-	public partial class ORMBaseBinaryLinkShape : IReconfigureableLink, IConfigureAsChildShape, IInvalidateDisplay
+	#region IJumpFreeLinkShape interface
+	/// <summary>
+	/// Implement this interace on any link shape derived from <see cref="ORMBaseBinaryLinkShape"/>
+	/// to either block or dynamically control line jumps. Use the <see cref="ORMBaseBinaryLinkShape.JumpFreeChanged"/>
+	/// method to update the shape when the jump-free settings change.
+	/// </summary>
+	public interface IJumpFreeLinkShape
 	{
-		#region SubtypeLink Hack
 		/// <summary>
-		/// UNDONE: 2006-08 DSL Tools port: Hack for link-for-a-class
+		/// Return <see langword="true"/> to suppress jump, <see langword="false"/> to
+		/// use default jump behavior.
+		/// </summary>
+		bool IsJumpFree { get;}
+	}
+	#endregion // IJumpFreeLinkShape interface
+	#region ORMDirectBinaryLinkShape class
+	partial class ORMBaseBinaryLinkShape : IConfigureAsChildShape, IInvalidateDisplay
+	{
+		#region Link-As-Class Hack
+		/// <summary>
+		/// Allow class types to back link shapes in generated code.
 		/// </summary>
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
@@ -48,31 +64,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return false;
 			}
 		}
-		#endregion // SubtypeLink Hack
-		#region MultipleShapesSupport
-		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
-		public override ShapeElement FixUpChildShapes(ModelElement childElement)
-		{
-			return MultiShapeUtility.FixUpChildShapes(this, childElement, null);
-		}
-		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
-		{
-			Debug.Fail("Classes derived from ORMBaseBinaryLinkShape must implement IReconfigurableLink.Reconfigure");
-		}
-		#endregion //MultipleShapesSupport
+		#endregion // Link-As-Class Hack
 		#region Customize appearance
-		/// <summary>
-		/// Specify CenterToCenter routing style so we can
-		/// locate our objects in DoFoldToShape
-		/// </summary>
-		[CLSCompliant(false)]
-		protected override VGRoutingStyle DefaultRoutingStyle
-		{
-			get
-			{
-				return VGRoutingStyle.VGRouteCenterToCenter;
-			}
-		}
 		/// <summary>
 		/// Selecting links gets in the way of selecting roleboxes, etc.
 		/// It is best just to turn them off. This also eliminates a bunch of unnamed
@@ -114,8 +107,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			// ORM lines cross, they don't jump. However, the RouteJumpType cannot
 			// be set before the diagram is in place, so this property cannot be set
-			// from initialization code in the shape itself.
-			RouteJumpType = VGObjectLineJumpCode.VGObjectJumpCodeNever;
+			// from initialization code in the shape itself. This makes sure the jump
+			// settings are corect.
+			JumpFreeChanged();
 		}
 		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
@@ -266,6 +260,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // LinkChangeRule
+		/// <summary>
+		/// The <see cref="IJumpFreeLinkShape"/> settings have change,
+		/// requery the setting and update as needed.
+		/// </summary>
+		public void JumpFreeChanged()
+		{
+			IJumpFreeLinkShape jumpFreeShape;
+			VGObjectLineJumpCode expectedJumpCode;
+			if (null != (jumpFreeShape = this as IJumpFreeLinkShape) &&
+				RouteJumpType != (expectedJumpCode = (jumpFreeShape.IsJumpFree ? VGObjectLineJumpCode.VGObjectJumpCodeNever : VGObjectLineJumpCode.VGObjectJumpCodePage)))
+			{
+				RouteJumpType = expectedJumpCode;
+			}
+		}
 		#endregion // LinkConnectorShape management
 		#region Accessibility Properties
 		/// <summary>
@@ -305,6 +313,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		#endregion // Accessibility Properties
 	}
+	#endregion // ORMBaseBinaryLinkShape class
 	#region LinkConnectorShape class
 	public partial class LinkConnectorShape : IProxyConnectorShape
 	{
@@ -443,4 +452,57 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 	}
 	#endregion // LinkConnectorShape class
+	#region ORMDirectBinaryLinkShape class
+	/// <summary>
+	/// Provide the base for a link shape that supports recongifurable multi shape routing
+	/// and no line jumps.
+	/// </summary>
+	partial class ORMDirectBinaryLinkShape : IReconfigureableLink, IJumpFreeLinkShape
+	{
+		#region MultipleShapesSupport
+		/// <summary>See <see cref="ShapeElement.FixUpChildShapes"/>.</summary>
+		public override ShapeElement FixUpChildShapes(ModelElement childElement)
+		{
+			return MultiShapeUtility.FixUpChildShapes(this, childElement, null);
+		}
+		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)
+		{
+			Debug.Fail("Classes derived from ORMBaseBinaryLinkShape must implement IReconfigurableLink.Reconfigure");
+		}
+		#endregion // MultipleShapesSupport
+		#region Customize Appearance
+		/// <summary>
+		/// Specify CenterToCenter routing style so we can
+		/// locate our objects in DoFoldToShape
+		/// </summary>
+		[CLSCompliant(false)]
+		protected override VGRoutingStyle DefaultRoutingStyle
+		{
+			get
+			{
+				return VGRoutingStyle.VGRouteCenterToCenter;
+			}
+		}
+		#endregion // Customize Appearance
+		#region IJumpFreeLinkShape Implementation
+		/// <summary>
+		/// Implements <see cref="IJumpFreeLinkShape.IsJumpFree"/>
+		/// </summary>
+		protected static bool IsJumpFree
+		{
+			get
+			{
+				return true;
+			}
+		}
+		bool IJumpFreeLinkShape.IsJumpFree
+		{
+			get
+			{
+				return IsJumpFree;
+			}
+		}
+		#endregion // IJumpFreeLinkShape Implementation
+	}
+	#endregion // ORMDirectBinaryLinkShape class
 }

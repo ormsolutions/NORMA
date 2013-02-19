@@ -58,7 +58,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
 			PropertyDescriptorCollection retVal = base.GetProperties(attributes);
-			EditorUtility.ModifyPropertyDescriptorDisplay(retVal, "Name", null, null, ResourceStrings.ElementGroupingPropertyCategory);
+			EditorUtility.ModifyPropertyDescriptorDisplay(retVal, "Name", null, null, null, ResourceStrings.ElementGroupingPropertyCategory);
 			retVal.Add(GroupingTypesPropertyDescriptor.Instance);
 			Type groupType = typeof(TModelElement);
 			foreach (ElementGroupingType groupingType in ModelElement.GroupingTypeCollection)

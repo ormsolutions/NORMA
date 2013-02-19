@@ -69,7 +69,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				PropertyDescriptor retVal = myKindDisplayPropertyDescriptor;
 				if (retVal == null)
 				{
-					myKindDisplayPropertyDescriptor = retVal = new AutomatedElementFilterCustomPropertyDescriptor(TypeDescriptor.CreateProperty(typeof(ReferenceMode), "KindDisplay", typeof(ReferenceModeKind)), ResourceStrings.ReferenceModeKindDisplayDisplayName, ResourceStrings.ReferenceModeKindDisplayDescription, null);
+					myKindDisplayPropertyDescriptor = retVal = new AutomatedElementFilterCustomPropertyDescriptor(TypeDescriptor.CreateProperty(typeof(ReferenceMode), "KindDisplay", typeof(ReferenceModeKind)), null, ResourceStrings.ReferenceModeKindDisplayDisplayName, ResourceStrings.ReferenceModeKindDisplayDescription, null);
 				}
 				return retVal;
 			}

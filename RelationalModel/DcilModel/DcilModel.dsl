@@ -49,6 +49,13 @@
 			</Properties>
 		</DomainClass>
 		<DomainClass Id="DDBACED7-C013-419B-A305-9937379038D0" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="Schema" Description="Equivalent to a 'SCHEMA' in the SQL Standard.">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;Schema, Design.SchemaTypeDescriptor&lt;Schema&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 			<BaseClass>
 				<DomainClassMoniker Name="ConceptualDatabaseModelElement"/>
 			</BaseClass>
@@ -61,6 +68,16 @@
 				<DomainProperty Id="7DC89632-AF5F-44FA-8F30-03B1D053886B" Name="DefaultColumnOrder" DisplayName="DefaultColumnOrder" DefaultValue="PrimaryMandatoryUniqueOther" Description="Determine the default column sort order for tables in this schema.">
 					<Type>
 						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase/AutomaticColumnOrdering"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Id="9768CF92-384D-4202-8680-E599AD24736D" Name="CustomName" IsBrowsable="false" Description="The generated schema name is modified by the user.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Id="42BFD5FC-04DC-4C35-B42F-40C91F7B3635" Name="EditName" IsBrowsable="false" DisplayName="Name" Description="The name of the schema." Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
 			</Properties>

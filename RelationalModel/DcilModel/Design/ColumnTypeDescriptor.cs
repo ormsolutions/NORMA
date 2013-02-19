@@ -30,7 +30,7 @@ using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 {
 	/// <summary>
-	/// <see cref="ElementTypeDescriptor"/> for <see cref="ObjectType"/>s.
+	/// <see cref="ElementTypeDescriptor"/> for a <see cref="Column"/>.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 	public class ColumnTypeDescriptor<TModelElement> : ConceptualDatabaseElementTypeDescriptor<TModelElement>

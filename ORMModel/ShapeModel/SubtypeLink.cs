@@ -31,7 +31,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
-	public partial class SubtypeLink : ORMBaseBinaryLinkShape, IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink, IConfigureAsChildShape, IAutoCreatedSelectableShape, IDynamicColorGeometryHost
+	public partial class SubtypeLink : IModelErrorActivation, IProvideConnectorShape, IReconfigureableLink, IConfigureAsChildShape, IAutoCreatedSelectableShape, IDynamicColorGeometryHost
 	{
 		#region Customize appearance
 		//The Resource ID's for the given subtype drawing type.
@@ -305,6 +305,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return ObliqueBinaryLinkShapeGeometry.ShapeGeometry;
 			}
 		}
+		/// <summary>
+		/// Set ZOrder layer
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				return base.ZOrder + ZOrderLayer.SubtypeConnectors;
+			}
+		}
 		#endregion // Customize appearance
 		#region Mouse handling
 		/// <summary>
@@ -478,17 +488,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return GetUniqueConnectorShape(oppositeShape, ignoreLinkShapesFor);
 		}
 		#region HACK: Size property
-		// UNDONE: 2006-06 DSL Tools port: SubtypeLink gets the generated code for a shape even though it is a link,
-		// since links must be related to DomainRelationship elements, not DomainClass elements.
-		// UNDONE: 2006-08 DSL Tools port: This is called from a different location now, so it is internal rather
-		// than private.
-		/// <summary>HACK: Pretend this property isn't here.</summary>
+		/// <summary>Dummy property for generated code.</summary>
 		[Browsable(false)]
 		[EditorBrowsable(EditorBrowsableState.Never)]
 		internal SizeD Size
 		{
 			set
 			{
+				// HACK: SubtypeLink gets the generated code for a shape even though it is a link,
+				// since links must be related to DomainRelationship elements, not DomainClass elements.
+				// Add this to allow compilation
 			}
 		}
 		#endregion HACK: Size property

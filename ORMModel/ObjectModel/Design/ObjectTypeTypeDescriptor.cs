@@ -340,7 +340,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				PropertyDescriptor retVal = myDataTypeDisplayPropertyDescriptor;
 				if (retVal == null)
 				{
-					myDataTypeDisplayPropertyDescriptor = retVal = EditorUtility.ReflectStoreEnabledPropertyDescriptor(typeof(ObjectType), "DataTypeDisplay", typeof(DataType), ResourceStrings.ObjectTypeDataTypeDisplayDisplayName, ResourceStrings.ObjectTypeDataTypeDisplayDescription, null);
+					myDataTypeDisplayPropertyDescriptor = retVal = EditorUtility.ReflectStoreEnabledPropertyDescriptor(typeof(ObjectType), "DataTypeDisplay", typeof(DataType), null, ResourceStrings.ObjectTypeDataTypeDisplayDisplayName, ResourceStrings.ObjectTypeDataTypeDisplayDescription, null);
 				}
 				return retVal;
 			}

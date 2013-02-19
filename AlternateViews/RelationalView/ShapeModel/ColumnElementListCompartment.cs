@@ -316,6 +316,19 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			base.InitializeShapeFields(shapeFields);
 			// Removes the PlusMinusButtonField because we don't want the compartment expanded and collapsed.
 			shapeFields.RemoveAt(2);
+
+			//// Removes the HdrText fields because we don't need to see 'Columns' on every shape.
+			shapeFields.RemoveAt(2);
+			AreaField headerField = (AreaField)shapeFields[1];
+			AnchoringBehavior anchor = headerField.AnchoringBehavior;
+			anchor.ClearBottomAnchor();
+			anchor.SetTopAnchor(AnchoringBehavior.Edge.Top, 0d);
+			headerField.DefaultHeight = 1.5 / 72d;
+
+			// The main list field is anchored off the header, which no longer has a bottom anchor.
+			// Anchor directly to the top at the same size as the header field
+			anchor = shapeFields[2].AnchoringBehavior;
+			anchor.SetTopAnchor(AnchoringBehavior.Edge.Top, 1.5 / 72d);
 		}
 		/// <summary>
 		/// Gets a handle to the desktop window.
@@ -360,6 +373,17 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			else
 			{
 				((TableShape)ParentShape).InvalidateRequired(true);
+			}
+		}
+		/// <summary>
+		/// The default implementation of CollapsedSize requires the
+		/// header text field, which we remove.
+		/// </summary>
+		protected override SizeD CollapsedSize
+		{
+			get
+			{
+				return new SizeD(0d, 0d);
 			}
 		}
 		private void UpdateSize(SizeD newSize)

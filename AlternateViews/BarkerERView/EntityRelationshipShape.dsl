@@ -67,7 +67,7 @@
 		<Connector Id="03FE4DA6-29DC-4DFC-9450-07E7D2B5EC48" Name="AssociationConnector" Namespace="ORMSolutions.ORMArchitect.Views.BarkerERView" DisplayName="AssociationConnector" 
 			Thickness="0.01">
 			<BaseConnector>
-				<ConnectorMoniker Name="/ORMSolutions.ORMArchitect.Core.ShapeModel/ORMBaseBinaryLinkShape"/>
+				<ConnectorMoniker Name="/ORMSolutions.ORMArchitect.Core.ShapeModel/ORMDirectBinaryLinkShape"/>
 			</BaseConnector>
 		</Connector>
 	</Connectors>

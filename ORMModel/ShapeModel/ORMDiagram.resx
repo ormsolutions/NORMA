@@ -237,11 +237,23 @@
     <value>../Resources/DiagramBrowserImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment xml:space="preserve">The image shown on the model browser for ORM diagrams.</comment>
   </data>
-	<data name="Diagram.MenuDisplayName">
-		<value xml:space="preserve">ORM Diagram</value>
-		<comment xml:space="preserve">The context menu command name for creating a new ORM diagram.</comment>
-	</data>
-	<data name="Diagram.TabImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Diagram.MenuDisplayName">
+    <value xml:space="preserve">ORM Diagram</value>
+    <comment xml:space="preserve">The context menu command name for creating a new ORM diagram.</comment>
+  </data>
+  <data name="Diagram.Properties.DiagramName.Description" xml:space="preserve">
+    <value>The name of this diagram.</value>
+    <comment>Display name for the Diagram.Name property shown in the properties window with a diagram selection.</comment>
+  </data>
+  <data name="Diagram.Properties.DiagramName.DisplayName" xml:space="preserve">
+    <value>DiagramName</value>
+    <comment>Display name for the Diagram.Name property shown in the properties window with a diagram selection.</comment>
+  </data>
+  <data name="Diagram.Properties.ModelName.DisplayName" xml:space="preserve">
+    <value>ModelName</value>
+    <comment>Display name for the ORMModel.Name property shown in the properties window with a diagram selection. Note that we use the native description here, so there is no corresponding description.</comment>
+  </data>
+  <data name="Diagram.TabImage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../Resources/DiagramTabImage.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment xml:space="preserve">The image shown on the tab for ORM diagrams.</comment>
   </data>

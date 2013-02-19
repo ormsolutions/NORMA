@@ -141,6 +141,11 @@
 					<xs:documentation>The name of the schema.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
+			<xs:attribute name="CustomName" default="false" type="xs:boolean">
+				<xs:annotation>
+					<xs:documentation>True if the schema name is user-customized. Affects future schema modifications.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 			<xs:attribute name="DefaultColumnOrder" default="PrimaryMandatoryUniqueOther">
 				<xs:annotation>
 					<xs:documentation>Choose the default algorithm for automatically sorting columns in this schema.</xs:documentation>

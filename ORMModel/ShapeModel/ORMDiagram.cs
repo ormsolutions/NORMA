@@ -3507,4 +3507,76 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 	}
 	#endregion // ORMDiagramBase class
+	#region ZOrderLayer class
+	/// <summary>
+	/// Diagram shapes zorder is determined automatically by the relative
+	/// creation order of the shapes and connectors. By default, this means
+	/// that connectors display above the shapes they are connected to.
+	/// However, if a connector is attached to another shape, then it may
+	/// display behind the other shape, giving an inconsistent (or possibly
+	/// incorrent) display. The ZOrderLayer values provide an offset to
+	/// add to the explicit ZOrder so that different shape types always
+	/// layer in a consistent fashion.
+	/// </summary>
+	/// <remarks>These values are intentionally static properties instead
+	/// of constants so that extensions get updated values without recompilation.</remarks>
+	public static class ZOrderLayer
+	{
+		/// <summary>
+		/// Put note connectors behind all other shapes
+		/// </summary>
+		public static readonly double NoteConnectors = 0d;
+		/// <summary>
+		/// The minimum zorder order range used by native shapes.
+		/// </summary>
+		public static readonly double FirstLayerBeginning = NoteConnectors;
+		/// <summary>
+		/// Place object type shapes at the bottom
+		/// </summary>
+		public static readonly double ObjectTypeShapes = 100000d;
+		/// <summary>
+		/// Place fact types shapes over object type shapes. The fact type
+		/// shapes are generally smaller, so they can remain selectable
+		/// in cases of overlap.
+		/// </summary>
+		public static readonly double FactTypeShapes = 200000d;
+		/// <summary>
+		/// Place external constraint shapes above base shapes to keep them selectable.
+		/// </summary>
+		public static readonly double ExternalConstraintShapes = 300000d;
+		/// <summary>
+		/// Place note shapes, which have a transparent backgroun by default,
+		/// above other shapes.
+		/// </summary>
+		public static readonly double NoteShapes = 400000d;
+		/// <summary>
+		/// Subtype connectors go over all shapes. These lines are drawn wider
+		/// than other connectors, so placing them before other connector types
+		/// keeps them below the other conector types.
+		/// </summary>
+		public static readonly double SubtypeConnectors = 500000d;
+		/// <summary>
+		/// Role player connectors draw over subtype connectors and below
+		/// constraint connectors.
+		/// </summary>
+		public static readonly double RolePlayerConnectors = 600000d;
+		/// <summary>
+		/// Draw the lightweight constraint connector lines above other connector types.
+		/// </summary>
+		public static readonly double ConstraintConnectors = 700000d;
+		/// <summary>
+		/// Show transparent value constraint shapes above intersecting connectors.
+		/// </summary>
+		public static readonly double ValueConstraintShapes = 800000d;
+		/// <summary>
+		/// Place floating text shapes (reading, objectified fact type name, and role name)
+		/// above other shapes.
+		/// </summary>
+		public static readonly double FloatingTextShapes = 900000d;
+		/// <summary>
+		/// The end of the maximum zorder order range used by native shapes.
+		/// </summary>
+		public static readonly double MaximumLayerEnd = 1000000d;
+	}
+	#endregion // ZOrderLayer class
 }

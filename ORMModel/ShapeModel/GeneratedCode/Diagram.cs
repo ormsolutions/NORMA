@@ -31,7 +31,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	/// <summary>
 	/// Double-derived base class for DomainClass ORMDiagram
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider<ORMDiagram, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel, global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.DiagramTypeDescriptor<ORMDiagram, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>>))]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider<ORMDiagram, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel, Design.ORMDiagramTypeDescriptor<ORMDiagram, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -207,6 +207,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (connector == null)
 				throw new global::System.ArgumentNullException("connector");
 			#endregion
+			if (connector is global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDirectBinaryLinkShape)
+				return false;
 			if (connector is global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape)
 				return false;
 			return base.IsConnectorMappedToLink(connector);

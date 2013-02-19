@@ -76,7 +76,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				PropertyDescriptor retVal = myModelErrorDisplayFilterDisplayPropertyDescriptor;
 				if (retVal == null)
 				{
-					myModelErrorDisplayFilterDisplayPropertyDescriptor = retVal = EditorUtility.ReflectStoreEnabledPropertyDescriptor(typeof(ORMModel), "ModelErrorDisplayFilterDisplay", typeof(ModelErrorDisplayFilter), ResourceStrings.ModelModelErrorDisplayFilterDisplayDisplayName, ResourceStrings.ModelModelErrorDisplayFilterDisplayDescription, null);
+					myModelErrorDisplayFilterDisplayPropertyDescriptor = retVal = EditorUtility.ReflectStoreEnabledPropertyDescriptor(typeof(ORMModel), "ModelErrorDisplayFilterDisplay", typeof(ModelErrorDisplayFilter), null, ResourceStrings.ModelModelErrorDisplayFilterDisplayDisplayName, ResourceStrings.ModelModelErrorDisplayFilterDisplayDescription, null);
 				}
 				return retVal;
 			}

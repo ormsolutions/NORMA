@@ -39,7 +39,7 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel))]
 	[global::System.CLSCompliant(true)]
 	[DslModeling::DomainObjectId("03fe4da6-29dc-4dfc-9450-07e7d2b5ec48")]
-	public partial class AssociationConnector : global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseBinaryLinkShape
+	public partial class AssociationConnector : global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDirectBinaryLinkShape
 	{
 		#region DiagramElement boilerplate
 		private static DslDiagrams::StyleSet classStyleSet;

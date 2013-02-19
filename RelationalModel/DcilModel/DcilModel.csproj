@@ -145,6 +145,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Column.cs" />
+    <Compile Include="Design\SchemaTypeDescriptor.cs" />
+    <Compile Include="Schema.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="DcilModel.DeserializationFixupListeners.cs" />
     <Compile Include="Design\TableTypeDescriptor.cs" />

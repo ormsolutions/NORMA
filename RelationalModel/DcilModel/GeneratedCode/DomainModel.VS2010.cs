@@ -124,6 +124,8 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 				new DomainMemberInfo(typeof(Catalog), "Name", Catalog.NameDomainPropertyId, typeof(Catalog.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(Schema), "Name", Schema.NameDomainPropertyId, typeof(Schema.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(Schema), "DefaultColumnOrder", Schema.DefaultColumnOrderDomainPropertyId, typeof(Schema.DefaultColumnOrderPropertyHandler)),
+				new DomainMemberInfo(typeof(Schema), "CustomName", Schema.CustomNameDomainPropertyId, typeof(Schema.CustomNamePropertyHandler)),
+				new DomainMemberInfo(typeof(Schema), "EditName", Schema.EditNameDomainPropertyId, typeof(Schema.EditNamePropertyHandler)),
 				new DomainMemberInfo(typeof(Table), "Name", Table.NameDomainPropertyId, typeof(Table.NamePropertyHandler)),
 				new DomainMemberInfo(typeof(Table), "CustomName", Table.CustomNameDomainPropertyId, typeof(Table.CustomNamePropertyHandler)),
 				new DomainMemberInfo(typeof(Table), "EditName", Table.EditNameDomainPropertyId, typeof(Table.EditNamePropertyHandler)),

@@ -214,7 +214,7 @@
 		</GeometryShape>
 		<GeometryShape Name="SubtypeLink" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="87DDAEDA-1FD8-4433-BB1E-7482C7F471A7" FillGradientMode="None">
 			<!--<BaseGeometryShape>
-				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
+				<ConnectorMoniker Name="ORMDirectBinaryLinkShape"/>
 			</BaseGeometryShape>-->
 		</GeometryShape>
 		<GeometryShape Name="ExternalConstraintShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="00A08F56-73BA-4C8F-8FA1-AE61B8FC1CAE" FillGradientMode="None" InitialWidth=".16" InitialHeight=".16">
@@ -339,9 +339,14 @@
 				</DomainProperty>
 			</Properties>
 		</Connector>
-		<Connector Name="RolePlayerLink" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="2B3F0AAE-B1B1-4727-8862-5C34B494B499">
+		<Connector Name="ORMDirectBinaryLinkShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" InheritanceModifier="Abstract" Id="C9D051CC-A90B-468F-891D-62BDE679922F">
 			<BaseConnector>
 				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
+			</BaseConnector>
+		</Connector>
+		<Connector Name="RolePlayerLink" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="2B3F0AAE-B1B1-4727-8862-5C34B494B499">
+			<BaseConnector>
+				<ConnectorMoniker Name="ORMDirectBinaryLinkShape"/>
 			</BaseConnector>
 		</Connector>
 		<Connector Name="RolePlayerProxyLink" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="27D3440F-6CA0-4135-9A1C-2D3259E4A7FF">
@@ -351,17 +356,17 @@
 		</Connector>
 		<Connector Name="ExternalConstraintLink" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="8815E6D8-238B-422C-A4B3-29FDC8DE9EA5">
 			<BaseConnector>
-				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
+				<ConnectorMoniker Name="ORMDirectBinaryLinkShape"/>
 			</BaseConnector>
 		</Connector>
 		<Connector Name="ValueRangeLink" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="374E43C3-C294-49C4-8A61-3C3CA5FC86E8">
 			<BaseConnector>
-				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
+				<ConnectorMoniker Name="ORMDirectBinaryLinkShape"/>
 			</BaseConnector>
 		</Connector>
 		<Connector Name="ModelNoteLink" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="21E7C585-BC80-446F-8517-BC4FD465971F" DisplayName="ModelNoteReference">
 			<BaseConnector>
-				<ConnectorMoniker Name="ORMBaseBinaryLinkShape"/>
+				<ConnectorMoniker Name="ORMDirectBinaryLinkShape"/>
 			</BaseConnector>
 		</Connector>
 	</Connectors>
@@ -378,7 +383,7 @@
 		<Attributes>
 			<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 				<Parameters>
-					<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;ORMDiagram, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel, global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.DiagramTypeDescriptor&lt;ORMDiagram, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;&gt;)"/>
+					<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Diagrams.Design.PresentationElementTypeDescriptionProvider&lt;ORMDiagram, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel, Design.ORMDiagramTypeDescriptor&lt;ORMDiagram, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;&gt;)"/>
 				</Parameters>
 			</ClrAttribute>
 		</Attributes>

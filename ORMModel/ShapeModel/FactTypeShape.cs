@@ -4190,6 +4190,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				view.HighlightedShapes.Remove(new DiagramItem(this, field, subField));
 			}
 		}
+		/// <summary>
+		/// Set ZOrder layer
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				return base.ZOrder + ZOrderLayer.FactTypeShapes;
+			}
+		}
 		#endregion // Customize appearance
 		#region DisplayFlags
 		/// <summary>

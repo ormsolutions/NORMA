@@ -164,8 +164,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				PropertyDescriptor reflectedDescriptor = TypeDescriptor.CreateProperty(typeof(Role), "RolePlayerDisplay", typeof(ObjectType));
 				string displayName = ResourceStrings.RoleRolePlayerDisplayDisplayName;
 				string description = ResourceStrings.RoleRolePlayerDisplayDescription;
-				myRolePlayerDisplayPropertyDescriptor = new StoreEnabledPropertyDescriptor(reflectedDescriptor, displayName, description, null);
-				myRolePlayerDisplayReadOnlyPropertyDescriptor = new StoreEnabledReadOnlyPropertyDescriptor(reflectedDescriptor, displayName, description, null);
+				myRolePlayerDisplayPropertyDescriptor = new StoreEnabledPropertyDescriptor(reflectedDescriptor, null, displayName, description, null);
+				myRolePlayerDisplayReadOnlyPropertyDescriptor = new StoreEnabledReadOnlyPropertyDescriptor(reflectedDescriptor, null, displayName, description, null);
 				retVal = isReadOnly ? myRolePlayerDisplayReadOnlyPropertyDescriptor : myRolePlayerDisplayPropertyDescriptor;
 			}
 			return retVal;

@@ -241,6 +241,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return retVal;
 			}
 		}
+		/// <summary>
+		/// Set ZOrder layer
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				return base.ZOrder + ZOrderLayer.RolePlayerConnectors;
+			}
+		}
 		#endregion // Customize appearance
 		#region IDynamicColorGeometryHost Implementation
 		/// <summary>

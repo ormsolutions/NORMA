@@ -469,6 +469,9 @@
 	<ResourceString name="DiagramCommandRenamePage" model="Diagram" resourceName="Diagram.Command.RenamePage"/>
 	<ResourceString name="DiagramCommandReorderPages" model="Diagram" resourceName="Diagram.Command.ReorderPages"/>
 	<ResourceString name="DiagramCommandDeletePage" model="Diagram" resourceName="Diagram.Command.DeletePage"/>
+	<ResourceString name="DiagramPropertiesDiagramNameDescription" model="Diagram" resourceName="Diagram.Properties.DiagramName.Description"/>
+	<ResourceString name="DiagramPropertiesDiagramNameDisplayName" model="Diagram" resourceName="Diagram.Properties.DiagramName.DisplayName"/>
+	<ResourceString name="DiagramPropertiesModelNameDisplayName" model="Diagram" resourceName="Diagram.Properties.ModelName.DisplayName"/>
 	<ResourceString name="SetConstraintStickyRoleFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayFormatString"/>
 	<ResourceString name="SetConstraintStickyRoleTooltipFormatString" model="Diagram" resourceName="SetConstraintStickyRole.DisplayTooltipFormatString"/>
 	<ResourceString name="SetConstraintStickyRoleOverlapping" model="Diagram" resourceName="SetConstraintStickyRole.DisplayOverlapping"/>

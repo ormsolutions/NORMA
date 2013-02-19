@@ -163,7 +163,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			LinkedElementCollection<ConceptType> conceptTypes = sourceModel.ConceptTypeCollection;
 			Partition partition = schema.Partition;
 			if (customization != null &&
-				customization.IsEmpty)
+				!customization.CustomizesTablesOrColumns)
 			{
 				customization = null;
 			}

@@ -57,6 +57,13 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Attribute ID="CustomName">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="CustomName" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="Tables">
 			<se:Embed RelationshipName="SchemaContainsTable" RoleName="Table"/>
 		</se:Container>
@@ -71,7 +78,7 @@
 		</se:Container>-->
 	</se:Element>
 	<se:Element Class="Domain" Name="DomainDataType">
-		
+
 	</se:Element>
 	<se:Element Class="Table" SortChildElements="true">
 		<se:Attribute ID="CustomName">
@@ -81,7 +88,7 @@
 				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
-		<se:Attribute ID="ColumnOrder">
+`		<se:Attribute ID="ColumnOrder">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="equality">
 					<plx:left>

@@ -493,6 +493,14 @@
     <value>Update Counter</value>
     <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMBaseBinaryLinkShape&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDirectBinaryLinkShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDirectBinaryLinkShape</value>
+    <comment>Description for DomainClass &apos;ORMDirectBinaryLinkShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDirectBinaryLinkShape.DisplayName" xml:space="preserve">
+    <value>ORMDirect Binary Link Shape</value>
+    <comment>DisplayName for DomainClass &apos;ORMDirectBinaryLinkShape&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.RolePlayerLink</value>
     <comment>Description for DomainClass &apos;RolePlayerLink&apos;</comment>

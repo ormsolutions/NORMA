@@ -29,18 +29,18 @@ using ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase;
 namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 {
 	/// <summary>
-	/// <see cref="ElementTypeDescriptor"/> for a <see cref="Table"/>.
+	/// <see cref="ElementTypeDescriptor"/> for <see cref="Schema"/>.
 	/// </summary>
 	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
-	public class TableTypeDescriptor<TModelElement> : ConceptualDatabaseElementTypeDescriptor<TModelElement>
-		where TModelElement : Table
+	public class SchemaTypeDescriptor<TModelElement> : ConceptualDatabaseElementTypeDescriptor<TModelElement>
+		where TModelElement : Schema
 	{
 		#region Constructor
 		/// <summary>
-		/// Initializes a new instance of <see cref="TableTypeDescriptor{TModelElement}"/>
+		/// Initializes a new instance of <see cref="SchemaTypeDescriptor{TModelElement}"/>
 		/// for <paramref name="selectedElement"/>.
 		/// </summary>
-		public TableTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
+		public SchemaTypeDescriptor(ICustomTypeDescriptor parent, TModelElement selectedElement)
 			: base(parent, selectedElement)
 		{
 		}
@@ -51,7 +51,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 		/// </summary>
 		protected override ElementPropertyDescriptor CreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainPropertyInfo, Attribute[] attributes)
 		{
-			if (domainPropertyInfo.Id == Table.NameDomainPropertyId)
+			if (domainPropertyInfo.Id == Schema.NameDomainPropertyId)
 			{
 				return new NamePropertyDescriptor(this, requestor, domainPropertyInfo, attributes);
 			}
@@ -61,7 +61,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 		#region NamePropertyDescriptor class
 		/// <summary>
 		/// A property descriptor that ties display and reset capabilities
-		/// on the table name to both the Name and CustomName properties.
+		/// on the schema name to both the Name and CustomName properties.
 		/// </summary>
 		private sealed class NamePropertyDescriptor : ElementPropertyDescriptor
 		{
@@ -71,7 +71,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 			}
 			public override bool CanResetValue(object component)
 			{
-				return ((Table)this.ModelElement).CustomName;
+				return ((Schema)this.ModelElement).CustomName;
 			}
 			public override void ResetValue(object component)
 			{
@@ -79,17 +79,17 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 			}
 			public override bool ShouldSerializeValue(object component)
 			{
-				return ((Table)this.ModelElement).CustomName;
+				return ((Schema)this.ModelElement).CustomName;
 			}
 			public override void SetValue(object component, object value)
 			{
-				Table table;
+				Schema schema;
 				Store store;
 				string newName;
-				if (null == (table = ModelElement as Table) ||
-					null == (store = Utility.ValidateStore(table.Store)) ||
+				if (null == (schema = ModelElement as Schema) ||
+					null == (store = Utility.ValidateStore(schema.Store)) ||
 					null == (newName = value as string) ||
-					newName == table.Name)
+					newName == schema.Name)
 				{
 					return;
 				}
@@ -99,12 +99,12 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 					{
 						// Name generators should listen to this property to regenerate
 						// the name.
-						table.CustomName = false;
+						schema.CustomName = false;
 					}
 					else
 					{
-						table.CustomName = true;
-						table.Name = newName;
+						schema.CustomName = true;
+						schema.Name = newName;
 					}
 					if (t.HasPendingChanges)
 					{

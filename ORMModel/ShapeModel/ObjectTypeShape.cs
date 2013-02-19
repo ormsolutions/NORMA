@@ -438,6 +438,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			return retVal;
 		}
+		/// <summary>
+		/// Set ZOrder layer
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				return base.ZOrder + ZOrderLayer.ObjectTypeShapes;
+			}
+		}
 		#endregion // Customize appearance
 		#region ObjectTypeShape specific
 		/// <summary>

@@ -128,6 +128,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				return size;
 			}
 		}
+		/// <summary>
+		/// Set ZOrder layer
+		/// </summary>
+		public override double ZOrder
+		{
+			get
+			{
+				return base.ZOrder + ZOrderLayer.NoteShapes;
+			}
+		}
 		#region IDynamicColorGeometryHost Implementation
 		/// <summary>
 		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>
