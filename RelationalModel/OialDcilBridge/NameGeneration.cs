@@ -166,16 +166,14 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			public static void GenerateAllNames(Schema schema, SchemaCustomization customization)
 			{
 				// Verify the schema name
-				string customSchemaName = customization.CustomizedSchemaName;
-				if (customSchemaName == null)
-				{
-					AbstractionModel abstraction;
-					if (null != (abstraction = SchemaIsForAbstractionModel.GetAbstractionModel(schema)))
-					{
-						customSchemaName = abstraction.Name;
-					}
-				}
-				if (customSchemaName != null)
+				AbstractionModel abstraction;
+				string customSchemaName;
+				if (null != (customSchemaName = 
+						((null == customization ||
+						null == (customSchemaName = customization.CustomizedSchemaName)) &&
+						null != (abstraction = SchemaIsForAbstractionModel.GetAbstractionModel(schema))) ?
+					abstraction.Name :
+					null))
 				{
 					schema.Name = customSchemaName;
 				}

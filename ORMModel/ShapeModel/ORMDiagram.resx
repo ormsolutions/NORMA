@@ -536,7 +536,7 @@
     <comment xml:space="preserve">The message displayed if a selected item cannot be located in the model browser.</comment>
   </data>
   <data name="MessageBox.RevertExtensions.Message">
-    <value xml:space="preserve">Restoring previous model state, loading new extensions faileds with exception:&#xd;&#xa;</value>
+    <value xml:space="preserve">Restoring previous model state, loading new extensions failed with exception:&#xd;&#xa;</value>
     <comment xml:space="preserve">The header for the message displayed if a set of extensions fails to correctly reload.</comment>
   </data>
   <data name="MessageBox.ImpliedInternalUniquenessConstraint.Message">
