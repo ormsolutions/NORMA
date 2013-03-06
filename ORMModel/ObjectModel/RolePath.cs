@@ -1020,6 +1020,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					//    NEW: AggregationContext can reference multiple path nodes, UniversalAggregationContext
 					//         property used otherwise. No context for an aggregate calculation is an error.
 					//         Scope is no longer used for scalar functions.
+					// 7) OLD: A subpath could lead with a non-join pathed role. This 'intra-fact type split'
+					//         indicated branching within the roles of a single fact type.
+					//    NEW: The intra-fact type split approach is difficult to use because it requires looking
+					//         down sub paths to determine variables for a fact type entry, and it doesn't display
+					//         well. More importantly, it does not actually solve the general problem of adding
+					//         conditions to an inscope variable because variables can be in scope for both the
+					//         most recent fact type and variables declared earlier in the path. The new approach
+					//         deprecates the intra-fact type split, moves all pathed roles to the path with the
+					//         initial entry role, and uses path roots and correlation in sub paths to state the
+					//         conditions originally covered by intra-fact type splits. This pattern also allows
+					//         additional conditions on all in-scope variables, which was not included in the
+					//         intra-fact type split pattern.
 
 					// Move from the single contained element to the many containment
 					RolePathOwnerHasPathComponent_Deprecated rootContainmentLink = RolePathOwnerHasPathComponent_Deprecated.GetLinkToPathComponent(element);
@@ -1346,10 +1358,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 
-					// Replace deprecated StartRole pathed role purpose with PostInnerJoin pathed roles
-					// and modify projections.
 					foreach (LeadRolePath leadRolePath in element.OwnedLeadRolePathCollection)
 					{
+						// Replace deprecated StartRole pathed role purpose with PostInnerJoin pathed roles
+						// and modify projections.
 						VisitPathNodes(
 							leadRolePath,
 							RolePathNode.Empty,
@@ -1536,8 +1548,521 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 							}
 						}
+
+						// Eliminate intra-fact type splits. The basic approach is to add new pathed role declarations
+						// immediately after the entry role for the fact type, replace the ift split roles
+						// with new path roots, and move all projections, calculations, and value ranges to the
+						// new path root node. While most IFT roles will be single, it is also possible to have
+						// multiple roles at the start of the path. In this case, we need to create a new subpath
+						// for each additional role.
+						ReadOnlyCollection<PathedRole> entryPathedRoles = null;
+						RemoveIntraFactTypeSplits(leadRolePath, ref entryPathedRoles, -1, leadRolePath.SplitCombinationOperator == LogicalCombinationOperator.And && !leadRolePath.SplitIsNegated, notifyAdded);
 					}
 				}
+			}
+			/// <summary>
+			/// Recursive helper function for ProcessElement
+			/// </summary>
+			/// <param name="rolePath">The role path to check</param>
+			/// <param name="entryPathedRoles">The pathed roles for the path that contains the last
+			/// entry role into a fact type use. Passed by reference so the readonly collection can
+			/// be updated when it changes.</param>
+			/// <param name="entryRoleIndex">The index of the entry role in <paramref name="entryPathedRoles"/></param>
+			/// <param name="inPositiveConjunction">True if all of the splits passed since the entry pathed role
+			/// are 'and' splits and not negated.</param>
+			/// <param name="notifyAdded">Add notification callback.</param>
+			private static void RemoveIntraFactTypeSplits(RolePath rolePath, ref ReadOnlyCollection<PathedRole> entryPathedRoles, int entryRoleIndex, bool inPositiveConjunction, INotifyElementAdded notifyAdded)
+			{
+				LinkedElementCollection<RoleSubPath> subpaths = rolePath.SubPathCollection;
+				int subpathCount = subpaths.Count;
+				ReadOnlyCollection<PathedRole> currentPathedRoles = null;
+				if (subpathCount == 0 &&
+					entryRoleIndex == -1)
+				{
+					// There is no bound ift role at the beginning without a context,
+					// and there are no trailing ones without subpaths.
+					return;
+				}
+				bool hasRoot = rolePath.PathRoot != null;
+				bool scrubbedSplit;
+				if (scrubbedSplit = (entryRoleIndex != -1 &&
+					!hasRoot &&
+					(currentPathedRoles = rolePath.PathedRoleCollection).Count != 0 &&
+					currentPathedRoles[0].PathedRolePurpose == PathedRolePurpose.SameFactType))
+				{
+					// Clear the ift split in this branch. Do the work in a non-recursive routine
+					// to keep the stack reasonable for this function.
+					ScrubIntraFactTypeSplit(rolePath, currentPathedRoles, ref entryPathedRoles, entryRoleIndex, inPositiveConjunction, notifyAdded);
+				}
+
+				if (subpathCount != 0)
+				{
+					// Find an entry pathed role in the current roles. If there is none, then we may have
+					// a nested ift split in a following branch, so we leave the entry role the same as with
+					// this call.
+					// Note that the count can change with the ift cleanup, don't cache
+					int i = (currentPathedRoles ?? (currentPathedRoles = rolePath.PathedRoleCollection)).Count - 1;
+					for (; i >= 0; --i)
+					{
+						if (currentPathedRoles[i].PathedRolePurpose != PathedRolePurpose.SameFactType)
+						{
+							entryPathedRoles = currentPathedRoles;
+							entryRoleIndex = i;
+							break;
+						}
+					}
+					if (i == -1 && hasRoot)
+					{
+						// The root is reset, so there is no connection to a previous entry role
+						entryPathedRoles = null;
+						entryRoleIndex = -1;
+					}
+					RoleSubPath[] subpathSnap = subpaths.ToArray();
+					RoleSubPath subpath;
+					for (i = 0; i < subpathCount; ++i)
+					{
+						subpath = subpathSnap[i];
+						RemoveIntraFactTypeSplits(
+							subpath,
+							ref entryPathedRoles,
+							entryRoleIndex,
+							entryPathedRoles == null || (inPositiveConjunction && subpath.SplitCombinationOperator == LogicalCombinationOperator.And && !subpath.SplitIsNegated),
+							notifyAdded);
+					}
+					if (subpaths.Count == 1 &&
+						(subpath = subpaths[0]).PathRoot == null)
+					{
+						// We've eliminated one or more subpaths and no longer need the single path.
+						// Move pathed roles and subpaths up one level.
+						foreach (PathedRole nestedPathedRole in subpath.PathedRoleCollection)
+						{
+							nestedPathedRole.RolePath = rolePath;
+						}
+						foreach (RoleSubPathIsContinuationOfRolePath nestedSubPathLink in RoleSubPathIsContinuationOfRolePath.GetLinksToSubPathCollection(rolePath))
+						{
+							nestedSubPathLink.ParentRolePath = rolePath;
+						}
+						subpath.Delete();
+					}
+				}
+				else if (scrubbedSplit && rolePath.RoleCollection.Count == 0)
+				{
+					// This branch is empty, we don't need it anymore
+					rolePath.Delete();
+				}
+			}
+			private static void ScrubIntraFactTypeSplit(RolePath rolePath, ReadOnlyCollection<PathedRole> currentPathedRoles, ref ReadOnlyCollection<PathedRole> entryPathedRoles, int entryRoleIndex, bool inPositiveConjunction, INotifyElementAdded notifyAdded)
+			{
+				// Find the deepest role to scrub and work backwards
+				int pathedRoleCount = currentPathedRoles.Count;
+
+				// We already know 0 is an ift role and there is no path root, or we wouldn't be here.
+
+				// The initial ift role can be transformed directly into the path root of this path,
+				// but any subsequent roles need to split off their own path. Do this part first.
+				PathedRole replacePathedRole;
+				PathedRole correlatedRole;
+				RolePathObjectTypeRoot replacementPathRoot;
+				bool injectedRoleAtEnd;
+				for (int i = 1; i < pathedRoleCount; ++i)
+				{
+					if (currentPathedRoles[i].PathedRolePurpose != PathedRolePurpose.SameFactType)
+					{
+						// Work backwards. Injecting these roles into the entry fact type will
+						// at least give some semblance of order.
+						RoleSubPath lastSubpath = null;
+						Store store = rolePath.Store;
+						for (int j = i - 1; j >= 1; --j)
+						{
+							replacePathedRole = currentPathedRoles[j];
+							correlatedRole = InjectPathedRole(replacePathedRole, ref entryPathedRoles, entryRoleIndex, false, notifyAdded, out injectedRoleAtEnd);
+							RoleSubPath subpath;
+							notifyAdded.ElementAdded(subpath = new RoleSubPath(store));
+							if (null != (replacementPathRoot = CreateCorrelatedRoot(subpath, correlatedRole, notifyAdded)))
+							{
+								TransferAdherents(replacePathedRole, replacementPathRoot, null, notifyAdded);
+							}
+							replacePathedRole.Delete();
+							if (lastSubpath == null)
+							{
+								// Move all trailing pathed roles down to the new subpath. Note that
+								// we've deleted j, but the indices don't move because we're analyzing
+								// a read-only collection.
+								for (int k = j + 1; j < pathedRoleCount; ++k)
+								{
+									PathedRole reparentPathedRole = currentPathedRoles[k];
+									reparentPathedRole.RolePath = subpath;
+								}
+								foreach (RoleSubPathIsContinuationOfRolePath subPathLink in RoleSubPathIsContinuationOfRolePath.GetLinksToSubPathCollection(rolePath))
+								{
+									subPathLink.ParentRolePath = subpath;
+								}
+							}
+							else
+							{
+								notifyAdded.ElementAdded(new RoleSubPathIsContinuationOfRolePath(subpath, lastSubpath), false);
+							}
+							lastSubpath = subpath;
+						}
+						if (lastSubpath != null)
+						{
+							notifyAdded.ElementAdded(new RoleSubPathIsContinuationOfRolePath(rolePath, lastSubpath));
+						}
+						break;
+					}
+				}
+
+				// Handle the lead pathed role
+				replacePathedRole = currentPathedRoles[0];
+				correlatedRole = InjectPathedRole(replacePathedRole, ref entryPathedRoles, entryRoleIndex, inPositiveConjunction, notifyAdded, out injectedRoleAtEnd);
+				if (correlatedRole == replacePathedRole)
+				{
+					// The role pathed role was moved to the end of the entry fact type
+					// and can be joined to directly to any following elements. Anything
+					// left in this subpath can be moved to the parent path (this only
+					// happens under positive conjunction, so the split settings no longer
+					// need to be checked or moved).
+					RoleSubPath subpath;
+					if (null != (subpath = rolePath as RoleSubPath))
+					{
+						RolePath parentPath = subpath.ParentRolePath;
+						bool movedPathedRole = false;
+						foreach (PathedRole remainingPathedRole in PathedRole.GetLinksToRoleCollection(rolePath))
+						{
+							remainingPathedRole.RolePath = parentPath;
+							movedPathedRole = true;
+						}
+						if (movedPathedRole)
+						{
+							entryPathedRoles = entryPathedRoles[0].RolePath.PathedRoleCollection;
+						}
+						ReadOnlyCollection<RoleSubPathIsContinuationOfRolePath> nestedSubpathLinks = RoleSubPathIsContinuationOfRolePath.GetLinksToSubPathCollection(rolePath);
+						int nestedSubpathCount = nestedSubpathLinks.Count;
+						if (nestedSubpathCount != 0)
+						{
+							// Find a context entry role in the new extended pathed roles
+							ReadOnlyCollection<PathedRole> newPathedRoles = parentPath.PathedRoleCollection;
+							int newEntryRoleIndex = -1;
+							for (int i = newPathedRoles.Count - 1; i >= 0; --i)
+							{
+								if (newPathedRoles[i].PathedRolePurpose != PathedRolePurpose.SameFactType)
+								{
+									newEntryRoleIndex = i;
+									break;
+								}
+							}
+							if (newEntryRoleIndex == -1)
+							{
+								newPathedRoles = null;
+							}
+
+							// Move all of the nested subpaths to this location
+							LinkedElementCollection<RoleSubPath> parentSubpaths = parentPath.SubPathCollection;
+							int moveTo = parentSubpaths.IndexOf(subpath) + 1;
+							bool atEnd = moveTo == parentSubpaths.Count;
+							DomainRoleInfo roleInfo = atEnd ? null : parentPath.Store.DomainDataDirectory.FindDomainRole(RoleSubPathIsContinuationOfRolePath.ParentRolePathDomainRoleId);
+							for (int i = 0; i < nestedSubpathCount; ++i)
+							{
+								RoleSubPathIsContinuationOfRolePath nestedSubpathLink = nestedSubpathLinks[i];
+								nestedSubpathLink.ParentRolePath = parentPath;
+								if (!atEnd)
+								{
+									nestedSubpathLink.MoveToIndex(roleInfo, moveTo);
+									++moveTo;
+								}
+							}
+
+							// Delete the current subpath before recursing
+							subpath.Delete();
+
+							// With these subpaths now attached to the parent, we can do their
+							// ift processing. These won't be picked up by the calling code, which snapshots
+							// the roles before we get this far.
+							for (int i = 0; i < nestedSubpathCount; ++i)
+							{
+								RemoveIntraFactTypeSplits(nestedSubpathLinks[i].SubPath, ref newPathedRoles, newEntryRoleIndex, rolePath.SplitCombinationOperator == LogicalCombinationOperator.And && !rolePath.SplitIsNegated, notifyAdded);
+							}
+						}
+						else
+						{
+							// This subpath has been fully absorbed into the parent path, delete it.
+							subpath.Delete();
+						}
+					}
+				}
+				else
+				{
+					// There is nothing needed. The injected role was placed the end of the list, which
+					// means that the natural join is for the next role.
+					if (injectedRoleAtEnd)
+					{
+						replacementPathRoot = null;
+						TransferAdherents(
+							replacePathedRole,
+							null,
+							delegate()
+							{
+								return replacementPathRoot ?? (replacementPathRoot = CreateCorrelatedRoot(rolePath, correlatedRole, notifyAdded));
+							},
+							notifyAdded);
+					}
+					else
+					{
+						if (null != (replacementPathRoot = CreateCorrelatedRoot(rolePath, correlatedRole, notifyAdded)))
+						{
+							TransferAdherents(replacePathedRole, replacementPathRoot, null, notifyAdded);
+						}
+					}
+					replacePathedRole.Delete();
+				}
+			}
+			private delegate RolePathObjectTypeRoot GetPathRoot();
+			/// <summary>
+			/// Helper for RemoveIntraFactTypeSplits. Move projections, calculations, and value
+			/// range information from a pending removed role to a path root.
+			/// </summary>
+			private static void TransferAdherents(PathedRole fromRole, RolePathObjectTypeRoot toRoot, GetPathRoot delayCreateRoot, INotifyElementAdded notifyAdded)
+			{
+				// Move value constraint ranges
+				Store store = fromRole.Store;
+				PathConditionRoleValueConstraint roleValueConstraint;
+				if (null != (roleValueConstraint = fromRole.ValueConstraint))
+				{
+					PathConditionRootValueConstraint rootConstraint;
+					notifyAdded.ElementAdded(rootConstraint = new PathConditionRootValueConstraint(store));
+					foreach (ValueConstraintHasValueRange rangeLink in ValueConstraintHasValueRange.GetLinksToValueRangeCollection(roleValueConstraint))
+					{
+						rangeLink.ValueConstraint = rootConstraint;
+					}
+					if (null == (toRoot ?? (toRoot = delayCreateRoot())))
+					{
+						return;
+					}
+					notifyAdded.ElementAdded(new RolePathRootHasValueConstraint(toRoot, rootConstraint));
+					roleValueConstraint.Delete();
+				}
+
+				// Note that correlations have already been synchronized during InjectPathedRole and CreateCorrelatedRoot,
+				// there is no need to check them here.
+
+				// Check remaining known link types. Note that this could be optimized with
+				// a lookup table by link type, but speed is not paramount while eliminating
+				// deprecated elements.
+				CalculatedPathValueInputBindsToPathedRole calculationInputLink;
+				DerivedRoleProjectedFromPathedRole roleProjectionLink;
+				ConstraintRoleProjectedFromPathedRole constraintRoleProjectionLink;
+				CalculatedPathValueAggregationContextIncludesPathedRole aggContextLink;
+				QueryParameterBoundToPathedRole queryParameterBindingLink;
+				SubqueryParameterInputFromPathedRole subqueryParameterInputLink;
+				foreach (ElementLink link in DomainRoleInfo.GetAllElementLinks(fromRole))
+				{
+					if (null != (calculationInputLink = link as CalculatedPathValueInputBindsToPathedRole))
+					{
+						if (null == (toRoot ?? (toRoot = delayCreateRoot())))
+						{
+							return;
+						}
+						notifyAdded.ElementAdded(new CalculatedPathValueInputBindsToRolePathRoot(calculationInputLink.Input, toRoot));
+					}
+					else if (null != (roleProjectionLink = link as DerivedRoleProjectedFromPathedRole))
+					{
+						if (null == (toRoot ?? (toRoot = delayCreateRoot())))
+						{
+							return;
+						}
+						notifyAdded.ElementAdded(new DerivedRoleProjectedFromRolePathRoot(roleProjectionLink.RoleProjection, toRoot));
+					}
+					else if (null != (constraintRoleProjectionLink = link as ConstraintRoleProjectedFromPathedRole))
+					{
+						if (null == (toRoot ?? (toRoot = delayCreateRoot())))
+						{
+							return;
+						}
+						notifyAdded.ElementAdded(new ConstraintRoleProjectedFromRolePathRoot(constraintRoleProjectionLink.ConstraintRoleProjection, toRoot));
+					}
+					else if (null != (aggContextLink = link as CalculatedPathValueAggregationContextIncludesPathedRole))
+					{
+						if (null == (toRoot ?? (toRoot = delayCreateRoot())))
+						{
+							return;
+						}
+						notifyAdded.ElementAdded(new CalculatedPathValueAggregationContextIncludesRolePathRoot(aggContextLink.CalculatedValue, toRoot));
+					}
+					else if (null != (queryParameterBindingLink = link as QueryParameterBoundToPathedRole))
+					{
+						if (null == (toRoot ?? (toRoot = delayCreateRoot())))
+						{
+							return;
+						}
+						notifyAdded.ElementAdded(new QueryParameterBoundToRolePathRoot(queryParameterBindingLink.ParameterBinding, toRoot));
+					}
+					else if (null != (subqueryParameterInputLink = link as SubqueryParameterInputFromPathedRole))
+					{
+						if (null == (toRoot ?? (toRoot = delayCreateRoot())))
+						{
+							return;
+						}
+						notifyAdded.ElementAdded(new SubqueryParameterInputFromRolePathRoot(subqueryParameterInputLink.ParameterInput, toRoot));
+					}
+					else
+					{
+						continue;
+					}
+					link.Delete();
+				}
+			}
+			private static PathedRole InjectPathedRole(PathedRole replacePathedRole, ref ReadOnlyCollection<PathedRole> entryPathedRoles, int entryRoleIndex, bool canStealReplaceRole, INotifyElementAdded notifyAdded, out bool injectedRoleAtEnd)
+			{
+				// Inject a role immediately after the entry role. Theoretically each role during
+				// an ift was used one time only, but this was weakly enforced and there was no
+				// underlying theoretical reason for it, so we verify this condition.
+				// The harder case here is if there is no trailing same fact type role,
+				// which means that the following joined roles will now need a new correlation
+				// root to clean this up.
+				Role role = replacePathedRole.Role;
+
+				PathedRole factTypeEntry = entryPathedRoles[entryRoleIndex];
+				int roleCount = entryPathedRoles.Count;
+				if (factTypeEntry.Role == role)
+				{
+					// Unlikely, but sufficient
+					SynchronizePathedRoleUnifiers(factTypeEntry, replacePathedRole);
+					injectedRoleAtEnd = entryRoleIndex == (roleCount - 1);
+					return factTypeEntry;
+				}
+				int i = entryRoleIndex + 1;
+				for (; i < roleCount; ++i)
+				{
+					PathedRole testPathedRole = entryPathedRoles[i];
+					if (testPathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+					{
+						break;
+					}
+					else if (testPathedRole.Role == role)
+					{
+						SynchronizePathedRoleUnifiers(testPathedRole, replacePathedRole);
+						injectedRoleAtEnd = i == (roleCount - 1);
+						return testPathedRole;
+					}
+				}
+				RolePath rolePath = factTypeEntry.RolePath;
+				if (i == (entryRoleIndex + 1))
+				{
+					// There are no trailing same fact type roles, so we need to make sure that
+					// following subpaths get a correlated root to the entry role.
+					// Note that anything that already has a path root can be safely ignored.
+					// All of these variables are in the same fact use, so it doesn't matter
+					// which of the variables we coexist with. Only worry about the subpaths
+					// with no root and a lead join role. The path to modify may be nested
+					// because subpaths can exist for splits only.
+					ReanchorSubpaths(rolePath.SubPathCollection, factTypeEntry, notifyAdded);
+				}
+				// Create and return a new same fact type pathed role at this location.
+				PathedRole newPathedRole;
+				if (canStealReplaceRole &&
+					(entryRoleIndex + 1) == roleCount)
+				{
+					newPathedRole = replacePathedRole;
+					newPathedRole.RolePath = rolePath;
+				}
+				else
+				{
+					notifyAdded.ElementAdded(newPathedRole = new PathedRole(rolePath, role), false);
+					if ((entryRoleIndex + 1) != roleCount)
+					{
+						newPathedRole.MoveToIndex(newPathedRole.Store.DomainDataDirectory.FindDomainRole(PathedRole.RolePathDomainRoleId), entryRoleIndex + 1);
+					}
+
+				}
+				// The readonly collection has changed, update it for future reference
+				entryPathedRoles = rolePath.PathedRoleCollection;
+				SynchronizePathedRoleUnifiers(newPathedRole, replacePathedRole);
+				injectedRoleAtEnd = entryRoleIndex == (roleCount - 1);
+				return newPathedRole;
+			}
+			/// <summary>
+			/// Synchronize correlation settings prior to deleting a role.
+			/// Helper for RemoveIntraFactTypeSplits.
+			/// </summary>
+			private static void SynchronizePathedRoleUnifiers(PathedRole pathedRole, PathedRole replacePathedRole)
+			{
+				PathObjectUnifier unifier;
+				if (pathedRole != replacePathedRole && // Sanity check
+					null != (unifier = replacePathedRole.ObjectUnifier))
+				{
+					PathObjectUnifier otherUnifier;
+					if (null != (otherUnifier = pathedRole.ObjectUnifier))
+					{
+						foreach (PathObjectUnifierUnifiesPathedRole pathedRoleLink in PathObjectUnifierUnifiesPathedRole.GetLinksToPathedRoleCollection(unifier))
+						{
+							if (pathedRoleLink.PathedRole != replacePathedRole)
+							{
+								pathedRoleLink.ObjectUnifier = otherUnifier;
+							}
+						}
+						foreach (PathObjectUnifierUnifiesRolePathRoot pathRootLink in PathObjectUnifierUnifiesRolePathRoot.GetLinksToPathRootCollection(unifier))
+						{
+							pathRootLink.ObjectUnifier = otherUnifier;
+						}
+						unifier.Delete();
+					}
+					else
+					{
+						replacePathedRole.ObjectUnifier = null;
+						pathedRole.ObjectUnifier = unifier;
+					}
+				}
+			}
+			/// <summary>
+			/// Helper for RemoveIntraFactTypeSplits. For a following subpath that begins with an entry role and
+			/// has no path root, set the path root and correlated with the provided pathed role.
+			/// </summary>
+			private static void ReanchorSubpaths(LinkedElementCollection<RoleSubPath> subpaths, PathedRole unifyWithPathedRole, INotifyElementAdded notifyAdded)
+			{
+				foreach (RoleSubPath subpath in subpaths)
+				{
+					if (subpath.PathRoot == null)
+					{
+						ReadOnlyCollection<PathedRole> pathedRoles = subpath.PathedRoleCollection;
+						if (pathedRoles.Count == 0)
+						{
+							// This path splits before it does anything, recurse.
+							ReanchorSubpaths(subpath.SubPathCollection, unifyWithPathedRole, notifyAdded);
+						}
+						else if (pathedRoles[0].PathedRolePurpose != PathedRolePurpose.SameFactType)
+						{
+							CreateCorrelatedRoot(subpath, unifyWithPathedRole, notifyAdded);
+						}
+					}
+				}
+			}
+			/// <summary>
+			/// Helper for RemoveIntraFactTypeSplits. Correlates a new path root with an existing
+			/// pathed role. The pathed role is guaranteed to be in the path (so we can get
+			/// back to the root to create unifiers), but the provided subpath may not be rooted yet.
+			/// Note that this will return null if the role does not have a role player.
+			/// </summary>
+			private static RolePathObjectTypeRoot CreateCorrelatedRoot(RolePath rolePath, PathedRole unifyWithPathedRole, INotifyElementAdded notifyAdded)
+			{
+				ObjectType rootType = unifyWithPathedRole.Role.RolePlayer;
+				if (rootType == null)
+				{
+					// This will result in correlation errors in the path, but this case is rare
+					// and the only way to avoid the issue is to stick with the intra-fact type splits,
+					// which do not require role players.
+					return null;
+				}
+				RolePathObjectTypeRoot pathRoot;
+				PathObjectUnifier unifier;
+				notifyAdded.ElementAdded(pathRoot = new RolePathObjectTypeRoot(rolePath, unifyWithPathedRole.Role.RolePlayer), false);
+				if (null == (unifier = unifyWithPathedRole.ObjectUnifier))
+				{
+					notifyAdded.ElementAdded(unifier = new PathObjectUnifier(rolePath.Store), false);
+					notifyAdded.ElementAdded(new LeadRolePathHasObjectUnifier(unifyWithPathedRole.RolePath.RootRolePath, unifier));
+					notifyAdded.ElementAdded(new PathObjectUnifierUnifiesPathedRole(unifier, unifyWithPathedRole));
+				}
+				notifyAdded.ElementAdded(new PathObjectUnifierUnifiesRolePathRoot(unifier, pathRoot));
+				return pathRoot;
 			}
 			/// <summary>
 			/// Upgrade a pathed role correlation hierarchy to the replacement <see cref="PathObjectUnifier"/> element.
