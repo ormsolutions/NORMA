@@ -25,6 +25,16 @@ using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
+	#region PathNodeVisitor delegate
+	/// <summary>
+	/// Callback for <see cref="RolePathNode.VisitPathNodes"/>
+	/// </summary>
+	/// <param name="currentPathNode">The current path node</param>
+	/// <param name="previousPathNode">The previous pathed role</param>
+	/// <param name="unwinding">The stack is unwinding.</param>
+	/// <returns>Return <see langword="true"/> to continue iteration.</returns>
+	public delegate bool PathNodeVisitor(RolePathNode currentPathNode, RolePathNode previousPathNode, bool unwinding);
+	#endregion // PathNodeVisitor delegate
 	#region RolePathNode struct
 	/// <summary>
 	/// A structure representing either the <see cref="RolePathObjectTypeRoot"/> of a
@@ -279,6 +289,67 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return (pathRoot == null) ? default(RolePathNode) : new RolePathNode(pathRoot);
 		}
 		#endregion // Equality and casting routines
+		#region Helper Methods
+		/// <summary>
+		/// Iterate rooted paths and pathed roles for validation
+		/// </summary>
+		/// <param name="rolePath">The <see cref="RolePath"/> to get nodes for.</param>
+		/// <param name="contextPathNode">The <see cref="RolePathNode"/> above <paramref name="rolePath"/> in the path structure.</param>
+		/// <param name="unwind">Should <paramref name="visitor"/> be invoked for both winding and unwinding the stack?</param>
+		/// <param name="visitor">A <see cref="PathNodeVisitor"/> callback.</param>
+		/// <returns>Returns <see langword="true"/> if a visitor did not cancel iteration.</returns>
+		public static bool VisitPathNodes(RolePath rolePath, RolePathNode contextPathNode, bool unwind, PathNodeVisitor visitor)
+		{
+			RolePathNode currentContext = contextPathNode;
+			RolePathNode rootContext = currentContext;
+			RolePathObjectTypeRoot pathRoot = rolePath.PathRoot;
+			if (pathRoot != null)
+			{
+				rootContext = pathRoot;
+				if (!visitor(rootContext, currentContext, false))
+				{
+					return false;
+				}
+				currentContext = rootContext;
+			}
+			ReadOnlyCollection<PathedRole> pathedRoles = rolePath.PathedRoleCollection;
+			int pathedRoleCount = pathedRoles.Count;
+			for (int i = 0; i < pathedRoleCount; ++i)
+			{
+				RolePathNode node = pathedRoles[i];
+				if (!visitor(node, currentContext, false))
+				{
+					return false;
+				}
+				currentContext = node;
+			}
+			foreach (RoleSubPath subPath in rolePath.SubPathCollection)
+			{
+				if (!VisitPathNodes(subPath, currentContext, unwind, visitor))
+				{
+					return false;
+				}
+			}
+			if (unwind)
+			{
+				for (int i = pathedRoleCount - 1; i >= 0; --i)
+				{
+					if (!visitor(pathedRoles[i], i == 0 ? (pathRoot != null ? rootContext : contextPathNode) : (RolePathNode)pathedRoles[i - 1], true))
+					{
+						return false;
+					}
+				}
+				if (pathRoot != null)
+				{
+					if (!visitor(pathRoot, contextPathNode, true))
+					{
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		#endregion // Helper Methods
 	}
 	#endregion // RolePathNode struct
 	#region RolePath class
@@ -649,6 +720,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // CustomStorage Handlers
+		#region Helper Methods
+		/// <summary>
+		/// Helper method to find a single <see cref="RolePathNode"/> of a
+		/// given type.
+		/// </summary>
+		/// <param name="type">The node type to search for.</param>
+		/// <returns>A populated <see cref="RolePathNode"/> if one node is
+		/// found, or an empty node if no node is found, or multiple non-correlated
+		/// nodes of the type are found.</returns>
+		public RolePathNode FindSingleNodeOfType(ObjectType type)
+		{
+			// The algorithm here should mirror RoleProjectedDerivationRule.ValidateAutomaticProjections
+			// and ConstraintRoleSequenceJoinPath.ValidateAutomaticProjections
+			RolePathNode matchedNode = RolePathNode.Empty;
+			if (type != null)
+			{
+				PathObjectUnifier matchedUnifier = null;
+				RolePathNode.VisitPathNodes(
+					this,
+					RolePathNode.Empty,
+					false,
+					delegate(RolePathNode pathNode, RolePathNode previousPathNode, bool unwinding)
+					{
+						PathedRole pathedRole;
+						ObjectType startingType;
+						if ((null != (pathedRole = pathNode.PathedRole) &&
+							pathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType) ||
+							null == (startingType = pathNode.ObjectType) ||
+							(matchedUnifier != null && pathNode.ObjectUnifier == matchedUnifier))
+						{
+							return true;
+						}
+						return ObjectType.WalkSupertypes(
+									startingType,
+									delegate(ObjectType testType, int depth, bool isPrimary)
+									{
+										if (testType == type)
+										{
+											if (matchedNode.IsEmpty)
+											{
+												matchedUnifier = (matchedNode = pathNode).ObjectUnifier;
+											}
+											else
+											{
+												// Duplicate match of a non-unified role, no single-typed node
+												matchedNode = RolePathNode.Empty;
+											}
+											return ObjectTypeVisitorResult.Stop;
+										}
+										return ObjectTypeVisitorResult.Continue;
+									}) ||
+								!matchedNode.IsEmpty;
+					});
+			}
+			return matchedNode;
+		}
+		#endregion // Helper Methods
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
 		/// <summary>
@@ -760,57 +888,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Abstract members
-		#region Helper Methods
-		/// <summary>
-		/// Callback for <see cref="VisitPathNodes"/>
-		/// </summary>
-		/// <param name="currentPathNode">The current path node</param>
-		/// <param name="previousPathNode">The previous pathed role</param>
-		/// <param name="unwinding">The stack is unwinding.</param>
-		private delegate void PathNodeVisitor(RolePathNode currentPathNode, RolePathNode previousPathNode, bool unwinding);
-		/// <summary>
-		/// Iterate rooted paths and pathed roles for validation
-		/// </summary>
-		/// <param name="rolePath">The <see cref="RolePath"/> to get nodes for.</param>
-		/// <param name="contextPathNode">The <see cref="RolePathNode"/> above <paramref name="rolePath"/> in the path structure.</param>
-		/// <param name="unwind">Should <paramref name="visitor"/> be invoked for both winding and unwinding the stack?</param>
-		/// <param name="visitor">A <see cref="PathNodeVisitor"/> callback.</param>
-		private static void VisitPathNodes(RolePath rolePath, RolePathNode contextPathNode, bool unwind, PathNodeVisitor visitor)
-		{
-			RolePathNode currentContext = contextPathNode;
-			RolePathNode rootContext = currentContext;
-			RolePathObjectTypeRoot pathRoot = rolePath.PathRoot;
-			if (pathRoot != null)
-			{
-				rootContext = pathRoot;
-				visitor(rootContext, currentContext, false);
-				currentContext = rootContext;
-			}
-			ReadOnlyCollection<PathedRole> pathedRoles = rolePath.PathedRoleCollection;
-			int pathedRoleCount = pathedRoles.Count;
-			for (int i = 0; i < pathedRoleCount; ++i)
-			{
-				RolePathNode node = pathedRoles[i];
-				visitor(node, currentContext, false);
-				currentContext = node;
-			}
-			foreach (RoleSubPath subPath in rolePath.SubPathCollection)
-			{
-				VisitPathNodes(subPath, currentContext, unwind, visitor);
-			}
-			if (unwind)
-			{
-				for (int i = pathedRoleCount - 1; i >= 0; --i)
-				{
-					visitor(pathedRoles[i], i == 0 ? (pathRoot != null ? rootContext : contextPathNode) : (RolePathNode)pathedRoles[i - 1], true);
-				}
-				if (pathRoot != null)
-				{
-					visitor(pathRoot, contextPathNode, true);
-				}
-			}
-		}
-		#endregion // Helper Methods
 		#region IModelErrorOwner Implementation
 		/// <summary>
 		/// Implements <see cref="IModelErrorOwner.GetErrorCollection"/>
@@ -833,7 +910,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// UNDONE: PathedRole and LeadRolePath should probably be their own model error owners,
 				// although all validation (except for value constraints) will come through the owner.
 				bool pathHasNodes = false;
-				VisitPathNodes(
+				RolePathNode.VisitPathNodes(
 					rolePath,
 					RolePathNode.Empty,
 					false,
@@ -882,6 +959,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							// UNDONE: IntraPathRoot We'll need additional errors for path roots, including compatibility errors for set comparators
 						}
+						return true; // Continue iteration
 					});
 				if (errors != null && errors.Count != 0)
 				{
@@ -1362,7 +1440,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						// Replace deprecated StartRole pathed role purpose with PostInnerJoin pathed roles
 						// and modify projections.
-						VisitPathNodes(
+						RolePathNode.VisitPathNodes(
 							leadRolePath,
 							RolePathNode.Empty,
 							false,
@@ -1433,6 +1511,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										}
 									}
 								}
+								return true; // Continue iteration
 							});
 
 						// Replace scope with aggregation context
@@ -1496,9 +1575,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												foreach (RolePathNode nestedNode in satisfyPathNodes)
 												{
 													bool seenBagNode = false;
-													bool processedPathRoot = false;
 													RolePathObjectTypeRoot resolvedRoot = null;
-													VisitPathNodes(
+													RolePathNode.VisitPathNodes(
 														leadRolePath,
 														RolePathNode.Empty,
 														true,
@@ -1509,11 +1587,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 																if (seenBagNode)
 																{
 																	RolePathObjectTypeRoot pathRoot;
-																	if (!processedPathRoot &&
-																		null != (pathRoot = currentPathNode))
+																	if (null != (pathRoot = currentPathNode))
 																	{
-																		processedPathRoot = true;
 																		resolvedRoot = pathRoot;
+																		return false; // Stop iteration
 																	}
 																}
 																else if (currentPathNode == nestedNode)
@@ -1521,6 +1598,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 																	seenBagNode = true;
 																}
 															}
+															return true; // Continue iteration
 														});
 													if (resolvedRoot == null)
 													{
@@ -3358,7 +3436,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Walk all pathed roles to check path structure and join compatibility. Errors
 				// are specified on the pathed roles.
 				bool havePathNodes = false;
-				VisitPathNodes(
+				RolePathNode.VisitPathNodes(
 					leadRolePath,
 					RolePathNode.Empty,
 					true,
@@ -3729,6 +3807,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							#endregion // PathedRole Errors
 						}
+						return true; // Continue iteration
 					});
 
 				#region Empty Path Root Object Type Error
@@ -4138,7 +4217,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected override void NewlyCreated()
 		{
-			FrameworkDomainModel.DelayValidateElement(this, DelayValidateProjections);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateProjectionExistence);
 		}
 		/// <summary>
 		/// Check derivation projections
@@ -4146,21 +4225,345 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="notifyAdded">Standard deserialization callback.</param>
 		protected override void ValidateDerivedRolePathOwner(INotifyElementAdded notifyAdded)
 		{
+			ValidateAutomaticProjections(notifyAdded);
 			if (notifyAdded != null)
 			{
 				// We do all projection analysis independently after the deserialization request
-				ValidateProjections(notifyAdded);
+				ValidateProjectionExistence(notifyAdded);
+			}
+		}
+		/// <summary>
+		/// Helper struct for ValidateAutomaticProjections
+		/// </summary>
+		private struct AutoProjectedRoleInfo
+		{
+			public readonly Role Role;
+			public readonly ObjectType RolePlayer;
+			public DerivedRoleProjection RoleProjection;
+			public RolePathNode MatchingPathNode;
+			public bool HasMultipleMatches;
+			public bool ExplicitProjection;
+			public AutoProjectedRoleInfo(Role role, ObjectType rolePlayer)
+			{
+				Role = role;
+				RolePlayer = rolePlayer;
+				MatchingPathNode = RolePathNode.Empty;
+				HasMultipleMatches = false;
+				RoleProjection = null;
+				ExplicitProjection = false;
+			}
+			/// <summary>
+			/// Record if a path node matches any of the data items.
+			/// </summary>
+			/// <param name="data">Data previously initialized with the <see cref="Reset"/> method.</param>
+			/// <param name="pathNode">The node to test for type matches.</param>
+			/// <returns>The number of nodes eliminated from automatic projection consideration. When the
+			/// cumulative total of return values from this method matches the return value from the Reset
+			/// method, all automatic projection possibilities have been eliminated.</returns>
+			public static int RecordMatches(AutoProjectedRoleInfo[] data, RolePathNode pathNode)
+			{
+				ObjectType startingType;
+				int eliminatedItems = 0;
+				if (null != (startingType = pathNode.ObjectType))
+				{
+					ObjectType.WalkSupertypes(
+						startingType,
+						delegate(ObjectType type, int depth, bool isPrimary)
+						{
+							for (int i = 0; i < data.Length; ++i)
+							{
+								AutoProjectedRoleInfo info = data[i];
+								if (!info.ExplicitProjection &&
+									!info.HasMultipleMatches &&
+									info.RolePlayer == type)
+								{
+									RolePathNode previousNode = info.MatchingPathNode;
+									bool previousNodeIsEmpty = previousNode.IsEmpty;
+									PathObjectUnifier unifier;
+									if (previousNodeIsEmpty)
+									{
+										// Note that we're walking from the top down, so
+										// this will automatically get the first correlated
+										// object.
+										info.MatchingPathNode = pathNode;
+									}
+									else if (null == (unifier = previousNode.ObjectUnifier) ||
+										unifier != pathNode.ObjectUnifier)
+									{
+										++eliminatedItems;
+										info.HasMultipleMatches = true;
+									}
+									else
+									{
+										continue;
+									}
+									data[i] = info;
+								}
+							}
+							return ObjectTypeVisitorResult.Continue;
+						});
+				}
+				return eliminatedItems;
+			}
+			/// <summary>
+			/// Reset projected role information for a projection set before iterating the role path.
+			/// </summary>
+			/// <returns>Number of possible automatic projections.</returns>
+			public static int Reset(AutoProjectedRoleInfo[] data, RoleSetDerivationProjection projectionSet)
+			{
+				int retVal = 0;
+				for (int i = 0; i < data.Length; ++i)
+				{
+					AutoProjectedRoleInfo info = data[i];
+					DerivedRoleProjection projection;
+					if (projectionSet != null &&
+						null != (projection = DerivedRoleProjection.GetLink(projectionSet, info.Role)))
+					{
+						info.RoleProjection = projection;
+						bool canBeAuto = projection.IsAutomatic;
+						info.ExplicitProjection = !canBeAuto;
+						if (canBeAuto)
+						{
+							++retVal;
+						}
+					}
+					else
+					{
+						info.RoleProjection = null;
+						info.ExplicitProjection = false;
+						++retVal;
+					}
+					info.MatchingPathNode = RolePathNode.Empty;
+					info.HasMultipleMatches = false;
+					data[i] = info;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Populate automatic projections if there is exactly one source node
+		/// that matches the possible role projection.
+		/// </summary>
+		private void ValidateAutomaticProjections(INotifyElementAdded notifyAdded)
+		{
+			// The algorithm here should mirror LeadRolePath.FindSingleNodeOfType
+			int factTypeRoleCount = 0;
+			AutoProjectedRoleInfo[] roleInfo = null;
+			foreach (LeadRolePath leadRolePath in LeadRolePathCollection)
+			{
+				if (factTypeRoleCount == 0)
+				{
+					LinkedElementCollection<RoleBase> factTypeRoles = FactType.RoleCollection;
+					int? unaryRoleIndex;
+					factTypeRoleCount = factTypeRoles.Count;
+					Role role;
+					if (factTypeRoleCount == 2 &&
+						(unaryRoleIndex = FactType.GetUnaryRoleIndex(factTypeRoles)).HasValue)
+					{
+						factTypeRoleCount = 1;
+						role = factTypeRoles[unaryRoleIndex.Value].Role;
+						roleInfo = new AutoProjectedRoleInfo[] { new AutoProjectedRoleInfo(role, role.RolePlayer) };
+					}
+					else
+					{
+						roleInfo = new AutoProjectedRoleInfo[factTypeRoleCount];
+						for (int i = 0; i < factTypeRoleCount; ++i)
+						{
+							role = factTypeRoles[i].Role;
+							roleInfo[i] =  new AutoProjectedRoleInfo(role, role.RolePlayer);
+						}
+					}
+				}
+				RoleSetDerivationProjection projectionSet = RoleSetDerivationProjection.GetLink(this, leadRolePath);
+				int possibleAutoCount = AutoProjectedRoleInfo.Reset(roleInfo, projectionSet);
+				if (possibleAutoCount == 0)
+				{
+					continue;
+				}
+				RolePathNode.VisitPathNodes(
+					leadRolePath,
+					RolePathNode.Empty,
+					false,
+					delegate(RolePathNode pathNode, RolePathNode previousPathNode, bool unwinding)
+					{
+						PathedRole pathedRole;
+						if (null != (pathedRole = pathNode.PathedRole) &&
+							pathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+						{
+							return true;
+						}
+						possibleAutoCount -= AutoProjectedRoleInfo.RecordMatches(roleInfo, pathNode);
+						return possibleAutoCount != 0;
+					});
+				Store store = this.Store;
+				bool setChangingFlag = notifyAdded != null; // Flag not needed if rules not on, pretend it is set in this case
+				try
+				{
+					for (int i = 0; i < factTypeRoleCount; ++i)
+					{
+						AutoProjectedRoleInfo info = roleInfo[i];
+						if (!info.ExplicitProjection)
+						{
+							RolePathNode autoNode = info.MatchingPathNode;
+							DerivedRoleProjection projection = info.RoleProjection;
+							PathedRole autoPathedRole;
+							RolePathObjectTypeRoot autoPathRoot;
+							ModelElement notifyLink;
+							if (info.HasMultipleMatches || autoNode.IsEmpty)
+							{
+								if (projection != null)
+								{
+									// This is run before ValidateProjectionExistence, which will clean up empty
+									// sets and add associated errors, so we don't have to do it here.
+									projection.Delete();
+								}
+							}
+							else
+							{
+								if (projection != null)
+								{
+									PathedRole existingPathedRole;
+									RolePathObjectTypeRoot existingPathRoot;
+									if (null != (existingPathedRole = projection.ProjectedFromPathedRole))
+									{
+										if (null != (autoPathedRole = autoNode.PathedRole))
+										{
+											if (autoPathedRole == existingPathedRole)
+											{
+												continue;
+											}
+											if (!setChangingFlag)
+											{
+												DerivedRoleProjection.ChangingAutomaticProjection(store, true);
+												setChangingFlag = true;
+											}
+											projection.ProjectedFromPathedRole = autoPathedRole;
+										}
+										else
+										{
+											if (notifyAdded != null)
+											{
+												notifyAdded.ElementAdded(new DerivedRoleProjectedFromRolePathRoot(projection, autoNode.PathRoot), false);
+												projection.ProjectedFromPathedRole = null;
+											}
+											else
+											{
+												if (!setChangingFlag)
+												{
+													DerivedRoleProjection.ChangingAutomaticProjection(store, true);
+													setChangingFlag = true;
+												}
+												// Rules will clear out the other element
+												projection.ProjectedFromPathRoot = autoNode.PathRoot;
+											}
+										}
+									}
+									else if (null != (existingPathRoot = projection.ProjectedFromPathRoot))
+									{
+										if (null != (autoPathRoot = autoNode.PathRoot))
+										{
+											if (autoPathRoot == existingPathRoot)
+											{
+												continue;
+											}
+											if (!setChangingFlag)
+											{
+												DerivedRoleProjection.ChangingAutomaticProjection(store, true);
+												setChangingFlag = true;
+											}
+											projection.ProjectedFromPathRoot = autoPathRoot;
+										}
+										else
+										{
+											if (notifyAdded != null)
+											{
+												notifyAdded.ElementAdded(new DerivedRoleProjectedFromPathedRole(projection, autoNode.PathedRole), false);
+												projection.ProjectedFromPathRoot = null;
+											}
+											else
+											{
+												if (!setChangingFlag)
+												{
+													DerivedRoleProjection.ChangingAutomaticProjection(store, true);
+													setChangingFlag = true;
+												}
+												// Rules will clear out the other element
+												projection.ProjectedFromPathedRole = autoNode.PathedRole;
+											}
+										}
+									}
+									else
+									{
+										// Invalid state that we shouldn't hit during normal process (we don't auto project constants or calculations),
+										// but can happen on load.
+										if (!setChangingFlag)
+										{
+											DerivedRoleProjection.ChangingAutomaticProjection(store, true);
+											setChangingFlag = true;
+										}
+										notifyLink = (null != (autoPathedRole = autoNode.PathedRole)) ?
+											(ModelElement)new DerivedRoleProjectedFromPathedRole(projection, autoPathedRole) :
+											new DerivedRoleProjectedFromRolePathRoot(projection, autoNode.PathRoot);
+										if (notifyAdded != null)
+										{
+											notifyAdded.ElementAdded(notifyLink, false);
+											projection.ProjectedFromConstant = null;
+											projection.ProjectedFromCalculatedValue = null;
+										}
+									}
+								}
+								else
+								{
+									if (projectionSet == null)
+									{
+										projectionSet = new RoleSetDerivationProjection(this, leadRolePath);
+										if (notifyAdded != null)
+										{
+											notifyAdded.ElementAdded(projectionSet, false);
+										}
+									}
+									projection = new DerivedRoleProjection(store,
+										new RoleAssignment[]{
+											new RoleAssignment(DerivedRoleProjection.DerivationProjectionDomainRoleId, projectionSet),
+											new RoleAssignment(DerivedRoleProjection.ProjectedRoleDomainRoleId, info.Role)},
+										new PropertyAssignment[]{
+											new PropertyAssignment(DerivedRoleProjection.IsAutomaticDomainPropertyId, true)});
+									if (!setChangingFlag)
+									{
+										DerivedRoleProjection.ChangingAutomaticProjection(store, true);
+										setChangingFlag = true;
+									}
+									notifyLink = (null != (autoPathedRole = autoNode.PathedRole)) ?
+										(ModelElement)new DerivedRoleProjectedFromPathedRole(projection, autoPathedRole) :
+										new DerivedRoleProjectedFromRolePathRoot(projection, autoNode.PathRoot);
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(projection, false);
+										notifyAdded.ElementAdded(notifyLink, false);
+									}
+								}
+							}
+						}
+					}
+				}
+				finally
+				{
+					if (setChangingFlag && notifyAdded == null)
+					{
+						DerivedRoleProjection.ChangingAutomaticProjection(store, false);
+					}
+				}
 			}
 		}
 		/// <summary>
 		/// Verify all projection errors
 		/// </summary>
 		/// <param name="element">A <see cref="RoleProjectedDerivationRule"/></param>
-		protected static void DelayValidateProjections(ModelElement element)
+		protected static void DelayValidateProjectionExistence(ModelElement element)
 		{
 			if (!element.IsDeleted)
 			{
-				((RoleProjectedDerivationRule)element).ValidateProjections(null);
+				((RoleProjectedDerivationRule)element).ValidateProjectionExistence(null);
 			}
 		}
 		/// <summary>
@@ -4168,7 +4571,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="notifyAdded">Standard deserialization callback. Perform extra
 		/// structural checks if this is set.</param>
-		private void ValidateProjections(INotifyElementAdded notifyAdded)
+		private void ValidateProjectionExistence(INotifyElementAdded notifyAdded)
 		{
 			bool seenProjection = false;
 			int factTypeRoleCount = 0;
@@ -4205,15 +4608,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							roleProjection.Delete();
 						}
 					}
-					if (projectedRoleCount == 0)
-					{
-						projection.Delete();
-						continue;
-					}
 				}
 				else
 				{
 					projectedRoleCount = projection.ProjectedRoleCollection.Count;
+				}
+				if (projectedRoleCount == 0)
+				{
+					projection.Delete();
+					continue;
 				}
 				seenProjection = true;
 				PartialRoleSetDerivationProjectionError partialProjectionError = projection.PartialProjectionError;
@@ -4354,7 +4757,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RoleProjectedDerivationRule derivationRule;
 			if (null != (derivationRule = ((FactTypeHasRole)e.ModelElement).FactType.DerivationRule))
 			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -4367,7 +4770,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!factType.IsDeleted &&
 				null != (derivationRule = factType.DerivationRule))
 			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -4463,7 +4866,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ProjectionAddedRule(ElementAddedEventArgs e)
 		{
-			FrameworkDomainModel.DelayValidateElement(((RoleSetDerivationProjection)e.ModelElement).DerivationRule, DelayValidateProjections);
+			FrameworkDomainModel.DelayValidateElement(((RoleSetDerivationProjection)e.ModelElement).DerivationRule, DelayValidateProjectionExistence);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(RoleSetDerivationProjection)
@@ -4473,7 +4876,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RoleProjectedDerivationRule derivationRule = ((RoleSetDerivationProjection)e.ModelElement).DerivationRule;
 			if (!derivationRule.IsDeleted)
 			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -4483,12 +4886,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainRole.Id == RoleSetDerivationProjection.DerivationRuleDomainRoleId)
 			{
-				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateProjections);
-				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateProjectionExistence);
+				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateProjectionExistence);
 			}
 			else
 			{
-				FrameworkDomainModel.DelayValidateElement(((RoleSetDerivationProjection)e.ElementLink).DerivationRule, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(((RoleSetDerivationProjection)e.ElementLink).DerivationRule, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -4555,7 +4958,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RoleProjectedDerivationRule derivationRule = ((DerivedRoleProjection)e.ModelElement).DerivationProjection.DerivationRule;
 			if (derivationRule != null)
 			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -4568,7 +4971,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!projection.IsDeleted &&
 				null != (derivationRule = projection.DerivationRule))
 			{
-				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -4581,12 +4984,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				RoleProjectedDerivationRule derivationRule = ((RoleSetDerivationProjection)e.OldRolePlayer).DerivationRule;
 				if (derivationRule != null)
 				{
-					FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+					FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjectionExistence);
 				}
 				derivationRule = ((RoleSetDerivationProjection)e.NewRolePlayer).DerivationRule;
 				if (derivationRule != null)
 				{
-					FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjections);
+					FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateProjectionExistence);
 				}
 			}
 		}
@@ -4663,7 +5066,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (e.DomainProperty.Id == ExternalDerivationDomainPropertyId)
 			{
 				// Projection errors will come and go based on this setting
-				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -4953,6 +5356,59 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	#region DerivedRoleProjection class
 	partial class DerivedRoleProjection
 	{
+		#region Custom Storage Handlers
+		private bool myIsAutomatic;
+		private bool GetIsAutomaticValue()
+		{
+			return myIsAutomatic;
+		}
+		private void SetIsAutomaticValue(bool value)
+		{
+			if (value &&
+				!Store.InUndoRedoOrRollback)
+			{
+				PathedRole currentPathedRole;
+				RolePathObjectTypeRoot currentPathRoot = null;
+				// If all values are null, then this is newly constructed. Do not
+				// attempt to validate an incoming value. The incoming value is coming
+				// from initialization code, not the user.
+				if (!(null == (currentPathedRole = ProjectedFromPathedRole) &&
+					null == (currentPathRoot = ProjectedFromPathRoot) &&
+					null == ProjectedFromCalculatedValue &&
+					null == ProjectedFromConstant))
+				{
+					RolePathNode singleNode = DerivationProjection.RolePath.FindSingleNodeOfType(ProjectedRole.RolePlayer);
+					if (singleNode.IsEmpty)
+					{
+						throw new InvalidOperationException(ResourceStrings.ModelErrorDerivedRoleProjectionProjectionAutomaticProjectionUnavailable);
+					}
+					else
+					{
+						// Note that we do not need to set ChangingAutomaticProjection here because
+						// the getter for this property will still return false, so no attempt will
+						// be made to reset it.
+						PathedRole newPathedRole;
+						if (null != (newPathedRole = singleNode.PathedRole))
+						{
+							if (newPathedRole != currentPathedRole)
+							{
+								ProjectedFromPathedRole = newPathedRole;
+							}
+						}
+						else
+						{
+							RolePathObjectTypeRoot newPathRoot = singleNode.PathRoot;
+							if (newPathRoot != currentPathRoot)
+							{
+								ProjectedFromPathRoot = newPathRoot;
+							}
+						}
+					}
+				}
+			}
+			myIsAutomatic = value;
+		}
+		#endregion // Custom Storage Handlers
 		#region Role derivation validation rules
 		/// <summary>
 		/// DeleteRule: typeof(DerivedRoleProjection), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
@@ -4973,6 +5429,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ProjectedFromCalculatedValueAddedRule(ElementAddedEventArgs e)
 		{
 			DerivedRoleProjection roleProjection = ((DerivedRoleProjectedFromCalculatedPathValue)e.ModelElement).RoleProjection;
+			roleProjection.IsAutomatic = false;
 			roleProjection.ProjectedFromConstant = null;
 			roleProjection.ProjectedFromPathRoot = null;
 			roleProjection.ProjectedFromPathedRole = null;
@@ -5001,6 +5458,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ProjectedFromConstantAddedRule(ElementAddedEventArgs e)
 		{
 			DerivedRoleProjection roleProjection = ((DerivedRoleProjectedFromPathConstant)e.ModelElement).RoleProjection;
+			roleProjection.IsAutomatic = false;
 			roleProjection.ProjectedFromPathRoot = null;
 			roleProjection.ProjectedFromPathedRole = null;
 			roleProjection.ProjectedFromCalculatedValue = null;
@@ -5018,9 +5476,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ProjectedFromPathedRoleAddedRule(ElementAddedEventArgs e)
 		{
 			DerivedRoleProjection roleProjection = ((DerivedRoleProjectedFromPathedRole)e.ModelElement).RoleProjection;
-			roleProjection.ProjectedFromPathRoot = null;
+			DerivedRoleProjectedFromRolePathRoot rootLink = DerivedRoleProjectedFromRolePathRoot.GetLinkToProjectedFromPathRoot(roleProjection);
+			if (rootLink != null)
+			{
+				if (roleProjection.IsAutomatic && !ChangingAutomaticProjection(rootLink.Store, null))
+				{
+					roleProjection.IsAutomatic = false;
+				}
+				rootLink.Delete();
+			}
 			roleProjection.ProjectedFromConstant = null;
 			roleProjection.ProjectedFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(DerivedRoleProjectedFromPathedRole)
+		/// </summary>
+		private static void ProjectedFromPathedRoleRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == DerivedRoleProjectedFromPathedRole.SourceDomainRoleId)
+			{
+				DerivedRoleProjection projection = ((DerivedRoleProjectedFromRolePathRoot)e.ElementLink).RoleProjection;
+				if (projection.IsAutomatic && !ChangingAutomaticProjection(projection.Store, null))
+				{
+					projection.IsAutomatic = false;
+				}
+			}
 		}
 		/// <summary>
 		/// DeleteRule: typeof(DerivedRoleProjectedFromPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
@@ -5035,7 +5515,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ProjectedFromPathRootAddedRule(ElementAddedEventArgs e)
 		{
 			DerivedRoleProjection roleProjection = ((DerivedRoleProjectedFromRolePathRoot)e.ModelElement).RoleProjection;
-			roleProjection.ProjectedFromPathedRole = null;
+			DerivedRoleProjectedFromPathedRole pathedRoleLink = DerivedRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
+			if (pathedRoleLink != null)
+			{
+				if (roleProjection.IsAutomatic && !ChangingAutomaticProjection(pathedRoleLink.Store, null))
+				{
+					roleProjection.IsAutomatic = false;
+				}
+				pathedRoleLink.Delete();
+			}
 			roleProjection.ProjectedFromConstant = null;
 			roleProjection.ProjectedFromCalculatedValue = null;
 		}
@@ -5045,6 +5533,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ProjectedFromPathRootDeletedRule(ElementDeletedEventArgs e)
 		{
 			DeleteIfEmpty(((DerivedRoleProjectedFromRolePathRoot)e.ModelElement).RoleProjection);
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(DerivedRoleProjectedFromRolePathRoot)
+		/// </summary>
+		private static void ProjectedFromPathRootRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == DerivedRoleProjectedFromRolePathRoot.SourceDomainRoleId)
+			{
+				DerivedRoleProjection projection = ((DerivedRoleProjectedFromRolePathRoot)e.ElementLink).RoleProjection;
+				if (projection.IsAutomatic && !ChangingAutomaticProjection(projection.Store, null))
+				{
+					projection.IsAutomatic = false;
+				}
+			}
+		}
+		/// <summary>
+		/// Add a flag to the store that changes to existing automatic projections
+		/// should not result in the <see cref="IsAutomatic"/> property being cleared.
+		/// </summary>
+		/// <param name="store">The Store object being modified.</param>
+		/// <param name="value">The boolean value to set, or null to retrieve the current value.</param>
+		public static bool ChangingAutomaticProjection(Store store, bool? value)
+		{
+			Transaction transaction;
+			if (null != (transaction = store.TransactionManager.CurrentTransaction))
+			{
+				transaction = transaction.TopLevelTransaction;
+				Dictionary<object, object> dict = transaction.Context.ContextInfo;
+				object key = typeof(DerivedRoleProjection);
+				object counterObj;
+				bool dictHasValue;
+				dictHasValue = dict.TryGetValue(key, out counterObj) && counterObj is int;
+				if (value.HasValue)
+				{
+					if (value.Value)
+					{
+						dict[key] = dictHasValue ? ((int)counterObj) + 1 : 1;
+					}
+					else if (dictHasValue)
+					{
+						int counter = (int)counterObj;
+						if (counter == 1)
+						{
+							dict.Remove(key);
+						}
+						else
+						{
+							dict[key] = counter + 1;
+						}
+					}
+				}
+				else
+				{
+					return dictHasValue;
+				}
+			}
+			return false;
 		}
 		#endregion // Role derivation validation rules
 	}
@@ -5375,7 +5920,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected override void NewlyCreated()
 		{
-			FrameworkDomainModel.DelayValidateElement(this, DelayValidateProjections);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateProjectionExistence);
 		}
 		/// <summary>
 		/// Check projections
@@ -5383,21 +5928,336 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="notifyAdded">Standard deserialization callback.</param>
 		protected override void ValidateDerivedRolePathOwner(INotifyElementAdded notifyAdded)
 		{
+			if (!IsAutomatic)
+			{
+				ValidateAutomaticProjections(notifyAdded);
+			}
 			if (notifyAdded != null)
 			{
 				// We do all projection analysis independently after the deserialization request
-				ValidateProjections(notifyAdded);
+				ValidateProjectionExistence(notifyAdded);
+			}
+		}
+		/// <summary>
+		/// Helper struct for ValidateAutomaticProjections
+		/// </summary>
+		private struct AutoProjectedConstraintRoleInfo
+		{
+			public readonly ConstraintRoleSequenceHasRole ConstraintRole;
+			public readonly ObjectType RolePlayer;
+			public ConstraintRoleProjection ConstraintRoleProjection;
+			public RolePathNode MatchingPathNode;
+			public bool HasMultipleMatches;
+			public bool ExplicitProjection;
+			public AutoProjectedConstraintRoleInfo(ConstraintRoleSequenceHasRole constraintRole, ObjectType rolePlayer)
+			{
+				ConstraintRole = constraintRole;
+				RolePlayer = rolePlayer;
+				MatchingPathNode = RolePathNode.Empty;
+				HasMultipleMatches = false;
+				ConstraintRoleProjection = null;
+				ExplicitProjection = false;
+			}
+			/// <summary>
+			/// Record if a path node matches any of the data items.
+			/// </summary>
+			/// <param name="data">Data previously initialized with the <see cref="Reset"/> method.</param>
+			/// <param name="pathNode">The node to test for type matches.</param>
+			/// <returns>The number of nodes eliminated from automatic projection consideration. When the
+			/// cumulative total of return values from this method matches the return value from the Reset
+			/// method, all automatic projection possibilities have been eliminated.</returns>
+			public static int RecordMatches(AutoProjectedConstraintRoleInfo[] data, RolePathNode pathNode)
+			{
+				ObjectType startingType;
+				int eliminatedItems = 0;
+				if (null != (startingType = pathNode.ObjectType))
+				{
+					ObjectType.WalkSupertypes(
+						startingType,
+						delegate(ObjectType type, int depth, bool isPrimary)
+						{
+							for (int i = 0; i < data.Length; ++i)
+							{
+								AutoProjectedConstraintRoleInfo info = data[i];
+								if (!info.ExplicitProjection &&
+									!info.HasMultipleMatches &&
+									info.RolePlayer == type)
+								{
+									RolePathNode previousNode = info.MatchingPathNode;
+									bool previousNodeIsEmpty = previousNode.IsEmpty;
+									PathObjectUnifier unifier;
+									if (previousNodeIsEmpty)
+									{
+										// Note that we're walking from the top down, so
+										// this will automatically get the first correlated
+										// object.
+										info.MatchingPathNode = pathNode;
+									}
+									else if (null == (unifier = previousNode.ObjectUnifier) ||
+										unifier != pathNode.ObjectUnifier)
+									{
+										++eliminatedItems;
+										info.HasMultipleMatches = true;
+									}
+									else
+									{
+										continue;
+									}
+									data[i] = info;
+								}
+							}
+							return ObjectTypeVisitorResult.Continue;
+						});
+				}
+				return eliminatedItems;
+			}
+			/// <summary>
+			/// Reset projected role information for a projection set before iterating the role path.
+			/// </summary>
+			/// <returns>Number of possible automatic projections.</returns>
+			public static int Reset(AutoProjectedConstraintRoleInfo[] data, ConstraintRoleSequenceJoinPathProjection projectionSet)
+			{
+				int retVal = 0;
+				for (int i = 0; i < data.Length; ++i)
+				{
+					AutoProjectedConstraintRoleInfo info = data[i];
+					ConstraintRoleProjection projection;
+					if (projectionSet != null &&
+						null != (projection = ConstraintRoleProjection.GetLink(projectionSet, info.ConstraintRole)))
+					{
+						info.ConstraintRoleProjection = projection;
+						bool canBeAuto = projection.IsAutomatic;
+						info.ExplicitProjection = !canBeAuto;
+						if (canBeAuto)
+						{
+							++retVal;
+						}
+					}
+					else
+					{
+						info.ConstraintRoleProjection = null;
+						info.ExplicitProjection = false;
+						++retVal;
+					}
+					info.MatchingPathNode = RolePathNode.Empty;
+					info.HasMultipleMatches = false;
+					data[i] = info;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Populate automatic projections if there is exactly one source node
+		/// that matches the possible role projection.
+		/// </summary>
+		private void ValidateAutomaticProjections(INotifyElementAdded notifyAdded)
+		{
+			// The algorithm here should mirror LeadRolePath.FindSingleNodeOfType
+			int constrainedRoleCount = 0;
+			AutoProjectedConstraintRoleInfo[] constraintRoleInfo = null;
+			foreach (LeadRolePath leadRolePath in LeadRolePathCollection)
+			{
+				if (constrainedRoleCount == 0)
+				{
+					ReadOnlyCollection<ConstraintRoleSequenceHasRole> constrainedRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(RoleSequence);
+					constrainedRoleCount = constrainedRoles.Count;
+					constraintRoleInfo = new AutoProjectedConstraintRoleInfo[constrainedRoleCount];
+					for (int i = 0; i < constrainedRoleCount; ++i)
+					{
+						ConstraintRoleSequenceHasRole constraintRole = constrainedRoles[i];
+						constraintRoleInfo[i] = new AutoProjectedConstraintRoleInfo(constraintRole, constraintRole.Role.RolePlayer);
+					}
+				}
+				ConstraintRoleSequenceJoinPathProjection projectionSet = ConstraintRoleSequenceJoinPathProjection.GetLink(this, leadRolePath);
+				int possibleAutoCount = AutoProjectedConstraintRoleInfo.Reset(constraintRoleInfo, projectionSet);
+				if (possibleAutoCount == 0)
+				{
+					continue;
+				}
+				RolePathNode.VisitPathNodes(
+					leadRolePath,
+					RolePathNode.Empty,
+					false,
+					delegate(RolePathNode pathNode, RolePathNode previousPathNode, bool unwinding)
+					{
+						PathedRole pathedRole;
+						if (null != (pathedRole = pathNode.PathedRole) &&
+							pathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+						{
+							return true;
+						}
+						possibleAutoCount -= AutoProjectedConstraintRoleInfo.RecordMatches(constraintRoleInfo, pathNode);
+						return possibleAutoCount != 0;
+					});
+				Store store = this.Store;
+				bool setChangingFlag = notifyAdded != null; // Flag not needed if rules not on, pretend it is set in this case
+				try
+				{
+					for (int i = 0; i < constrainedRoleCount; ++i)
+					{
+						AutoProjectedConstraintRoleInfo info = constraintRoleInfo[i];
+						if (!info.ExplicitProjection)
+						{
+							RolePathNode autoNode = info.MatchingPathNode;
+							ConstraintRoleProjection projection = info.ConstraintRoleProjection;
+							PathedRole autoPathedRole;
+							RolePathObjectTypeRoot autoPathRoot;
+							ModelElement notifyLink;
+							if (info.HasMultipleMatches || autoNode.IsEmpty)
+							{
+								if (projection != null)
+								{
+									// This is run before ValidateProjectionExistence, which will clean up empty
+									// sets and add associated errors, so we don't have to do it here.
+									projection.Delete();
+								}
+							}
+							else
+							{
+								if (projection != null)
+								{
+									PathedRole existingPathedRole;
+									RolePathObjectTypeRoot existingPathRoot;
+									if (null != (existingPathedRole = projection.ProjectedFromPathedRole))
+									{
+										if (null != (autoPathedRole = autoNode.PathedRole))
+										{
+											if (autoPathedRole == existingPathedRole)
+											{
+												continue;
+											}
+											if (!setChangingFlag)
+											{
+												ConstraintRoleProjection.ChangingAutomaticProjection(store, true);
+												setChangingFlag = true;
+											}
+											projection.ProjectedFromPathedRole = autoPathedRole;
+										}
+										else
+										{
+											if (notifyAdded != null)
+											{
+												notifyAdded.ElementAdded(new ConstraintRoleProjectedFromRolePathRoot(projection, autoNode.PathRoot), false);
+												projection.ProjectedFromPathedRole = null;
+											}
+											else
+											{
+												if (!setChangingFlag)
+												{
+													ConstraintRoleProjection.ChangingAutomaticProjection(store, true);
+													setChangingFlag = true;
+												}
+												// Rules will clear out the other element
+												projection.ProjectedFromPathRoot = autoNode.PathRoot;
+											}
+										}
+									}
+									else if (null != (existingPathRoot = projection.ProjectedFromPathRoot))
+									{
+										if (null != (autoPathRoot = autoNode.PathRoot))
+										{
+											if (autoPathRoot == existingPathRoot)
+											{
+												continue;
+											}
+											if (!setChangingFlag)
+											{
+												ConstraintRoleProjection.ChangingAutomaticProjection(store, true);
+												setChangingFlag = true;
+											}
+											projection.ProjectedFromPathRoot = autoPathRoot;
+										}
+										else
+										{
+											if (notifyAdded != null)
+											{
+												notifyAdded.ElementAdded(new ConstraintRoleProjectedFromPathedRole(projection, autoNode.PathedRole), false);
+												projection.ProjectedFromPathRoot = null;
+											}
+											else
+											{
+												if (!setChangingFlag)
+												{
+													ConstraintRoleProjection.ChangingAutomaticProjection(store, true);
+													setChangingFlag = true;
+												}
+												// Rules will clear out the other element
+												projection.ProjectedFromPathedRole = autoNode.PathedRole;
+											}
+										}
+									}
+									else
+									{
+										// Invalid state that we shouldn't hit during normal process (we don't auto project constants or calculations),
+										// but can happen on load.
+										if (!setChangingFlag)
+										{
+											ConstraintRoleProjection.ChangingAutomaticProjection(store, true);
+											setChangingFlag = true;
+										}
+										notifyLink = (null != (autoPathedRole = autoNode.PathedRole)) ?
+											(ModelElement)new ConstraintRoleProjectedFromPathedRole(projection, autoPathedRole) :
+											new ConstraintRoleProjectedFromRolePathRoot(projection, autoNode.PathRoot);
+										if (notifyAdded != null)
+										{
+											notifyAdded.ElementAdded(notifyLink, false);
+											projection.ProjectedFromConstant = null;
+											projection.ProjectedFromCalculatedValue = null;
+										}
+									}
+								}
+								else
+								{
+									if (projectionSet == null)
+									{
+										projectionSet = new ConstraintRoleSequenceJoinPathProjection(this, leadRolePath);
+										if (notifyAdded != null)
+										{
+											notifyAdded.ElementAdded(projectionSet, false);
+										}
+									}
+									projection = new ConstraintRoleProjection(store,
+										new RoleAssignment[]{
+											new RoleAssignment(ConstraintRoleProjection.JoinPathProjectionDomainRoleId, projectionSet),
+											new RoleAssignment(ConstraintRoleProjection.ProjectedConstraintRoleDomainRoleId, info.ConstraintRole)},
+										new PropertyAssignment[]{
+											new PropertyAssignment(ConstraintRoleProjection.IsAutomaticDomainPropertyId, true)});
+									if (!setChangingFlag)
+									{
+										ConstraintRoleProjection.ChangingAutomaticProjection(store, true);
+										setChangingFlag = true;
+									}
+									notifyLink = (null != (autoPathedRole = autoNode.PathedRole)) ?
+										(ModelElement)new ConstraintRoleProjectedFromPathedRole(projection, autoPathedRole) :
+										new ConstraintRoleProjectedFromRolePathRoot(projection, autoNode.PathRoot);
+									if (notifyAdded != null)
+									{
+										notifyAdded.ElementAdded(projection, false);
+										notifyAdded.ElementAdded(notifyLink, false);
+									}
+								}
+							}
+						}
+					}
+				}
+				finally
+				{
+					if (setChangingFlag && notifyAdded == null)
+					{
+						ConstraintRoleProjection.ChangingAutomaticProjection(store, false);
+					}
+				}
 			}
 		}
 		/// <summary>
 		/// Verify all projection errors
 		/// </summary>
 		/// <param name="element">A <see cref="ConstraintRoleSequenceJoinPath"/></param>
-		private static void DelayValidateProjections(ModelElement element)
+		private static void DelayValidateProjectionExistence(ModelElement element)
 		{
 			if (!element.IsDeleted)
 			{
-				((ConstraintRoleSequenceJoinPath)element).ValidateProjections(null);
+				((ConstraintRoleSequenceJoinPath)element).ValidateProjectionExistence(null);
 			}
 		}
 		/// <summary>
@@ -5405,7 +6265,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="notifyAdded">Standard deserialization callback. Perform extra
 		/// structural checks if this is set.</param>
-		private void ValidateProjections(INotifyElementAdded notifyAdded)
+		private void ValidateProjectionExistence(INotifyElementAdded notifyAdded)
 		{
 			bool seenProjection = false;
 			int constraintRoleCount = 0;
@@ -5436,15 +6296,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							roleProjection.Delete();
 						}
 					}
-					if (projectedRoleCount == 0)
-					{
-						projection.Delete();
-						continue;
-					}
 				}
 				else
 				{
 					projectedRoleCount = projection.ProjectedRoleCollection.Count;
+				}
+				if (projectedRoleCount == 0)
+				{
+					projection.Delete();
+					continue;
 				}
 				seenProjection = true;
 				PartialConstraintRoleSequenceJoinPathProjectionError partialProjectionError = projection.PartialProjectionError;
@@ -5602,7 +6462,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ConstraintRoleSequenceJoinPath joinPath;
 			if (null != (joinPath = ((ConstraintRoleSequenceHasRole)e.ModelElement).ConstraintRoleSequence.JoinPath))
 			{
-				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -5615,7 +6475,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!roleSequence.IsDeleted &&
 				null != (joinPath = roleSequence.JoinPath))
 			{
-				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -5740,7 +6600,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ProjectionAddedRule(ElementAddedEventArgs e)
 		{
-			FrameworkDomainModel.DelayValidateElement(((ConstraintRoleSequenceJoinPathProjection)e.ModelElement).JoinPath, DelayValidateProjections);
+			FrameworkDomainModel.DelayValidateElement(((ConstraintRoleSequenceJoinPathProjection)e.ModelElement).JoinPath, DelayValidateProjectionExistence);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ConstraintRoleSequenceJoinPathProjection)
@@ -5750,7 +6610,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ConstraintRoleSequenceJoinPath joinPath = ((ConstraintRoleSequenceJoinPathProjection)e.ModelElement).JoinPath;
 			if (!joinPath.IsDeleted)
 			{
-				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -5760,12 +6620,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainRole.Id == ConstraintRoleSequenceJoinPathProjection.JoinPathDomainRoleId)
 			{
-				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateProjections);
-				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(e.OldRolePlayer, DelayValidateProjectionExistence);
+				FrameworkDomainModel.DelayValidateElement(e.NewRolePlayer, DelayValidateProjectionExistence);
 			}
 			else
 			{
-				FrameworkDomainModel.DelayValidateElement(((ConstraintRoleSequenceJoinPathProjection)e.ElementLink).JoinPath, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(((ConstraintRoleSequenceJoinPathProjection)e.ElementLink).JoinPath, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -5776,7 +6636,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ConstraintRoleSequenceJoinPath joinPath = ((ConstraintRoleProjection)e.ModelElement).JoinPathProjection.JoinPath;
 			if (joinPath != null)
 			{
-				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -5789,7 +6649,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!projection.IsDeleted &&
 				null != (joinPath = projection.JoinPath))
 			{
-				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjections);
+				FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjectionExistence);
 			}
 		}
 		/// <summary>
@@ -5802,12 +6662,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ConstraintRoleSequenceJoinPath joinPath = ((ConstraintRoleSequenceJoinPathProjection)e.OldRolePlayer).JoinPath;
 				if (joinPath != null)
 				{
-					FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjections);
+					FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjectionExistence);
 				}
 				joinPath = ((ConstraintRoleSequenceJoinPathProjection)e.NewRolePlayer).JoinPath;
 				if (joinPath != null)
 				{
-					FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjections);
+					FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateProjectionExistence);
 				}
 			}
 		}
@@ -5904,6 +6764,114 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IModelErrorDisplayContext Implementation
 	}
 	#endregion // ConstraintRoleSequenceJoinPathProjection class
+	#region ConstraintRoleProjection class
+	partial class ConstraintRoleProjection
+	{
+		#region Custom Storage Handlers
+		private bool myIsAutomatic;
+		private bool GetIsAutomaticValue()
+		{
+			return myIsAutomatic;
+		}
+		private void SetIsAutomaticValue(bool value)
+		{
+			if (value &&
+				!Store.InUndoRedoOrRollback)
+			{
+				ConstraintRoleSequenceJoinPathProjection projection = JoinPathProjection;
+				if (projection.JoinPath.IsAutomatic)
+				{
+					throw new InvalidOperationException(ResourceStrings.ModelErrorConstraintRoleProjectionAutomaticProjectionUnavailableForAutomaticJoinPath);
+				}
+				PathedRole currentPathedRole;
+				RolePathObjectTypeRoot currentPathRoot = null;
+				// If all values are null, then this is newly constructed. Do not
+				// attempt to validate an incoming value. The incoming value is coming
+				// from initialization code, not the user.
+				if (!(null == (currentPathedRole = ProjectedFromPathedRole) &&
+					null == (currentPathRoot = ProjectedFromPathRoot) &&
+					null == ProjectedFromCalculatedValue &&
+					null == ProjectedFromConstant))
+				{
+					RolePathNode singleNode = projection.RolePath.FindSingleNodeOfType(ProjectedConstraintRole.Role.RolePlayer);
+					if (singleNode.IsEmpty)
+					{
+						throw new InvalidOperationException(ResourceStrings.ModelErrorConstraintRoleProjectionAutomaticProjectionUnavailable);
+					}
+					else
+					{
+						// Note that we do not need to set ChangingAutomaticProjection here because
+						// the getter for this property will still return false, so no attempt will
+						// be made to reset it.
+						PathedRole newPathedRole;
+						if (null != (newPathedRole = singleNode.PathedRole))
+						{
+							if (newPathedRole != currentPathedRole)
+							{
+								ProjectedFromPathedRole = newPathedRole;
+							}
+						}
+						else
+						{
+							RolePathObjectTypeRoot newPathRoot = singleNode.PathRoot;
+							if (newPathRoot != currentPathRoot)
+							{
+								ProjectedFromPathRoot = newPathRoot;
+							}
+						}
+					}
+				}
+			}
+			myIsAutomatic = value;
+		}
+		#endregion // Custom Storage Handlers
+		#region Rule Helpers
+		/// <summary>
+		/// Add a flag to the store that changes to existing automatic projections
+		/// should not result in the <see cref="IsAutomatic"/> property being cleared.
+		/// </summary>
+		/// <param name="store">The Store object being modified.</param>
+		/// <param name="value">The boolean value to set, or null to retrieve the current value.</param>
+		public static bool ChangingAutomaticProjection(Store store, bool? value)
+		{
+			Transaction transaction;
+			if (null != (transaction = store.TransactionManager.CurrentTransaction))
+			{
+				transaction = transaction.TopLevelTransaction;
+				Dictionary<object, object> dict = transaction.Context.ContextInfo;
+				object key = typeof(ConstraintRoleProjection);
+				object counterObj;
+				bool dictHasValue;
+				dictHasValue = dict.TryGetValue(key, out counterObj) && counterObj is int;
+				if (value.HasValue)
+				{
+					if (value.Value)
+					{
+						dict[key] = dictHasValue ? ((int)counterObj) + 1 : 1;
+					}
+					else if (dictHasValue)
+					{
+						int counter = (int)counterObj;
+						if (counter == 1)
+						{
+							dict.Remove(key);
+						}
+						else
+						{
+							dict[key] = counter + 1;
+						}
+					}
+				}
+				else
+				{
+					return dictHasValue;
+				}
+			}
+			return false;
+		}
+		#endregion // Rule Helpers
+	}
+	#endregion // ConstraintRoleProjection class
 	#region RoleSubPath class
 	partial class RoleSubPath : IHasIndirectModelErrorOwner
 	{

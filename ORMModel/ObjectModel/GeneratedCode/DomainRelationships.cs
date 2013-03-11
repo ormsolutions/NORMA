@@ -36549,6 +36549,97 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return new DslModeling::LinkedElementCollection<ConstraintRoleSequenceHasRole>(element, JoinPathProjectionDomainRoleId);
 		}
 		#endregion
+		#region IsAutomatic domain property code
+		
+		/// <summary>
+		/// IsAutomatic domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsAutomaticDomainPropertyId = new global::System.Guid(0x335709e7, 0x299e, 0x4931, 0xae, 0x66, 0x11, 0x2e, 0x90, 0x0b, 0xe5, 0x6d);
+		
+		/// <summary>
+		/// Gets or sets the value of IsAutomatic domain property.
+		/// The projection is automatically attached to a path node with a matching type.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection/IsAutomatic.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection/IsAutomatic.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("335709e7-299e-4931-ae66-112e900be56d")]
+		public global::System.Boolean IsAutomatic
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return IsAutomaticPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsAutomaticPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ConstraintRoleProjection.IsAutomatic domain property.
+		/// </summary>
+		internal sealed partial class IsAutomaticPropertyHandler : DslModeling::DomainPropertyValueHandler<ConstraintRoleProjection, global::System.Boolean>
+		{
+			private IsAutomaticPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ConstraintRoleProjection.IsAutomatic domain property value handler.
+			/// </summary>
+			public static readonly IsAutomaticPropertyHandler Instance = new IsAutomaticPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ConstraintRoleProjection.IsAutomatic domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsAutomaticDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ConstraintRoleProjection element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for IsAutomatic because its Kind is
+				// set to CustomStorage. Please provide the GetIsAutomaticValue()
+				// method on the domain class.
+				return element.GetIsAutomaticValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ConstraintRoleProjection element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for IsAutomatic because its Kind is
+					// set to CustomStorage. Please provide the SetIsAutomaticValue()
+					// method on the domain class.
+					element.SetIsAutomaticValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Accessors for roles that this REL plays in other RELs
 		#region ProjectedFromPathRoot opposite domain role accessor
 		/// <summary>
@@ -52964,6 +53055,97 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return new DslModeling::LinkedElementCollection<Role>(element, DerivationProjectionDomainRoleId);
 		}
+		#endregion
+		#region IsAutomatic domain property code
+		
+		/// <summary>
+		/// IsAutomatic domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid IsAutomaticDomainPropertyId = new global::System.Guid(0x694e4b88, 0x2f04, 0x40fb, 0x92, 0x5b, 0x30, 0xb1, 0xe6, 0x30, 0x34, 0x49);
+		
+		/// <summary>
+		/// Gets or sets the value of IsAutomatic domain property.
+		/// The projection is automatically attached to a path node with a matching type.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/IsAutomatic.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/IsAutomatic.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("694e4b88-2f04-40fb-925b-30b1e6303449")]
+		public global::System.Boolean IsAutomatic
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return IsAutomaticPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				IsAutomaticPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the DerivedRoleProjection.IsAutomatic domain property.
+		/// </summary>
+		internal sealed partial class IsAutomaticPropertyHandler : DslModeling::DomainPropertyValueHandler<DerivedRoleProjection, global::System.Boolean>
+		{
+			private IsAutomaticPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the DerivedRoleProjection.IsAutomatic domain property value handler.
+			/// </summary>
+			public static readonly IsAutomaticPropertyHandler Instance = new IsAutomaticPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the DerivedRoleProjection.IsAutomatic domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return IsAutomaticDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(DerivedRoleProjection element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for IsAutomatic because its Kind is
+				// set to CustomStorage. Please provide the GetIsAutomaticValue()
+				// method on the domain class.
+				return element.GetIsAutomaticValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(DerivedRoleProjection element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for IsAutomatic because its Kind is
+					// set to CustomStorage. Please provide the SetIsAutomaticValue()
+					// method on the domain class.
+					element.SetIsAutomaticValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
 		#region ProjectedFromPathRoot opposite domain role accessor

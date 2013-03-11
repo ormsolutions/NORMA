@@ -1924,6 +1924,11 @@
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attributeGroup ref="refAttribute"/>
+		<xs:attribute name="IsAutomatic" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The role is automatically projected onto the only matching path node.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:simpleType name="DerivationCompletenessValues">
 		<xs:annotation>
@@ -2047,6 +2052,11 @@
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attributeGroup ref="refAttribute"/>
+		<xs:attribute name="IsAutomatic" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>The constraint role is automatically projected onto the only matching path node.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="InformalDerivationRuleType">
 		<xs:annotation>

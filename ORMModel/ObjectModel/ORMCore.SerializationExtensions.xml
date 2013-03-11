@@ -761,6 +761,13 @@
 		<se:Link RelationshipName="RoleSetDerivationProjectionHasPartialProjectionError" RoleName="PartialProjectionError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="DerivedRoleProjection">
+		<se:Attribute ID="IsAutomatic" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsAutomatic" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="DerivationSource">
 			<se:Link RelationshipName="DerivedRoleProjectedFromRolePathRoot" RoleName="Source"/>
 			<se:Link RelationshipName="DerivedRoleProjectedFromPathedRole" RoleName="Source"/>
@@ -1046,7 +1053,7 @@
 		<se:Link RelationshipName="ConstraintRoleProjection" RoleName="JoinPathProjection" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleSequenceJoinPath" Name="JoinPath" Override="true">
-		<se:Attribute ID="IsAutomatic">
+		<se:Attribute ID="IsAutomatic" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="IsAutomatic" type="property"/>
@@ -1064,6 +1071,13 @@
 		<se:Link RelationshipName="ConstraintRoleSequenceProjectionHasPartialProjectionError" RoleName="PartialProjectionError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ConstraintRoleProjection">
+		<se:Attribute ID="IsAutomatic">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="IsAutomatic" type="property"/>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="ProjectedFrom">
 			<se:Link RelationshipName="ConstraintRoleProjectedFromRolePathRoot" RoleName="Source"/>
 			<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="Source"/>

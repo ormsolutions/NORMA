@@ -610,9 +610,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(ValueTypeHasDataType), "CurrentScale", ValueTypeHasDataType.CurrentScaleDomainPropertyId, typeof(ValueTypeHasDataType.CurrentScalePropertyHandler)),
 				new DomainMemberInfo(typeof(ValueTypeHasDataType), "CurrentLength", ValueTypeHasDataType.CurrentLengthDomainPropertyId, typeof(ValueTypeHasDataType.CurrentLengthPropertyHandler)),
 				new DomainMemberInfo(typeof(Objectification), "IsImplied", Objectification.IsImpliedDomainPropertyId, typeof(Objectification.IsImpliedPropertyHandler)),
+				new DomainMemberInfo(typeof(ConstraintRoleProjection), "IsAutomatic", ConstraintRoleProjection.IsAutomaticDomainPropertyId, typeof(ConstraintRoleProjection.IsAutomaticPropertyHandler)),
 				new DomainMemberInfo(typeof(RolePathObjectTypeRoot), "IsNegated", RolePathObjectTypeRoot.IsNegatedDomainPropertyId, typeof(RolePathObjectTypeRoot.IsNegatedPropertyHandler)),
 				new DomainMemberInfo(typeof(PathedRole), "IsNegated", PathedRole.IsNegatedDomainPropertyId, typeof(PathedRole.IsNegatedPropertyHandler)),
 				new DomainMemberInfo(typeof(PathedRole), "PathedRolePurpose", PathedRole.PathedRolePurposeDomainPropertyId, typeof(PathedRole.PathedRolePurposePropertyHandler)),
+				new DomainMemberInfo(typeof(DerivedRoleProjection), "IsAutomatic", DerivedRoleProjection.IsAutomaticDomainPropertyId, typeof(DerivedRoleProjection.IsAutomaticPropertyHandler)),
 			};
 		}
 		/// <summary>

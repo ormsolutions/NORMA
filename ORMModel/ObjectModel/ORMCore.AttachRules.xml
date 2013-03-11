@@ -62,12 +62,18 @@
 			<arg:AddRule methodName="ConstraintRoleProjectedFromPathedRoleAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleProjectedFromPathedRole"/>
 			</arg:AddRule>
+			<arg:RolePlayerChangeRule methodName="ConstraintRoleProjectedFromPathedRoleRolePlayerChangedRule">
+				<arg:RuleOn targetType="ConstraintRoleProjectedFromPathedRole"/>
+			</arg:RolePlayerChangeRule>
 			<arg:DeleteRule methodName="ConstraintRoleProjectedFromPathedRoleDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleProjectedFromPathedRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
 			<arg:AddRule methodName="ConstraintRoleProjectedFromPathRootAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleProjectedFromRolePathRoot"/>
 			</arg:AddRule>
+			<arg:RolePlayerChangeRule methodName="ConstraintRoleProjectedFromPathRootRolePlayerChangedRule">
+				<arg:RuleOn targetType="ConstraintRoleProjectedFromRolePathRoot"/>
+			</arg:RolePlayerChangeRule>
 			<arg:DeleteRule methodName="ConstraintRoleProjectedFromPathRootDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleProjectedFromRolePathRoot" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
@@ -193,12 +199,18 @@
 			<arg:DeleteRule methodName="ProjectedFromPathedRoleDeletedRule">
 				<arg:RuleOn targetType="DerivedRoleProjectedFromPathedRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="ProjectedFromPathedRoleRolePlayerChangedRule">
+				<arg:RuleOn targetType="DerivedRoleProjectedFromPathedRole"/>
+			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="ProjectedFromPathRootAddedRule">
 				<arg:RuleOn targetType="DerivedRoleProjectedFromRolePathRoot"/>
 			</arg:AddRule>
 			<arg:DeleteRule methodName="ProjectedFromPathRootDeletedRule">
 				<arg:RuleOn targetType="DerivedRoleProjectedFromRolePathRoot" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="ProjectedFromPathRootRolePlayerChangedRule">
+				<arg:RuleOn targetType="DerivedRoleProjectedFromRolePathRoot"/>
+			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="EntityTypeHasPreferredIdentifier">
 			<arg:ChangeRule methodName="ModalityChangeRule">

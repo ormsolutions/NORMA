@@ -3304,6 +3304,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ConstraintRoleProjectedFromCalculatedValueAddedRule(ElementAddedEventArgs e)
 		{
 			ConstraintRoleProjection constraintRoleProjection = ((ConstraintRoleProjectedFromCalculatedPathValue)e.ModelElement).ConstraintRoleProjection;
+			constraintRoleProjection.IsAutomatic = false;
 			constraintRoleProjection.ProjectedFromConstant = null;
 			constraintRoleProjection.ProjectedFromPathRoot = null;
 			constraintRoleProjection.ProjectedFromPathedRole = null;
@@ -3332,6 +3333,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ConstraintRoleProjectedFromConstantAddedRule(ElementAddedEventArgs e)
 		{
 			ConstraintRoleProjection constraintRoleProjection = ((ConstraintRoleProjectedFromPathConstant)e.ModelElement).ConstraintRoleProjection;
+			constraintRoleProjection.IsAutomatic = false;
 			constraintRoleProjection.ProjectedFromPathedRole = null;
 			constraintRoleProjection.ProjectedFromPathRoot = null;
 			constraintRoleProjection.ProjectedFromCalculatedValue = null;
@@ -3349,9 +3351,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ConstraintRoleProjectedFromPathedRoleAddedRule(ElementAddedEventArgs e)
 		{
 			ConstraintRoleProjection constraintRoleProjection = ((ConstraintRoleProjectedFromPathedRole)e.ModelElement).ConstraintRoleProjection;
-			constraintRoleProjection.ProjectedFromPathRoot = null;
+			ConstraintRoleProjectedFromRolePathRoot rootLink = ConstraintRoleProjectedFromRolePathRoot.GetLinkToProjectedFromPathRoot(constraintRoleProjection);
+			if (rootLink != null)
+			{
+				if (constraintRoleProjection.IsAutomatic && !ConstraintRoleProjection.ChangingAutomaticProjection(rootLink.Store, null))
+				{
+					constraintRoleProjection.IsAutomatic = false;
+				}
+				rootLink.Delete();
+			}
 			constraintRoleProjection.ProjectedFromConstant = null;
 			constraintRoleProjection.ProjectedFromCalculatedValue = null;
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ConstraintRoleProjectedFromPathedRole)
+		/// </summary>
+		private static void ConstraintRoleProjectedFromPathedRoleRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == ConstraintRoleProjectedFromPathedRole.SourceDomainRoleId)
+			{
+				ConstraintRoleProjection projection = ((ConstraintRoleProjectedFromRolePathRoot)e.ElementLink).ConstraintRoleProjection;
+				if (projection.IsAutomatic && !ConstraintRoleProjection.ChangingAutomaticProjection(projection.Store, null))
+				{
+					projection.IsAutomatic = false;
+				}
+			}
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ConstraintRoleProjectedFromPathedRole), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
@@ -3366,9 +3390,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ConstraintRoleProjectedFromPathRootAddedRule(ElementAddedEventArgs e)
 		{
 			ConstraintRoleProjection constraintRoleProjection = ((ConstraintRoleProjectedFromRolePathRoot)e.ModelElement).ConstraintRoleProjection;
+			ConstraintRoleProjectedFromPathedRole pathedRoleLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(constraintRoleProjection);
+			if (pathedRoleLink != null)
+			{
+				if (constraintRoleProjection.IsAutomatic && !ConstraintRoleProjection.ChangingAutomaticProjection(pathedRoleLink.Store, null))
+				{
+					constraintRoleProjection.IsAutomatic = false;
+				}
+				pathedRoleLink.Delete();
+			}
 			constraintRoleProjection.ProjectedFromConstant = null;
 			constraintRoleProjection.ProjectedFromCalculatedValue = null;
-			constraintRoleProjection.ProjectedFromPathedRole = null;
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ConstraintRoleProjectedFromRolePathRoot), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
@@ -3388,6 +3420,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				projection.ProjectedRoleCollection.Count == 0)
 			{
 				projection.Delete();
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ConstraintRoleProjectedFromRolePathRoot)
+		/// </summary>
+		private static void ConstraintRoleProjectedFromPathRootRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == ConstraintRoleProjectedFromRolePathRoot.SourceDomainRoleId)
+			{
+				ConstraintRoleProjection projection = ((ConstraintRoleProjectedFromRolePathRoot)e.ElementLink).ConstraintRoleProjection;
+				if (projection.IsAutomatic && !ConstraintRoleProjection.ChangingAutomaticProjection(projection.Store, null))
+				{
+					projection.IsAutomatic = false;
+				}
 			}
 		}
 		/// <summary>
@@ -5909,6 +5955,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						roleProjection = ConstraintRoleProjection.GetLink(pathProjection, projectOnConstraintRole);
 						if (roleProjection != null)
 						{
+							roleProjection.IsAutomatic = false;
 							if (lastBindablePathedRole == null)
 							{
 								pathRootProjectionLink = ConstraintRoleProjectedFromRolePathRoot.GetLinkToProjectedFromPathRoot(roleProjection);
@@ -6106,6 +6153,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									roleProjection = ConstraintRoleProjection.GetLink(pathProjection, roleLink);
 									if (roleProjection != null)
 									{
+										roleProjection.IsAutomatic = false;
 										projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
 									}
 								}
@@ -6185,6 +6233,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					roleProjection = ConstraintRoleProjection.GetLink(pathProjection, roleLink);
 					if (roleProjection != null)
 					{
+						roleProjection.IsAutomatic = false;
 						projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
 					}
 				}

@@ -580,6 +580,14 @@
 		<value>Internal constraint can only have one associated fact. The IsInternal property must be cleared before adding roles from a second fact type to the constraint.</value>
 		<comment>Exception message when an attempt is made to attached more than one fact type to an internal constraint.</comment>
 	</data>
+	<data name="ModelError.ConstraintRoleProjection.AutomaticProjectionUnavailable.Text" xml:space="preserve">
+		<value>Automatic projection is unavailable because the join path does not contain the exactly one path node with a matching type (the same type or a subtype) for this constrained role.</value>
+		<comment>Automatic projection is explicitly requested for a constrained role in a joined constraint sequence when a single node of a matching type does not exist in the role path.</comment>
+	</data>
+	<data name="ModelError.ConstraintRoleProjection.AutomaticProjectionUnavailableForAutomaticJoinPath.Text" xml:space="preserve">
+		<value>Automatic projection is unavailable for an automatically created join path.</value>
+		<comment>Block automatic projection on automatic join paths. Projection is handled as part of the automatic join path creation.</comment>
+	</data>
 	<data name="ModelException.ConstraintRoleSequence.AutomaticJoinPathNotAvailable" xml:space="preserve">
 		<value>Automatic join path not available for this constraint role sequence.</value>
 		<comment>Exception message when an attempt is made to set the IsAutomatic property to true for a ConstraintRoleSequenceJoinPath when no automatic join path can be determined.</comment>
@@ -591,6 +599,10 @@
 	<data name="ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text" xml:space="preserve">
 		<value>{0} requires a join path.</value>
 		<comment>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is context owner name.</comment>
+	</data>
+	<data name="ModelError.DerivedRoleProjection.AutomaticProjectionUnavailable.Text" xml:space="preserve">
+		<value>Automatic projection is unavailable because the role path does not contain the exactly one path node with a matching type (the same type or a subtype) for this role.</value>
+		<comment>Automatic projection is explicitly requested for a role in a derived fact type when a single node of a matching type does not exist in the role path.</comment>
 	</data>
 	<data name="ModelException.EntityTypeInstance.EnforceFixedRoleInstance" xml:space="preserve">
 		<value>The role players of an EntityTypeInstanceHasRoleInstance relationship cannot be changed.</value>

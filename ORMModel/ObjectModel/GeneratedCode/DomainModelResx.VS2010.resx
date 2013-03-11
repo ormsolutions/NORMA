@@ -6988,6 +6988,14 @@
     <value>Constraint Role Projection</value>
     <comment>DisplayName for DomainClass &apos;ConstraintRoleProjection&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection/IsAutomatic.Description" xml:space="preserve">
+    <value>The projection is automatically attached to a path node with a matching type.</value>
+    <comment>Description for DomainProperty &apos;IsAutomatic&apos; on DomainClass &apos;ConstraintRoleProjection&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection/IsAutomatic.DisplayName" xml:space="preserve">
+    <value>Is Automatic</value>
+    <comment>DisplayName for DomainProperty &apos;IsAutomatic&apos; on DomainClass &apos;ConstraintRoleProjection&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection/JoinPathProjection.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection.JoinPathProjection</value>
     <comment>Description for DomainRole &apos;JoinPathProjection&apos; on DomainRelationship &apos;ConstraintRoleProjection&apos;</comment>
@@ -9123,6 +9131,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.DisplayName" xml:space="preserve">
     <value>Derived Role Projection</value>
     <comment>DisplayName for DomainClass &apos;DerivedRoleProjection&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/IsAutomatic.Description" xml:space="preserve">
+    <value>The projection is automatically attached to a path node with a matching type.</value>
+    <comment>Description for DomainProperty &apos;IsAutomatic&apos; on DomainClass &apos;DerivedRoleProjection&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/IsAutomatic.DisplayName" xml:space="preserve">
+    <value>Is Automatic</value>
+    <comment>DisplayName for DomainProperty &apos;IsAutomatic&apos; on DomainClass &apos;DerivedRoleProjection&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection/DerivationProjection.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.DerivationProjection</value>

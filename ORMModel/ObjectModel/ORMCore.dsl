@@ -5104,6 +5104,13 @@
 			</Target>
 		</DomainRelationship>
 		<DomainRelationship Name="ConstraintRoleProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B4DF8B28-6C80-4FAA-B081-A1F26C2B3BC0">
+			<Properties>
+				<DomainProperty Name="IsAutomatic" Id="335709E7-299E-4931-AE66-112E900BE56D" IsBrowsable="false" Kind="CustomStorage" Description="The projection is automatically attached to a path node with a matching type.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 			<Source>
 				<DomainRole Name="JoinPathProjection" PropertyName="ProjectedRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="JoinPathProjection" Id="CAD5C4D6-E038-4EC9-BF02-26C07B918FD6">
 					<RolePlayer>
@@ -6231,6 +6238,13 @@
 			</Target>
 		</DomainRelationship>
 		<DomainRelationship Name="DerivedRoleProjection" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E4E47551-0637-443F-ADB0-4BE9CAD921F0">
+			<Properties>
+				<DomainProperty Name="IsAutomatic" Id="694E4B88-2F04-40FB-925B-30B1E6303449" IsBrowsable="false" Kind="CustomStorage" Description="The projection is automatically attached to a path node with a matching type.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
 			<Source>
 				<DomainRole Name="DerivationProjection" PropertyName="ProjectedRoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DerivationProjection" Id="F0996660-410E-4147-AD3C-EA5C6629DBB5">
 					<RolePlayer>

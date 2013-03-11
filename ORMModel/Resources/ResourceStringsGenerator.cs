@@ -3019,12 +3019,36 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.NMinusOneRule.Text");
 			}
 		}
+		/// <summary>Automatic projection is explicitly requested for a constrained role in a joined constraint sequence when a single node of a matching type does not exist in the role path.</summary>
+		public static string ModelErrorConstraintRoleProjectionAutomaticProjectionUnavailable
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleProjection.AutomaticProjectionUnavailable.Text");
+			}
+		}
+		/// <summary>Block automatic projection on automatic join paths. Projection is handled as part of the automatic join path creation.</summary>
+		public static string ModelErrorConstraintRoleProjectionAutomaticProjectionUnavailableForAutomaticJoinPath
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleProjection.AutomaticProjectionUnavailableForAutomaticJoinPath.Text");
+			}
+		}
 		/// <summary>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is context owner name.</summary>
 		public static string ModelErrorConstraintRoleSequenceJoinPathRequiredError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text");
+			}
+		}
+		/// <summary>Automatic projection is explicitly requested for a role in a derived fact type when a single node of a matching type does not exist in the role path.</summary>
+		public static string ModelErrorDerivedRoleProjectionProjectionAutomaticProjectionUnavailable
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DerivedRoleProjection.AutomaticProjectionUnavailable.Text");
 			}
 		}
 		/// <summary>The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</summary>
