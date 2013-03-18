@@ -348,6 +348,10 @@
 		<value>Constraint '{0}' has too many role sequences.</value>
 		<comment>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
+	<data name="ModelError.ConstraintRoleProjection.IncompatibleProjection.Text" xml:space="preserve">
+		<value>{0} has a constrained role with an incompatible join path projection.</value>
+		<comment>Model validation error text for projection on a constraint role from a join path where the type of projection does not match the type of the constrained role. {0}=error display context (from join path)</comment>
+	</data>
 	<data name="ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.Text" xml:space="preserve">
 		<value>{0} must project constrained roles from at least one source path.</value>
 		<comment>Model validation error text for a constraint join path with no path projection. {0}=error display context</comment>
@@ -355,6 +359,10 @@
 	<data name="ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.Text" xml:space="preserve">
 		<value>{0} must project all constrained roles from each projected source path.</value>
 		<comment>Model validation error text for a constraint join path projection that does not project all constraint roles. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.DerivedRoleProjection.IncompatibleProjection.Text" xml:space="preserve">
+		<value>{0} has a derivation projection with an incompatible type.</value>
+		<comment>Model validation error text for projection on a role from a derived fact type where the type of projection does not match the type of the role. {0}=error display context (from role)</comment>
 	</data>
 	<data name="ModelError.ElementGrouping.DuplicateNameError.Message" xml:space="preserve">
 		<value>Model '{0}' contains multiple groups named '{1}'. Group names must be unique in the model.</value>

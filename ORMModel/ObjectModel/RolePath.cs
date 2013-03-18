@@ -349,6 +349,118 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return true;
 		}
+		/// <summary>
+		/// Test if this node can be projected (or otherwise assigned to) a
+		/// given type.
+		/// </summary>
+		/// <param name="targetType">The type to test.</param>
+		public bool CanProjectOn(ObjectType targetType)
+		{
+			ObjectType currentType = this.ObjectType;
+			if (currentType == targetType ||
+					targetType == null ||
+					currentType == null)
+			{
+				// This seems like an odd response for null types, but if we don't know
+				// about one or both types, then there are validation errors
+				// in the model that we assume will be cleaned up in
+				// a consistent manner in the future. Until we have sufficient
+				// data to definitively produce a negative response we
+				// respond in the affirmative.
+				return true;
+			}
+			if (currentType.IsValueType)
+			{
+				if (targetType.IsValueType)
+				{
+					return DataType.IsAssignableValueType(targetType, currentType);
+				}
+
+				// See if we can find a single identifying type that matches the current value type
+				bool hasSingleMatchingIdentifier = false;
+				ObjectType.WalkSupertypes(
+					targetType,
+					delegate(ObjectType type, int depth, bool isPrimary)
+					{
+						ObjectType identifyingValueType;
+						if (null != (identifyingValueType = GetIdentifyingValueType(type)) &&
+							identifyingValueType == currentType)
+						{
+							if (hasSingleMatchingIdentifier)
+							{
+								hasSingleMatchingIdentifier = false;
+								return ObjectTypeVisitorResult.Stop;
+							}
+							else
+							{
+								hasSingleMatchingIdentifier = true;
+							}
+						}
+						return ObjectTypeVisitorResult.Continue;
+					});
+				return hasSingleMatchingIdentifier;
+			}
+			else
+			{
+				// Current type is an entity type
+				if (targetType.IsValueType)
+				{
+					// Find a single identifying value type and see if it is compatible with the
+					// data type of the target value type.
+					// Theoretically we could break down multiple context-dependent single-valued
+					// identifiers, but that is very fragile as the data types change. Therefore,
+					// we require explicit identifier assignment for this case and only allow
+					// value type projection on an entity with a single identifying value type.
+					ObjectType currentIdentifyingValueType = null;
+					ObjectType.WalkSupertypes(
+						currentType,
+						delegate(ObjectType type, int depth, bool isPrimary)
+						{
+							ObjectType identifyingValueType;
+							if (null != (identifyingValueType = GetIdentifyingValueType(type)))
+							{
+								if (currentIdentifyingValueType == null)
+								{
+									currentIdentifyingValueType = identifyingValueType;
+								}
+								else
+								{
+									currentIdentifyingValueType = null;
+									return ObjectTypeVisitorResult.Stop;
+								}
+							}
+							return ObjectTypeVisitorResult.Continue;
+						});
+					return currentIdentifyingValueType != null &&
+						DataType.IsAssignableValueType(targetType, currentIdentifyingValueType);
+				}
+
+				// Both types are entity types, use subtype compatibility matching
+				return ObjectType.GetNearestCompatibleTypes(new ObjectType[]{targetType, currentType}, true).Length != 0;
+			}
+		}
+		/// <summary>
+		/// Helper method for CanProjectOn. Find the identifying value type for an
+		/// entity type without crossing a subtype, or null.
+		/// </summary>
+		private static ObjectType GetIdentifyingValueType(ObjectType entityType)
+		{
+			UniquenessConstraint pid;
+			LinkedElementCollection<Role> pidRoles;
+			ObjectType identifyingRolePlayer = null;
+			if (null != (pid = entityType.PreferredIdentifier) && // Verify a local identification scheme
+				1 == (pidRoles = pid.RoleCollection).Count)
+			{
+				Role identifyingRole = pidRoles[0];
+				identifyingRolePlayer = identifyingRole.RolePlayer;
+				if (!identifyingRolePlayer.IsValueType)
+				{
+					Role[] valueRoles = identifyingRole.GetValueRoles();
+					identifyingRolePlayer = (valueRoles != null && valueRoles.Length != 0) ? valueRoles[0].RolePlayer : null;
+				}
+			}
+			return identifyingRolePlayer;
+		}
 		#endregion // Helper Methods
 	}
 	#endregion // RolePathNode struct
@@ -3344,6 +3456,118 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Rule Methods
+		#region DataType Change Tracking (rules and callback registration)
+		/// <summary>
+		/// Callback delegate used as an extension point for notifications
+		/// when data type changes are made that can affect role path projections.
+		/// Notification delegates can be added with the <see cref="RolePathOwner.AddRolePathDataTypeChangeRuleNotification"/> method.
+		/// </summary>
+		/// <param name="valueType">The value type that has a modified data type.</param>
+		/// <param name="playedRoles">Roles played by this value type</param>
+		/// <param name="pathNode">A path node that uses this data type. If the path node is
+		/// empty, then the callback should find additional nodes that can be affected.</param>
+		protected delegate void RolePathDataTypeChange(ObjectType valueType, IList<Role> playedRoles, RolePathNode pathNode);
+		/// <summary>
+		/// Retrieve the delegates registered with <see cref="AddRolePathDataTypeChangeRuleNotification"/>
+		/// </summary>
+		private static RolePathDataTypeChange GetRolePathDataTypeChangeRuleNotifications(Store store)
+		{
+			object callback;
+			return store.PropertyBag.TryGetValue(typeof(RolePathDataTypeChange), out callback) ? callback as RolePathDataTypeChange : null;
+		}
+		/// <summary>
+		/// Add a callback delegate that should be notified when a change is made
+		/// to the use of a data type that may affect the path validation.
+		/// This is meant to avoid rewriting redundant rules for data type tracking
+		/// from each path type. Callbacks should be added in the <see cref="Framework.Shell.IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization"/>
+		/// method for each of the derived types.
+		/// </summary>
+		/// <param name="store">The context <see cref="Store"/></param>
+		/// <param name="dataTypeChangeCallback">A validation method that should run when the store changes.
+		/// This method will generally use <see cref="FrameworkDomainModel.DelayValidateElement"/> to
+		/// perform delayed validation of affected parts of the role path.</param>
+		protected static void AddRolePathDataTypeChangeRuleNotification(Store store, RolePathDataTypeChange dataTypeChangeCallback)
+		{
+			object key = typeof(RolePathDataTypeChange);
+			Dictionary<object, object> bag = store.PropertyBag;
+			RolePathDataTypeChange newDataTypeChange;
+			object value;
+			if (bag.TryGetValue(key, out value) &&
+				null != (newDataTypeChange = value as RolePathDataTypeChange))
+			{
+				newDataTypeChange += dataTypeChangeCallback;
+			}
+			else
+			{
+				newDataTypeChange = dataTypeChangeCallback;
+			}
+			bag[key] = newDataTypeChange;
+		}
+		/// <summary>
+		/// AddRule: typeof(ValueTypeHasDataType)
+		/// </summary>
+		private static void DataTypeUseAddedRule(ElementAddedEventArgs e)
+		{
+			DataTypeChangedForValueType(((ValueTypeHasDataType)e.ModelElement).ValueType);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ValueTypeHasDataType)
+		/// </summary>
+		private static void DataTypeUseDeletedRule(ElementDeletedEventArgs e)
+		{
+			ObjectType valueType = ((ValueTypeHasDataType)e.ModelElement).ValueType;
+			if (!valueType.IsDeleted)
+			{
+				DataTypeChangedForValueType(valueType);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(ValueTypeHasDataType)
+		/// </summary>
+		private static void DataTypeUseFacetChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			ValueTypeHasDataType link = (ValueTypeHasDataType)e.ModelElement;
+			DataType dataType = link.DataType;
+			Guid propertyId = e.DomainProperty.Id;
+			if ((dataType.LengthName != null && propertyId == ValueTypeHasDataType.LengthDomainPropertyId) ||
+				(dataType.ScaleName != null && propertyId == ValueTypeHasDataType.ScaleDomainPropertyId))
+			{
+				DataTypeChangedForValueType(link.ValueType);
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ValueTypeHasDataType)
+		/// </summary>
+		private static void DataTypeUseRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
+			{
+				DataTypeChangedForValueType(((ValueTypeHasDataType)e.ElementLink).ValueType);
+			}
+		}
+		private static void DataTypeChangedForValueType(ObjectType valueType)
+		{
+			Store store = valueType.Store;
+			RolePathDataTypeChange changeCallback;
+			if (null != (changeCallback = GetRolePathDataTypeChangeRuleNotifications(store))) // Defensive, we register callbacks, so these should always be set.
+			{
+				LinkedElementCollection<Role> playedRoles = valueType.PlayedRoleCollection;
+				foreach (RolePathObjectTypeRoot pathRoot in RolePathObjectTypeRoot.GetLinksToRolePathCollection(valueType))
+				{
+					changeCallback(valueType, playedRoles, pathRoot);
+				}
+				foreach (Role role in playedRoles)
+				{
+					foreach (PathedRole pathedRole in PathedRole.GetLinksToRolePathCollection(role))
+					{
+						changeCallback(valueType, playedRoles, pathedRole);
+					}
+				}
+				// Let the callbacks handle other elements that aren't managed by the default owner.
+				changeCallback(valueType, playedRoles, RolePathNode.Empty);
+			}
+		}
+		#endregion // DataType Change Tracking (rules and registration)
 		#region Path Validation
 		/// <summary>
 		/// Helper to choose between root path and subpath validators
@@ -3399,8 +3623,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				FrameworkDomainModel.DelayValidateElement(element, DelayValidateDerivedRolePathOwner);
 			}
 		}
+		/// <summary>
+		/// Call to the <see cref="ValidateDerivedRolePathOwner"/> after core path
+		/// validation is complete.
+		/// </summary>
 		[DelayValidatePriority(1)] // Run after DelayValidateLeadRolePaths
-		private static void DelayValidateDerivedRolePathOwner(ModelElement element)
+		protected static void DelayValidateDerivedRolePathOwner(ModelElement element)
 		{
 			if (!element.IsDeleted)
 			{
@@ -3736,7 +3964,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										(compatibilityTester ?? (compatibilityTester = new ObjectType[2]))[0] = currentRolePlayer;
 										compatibilityTester[1] = testCompatibilityWith;
-										if (ObjectType.GetNearestCompatibleTypes(compatibilityTester).Length == 0)
+										if (ObjectType.GetNearestCompatibleTypes(compatibilityTester, true).Length == 0)
 										{
 											hasJoinCompatibilityError = true;
 										}
@@ -3849,7 +4077,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						(compatibilityTester ?? (compatibilityTester = new ObjectType[2]))[0] = currentObjectType;
 						compatibilityTester[1] = testObjectType;
-						if (ObjectType.GetNearestCompatibleTypes(compatibilityTester).Length == 0)
+						if (ObjectType.GetNearestCompatibleTypes(compatibilityTester, true).Length == 0)
 						{
 							return false;
 						}
@@ -4231,6 +4459,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// We do all projection analysis independently after the deserialization request
 				ValidateProjectionExistence(notifyAdded);
 			}
+			ValidateProjectionTypes(notifyAdded);
 		}
 		/// <summary>
 		/// Helper struct for ValidateAutomaticProjections
@@ -4555,6 +4784,47 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
+		private void ValidateProjectionTypes(INotifyElementAdded notifyAdded)
+		{
+			ORMModel contextModel = null;
+			foreach (RoleSetDerivationProjection projectionSet in RoleSetDerivationProjection.GetLinksToProjectedPathComponentCollection(this))
+			{
+				foreach (DerivedRoleProjection projection in DerivedRoleProjection.GetLinksToProjectedRoleCollection(projectionSet))
+				{
+					PathedRole pathedRole;
+					RolePathObjectTypeRoot pathRoot;
+					bool hasError = false;
+					if (null != (pathedRole = projection.ProjectedFromPathedRole))
+					{
+						hasError = !new RolePathNode(pathedRole).CanProjectOn(projection.ProjectedRole.RolePlayer);
+					}
+					else if (null != (pathRoot = projection.ProjectedFromPathRoot))
+					{
+						hasError = !new RolePathNode(pathRoot).CanProjectOn(projection.ProjectedRole.RolePlayer);
+					}
+					DerivedRoleRequiresCompatibleProjectionError error = projection.IncompatibleProjectionError;
+					if (hasError)
+					{
+						if (error == null &&
+							null != (contextModel ?? (contextModel = this.Model)))
+						{
+							error = new DerivedRoleRequiresCompatibleProjectionError(Store);
+							error.Projection = projection;
+							error.Model = contextModel;
+							error.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(error, true);
+							}
+						}
+					}
+					else if (error != null)
+					{
+						error.Delete();
+					}
+				}
+			}
+		}
 		/// <summary>
 		/// Verify all projection errors
 		/// </summary>
@@ -4683,9 +4953,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					foreach (RoleSetDerivationProjection projection in RoleSetDerivationProjection.GetLinksToProjectedPathComponentCollection(this))
+					foreach (RoleSetDerivationProjection projectionSet in RoleSetDerivationProjection.GetLinksToProjectedPathComponentCollection(this))
 					{
-						PartialRoleSetDerivationProjectionError partialProjectionError = projection.PartialProjectionError;
+						foreach (DerivedRoleProjection projection in DerivedRoleProjection.GetLinksToProjectedRoleCollection(projectionSet))
+						{
+							DerivedRoleRequiresCompatibleProjectionError compatibilityError = projection.IncompatibleProjectionError;
+							if (compatibilityError != null)
+							{
+								yield return compatibilityError;
+							}
+						}
+						PartialRoleSetDerivationProjectionError partialProjectionError = projectionSet.PartialProjectionError;
 						if (partialProjectionError != null)
 						{
 							yield return partialProjectionError;
@@ -4720,6 +4998,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorDisplayContext Implementation
 		#region Validation Rule Methods
+		/// <summary>
+		/// Attach rule notifications for data type changes
+		/// </summary>
+		/// <param name="store">The context <see cref="Store"/></param>
+		public new static void EnableRuleNotifications(Store store)
+		{
+			RolePathOwner.AddRolePathDataTypeChangeRuleNotification(store, ProcessDataTypeChange);
+		}
+		private static void ProcessDataTypeChange(ObjectType valueType, IList<Role> playedRoles, RolePathNode processNode)
+		{
+			PathedRole pathedRole;
+			if (processNode.IsEmpty)
+			{
+				foreach (Role playedRole in playedRoles)
+				{
+					FactType factType;
+					RoleProjectedDerivationRule derivationRule;
+					if (null != (factType = playedRole.FactType) &&
+						null != (derivationRule = factType.DerivationRule))
+					{
+						FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateDerivedRolePathOwner);
+					}
+				}
+			}
+			else if (null != (pathedRole = processNode.PathedRole))
+			{
+				foreach (DerivedRoleProjection projection in DerivedRoleProjectedFromPathedRole.GetDerivedRoleProjections(pathedRole))
+				{
+					FrameworkDomainModel.DelayValidateElement(projection.DerivationProjection.DerivationRule, DelayValidateDerivedRolePathOwner);
+				}
+			}
+			else
+			{
+				foreach (DerivedRoleProjection projection in DerivedRoleProjectedFromRolePathRoot.GetDerivedRoleProjections(processNode.PathRoot))
+				{
+					FrameworkDomainModel.DelayValidateElement(projection.DerivationProjection.DerivationRule, DelayValidateDerivedRolePathOwner);
+				}
+			}
+		}
 		/// <summary>
 		/// AddRule: typeof(DerivedRoleProjectedFromCalculatedPathValue)
 		/// </summary>
@@ -5354,7 +5671,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // RoleSetDerivationProjection class
 	#region DerivedRoleProjection class
-	partial class DerivedRoleProjection
+	partial class DerivedRoleProjection : IElementLinkRoleHasIndirectModelErrorOwner
 	{
 		#region Custom Storage Handlers
 		private bool myIsAutomatic;
@@ -5592,6 +5909,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return false;
 		}
 		#endregion // Role derivation validation rules
+		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { DerivedRoleProjection.DerivationProjectionDomainRoleId, DerivedRoleProjection.ProjectedRoleDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerElementLinkRoles();
+		}
+		#endregion // IElementLinkRoleHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // DerivedRoleProjection class
 	#region QueryParameterBinding class
@@ -5936,6 +6274,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				// We do all projection analysis independently after the deserialization request
 				ValidateProjectionExistence(notifyAdded);
+			}
+			if (!IsAutomatic)
+			{
+				ValidateProjectionTypes(notifyAdded);
+			}
+		}
+		private void ValidateProjectionTypes(INotifyElementAdded notifyAdded)
+		{
+			ORMModel contextModel = null;
+			foreach (ConstraintRoleSequenceJoinPathProjection projectionSet in ConstraintRoleSequenceJoinPathProjection.GetLinksToProjectedPathComponentCollection(this))
+			{
+				foreach (ConstraintRoleProjection projection in ConstraintRoleProjection.GetLinksToProjectedRoleCollection(projectionSet))
+				{
+					PathedRole pathedRole;
+					RolePathObjectTypeRoot pathRoot;
+					bool hasError = false;
+					if (null != (pathedRole = projection.ProjectedFromPathedRole))
+					{
+						hasError = !new RolePathNode(pathedRole).CanProjectOn(projection.ProjectedConstraintRole.Role.RolePlayer);
+					}
+					else if (null != (pathRoot = projection.ProjectedFromPathRoot))
+					{
+						hasError = !new RolePathNode(pathRoot).CanProjectOn(projection.ProjectedConstraintRole.Role.RolePlayer);
+					}
+					ConstraintRoleRequiresCompatibleJoinPathProjectionError error = projection.IncompatibleProjectionError;
+					if (hasError)
+					{
+						if (error == null &&
+							null != (contextModel ?? (contextModel = this.Model)))
+						{
+							error = new ConstraintRoleRequiresCompatibleJoinPathProjectionError(Store);
+							error.Projection = projection;
+							error.Model = contextModel;
+							error.GenerateErrorText();
+							if (notifyAdded != null)
+							{
+								notifyAdded.ElementAdded(error, true);
+							}
+						}
+					}
+					else if (error != null)
+					{
+						error.Delete();
+					}
+				}
 			}
 		}
 		/// <summary>
@@ -6437,9 +6820,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					foreach (ConstraintRoleSequenceJoinPathProjection projection in ConstraintRoleSequenceJoinPathProjection.GetLinksToProjectedPathComponentCollection(this))
+					foreach (ConstraintRoleSequenceJoinPathProjection projectionSet in ConstraintRoleSequenceJoinPathProjection.GetLinksToProjectedPathComponentCollection(this))
 					{
-						PartialConstraintRoleSequenceJoinPathProjectionError partialProjectionError = projection.PartialProjectionError;
+						foreach (ConstraintRoleProjection projection in ConstraintRoleProjection.GetLinksToProjectedRoleCollection(projectionSet))
+						{
+							ConstraintRoleRequiresCompatibleJoinPathProjectionError compatibilityError = projection.IncompatibleProjectionError;
+							if (compatibilityError != null)
+							{
+								yield return compatibilityError;
+							}
+						}
+						PartialConstraintRoleSequenceJoinPathProjectionError partialProjectionError = projectionSet.PartialProjectionError;
 						if (partialProjectionError != null)
 						{
 							yield return partialProjectionError;
@@ -6454,6 +6845,46 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IModelErrorOwner Implementation
 		#region Validation Rule Methods
+		/// <summary>
+		/// Attach rule notifications for data type changes
+		/// </summary>
+		/// <param name="store">The context <see cref="Store"/></param>
+		public new static void EnableRuleNotifications(Store store)
+		{
+			RolePathOwner.AddRolePathDataTypeChangeRuleNotification(store, ProcessDataTypeChange);
+		}
+		private static void ProcessDataTypeChange(ObjectType valueType, IList<Role> playedRoles, RolePathNode processNode)
+		{
+			PathedRole pathedRole;
+			if (processNode.IsEmpty)
+			{
+				foreach (Role playedRole in playedRoles)
+				{
+					foreach (ConstraintRoleSequence sequence in ConstraintRoleSequenceHasRole.GetConstraintRoleSequenceCollection(playedRole))
+					{
+						ConstraintRoleSequenceJoinPath joinPath;
+						if (null != (joinPath = sequence.JoinPath))
+						{
+							FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateDerivedRolePathOwner);
+						}
+					}
+				}
+			}
+			else if (null != (pathedRole = processNode.PathedRole))
+			{
+				foreach (ConstraintRoleProjection projection in ConstraintRoleProjectedFromPathedRole.GetConstraintRoleProjections(pathedRole))
+				{
+					FrameworkDomainModel.DelayValidateElement(projection.JoinPathProjection.JoinPath, DelayValidateDerivedRolePathOwner);
+				}
+			}
+			else
+			{
+				foreach (ConstraintRoleProjection projection in ConstraintRoleProjectedFromRolePathRoot.GetConstraintRoleProjections(processNode.PathRoot))
+				{
+					FrameworkDomainModel.DelayValidateElement(projection.JoinPathProjection.JoinPath, DelayValidateDerivedRolePathOwner);
+				}
+			}
+		}
 		/// <summary>
 		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
 		/// </summary>
@@ -6765,7 +7196,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // ConstraintRoleSequenceJoinPathProjection class
 	#region ConstraintRoleProjection class
-	partial class ConstraintRoleProjection
+	partial class ConstraintRoleProjection : IElementLinkRoleHasIndirectModelErrorOwner
 	{
 		#region Custom Storage Handlers
 		private bool myIsAutomatic;
@@ -6870,6 +7301,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return false;
 		}
 		#endregion // Rule Helpers
+		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { ConstraintRoleProjection.JoinPathProjectionDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerElementLinkRoles();
+		}
+		#endregion // IElementLinkRoleHasIndirectModelErrorOwner Implementation
 	}
 	#endregion // ConstraintRoleProjection class
 	#region RoleSubPath class
@@ -7631,6 +8083,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
+	partial class DerivedRoleRequiresCompatibleProjectionError
+	{
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		/// <summary>
+		/// Generate the error text
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			IModelErrorDisplayContext displayContext = Projection.ProjectedRole;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorDerivedRoleProjectionIncompatibleProjection, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+	}
+	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
 	partial class ConstraintRoleSequenceJoinPathRequiresProjectionError
 	{
 		/// <summary>
@@ -7672,6 +8146,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = JoinPathProjection;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorJoinPathPartialProjection, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+	}
+	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
+	partial class ConstraintRoleRequiresCompatibleJoinPathProjectionError
+	{
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.ModelNameChange | RegenerateErrorTextEvents.OwnerNameChange;
+			}
+		}
+		/// <summary>
+		/// Generate the error text
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			IModelErrorDisplayContext displayContext = Projection.JoinPathProjection;
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintRoleProjectionIncompatibleProjection, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
 	}
 	#endregion // Path Errors

@@ -1051,11 +1051,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				// We will only test incompatibility if we find more than
 				// only role that actually has a role player. We'll cache the
-				// full set of supertypes for the first roleplayer we find,
-				// then walk the supertypes for all other types to find an
-				// intersection with the first set.
+				// full set of supertypes and excluded supertype roles for
+				// the first roleplayer we find, then walk the supertypes for
+				// all other types to find an intersection with the first set.
 				ObjectType firstRolePlayer = null;
-				Collection<ObjectType> superTypesCache = null;
+				Dictionary<ObjectType, object> superTypesCache = null;
+				Dictionary<ExclusionConstraint, SupertypeMetaRole> excludedRolesCache = null;
 
 				for (int i = 0; i < roleCount; ++i)
 				{
@@ -1071,24 +1072,69 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						else
 						{
-							if (superTypesCache == null)
+							if (currentRolePlayer != firstRolePlayer)
 							{
-								// Populate the cache
-								superTypesCache = new Collection<ObjectType>();
-								ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+								if (superTypesCache == null)
 								{
-									superTypesCache.Add(type);
+									// Populate the cache
+									ObjectType.WalkSupertypeRelationships(firstRolePlayer, delegate(SubtypeFact subtypeFact, ObjectType type, int depth)
+									{
+										(superTypesCache ?? (superTypesCache = new Dictionary<ObjectType, object>()))[type] = null;
+										// Track any exclusion constraints we pass here. If two different roles
+										// from the same exclusion constraint are passed for the different roles,
+										// then the types cannot be compatible.
+										SupertypeMetaRole supertypeRole = subtypeFact.SupertypeRole;
+										foreach (ConstraintRoleSequence intersectingSequence in supertypeRole.ConstraintRoleSequenceCollection)
+										{
+											SetComparisonConstraintRoleSequence comparedSequence;
+											ExclusionConstraint exclusion;
+											if (null != (comparedSequence = intersectingSequence as SetComparisonConstraintRoleSequence) &&
+												null != (exclusion = comparedSequence.ExternalConstraint as ExclusionConstraint))
+											{
+												// Note that it is possible to override a tracked role here if a subtype has
+												// two supertypes that are not compatible. However, this is caught as a different
+												// error, and fixing that error will rerun this code. So, we assume a clean state
+												// here and just record a single role per exclusion.
+												(excludedRolesCache ?? (excludedRolesCache = new Dictionary<ExclusionConstraint, SupertypeMetaRole>()))[exclusion] = supertypeRole;
+											}
+										}
+										return ObjectTypeVisitorResult.Continue;
+									});
+								}
+							}
+							if (!(isCompatible = (currentRolePlayer == firstRolePlayer || (superTypesCache != null && superTypesCache.ContainsKey(currentRolePlayer)))))
+							{
+								ObjectType.WalkSupertypeRelationships(currentRolePlayer, delegate(SubtypeFact subtypeFact, ObjectType type, int depth)
+								{
+									// Exclusion constraints need to be verified whether or not we have a matching
+									// supertype, so check up front.
+									if (excludedRolesCache != null)
+									{
+										SupertypeMetaRole supertypeRole = subtypeFact.SupertypeRole;
+										foreach (ConstraintRoleSequence intersectingSequence in supertypeRole.ConstraintRoleSequenceCollection)
+										{
+											SetComparisonConstraintRoleSequence comparedSequence;
+											ExclusionConstraint exclusion;
+											SupertypeMetaRole excludedWithRole;
+											if (null != (comparedSequence = intersectingSequence as SetComparisonConstraintRoleSequence) &&
+												null != (exclusion = comparedSequence.ExternalConstraint as ExclusionConstraint) &&
+												excludedRolesCache.TryGetValue(exclusion, out excludedWithRole) &&
+												excludedWithRole != supertypeRole)
+											{
+												return ObjectTypeVisitorResult.Stop;
+											}
+										}
+									}
+
+									if (firstRolePlayer == type ||
+										(superTypesCache != null && superTypesCache.ContainsKey(type)))
+									{
+										isCompatible = true;
+										return ObjectTypeVisitorResult.Stop;
+									}
 									return ObjectTypeVisitorResult.Continue;
 								});
 							}
-							// If the type is contained, WalkSupertype will return false because the iteration
-							// did not complete.
-							isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
-							{
-								// Continue iteration if the type is recognized in the cache
-								return superTypesCache.Contains(type) ? ObjectTypeVisitorResult.Stop : ObjectTypeVisitorResult.Continue;
-							});
-
 							if (!isCompatible)
 							{
 								//If the error is not present, add it to the model
@@ -1966,6 +2012,47 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion //SetComparisonConstraintRoleSequenceDeletedRule
+		#region Empty validation error cleanup rules
+		// These errors do not have delete propagation relationships from the violating constraints
+		// to the errors because there error-to-constraint roles are many. Make sure these errors
+		// go away when they're supposed to.
+		/// <summary>
+		/// DeleteRule: typeof(SetComparisonConstraintHasContradictionError), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void ContradictionErrorComponentDeletedRule(ElementDeletedEventArgs e)
+		{
+			ContradictionError error = ((SetComparisonConstraintHasContradictionError)e.ModelElement).ContradictionError;
+			if (!error.IsDeleted &&
+				error.SetComparisonConstraintCollection.Count < 2)
+			{
+				error.Delete();
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ExclusionConstraintHasExclusionContradictsMandatoryError), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void ExclusionContradictsMandatoryErrorExclusionComponentDeletedRule(ElementDeletedEventArgs e)
+		{
+			ExclusionContradictsMandatoryError error = ((ExclusionConstraintHasExclusionContradictsMandatoryError)e.ModelElement).ExclusionContradictsMandatoryError;
+			if (!error.IsDeleted &&
+				error.ExclusionConstraint.Count == 0)
+			{
+				error.Delete();
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(MandatoryConstraintHasExclusionContradictsMandatoryError), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// </summary>
+		private static void ExclusionContradictsMandatoryErrorMandatoryComponentDeletedRule(ElementDeletedEventArgs e)
+		{
+			ExclusionContradictsMandatoryError error = ((MandatoryConstraintHasExclusionContradictsMandatoryError)e.ModelElement).ExclusionContradictsMandatoryError;
+			if (!error.IsDeleted &&
+				error.MandatoryConstraint.Count == 0)
+			{
+				error.Delete();
+			}
+		}
+		#endregion // Empty validation error cleanup rules
 		#endregion // SetComparisonConstraint synchronization rules
 		#region Deserialization Fixup
 		/// <summary>
@@ -2280,7 +2367,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences = RoleSequenceCollection;
 				int sequenceCount = sequences.Count;
 				bool hasSubtypeSubsetError = false;
-				SupertypeMetaRole supertypeRole = null;
+				SupertypeMetaRole subsetSupertypeRole = null;
 
 				if (sequenceCount > 1)
 				{
@@ -2297,6 +2384,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 					// Verify each column individually
 					int rolePlayerCount = roleCollections[0].Count;
+					Dictionary<ObjectType, object> superTypesCache = null;
+					Dictionary<ExclusionConstraint, SupertypeMetaRole> excludedRolesCache = null;
+					ObjectType populatedCachesForType = null;
 					for (int column = 0; column < rolePlayerCount; ++column)
 					{
 						// We will only test incompatibility if we find more than
@@ -2305,7 +2395,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						// then walk the supertypes for all other types to find an
 						// intersection with the first set.
 						ObjectType firstRolePlayer = null;
-						Collection<ObjectType> superTypesCache = null;
+						bool populatedCaches = false;
+						bool firstRolePlayerHasSupertypes = false;
 
 						for (int sequence = 0; sequence < sequenceCount; ++sequence)
 						{
@@ -2322,32 +2413,115 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										column == 0 &&
 										sequence == 0)
 									{
-										supertypeRole = currentRole as SupertypeMetaRole;
+										subsetSupertypeRole = currentRole as SupertypeMetaRole;
 									}
 								}
 								else
 								{
-									if (superTypesCache == null)
+									if (currentRolePlayer != firstRolePlayer &&
+										!populatedCaches)
 									{
-										// Populate the cache
-										superTypesCache = new Collection<ObjectType>();
-										ObjectType.WalkSupertypes(firstRolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
+										populatedCaches = true;
+										if (populatedCachesForType == firstRolePlayer)
 										{
-											superTypesCache.Add(type);
+											firstRolePlayerHasSupertypes = superTypesCache != null && superTypesCache.Count != 0;
+										}
+										else
+										{
+											// Populate the cache
+											ObjectType.WalkSupertypeRelationships(
+												firstRolePlayer,
+												delegate(SubtypeFact subtypeFact, ObjectType type, int depth)
+												{
+													if (!firstRolePlayerHasSupertypes)
+													{
+														firstRolePlayerHasSupertypes = true;
+														if (superTypesCache == null)
+														{
+															superTypesCache = new Dictionary<ObjectType, object>();
+														}
+														else
+														{
+															superTypesCache.Clear();
+														}
+														if (excludedRolesCache != null)
+														{
+															excludedRolesCache.Clear();
+														}
+														populatedCachesForType = firstRolePlayer;
+													}
+													superTypesCache[type] = null;
+													// Track any exclusion constraints we pass here. If two different roles
+													// from the same exclusion constraint are passed for the different columns,
+													// then the types cannot be compatible.
+													SupertypeMetaRole supertypeRole = subtypeFact.SupertypeRole;
+													foreach (ConstraintRoleSequence intersectingSequence in supertypeRole.ConstraintRoleSequenceCollection)
+													{
+														SetComparisonConstraintRoleSequence comparedSequence;
+														ExclusionConstraint exclusion;
+														if (null != (comparedSequence = intersectingSequence as SetComparisonConstraintRoleSequence) &&
+															null != (exclusion = comparedSequence.ExternalConstraint as ExclusionConstraint) &&
+															exclusion != this)
+														{
+															// Note that it is possible to override a tracked role here if a subtype has
+															// two supertypes that are not compatible. However, this is caught as a different
+															// error, and fixing that error will rerun this code. So, we assume a clean state
+															// here and just record a single role per exclusion.
+															(excludedRolesCache ?? (excludedRolesCache = new Dictionary<ExclusionConstraint, SupertypeMetaRole>()))[exclusion] = supertypeRole;
+														}
+													}
+													return ObjectTypeVisitorResult.Continue;
+												});
+										}
+									}
+									bool isCompatible;
+									if (!(isCompatible = (currentRolePlayer == firstRolePlayer || (firstRolePlayerHasSupertypes && superTypesCache.ContainsKey(currentRolePlayer)))))
+									{
+										ObjectType.WalkSupertypeRelationships(currentRolePlayer, delegate(SubtypeFact subtypeFact, ObjectType type, int depth)
+										{
+											if (firstRolePlayerHasSupertypes)
+											{
+												// Exclusion constraints need to be verified whether or not we have a matching
+												// supertype, so check up front.
+												if (excludedRolesCache != null &&
+													excludedRolesCache.Count != 0)
+												{
+													SupertypeMetaRole supertypeRole = subtypeFact.SupertypeRole;
+													foreach (ConstraintRoleSequence intersectingSequence in supertypeRole.ConstraintRoleSequenceCollection)
+													{
+														SetComparisonConstraintRoleSequence comparedSequence;
+														ExclusionConstraint exclusion;
+														SupertypeMetaRole excludedWithRole;
+														if (null != (comparedSequence = intersectingSequence as SetComparisonConstraintRoleSequence) &&
+															null != (exclusion = comparedSequence.ExternalConstraint as ExclusionConstraint) &&
+															exclusion != this &&
+															excludedRolesCache.TryGetValue(exclusion, out excludedWithRole) &&
+															excludedWithRole != supertypeRole)
+														{
+															return ObjectTypeVisitorResult.Stop;
+														}
+													}
+												}
+												// Continue iteration if the type is not recognized in the cache
+												if (firstRolePlayer == type || superTypesCache.ContainsKey(type))
+												{
+													isCompatible = true;
+													return ObjectTypeVisitorResult.Stop;
+												}
+												return ObjectTypeVisitorResult.Continue;
+											}
+											if (firstRolePlayer == type)
+											{
+												isCompatible = true;
+												return ObjectTypeVisitorResult.Stop;
+											}
 											return ObjectTypeVisitorResult.Continue;
 										});
 									}
-									// If the type is contained, WalkSupertype will return false because the iteration
-									// did not complete.
-									bool isCompatible = !ObjectType.WalkSupertypes(currentRolePlayer, delegate(ObjectType type, int depth, bool isPrimary)
-									{
-										// Continue iteration if the type is recognized in the cache
-										return superTypesCache.Contains(type) ? ObjectTypeVisitorResult.Stop : ObjectTypeVisitorResult.Continue;
-									});
 									if (!isCompatible)
 									{
-										// If a starting error is present, then adjust its column
-										// property and regenerate the text
+										// Matched error condition. If a starting error is present,
+										// then adjust its column property and regenerate the text
 										if (nextStartingError < startingErrorCount)
 										{
 											compatibleError = startingErrors[nextStartingError];
@@ -2369,10 +2543,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											}
 										}
 									}
-									else if (supertypeRole != null &&
+									else if (subsetSupertypeRole != null &&
 											column == 0 &&
 											sequence == 1 &&
-											!superTypesCache.Contains(currentRolePlayer))
+											!superTypesCache.ContainsKey(currentRolePlayer))
 									{
 										// Don't set if not compatible.
 										hasSubtypeSubsetError = true;
@@ -5115,10 +5289,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static ObjectType ResolveCompatibleSupertype(ObjectType objectType1, ObjectType objectType2)
 		{
-			ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(new ObjectType[] { objectType1, objectType2 });
+			ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(new ObjectType[] { objectType1, objectType2 }, true);
 			while (compatibleTypes.Length > 1)
 			{
-				compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes);
+				compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes, true);
 			}
 			if (compatibleTypes.Length != 0)
 			{
@@ -5956,6 +6130,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (roleProjection != null)
 						{
 							roleProjection.IsAutomatic = false;
+							roleProjection.IncompatibleProjectionError = null;
 							if (lastBindablePathedRole == null)
 							{
 								pathRootProjectionLink = ConstraintRoleProjectedFromRolePathRoot.GetLinkToProjectedFromPathRoot(roleProjection);
@@ -6154,6 +6329,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									if (roleProjection != null)
 									{
 										roleProjection.IsAutomatic = false;
+										roleProjection.IncompatibleProjectionError = null;
 										projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
 									}
 								}
@@ -6234,6 +6410,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (roleProjection != null)
 					{
 						roleProjection.IsAutomatic = false;
+						roleProjection.IncompatibleProjectionError = null;
 						projectionLink = ConstraintRoleProjectedFromPathedRole.GetLinkToProjectedFromPathedRole(roleProjection);
 					}
 				}

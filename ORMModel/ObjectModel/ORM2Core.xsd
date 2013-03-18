@@ -1930,6 +1930,12 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:complexType name="DerivedRoleProjectionRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a projection onto a role in a derived fact type.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
 	<xs:simpleType name="DerivationCompletenessValues">
 		<xs:annotation>
 			<xs:documentation>Specify if instances of a derived fact or object type can also be directly asserted.</xs:documentation>
@@ -2057,6 +2063,12 @@
 				<xs:documentation>The constraint role is automatically projected onto the only matching path node.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ConstraintRoleProjectionRef">
+		<xs:annotation>
+			<xs:documentation>A reference to a projection from a join path onto a constrained role.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
 	<xs:complexType name="InformalDerivationRuleType">
 		<xs:annotation>
@@ -2628,6 +2640,9 @@
 			<xs:element name="PartialQueryDerivationProjectionError" type="PartialQueryDerivationProjectionErrorType"/>
 			<xs:element name="JoinPathRequiresProjectionError" type="JoinPathRequiresProjectionErrorType"/>
 			<xs:element name="PartialJoinPathProjectionError" type="PartialJoinPathProjectionErrorType"/>
+			<xs:element name="DerivedFactTypeRoleProjectionCompatibilityError" type="DerivedFactTypeRoleProjectionCompatibilityErrorType"/>
+			<xs:element name="QueryRoleProjectionCompatibilityError" type="QueryRoleProjectionCompatibilityErrorType"/>
+			<xs:element name="JoinedConstraintRoleProjectionCompatibilityError" type="JoinedConstraintRoleProjectionCompatibilityErrorType"/>
 		</xs:choice>
 	</xs:complexType>
 	<xs:complexType name="ModelError" abstract="true">
@@ -3552,6 +3567,42 @@
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="JoinPathProjection" type="JoinPathProjectionRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DerivedFactTypeRoleProjectionCompatibilityErrorType">
+		<xs:annotation>
+			<xs:documentation>A projection onto a derived fact type role is not compatible with the role player of that role.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="DerivedRoleProjection" type="DerivedRoleProjectionRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="QueryRoleProjectionCompatibilityErrorType">
+		<xs:annotation>
+			<xs:documentation>A projection onto a query role is not compatible with the role player of that role.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="DerivedRoleProjection" type="DerivedRoleProjectionRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="JoinedConstraintRoleProjectionCompatibilityErrorType">
+		<xs:annotation>
+			<xs:documentation>A projection from a join path onto a constrained role is not compatible with the role player of that role.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ConstraintRoleProjection" type="ConstraintRoleProjectionRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>

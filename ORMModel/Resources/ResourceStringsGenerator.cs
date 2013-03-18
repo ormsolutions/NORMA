@@ -3035,6 +3035,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleProjection.AutomaticProjectionUnavailableForAutomaticJoinPath.Text");
 			}
 		}
+		/// <summary>Model validation error text for projection on a constraint role from a join path where the type of projection does not match the type of the constrained role. {0}=error display context (from join path)</summary>
+		public static string ModelErrorConstraintRoleProjectionIncompatibleProjection
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleProjection.IncompatibleProjection.Text");
+			}
+		}
 		/// <summary>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is context owner name.</summary>
 		public static string ModelErrorConstraintRoleSequenceJoinPathRequiredError
 		{
@@ -3049,6 +3057,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DerivedRoleProjection.AutomaticProjectionUnavailable.Text");
+			}
+		}
+		/// <summary>Model validation error text for projection on a role from a derived fact type where the type of projection does not match the type of the role. {0}=error display context (from role)</summary>
+		public static string ModelErrorDerivedRoleProjectionIncompatibleProjection
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DerivedRoleProjection.IncompatibleProjection.Text");
 			}
 		}
 		/// <summary>The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</summary>

@@ -57,6 +57,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			ConstraintRoleSequence.EnableRuleNotifications(store);
 			RolePathOwner.EnableRuleNotifications(store);
+			RoleProjectedDerivationRule.EnableRuleNotifications(store);
+			ConstraintRoleSequenceJoinPath.EnableRuleNotifications(store);
 		}
 		#endregion // Custom Rule Notifications
 		#region IModelingEventSubscriber Implementation

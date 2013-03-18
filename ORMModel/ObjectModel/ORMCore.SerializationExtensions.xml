@@ -777,6 +777,7 @@
 		<se:Link RelationshipName="DerivedRoleProjectedFromRolePathRoot" RoleName="Source" Name="PathRoot"/>
 		<se:Link RelationshipName="DerivedRoleProjectedFromPathedRole" RoleName="Source" Name="PathedRole"/>
 		<se:Link RelationshipName="DerivedRoleProjectedFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
+		<se:Link RelationshipName="DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError" RoleName="IncompatibleProjectionError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="QueryDerivationRule" Name="QueryDerivationPath" Override="true">
 		<se:Container Name="DerivationProjections">
@@ -1087,6 +1088,7 @@
 		<se:Link RelationshipName="ConstraintRoleProjectedFromRolePathRoot" RoleName="Source" Name="PathRoot"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromPathedRole" RoleName="Source" Name="PathedRole"/>
 		<se:Link RelationshipName="ConstraintRoleProjectedFromCalculatedPathValue" RoleName="Source" Name="CalculatedValue"/>
+		<se:Link RelationshipName="ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError" RoleName="IncompatibleProjectionError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="MandatoryConstraint" SortChildElements="true" Override="true">
 		<se:Attribute ID="IsSimple">
@@ -1905,11 +1907,35 @@
 		</se:ConditionalName>
 		<se:Link RelationshipName="RoleSetDerivationProjectionHasPartialProjectionError" RoleName="DerivationProjection" Name="DerivationProjection"/>
 	</se:Element>
+	<se:Element Class="DerivedRoleRequiresCompatibleProjectionError" Name="DerivedFactTypeRoleProjectionCompatibilityError" Override="true">
+		<se:ConditionalName Name="QueryRoleProjectionCompatibilityError">
+			<plx:binaryOperator type="typeEquality">
+				<plx:left>
+					<plx:callInstance type="property" name="DerivationRule">
+						<plx:callObject>
+							<plx:callInstance type="property" name="DerivationProjection">
+								<plx:callObject>
+									<plx:callThis type="property" name="Projection"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:left>
+				<plx:right>
+					<plx:directTypeReference dataTypeName="QueryDerivationRule"/>
+				</plx:right>
+			</plx:binaryOperator>
+		</se:ConditionalName>
+		<se:Link RelationshipName="DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError" RoleName="Projection" Name="DerivedRoleProjection"/>
+	</se:Element>
 	<se:Element Class="ConstraintRoleSequenceJoinPathRequiresProjectionError" Name="JoinPathRequiresProjectionError" Override="true">
 		<se:Link RelationshipName="ConstraintRoleSequenceJoinPathHasProjectionRequiredError" RoleName="JoinPath" Name="JoinPath"/>
 	</se:Element>
 	<se:Element Class="PartialConstraintRoleSequenceJoinPathProjectionError" Name="PartialJoinPathProjectionError" Override="true">
 		<se:Link RelationshipName="ConstraintRoleSequenceProjectionHasPartialProjectionError" RoleName="JoinPathProjection" Name="JoinPathProjection"/>
+	</se:Element>
+	<se:Element Class="ConstraintRoleRequiresCompatibleJoinPathProjectionError" Name="JoinedConstraintRoleProjectionCompatibilityError" Override="true">
+		<se:Link RelationshipName="ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError" RoleName="Projection" Name="ConstraintRoleProjection"/>
 	</se:Element>
 
 	<!-- Grouping constructs -->

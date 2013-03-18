@@ -11913,7 +11913,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null != (rootObjectType = rolePath.RootObjectType) &&
 					null != (subtype = derivationRule.Subtype) &&
 					rootObjectType != subtype &&
-					ObjectType.GetNearestCompatibleTypes(new ObjectType[] { subtype, rootObjectType }).Length != 0;
+					ObjectType.GetNearestCompatibleTypes(new ObjectType[] { subtype, rootObjectType }, true).Length != 0;
 			}
 		}
 		#endregion // SubTypeDerivationRuleVerbalizer class
@@ -11951,10 +11951,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(
 						constraintRoles,
-						delegate(ConstraintRoleSequenceHasRole constraintRole) { return constraintRole.Role.RolePlayer; });
+						delegate(ConstraintRoleSequenceHasRole constraintRole) { return constraintRole.Role.RolePlayer; },
+						false);
 					while (compatibleTypes.Length > 1)
 					{
-						compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes);
+						compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes, false);
 					}
 					compatibleVariable = AddExternalVariable(0, null, compatibleTypes.Length != 0 ? compatibleTypes[0] : null, RolePathNode.Empty);
 				}
@@ -12218,10 +12219,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(
 						allSequencedRoleLinks,
 						i,
-						delegate(ConstraintRoleSequenceHasRole constraintRole) { return constraintRole.Role.RolePlayer; });
+						delegate(ConstraintRoleSequenceHasRole constraintRole) { return constraintRole.Role.RolePlayer; },
+						false);
 					while (compatibleTypes.Length > 1)
 					{
-						compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes);
+						compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes, false);
 					}
 					columnVariables[i] = AddExternalVariable(i, null, compatibleTypes.Length != 0 ? compatibleTypes[0] : null, RolePathNode.Empty);
 				}

@@ -16227,6 +16227,80 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass DerivedRoleRequiresCompatibleProjectionError
+	/// A role path projection onto a derived role must be of a type that is compatible
+	/// with the derived role.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleRequiresCompatibleProjectionError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleRequiresCompatibleProjectionError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("7929f50f-70eb-4bab-9230-1ebb4f8331b5")]
+	public partial class DerivedRoleRequiresCompatibleProjectionError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// DerivedRoleRequiresCompatibleProjectionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7929f50f, 0x70eb, 0x4bab, 0x92, 0x30, 0x1e, 0xbb, 0x4f, 0x83, 0x31, 0xb5);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DerivedRoleRequiresCompatibleProjectionError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DerivedRoleRequiresCompatibleProjectionError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Projection opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Projection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.IncompatibleProjectionError
+		/// </summary>
+		public virtual DerivedRoleProjection Projection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.IncompatibleProjectionErrorDomainRoleId) as DerivedRoleProjection;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.ProjectionDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.ProjectionDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.IncompatibleProjectionErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass ConstraintRoleSequenceJoinPathRequiresProjectionError
 	/// Roles in a constraint role sequence join path must be projected from at least
 	/// one role path.
@@ -16366,6 +16440,80 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError.PartialProjectionErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ConstraintRoleRequiresCompatibleJoinPathProjectionError
+	/// A constraint role join path projection must be of a type that is compatible with
+	/// the constrained role.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleRequiresCompatibleJoinPathProjectionError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleRequiresCompatibleJoinPathProjectionError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("11a7fc14-052c-4d22-b59c-59b39e5964b9")]
+	public partial class ConstraintRoleRequiresCompatibleJoinPathProjectionError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ConstraintRoleRequiresCompatibleJoinPathProjectionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x11a7fc14, 0x052c, 0x4d22, 0xb5, 0x9c, 0x59, 0xb3, 0x9e, 0x59, 0x64, 0xb9);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ConstraintRoleRequiresCompatibleJoinPathProjectionError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ConstraintRoleRequiresCompatibleJoinPathProjectionError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Projection opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Projection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.IncompatibleProjectionError
+		/// </summary>
+		public virtual ConstraintRoleProjection Projection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.IncompatibleProjectionErrorDomainRoleId) as ConstraintRoleProjection;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.ProjectionDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.ProjectionDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.IncompatibleProjectionErrorDomainRoleId, value);
 				}
 			}
 		}

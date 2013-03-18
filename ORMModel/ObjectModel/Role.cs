@@ -1211,13 +1211,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (filter == (ModelErrorUses)(-1))
 			{
 				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToObjectTypeInstanceCollection(this);
-				int roleInstanceCount = roleInstances.Count;
-				for (int i = 0; i < roleInstanceCount; ++i)
+				int count = roleInstances.Count;
+				for (int i = 0; i < count; ++i)
 				{
-					PopulationUniquenessError error = roleInstances[i].PopulationUniquenessError;
-					if (error != null)
+					PopulationUniquenessError populationError = roleInstances[i].PopulationUniquenessError;
+					if (populationError != null)
 					{
-						yield return error;
+						yield return populationError;
+					}
+				}
+
+				ReadOnlyCollection<DerivedRoleProjection> projections = DerivedRoleProjection.GetLinksToDerivationProjectionCollection(this);
+				count = roleInstances.Count;
+				for (int i = 0; i < count; ++i)
+				{
+					DerivedRoleRequiresCompatibleProjectionError compatibilityError = projections[i].IncompatibleProjectionError;
+					if (compatibilityError != null)
+					{
+						yield return compatibilityError;
 					}
 				}
 			}

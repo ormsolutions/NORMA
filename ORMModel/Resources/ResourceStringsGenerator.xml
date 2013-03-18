@@ -429,8 +429,10 @@
 	<ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text"/>
 	<ResourceString name="ModelErrorConstraintRoleProjectionAutomaticProjectionUnavailable" model="Model" resourceName="ModelError.ConstraintRoleProjection.AutomaticProjectionUnavailable.Text"/>
 	<ResourceString name="ModelErrorConstraintRoleProjectionAutomaticProjectionUnavailableForAutomaticJoinPath" model="Model" resourceName="ModelError.ConstraintRoleProjection.AutomaticProjectionUnavailableForAutomaticJoinPath.Text"/>
+	<ResourceString name="ModelErrorConstraintRoleProjectionIncompatibleProjection" model="Model" resourceName="ModelError.ConstraintRoleProjection.IncompatibleProjection.Text"/>
 	<ResourceString name="ModelErrorConstraintRoleSequenceJoinPathRequiredError" model="Model" resourceName="ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text"/>
 	<ResourceString name="ModelErrorDerivedRoleProjectionProjectionAutomaticProjectionUnavailable" model="Model" resourceName="ModelError.DerivedRoleProjection.AutomaticProjectionUnavailable.Text"/>
+	<ResourceString name="ModelErrorDerivedRoleProjectionIncompatibleProjection" model="Model" resourceName="ModelError.DerivedRoleProjection.IncompatibleProjection.Text"/>
 	<ResourceString name="ModelErrorSetConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text"/>
 	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text"/>
 	<ResourceString name="ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" model="Model" resourceName="ModelError.Constraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Text"/>

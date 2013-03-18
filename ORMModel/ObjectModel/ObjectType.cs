@@ -1643,10 +1643,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="roleCollectionCollection">Set of collections of roles to walk</param>
 		/// <param name="column">The column to test</param>
+		/// <param name="testExclusion">Verify that there are no exclusion constraints in the path.
+		/// If this is not set, only the subtype hierarchy is tested.</param>
 		/// <returns>ObjectType[]</returns>
-		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<IEnumerable<Role>> roleCollectionCollection, int column)
+		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<IEnumerable<Role>> roleCollectionCollection, int column, bool testExclusion)
 		{
-			return GetNearestCompatibleTypes(GetRolePlayerCollection(GetColumnCollection(roleCollectionCollection, column), delegate(Role role) { return role.RolePlayer; }));
+			return GetNearestCompatibleTypes(GetRolePlayerCollection(GetColumnCollection(roleCollectionCollection, column), delegate(Role role) { return role.RolePlayer; }), testExclusion);
 		}
 		/// <summary>
 		/// Return an ObjectType array containing the nearest compatible
@@ -1656,10 +1658,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="collectionCollection">Set of collections of convertible elements to walk</param>
 		/// <param name="column">The column to test</param>
 		/// <param name="converter">A <see cref="Converter{T,ObjectType}"/> to transform elements.</param>
+		/// <param name="testExclusion">Verify that there are no exclusion constraints in the path.
+		/// If this is not set, only the subtype hierarchy is tested.</param>
 		/// <returns>ObjectType[]</returns>
-		public static ObjectType[] GetNearestCompatibleTypes<T>(IEnumerable<IEnumerable<T>> collectionCollection, int column, Converter<T, ObjectType> converter)
+		public static ObjectType[] GetNearestCompatibleTypes<T>(IEnumerable<IEnumerable<T>> collectionCollection, int column, Converter<T, ObjectType> converter, bool testExclusion)
 		{
-			return GetNearestCompatibleTypes(GetRolePlayerCollection(GetColumnCollection(collectionCollection, column), converter));
+			return GetNearestCompatibleTypes(GetRolePlayerCollection(GetColumnCollection(collectionCollection, column), converter), testExclusion);
 		}
 		private static IEnumerable<T> GetColumnCollection<T>(IEnumerable<IEnumerable<T>> collectionCollection, int column)
 		{
@@ -1682,10 +1686,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// types for the given role collection.
 		/// </summary>
 		/// <param name="roleCollection">Set of roles to walk</param>
+		/// <param name="testExclusion">Verify that there are no exclusion constraints in the path.
+		/// If this is not set, only the subtype hierarchy is tested.</param>
 		/// <returns>ObjectType[]</returns>
-		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<Role> roleCollection)
+		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<Role> roleCollection, bool testExclusion)
 		{
-			return GetNearestCompatibleTypes(GetRolePlayerCollection(roleCollection, delegate(Role role) { return role.RolePlayer; }));
+			return GetNearestCompatibleTypes(GetRolePlayerCollection(roleCollection, delegate(Role role) { return role.RolePlayer; }), testExclusion);
 		}
 		/// <summary>
 		/// Return an ObjectType array containing the nearest compatible
@@ -1694,10 +1700,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="collection">Set of elements to walk</param>
 		/// <param name="converter">A <see cref="Converter{T,ObjectType}"/> to transform elements.</param>
+		/// <param name="testExclusion">Verify that there are no exclusion constraints in the path.
+		/// If this is not set, only the subtype hierarchy is tested.</param>
 		/// <returns>ObjectType[]</returns>
-		public static ObjectType[] GetNearestCompatibleTypes<T>(IEnumerable<T> collection, Converter<T, ObjectType> converter)
+		public static ObjectType[] GetNearestCompatibleTypes<T>(IEnumerable<T> collection, Converter<T, ObjectType> converter, bool testExclusion)
 		{
-			return GetNearestCompatibleTypes(GetRolePlayerCollection(collection, converter));
+			return GetNearestCompatibleTypes(GetRolePlayerCollection(collection, converter), testExclusion);
 		}
 		private static IEnumerable<ObjectType> GetRolePlayerCollection<T>(IEnumerable<T> collection, Converter<T, ObjectType> converter)
 		{
@@ -1711,13 +1719,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// types for the given set of object types.
 		/// </summary>
 		/// <param name="objectTypeCollection">Set of object types to test</param>
+		/// <param name="testExclusion">Verify that there are no exclusion constraints in the path.
+		/// If this is not set, only the subtype hierarchy is tested.</param>
 		/// <returns>ObjectType[]</returns>
-		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<ObjectType> objectTypeCollection)
+		public static ObjectType[] GetNearestCompatibleTypes(IEnumerable<ObjectType> objectTypeCollection, bool testExclusion)
 		{
 			int currentRoleIndex = 0;
 			int expectedVisitCount = 0;
 			ObjectType firstObjectType = null;
-			Dictionary<ObjectType, NearestCompatibleTypeNode> dictionary = null;
+			Dictionary<ObjectType, NearestCompatibleTypeNode> typeNodes = null;
+			Dictionary<ExclusionConstraint, int> passedExclusions = null;
 			foreach (ObjectType currentObjectType in objectTypeCollection)
 			{
 				// Increment first so we can use with the LastVisitedDuring field. Otherwise,
@@ -1732,25 +1743,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (expectedVisitCount == 0)
 					{
 						// First different object, delay add the initial data to the set
-						dictionary = new Dictionary<ObjectType, NearestCompatibleTypeNode>();
-						WalkSupertypesForNearestCompatibleTypes(dictionary, firstObjectType, 1);
+						typeNodes = new Dictionary<ObjectType, NearestCompatibleTypeNode>();
+						if (testExclusion)
+						{
+							passedExclusions = new Dictionary<ExclusionConstraint, int>();
+						}
+						WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, firstObjectType, 1);
+						// Exclusion checking cannot fail on the first visit index
 						expectedVisitCount = 1;
 					}
 
 					// Process the current element
-					WalkSupertypesForNearestCompatibleTypes(dictionary, currentObjectType, currentRoleIndex);
+					if (!WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, currentObjectType, currentRoleIndex))
+					{
+						// Exclusion checking failed, get out.
+						return null;
+					}
 					++expectedVisitCount;
 				}
 			}
 			ObjectType[] retVal;
-			if (dictionary != null)
+			if (typeNodes != null)
 			{
 				// Walk the elements. The shallowest node we get down any given path
 				// is a valid node.
 				int total = 0;
-				NearestCompatibleTypeNode firstNode = dictionary[firstObjectType];
+				NearestCompatibleTypeNode firstNode = typeNodes[firstObjectType];
 				firstNode.WalkDescendants(
-					dictionary,
+					typeNodes,
 					delegate(NearestCompatibleTypeNode node)
 					{
 						if (node.VisitCount == expectedVisitCount)
@@ -1764,12 +1784,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						return ObjectTypeVisitorResult.Continue;
 					});
-				retVal = new ObjectType[total];
 				if (total != 0)
 				{
+					retVal = new ObjectType[total];
 					int currentIndex = 0;
 					firstNode.WalkDescendants(
-						dictionary,
+						typeNodes,
 						delegate(NearestCompatibleTypeNode node)
 						{
 							if (node.VisitCount == expectedVisitCount)
@@ -1788,6 +1808,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							return ObjectTypeVisitorResult.Continue;
 						});
 				}
+				else
+				{
+					retVal = EmptyArray;
+				}
 			}
 			else if (firstObjectType != null)
 			{
@@ -1802,28 +1826,68 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Helper method for GetNearestCompatibleTypes
 		/// </summary>
-		private static void WalkSupertypesForNearestCompatibleTypes(Dictionary<ObjectType, NearestCompatibleTypeNode> dictionary, ObjectType currentType, int currentVisitIndex)
+		private static bool WalkSupertypesForNearestCompatibleTypes(Dictionary<ObjectType, NearestCompatibleTypeNode> typeNodes, Dictionary<ExclusionConstraint, int> passedExclusions, ObjectType currentType, int currentVisitIndex)
 		{
 			NearestCompatibleTypeNode currentNode;
-			if (dictionary.TryGetValue(currentType, out currentNode))
+			if (typeNodes.TryGetValue(currentType, out currentNode))
 			{
-				currentNode.IncrementVisitCounts(dictionary, currentVisitIndex);
+				currentNode.IncrementVisitCounts(typeNodes, currentVisitIndex);
 			}
 			else
 			{
-				currentNode = new NearestCompatibleTypeNode(currentType, currentVisitIndex);
-				dictionary[currentType] = currentNode;
-				foreach (ObjectType childType in currentType.SupertypeCollection)
+				typeNodes[currentType] = currentNode = new NearestCompatibleTypeNode(currentType, currentVisitIndex);
+				LinkedList<ObjectType> currentChildren = currentNode.ChildNodes;
+				foreach (Role role in currentType.PlayedRoleCollection)
 				{
-					LinkedList<ObjectType> currentChildren = currentNode.ChildNodes;
-					if (currentChildren == null)
+					if (role is SubtypeMetaRole)
 					{
-						currentNode.ChildNodes = currentChildren = new LinkedList<ObjectType>();
+						SupertypeMetaRole supertypeRole = ((SubtypeFact)role.FactType).SupertypeRole;
+						if (passedExclusions != null)
+						{
+							// Find exclusion constraints on this role and track the visit number for the
+							// exclusion. Given that we don't visit the same node type twice through this code,
+							// if we hit the same exclusion during a different visit then we won't find compatible
+							// types.
+							foreach (ConstraintRoleSequence intersectingSequence in supertypeRole.ConstraintRoleSequenceCollection)
+							{
+								SetComparisonConstraintRoleSequence comparedSequence;
+								ExclusionConstraint exclusion;
+								if (null != (comparedSequence = intersectingSequence as SetComparisonConstraintRoleSequence) &&
+									null != (exclusion = comparedSequence.ExternalConstraint as ExclusionConstraint))
+								{
+									int previousVisit;
+									if (passedExclusions.TryGetValue(exclusion, out previousVisit))
+									{
+										// The less than comparison here instead of less than or equal is intentional.
+										// If we have supertype that itself has two incompatible supertypes, then we can
+										// safely treat that node as a non-blocking for this routine, so we only care if
+										// we hit the same exclusion during a later visit.
+										if (previousVisit < currentVisitIndex)
+										{
+											return false;
+										}
+									}
+									else
+									{
+										passedExclusions[exclusion] = currentVisitIndex;
+									}
+								}
+							}
+						}
+						ObjectType childType = supertypeRole.RolePlayer;
+						if (currentChildren == null)
+						{
+							currentNode.ChildNodes = currentChildren = new LinkedList<ObjectType>();
+						}
+						currentChildren.AddLast(new LinkedListNode<ObjectType>(childType));
+						if (!WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, childType, currentVisitIndex))
+						{
+							return false;
+						}
 					}
-					currentChildren.AddLast(new LinkedListNode<ObjectType>(childType));
-					WalkSupertypesForNearestCompatibleTypes(dictionary, childType, currentVisitIndex);
 				}
 			}
+			return true;
 		}
 		/// <summary>
 		/// Retrieve the delegates registered with <see cref="AddSubtypeHierarchyChangeRuleNotification"/>
@@ -4092,6 +4156,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="exclusionConstraint">The modified <see cref="ExclusionConstraint"/></param>
 		private static void DelayValidateSubtypeExclusion(ExclusionConstraint exclusionConstraint)
 		{
+			SubtypeHierarchyChange hierarchyChangeCallback = GetSubtypeHierarchyChangeRuleNotifications(exclusionConstraint.Store);
 			foreach (ConstraintRoleSequence roleSequence in exclusionConstraint.RoleSequenceCollection)
 			{
 				foreach (Role role in roleSequence.RoleCollection)
@@ -4099,8 +4164,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					SupertypeMetaRole supertypeRole = role as SupertypeMetaRole;
 					if (supertypeRole == null)
 					{
-						// We can't mix and match these, there is nothing else to do.
-						return;
+						// We can now mix and match supertype roles and normal roles on single-column
+						// exclusion constraints, so continue to look.
+						continue;
 					}
 					RoleBase oppositeRoleBase;
 					Role oppositeRole;
@@ -4114,6 +4180,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (depth != 0)
 							{
 								FrameworkDomainModel.DelayValidateElement(type, DelayValidateCompatibleSupertypesError);
+							}
+							if (hierarchyChangeCallback != null)
+							{
+								hierarchyChangeCallback(type);
 							}
 							return ObjectTypeVisitorResult.Continue;
 						});

@@ -1478,6 +1478,14 @@
     <value>Incomplete Fact Type Derivation Projection</value>
     <comment>DisplayName for DomainClass &apos;PartialRoleSetDerivationProjectionError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleRequiresCompatibleProjectionError.Description" xml:space="preserve">
+    <value>A role path projection onto a derived role must be of a type that is compatible with the derived role.</value>
+    <comment>Description for DomainClass &apos;DerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleRequiresCompatibleProjectionError.DisplayName" xml:space="preserve">
+    <value>Incompatible Derived Role Projection</value>
+    <comment>DisplayName for DomainClass &apos;DerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathRequiresProjectionError.Description" xml:space="preserve">
     <value>Roles in a constraint role sequence join path must be projected from at least one role path.</value>
     <comment>Description for DomainClass &apos;ConstraintRoleSequenceJoinPathRequiresProjectionError&apos;</comment>
@@ -1493,6 +1501,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PartialConstraintRoleSequenceJoinPathProjectionError.DisplayName" xml:space="preserve">
     <value>Incomplete Join Path Projection</value>
     <comment>DisplayName for DomainClass &apos;PartialConstraintRoleSequenceJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleRequiresCompatibleJoinPathProjectionError.Description" xml:space="preserve">
+    <value>A constraint role join path projection must be of a type that is compatible with the constrained role.</value>
+    <comment>Description for DomainClass &apos;ConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleRequiresCompatibleJoinPathProjectionError.DisplayName" xml:space="preserve">
+    <value>Incompatible Join Path Projection</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.TooFewRoleSequencesError.Description" xml:space="preserve">
     <value></value>
@@ -9836,6 +9852,38 @@
     <value>Derivation Projection</value>
     <comment>PropertyDisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;RoleSetDerivationProjectionHasPartialProjectionError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError</value>
+    <comment>Description for DomainClass &apos;DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.DisplayName" xml:space="preserve">
+    <value>Derived Role Projection Has Derived Role Requires Compatible Projection Error</value>
+    <comment>DisplayName for DomainClass &apos;DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/Projection.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.Projection</value>
+    <comment>Description for DomainRole &apos;Projection&apos; on DomainRelationship &apos;DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/Projection.DisplayName" xml:space="preserve">
+    <value>Projection</value>
+    <comment>DisplayName for DomainRole &apos;Projection&apos; on DomainRelationship &apos;DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/Projection.PropertyDisplayName" xml:space="preserve">
+    <value>Incompatible Projection Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Projection&apos; on DomainRelationship &apos;DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/IncompatibleProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.IncompatibleProjectionError</value>
+    <comment>Description for DomainRole &apos;IncompatibleProjectionError&apos; on DomainRelationship &apos;DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/IncompatibleProjectionError.DisplayName" xml:space="preserve">
+    <value>IncompatibleProjectionError</value>
+    <comment>DisplayName for DomainRole &apos;IncompatibleProjectionError&apos; on DomainRelationship &apos;DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/IncompatibleProjectionError.PropertyDisplayName" xml:space="preserve">
+    <value>Projection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;IncompatibleProjectionError&apos; on DomainRelationship &apos;DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError</value>
     <comment>Description for DomainClass &apos;ConstraintRoleSequenceJoinPathHasProjectionRequiredError&apos;</comment>
@@ -9899,6 +9947,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError/PartialProjectionError.PropertyDisplayName" xml:space="preserve">
     <value>Join Path Projection</value>
     <comment>PropertyDisplayName for DomainRole &apos;PartialProjectionError&apos; on DomainRelationship &apos;ConstraintRoleSequenceProjectionHasPartialProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError</value>
+    <comment>Description for DomainClass &apos;ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.DisplayName" xml:space="preserve">
+    <value>Constraint Role Projection Has Constraint Role Requires Compatible Join Path Projection Error</value>
+    <comment>DisplayName for DomainClass &apos;ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/Projection.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.Projection</value>
+    <comment>Description for DomainRole &apos;Projection&apos; on DomainRelationship &apos;ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/Projection.DisplayName" xml:space="preserve">
+    <value>Projection</value>
+    <comment>DisplayName for DomainRole &apos;Projection&apos; on DomainRelationship &apos;ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/Projection.PropertyDisplayName" xml:space="preserve">
+    <value>Incompatible Projection Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Projection&apos; on DomainRelationship &apos;ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/IncompatibleProjectionError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.IncompatibleProjectionError</value>
+    <comment>Description for DomainRole &apos;IncompatibleProjectionError&apos; on DomainRelationship &apos;ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/IncompatibleProjectionError.DisplayName" xml:space="preserve">
+    <value>IncompatibleProjectionError</value>
+    <comment>DisplayName for DomainRole &apos;IncompatibleProjectionError&apos; on DomainRelationship &apos;ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/IncompatibleProjectionError.PropertyDisplayName" xml:space="preserve">
+    <value>Projection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;IncompatibleProjectionError&apos; on DomainRelationship &apos;ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationExpressionStorageType/Derived.DisplayName" xml:space="preserve">
     <value>Derived</value>

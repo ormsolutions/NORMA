@@ -1110,6 +1110,18 @@
 			<arg:RolePlayerChangeRule methodName="CalculationInputTargetsParameterRolePlayerChangedRule">
 				<arg:RuleOn targetType="CalculatedPathValueInputCorrespondsToFunctionParameter"/>
 			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="DataTypeUseAddedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="DataTypeUseDeletedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType"/>
+			</arg:DeleteRule>
+			<arg:ChangeRule methodName="DataTypeUseFacetChangedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType"/>
+			</arg:ChangeRule>
+			<arg:RolePlayerChangeRule methodName="DataTypeUseRolePlayerChangedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType"/>
+			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="LeadRolePathAddedRule">
 				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath"/>
 			</arg:AddRule>
@@ -1287,6 +1299,17 @@
 			<arg:RolePlayerPositionChangeRule methodName="SetComparisonConstraintRoleSequencePositionChangeRule">
 				<arg:RuleOn targetType="SetComparisonConstraintHasRoleSequence"/>
 			</arg:RolePlayerPositionChangeRule>
+			
+			<!-- Clean up errors that related to multiple constraints and do no have delete propagation when the constraint is deleted. -->
+			<arg:DeleteRule methodName="ContradictionErrorComponentDeletedRule">
+				<arg:RuleOn targetType="SetComparisonConstraintHasContradictionError" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:DeleteRule methodName="ExclusionContradictsMandatoryErrorExclusionComponentDeletedRule">
+				<arg:RuleOn targetType="ExclusionConstraintHasExclusionContradictsMandatoryError" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
+			<arg:DeleteRule methodName="ExclusionContradictsMandatoryErrorMandatoryComponentDeletedRule">
+				<arg:RuleOn targetType="MandatoryConstraintHasExclusionContradictsMandatoryError" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="SetConstraint">
 			<arg:AddRule methodName="ConstraintAddedRule">

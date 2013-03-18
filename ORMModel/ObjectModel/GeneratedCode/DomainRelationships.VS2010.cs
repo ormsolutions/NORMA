@@ -36870,6 +36870,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region IncompatibleProjectionError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets IncompatibleProjectionError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.Projection
+		/// </summary>
+		public virtual ConstraintRoleRequiresCompatibleJoinPathProjectionError IncompatibleProjectionError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.ProjectionDomainRoleId) as ConstraintRoleRequiresCompatibleJoinPathProjectionError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.IncompatibleProjectionErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.IncompatibleProjectionErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.ProjectionDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#endregion
 		#region JoinPathProjection link accessor
 		/// <summary>
@@ -53450,6 +53482,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region IncompatibleProjectionError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets IncompatibleProjectionError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.Projection
+		/// </summary>
+		public virtual DerivedRoleRequiresCompatibleProjectionError IncompatibleProjectionError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.ProjectionDomainRoleId) as DerivedRoleRequiresCompatibleProjectionError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.IncompatibleProjectionErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.IncompatibleProjectionErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.ProjectionDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#endregion
 		#region DerivationProjection link accessor
 		/// <summary>
@@ -59360,6 +59424,311 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("c7f3110f-ec28-44a4-9925-13e3fd9f889f")]
+	public partial class DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc7f3110f, 0xec28, 0x44a4, 0x99, 0x25, 0x13, 0xe3, 0xfd, 0x9f, 0x88, 0x9f);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError link in the same Partition as the given DerivedRoleProjection
+		/// </summary>
+		/// <param name="source">DerivedRoleProjection to use as the source of the relationship.</param>
+		/// <param name="target">DerivedRoleRequiresCompatibleProjectionError to use as the target of the relationship.</param>
+		public DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError(DerivedRoleProjection source, DerivedRoleRequiresCompatibleProjectionError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.ProjectionDomainRoleId, source), new DslModeling::RoleAssignment(DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.IncompatibleProjectionErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Projection domain role code
+		
+		/// <summary>
+		/// Projection domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ProjectionDomainRoleId = new global::System.Guid(0xd2ee2117, 0xfb73, 0x4803, 0xb2, 0x7a, 0xfc, 0x88, 0x6d, 0x01, 0x7a, 0x5f);
+		
+		/// <summary>
+		/// DomainRole Projection
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.Projection
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/Projection.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/Projection.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "IncompatibleProjectionError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/Projection.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("d2ee2117-fb73-4803-b27a-fc886d017a5f")]
+		public virtual DerivedRoleProjection Projection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DerivedRoleProjection)DslModeling::DomainRoleInfo.GetRolePlayer(this, ProjectionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ProjectionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Projection of a DerivedRoleRequiresCompatibleProjectionError
+		/// <summary>
+		/// Gets Projection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DerivedRoleProjection GetProjection(DerivedRoleRequiresCompatibleProjectionError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, IncompatibleProjectionErrorDomainRoleId) as DerivedRoleProjection;
+		}
+		
+		/// <summary>
+		/// Sets Projection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetProjection(DerivedRoleRequiresCompatibleProjectionError element, DerivedRoleProjection newProjection)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, IncompatibleProjectionErrorDomainRoleId, newProjection);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Projection domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Projection;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Projection = (DerivedRoleProjection)value;
+			}
+		}
+		
+		#endregion
+		#region IncompatibleProjectionError domain role code
+		
+		/// <summary>
+		/// IncompatibleProjectionError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid IncompatibleProjectionErrorDomainRoleId = new global::System.Guid(0x7c2adf2a, 0xf396, 0x4819, 0x83, 0x58, 0x58, 0x01, 0x88, 0x65, 0x72, 0xe9);
+		
+		/// <summary>
+		/// DomainRole IncompatibleProjectionError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.IncompatibleProjectionError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/IncompatibleProjectionError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/IncompatibleProjectionError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Projection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError/IncompatibleProjectionError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("7c2adf2a-f396-4819-8358-5801886572e9")]
+		public virtual DerivedRoleRequiresCompatibleProjectionError IncompatibleProjectionError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DerivedRoleRequiresCompatibleProjectionError)DslModeling::DomainRoleInfo.GetRolePlayer(this, IncompatibleProjectionErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, IncompatibleProjectionErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access IncompatibleProjectionError of a DerivedRoleProjection
+		/// <summary>
+		/// Gets IncompatibleProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DerivedRoleRequiresCompatibleProjectionError GetIncompatibleProjectionError(DerivedRoleProjection element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ProjectionDomainRoleId) as DerivedRoleRequiresCompatibleProjectionError;
+		}
+		
+		/// <summary>
+		/// Sets IncompatibleProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetIncompatibleProjectionError(DerivedRoleProjection element, DerivedRoleRequiresCompatibleProjectionError newIncompatibleProjectionError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ProjectionDomainRoleId, newIncompatibleProjectionError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing IncompatibleProjectionError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.IncompatibleProjectionError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.IncompatibleProjectionError = (DerivedRoleRequiresCompatibleProjectionError)value;
+			}
+		}
+		
+		#endregion
+		#region Projection link accessor
+		/// <summary>
+		/// Get the DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError link to a DerivedRoleProjection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError GetLinkToIncompatibleProjectionError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection projectionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError>(projectionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.ProjectionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Projection not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region IncompatibleProjectionError link accessor
+		/// <summary>
+		/// Get the DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError link to a DerivedRoleRequiresCompatibleProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError GetLinkToProjection (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleRequiresCompatibleProjectionError incompatibleProjectionErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError>(incompatibleProjectionErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.IncompatibleProjectionErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of IncompatibleProjectionError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError instance accessors
+		
+		/// <summary>
+		/// Get any DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError links between a given DerivedRoleProjection and a DerivedRoleRequiresCompatibleProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleRequiresCompatibleProjectionError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.ProjectionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError link in links )
+			{
+				if ( target.Equals(link.IncompatibleProjectionError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError link between a given DerivedRoleProjectionand a DerivedRoleRequiresCompatibleProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleRequiresCompatibleProjectionError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError.ProjectionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError link in links )
+			{
+				if ( target.Equals(link.IncompatibleProjectionError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ConstraintRoleSequenceJoinPathHasProjectionRequiredError
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPathHasProjectionRequiredError
@@ -59957,6 +60326,311 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceProjectionHasPartialProjectionError link in links )
 			{
 				if ( target.Equals(link.PartialProjectionError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("465c0a3b-06cf-44d8-916f-5651f4a3deac")]
+	public partial class ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x465c0a3b, 0x06cf, 0x44d8, 0x91, 0x6f, 0x56, 0x51, 0xf4, 0xa3, 0xde, 0xac);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError link in the same Partition as the given ConstraintRoleProjection
+		/// </summary>
+		/// <param name="source">ConstraintRoleProjection to use as the source of the relationship.</param>
+		/// <param name="target">ConstraintRoleRequiresCompatibleJoinPathProjectionError to use as the target of the relationship.</param>
+		public ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError(ConstraintRoleProjection source, ConstraintRoleRequiresCompatibleJoinPathProjectionError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.ProjectionDomainRoleId, source), new DslModeling::RoleAssignment(ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.IncompatibleProjectionErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Projection domain role code
+		
+		/// <summary>
+		/// Projection domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ProjectionDomainRoleId = new global::System.Guid(0xc221c6cc, 0xb400, 0x4985, 0x83, 0x71, 0x74, 0x5d, 0x39, 0x04, 0x28, 0xd7);
+		
+		/// <summary>
+		/// DomainRole Projection
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.Projection
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/Projection.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/Projection.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "IncompatibleProjectionError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/Projection.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("c221c6cc-b400-4985-8371-745d390428d7")]
+		public virtual ConstraintRoleProjection Projection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ConstraintRoleProjection)DslModeling::DomainRoleInfo.GetRolePlayer(this, ProjectionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ProjectionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Projection of a ConstraintRoleRequiresCompatibleJoinPathProjectionError
+		/// <summary>
+		/// Gets Projection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ConstraintRoleProjection GetProjection(ConstraintRoleRequiresCompatibleJoinPathProjectionError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, IncompatibleProjectionErrorDomainRoleId) as ConstraintRoleProjection;
+		}
+		
+		/// <summary>
+		/// Sets Projection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetProjection(ConstraintRoleRequiresCompatibleJoinPathProjectionError element, ConstraintRoleProjection newProjection)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, IncompatibleProjectionErrorDomainRoleId, newProjection);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Projection domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Projection;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Projection = (ConstraintRoleProjection)value;
+			}
+		}
+		
+		#endregion
+		#region IncompatibleProjectionError domain role code
+		
+		/// <summary>
+		/// IncompatibleProjectionError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid IncompatibleProjectionErrorDomainRoleId = new global::System.Guid(0x6cad881f, 0xef56, 0x4e84, 0x97, 0x6f, 0x4d, 0x9d, 0xe8, 0x18, 0xbf, 0x71);
+		
+		/// <summary>
+		/// DomainRole IncompatibleProjectionError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.IncompatibleProjectionError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/IncompatibleProjectionError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/IncompatibleProjectionError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Projection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError/IncompatibleProjectionError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("6cad881f-ef56-4e84-976f-4d9de818bf71")]
+		public virtual ConstraintRoleRequiresCompatibleJoinPathProjectionError IncompatibleProjectionError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ConstraintRoleRequiresCompatibleJoinPathProjectionError)DslModeling::DomainRoleInfo.GetRolePlayer(this, IncompatibleProjectionErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, IncompatibleProjectionErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access IncompatibleProjectionError of a ConstraintRoleProjection
+		/// <summary>
+		/// Gets IncompatibleProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ConstraintRoleRequiresCompatibleJoinPathProjectionError GetIncompatibleProjectionError(ConstraintRoleProjection element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ProjectionDomainRoleId) as ConstraintRoleRequiresCompatibleJoinPathProjectionError;
+		}
+		
+		/// <summary>
+		/// Sets IncompatibleProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetIncompatibleProjectionError(ConstraintRoleProjection element, ConstraintRoleRequiresCompatibleJoinPathProjectionError newIncompatibleProjectionError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ProjectionDomainRoleId, newIncompatibleProjectionError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing IncompatibleProjectionError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.IncompatibleProjectionError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.IncompatibleProjectionError = (ConstraintRoleRequiresCompatibleJoinPathProjectionError)value;
+			}
+		}
+		
+		#endregion
+		#region Projection link accessor
+		/// <summary>
+		/// Get the ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError link to a ConstraintRoleProjection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError GetLinkToIncompatibleProjectionError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection projectionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError>(projectionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.ProjectionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Projection not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region IncompatibleProjectionError link accessor
+		/// <summary>
+		/// Get the ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError link to a ConstraintRoleRequiresCompatibleJoinPathProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError GetLinkToProjection (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleRequiresCompatibleJoinPathProjectionError incompatibleProjectionErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError>(incompatibleProjectionErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.IncompatibleProjectionErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of IncompatibleProjectionError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError instance accessors
+		
+		/// <summary>
+		/// Get any ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError links between a given ConstraintRoleProjection and a ConstraintRoleRequiresCompatibleJoinPathProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleRequiresCompatibleJoinPathProjectionError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.ProjectionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError link in links )
+			{
+				if ( target.Equals(link.IncompatibleProjectionError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError link between a given ConstraintRoleProjectionand a ConstraintRoleRequiresCompatibleJoinPathProjectionError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjection source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleRequiresCompatibleJoinPathProjectionError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError.ProjectionDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError link in links )
+			{
+				if ( target.Equals(link.IncompatibleProjectionError) )
 				{
 					return link;
 				}

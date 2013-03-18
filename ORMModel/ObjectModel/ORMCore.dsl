@@ -1372,12 +1372,22 @@
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
+		<DomainClass Name="DerivedRoleRequiresCompatibleProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7929F50F-70EB-4BAB-9230-1EBB4F8331B5" DisplayName="Incompatible Derived Role Projection" Description="A role path projection onto a derived role must be of a type that is compatible with the derived role.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
 		<DomainClass Name="ConstraintRoleSequenceJoinPathRequiresProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="07B0F1A0-148E-4D8E-AA59-77F3D301B2BE" DisplayName="Join Path Not Projected" Description="Roles in a constraint role sequence join path must be projected from at least one role path.">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 		<DomainClass Name="PartialConstraintRoleSequenceJoinPathProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D58118A4-7D4C-4361-9245-EA71DBD54702" DisplayName="Incomplete Join Path Projection" Description="A constraint role sequence join path projection must project on every role in the sequence.">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+		<DomainClass Name="ConstraintRoleRequiresCompatibleJoinPathProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="11A7FC14-052C-4D22-B59C-59B39E5964B9" DisplayName="Incompatible Join Path Projection" Description="A constraint role join path projection must be of a type that is compatible with the constrained role.">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -6635,6 +6645,25 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Name="DerivedRoleProjectionHasDerivedRoleRequiresCompatibleProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C7F3110F-EC28-44A4-9925-13E3FD9F889F">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Projection" PropertyName="IncompatibleProjectionError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Projection" Id="D2EE2117-FB73-4803-B27A-FC886D017A5F">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="DerivedRoleProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="IncompatibleProjectionError" PropertyName="Projection" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="IncompatibleProjectionError" Id="7C2ADF2A-F396-4819-8358-5801886572E9">
+					<RolePlayer>
+						<DomainClassMoniker Name="DerivedRoleRequiresCompatibleProjectionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 		<DomainRelationship Name="ConstraintRoleSequenceJoinPathHasProjectionRequiredError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="9B4AAF66-EF35-4279-8DC0-5DE1C6306ED6">
 			<BaseRelationship>
 				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
@@ -6669,6 +6698,25 @@
 				<DomainRole Name="PartialProjectionError" PropertyName="JoinPathProjection" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="PartialProjectionError" Id="F92910D0-FBCD-41A2-B0B4-8CF3DA9DC75E">
 					<RolePlayer>
 						<DomainClassMoniker Name="PartialConstraintRoleSequenceJoinPathProjectionError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ConstraintRoleProjectionHasConstraintRoleRequiresCompatibleJoinPathProjectionError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="465C0A3B-06CF-44D8-916F-5651F4A3DEAC">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Projection" PropertyName="IncompatibleProjectionError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Projection" Id="C221C6CC-B400-4985-8371-745D390428D7">
+					<RolePlayer>
+						<DomainRelationshipMoniker Name="ConstraintRoleProjection"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="IncompatibleProjectionError" PropertyName="Projection" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="IncompatibleProjectionError" Id="6CAD881F-EF56-4E84-976F-4D9DE818BF71">
+					<RolePlayer>
+						<DomainClassMoniker Name="ConstraintRoleRequiresCompatibleJoinPathProjectionError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
