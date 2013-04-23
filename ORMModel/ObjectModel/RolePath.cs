@@ -5812,7 +5812,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainRole.Id == DerivedRoleProjectedFromPathedRole.SourceDomainRoleId)
 			{
-				DerivedRoleProjection projection = ((DerivedRoleProjectedFromRolePathRoot)e.ElementLink).RoleProjection;
+				DerivedRoleProjection projection = ((DerivedRoleProjectedFromPathedRole)e.ElementLink).RoleProjection;
 				if (projection.IsAutomatic && !ChangingAutomaticProjection(projection.Store, null))
 				{
 					projection.IsAutomatic = false;

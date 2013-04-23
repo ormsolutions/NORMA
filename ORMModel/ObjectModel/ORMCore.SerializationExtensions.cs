@@ -3961,7 +3961,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -4092,6 +4092,74 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static IComparer<DomainRoleInfo> myCustomSortChildComparer;
+		private sealed class CustomSortChildComparer : IComparer<DomainRoleInfo>
+		{
+			private readonly Dictionary<string, int> myRoleOrderDictionary;
+			private IComparer<DomainRoleInfo> myBaseComparer;
+			public CustomSortChildComparer(Store store, IComparer<DomainRoleInfo> baseComparer)
+			{
+				this.myBaseComparer = baseComparer;
+				DomainDataDirectory domainDataDirectory = store.DomainDataDirectory;
+				Dictionary<string, int> roleOrderDictionary = new Dictionary<string, int>();
+				DomainRoleInfo domainRole;
+				domainRole = domainDataDirectory.FindDomainRole(RoleSetDerivationProjection.RolePathDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
+				domainRole = domainDataDirectory.FindDomainRole(FactTypeDerivationRuleHasDerivationNote.DerivationNoteDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(RoleProjectedDerivationRuleHasProjectionRequiredError.ProjectionRequiredErrorDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				this.myRoleOrderDictionary = roleOrderDictionary;
+			}
+			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
+			{
+				if (this.myBaseComparer != null)
+				{
+					int baseOpinion = this.myBaseComparer.Compare(x, y);
+					if (0 != baseOpinion)
+					{
+						return baseOpinion;
+					}
+				}
+				int xPos;
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(x.DomainRelationship.ImplementationClass.FullName, ".", x.Name), out xPos))
+				{
+					xPos = int.MaxValue;
+				}
+				int yPos;
+				if (!this.myRoleOrderDictionary.TryGetValue(string.Concat(y.DomainRelationship.ImplementationClass.FullName, ".", y.Name), out yPos))
+				{
+					yPos = int.MaxValue;
+				}
+				return xPos.CompareTo(yPos);
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected new IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				IComparer<DomainRoleInfo> retVal = FactTypeDerivationRule.myCustomSortChildComparer;
+				if (null == retVal)
+				{
+					IComparer<DomainRoleInfo> baseComparer = null;
+					if (0 != (CustomSerializedElementSupportedOperations.CustomSortChildRoles & base.SupportedCustomSerializedOperations))
+					{
+						baseComparer = base.CustomSerializedChildRoleComparer;
+					}
+					retVal = new CustomSortChildComparer(this.Store, baseComparer);
+					FactTypeDerivationRule.myCustomSortChildComparer = retVal;
+				}
+				return retVal;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
 		}
 		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
 		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>

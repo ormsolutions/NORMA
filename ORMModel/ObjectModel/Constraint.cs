@@ -8184,6 +8184,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return verbalizer.myConstraint;
 			}
 			#endregion // Passthrough properties
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(myConstraint != null ? myConstraint.GetHashCode() : 0, this.GetType().GetHashCode());
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				return obj != null && obj.GetType() == this.GetType() && ((UniquenessVerbalizerBase)obj).myConstraint == myConstraint;
+			}
+			#endregion // Equality Overrides
 		}
 		private partial class UniquenessConstraintVerbalizer : UniquenessVerbalizerBase { }
 		private partial class UniquenessPossibilityVerbalizer : UniquenessVerbalizerBase { }
@@ -8451,6 +8470,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return verbalizer.myConstraint;
 			}
 			#endregion // Passthrough properties
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(myConstraint != null ? myConstraint.GetHashCode() : 0, this.GetType().GetHashCode());
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				return obj != null && obj.GetType() == this.GetType() && ((MandatoryVerbalizerBase)obj).myConstraint == myConstraint;
+			}
+			#endregion // Equality Overrides
 		}
 		private partial class SimpleMandatoryVerbalizer : MandatoryVerbalizerBase { }
 		private partial class DisjunctiveMandatoryVerbalizer : MandatoryVerbalizerBase { }
@@ -9459,6 +9497,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			#endregion // Passthrough properties
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(myConstraint != null ? myConstraint.GetHashCode() : 0, this.GetType().GetHashCode());
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				return obj != null && obj.GetType() == this.GetType() && ((RingVerbalizerBase)obj).myConstraint == myConstraint;
+			}
+			#endregion // Equality Overrides
 		}
 		private partial class AcyclicRingVerbalizer : RingVerbalizerBase { }
 		private partial class AntisymmetricRingVerbalizer : RingVerbalizerBase { }

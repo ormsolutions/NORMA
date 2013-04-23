@@ -678,7 +678,7 @@
 	</se:Element>
 	<!-- UNDONE: File format change, remove derivation expression. -->
 	<se:Element Class="FactTypeDerivationExpression" Name="DerivationExpression" Override="true"/>
-	<se:Element Class="FactTypeDerivationRule" Name="FactTypeDerivationPath" Override="true">
+	<se:Element Class="FactTypeDerivationRule" Name="FactTypeDerivationPath" Override="true" SortChildElements="true">
 		<se:Attribute ID="DerivationCompleteness">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="equality">

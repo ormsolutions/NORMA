@@ -1520,6 +1520,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 			}
 			#endregion // IModelErrorOwner Implementation
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				// Combine the role has code with a nother value so we don't get in a hash
+				// bucket with the role itself.
+				return Utility.GetCombinedHashCode(myRole != null ? myRole.GetHashCode() : 0, GetType().GetHashCode());
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				ErrorReport other;
+				return (null != (other = obj as ErrorReport)) && other.myRole == myRole;
+			}
+			#endregion // Equality Overrides
 		}
 		#endregion // ErrorReport verbalizer class
 		#endregion // IVerbalizeCustomChildren Implementation

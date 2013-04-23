@@ -2699,23 +2699,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private partial class ImpliedUniqueVerbalizer
 		{
-			private FactType myFact;
+			private FactType myFactType;
 			private UniquenessConstraint myConstraint;
-			public void Initialize(FactType fact, UniquenessConstraint constraint)
+			public void Initialize(FactType factType, UniquenessConstraint constraint)
 			{
-				myFact = fact;
+				myFactType = factType;
 				myConstraint = constraint;
 			}
 			private void DisposeHelper()
 			{
-				myFact = null;
+				myFactType = null;
 				myConstraint = null;
 			}
 			private FactType FactType
 			{
 				get
 				{
-					return myFact;
+					return myFactType;
 				}
 			}
 			private LinkedElementCollection<Role> RoleCollection
@@ -2739,6 +2739,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return myConstraint.IsPreferred;
 				}
 			}
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(myFactType != null ? myFactType.GetHashCode() : 0, myConstraint != null ? myConstraint.GetHashCode() : 0);
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				ImpliedUniqueVerbalizer other;
+				return (null != (other = obj as ImpliedUniqueVerbalizer)) && other.myFactType == myFactType && other.myConstraint == myConstraint;
+			}
+			#endregion // Equality Overrides
 		}
 		#endregion // ImpliedUniqueVerbalizer class
 		#region ImpliedMandatoryVerbalizer class
@@ -2748,23 +2768,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private partial class ImpliedMandatoryVerbalizer
 		{
-			private FactType myFact;
+			private FactType myFactType;
 			private MandatoryConstraint myConstraint;
-			public void Initialize(FactType fact, MandatoryConstraint constraint)
+			public void Initialize(FactType factType, MandatoryConstraint constraint)
 			{
-				myFact = fact;
+				myFactType = factType;
 				myConstraint = constraint;
 			}
 			private void DisposeHelper()
 			{
-				myFact = null;
+				myFactType = null;
 				myConstraint = null;
 			}
 			private FactType FactType
 			{
 				get
 				{
-					return myFact;
+					return myFactType;
 				}
 			}
 			private LinkedElementCollection<Role> RoleCollection
@@ -2781,6 +2801,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return myConstraint.Modality;
 				}
 			}
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(myFactType != null ? myFactType.GetHashCode() : 0, myConstraint != null ? myConstraint.GetHashCode() : 0);
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				ImpliedMandatoryVerbalizer other;
+				return (null != (other = obj as ImpliedMandatoryVerbalizer)) && other.myFactType == myFactType && other.myConstraint == myConstraint;
+			}
+			#endregion // Equality Overrides
 		}
 		#endregion // ImpliedMandatoryVerbalizer class
 		#region CombinedMandatoryUniqueVerbalizer class
@@ -2790,18 +2830,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private partial class CombinedMandatoryUniqueVerbalizer : IModelErrorOwner
 		{
-			private FactType myFact;
+			private FactType myFactType;
 			private UniquenessConstraint myUniquenessConstraint;
 			private MandatoryConstraint myMandatoryConstraint;
-			public void Initialize(FactType fact, UniquenessConstraint uniquenessConstraint, MandatoryConstraint mandatoryConstraint)
+			public void Initialize(FactType factType, UniquenessConstraint uniquenessConstraint, MandatoryConstraint mandatoryConstraint)
 			{
-				myFact = fact;
+				myFactType = factType;
 				myUniquenessConstraint = uniquenessConstraint;
 				myMandatoryConstraint = mandatoryConstraint;
 			}
 			private void DisposeHelper()
 			{
-				myFact = null;
+				myFactType = null;
 				myUniquenessConstraint = null;
 				myMandatoryConstraint = null;
 			}
@@ -2809,7 +2849,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				get
 				{
-					return myFact;
+					return myFactType;
 				}
 			}
 			private LinkedElementCollection<Role> RoleCollection
@@ -2847,6 +2887,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 			}
 			#endregion // IModelErrorOwner Implementation
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(myFactType != null ? myFactType.GetHashCode() : 0, myMandatoryConstraint != null ? myMandatoryConstraint.GetHashCode() : 0, myUniquenessConstraint != null ? myUniquenessConstraint.GetHashCode() : 0);
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				CombinedMandatoryUniqueVerbalizer other;
+				return (null != (other = obj as CombinedMandatoryUniqueVerbalizer)) && other.myFactType == myFactType && other.myMandatoryConstraint == myMandatoryConstraint && other.myMandatoryConstraint == myMandatoryConstraint;
+			}
+			#endregion // Equality Overrides
 		}
 		#endregion // CombinedMandatoryUniqueVerbalizer class
 		#region FactTypeInstanceVerbalizer class
@@ -2856,25 +2916,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private partial class FactTypeInstanceVerbalizer
 		{
-			private FactType myFact;
+			private FactType myFactType;
 			private FactTypeInstance myInstance;
 			private bool myDisplayIdentifier;
 			public void Initialize(FactType factType, FactTypeInstance factInstance, bool displayIdentifier)
 			{
-				myFact = factType;
+				myFactType = factType;
 				myInstance = factInstance;
 				myDisplayIdentifier = displayIdentifier;
 			}
 			private void DisposeHelper()
 			{
-				myFact = null;
+				myFactType = null;
 				myInstance = null;
 			}
 			private FactType FactType
 			{
 				get
 				{
-					return myFact;
+					return myFactType;
 				}
 			}
 			private FactTypeInstance Instance
@@ -2891,6 +2951,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return myDisplayIdentifier;
 				}
 			}
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(myFactType != null ? myFactType.GetHashCode() : 0, myInstance != null ? myInstance.GetHashCode() : 0, myDisplayIdentifier.GetHashCode());
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				FactTypeInstanceVerbalizer other;
+				return (null != (other = obj as FactTypeInstanceVerbalizer)) && other.myFactType == myFactType && other.myInstance == myInstance && other.myDisplayIdentifier == myDisplayIdentifier;
+			}
+			#endregion // Equality Overrides
 		}
 		#endregion // FactTypeInstanceVerbalizer class
 		#region IVerbalizeCustomChildren Implementation
@@ -3214,23 +3294,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region DefaultBinaryMissingUniquenessVerbalizer
 		private partial class DefaultBinaryMissingUniquenessVerbalizer
 		{
-			private FactType myFact;
+			private FactType myFactType;
 			private UniquenessConstraint myConstraint;
-			public void Initialize(FactType fact, UniquenessConstraint constraint)
+			public void Initialize(FactType factType, UniquenessConstraint constraint)
 			{
-				myFact = fact;
+				myFactType = factType;
 				myConstraint = constraint;
 			}
 			private void DisposeHelper()
 			{
-				myFact = null;
+				myFactType = null;
 				myConstraint = null;
 			}
 			private FactType FactType
 			{
 				get
 				{
-					return myFact;
+					return myFactType;
 				}
 			}
 			private LinkedElementCollection<Role> RoleCollection
@@ -3247,6 +3327,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return myConstraint.Modality;
 				}
 			}
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(myFactType != null ? myFactType.GetHashCode() : 0, myConstraint != null ? myConstraint.GetHashCode() : 0);
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				DefaultBinaryMissingUniquenessVerbalizer other;
+				return (null != (other = obj as DefaultBinaryMissingUniquenessVerbalizer)) && other.myFactType == myFactType && other.myConstraint == myConstraint;
+			}
+			#endregion // Equality Overrides
 		}
 		#endregion // DefaultBinaryMissingUniquenessVerbalizer
 		#region IHierarchyContextEnabled Members

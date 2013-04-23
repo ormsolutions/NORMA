@@ -670,7 +670,7 @@
 							<CompositeList listStyle="IndentedLogicalOrList">
 								<IterateRoles match="providedConstraintRoles" minFactArity="2">
 									<Fact readingChoice="PreferPrimaryLeadReadingNoFrontText">
-										<ProvidedPredicateReplacement match="included" minimizeHeadSubscripting="true" quantify="true"/>
+										<ProvidedPredicateReplacement match="primary" minimizeHeadSubscripting="true" quantify="true"/>
 										<ProvidedPredicateReplacement match="excluded" minimizeHeadSubscripting="true" quantify="true"/>
 									</Fact>
 								</IterateRoles>

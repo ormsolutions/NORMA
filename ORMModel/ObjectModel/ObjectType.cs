@@ -4961,26 +4961,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region ObjectTypeInstanceVerbalizer class
 		private partial class ObjectTypeInstanceVerbalizer
 		{
-			private ObjectType myParentObject;
+			private ObjectType myParentObjectType;
 			private IList<ObjectTypeInstance> myInstances;
-			public void Initialize(ObjectType parentObject, IList<ObjectTypeInstance> instances)
+			public void Initialize(ObjectType parentObjectType, IList<ObjectTypeInstance> instances)
 			{
-				myParentObject = parentObject;
+				myParentObjectType = parentObjectType;
 				myInstances = instances;
 			}
 			private void DisposeHelper()
 			{
-				myParentObject = null;
+				myParentObjectType = null;
 				myInstances = null;
 			}
 			private ObjectType ParentObject
 			{
-				get { return myParentObject; }
+				get { return myParentObjectType; }
 			}
 			private IList<ObjectTypeInstance> Instances
 			{
 				get { return myInstances; }
 			}
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				// Ignore the actual instances for equality, but combine additional
+				// data so that we aren't exactly the same as the object type.
+				return Utility.GetCombinedHashCode(myParentObjectType != null ? myParentObjectType.GetHashCode() : 0, GetType().GetHashCode());
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				ObjectTypeInstanceVerbalizer other;
+				return (null != (other = obj as ObjectTypeInstanceVerbalizer)) && other.myParentObjectType == myParentObjectType;
+			}
+			#endregion // Equality Overrides
 		}
 		#endregion // ObjectTypeInstanceVerbalizer class
 		#region NearestValueConstraintVerbalizer class
@@ -5026,6 +5048,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return myValueConstraint.ValueRangeCollection;
 				}
 			}
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(myParentObjectType != null ? myParentObjectType.GetHashCode() : 0, myValueConstraint != null ? myValueConstraint.GetHashCode() : 0);
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				NearestValueConstraintVerbalizer other;
+				return (null != (other = obj as NearestValueConstraintVerbalizer)) && other.myParentObjectType == myParentObjectType && other.myValueConstraint == myValueConstraint;
+			}
+			#endregion // Equality Overrides
 		}
 		#endregion // NearestValueConstraintVerbalizer class
 	}

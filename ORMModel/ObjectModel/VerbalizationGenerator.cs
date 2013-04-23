@@ -7176,7 +7176,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									{
 										if (replaceRole == constraintRole.Role)
 										{
-											return pathVerbalizer.RenderAssociatedRolePlayer(constraintRole, hyphenBindingFormatString, RolePathRolePlayerRenderingOptions.Quantify);
+											if (primaryRole == replaceRole)
+											{
+												return pathVerbalizer.RenderAssociatedRolePlayer(constraintRole, hyphenBindingFormatString, RolePathRolePlayerRenderingOptions.Quantify);
+											}
+											break;
 										}
 									}
 									return pathVerbalizer.RenderAssociatedRolePlayer(replaceRole, hyphenBindingFormatString, RolePathRolePlayerRenderingOptions.Quantify);
