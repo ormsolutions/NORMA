@@ -146,7 +146,7 @@ Format: each distinct {0}</statement>
   </snippet>
   <snippet name="AndTailListOpen" replacementCount="0">
     <statement></statement>
-    <unformattedSnippet>and </unformattedSnippet>
+    <unformattedSnippet>where </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -1915,14 +1915,14 @@ Format: the possible values of {0} are {1}</statement>
   </snippet>
   <snippet name="NegatedChainedListClose" replacementCount="0">
     <statement></statement>
-    <unformattedSnippet></unformattedSnippet>
+    <unformattedSnippet>)</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="NegatedChainedListOpen" replacementCount="0">
     <statement></statement>
-    <unformattedSnippet>it is not true that </unformattedSnippet>
+    <unformattedSnippet>it is not true that (</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -2296,7 +2296,7 @@ Format negative: more than one {0}</statement>
   </snippet>
   <snippet name="OrTailListOpen" replacementCount="0">
     <statement></statement>
-    <unformattedSnippet>and </unformattedSnippet>
+    <unformattedSnippet>where </unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
@@ -2563,7 +2563,7 @@ Format: ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListC
     <statement>Description: A space separated list of list separators and close elements that must be placed before any
 active trailing outdent snippets.
 Format: NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator</statement>
-    <unformattedSnippet>NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator</unformattedSnippet>
+    <unformattedSnippet>NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator NegatedChainedListClose</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />

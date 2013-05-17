@@ -34,7 +34,7 @@
 	</Attributes>
 
 	<Shapes>
-		<CompartmentShape Name="TableShape" Id="50DABFCD-909C-418A-8895-172AADAAD4FB" Namespace="ORMSolutions.ORMArchitect.Views.RelationalView" GeneratesDoubleDerived="true" InitialHeight="0.3" InitialWidth="1" OutlineThickness="0.015625" AccessModifier="Assembly">
+		<CompartmentShape Name="TableShape" Id="50DABFCD-909C-418A-8895-172AADAAD4FB" Namespace="ORMSolutions.ORMArchitect.Views.RelationalView" GeneratesDoubleDerived="true" InitialHeight="0.25" InitialWidth="1" OutlineThickness="0.015625" AccessModifier="Assembly">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>

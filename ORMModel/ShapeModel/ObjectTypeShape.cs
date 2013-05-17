@@ -430,9 +430,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public override string GetToolTipText(DiagramItem item)
 		{
 			string retVal = null;
-			// Show for all shapes and fields in item
-			retVal = AssociatedObjectType.DefinitionText;
-			if (retVal.Length == 0)
+			ObjectType objectType;
+			// Show for all shapes and fields in item.
+			// Make sure that the shape has not been destroyed between the tooltip text
+			// timer starting and firing.
+			if (!IsDeleted &&
+				null != (objectType = AssociatedObjectType) &&
+				(retVal = objectType.DefinitionText).Length == 0)
 			{
 				retVal = null;
 			}

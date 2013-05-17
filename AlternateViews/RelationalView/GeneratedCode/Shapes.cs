@@ -136,7 +136,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		{
 			get
 			{
-				return new DslDiagrams::SizeD(1, 0.3);
+				return new DslDiagrams::SizeD(1, 0.25);
 			}
 		}
 		#endregion

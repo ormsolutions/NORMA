@@ -1757,7 +1757,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (!WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, currentObjectType, currentRoleIndex))
 					{
 						// Exclusion checking failed, get out.
-						return null;
+						return EmptyArray;
 					}
 					++expectedVisitCount;
 				}

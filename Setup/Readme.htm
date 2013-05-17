@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA January 2013 CTP Readme</title>
+<title>NORMA May 2013 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	li {padding-bottom: 3px;}
@@ -12,9 +12,9 @@
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA January 2013 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2013 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The January 2013 release adds Visual Studio 2012 support, new constraint connections between a subtyping relationship and normal roles, some enhancements to disjunctive mandatory and external uniqueness verbalization patterns, native SQL Server data type handling, and other bug fixes. See detailed change notes below for specifics.<br/><br/>
+The May 2013 release is a bug fix release with no major feature changes. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2>Contents</h2>
 <ul>
@@ -43,8 +43,31 @@ The January 2013 release adds Visual Studio 2012 support, new constraint connect
 </ul>-->
 
 <hr/>
+<h2>May 2013 CTP Changes</h2>
+<div>The May 2013 CTP release includes all modifications through changeset 1517. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li>Feature Changes:
+<ol>
+<li>Display both ModelName and DiagramName properties when an ORM diagram is selected. This removes ambiguity and makes it easier to edit the diagram names.</li>
+<li>Enable persistent customization of generated relational schema names. Extends support for persistent customization of table and column names.</li>
+<li>Remove the 'Columns' header from the Relational View page and remove some vertical whitespace from the table name section.</li>
+<li>Improve foreign key highlighting in the Relational View. The entire foreign key line highlights on a mouse over, making it visually easier to trace foreign key lines.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Restore missing constraints in the <em>Constraint Validation</em> page of HTML report. Internal constraints on this page displayed only the first constraint of each type, so this report page was missing most of the internal constraints in the model.</li>
+<li>Compatible column validation for constraints now look for exclusion constraints across subtypes and treat these as incompatible types.</li>
+<li>Modified z-order on an ORM diagram to ensure consistent display. By default, z-order is determined by shape creation order. Creating a new shape for an object type or fact type that uses an existing role connector would draw the connector behind the shape. This was especially noticable with objectified fact types, which could obscur the role player connects behind the objectified fact type shape.</li>
+<li>Verbalization of disjunctive mandatory constraints over multiple roles in the same fact type and multiple role player types was incorrectly correlating unrelated variables.</li>
+<li>Fixed a timing issue with shape deletion. If mouse movement started a tooltip timer on a shape that was deleted before the timer fired and the tooltip requested text, then the IDE would crash. This was hard to hit, but was not recoverable and resulted in data loss.</li>
+</ol>
+</li>
+</ul>
+
+<hr/>
 <h2>January 2013 CTP Changes</h2>
-<div>The January 2013 CTP release includes all modifications through changeset 1510.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The January 2013 CTP release includes all modifications through changeset 1510.</div>
 <ul>
 <li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2013-01">Verbalized object type name separator character removal options</a></li>
 <li><a href="#SQLServerNativeDataTypes 2013-01">SQL Server Native Data Types</a></li>
@@ -86,7 +109,7 @@ The January 2013 release adds Visual Studio 2012 support, new constraint connect
 
 <hr/>
 <h2>April 2012 CTP Changes</h2>
-<div>The April 2012 CTP release includes all modifications through changeset 1487.  Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The April 2012 CTP release includes all modifications through changeset 1487.</div>
 <ul>
 <li><a href="#VerbalizePossiblePopulationsOption 2012-04">Verbalize possible populations option</a>&nbsp;</li>
 <li>Other Features:

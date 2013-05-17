@@ -229,7 +229,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			string retVal = null;
 			ValueConstraint constraint;
-			if (null != (constraint = AssociatedValueConstraint))
+			if (!IsDeleted &&
+				null != (constraint = AssociatedValueConstraint))
 			{
 				retVal = constraint.GetDisplayText(MaximumDisplayedColumns, 0);
 				if (string.IsNullOrEmpty(retVal))

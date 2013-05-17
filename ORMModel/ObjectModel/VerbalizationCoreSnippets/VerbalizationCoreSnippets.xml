@@ -316,7 +316,7 @@ You must not remove this notice, or any other, from this software.
 
 			<!-- Role plath list management -->
 			<Snippet type="RolePathListCloseOutdentSnippets"><![CDATA[ChainedListClose NegatedChainedListClose AndTailListClose AndNestedListClose NegatedAndLeadListClose NegatedAndTailListClose NegatedAndNestedListClose OrTailListClose OrNestedListClose NegatedOrLeadListClose NegatedOrTailListClose NegatedOrNestedListClose XorLeadListClose XorTailListClose XorNestedListClose NegatedXorLeadListClose NegatedXorTailListClose NegatedXorNestedListClose]]></Snippet>
-			<Snippet type="RolePathOutdentAwareTrailingListSnippets"><![CDATA[NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator]]></Snippet>
+			<Snippet type="RolePathOutdentAwareTrailingListSnippets"><![CDATA[NegatedAndLeadListSeparator NegatedAndNestedListSeparator NegatedAndTailListSeparator NegatedOrLeadListSeparator NegatedOrNestedListSeparator NegatedOrTailListSeparator XorLeadListSeparator XorNestedListSeparator XorTailListSeparator NegatedXorLeadListSeparator NegatedXorNestedListSeparator NegatedXorTailListSeparator NegatedChainedListClose]]></Snippet>
 			<Snippet type="ChainedListOpen"><![CDATA[<span>]]></Snippet>
 			<Snippet type="ChainedListLocalRestrictionSeparator"><![CDATA[ <span class="quantifier">where</span> ]]></Snippet>
 			<Snippet type="ChainedListLocalRestrictionBackReferenceSeparator"><![CDATA[ ]]></Snippet>
@@ -328,12 +328,12 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ChainedListTopLevelComplexRestrictionCollapsedLeadSeparator"><![CDATA[<br/><span class="quantifier">and</span> ]]></Snippet>
 			<Snippet type="ChainedListCollapsedSeparator"><![CDATA[ ]]></Snippet>
 			<Snippet type="ChainedListClose"><![CDATA[</span>]]></Snippet>
-			<Snippet type="NegatedChainedListOpen"><![CDATA[<span class="quantifier">it is not true that </span>]]></Snippet>
-			<Snippet type="NegatedChainedListClose"><![CDATA[]]></Snippet>
+			<Snippet type="NegatedChainedListOpen"><![CDATA[<span class="quantifier">it is not true that </span><span class="listSeparator">(</span>]]></Snippet>
+			<Snippet type="NegatedChainedListClose"><![CDATA[<span class="listSeparator">)</span>]]></Snippet>
 			<Snippet type="AndLeadListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="AndLeadListSeparator"><![CDATA[<br/><span class="quantifier">and</span> ]]></Snippet>
 			<Snippet type="AndLeadListClose"><![CDATA[]]></Snippet>
-			<Snippet type="AndTailListOpen"><![CDATA[<br/><span class="smallIndent"><span class="quantifier">and</span> ]]></Snippet>
+			<Snippet type="AndTailListOpen"><![CDATA[<br/><span class="smallIndent"><span class="quantifier">where</span> ]]></Snippet>
 			<Snippet type="AndTailListCollapsedOpen" groupWith="AndTailListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="AndTailListSeparator"><![CDATA[<br/><span class="quantifier">and</span> ]]></Snippet>
 			<Snippet type="AndTailListClose"><![CDATA[</span>]]></Snippet>
@@ -355,7 +355,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="OrLeadListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="OrLeadListSeparator"><![CDATA[<br/><span class="quantifier">or</span> ]]></Snippet>
 			<Snippet type="OrLeadListClose"><![CDATA[]]></Snippet>
-			<Snippet type="OrTailListOpen"><![CDATA[<br/><span class="smallIndent"><span class="quantifier">and</span> ]]></Snippet>
+			<Snippet type="OrTailListOpen"><![CDATA[<br/><span class="smallIndent"><span class="quantifier">where</span> ]]></Snippet>
 			<Snippet type="OrTailListCollapsedOpen" groupWith="OrTailListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="OrTailListSeparator"><![CDATA[<br/><span class="quantifier">or</span> ]]></Snippet>
 			<Snippet type="OrTailListClose"><![CDATA[</span>]]></Snippet>

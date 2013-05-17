@@ -601,11 +601,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			bool rVal = false;
 			Role r;
 			IConstraint constraint = AssociatedConstraint;
-			if (mel == constraint)
+			if (constraint == null)
+			{
+				rVal = false;
+			}
+			else if (mel == constraint)
 			{
 				rVal = true;
 			}
-			else if (constraint != null && null != (r = mel as Role))
+			else if (null != (r = mel as Role))
 			{
 				switch (constraint.ConstraintStorageStyle)
 				{
