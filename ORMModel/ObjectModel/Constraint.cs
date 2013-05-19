@@ -2544,9 +2544,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										}
 									}
 									else if (subsetSupertypeRole != null &&
-											column == 0 &&
-											sequence == 1 &&
-											!superTypesCache.ContainsKey(currentRolePlayer))
+										column == 0 &&
+										sequence == 1 &&
+										populatedCaches &&
+										populatedCachesForType != currentRolePlayer &&
+										(superTypesCache == null || !superTypesCache.ContainsKey(currentRolePlayer)))
 									{
 										// Don't set if not compatible.
 										hasSubtypeSubsetError = true;

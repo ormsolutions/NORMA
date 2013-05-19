@@ -44,7 +44,7 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 
 <hr/>
 <h2>May 2013 CTP Changes</h2>
-<div>The May 2013 CTP release includes all modifications through changeset 1517. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<div>The May 2013 CTP release includes all modifications through changeset 1518. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
 <ul>
 <li>Feature Changes:
 <ol>
@@ -61,6 +61,7 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 <li>Modified z-order on an ORM diagram to ensure consistent display. By default, z-order is determined by shape creation order. Creating a new shape for an object type or fact type that uses an existing role connector would draw the connector behind the shape. This was especially noticable with objectified fact types, which could obscur the role player connects behind the objectified fact type shape.</li>
 <li>Verbalization of disjunctive mandatory constraints over multiple roles in the same fact type and multiple role player types was incorrectly correlating unrelated variables.</li>
 <li>Fixed a timing issue with shape deletion. If mouse movement started a tooltip timer on a shape that was deleted before the timer fired and the tooltip requested text, then the IDE would crash. This was hard to hit, but was not recoverable and resulted in data loss.</li>
+<li>Validating a subset constraint from a subtype to a single role crashes if the supertype hierarchy is not sufficiently complex.</li>
 </ol>
 </li>
 </ul>
