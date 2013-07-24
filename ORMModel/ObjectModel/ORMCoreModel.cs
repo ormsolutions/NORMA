@@ -18,6 +18,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Collections.ObjectModel;
@@ -25,15 +26,43 @@ using System.Reflection;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Framework;
-using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Framework.Diagnostics;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
+	#region ORMModelBrowserDynamicColor enum
+	// Define the color customization enum in this name space
+	// so that it can be automatically associated with the default
+	// xml namespace for this model.
+	/// <summary>
+	/// Define dynamic colors for displaying elements in the ORM
+	/// model browser.
+	/// </summary>
+	[TypeConverter(typeof(EnumConverter<ORMModelBrowserDynamicColor, ORMModel>))]
+	[ResourceAccessorCategory(typeof(ORMModel), "ORMModelBrowserDynamicColor.Category")]
+	public enum ORMModelBrowserDynamicColor
+	{
+		/// <summary>
+		/// The foreground color used to customize
+		/// items in the ORM Model Browser display.
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMModel), "ORMModelBrowserDynamicColor.Foreground.Description")]
+		Foreground,
+		/// <summary>
+		/// The background color used to customize
+		/// items in the ORM Model Browser display.
+		/// </summary>
+		[ResourceAccessorDescription(typeof(ORMModel), "ORMModelBrowserDynamicColor.Background.Description")]
+		Background,
+	}
+	#endregion // ORMModelBrowserDynamicColor enum
 	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	[VerbalizationOptionProvider("VerbalizationOptions")]
-	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener, IPermanentAutomatedElementFilterProvider
+	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener, IPermanentAutomatedElementFilterProvider, IDynamicColorSetConsumer
 	{
 		#region Static Survey Data
 		private static readonly Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
@@ -99,8 +128,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				DomainClassInfo classInfo = directory.FindDomainClass(ObjectType.DomainClassId);
 				DomainPropertyInfo propertyInfo = directory.FindDomainProperty(ObjectType.NameDomainPropertyId);
 				eventManager.AddOrRemoveHandler(classInfo, propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ObjectTypeNameChangedEvent), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAddedEvent), action);
 				eventManager.AddOrRemoveHandler(classInfo, standardDeleteHandler, action);
+				classInfo = directory.FindDomainRelationship(ModelHasObjectType.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ObjectTypeAddedEvent), action);
 
 				//Fact Type
 				classInfo = directory.FindDomainRelationship(ModelHasFactType.DomainClassId);
@@ -109,13 +139,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				eventManager.AddOrRemoveHandler(classInfo, standardDeleteHandler, action);
 
 				//Set Constraint
-				classInfo = directory.FindDomainClass(SetConstraint.DomainClassId);
+				classInfo = directory.FindDomainRelationship(ModelHasSetConstraint.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SetConstraintAddedEvent), action);
+				classInfo = directory.FindDomainClass(SetConstraint.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardDeleteHandler, action);
 
 				//Set Comparison
-				classInfo = directory.FindDomainClass(SetComparisonConstraint.DomainClassId);
+				classInfo = directory.FindDomainRelationship(ModelHasSetComparisonConstraint.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(SetComparisonConstraintAddedEvent), action);
+				classInfo = directory.FindDomainClass(SetComparisonConstraint.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, standardDeleteHandler, action);
 
 				// External constraint expansion
@@ -536,7 +568,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Survey event handler for addition of an <see cref="ObjectType"/>
+		/// Survey event handler for addition of an <see cref="ModelHasObjectType"/>
 		/// </summary>
 		private static void ObjectTypeAddedEvent(object sender, ElementAddedEventArgs e)
 		{
@@ -544,7 +576,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				ObjectType objectType = (ObjectType)element;
+				ObjectType objectType = ((ModelHasObjectType)element).ObjectType;
 				Objectification objectification;
 				if (!objectType.IsImplicitBooleanValue && (null == (objectification = objectType.Objectification) || !objectification.IsImplied))
 				{
@@ -586,7 +618,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Survey event handler for addition of a <see cref="SetConstraint"/>
+		/// Survey event handler for addition of a <see cref="ModelHasSetConstraint"/>
 		/// </summary>
 		private static void SetConstraintAddedEvent(object sender, ElementAddedEventArgs e)
 		{
@@ -594,8 +626,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
-				SetConstraint constraint = (SetConstraint)element;
-				//do not add mandatory constraint if it's part of ExclusiveOr
+				SetConstraint constraint = ((ModelHasSetConstraint)element).SetConstraint;
 				switch (((IConstraint)constraint).ConstraintType)
 				{
 					case ConstraintType.SimpleMandatory:
@@ -608,13 +639,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						return;
 					case ConstraintType.ImpliedMandatory:
+						// Do not add implied constraints
 						return;
 				}
 				eventNotify.ElementAdded(constraint, null);
 			}
 		}
 		/// <summary>
-		/// Survey event handler for addition of a <see cref="SetComparisonConstraint"/>
+		/// Survey event handler for addition of a <see cref="ModelHasSetComparisonConstraint"/>
 		/// </summary>
 		private static void SetComparisonConstraintAddedEvent(object sender, ElementAddedEventArgs e)
 		{
@@ -622,13 +654,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ModelElement element = e.ModelElement;
 			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
 			{
+				SetComparisonConstraint constraint = ((ModelHasSetComparisonConstraint)element).SetComparisonConstraint;
 				ExclusionConstraint exclusion;
 				//do not add the exclusion constraint if its part of ExclusiveOr. 
-				if (null != (exclusion = element as ExclusionConstraint) && null != exclusion.ExclusiveOrMandatoryConstraint)
+				if (null != (exclusion = constraint as ExclusionConstraint) && null != exclusion.ExclusiveOrMandatoryConstraint)
 				{
 					return;
 				}
-				eventNotify.ElementAdded(element, null);
+				eventNotify.ElementAdded(constraint, null);
 			}
 		}
 		/// <summary>
@@ -1369,6 +1402,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetAutomatedElementFilters();
 		}
 		#endregion // IPermanentAutomatedElementFilterProvider Implementation
+		#region IDynamicColorSetConsumer Implementation
+		/// <summary>
+		/// Implements <see cref="IDynamicColorSetConsumer.GetDynamicColorSet"/>
+		/// </summary>
+		protected static Type GetDynamicColorSet(Type renderingType)
+		{
+			if (renderingType == typeof(ORMModelBrowserDynamicColor))
+			{
+				return typeof(ORMModelBrowserDynamicColor);
+			}
+			return null;
+		}
+		Type IDynamicColorSetConsumer.GetDynamicColorSet(Type renderingType)
+		{
+			return GetDynamicColorSet(renderingType);
+		}
+		#endregion // IDynamicColorSetConsumer implementation
 	}
 	#region IModelErrorOwner Implementations
 	partial class FactTypeHasFactTypeInstance : IModelErrorOwnerPath

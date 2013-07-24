@@ -389,6 +389,26 @@ namespace ORMSolutions.ORMArchitect.Framework
 		Guid[] GetNamedElementDictionaryLinkRoles();
 	}
 	#endregion // INamedElementDictionaryRemoteParent interface
+	#region INamedElementDictionaryOwner interface
+	/// <summary>
+	/// Retrieve a named element dictionary based on the type of
+	/// child element. Unlike <see cref="INamedElementDictionaryParent"/>,
+	/// which can be implemented at multiple levels in the same model
+	/// to route nested child elements to a root element, this interface
+	/// should be implemented only on the objects that directly own
+	/// one or more dictionaries.
+	/// </summary>
+	public interface INamedElementDictionaryOwner
+	{
+		/// <summary>
+		/// Find the owned <see cref="INamedElementDictionary"/> based
+		/// on the type of child object.
+		/// </summary>
+		/// <param name="childType">The type of a child element.</param>
+		/// <returns>The owned dictionary if the child type is recognized.</returns>
+		INamedElementDictionary FindNamedElementDictionary(Type childType);
+	}
+	#endregion // INamedElementDictionaryOwner interface
 	#region IDefaultNamePattern interface
 	/// <summary>
 	/// Provide a custom pattern for a default name.

@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -85,6 +85,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		AddImplicitPresentationElements = StandardFixupPhase.AddImplicitPresentationElements,
 	}
 	#endregion // ORMDeserializationFixupPhase enum
+	#region ORMModelBase class
 	partial class ORMModelBase
 	{
 		#region CustomStorage handlers
@@ -109,7 +110,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Definition = new Definition(Store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+					Definition = new Definition(Partition, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -124,7 +125,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+					Note = new Note(Partition, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -173,6 +174,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // MergeContext functions
 	}
+	#endregion // ORMModelBase class
+	#region ORMModel class
 	partial class ORMModel : IVerbalizeCustomChildren, IVerbalizeFilterChildrenByRole
 	{
 		#region ElementGroup.UserData keys
@@ -303,6 +306,80 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IVerbalizeFilterChildrenByRole Implementation
 	}
+	#endregion // ORMModel class
+	#region Alternate owner interfaces
+	/// <summary>
+	/// The non-generic implementation of an element other
+	/// than an <see cref="ORMModel"/> that owns top-level
+	/// ORM elements (object types, fact types, constraints).
+	/// </summary>
+	public interface IAlternateElementOwner
+	{
+		/// <summary>
+		/// Get the model associated with these elements.
+		/// </summary>
+		ORMModel Model { get;}
+	}
+	/// <summary>
+	/// Formally define an element as an alternate owner for a
+	/// top-level ORM element.
+	/// </summary>
+	/// <typeparam name="ORMElementType">This is expected to be
+	/// any of the top-level owned ORM elements. Choose from <see cref="ObjectType"/>,
+	/// <see cref="FactType"/>, <see cref="SetConstraint"/>, and <see cref="SetComparisonConstraint"/>.</typeparam>
+	public interface IAlternateElementOwner<ORMElementType> : IAlternateElementOwner where ORMElementType : ORMModelElement
+	{
+		/// <summary>
+		/// Get all elements of the given type that are owned by this owner.
+		/// </summary>
+		IList<ORMElementType> OwnedElements { get;}
+		/// <summary>
+		/// Determine if the core model validation routines should validate
+		/// this element for a given error type.
+		/// </summary>
+		/// <param name="element">The element to validate.</param>
+		/// <param name="modelErrorType">The type of error being checked.</param>
+		/// <returns>Return <see langword="true"/> to check the error state for this item.</returns>
+		bool ValidateErrorFor(ORMElementType element, Type modelErrorType);
+		/// <summary>
+		/// Return the <see cref="DomainClassInfo"/> that can be used to
+		/// create an element that can be attached to this owner.
+		/// </summary>
+		/// <param name="elementType">The type of an element that is the same
+		/// as or a subtype of <typeparamref name="ORMElementType"/></param>
+		/// <returns>A <see cref="DomainClassInfo"/>, or <see langword="null"/>
+		/// if the type is not supported. The returned class info must support
+		/// <see cref="IHasAlternateOwner{ORMElementType}"/>.</returns>
+		DomainClassInfo GetOwnedElementClassInfo(Type elementType);
+	}
+	/// <summary>
+	/// An empty interface used as the base type for the generic interface
+	/// of the same name. Enables a general check for alternate owners without
+	/// knowing the specific element type.
+	/// </summary>
+	public interface IHasAlternateOwner
+	{
+		/// <summary>
+		/// Get the untyped alternate owner for this element
+		/// </summary>
+		object UntypedAlternateOwner { get;}
+	}
+	/// <summary>
+	/// A top-level ORM element has an owner other than an <see cref="ORMModel"/>.
+	/// Enable the model to be retrieved via the 
+	/// </summary>
+	/// <typeparam name="ORMElementType">This is expected to be
+	/// any of the top-level owned ORM elements. Choose from <see cref="ObjectType"/>,
+	/// <see cref="FactType"/>, <see cref="SetConstraint"/>, and <see cref="SetComparisonConstraint"/>.
+	/// The class implementing this interface should be a subtype of one of these element types.</typeparam>
+	public interface IHasAlternateOwner<ORMElementType> : IHasAlternateOwner where ORMElementType : ORMModelElement
+	{
+		/// <summary>
+		/// Retrieve or set the alternate owner for this element.
+		/// </summary>
+		IAlternateElementOwner<ORMElementType> AlternateOwner { get; set;}
+	}
+	#endregion // Alternate owner interfaces
 	#region Indirect merge support
 	partial class ORMModel
 	{
@@ -420,7 +497,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // Indirect merge support
 	#region NamedElementDictionary and DuplicateNameError integration
-	partial class ORMModel : INamedElementDictionaryParent
+	partial class ORMModel : INamedElementDictionaryParent, INamedElementDictionaryOwner
 	{
 		#region Public token values
 		/// <summary>
@@ -770,9 +847,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							if (error == null)
 							{
-								error = new ObjectTypeDuplicateNameError(objectType.Store);
+								error = new ObjectTypeDuplicateNameError(objectType.Partition);
 								objectType.DuplicateNameError = error;
-								error.Model = objectType.Model;
+								error.Model = objectType.ResolvedModel;
 								error.GenerateErrorText();
 								if (notifyAdded != null)
 								{
@@ -956,7 +1033,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							if (error == null)
 							{
-								error = new ConstraintDuplicateNameError(element.Store);
+								error = new ConstraintDuplicateNameError(element.Partition);
 								if (scConstraint != null)
 								{
 									scConstraint.DuplicateNameError = error;
@@ -974,11 +1051,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									RoleValueConstraint roleValue;
 									if (null != (vTypeValue = vConstraint as ValueTypeValueConstraint))
 									{
-										error.Model = vTypeValue.ValueType.Model;
+										error.Model = vTypeValue.ValueType.ResolvedModel;
 									}
 									else if (null != (roleValue = vConstraint as RoleValueConstraint))
 									{
-										error.Model = roleValue.Role.FactType.Model;
+										error.Model = roleValue.Role.FactType.ResolvedModel;
 									}
 								}
 								error.GenerateErrorText();
@@ -1172,7 +1249,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							if (error == null)
 							{
-								error = new RecognizedPhraseDuplicateNameError(recognizedPhrase.Store);
+								error = new RecognizedPhraseDuplicateNameError(recognizedPhrase.Partition);
 								recognizedPhrase.DuplicateNameError = error;
 								error.Model = recognizedPhrase.Model;
 								error.GenerateErrorText();
@@ -1471,7 +1548,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							if (error == null)
 							{
-								error = new FunctionDuplicateNameError(function.Store);
+								error = new FunctionDuplicateNameError(function.Partition);
 								function.DuplicateNameError = error;
 								error.Model = function.Model;
 								error.GenerateErrorText();
@@ -1537,6 +1614,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // FunctionNamedElementDictionary class
 		#endregion // Relationship-specific NamedElementDictionary implementations
+		#region INamedElementDictionaryOwner Implementation
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryOwner.FindNamedElementDictionary"/>
+		/// </summary>
+		protected INamedElementDictionary FindNamedElementDictionary(Type childType)
+		{
+			if (typeof(ObjectType).IsAssignableFrom(childType))
+			{
+				return ObjectTypesDictionary;
+			}
+			else if (typeof(Function).IsAssignableFrom(childType))
+			{
+				return FunctionsDictionary;
+			}
+			else if (typeof(SetConstraint).IsAssignableFrom(childType) ||
+				typeof(SetComparisonConstraint).IsAssignableFrom(childType) ||
+				typeof(ValueConstraint).IsAssignableFrom(childType))
+			{
+				return ConstraintsDictionary;
+			}
+			else if (typeof(RecognizedPhrase).IsAssignableFrom(childType))
+			{
+				return RecognizedPhrasesDictionary;
+			}
+			return null;
+		}
+		INamedElementDictionary INamedElementDictionaryOwner.FindNamedElementDictionary(Type childType)
+		{
+			return FindNamedElementDictionary(childType);
+		}
+		#endregion // INamedElementDictionaryOwner Implementation
 	}
 	partial class ModelHasObjectType : INamedElementDictionaryLink
 	{

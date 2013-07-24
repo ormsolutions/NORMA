@@ -283,6 +283,16 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		{
 			this.ElementChanged(element, ErrorDisplayTypes);
 		}
+		/// <summary>
+		/// Get the survey context passed to the constructor.
+		/// </summary>
+		public SurveyContextType SurveyContext
+		{
+			get
+			{
+				return mySurveyContext;
+			}
+		}
 		private Type[] ErrorDisplayTypes
 		{
 			get
@@ -392,6 +402,22 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				return false;
 			}
 		}
+		/// <summary>
+		/// Override to force a following calls to <see cref="GetDynamicColor"/>
+		/// </summary>
+		protected virtual bool DynamicColorsEnabled { get { return false; } }
+		/// <summary>
+		/// Override (along with <see cref="DynamicColorsEnabled"/>) to enable
+		/// callbacks for custom coloring of elements.
+		/// </summary>
+		/// <param name="element">The element to retrieve colors for.</param>
+		/// <param name="colorRole">How the requested color is used.</param>
+		/// <returns>Return a <see cref="Color"/> or <see cref="Color.Empty"/> to
+		/// use the default colors.</returns>
+		protected virtual Color GetDynamicColor(object element, SurveyDynamicColor colorRole)
+		{
+			return Color.Empty;
+		}
 		#endregion // Virtual Members
 		#region INotifySurveyElementChanged Implementation
 		/// <summary>
@@ -414,6 +440,23 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// </summary>
 		protected void ElementChanged(object element, params Type[] questionTypes)
 		{
+			if (element == null)
+			{
+				if (questionTypes.Length == 0)
+				{
+					// This is a general call for a full redraw of the window.
+					// Something has changed, but the notifier does not know what
+					// it is. This can happen during deletion scenarios where
+					// element trees are too broken during events to get targeted
+					// information.
+					foreach (MainList list in myMainListDictionary.Values)
+					{
+						list.ForceRedraw();
+						break;
+					}
+				}
+				return;
+			}
 			NodeLocation location;
 			if (myNodeDictionary.TryGetValue(element, out location))
 			{
@@ -422,7 +465,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					notifyList.NodeChanged(location.ElementNode, null, false, questionTypes);
 				}
-				else
+				else if (questionTypes.Length != 0)
 				{
 					SampleDataElementNode node = location.ElementNode;
 					Survey survey = location.Survey;

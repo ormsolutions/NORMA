@@ -4186,4 +4186,9 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:element name="ORMModelBrowserDynamicColor" substitutionGroup="DynamicColor">
+		<xs:annotation>
+			<xs:documentation>Dynamic color information displayed in the ORM Model Browser tool window.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
 </xs:schema>

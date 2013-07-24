@@ -134,7 +134,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			public static void BinarizeUnary(FactType unaryFactType, INotifyElementAdded notifyAdded)
 			{
-				Store store = unaryFactType.Store;
+				Partition partition = unaryFactType.Partition;
+				Store store = partition.Store;
+				IHasAlternateOwner<FactType> toAlternateOwner;
+				IAlternateElementOwner<FactType> alternateFactTypeOwner = (null == (toAlternateOwner = unaryFactType as IHasAlternateOwner<FactType>)) ? null : toAlternateOwner.AlternateOwner;
 				LinkedElementCollection<RoleBase> roleCollection = unaryFactType.RoleCollection;
 				Debug.Assert(roleCollection.Count == 1, "Unaries should only have one role.");
 
@@ -155,7 +158,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					UniquenessConstraint uniquenessConstraint = UniquenessConstraint.CreateInternalUniquenessConstraint(unaryFactType);
 					uniquenessConstraint.RoleCollection.Add(unaryRole);
-					uniquenessConstraint.Model = unaryFactType.Model;
 					if (notifyAdded != null)
 					{
 						notifyAdded.ElementAdded(uniquenessConstraint, true);
@@ -163,17 +165,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 
 				// Setup the boolean role (to make the FactType a binary)
-				Role implicitBooleanRole = new Role(store, null);
+				Role implicitBooleanRole = new Role(partition, null);
 				implicitBooleanRole.Name = unaryRole.Name;
 
 				// Setup the boolean value type (because the boolean role needs a role player)
-				ObjectType implicitBooleanValueType = new ObjectType(store, new PropertyAssignment(ObjectType.IsImplicitBooleanValueDomainPropertyId, true));
+
+				IAlternateElementOwner<ObjectType> alternateObjectTypeOwner = null;
+				DomainClassInfo alternateCtor =
+					(null != alternateFactTypeOwner &&
+					null != (alternateObjectTypeOwner = alternateFactTypeOwner as IAlternateElementOwner<ObjectType>)) ?
+						alternateObjectTypeOwner.GetOwnedElementClassInfo(typeof(ObjectType)) :
+						null;
+				PropertyAssignment implicitBooleanProperty = new PropertyAssignment(ObjectType.IsImplicitBooleanValueDomainPropertyId, true);
+				ObjectType implicitBooleanValueType = (alternateCtor != null) ?
+					(ObjectType)partition.ElementFactory.CreateElement(alternateCtor, implicitBooleanProperty) :
+					new ObjectType(partition, implicitBooleanProperty);
 				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 				try
 				{
 					contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
 					implicitBooleanValueType.Name = implicitBooleanValueTypeName;
-					implicitBooleanValueType.Model = unaryFactType.Model;
+					if (alternateCtor != null)
+					{
+						((IHasAlternateOwner<ObjectType>)implicitBooleanValueType).AlternateOwner = alternateObjectTypeOwner;
+					}
+					else
+					{
+						implicitBooleanValueType.Model = unaryFactType.ResolvedModel;
+					}
 					if (notifyAdded != null)
 					{
 						notifyAdded.ElementAdded(implicitBooleanValueType, true);
@@ -187,10 +206,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 				// Set value constraint on implicit boolean ValueType for open-world assumption
 				ValueTypeValueConstraint implicitBooleanValueConstraint = implicitBooleanValueType.ValueConstraint
-					= new ValueTypeValueConstraint(implicitBooleanValueType.Store, null);
+					= new ValueTypeValueConstraint(partition, null);
 
 				// Add the true-only ValueRange to the value constraint for open-world assumption
-				implicitBooleanValueConstraint.ValueRangeCollection.Add(new ValueRange(store,
+				implicitBooleanValueConstraint.ValueRangeCollection.Add(new ValueRange(partition,
 					new PropertyAssignment(ValueRange.MinValueDomainPropertyId, bool.TrueString),
 					new PropertyAssignment(ValueRange.MaxValueDomainPropertyId, bool.TrueString)));
 

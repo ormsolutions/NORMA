@@ -196,7 +196,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				DataType dataType = null;
 				ORMModel model;
 				if (newValue &&
-					null != (model = Model))
+					null != (model = ResolvedModel))
 				{
 					dataType = model.DefaultDataType;
 				}
@@ -390,7 +390,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					definition = new Definition(Store);
+					definition = new Definition(Partition);
 					definition.Text = newValue;
 					Definition = definition;
 				}
@@ -413,7 +413,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					note = new Note(Store);
+					note = new Note(Partition);
 					note.Text = newValue;
 					Note = note;
 				}
@@ -427,11 +427,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private void SetDerivationNoteDisplayValue(string newValue)
 		{
-			Store store = Store;
-			if (!store.InUndoRedoOrRollback)
+			if (!Store.InUndoRedoOrRollback)
 			{
 				SubtypeDerivationRule derivationRule;
 				DerivationNote derivationNote;
+				Partition partition = Partition;
 				if (null != (derivationRule = DerivationRule))
 				{
 					derivationNote = derivationRule.DerivationNote;
@@ -449,7 +449,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					new SubtypeHasDerivationRule(
 						this,
 						derivationRule = new SubtypeDerivationRule(
-							store,
+							partition,
 							new PropertyAssignment(SubtypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
 					derivationNote = null;
 				}
@@ -458,7 +458,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					new SubtypeDerivationRuleHasDerivationNote(
 						derivationRule,
 						new DerivationNote(
-							store,
+							partition,
 							new PropertyAssignment(DerivationNote.BodyDomainPropertyId, newValue)));
 				}
 				else
@@ -520,6 +520,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			set
 			{
 				SetReferenceMode(this, value, ReferenceMode, null, null, false);
+			}
+		}
+		/// <summary>
+		/// Determine the <see cref="ORMModel"/> for this element.
+		/// If the element is owned by an alternate owner, then retrieve
+		/// the model through that owner.
+		/// </summary>
+		public ORMModel ResolvedModel
+		{
+			get
+			{
+				IHasAlternateOwner<ObjectType> toAlternateOwner;
+				IAlternateElementOwner<ObjectType> alternateOwner;
+				return (null != (toAlternateOwner = this as IHasAlternateOwner<ObjectType>) &&
+					null != (alternateOwner = toAlternateOwner.AlternateOwner)) ?
+						alternateOwner.Model :
+						this.Model;
 			}
 		}
 		#endregion // Non-DSL Custom Properties
@@ -613,15 +630,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private void CreateReferenceMode(string valueTypeName)
 		{
-			ORMModel model = this.Model;
-			Store store = model.Store;
-			ObjectType valueType = FindValueType(valueTypeName, model);
+			Partition partition = this.Partition;
+			IHasAlternateOwner<ObjectType> toAlternateOwner;
+			IAlternateElementOwner<ObjectType> alternateObjectTypeOwner = (null == (toAlternateOwner = this as IHasAlternateOwner<ObjectType>)) ? null : toAlternateOwner.AlternateOwner;
+			ORMModel model = (alternateObjectTypeOwner == null) ? this.Model : null;
+			ObjectType valueType = FindValueType(valueTypeName, model, alternateObjectTypeOwner);
+			DomainClassInfo alternateCtor;
 
 			if (valueType == null)
 			{
-				valueType = new ObjectType(store);
-				valueType.Name = valueTypeName;
-				valueType.Model = model;
+				alternateCtor = null;
+				if (alternateObjectTypeOwner != null &&
+					null == (alternateCtor = alternateObjectTypeOwner.GetOwnedElementClassInfo(typeof(ObjectType))))
+				{
+					model = alternateObjectTypeOwner.Model;
+				}
+				if (alternateCtor != null)
+				{
+					valueType = (ObjectType)partition.ElementFactory.CreateElement(alternateCtor);
+					valueType.Name = valueTypeName; // Set the name before parenting, save a name change operation
+					((IHasAlternateOwner<ObjectType>)valueType).AlternateOwner = alternateObjectTypeOwner;
+				}
+				else
+				{
+					valueType = new ObjectType(partition);
+					valueType.Name = valueTypeName;
+					valueType.Model = model;
+				}
 				valueType.IsValueType = true;
 			}
 			else
@@ -671,41 +706,71 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 
-			FactType refFact = new FactType(store);
-			refFact.Model = model;
+			IAlternateElementOwner<FactType> alternateFactTypeOwner = null;
+			alternateCtor = null;
+			if (null != alternateObjectTypeOwner)
+			{
+				if ((null == (alternateFactTypeOwner = alternateObjectTypeOwner as IAlternateElementOwner<FactType>) ||
+					null == (alternateCtor = alternateFactTypeOwner.GetOwnedElementClassInfo(typeof(FactType)))) &&
+					model == null)
+				{
+					model = alternateObjectTypeOwner.Model;
+				}
+			}
+			FactType refModeFactType;
+			if (alternateCtor != null)
+			{
+				refModeFactType = (FactType)partition.ElementFactory.CreateElement(alternateCtor);
+				((IHasAlternateOwner<FactType>)refModeFactType).AlternateOwner = alternateFactTypeOwner;
+			}
+			else
+			{
+				refModeFactType = new FactType(partition);
+				refModeFactType.Model = model;
+			}
 
-			Role objectTypeRole = new Role(store);
+			Role objectTypeRole = new Role(partition);
 			objectTypeRole.RolePlayer = this;
-			LinkedElementCollection<RoleBase> roleCollection = refFact.RoleCollection;
+			LinkedElementCollection<RoleBase> roleCollection = refModeFactType.RoleCollection;
 			roleCollection.Add(objectTypeRole);
 
-			Role valueTypeRole = new Role(store);
+			Role valueTypeRole = new Role(partition);
 			valueTypeRole.RolePlayer = valueType;
 			roleCollection.Add(valueTypeRole);
 
-			UniquenessConstraint ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-			ic.RoleCollection.Add(valueTypeRole); // Automatically sets FactType
+			UniquenessConstraint ic = UniquenessConstraint.CreateInternalUniquenessConstraint(refModeFactType);
+			ic.RoleCollection.Add(valueTypeRole);
 			this.PreferredIdentifier = ic;
 
-			ReadingOrder readingOrder1 = new ReadingOrder(store);
-			LinkedElementCollection<RoleBase> roles = refFact.RoleCollection;
+			ReadingOrder readingOrder1 = new ReadingOrder(partition);
+			LinkedElementCollection<RoleBase> roles = refModeFactType.RoleCollection;
 			LinkedElementCollection<RoleBase> readingRoles = readingOrder1.RoleCollection;
 			readingRoles.Add(roles[0]);
 			readingRoles.Add(roles[1]);
 			readingOrder1.AddReading(ResourceStrings.ReferenceModePredicateReading);
-			readingOrder1.FactType = refFact;
+			readingOrder1.FactType = refModeFactType;
 
-			ReadingOrder readingOrder2 = new ReadingOrder(store);
+			ReadingOrder readingOrder2 = new ReadingOrder(partition);
 			readingRoles = readingOrder2.RoleCollection;
 			readingRoles.Add(roles[1]);
 			readingRoles.Add(roles[0]);
 			readingOrder2.AddReading(ResourceStrings.ReferenceModePredicateInverseReading);
-			readingOrder2.FactType = refFact;
+			readingOrder2.FactType = refModeFactType;
 		}
 
-		private static ObjectType FindValueType(string name, ORMModel objModel)
+		private static ObjectType FindValueType(string name, ORMModel model, IAlternateElementOwner<ObjectType> alternateOwner)
 		{
-			return objModel.ObjectTypesDictionary.GetElement(name).FirstElement as ObjectType;
+			INamedElementDictionaryOwner dictionaryOwner;
+			INamedElementDictionary alternateDictionary = null;
+			if (alternateOwner != null)
+			{
+				if (null == (dictionaryOwner = alternateOwner as INamedElementDictionaryOwner) ||
+					null == (alternateDictionary = dictionaryOwner.FindNamedElementDictionary(typeof(ObjectType))))
+				{
+					model = alternateOwner.Model;
+				}
+			}
+			return (alternateDictionary ?? model.ObjectTypesDictionary).GetElement(name).FirstElement as ObjectType;
 		}
 		/// <summary>
 		///  Utility function to change the name of an existing reference mode.
@@ -724,8 +789,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				CreateReferenceMode(valueTypeName);
 				return;
 			}
-			ORMModel model = this.Model;
-			ObjectType valueType = FindValueType(valueTypeName, model);
+			IHasAlternateOwner<ObjectType> toAlternateOwner;
+			IAlternateElementOwner<ObjectType> alternateOwner = (null == (toAlternateOwner = this as IHasAlternateOwner<ObjectType>)) ? null : toAlternateOwner.AlternateOwner;
+			ORMModel model = (alternateOwner == null) ? this.Model : null;
+			ObjectType valueType = FindValueType(valueTypeName, model, alternateOwner);
 			Role constrainedRole = constraintRoles[0];
 			ObjectType identifyingValueType;
 			bool valueTypeNotShared = !IsValueTypeShared(preferredConstraint, shareReferenceModeValueType, out identifyingValueType);
@@ -742,10 +809,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				FactType nestedFactType = NestedFactType;
 				if (valueType == null)
 				{
-					Store store = model.Store;
-					valueType = new ObjectType(store);
-					valueType.Name = valueTypeName;
-					valueType.Model = model;
+					Partition partition = this.Partition;
+					DomainClassInfo alternateCtor = null;
+					if (alternateOwner != null &&
+						null == (alternateCtor = alternateOwner.GetOwnedElementClassInfo(typeof(ObjectType))))
+					{
+						model = alternateOwner.Model;
+					}
+					if (alternateCtor != null)
+					{
+						valueType = (ObjectType)partition.ElementFactory.CreateElement(alternateCtor);
+						valueType.Name = valueTypeName; // Set the name before parenting, save a name change operation
+						((IHasAlternateOwner<ObjectType>)valueType).AlternateOwner = alternateOwner;
+					}
+					else
+					{
+						valueType = new ObjectType(partition);
+						valueType.Name = valueTypeName;
+						valueType.Model = model;
+					}
 
 					// Use the DataType of the starting ValueType if it is
 					// specified. Otherwise, use the IsValueType property to
@@ -1039,7 +1121,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (null != (valueType = GetValueTypeForPreferredConstraint()))
 			{
 				string valueTypeName = valueType.Name;
-				refMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueTypeName, this.Name, this.Model);
+				refMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueTypeName, this.Name, this.ResolvedModel);
 				refModeString = (refMode == null) ? valueTypeName : refMode.Name;
 			}
 		}
@@ -1061,7 +1143,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					RoleValueConstraint roleValueConstraint = role.ValueConstraint;
 					if (roleValueConstraint == null && autoCreate)
 					{
-						role.ValueConstraint = roleValueConstraint = new RoleValueConstraint(role.Store);
+						role.ValueConstraint = roleValueConstraint = new RoleValueConstraint(role.Partition);
 					}
 					return roleValueConstraint as ValueConstraint;
 				}
@@ -1070,7 +1152,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ValueTypeValueConstraint valueConstraint = this.ValueConstraint;
 			if (valueConstraint == null && autoCreate)
 			{
-				this.ValueConstraint = valueConstraint = new ValueTypeValueConstraint(this.Store);
+				this.ValueConstraint = valueConstraint = new ValueTypeValueConstraint(this.Partition);
 			}
 			return valueConstraint as ValueConstraint;
 		}
@@ -1088,7 +1170,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				valueConstraint = associatedValueType.ValueConstraint;
 				if (valueConstraint == null && autoCreate)
 				{
-					associatedValueType.ValueConstraint = valueConstraint = new ValueTypeValueConstraint(this.Store);
+					associatedValueType.ValueConstraint = valueConstraint = new ValueTypeValueConstraint(this.Partition);
 				}
 			}
 			return valueConstraint;
@@ -1955,7 +2037,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					string oldValue = (string)e.OldValue;
 					string oldReferenceModeName = string.Empty;
 
-					ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.ReferenceModeString, oldValue, objectType.Model);
+					ReferenceMode referenceMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(objectType.ReferenceModeString, oldValue, objectType.ResolvedModel);
 
 					if (referenceMode != null)
 					{
@@ -1976,7 +2058,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string newStringValue;
 				if (!string.IsNullOrEmpty(newStringValue = newValue as string))
 				{
-					ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(newStringValue, objectType.Model, true);
+					ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(newStringValue, objectType.ResolvedModel, true);
 					if (singleMode != null)
 					{
 						newValue = singleMode;
@@ -1987,7 +2069,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else if (attributeGuid == ObjectType.ReferenceModeDecoratedStringDomainPropertyId)
 			{
 				string newName = (string)e.NewValue ?? string.Empty;
-				ReferenceMode singleMode = newName.Length != 0 ? ReferenceMode.GetReferenceModeForDecoratedName(newName, objectType.Model, true) : null;
+				ReferenceMode singleMode = newName.Length != 0 ? ReferenceMode.GetReferenceModeForDecoratedName(newName, objectType.ResolvedModel, true) : null;
 				if (singleMode != null)
 				{
 					newName = null;
@@ -1999,7 +2081,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string newName = (string)e.NewValue;
 
 				// Find the unique reference mode for this object type and reference mode string
-				IList<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(newName, objectType.Model);
+				IList<ReferenceMode> referenceModes = ReferenceMode.FindReferenceModesByName(newName, objectType.ResolvedModel);
 				ReferenceMode singleMode = null;
 				int modeCount = referenceModes.Count;
 				if (modeCount == 1)
@@ -2100,7 +2182,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				//Now, set the dataType
 				DataType dataType = null;
-				ORMModel ormModel = objectType.Model;
+				ORMModel ormModel = objectType.ResolvedModel;
 				dataType = ormModel.GetPortableDataType(newModeType);
 				//Change the objectType to the ref mode's preferred valueType and set the
 				//dataType on that objectType.
@@ -2171,15 +2253,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>Model-owned dictionary for constraints</returns>
 		protected INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
+			INamedElementDictionary dictionary = null;
 			if (parentDomainRoleId == ValueTypeHasValueConstraint.ValueTypeDomainRoleId)
 			{
-				ORMModel model = Model;
-				if (model != null)
+				// If the object type has an alternate owner with a dictionary, then see if that
+				// owner has a dictionary that supports this relationship. Otherwise just use
+				// dictionary from the model.
+				IHasAlternateOwner<ObjectType> toAlternateOwner;
+				INamedElementDictionaryParent dictionaryParent;
+				ORMModel model;
+				if ((null == (toAlternateOwner = this as IHasAlternateOwner<ObjectType>) ||
+					null == (dictionaryParent = toAlternateOwner.AlternateOwner as INamedElementDictionaryParent) ||
+					null == (dictionary = dictionaryParent.GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId))) &&
+					null != (model = Model))
 				{
-					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
+					dictionary = ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
 				}
 			}
-			return null;
+			return dictionary;
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
@@ -2578,7 +2669,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						// on to see if roles are already implied.
 						if (notifyAdded != null)
 						{
-							notifyAdded.ElementAdded(new ConstraintRoleSequenceHasRole(playedRole, impliedMandatory), false);
+							notifyAdded.ElementAdded(new ConstraintRoleSequenceHasRole(impliedMandatory, playedRole), false);
 						}
 						else
 						{
@@ -2833,9 +2924,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (error == null)
 				{
-					error = new DataTypeNotSpecifiedError(Store);
+					error = new DataTypeNotSpecifiedError(Partition);
 					link.DataTypeNotSpecifiedError = error;
-					error.Model = Model;
+					error.Model = ResolvedModel;
 					error.GenerateErrorText();
 					if (notifyAdded != null)
 					{
@@ -3352,9 +3443,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (noRefSchemeError == null)
 					{
-						noRefSchemeError = new EntityTypeRequiresReferenceSchemeError(store);
+						noRefSchemeError = new EntityTypeRequiresReferenceSchemeError(Partition);
 						noRefSchemeError.ObjectType = this;
-						noRefSchemeError.Model = Model;
+						noRefSchemeError.Model = ResolvedModel;
 						noRefSchemeError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -3629,9 +3720,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (mandatoryRequired == null)
 					{
-						mandatoryRequired = new PreferredIdentifierRequiresMandatoryError(this.Store);
+						mandatoryRequired = new PreferredIdentifierRequiresMandatoryError(this.Partition);
 						mandatoryRequired.ObjectType = this;
-						mandatoryRequired.Model = this.Model;
+						mandatoryRequired.Model = this.ResolvedModel;
 						mandatoryRequired.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -3815,9 +3906,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (incompatibleSupertypes == null)
 					{
-						incompatibleSupertypes = new CompatibleSupertypesError(this.Store);
+						incompatibleSupertypes = new CompatibleSupertypesError(this.Partition);
 						incompatibleSupertypes.ObjectType = this;
-						incompatibleSupertypes.Model = this.Model;
+						incompatibleSupertypes.Model = this.ResolvedModel;
 						incompatibleSupertypes.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -4716,7 +4807,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				ORMModel model = Model;
+				ORMModel model = ResolvedModel;
 				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextObjectType, Name, model != null ? model.Name : "");
 			}
 		}
@@ -4847,7 +4938,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ProcessCheckForIncompatibleRelationship(e.ElementLink);
 		}
 		#endregion // CheckForIncompatibleRelationshipRolePlayerChangeRule
-		#region IHierarchyContextEnabled Members
+		#region IHierarchyContextEnabled Implementation
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextDecrementCount"/>
 		/// </summary>
@@ -4916,7 +5007,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get { return HierarchyContextPlacementPriority; }
 		}
-		#endregion
+		ORMModel IHierarchyContextEnabled.Model
+		{
+			get
+			{
+				return ResolvedModel;
+			}
+		}
+		#endregion // IHierarchyContextEnabled Implementation
 		#region IVerbalizeCustomChildren Implementation
 		/// <summary>
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible

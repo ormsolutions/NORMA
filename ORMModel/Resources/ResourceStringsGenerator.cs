@@ -908,6 +908,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMModelBrowser.WindowTitle");
 			}
 		}
+		/// <summary>Exception text used when a NORMA extension fails a compatibility check.</summary>
+		public static string LoadExceptionIncompatibleAssembly
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "LoadException.IncompatibleAssembly");
+			}
+		}
 		/// <summary>Exception message when a ModelErrorDisplayFilterAttribute is initialized with a type that does not derive from ModelErrorCategory.</summary>
 		public static string ModelExceptionModelErrorCategoryInvalid
 		{

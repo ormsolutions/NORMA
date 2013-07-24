@@ -40,7 +40,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			{
 				ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
 				IConstraint constraint = link.ConstraintRoleSequence.Constraint;
-				if (constraint != null)
+				if (constraint != null &&
+					!(constraint is IHasAlternateOwner))
 				{
 					if (IsRelevantConstraint(constraint))
 					{
@@ -64,7 +65,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			{
 				ConstraintRoleSequenceHasRole link = (ConstraintRoleSequenceHasRole)e.ModelElement;
 				IConstraint constraint = link.ConstraintRoleSequence.Constraint;
-				if (constraint != null)
+				if (constraint != null &&
+					!(constraint is IHasAlternateOwner))
 				{
 					if (IsRelevantConstraint(constraint))
 					{
@@ -330,6 +332,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			{
 				if (factType != null &&
 					!factType.IsDeleted &&
+					null != factType.Model &&
 					!ORMElementGateway.IsElementExcluded(factType))
 				{
 					FrameworkDomainModel.DelayValidateElement(factType, FactTypeConstraintPatternChangedDelayed);
@@ -339,8 +342,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			private static void FactTypeConstraintPatternChangedDelayed(ModelElement element)
 			{
 				FactType factType;
+				ORMModel model;
 				if (!element.IsDeleted &&
-					!ORMElementGateway.IsElementExcluded(factType = (FactType)element))
+					null != (model = (factType = (FactType)element).Model) &&
+					!ORMElementGateway.IsElementExcluded(factType))
 				{
 					// If we're not previously mapped, then we will have been added at this point
 					FactTypeMapsTowardsRole mapToRole = FactTypeMapsTowardsRole.GetLinkToTowardsRole(factType);
@@ -361,7 +366,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						else
 						{
 							AddTransactedModelElement(factType, ModelElementModification.ORMElementChanged);
-							FrameworkDomainModel.DelayValidateElement(factType.Model, DelayValidateModel);
+							FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 						}
 					}
 				}
@@ -463,8 +468,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				UniquenessConstraint constraint;
 				ORMModel model;
 				if (!element.IsDeleted &&
-					!ORMElementGateway.IsElementExcluded(constraint = (UniquenessConstraint)element) &&
-					null != (model = constraint.Model))
+					null != (model = (constraint = (UniquenessConstraint)element).Model) &&
+					!ORMElementGateway.IsElementExcluded(constraint))
 				{
 					AddTransactedModelElement(constraint, ModelElementModification.ORMElementChanged);
 					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
@@ -525,11 +530,11 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				ObjectType objectType;
 				ORMModel model;
 				if (!element.IsDeleted &&
-					!ORMElementGateway.IsElementExcluded(objectType = (ObjectType)element) &&
-					null != (model = objectType.Model))
+					null != (model = (objectType = (ObjectType)element).Model) &&
+					!ORMElementGateway.IsElementExcluded(objectType))
 				{
 					AddTransactedModelElement(objectType, ModelElementModification.ORMElementChanged);
-					FrameworkDomainModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
 			}
 			#endregion // General validation helper methods

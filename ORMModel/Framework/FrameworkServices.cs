@@ -378,4 +378,31 @@ namespace ORMSolutions.ORMArchitect.Framework
 		}
 	}
 	#endregion // AutomatedElementFilterService class
+	#region ICreateSignalTransactionItems
+	/// <summary>
+	/// Some model changes are used solely trigger other behavior within
+	/// a transaction. However, the system does not distinguish between
+	/// these changes an normal changes. If a signal occurs without a normal
+	/// change, then a transaction may appear to be meaningful to the user
+	/// by displaying in the undo/redo stack even when no significant changes
+	/// have occurred. A domain model class can implement this interface to
+	/// indicate which changes are signal changes and can be safely ignored when
+	/// determining if a transacted change should be displayed to the user.
+	/// </summary>
+	/// <remarks>Currently, we are only checking for property changes. This may
+	/// be updated in the future to enable other types of signals to be ignored.</remarks>
+	public interface IRegisterSignalChanges
+	{
+		/// <summary>
+		/// Enumerate domain properties defined by this domain class that result
+		/// in signal changes only and should not be visible to the user if they
+		/// do not occur with other non-signal changes.
+		/// </summary>
+		/// <returns>Enumeration of domain property id/callback function pairs.
+		/// If a callback function is not provided, then all changes of this
+		/// type can be ignored. Otherwise, the return true from the registered
+		/// predicate to support a change.</returns>
+		IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> GetSignalPropertyChanges();
+	}
+	#endregion // ICreateSignalTransactionItems
 }

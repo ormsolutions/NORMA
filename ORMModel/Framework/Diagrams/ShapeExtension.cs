@@ -108,8 +108,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 	/// colors for different shapes.
 	/// </summary>
 	/// <typeparam name="C">An <see cref="Enum"/> type specifying the supported
-	/// set of colors. This should be the same <see cref="IDynamicColorSetConsumer{Diagram}.DynamicColorSet"/>
-	/// proprerty used to match the colors.</typeparam>
+	/// set of colors. This should correspond to a color enum returned by
+	/// <see cref="IDynamicColorSetConsumer.GetDynamicColorSet"/>.</typeparam>
 	/// <typeparam name="S">The type of shape element being drawn</typeparam>
 	/// <typeparam name="T">An element associated with the shape. This does
 	/// not have to be the subject of the shape itself, allowing this interface
@@ -133,18 +133,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 	#endregion // IDynamicShapeColorProvider interface
 	#region IDynamicColorSetConsumer interface
 	/// <summary>
-	/// Indicate that a <see cref="DomainModel"/> uses a
-	/// color set <see cref="Enum"/> for a specific DiagramType.
+	/// Indicate that a <see cref="DomainModel"/> uses dynamic
+	/// colors from a specific color set <see cref="Enum"/>.
 	/// </summary>
-	/// <typeparam name="D">The type of <see cref="Diagram"/> the element will be
-	/// displayed on.</typeparam>
-	public interface IDynamicColorSetConsumer<D>
-		where D : Diagram
+	public interface IDynamicColorSetConsumer
 	{
 		/// <summary>
-		/// An <see cref="Enum"/> type that provides a list roles for the supported colors.
+		/// Get the <see cref="Enum"/> associated with a given
+		/// type of element rendering. If the
 		/// </summary>
-		Type DynamicColorSet { get;}
+		/// <param name="renderingType">The type of element
+		/// supported by this enum.</param>
+		/// <returns>Return the type of a dynamic color enum,
+		/// or <see langword="null"/> if the rendering type is
+		/// not recognized</returns>
+		Type GetDynamicColorSet(Type renderingType);
 	}
 	#endregion // IDynamicColorSetConsumer interface
 	#region IDynamicColorAlsoUsedBy interface

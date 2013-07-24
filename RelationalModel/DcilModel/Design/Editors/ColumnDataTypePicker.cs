@@ -62,7 +62,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 			IList retVal = null;
 			if (valueType != null)
 			{
-				LinkedElementCollection<DataType> dataTypes = valueType.Model.DataTypeCollection;
+				LinkedElementCollection<DataType> dataTypes = valueType.ResolvedModel.DataTypeCollection;
 				retVal = dataTypes;
 				int count = dataTypes.Count;
 				int unspecifiedIndex = dataTypes.FindIndex(delegate(DataType testType){return testType is UnspecifiedDataType;});

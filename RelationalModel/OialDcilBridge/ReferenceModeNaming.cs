@@ -61,23 +61,25 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		public static void PopulateReferenceModeNamingExtensionProperties(object extendableElement, PropertyDescriptorCollection properties)
 		{
 			ObjectType objectType;
+			ORMModel model;
 			IReferenceModePattern referenceMode;
 			if (null != (objectType = extendableElement as ObjectType) &&
 				!objectType.IsDeleted &&
+				null != (model = objectType.Model) &&
 				null != (referenceMode = objectType.ReferenceModePattern))
 			{
 				ReferenceModeType referenceModeType = referenceMode.ReferenceModeType;
 				properties.Add(ReferenceToEntityTypeNamingChoicePropertyDescriptor.Instance);
 				ReferenceModeNamingChoice currentChoice = GetNamingChoiceFromObjectType(objectType, ReferenceModeNamingUse.ReferenceToEntityType);
 				if (currentChoice == ReferenceModeNamingChoice.CustomFormat ||
-					(currentChoice == ReferenceModeNamingChoice.ModelDefault && GetNamingChoiceFromORMModel(objectType.Model, referenceModeType, ReferenceModeNamingUse.ReferenceToEntityType) == EffectiveReferenceModeNamingChoice.CustomFormat))
+					(currentChoice == ReferenceModeNamingChoice.ModelDefault && GetNamingChoiceFromORMModel(model, referenceModeType, ReferenceModeNamingUse.ReferenceToEntityType) == EffectiveReferenceModeNamingChoice.CustomFormat))
 				{
 					properties.Add(ReferenceToEntityTypeCustomFormatPropertyDescriptor.Instance);
 				}
 				properties.Add(PrimaryIdentifierNamingChoicePropertyDescriptor.Instance);
 				currentChoice = GetNamingChoiceFromObjectType(objectType, ReferenceModeNamingUse.PrimaryIdentifier);
 				if (currentChoice == ReferenceModeNamingChoice.CustomFormat ||
-					(currentChoice == ReferenceModeNamingChoice.ModelDefault && GetNamingChoiceFromORMModel(objectType.Model, referenceModeType, ReferenceModeNamingUse.PrimaryIdentifier) == EffectiveReferenceModeNamingChoice.CustomFormat))
+					(currentChoice == ReferenceModeNamingChoice.ModelDefault && GetNamingChoiceFromORMModel(model, referenceModeType, ReferenceModeNamingUse.PrimaryIdentifier) == EffectiveReferenceModeNamingChoice.CustomFormat))
 				{
 					properties.Add(PrimaryIdentifierCustomFormatPropertyDescriptor.Instance);
 				}
@@ -235,12 +237,14 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				{
 					ObjectType objectType;
 					IReferenceModePattern referenceMode;
+					ORMModel ormModel;
 					if (null != (objectType = EditorUtility.ResolveContextInstance(context.Instance, true) as ObjectType) &&
-						null != (referenceMode = objectType.ReferenceModePattern))
+						null != (referenceMode = objectType.ReferenceModePattern) &&
+						null != (ormModel = objectType.Model))
 					{
 						ReferenceModeType referenceModeType = referenceMode.ReferenceModeType;
 						string currentModelDefault = null;
-						switch (GetNamingChoiceFromORMModel(objectType.Model, referenceModeType, TargetUse))
+						switch (GetNamingChoiceFromORMModel(ormModel, referenceModeType, TargetUse))
 						{
 							case EffectiveReferenceModeNamingChoice.ValueTypeName:
 								currentModelDefault = ResourceStrings.ReferenceModeNamingCurrentModelDefaultValueTypeName;
@@ -1610,8 +1614,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		private static string ResolveObjectTypeName(ObjectType possibleEntityType, ObjectType possibleValueType, ObjectType alternateEntityType, bool preferEntityType, ReferenceModeNamingUse targetUse, ReferenceModeNamingChoice? forceNamingChoice, NameGenerator nameGenerator, AddNamePart addNamePartCallback, out bool consumedValueType)
 		{
 			consumedValueType = false;
+			ORMModel ormModel;
 			IReferenceModePattern referenceMode;
 			if (possibleEntityType != null &&
+				null != (ormModel = possibleEntityType.Model) &&
 				null != (referenceMode = possibleEntityType.ReferenceModePattern))
 			{
 				ReferenceModeType referenceModeType = referenceMode.ReferenceModeType;
@@ -1637,7 +1643,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				switch (choice)
 				{
 					case ReferenceModeNamingChoice.ModelDefault:
-						switch (GetNamingChoiceFromORMModel(possibleEntityType.Model, referenceModeType, targetUse))
+						switch (GetNamingChoiceFromORMModel(ormModel, referenceModeType, targetUse))
 						{
 							case EffectiveReferenceModeNamingChoice.EntityTypeName:
 								if (addNamePartCallback != null)
@@ -1724,7 +1730,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				string customFormat = GetCustomFormatFromObjectType(possibleEntityType, targetUse);
 				if (string.IsNullOrEmpty(customFormat))
 				{
-					customFormat = GetCustomFormatFromORMModel(possibleEntityType.Model, referenceModeType, targetUse);
+					customFormat = GetCustomFormatFromORMModel(ormModel, referenceModeType, targetUse);
 				}
 				if (!string.IsNullOrEmpty(customFormat))
 				{
@@ -1888,7 +1894,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					return;
 				}
 			}
-			else if (null != (valueTypeReferenceMode = objectType.Model.GetReferenceModeForValueType(objectType)))
+			else if (null != (valueTypeReferenceMode = objectType.ResolvedModel.GetReferenceModeForValueType(objectType)))
 			{
 				SeparateReferenceModeParts(valueTypeReferenceMode, valueTypeReferenceMode.ReferenceModeType, objectType, nameGenerator, addNamePartCallback);
 				return;
@@ -1966,7 +1972,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			ORMModel model;
 			IReferenceModePattern referenceMode;
 			if (null != objectType &&
-				null != (model = objectType.Model) &&
+				null != (model = objectType.ResolvedModel) &&
 				null != (referenceMode = objectType.ReferenceModePattern))
 			{
 				return GetCustomFormatFromORMModel(model, referenceMode.ReferenceModeType, targetUse);
@@ -2051,10 +2057,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					{
 						ObjectType objectType;
 						IReferenceModePattern referenceMode;
+						ORMModel ormModel;
 						if (null != (objectType = this.ObjectType) &&
-							null != (referenceMode = objectType.ReferenceModePattern))
+							null != (referenceMode = objectType.ReferenceModePattern) &&
+							null != (ormModel = objectType.Model))
 						{
-							return GetNamingChoiceFromORMModel(objectType.Model, referenceMode.ReferenceModeType, targetUse) == EffectiveReferenceModeNamingChoice.CustomFormat;
+							return GetNamingChoiceFromORMModel(ormModel, referenceMode.ReferenceModeType, targetUse) == EffectiveReferenceModeNamingChoice.CustomFormat;
 						}
 					}
 					break;

@@ -892,7 +892,7 @@
     <comment xml:space="preserve">The description of the dynamic background color.</comment>
   </data>
   <data name="ORMDiagramDynamicColor.Category">
-    <value xml:space="preserve">Custom Colors</value>
+    <value xml:space="preserve">Custom Diagram Colors</value>
     <comment xml:space="preserve">The display name for the category used for display colors.</comment>
   </data>
   <data name="ORMDiagramDynamicColor.Constraint">

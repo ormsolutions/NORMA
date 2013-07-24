@@ -24,13 +24,13 @@
 		<arg:Rule class="OIALModel.ModelHasFactTypeAddRule"/>
 		<arg:Rule class="OIALModel.ModelHasFactTypeDeletingRule"/>
 		<arg:Rule class="OIALModel.ModelHasSetConstraintAddRule"/>
-		<arg:Rule class="OIALModel.ModelHasSetConstraintChangeRule"/>
 		<arg:Rule class="OIALModel.ModelHasSetConstraintDeletingRule"/>
 		<arg:Rule class="OIALModel.ConstraintRoleSequenceHasRoleAddRule"/>
 		<arg:Rule class="OIALModel.ConstraintRoleSequenceHasRoleDeletingRule"/>
 		<arg:Rule class="OIALModel.UniquenessConstraintChangeRule"/>
 		<arg:Rule class="OIALModel.MandatoryConstraintChangeRule"/>
 		<arg:Rule class="OIALModel.RoleBaseChangeRule"/>
+		<arg:Rule class="OIALModel.SetConstraintChangeRule"/>
 		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeAddRule"/>
 		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.OIALModelHasConceptTypeDeleteRule"/>
 		<arg:Rule class="OIALModel.CheckConceptTypeParentExclusiveMandatory.ConceptTypeAbsorbedConceptTypeAddRule"/>

@@ -59,7 +59,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					if (null != (objectType = instance as ObjectType) ||
 						(null != (factType = instance as FactType) && null != (objectType = factType.NestingType)))
 					{
-						ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(refMode, objectType.Model, false);
+						ReferenceMode singleMode = ReferenceMode.GetReferenceModeForDecoratedName(refMode, objectType.ResolvedModel, false);
 						return (object)singleMode ?? refMode;
 					}
 				}

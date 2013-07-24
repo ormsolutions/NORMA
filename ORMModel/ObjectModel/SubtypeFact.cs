@@ -39,8 +39,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static SubtypeFact Create(ObjectType subtype, ObjectType supertype)
 		{
 			Debug.Assert(subtype != null && supertype != null);
-			SubtypeFact retVal = new SubtypeFact(subtype.Store);
-			retVal.Model = subtype.Model;
+			SubtypeFact retVal;
+			IHasAlternateOwner<ObjectType> toAlternateOwner;
+			IAlternateElementOwner<FactType> alternateFactTypeOwner;
+			DomainClassInfo alternateCtor;
+			if (null != (toAlternateOwner = subtype as IHasAlternateOwner<ObjectType>) &&
+				null != (alternateFactTypeOwner = toAlternateOwner.AlternateOwner as IAlternateElementOwner<FactType>) &&
+				null != (alternateCtor = alternateFactTypeOwner.GetOwnedElementClassInfo(typeof(SubtypeFact))))
+			{
+				((IHasAlternateOwner<FactType>)(retVal = (SubtypeFact)subtype.Partition.ElementFactory.CreateElement(alternateCtor))).AlternateOwner = alternateFactTypeOwner;
+			}
+			else
+			{
+				(retVal = new SubtypeFact(subtype.Partition)).Model = subtype.Model;
+			}
 			retVal.Subtype = subtype;
 			retVal.Supertype = supertype;
 			if (subtype.IsValueType)
@@ -190,13 +202,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void InitializeSubtypeAddRule(ElementAddedEventArgs e)
 		{
 			FactType factType = (FactType)e.ModelElement;
-			Store store = factType.Store;
-			if (CopyMergeUtility.GetIntegrationPhase(store) == CopyClosureIntegrationPhase.None)
+			if (CopyMergeUtility.GetIntegrationPhase(factType.Store) == CopyClosureIntegrationPhase.None)
 			{
 				// Establish role collecton
 				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-				SubtypeMetaRole subTypeMetaRole = new SubtypeMetaRole(store);
-				SupertypeMetaRole superTypeMetaRole = new SupertypeMetaRole(store);
+				Partition partition = factType.Partition;
+				SubtypeMetaRole subTypeMetaRole = new SubtypeMetaRole(partition);
+				SupertypeMetaRole superTypeMetaRole = new SupertypeMetaRole(partition);
 				roles.Add(subTypeMetaRole);
 				roles.Add(superTypeMetaRole);
 
@@ -234,7 +246,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SubtypeFact subtypeFact;
 			if (link.SetConstraint.Constraint.ConstraintIsInternal &&
 				null != (subtypeFact = link.FactType as SubtypeFact) &&
-				subtypeFact.Model != null &&
+				subtypeFact.ResolvedModel != null &&
 				CopyMergeUtility.GetIntegrationPhase(link.Store) == CopyClosureIntegrationPhase.None)
 			{
 				// Allow before adding to model, not afterwards,
@@ -254,7 +266,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (link.SetConstraint.Constraint.ConstraintIsInternal &&
 				null != (subtypeFact = link.FactType as SubtypeFact) &&
 				!subtypeFact.IsDeleted &&
-				subtypeFact.Model != null)
+				subtypeFact.ResolvedModel != null)
 			{
 				// Allow before adding to model, not afterwards
 				ThrowPatternModifiedException();
@@ -271,7 +283,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SubtypeFact subtypeFact;
 			if (null != (subtypeFact = link.FactType as SubtypeFact))
 			{
-				if (subtypeFact.Model != null &&
+				if (subtypeFact.ResolvedModel != null &&
 					CopyMergeUtility.GetIntegrationPhase(link.Store) == CopyClosureIntegrationPhase.None)
 				{
 					// Allow before adding to model, not afterwards
@@ -298,7 +310,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SubtypeFact subtypeFact = link.FactType as SubtypeFact;
 			if (null != (subtypeFact = link.FactType as SubtypeFact) &&
 				!subtypeFact.IsDeleted &&
-				subtypeFact.Model != null)
+				subtypeFact.ResolvedModel != null)
 			{
 				// Allow before adding to model, not afterwards
 				ThrowPatternModifiedException();
@@ -331,7 +343,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						SubtypeFact subtypeFact;
 						if (null != (subtypeFact = untypedRole.FactType as SubtypeFact) &&
-							subtypeFact.Model != null &&
+							subtypeFact.ResolvedModel != null &&
 							CopyMergeUtility.GetIntegrationPhase(subtypeFact.Store) == CopyClosureIntegrationPhase.None)
 						{
 							// Allow before adding to model, not afterwards
@@ -550,7 +562,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				SubtypeFact subtypeFact = facts[0] as SubtypeFact;
 				if (null != (subtypeFact = facts[0] as SubtypeFact) &&
 					!subtypeFact.IsDeleted &&
-					subtypeFact.Model != null)
+					subtypeFact.ResolvedModel != null)
 				{
 					// Allow before adding to model, not afterwards
 					ThrowPatternModifiedException();
@@ -566,7 +578,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Guid attributeId = e.DomainProperty.Id;
 			SetConstraint constraint = e.ModelElement as SetConstraint;
-			if (!constraint.IsDeleted)
+			if (!constraint.IsDeleted &&
+				!constraint.IsDeleting)
 			{
 				LinkedElementCollection<FactType> testFacts = null;
 				if (attributeId == UniquenessConstraint.IsInternalDomainPropertyId ||
@@ -674,7 +687,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			ValueTypeHasDataType link = e.ModelElement as ValueTypeHasDataType;
 			ObjectType objectType = link.ValueType;
-			if (!objectType.IsDeleted)
+			if (!objectType.IsDeleted && !objectType.IsDeleting)
 			{
 				LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
 				int playedRoleCount = playedRoles.Count;
@@ -751,16 +764,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// UNDONE: We can still save explicit readings, but we won't
 					// be able to load these in later file formats. Get rid of any serialized readings.
 					element.ReadingOrderCollection.Clear();
+					Partition partition = element.Partition;
 
 					// Note that rules aren't on, so we can read the Multiplicity properties,
 					// but we can't set them. All changes must be made explicitly.
 					if (superTypeMetaRole.Multiplicity != RoleMultiplicity.ExactlyOne)
 					{
-						EnsureSingleColumnUniqueAndMandatory(store, element.Model, subTypeMetaRole, true, notifyAdded);
+						EnsureSingleColumnUniqueAndMandatory(element, subTypeMetaRole, true, notifyAdded);
 					}
 					if (subTypeMetaRole.Multiplicity != RoleMultiplicity.ZeroToOne)
 					{
-						EnsureSingleColumnUniqueAndMandatory(store, element.Model, superTypeMetaRole, false, notifyAdded);
+						EnsureSingleColumnUniqueAndMandatory(element, superTypeMetaRole, false, notifyAdded);
 					}
 					
 					// Switch to using the new ProvidesPreferredIdentifier path property instead of the deprecated
@@ -799,11 +813,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (derivationExpression == null && derivationRule == null)
 							{
 								notifyAdded.ElementAdded(derivationRule = new SubtypeDerivationRule(
-									store,
+									partition,
 									new PropertyAssignment(SubtypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
 								notifyAdded.ElementAdded(new SubtypeHasDerivationRule(subtype, derivationRule));
 								notifyAdded.ElementAdded(derivationNote = new DerivationNote(
-									store,
+									partition,
 									new PropertyAssignment(DerivationNote.BodyDomainPropertyId, ruleBody)));
 								notifyAdded.ElementAdded(new SubtypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
 							}
@@ -817,7 +831,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								else
 								{
 									notifyAdded.ElementAdded(derivationNote = new DerivationNote(
-										store,
+										partition,
 										new PropertyAssignment(DerivationNote.BodyDomainPropertyId, ruleBody)));
 									notifyAdded.ElementAdded(new SubtypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
 								}
@@ -858,7 +872,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				factType.Delete();
 			}
-			private static void EnsureSingleColumnUniqueAndMandatory(Store store, ORMModel model, Role role, bool requireMandatory, INotifyElementAdded notifyAdded)
+			private static void EnsureSingleColumnUniqueAndMandatory(SubtypeFact subtypeFact, Role role, bool requireMandatory, INotifyElementAdded notifyAdded)
 			{
 				LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
 				int sequenceCount = sequences.Count;
@@ -902,19 +916,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
-				if (!haveUniqueness)
+				if (!haveUniqueness || !haveMandatory)
 				{
-					ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-					ic.RoleCollection.Add(role);
-					ic.Model = model;
-					notifyAdded.ElementAdded(ic, true);
-				}
-				if (!haveMandatory)
-				{
-					ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(store);
-					ic.RoleCollection.Add(role);
-					ic.Model = model;
-					notifyAdded.ElementAdded(ic, true);
+					IHasAlternateOwner<FactType> toAlternateOwner;
+					IAlternateElementOwner<SetConstraint> alternateConstraintOwner;
+					if (null != (toAlternateOwner = subtypeFact as IHasAlternateOwner<FactType>) &&
+						null != (alternateConstraintOwner = toAlternateOwner.AlternateOwner as IAlternateElementOwner<SetConstraint>))
+					{
+						if (!haveUniqueness)
+						{
+							ic = UniquenessConstraint.CreateInternalUniquenessConstraint(subtypeFact);
+							ic.RoleCollection.Add(role);
+							notifyAdded.ElementAdded(ic, true);
+						}
+					}
+					if (!haveMandatory)
+					{
+						ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(role);
+						notifyAdded.ElementAdded(ic, true);
+					}
 				}
 			}
 		}

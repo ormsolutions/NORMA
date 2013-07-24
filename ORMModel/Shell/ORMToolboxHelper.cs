@@ -91,7 +91,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// constraints without unpacking the model. We want to merge internals into a fact
 					// and externals into the model.
 					group.UserData = ORMModel.InternalUniquenessConstraintUserDataKey;
-					group.AddGraph(UniquenessConstraint.CreateInternalUniquenessConstraint(store), true);
+					group.AddGraph(UniquenessConstraint.CreateInternalUniquenessConstraint(store.DefaultPartition), true);
 				}
 				else
 				{

@@ -629,12 +629,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return new DomainRolePlayerInfo[]
 			{
-				new DomainRolePlayerInfo(typeof(FactConstraint), "FactType", FactConstraint.FactTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(FactConstraint), "Constraint", FactConstraint.ConstraintDomainRoleId),
-				new DomainRolePlayerInfo(typeof(FactSetComparisonConstraint), "FactType", FactSetComparisonConstraint.FactTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(FactConstraint), "FactType", FactConstraint.FactTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(FactSetComparisonConstraint), "SetComparisonConstraint", FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId),
-				new DomainRolePlayerInfo(typeof(FactSetConstraint), "FactType", FactSetConstraint.FactTypeDomainRoleId),
+				new DomainRolePlayerInfo(typeof(FactSetComparisonConstraint), "FactType", FactSetComparisonConstraint.FactTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(FactSetConstraint), "SetConstraint", FactSetConstraint.SetConstraintDomainRoleId),
+				new DomainRolePlayerInfo(typeof(FactSetConstraint), "FactType", FactSetConstraint.FactTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ORMModelElementHasExtensionElement), "ExtendedElement", ORMModelElementHasExtensionElement.ExtendedElementDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ORMModelElementHasExtensionElement), "Extension", ORMModelElementHasExtensionElement.ExtensionDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ORMModelElementHasExtensionModelError), "ExtendedElement", ORMModelElementHasExtensionModelError.ExtendedElementDomainRoleId),
@@ -685,8 +685,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainRolePlayerInfo(typeof(ExclusiveOrConstraintCoupler), "ExclusionConstraint", ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SetComparisonConstraintHasRoleSequence), "ExternalConstraint", SetComparisonConstraintHasRoleSequence.ExternalConstraintDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SetComparisonConstraintHasRoleSequence), "RoleSequence", SetComparisonConstraintHasRoleSequence.RoleSequenceDomainRoleId),
-				new DomainRolePlayerInfo(typeof(ConstraintRoleSequenceHasRole), "Role", ConstraintRoleSequenceHasRole.RoleDomainRoleId),
 				new DomainRolePlayerInfo(typeof(ConstraintRoleSequenceHasRole), "ConstraintRoleSequence", ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ConstraintRoleSequenceHasRole), "Role", ConstraintRoleSequenceHasRole.RoleDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SetComparisonConstraintHasTooFewRoleSequencesError), "SetComparisonConstraint", SetComparisonConstraintHasTooFewRoleSequencesError.SetComparisonConstraintDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SetComparisonConstraintHasTooFewRoleSequencesError), "TooFewRoleSequencesError", SetComparisonConstraintHasTooFewRoleSequencesError.TooFewRoleSequencesErrorDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SetComparisonConstraintHasTooManyRoleSequencesError), "SetComparisonConstraint", SetComparisonConstraintHasTooManyRoleSequencesError.SetComparisonConstraintDomainRoleId),

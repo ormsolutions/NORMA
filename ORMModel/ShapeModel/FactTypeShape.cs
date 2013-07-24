@@ -1842,7 +1842,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						else
 						{
 							FactType factType;
-							if (isHighlighted || isSticky || ModelError.HasErrors(factType = factShape.AssociatedFactType, ModelErrorUses.DisplayPrimary, (null != (model = factType.Model)) ? model.ModelErrorDisplayFilter : null))
+							if (isHighlighted || isSticky || ModelError.HasErrors(factType = factShape.AssociatedFactType, ModelErrorUses.DisplayPrimary, (null != (model = factType.ResolvedModel)) ? model.ModelErrorDisplayFilter : null))
 							{
 								factShape.DrawHighlight(g, boundsF, isSticky ? null : factShape.BackgroundBrushId, null, isSticky, factShapeHighlighted || isHighlighted);
 							}
@@ -2715,7 +2715,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								#endregion // Handling StickyObject highlighting and selection
 								if (fillBackground)
 								{
-									ORMModel model = factType.Model;
+									ORMModel model = factType.ResolvedModel;
 									if (highlightThisRole)
 									{
 										if (ModelError.HasErrors(currentRoleBase, ModelErrorUses.DisplayPrimary, (model != null) ? model.ModelErrorDisplayFilter : null))
@@ -3464,7 +3464,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMModel model;
 				if (null == associatedFact ||
 					(null != (objectification = associatedFact.Objectification) && !objectification.IsImplied) ||
-					ModelError.HasErrors(associatedFact, ModelErrorUses.DisplayPrimary, (null != (model = associatedFact.Model)) ? model.ModelErrorDisplayFilter : null))
+					ModelError.HasErrors(associatedFact, ModelErrorUses.DisplayPrimary, (null != (model = associatedFact.ResolvedModel)) ? model.ModelErrorDisplayFilter : null))
 				{
 					return base.BackgroundBrushId;
 				}
@@ -5433,7 +5433,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				nestingType = objectification.NestingType;
 			}
-			if (!nestingType.IsDeleted && nestingType.Model == null)
+			if (!nestingType.IsDeleted && nestingType.ResolvedModel == null)
 			{
 				return false;
 			}
@@ -5821,6 +5821,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				nestingType = link.NestingType;
 			}
+			ORMModel model;
+			if (null == (model = nestedFactType.Model))
+			{
+				// UNDONE: AlternateOwner Allow shapes for elements associated with alternate owners
+				return;
+			}
 
 			LinkedElementCollection<PresentationElement> pels;
 			// If the objectification should not be drawn, we only need to make sure that the nesting ObjectType has no shapes
@@ -5972,7 +5978,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (!hasShape &&
 				ORMShapeDomainModel.AllowElementFixup(nestedFactType))
 			{
-				Diagram.FixUpDiagram(nestedFactType.Model, nestedFactType);
+				Diagram.FixUpDiagram(model, nestedFactType);
 				missingNameShapes = true;
 			}
 			if (missingNameShapes)
@@ -6101,7 +6107,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			// Part2: Decide whether to keep the FactTypeShape, replace
 			// it with an ObjectTypeShape, or have both shapes. Move
 			// links as appropriate if an ObjectTypeShape is created.
-			ORMModel nestingTypeModel = nestingTypeRemoved ? null : nestingType.Model;
 			if (!nestedFactTypeRemoved)
 			{
 				LinkedElementCollection<PresentationElement> presentationElements = PresentationViewsSubject.GetPresentation(nestedFactType);

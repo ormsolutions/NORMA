@@ -171,8 +171,7 @@ namespace Neumont.Tools.ORM.OIALModel
 		//}
 		//public static void ValidateModelHasSetConstraintAdd(ModelElement element, INotifyElementAdded notifyAdded)
 		//{
-		//    ModelHasSetConstraint setConstraint = element as ModelHasSetConstraint;
-		//    ORMModel model = setConstraint.Model;
+		//    ORMModel model = ((ModelHasSetConstraint)element).Model;
 		//    OIALModel oial = (OIALModel)model.GetCounterpartRolePlayer(
 		//        OIALModelHasORMModel.ORMModelMetaRoleGuid,
 		//        OIALModelHasORMModel.OIALModelMetaRoleGuid, false);
@@ -193,10 +192,9 @@ namespace Neumont.Tools.ORM.OIALModel
 		//}
 		//public static void ValidateModelHasSetConstraintChange(ModelElement element, INotifyElementAdded notifyAdded)
 		//{
-		//    ModelHasSetConstraint setConstraint = element as ModelHasSetConstraint;
-		//    if (!setConstraint.IsRemoved)
+		//    if (!element.IsRemoved)
 		//    {
-		//        ORMModel model = setConstraint.Model;
+		//        ORMModel model = ((ModelHasSetConstraint)element).Model;
 		//        OIALModel oial = (OIALModel)model.GetCounterpartRolePlayer(
 		//            OIALModelHasORMModel.ORMModelMetaRoleGuid,
 		//            OIALModelHasORMModel.OIALModelMetaRoleGuid, false);
@@ -305,7 +303,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				FrameworkDomainModel.DelayValidateElement((e.ModelElement as ModelHasObjectType).Model, DelayValidateModel);
+				FrameworkDomainModel.DelayValidateElement(((ModelHasObjectType)e.ModelElement).Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -319,9 +317,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ObjectType objectType = (e.ModelElement as ModelHasObjectType).ObjectType;
-				ORMModel model = objectType.Model;
-				FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+				FrameworkDomainModel.DelayValidateElement(((ModelHasObjectType)e.ModelElement).Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -335,8 +331,8 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				ORMModel model = (e.ModelElement as ObjectType).Model;
-				if (model != null)
+				ORMModel model;
+				if (null != (model = ((ObjectType)e.ModelElement).Model))
 				{
 					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
@@ -353,7 +349,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				FrameworkDomainModel.DelayValidateElement((e.ModelElement as ModelHasFactType).Model, DelayValidateModel);
+				FrameworkDomainModel.DelayValidateElement(((ModelHasFactType)e.ModelElement).Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -367,9 +363,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				FactType fact = (e.ModelElement as ModelHasFactType).FactType;
-				ORMModel model = fact.Model;
-				FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+				FrameworkDomainModel.DelayValidateElement(((ModelHasFactType)e.ModelElement).Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -383,24 +377,24 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ModelHasSetConstraint setConstraint = e.ModelElement as ModelHasSetConstraint;
-				FrameworkDomainModel.DelayValidateElement(setConstraint.Model, DelayValidateModel);
+				FrameworkDomainModel.DelayValidateElement(((ModelHasSetConstraint)e.ModelElement).Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
 		/// This rule listens for when A SetConstraint is changed.
 		/// </summary>
-		[RuleOn(typeof(ModelHasSetConstraint))] // ChangeRule
-		private sealed partial class ModelHasSetConstraintChangeRule : ChangeRule
+		[RuleOn(typeof(SetConstraint))] // ChangeRule
+		private sealed partial class SetConstraintChangeRule : ChangeRule
 		{
 			/// <summary>
 			/// When a SetConstraint is changed we DelayValidate the Model.
 			/// </summary>
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				ModelHasSetConstraint setConstraint = e.ModelElement as ModelHasSetConstraint;
-				ORMModel model = setConstraint.Model;
-				if (model != null)
+				SetConstraint setConstraint = (SetConstraint)e.ModelElement;
+				ORMModel model;
+				if (!setConstraint.IsDeleted &&
+					null != (model = setConstraint.Model))
 				{
 					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
@@ -417,9 +411,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ModelHasSetConstraint setConstraint = e.ModelElement as ModelHasSetConstraint;
-				ORMModel model = setConstraint.Model;
-				FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+				FrameworkDomainModel.DelayValidateElement(((ModelHasSetConstraint)e.ModelElement).Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -434,12 +426,12 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <param name="e"></param>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ObjectTypePlaysRole objectRole = e.ModelElement as ObjectTypePlaysRole;
+				ObjectTypePlaysRole objectRole = (ObjectTypePlaysRole)e.ModelElement;
 				ObjectType objectType = objectRole.RolePlayer;
 				ORMModel model = objectType.Model;
 				if (model != null)
 				{
-					FrameworkDomainModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
 			}
 		}
@@ -454,9 +446,12 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ObjectTypePlaysRole objectRole = e.ModelElement as ObjectTypePlaysRole;
-				ObjectType objectType = objectRole.RolePlayer;
-				FrameworkDomainModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+				ObjectType objectType = ((ObjectTypePlaysRole)e.ModelElement).RolePlayer;
+				ORMModel model;
+				if (null != (model = objectType.Model))
+				{
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+				}
 			}
 		}
 		/// <summary>
@@ -468,14 +463,13 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// <summary>
 			/// When a ConstraintRoleSequence is added to a Role we DelayValidate the Model.
 			/// </summary>
-			/// <param name="e"></param>
 			public sealed override void ElementAdded(ElementAddedEventArgs e)
 			{
-				ConstraintRoleSequenceHasRole constraintSequence = e.ModelElement as ConstraintRoleSequenceHasRole;
-				RoleBase rolebase = constraintSequence.Role;
-				FactType factType = rolebase.FactType;
-				ORMModel model = factType.Model;
-				if (model != null)
+				RoleBase roleBase = ((ConstraintRoleSequenceHasRole)e.ModelElement).Role;
+				FactType factType;
+				ORMModel model;
+				if (null != (factType = roleBase.FactType) &&
+					null != (model = factType.Model))
 				{
 					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
@@ -493,10 +487,14 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementDeleting(ElementDeletingEventArgs e)
 			{
-				ConstraintRoleSequenceHasRole constraintSequence = e.ModelElement as ConstraintRoleSequenceHasRole;
-				RoleBase rolebase = constraintSequence.Role;
-				FactType factType = rolebase.FactType;
-				FrameworkDomainModel.DelayValidateElement(factType.Model, DelayValidateModel);
+				RoleBase roleBase = ((ConstraintRoleSequenceHasRole)e.ModelElement).Role;
+				FactType factType;
+				ORMModel model;
+				if (null != (factType = roleBase.FactType) &&
+					null != (model = factType.Model))
+				{
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+				}
 			}
 		}
 		/// <summary>
@@ -510,17 +508,18 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				UniquenessConstraint constraint = e.ModelElement as UniquenessConstraint;
-				LinkedElementCollection<Role> roles = constraint.RoleCollection;
+				LinkedElementCollection<Role> roles = ((UniquenessConstraint)e.ModelElement).RoleCollection;
 				int rolesCount = roles.Count;
 				int i;
 				for (i = 0; i < rolesCount; ++i)
 				{
-					RoleBase role = roles[i];
-					ORMModel model = role.FactType.Model;
-					if (model != null)
+					FactType factType;
+					ORMModel model;
+					if (null != (factType = roles[i].FactType) &&
+						null != (model = factType.Model))
 					{
 						FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+						break;
 					}
 				}
 			}
@@ -536,15 +535,15 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				MandatoryConstraint constraint = e.ModelElement as MandatoryConstraint;
-				LinkedElementCollection<Role> roles = constraint.RoleCollection;
+				LinkedElementCollection<Role> roles = ((MandatoryConstraint)e.ModelElement).RoleCollection;
 				int rolesCount = roles.Count;
 				int i;
 				for (i = 0; i < rolesCount; ++i)
 				{
-					RoleBase role = roles[i];
-					ORMModel model = role.FactType.Model;
-					if (model != null)
+					FactType factType;
+					ORMModel model;
+					if (null != (factType = roles[i].FactType) &&
+						null != (model = factType.Model))
 					{
 						FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 					}
@@ -562,10 +561,10 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			public sealed override void ElementPropertyChanged(ElementPropertyChangedEventArgs e)
 			{
-				RoleBase role = e.ModelElement as RoleBase;
-				FactType fact = role.FactType;
-				ORMModel model = fact.Model;
-				if (model != null)
+				FactType factType;
+				ORMModel model;
+				if (null != (factType = ((RoleBase)e.ModelElement).FactType) &&
+					null != (model = factType.Model))
 				{
 					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
@@ -598,16 +597,19 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			protected sealed override void ProcessElement(ObjectType element, Store store, INotifyElementAdded notifyAdded)
 			{
-				ObjectType objectType = element as ObjectType;
-				ORMModel model = objectType.Model;
-				OIALModel oil = OIALModelHasORMModel.GetOIALModel(model);
-				if (oil == null)
+				ORMModel model;
+				if (!element.IsDeleted &&
+					null != (model = element.Model))
 				{
-					oil = new OIALModel(store);
-					oil.ORMModel = model;
-					notifyAdded.ElementAdded(oil, true);
+					OIALModel oil = OIALModelHasORMModel.GetOIALModel(model);
+					if (oil == null)
+					{
+						oil = new OIALModel(store);
+						oil.ORMModel = model;
+						notifyAdded.ElementAdded(oil, true);
+					}
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
-				FrameworkDomainModel.DelayValidateElement(objectType.Model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -634,16 +636,19 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			protected sealed override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
 			{
-				FactType fact = element as FactType;
-				ORMModel model = fact.Model;
-				OIALModel oil = OIALModelHasORMModel.GetOIALModel(model);
-				if (oil == null)
+				ORMModel model;
+				if (!element.IsDeleted &&
+					null != (model = ((FactType)element).Model))
 				{
-					oil = new OIALModel(store);
-					oil.ORMModel = model;
-					notifyAdded.ElementAdded(oil, true);
+					OIALModel oil = OIALModelHasORMModel.GetOIALModel(model);
+					if (oil == null)
+					{
+						oil = new OIALModel(store);
+						oil.ORMModel = model;
+						notifyAdded.ElementAdded(oil, true);
+					}
+					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 				}
-				FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 			}
 		}
 		/// <summary>
@@ -670,8 +675,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			/// </summary>
 			protected sealed override void ProcessElement(ModelHasSetConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
-				ModelHasSetConstraint setConstraint = element as ModelHasSetConstraint;
-				ORMModel model = setConstraint.Model;
+				ORMModel model = ((ModelHasSetConstraint)element).Model;
 				OIALModel oil = OIALModelHasORMModel.GetOIALModel(model);
 				if (oil == null)
 				{

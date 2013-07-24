@@ -2374,16 +2374,16 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="FactType" PropertyName="ConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="FactType" Id="D60CB2BF-7DE7-4CED-A00F-BF7C3A2E5248">
+				<DomainRole Name="Constraint" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Constraint" Id="9B305629-1EFA-404F-AE8E-475117B287AE">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactType"/>
+						<DomainClassMoniker Name="ORMNamedElement"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="Constraint" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Constraint" Id="9B305629-1EFA-404F-AE8E-475117B287AE">
+				<DomainRole Name="FactType" PropertyName="ConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="FactType" Id="D60CB2BF-7DE7-4CED-A00F-BF7C3A2E5248">
 					<RolePlayer>
-						<DomainClassMoniker Name="ORMNamedElement"/>
+						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -2394,16 +2394,16 @@
 				<DomainRelationshipMoniker Name="FactConstraint"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="FactType" PropertyName="SetComparisonConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="F7733FAF-1029-480E-8FEA-96FDD65AB212">
+				<DomainRole Name="SetComparisonConstraint" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="575F65E4-682E-427A-B273-3D30D909A816">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactType"/>
+						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="SetComparisonConstraint" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="575F65E4-682E-427A-B273-3D30D909A816">
+				<DomainRole Name="FactType" PropertyName="SetComparisonConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="F7733FAF-1029-480E-8FEA-96FDD65AB212">
 					<RolePlayer>
-						<DomainClassMoniker Name="SetComparisonConstraint"/>
+						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -2414,16 +2414,16 @@
 				<DomainRelationshipMoniker Name="FactConstraint"/>
 			</BaseRelationship>
 			<Source>
-				<DomainRole Name="FactType" PropertyName="SetConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="DE9A381F-5346-4C95-9D48-E468B8CF8A29">
+				<DomainRole Name="SetConstraint" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="7789FD46-6E28-4AB7-AFC5-7F17B95AC4D9">
 					<RolePlayer>
-						<DomainClassMoniker Name="FactType"/>
+						<DomainClassMoniker Name="SetConstraint"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="SetConstraint" PropertyName="FactTypeCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="7789FD46-6E28-4AB7-AFC5-7F17B95AC4D9">
+				<DomainRole Name="FactType" PropertyName="SetConstraintCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="FactType" Id="DE9A381F-5346-4C95-9D48-E468B8CF8A29">
 					<RolePlayer>
-						<DomainClassMoniker Name="SetConstraint"/>
+						<DomainClassMoniker Name="FactType"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -2598,7 +2598,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ObjectType" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectType" Id="F827BD9B-9EDA-41C6-BAE9-ACFD8A19BA08">
+				<DomainRole Name="ObjectType" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ObjectType" Id="F827BD9B-9EDA-41C6-BAE9-ACFD8A19BA08">
 					<RolePlayer>
 						<DomainClassMoniker Name="ObjectType"/>
 					</RolePlayer>
@@ -2698,7 +2698,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="SetConstraint" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="550F7793-1381-4D37-A5E2-78C48D0F1331">
+				<DomainRole Name="SetConstraint" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="SetConstraint" Id="550F7793-1381-4D37-A5E2-78C48D0F1331">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetConstraint"/>
 					</RolePlayer>
@@ -2735,7 +2735,7 @@
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="SetComparisonConstraint" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="C176DA76-1A98-4369-B25F-BC1DED5B388C">
+				<DomainRole Name="SetComparisonConstraint" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="SetComparisonConstraint" Id="C176DA76-1A98-4369-B25F-BC1DED5B388C">
 					<RolePlayer>
 						<DomainClassMoniker Name="SetComparisonConstraint"/>
 					</RolePlayer>
@@ -2985,16 +2985,16 @@
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
 			</BaseRelationship>-->
 			<Source>
-				<DomainRole Name="Role" PropertyName="ConstraintRoleSequenceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="1A5A347E-1D5D-4045-9EA0-13B2338FC898">
+				<DomainRole Name="ConstraintRoleSequence" PropertyName="RoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConstraintRoleSequence" Id="9AD53904-280A-4329-A6F0-20E2C44F5607">
 					<RolePlayer>
-						<DomainClassMoniker Name="Role"/>
+						<DomainClassMoniker Name="ConstraintRoleSequence"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Name="ConstraintRoleSequence" PropertyName="RoleCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ConstraintRoleSequence" Id="9AD53904-280A-4329-A6F0-20E2C44F5607">
+				<DomainRole Name="Role" PropertyName="ConstraintRoleSequenceCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Role" Id="1A5A347E-1D5D-4045-9EA0-13B2338FC898">
 					<RolePlayer>
-						<DomainClassMoniker Name="ConstraintRoleSequence"/>
+						<DomainClassMoniker Name="Role"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

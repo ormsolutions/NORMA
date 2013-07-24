@@ -160,6 +160,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				Store store = myCurrentDocument.Store;
 				FactType startingFactType = myEditFactType;
+				// UNDONE: AlternateOwner Pass in a model xor alternate owner to this method.
 				ORMModel model = (myEditFactType != null) ? myEditFactType.Model : store.ElementDirectory.FindElements<ORMModel>()[0];
 				FactType currentFactType = null;
 				ReadingOrder retVal = null;
@@ -204,6 +205,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									currentObjectType = new ObjectType(store);
 									currentObjectType.Name = objectName;
+									// UNDONE: AlternateOwner Support alternate fact type owners
 									currentObjectType.Model = model;
 									(newlyCreatedObjectTypes ?? (newlyCreatedObjectTypes = new Dictionary<string, ObjectType>())).Add(objectName, currentObjectType);
 									tracker.Add(currentObjectType, true);
@@ -416,6 +418,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									currentFactType = new FactType(store);
 									tracker.Add(currentFactType, true);
+									// UNDONE: AlternateOwner Support alternate fact type owners
 									currentFactType.Model = model;
 									for (int i = 0; i < newFactArity; ++i)
 									{

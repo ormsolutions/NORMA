@@ -95,7 +95,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		#endregion // Validation Rules
 	}
 
-	partial class RelationalShapeDomainModel : IModelingEventSubscriber
+	partial class RelationalShapeDomainModel : IModelingEventSubscriber, IRegisterSignalChanges
 	{
 		#region IModelingEventSubscriber Implementation
 		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
@@ -117,5 +117,19 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			}
 		}
 		#endregion // IModelingEventSubscriber Implementation
+		#region IRegisterSignalChanges Implementation
+		/// <summary>
+		/// Implements <see cref="IRegisterSignalChanges.GetSignalPropertyChanges"/>
+		/// </summary>
+		protected IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> GetSignalPropertyChanges()
+		{
+			// Our UpdateCounter properties are also signals that should not trigger a user-visible change.
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(TableShape.UpdateCounterDomainPropertyId, null);
+		}
+		IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> IRegisterSignalChanges.GetSignalPropertyChanges()
+		{
+			return GetSignalPropertyChanges();
+		}
+		#endregion // IRegisterSignalChanges Implementation
 	}
 }

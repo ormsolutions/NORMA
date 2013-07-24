@@ -249,10 +249,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!string.IsNullOrEmpty(value) &&
 				null != (order = ReadingOrder) &&
 				null != (factType = order.FactType) &&
-				null != (model = factType.Model))
+				null != (model = factType.ResolvedModel))
 			{
-				Store store = Store;
-				RuleManager ruleManager = store.RuleManager;
+				RuleManager ruleManager = Store.RuleManager;
 				Type ruleType = typeof(ReadingPropertiesChangedRuleClass);
 				ruleManager.DisableRule(ruleType);
 				try
@@ -270,7 +269,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// a FactTypeNamePartChanged and this error includes the fact type name.
 					if (RequiresUserModificationError == null)
 					{
-						ReadingRequiresUserModificationError newError = new ReadingRequiresUserModificationError(store);
+						ReadingRequiresUserModificationError newError = new ReadingRequiresUserModificationError(Partition);
 						newError.Reading = this;
 						newError.Model = model;
 						newError.GenerateErrorText();
@@ -309,8 +308,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				TooManyReadingRolesError tooManyError;
 				ReadingOrder readingOrder = ReadingOrder;
 				FactType factType = readingOrder.FactType;
-				ORMModel theModel = factType.Model;
-				Store store = Store;
 				LinkedElementCollection<RoleBase> orderRoles = readingOrder.RoleCollection;
 				int numRoles = orderRoles.Count;
 				int deletingCount = 0;
@@ -335,9 +332,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					removeTooMany = true;
 					if (null == (tooFewError = TooFewRolesError))
 					{
-						tooFewError = new TooFewReadingRolesError(store);
+						tooFewError = new TooFewReadingRolesError(factType.Partition);
 						tooFewError.Reading = this;
-						tooFewError.Model = theModel;
+						tooFewError.Model = factType.ResolvedModel;
 						tooFewError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -357,9 +354,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (null == (tooManyError = TooManyRolesError))
 						{
-							tooManyError = new TooManyReadingRolesError(store);
+							tooManyError = new TooManyReadingRolesError(factType.Partition);
 							tooManyError.Reading = this;
-							tooManyError.Model = theModel;
+							tooManyError.Model = factType.ResolvedModel;
 							tooManyError.GenerateErrorText();
 							if (notifyAdded != null)
 							{

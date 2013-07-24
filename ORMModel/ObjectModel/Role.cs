@@ -804,7 +804,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				RoleValueConstraint valueConstraint = role.ValueConstraint;
 				if (valueConstraint == null)
 				{
-					role.ValueConstraint = valueConstraint = new RoleValueConstraint(role.Store);
+					role.ValueConstraint = valueConstraint = new RoleValueConstraint(role.Partition);
 				}
 				valueConstraint.Text = (string)e.NewValue;
 			}
@@ -815,7 +815,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if ((bool)e.NewValue)
 				{
 					// Add a mandatory constraint
-					Store store = role.Store;
 					FactType factType;
 					if (null == (factType = role.FactType))
 					{
@@ -1030,7 +1029,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (oldOne ^ newOne)
 					{
-						Store store = role.Store;
 						if (newOne)
 						{
 							// We are considered a 'many' instead of a 'one' either
@@ -1075,7 +1073,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							else
 							{
-								UniquenessConstraint.CreateInternalUniquenessConstraint(store).RoleCollection.Add(role);
+								new ConstraintRoleSequenceHasRole(UniquenessConstraint.CreateInternalUniquenessConstraint(factType), role);
 							}
 						}
 						else
@@ -1441,9 +1439,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						hasRolePlayer = false;
 						if (null == RolePlayerRequiredError)
 						{
-							rolePlayerRequired = new RolePlayerRequiredError(Store);
+							rolePlayerRequired = new RolePlayerRequiredError(Partition);
 							rolePlayerRequired.Role = this;
-							rolePlayerRequired.Model = fact.Model;
+							rolePlayerRequired.Model = fact.ResolvedModel;
 							rolePlayerRequired.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -1558,17 +1556,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>Model-owned dictionary for constraints</returns>
 		protected INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
+			INamedElementDictionary dictionary = null;
 			if (parentDomainRoleId == RoleHasValueConstraint.RoleDomainRoleId)
 			{
-				FactType fact;
-				ORMModel model;
-				if ((null != (fact = FactType)) &&
-					(null != (model = fact.Model)))
+				FactType factType;
+				if (null != (factType = FactType))
 				{
-					return ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
+					// If the object type has an alternate owner with a dictionary, then see if that
+					// owner has a dictionary that supports this relationship. Otherwise just use
+					// dictionary from the model.
+					IHasAlternateOwner<FactType> toAlternateOwner;
+					INamedElementDictionaryParent dictionaryParent;
+					ORMModel model;
+					if ((null == (toAlternateOwner = factType as IHasAlternateOwner<FactType>) ||
+						null == (dictionaryParent = toAlternateOwner.AlternateOwner as INamedElementDictionaryParent) ||
+						null == (dictionary = dictionaryParent.GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId))) &&
+						null != (model = factType.Model))
+					{
+						dictionary = ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
+					}
 				}
 			}
-			return null;
+			return dictionary;
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
@@ -1616,7 +1625,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				FactType factType = this.FactType;
-				return (factType != null) ? factType.Model : null;
+				return (factType != null) ? factType.ResolvedModel : null;
 			}
 		}
 		ORMModel IHierarchyContextEnabled.Model

@@ -247,6 +247,10 @@
 		<value>{0} is involved in {1}</value>
 		<comment>The reading for the predicate created implicitly via objectification.There is no attempt made to keep the predicate readings unique in ring situations.We allow the model error to populate instead of generating an articial unique reading.</comment>
 	</data>
+	<data name="LoadException.IncompatibleAssembly" xml:space="preserve">
+		<value>The following extension assembly is not compatible with this version of NORMA and must be replaced with a compatible version before it can be loaded.&#xd;&#xa;{0}</value>
+		<comment>Exception text used when a NORMA extension fails a compatibility check.</comment>
+	</data>
 	<data name="LogicalCombinationOperator.And" xml:space="preserve">
 		<value>And</value>
 	</data>
@@ -1528,6 +1532,26 @@ The remaining replacements are trimmed for leading/trailing whitespace
 	<data name="ObjectModel.ValueType.AutoCreateReferenceModeNamePattern" xml:space="preserve">
 		<value>{0}_RefMode{1}</value>
 		<comment>Used to automatically turn a value type into an entity type with a reference mode when IsValueType is set to false and the ValueType has downstream value roles. Replacement field {0} is the name of the exisiting type and field {1} is used to insert a number to ensure that the name is unique. {0}Values{1} is the default format.</comment>
+	</data>
+	<data name="ORMModelBrowserDynamicColor.Background">
+		<value xml:space="preserve">BrowserBackground</value>
+		<comment xml:space="preserve">The display name for the dynamic model browser background color.</comment>
+	</data>
+	<data name="ORMModelBrowserDynamicColor.Background.Description">
+		<value xml:space="preserve">The background color  in the ORM model browser for elements in this group.</value>
+		<comment xml:space="preserve">The description of the dynamic background color in the ORM model browser.</comment>
+	</data>
+	<data name="ORMModelBrowserDynamicColor.Category">
+		<value xml:space="preserve">Custom Model Browser Colors</value>
+		<comment xml:space="preserve">The display name for the category used for custom model browser colors.</comment>
+	</data>
+	<data name="ORMModelBrowserDynamicColor.Foreground">
+		<value xml:space="preserve">BrowserForeground</value>
+		<comment xml:space="preserve">The display name for the dynamic model browser foreground color.</comment>
+	</data>
+	<data name="ORMModelBrowserDynamicColor.Foreground.Description">
+		<value xml:space="preserve">The foreground color for text in the ORM model browser for elements in this group.</value>
+		<comment xml:space="preserve">The description of the dynamic foreground color in the ORM model browser.</comment>
 	</data>
 	<data name="Subquery.SignatureFormat" xml:space="preserve">
 		<value>({0})-&gt;{{{1}}}</value>

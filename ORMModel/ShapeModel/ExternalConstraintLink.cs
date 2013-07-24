@@ -263,7 +263,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (efc is FactSetComparisonConstraint)
 				{
 					SubsetConstraint sConstraint;
-					if (null != (sConstraint = efc.LinkedElements[1] as SubsetConstraint))
+					if (null != (sConstraint = efc.LinkedElements[0] as SubsetConstraint))
 					{
 						NodeShape connectedShape = FromLinkConnectsToNode.Nodes;
 						FactTypeShape factTypeShape;

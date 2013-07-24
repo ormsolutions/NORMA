@@ -1171,6 +1171,15 @@ snippets. Lead list types do not support back referencing.
 Format: And Or Chain</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="RolePathBlockLeadCollapseForSnippetDirective">
+					<xs:annotation>
+						<xs:documentation>Description: Specify a space-separated list of snippet names to specify list snippets that
+would allow lead role collapsing based on the RolePathCollapsibleLeadDirective, but do not actually support this construct.
+This allows a final override to block the collapsing behavior for specific snippets. This is checked for the
+(Negated)[And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] snippets.
+Format: AndTailListOpen OrTailListOpen</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="ImpersonalIdentityCorrelation">
 					<xs:annotation>
 						<xs:documentation>Description: Relate two variables of different types that represent the same instance where the first

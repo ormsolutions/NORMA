@@ -489,7 +489,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (retVal == null)
 				{
-					retVal = new FactSetConstraint(factType, this);
+					retVal = new FactSetConstraint(this, factType);
 					createdAndInitialized = retVal.ConstrainedRoleCollection.Count != 0;
 				}
 			}
@@ -508,7 +508,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Definition = new Definition(Store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+					Definition = new Definition(Partition, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -523,7 +523,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+					Note = new Note(Partition, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -540,13 +540,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // CustomStorage Handling
 		#region SetConstraint synchronization rules
 		/// <summary>
+		/// Determine the <see cref="ORMModel"/> for this element.
+		/// If the element is owned by an alternate owner, then retrieve
+		/// the model through that owner.
+		/// </summary>
+		public ORMModel ResolvedModel
+		{
+			get
+			{
+				IHasAlternateOwner<SetConstraint> toAlternateOwner;
+				IAlternateElementOwner<SetConstraint> alternateOwner;
+				return (null != (toAlternateOwner = this as IHasAlternateOwner<SetConstraint>) &&
+					null != (alternateOwner = toAlternateOwner.AlternateOwner)) ?
+						alternateOwner.Model :
+						this.Model;
+			}
+		}
+		/// <summary>
 		/// Make sure the model for the constraint and fact are consistent
 		/// </summary>
 		private static void EnforceNoForeignFactTypes(FactSetConstraint link)
 		{
-			FactType fact = link.FactType;
+			FactType factType = link.FactType;
 			SetConstraint constraint = link.SetConstraint;
-			ORMModel factModel = fact.Model;
+			IHasAlternateOwner<FactType> toAlternateFactTypeOwner;
+			IAlternateElementOwner<FactType> alternateFactTypeOwner;
+			IHasAlternateOwner<SetConstraint> toAlternateConstraintOwner;
+			IAlternateElementOwner<SetConstraint> alternateConstraintOwner;
+			ORMModel factModel = factType.Model;
 			ORMModel constraintModel = constraint.Model;
 			if ((constraint as IConstraint).ConstraintIsInternal)
 			{
@@ -560,7 +581,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (constraintModel == null)
 				{
-					constraint.Model = factModel;
+					if (null != (toAlternateConstraintOwner = constraint as IHasAlternateOwner<SetConstraint>) &&
+						null != (toAlternateFactTypeOwner = factType as IHasAlternateOwner<FactType>) &&
+						null != (alternateConstraintOwner = toAlternateFactTypeOwner.AlternateOwner as IAlternateElementOwner<SetConstraint>))
+					{
+						toAlternateConstraintOwner.AlternateOwner = alternateConstraintOwner;
+					}
+					else
+					{
+						constraint.Model = factModel;
+					}
 				}
 				else if (factModel != constraintModel)
 				{
@@ -569,7 +599,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (constraintModel != null)
 			{
-				fact.Model = constraintModel;
+				if (null != (toAlternateFactTypeOwner = factType as IHasAlternateOwner<FactType>) &&
+					null != (toAlternateConstraintOwner = constraint as IHasAlternateOwner<SetConstraint>) &&
+					null != (alternateFactTypeOwner = toAlternateConstraintOwner.AlternateOwner as IAlternateElementOwner<FactType>))
+				{
+					toAlternateFactTypeOwner.AlternateOwner = alternateFactTypeOwner;
+				}
+				else
+				{
+					factType.Model = constraintModel;
+				}
 			}
 		}
 		/// <summary>
@@ -588,7 +627,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactSetConstraint link = e.ModelElement as FactSetConstraint;
 			SetConstraint constraint = link.SetConstraint;
-			if (!constraint.IsDeleted && !constraint.IsDeleting && constraint.Constraint.ConstraintIsInternal && constraint.Model != null)
+			if (!constraint.IsDeleted && !constraint.IsDeleting && constraint.Constraint.ConstraintIsInternal && constraint.ResolvedModel != null)
 			{
 				constraint.Delete();
 			}
@@ -956,7 +995,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				int minCount = ConstraintUtility.RoleSequenceCountMinimum(this);
 				int maxCount;
 				int currentCount = RoleCollection.Count;
-				Store store = Store;
 				TooFewRoleSequencesError insufficientError;
 				TooManyRoleSequencesError extraError;
 				bool removeTooFew = false;
@@ -965,9 +1003,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (null == TooFewRoleSequencesError)
 					{
-						insufficientError = new TooFewRoleSequencesError(store);
+						insufficientError = new TooFewRoleSequencesError(Partition);
 						insufficientError.SetConstraint = this;
-						insufficientError.Model = Model;
+						insufficientError.Model = ResolvedModel;
 						insufficientError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -984,9 +1022,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (null == TooManyRoleSequencesError)
 						{
-							extraError = new TooManyRoleSequencesError(store);
+							extraError = new TooManyRoleSequencesError(Partition);
 							extraError.SetConstraint = this;
-							extraError.Model = Model;
+							extraError.Model = ResolvedModel;
 							extraError.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -1140,9 +1178,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								//If the error is not present, add it to the model
 								if (null == CompatibleRolePlayerTypeError)
 								{
-									compatibleError = new CompatibleRolePlayerTypeError(Store);
+									compatibleError = new CompatibleRolePlayerTypeError(Partition);
 									compatibleError.SetConstraint = this;
-									compatibleError.Model = Model;
+									compatibleError.Model = ResolvedModel;
 									compatibleError.GenerateErrorText();
 									if (notifyAdded != null)
 									{
@@ -1251,7 +1289,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				ORMModel model = Model;
+				ORMModel model = ResolvedModel;
 				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextSetConstraint, Name, model != null ? model.Name : "");
 			}
 		}
@@ -1271,7 +1309,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return Model;
+				return ResolvedModel;
 			}
 		}
 		/// <summary>
@@ -1543,13 +1581,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					Guid? domainRoleInfo = validationInfo.DomainRoleToError;
 					Guid domainRoleErrorId = domainRoleInfo.HasValue ? domainRoleInfo.Value : validationInfo.IntersectingDomainRoleToError.Value;
-					Store store = Store;
+					Partition partition = Partition;
 					ModelError error = (ModelError)DomainRoleInfo.GetLinkedElement(this, domainRoleErrorId);
 					if (hasError)
 					{
 						if (error == null)
 						{
-							error = (ModelError)store.ElementFactory.CreateElement(store.DomainDataDirectory.FindDomainRole(domainRoleErrorId).OppositeDomainRole.RolePlayer);
+							error = (ModelError)partition.ElementFactory.CreateElement(partition.DomainDataDirectory.FindDomainRole(domainRoleErrorId).OppositeDomainRole.RolePlayer);
 							DomainRoleInfo.SetLinkedElement(this, domainRoleErrorId, error);
 							error.Model = Constraint.Model;
 							error.GenerateErrorText();
@@ -1654,6 +1692,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return HierarchyContextPlacementPriority;
 			}
 		}
+		ORMModel IHierarchyContextEnabled.Model
+		{
+			get
+			{
+				return ResolvedModel;
+			}
+		}
 		/// <summary>
 		/// Implements <see cref="IHierarchyContextEnabled.HierarchyContextDecrementCount"/>
 		/// </summary>
@@ -1736,7 +1781,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (retVal == null)
 				{
-					retVal = new FactSetComparisonConstraint(factType, this);
+					retVal = new FactSetComparisonConstraint(this, factType);
 					createdAndInitialized = retVal.ConstrainedRoleCollection.Count != 0;
 				}
 			}
@@ -1755,7 +1800,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Definition = new Definition(Store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+					Definition = new Definition(Partition, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -1770,7 +1815,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+					Note = new Note(Partition, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -1787,19 +1832,49 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // CustomStorage Handling
 		#region SetComparisonConstraint synchronization rules
 		/// <summary>
+		/// Determine the <see cref="ORMModel"/> for this element.
+		/// If the element is owned by an alternate owner, then retrieve
+		/// the model through that owner.
+		/// </summary>
+		public ORMModel ResolvedModel
+		{
+			get
+			{
+				IHasAlternateOwner<SetComparisonConstraint> toAlternateOwner;
+				IAlternateElementOwner<SetComparisonConstraint> alternateOwner;
+				return (null != (toAlternateOwner = this as IHasAlternateOwner<SetComparisonConstraint>) &&
+					null != (alternateOwner = toAlternateOwner.AlternateOwner)) ?
+						alternateOwner.Model :
+						this.Model;
+			}
+		}
+		/// <summary>
 		/// Make sure the model for the constraint and fact are consistent
 		/// </summary>
 		private static void EnforceNoForeignFactTypes(FactSetComparisonConstraint link)
 		{
-			FactType fact = link.FactType;
+			FactType factType = link.FactType;
 			SetComparisonConstraint constraint = link.SetComparisonConstraint;
-			ORMModel factModel = fact.Model;
-			ORMModel constraintModel = constraint.Model;
+			IHasAlternateOwner<FactType> toAlternateFactTypeOwner;
+			IAlternateElementOwner<FactType> alternateFactTypeOwner;
+			IHasAlternateOwner<SetComparisonConstraint> toAlternateConstraintOwner;
+			IAlternateElementOwner<SetComparisonConstraint> alternateConstraintOwner;
+			ORMModel factModel = factType.ResolvedModel;
+			ORMModel constraintModel = constraint.ResolvedModel;
 			if (factModel != null)
 			{
 				if (constraintModel == null)
 				{
-					constraint.Model = factModel;
+					if (null != (toAlternateConstraintOwner = constraint as IHasAlternateOwner<SetComparisonConstraint>) &&
+						null != (toAlternateFactTypeOwner = factType as IHasAlternateOwner<FactType>) &&
+						null != (alternateConstraintOwner = toAlternateFactTypeOwner.AlternateOwner as IAlternateElementOwner<SetComparisonConstraint>))
+					{
+						toAlternateConstraintOwner.AlternateOwner = alternateConstraintOwner;
+					}
+					else
+					{
+						constraint.Model = factModel;
+					}
 				}
 				else if (factModel != constraintModel)
 				{
@@ -1808,7 +1883,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (constraintModel != null)
 			{
-				fact.Model = constraintModel;
+				if (null != (toAlternateFactTypeOwner = factType as IHasAlternateOwner<FactType>) &&
+					null != (toAlternateConstraintOwner = constraint as IHasAlternateOwner<SetComparisonConstraint>) &&
+					null != (alternateFactTypeOwner = toAlternateConstraintOwner.AlternateOwner as IAlternateElementOwner<FactType>))
+				{
+					toAlternateFactTypeOwner.AlternateOwner = alternateFactTypeOwner;
+				}
+				else
+				{
+					factType.Model = constraintModel;
+				}
 			}
 		}
 		/// <summary>
@@ -1876,7 +1960,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
 			SetComparisonConstraint constraint = link.ConstraintRoleSequence.Constraint as SetComparisonConstraint;
-			if (constraint != null && constraint.Model != null)
+			if (constraint != null && constraint.ResolvedModel != null)
 			{
 				bool createdAndInitialized;
 				FactConstraint factConstraint = constraint.EnsureFactConstraintForFactType(link.Role.FactType, out createdAndInitialized);
@@ -2188,7 +2272,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				int minCount = ConstraintUtility.RoleSequenceCountMinimum(this);
 				int maxCount;
 				int currentCount = RoleSequenceCollection.Count;
-				Store store = Store;
 				TooFewRoleSequencesError insufficientError;
 				TooManyRoleSequencesError extraError;
 				bool removeTooFew = false;
@@ -2199,9 +2282,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					tooFewOrTooMany = true;
 					if (null == this.TooFewRoleSequencesError)
 					{
-						insufficientError = new TooFewRoleSequencesError(store);
+						insufficientError = new TooFewRoleSequencesError(Partition);
 						insufficientError.SetComparisonConstraint = this;
-						insufficientError.Model = Model;
+						insufficientError.Model = ResolvedModel;
 						insufficientError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -2218,9 +2301,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						tooFewOrTooMany = true;
 						if (null == TooManyRoleSequencesError)
 						{
-							extraError = new TooManyRoleSequencesError(store);
+							extraError = new TooManyRoleSequencesError(Partition);
 							extraError.SetComparisonConstraint = this;
-							extraError.Model = Model;
+							extraError.Model = ResolvedModel;
 							extraError.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -2284,7 +2367,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ExternalConstraintRoleSequenceArityMismatchError arityError;
 			bool arityValid = true;
 			int currentCount = RoleSequenceCollection.Count;
-			Store store = Store;
 
 			if (tooFewOrTooManySequences)
 			{
@@ -2308,9 +2390,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							arityError = ArityMismatchError;
 							if (arityError == null)
 							{
-								arityError = new ExternalConstraintRoleSequenceArityMismatchError(store);
+								arityError = new ExternalConstraintRoleSequenceArityMismatchError(Partition);
 								arityError.Constraint = this;
-								arityError.Model = Model;
+								arityError.Model = ResolvedModel;
 								arityError.GenerateErrorText();
 								if (notifyAdded != null)
 								{
@@ -2351,7 +2433,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// the role player of the normal role must be the same as or a supertype of the supertype. The triggers to check this
 			// rule are exactly the same as the compatibility checks, so we do it inline here.
 			SubsetConstraint subsetConstraint = this as SubsetConstraint;
-			Store store = Store;
+			Partition partition = Partition;
 
 			//We don't want to display the error if arity error present or toofeworTooMany sequence errors are present
 			if (tooFewOrTooManySequencesOrArity)
@@ -2532,10 +2614,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										else
 										{
 											// We need a new error, create it from scratch
-											compatibleError = new CompatibleRolePlayerTypeError(store);
+											compatibleError = new CompatibleRolePlayerTypeError(partition);
 											compatibleError.Column = column;
 											compatibleError.SetComparisonConstraint = this;
-											compatibleError.Model = Model;
+											compatibleError.Model = ResolvedModel;
 											compatibleError.GenerateErrorText();
 											if (notifyAdded != null)
 											{
@@ -2575,9 +2657,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (subtypeError == null)
 						{
-							subtypeError = new SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(store);
+							subtypeError = new SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError(partition);
 							subtypeError.SubsetConstraint = subsetConstraint;
-							subtypeError.Model = Model;
+							subtypeError.Model = ResolvedModel;
 							subtypeError.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -2971,7 +3053,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return Model;
+				return ResolvedModel;
 			}
 		}
 		/// <summary>
@@ -3151,6 +3233,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return HierarchyContextPlacementPriority;
+			}
+		}
+		ORMModel IHierarchyContextEnabled.Model
+		{
+			get
+			{
+				return ResolvedModel;
 			}
 		}
 		/// <summary>
@@ -3401,6 +3490,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			if (deletedConstraint != null)
 			{
+				IHasAlternateOwner toAlternateOwner;
+				object alternateConstraintOwner = (null == (toAlternateOwner = deletedConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner;
 				#region Get constraints in potential conflict
 				//Let's assebmle a collection of all constraints in potential conflict
 				//for each validationInfo object
@@ -3421,6 +3512,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Get role collection from the set constraint
 				{
 					CheckIfAnyRolesInCollectionCanConflict(
+						alternateConstraintOwner,
 						deletedSetConstraint.RoleCollection,
 						allConstraintTypesInPotentialConflict,
 						delegate(IConstraint matchConstraint)
@@ -3441,6 +3533,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (SetComparisonConstraintRoleSequence sequence in sequenceCollection)
 					{
 						CheckIfAnyRolesInCollectionCanConflict(
+							alternateConstraintOwner,
 							sequence.RoleCollection,
 							allConstraintTypesInPotentialConflict,
 							delegate(IConstraint matchConstraint)
@@ -3798,6 +3891,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SetConstraint currentSetConstraint = null;
 			LinkedElementCollection<Role> setConstraintRoles = null;
 			ConstraintModality currentModality;
+			IHasAlternateOwner toAlternateOwner;
+			object currentConstraintOwner = (null == (toAlternateOwner = currentConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner;
 			Store store;
 			if (null != (currentSetConstraint = currentConstraint as SetConstraint))
 			{
@@ -3831,6 +3926,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (currentSetConstraint != null)
 				{
 					CheckIfAnyRolesInCollectionCanConflict(
+						currentConstraintOwner,
 						setConstraintRoles,
 						constraintTypesInPotentialConflict,
 						delegate(IConstraint matchConstraint)
@@ -3856,6 +3952,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ConstraintRoleSequence sequence in sequences)
 					{
 						CheckIfAnyRolesInCollectionCanConflict(
+							currentConstraintOwner,
 							sequence.RoleCollection,
 							constraintTypesInPotentialConflict,
 							delegate(IConstraint matchConstraint)
@@ -4067,6 +4164,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								// The error occurs when simple mandatory is on the top role
 								CheckIfAnyRolesInCollectionCanConflict(
+									currentConstraintOwner,
 									sequences[1].RoleCollection,
 									constraintTypesInPotentialConflict,
 									delegate(IConstraint matchConstraint)
@@ -4109,6 +4207,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								//The error occurs when simple mandatory is on the bottom role
 								//TODO: handle disjunctive mandatory too
 								CheckIfAnyRolesInCollectionCanConflict(
+									currentConstraintOwner,
 									sequences[0].RoleCollection,
 									constraintTypesInPotentialConflict,
 									delegate(IConstraint matchConstraint)
@@ -4126,6 +4225,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								if (hasError)
 								{
 									CheckIfAnyRolesInCollectionCanConflict(
+										currentConstraintOwner,
 										sequences[1].RoleCollection,
 										constraintTypesInPotentialConflict,
 										delegate(IConstraint matchConstraint)
@@ -4208,11 +4308,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Checks if any role is attached to a potentially conflicting constraint
 		/// </summary>
+		/// <param name="alternateOwner">The alternate owner (something other than the model) for this constraint.</param>
 		/// <param name="relatedRoles">RoleCollection for roles that can be attached to conflicting constraints</param>
 		/// <param name="constraintTypesInPotentialConflict">Constraint types that can be conflicting</param>
 		/// <param name="matchCallback">Callback delegate of type <see cref="Predicate{IConstraint}"/>.
 		/// Return <see langword="true"/> to continue iteration.</param>
 		private static void CheckIfAnyRolesInCollectionCanConflict(
+			object alternateOwner,
 			LinkedElementCollection<Role> relatedRoles,
 			IList<ConstraintType> constraintTypesInPotentialConflict,
 			Predicate<IConstraint> matchCallback)
@@ -4226,8 +4328,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				for (int j = 0; j < sequenceCount; ++j)
 				{
 					IConstraint currentConstraint = sequences[j].Constraint;
+					IHasAlternateOwner toAlternateOwner;
 
 					if (currentConstraint != null &&
+						(alternateOwner == ((null == (toAlternateOwner = currentConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner)) &&
 						constraintTypesInPotentialConflict.Contains(currentConstraint.ConstraintType) &&
 						!matchCallback(currentConstraint))
 					{
@@ -4403,6 +4507,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IList<IConstraint> constrFound = null;
 			bool hasError = hasErrorDefault;
 			Store store = ((ModelElement)curConstraint).Store;
+			IHasAlternateOwner toAlternateOwner;
+			object currentConstraintOwner = (null == (toAlternateOwner = curConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner;
 
 			if (shouldExecuteValidationCode &&
 				(0 < minNumViolatingConstraints ||
@@ -4420,6 +4526,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (SetComparisonConstraintRoleSequence sequence in sequences)
 					{
 						CheckIfAnyRolesInCollectionCanConflict(
+							currentConstraintOwner,
 							sequence.RoleCollection,
 							validationInfo.ConstraintTypesInPotentialConflict,
 							delegate(IConstraint matchConstraint)
@@ -4512,6 +4619,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Validation Code
 			ConstraintModality currentModality = setComparisonConstraint.Modality;
 			List<IConstraint> constraintsToCheck = null;
+			IHasAlternateOwner toAlternateOwner;
+			object constraintOwner = (null == (toAlternateOwner = setComparisonConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner;
 			for (int iConstraintSequence = 0; iConstraintSequence < constraintSequenceCount; ++iConstraintSequence)
 			{
 				ConstraintRoleSequence sequence = constraintSequences[iConstraintSequence];
@@ -4527,6 +4636,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						ConstraintRoleSequence eligibleSequence = eligibleSequences[k];
 						IConstraint intersectingConstraint = eligibleSequence.Constraint;
 						if (intersectingConstraint != setComparisonConstraint &&
+							constraintOwner == ((null == (toAlternateOwner = intersectingConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner) &&
 							validationInfo.TestModality(currentModality, intersectingConstraint.Modality) &&
 							(validationInfo.ConstraintTypesInPotentialConflict as IList<ConstraintType>).Contains(intersectingConstraint.ConstraintType))
 						{
@@ -4745,6 +4855,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				IList<IntersectingConstraintValidation> validations = (setComparisonConstraint as IConstraint).GetIntersectingConstraintValidationInfo();
 				if (validations != null)
 				{
+					IHasAlternateOwner toAlternateOwner;
+					object constraintOwner = (null == (toAlternateOwner = setComparisonConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner;
 					int validationCount = validations.Count;
 					ConstraintModality constraintModality = setComparisonConstraint.Modality;
 					for (int iValidation = 0; iValidation < validationCount; ++iValidation)
@@ -4794,6 +4906,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											ConstraintRoleSequence eligibleSequence = sequences[k];
 											IConstraint eligibleConstraint = eligibleSequence.Constraint;
 											if (eligibleConstraint != setComparisonConstraint &&
+												constraintOwner == ((null == (toAlternateOwner = eligibleConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner) &&
 												(modalityChange || validationInfo.TestModality(constraintModality, eligibleConstraint.Modality)) &&
 												(validationInfo.ConstraintTypesInPotentialConflict as IList<ConstraintType>).Contains(eligibleConstraint.ConstraintType) &&
 												!matchCallback(eligibleConstraint))
@@ -5033,7 +5146,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						Role currentRole = constraintRoles[i].Role;
 						FactType currentFactType = currentRole.FactType;
-						if (currentFactType != firstFactType)
+						if (currentFactType == firstFactType)
+						{
+							if (checkBinaryOppositeRolePlayerPattern)
+							{
+								checkBinaryOppositeRolePlayerPattern = false;
+								if (resolvedOppositeRolePlayer != null)
+								{
+									resolvedOppositeRolePlayer = resolvedOppositeRolePlayerAlternate = null;
+									joinNotNeeded = false;
+									break;
+								}
+							}
+						}
+						else
 						{
 							if (checkBinaryOppositeRolePlayerPattern)
 							{
@@ -5225,7 +5351,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								else
 								{
 									joinPath = new ConstraintRoleSequenceJoinPath(
-										Store,
+										Partition,
 										new PropertyAssignment(ConstraintRoleSequenceJoinPath.IsAutomaticDomainPropertyId, true));
 									joinPath.RoleSequence = this;
 									if (notifyAdded != null)
@@ -5269,7 +5395,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (null != constraint &&
 						null != (model = constraint.Model))
 					{
-						pathRequiredError = new JoinPathRequiredError(Store);
+						pathRequiredError = new JoinPathRequiredError(Partition);
 						pathRequiredError.RoleSequence = this;
 						pathRequiredError.Model = model;
 						pathRequiredError.GenerateErrorText();
@@ -5974,7 +6100,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ObjectType rootObjectType = constraintRoles[0].Role.RolePlayer;
 			ReadOnlyCollection<PathedRole> pathedRoles = null;
 			int pathedRoleCount = 0;
-			Store store = Store;
+			Partition partition = Partition;
 			if (retVal != null)
 			{
 				// The only thing we want in the join path is a lead path with the initial
@@ -6024,7 +6150,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else
 			{
 				retVal = new ConstraintRoleSequenceJoinPath(
-					store,
+					partition,
 					new PropertyAssignment(ConstraintRoleSequenceJoinPath.IsAutomaticDomainPropertyId, true));
 				retVal.RoleSequence = this;
 				if (notifyAdded != null)
@@ -6034,7 +6160,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (leadRolePath == null)
 			{
-				leadRolePath = new LeadRolePath(store);
+				leadRolePath = new LeadRolePath(partition);
 				leadRolePath.PathOwner = retVal;
 				rootObjectTypeLink = new RolePathObjectTypeRoot(leadRolePath, rootObjectType);
 				if (notifyAdded != null)
@@ -6092,7 +6218,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					pathedRole = stepPurpose == PathedRolePurpose.SameFactType ?
 						new PathedRole(leadRolePath, stepRole) :
 						new PathedRole(
-							store,
+							partition,
 							new RoleAssignment[]{
 								new RoleAssignment(PathedRole.RolePathDomainRoleId, leadRolePath),
 								new RoleAssignment(PathedRole.RoleDomainRoleId, stepRole)},
@@ -6212,7 +6338,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			// The only thing we want in the join path is a lead path with the resolved object type as the root
 			// and an 'and' tail split.
-			Store store = joinPath.Store;
+			Partition partition = joinPath.Partition;
 
 			// Find an appropriate lead role path to put in automatic form. If the path is shared,
 			// then we do not want to delete it outright or make it automatic. Detaching a shared
@@ -6236,7 +6362,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			LinkedElementCollection<RoleSubPath> subPaths;
 			if (leadRolePath == null)
 			{
-				leadRolePath = new LeadRolePath(store);
+				leadRolePath = new LeadRolePath(partition);
 				leadRolePath.PathOwner = joinPath;
 				leadRolePath.RootObjectType = resolvedObjectType;
 				if (notifyAdded != null)
@@ -6370,7 +6496,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						continue;
 					}
 				}
-				RoleSubPath subPath = new RoleSubPath(store);
+				RoleSubPath subPath = new RoleSubPath(partition);
 				if (firstUnverifiedSubpathIndex < subPathCount)
 				{
 					subPaths.Insert(i, subPath);
@@ -6382,7 +6508,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				++firstUnverifiedSubpathIndex;
 				++subPathCount;
 				new PathedRole(
-					store,
+					partition,
 					new RoleAssignment[]{
 						new RoleAssignment(PathedRole.RolePathDomainRoleId, subPath),
 						new RoleAssignment(PathedRole.RoleDomainRoleId, nearRole)},
@@ -6585,7 +6711,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (constraint != null)
 				{
 					constraintName = constraint.Name;
-					ORMModel model = constraint.Model;
+					ORMModel model = constraint.ResolvedModel;
 					if (model != null)
 					{
 						modelName = model.Name;
@@ -7141,8 +7267,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											}
 											if (!haveSingleRoleInternalUniqueness)
 											{
-												UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(oppositeRole.Store);
-												oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
+												UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(factType);
+												new ConstraintRoleSequenceHasRole(oppositeIuc, oppositeRole);
 											}
 											if (oppositeRolePlayer == null)
 											{
@@ -7328,9 +7454,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								// Create a uniqueness constraint on the opposite role to make
 								// this a 1-1 binary fact type.
-								Store store = iuc.Store;
-								UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-								oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
+								UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(factType);
+								new ConstraintRoleSequenceHasRole(oppositeIuc, oppositeRole);
 							}
 							oppositeRole.IsMandatory = true; // Make sure it is mandatory
 						}
@@ -7399,8 +7524,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								// Create a uniqueness constraint on the opposite role to make
 								// this a 1-1 binary fact type.
-								UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-								oppositeIuc.RoleCollection.Add(oppositeRole); // Automatically sets FactType
+								UniquenessConstraint oppositeIuc = UniquenessConstraint.CreateInternalUniquenessConstraint(factType);
+								new ConstraintRoleSequenceHasRole(oppositeIuc, oppositeRole);
 							}
 						}
 						break;
@@ -7839,9 +7964,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					//Adding the Error to the model
 					if (error == null)
 					{
-						error = new NMinusOneError(Store);
+						error = new NMinusOneError(Partition);
 						error.Constraint = this;
-						error.Model = factType.Model;
+						error.Model = factType.ResolvedModel;
 						error.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -7982,9 +8107,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Create a UniquenessConstraint with an initial 'IsInternal' property set to true
 		/// </summary>
-		/// <param name="store">The containing store</param>
+		/// <param name="partition">The containing <see cref="Partition"/></param>
 		/// <returns>The newly created constraint</returns>
-		public static UniquenessConstraint CreateInternalUniquenessConstraint(Store store)
+		public static UniquenessConstraint CreateInternalUniquenessConstraint(Partition partition)
+		{
+			return CreateInternalUniquenessConstraint(partition, null);
+		}
+		/// <summary>
+		/// Create a UniquenessConstraint with an initial 'IsInternal' property set to true
+		/// </summary>
+		/// <param name="partition">The containing <see cref="Partition"/></param>
+		/// <param name="alternateClassInfo">An alternate <see cref="DomainClassInfo"/> that
+		/// derives from UniquenessConstraint.</param>
+		/// <returns>The newly created constraint</returns>
+		public static UniquenessConstraint CreateInternalUniquenessConstraint(Partition partition, DomainClassInfo alternateClassInfo)
 		{
 			PropertyAssignment[] attributes = myInitialInternalAttributes;
 			if (attributes == null)
@@ -7992,7 +8128,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				attributes = myInitialInternalAttributes =
 					new PropertyAssignment[] { new PropertyAssignment(IsInternalDomainPropertyId, true) };
 			}
-			return new UniquenessConstraint(store, attributes);
+			return (alternateClassInfo != null) ? (UniquenessConstraint)partition.ElementFactory.CreateElement(alternateClassInfo, attributes) : new UniquenessConstraint(partition, attributes);
 		}
 		/// <summary>
 		/// Create a UniquenessConstraint with an initial 'IsInternal' property set to true
@@ -8002,8 +8138,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>The newly created constraint</returns>
 		public static UniquenessConstraint CreateInternalUniquenessConstraint(FactType factType)
 		{
-			UniquenessConstraint uc = CreateInternalUniquenessConstraint(factType.Store);
-			uc.FactTypeCollection.Add(factType);
+			IHasAlternateOwner<FactType> toAlternateOwner;
+			IAlternateElementOwner<SetConstraint> alternateConstraintOwner = null;
+			DomainClassInfo alternateCtor =
+				(null != (toAlternateOwner = factType as IHasAlternateOwner<FactType>) &&
+				null != (alternateConstraintOwner = toAlternateOwner.AlternateOwner as IAlternateElementOwner<SetConstraint>)) ?
+					alternateConstraintOwner.GetOwnedElementClassInfo(typeof(UniquenessConstraint)) :
+					null;
+			UniquenessConstraint uc = CreateInternalUniquenessConstraint(factType.Partition, alternateCtor);
+			if (alternateCtor != null)
+			{
+				((IHasAlternateOwner<SetConstraint>)uc).AlternateOwner = alternateConstraintOwner;
+			}
+			else
+			{
+				uc.Model = factType.ResolvedModel;
+			}
+			new FactSetConstraint(uc, factType);
 			return uc;
 		}
 		#endregion // Internal constraint handling
@@ -8310,16 +8461,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Create a MandatoryConstraint with an initial 'IsSimple' property set set true
 		/// </summary>
-		/// <param name="store">The containing store</param>
+		/// <param name="partition">The containing <see cref="Partition"/></param>
 		/// <returns>The newly created constraint</returns>
-		public static MandatoryConstraint CreateSimpleMandatoryConstraint(Store store)
+		public static MandatoryConstraint CreateSimpleMandatoryConstraint(Partition partition)
+		{
+			return CreateSimpleMandatoryConstraint(partition, null);
+		}
+		/// <summary>
+		/// Create a MandatoryConstraint with an initial 'IsSimple' property set set true
+		/// </summary>
+		/// <param name="partition">The containing <see cref="Partition"/></param>
+		/// <param name="alternateClassInfo">An alternate constructor. The class must
+		/// correspond to a subtype of <see cref="MandatoryConstraint"/>.</param>
+		/// <returns>The newly created constraint</returns>
+		public static MandatoryConstraint CreateSimpleMandatoryConstraint(Partition partition, DomainClassInfo alternateClassInfo)
 		{
 			PropertyAssignment[] attributes = myInitialInternalAttributes;
 			if (attributes == null)
 			{
 				attributes = myInitialInternalAttributes = new PropertyAssignment[] { new PropertyAssignment(IsSimpleDomainPropertyId, true) };
 			}
-			return new MandatoryConstraint(store, attributes);
+			return (alternateClassInfo != null) ? (MandatoryConstraint)partition.ElementFactory.CreateElement(alternateClassInfo, attributes) : new MandatoryConstraint(partition, attributes);
 		}
 		/// <summary>
 		/// Create a MandatoryConstraint with an initial 'IsSimple' property set to true
@@ -8329,7 +8491,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>The newly created constraint</returns>
 		public static MandatoryConstraint CreateSimpleMandatoryConstraint(Role role)
 		{
-			MandatoryConstraint mc = CreateSimpleMandatoryConstraint(role.Store);
+			FactType factType;
+			IHasAlternateOwner<FactType> toAlternateOwner;
+			IAlternateElementOwner<SetConstraint> alternateConstraintOwner = null;
+			ORMModel model;
+			DomainClassInfo alternateCtor =
+				(null != (factType = role.FactType) &&
+				null != (toAlternateOwner = factType as IHasAlternateOwner<FactType>) &&
+				null != (alternateConstraintOwner = toAlternateOwner.AlternateOwner as IAlternateElementOwner<SetConstraint>)) ?
+					alternateConstraintOwner.GetOwnedElementClassInfo(typeof(MandatoryConstraint)) :
+					null;
+			MandatoryConstraint mc = CreateSimpleMandatoryConstraint(role.Partition, alternateCtor);
+			if (alternateCtor != null)
+			{
+				((IHasAlternateOwner<SetConstraint>)mc).AlternateOwner = alternateConstraintOwner;
+			}
+			else if (null != factType &&
+				null != (model = factType.Model))
+			{
+				mc.Model = model;
+			}
 			mc.RoleCollection.Add(role);
 			return mc;
 		}
@@ -8371,13 +8552,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static MandatoryConstraint CreateImpliedMandatoryConstraint(ObjectType objectType)
 		{
 			PropertyAssignment[] attributes = myInitialImpliedAttributes;
-			Store store = objectType.Store;
 			if (attributes == null)
 			{
 				attributes = myInitialImpliedAttributes = new PropertyAssignment[] { new PropertyAssignment(IsImpliedDomainPropertyId, true) };
 			}
-			MandatoryConstraint retVal = new MandatoryConstraint(store, attributes);
-			retVal.Model = objectType.Model;
+			MandatoryConstraint retVal;
+			IHasAlternateOwner<ObjectType> toAlternateObjectTypeOwner;
+			IAlternateElementOwner<SetConstraint> alternateConstraintOwner;
+			DomainClassInfo alternateClassInfo;
+			if (null != (toAlternateObjectTypeOwner = objectType as IHasAlternateOwner<ObjectType>) &&
+				null != (alternateConstraintOwner = toAlternateObjectTypeOwner.AlternateOwner as IAlternateElementOwner<SetConstraint>) &&
+				null != (alternateClassInfo = alternateConstraintOwner.GetOwnedElementClassInfo(typeof(MandatoryConstraint))))
+			{
+				((IHasAlternateOwner<SetConstraint>)(retVal = (MandatoryConstraint)objectType.Partition.ElementFactory.CreateElement(alternateClassInfo, attributes))).AlternateOwner = alternateConstraintOwner;
+			}
+			else
+			{
+				(retVal = new MandatoryConstraint(objectType.Partition, attributes)).Model = objectType.Model;
+			}
 			new ObjectTypeImpliesMandatoryConstraint(objectType, retVal);
 			return retVal;
 		}
@@ -9049,9 +9241,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Adding the Error to the model
 				if (minMaxError == null)
 				{
-					minMaxError = new FrequencyConstraintMinMaxError(Store);
+					minMaxError = new FrequencyConstraintMinMaxError(Partition);
 					minMaxError.FrequencyConstraint = this;
-					minMaxError.Model = Model;
+					minMaxError.Model = ResolvedModel;
 					minMaxError.GenerateErrorText();
 					if (notifyAdded != null)
 					{
@@ -9079,9 +9271,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (exactlyOneError == null)
 						{
-							exactlyOneError = new FrequencyConstraintExactlyOneError(Store);
+							exactlyOneError = new FrequencyConstraintExactlyOneError(Partition);
 							exactlyOneError.FrequencyConstraint = this;
-							exactlyOneError.Model = Model;
+							exactlyOneError.Model = ResolvedModel;
 							exactlyOneError.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -9097,9 +9289,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (nonRestrictiveError == null)
 						{
-							nonRestrictiveError = new FrequencyConstraintNonRestrictiveRangeError(Store);
+							nonRestrictiveError = new FrequencyConstraintNonRestrictiveRangeError(Partition);
 							nonRestrictiveError.FrequencyConstraint = this;
-							nonRestrictiveError.Model = Model;
+							nonRestrictiveError.Model = ResolvedModel;
 							nonRestrictiveError.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -9172,14 +9364,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			bool retVal = false;
 			if (min == 1 && max == 1)
 			{
-				Store store = Store;
-				using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ConvertFrequencyToUniquenessTransactionName))
+				Partition partition = Partition;
+				using (Transaction t = Store.TransactionManager.BeginTransaction(ResourceStrings.ConvertFrequencyToUniquenessTransactionName))
 				{
-					UniquenessConstraint uniqueness = (FactTypeCollection.Count == 1) ?
-						UniquenessConstraint.CreateInternalUniquenessConstraint(store) :
-						new UniquenessConstraint(store);
+					IHasAlternateOwner<SetConstraint> toAlternateOwner;
+					IAlternateElementOwner<SetConstraint> alternateOwner = (null == (toAlternateOwner = this as IHasAlternateOwner<SetConstraint>)) ? null : toAlternateOwner.AlternateOwner;
+					DomainClassInfo alternateCtor = (alternateOwner != null) ? alternateOwner.GetOwnedElementClassInfo(typeof(UniquenessConstraint)) : null;
+					UniquenessConstraint uniqueness;
+					if (alternateCtor != null)
+					{
+						uniqueness = (FactTypeCollection.Count == 1) ?
+							UniquenessConstraint.CreateInternalUniquenessConstraint(partition, alternateCtor) :
+							(UniquenessConstraint)partition.ElementFactory.CreateElement(alternateCtor);
+						((IHasAlternateOwner<SetConstraint>)uniqueness).AlternateOwner = alternateOwner;
+					}
+					else
+					{
+						uniqueness = (FactTypeCollection.Count == 1) ?
+							UniquenessConstraint.CreateInternalUniquenessConstraint(partition, alternateCtor) :
+							new UniquenessConstraint(partition);
+						uniqueness.Model = Model;
+					}
 					uniqueness.Modality = Modality;
-					uniqueness.Model = Model;
 					// UNDONE: MULTISHAPE I should be able to do the following line before
 					// deleting the frequency constraint, but adding a shape with fixups 
 					// such as done by the FrequencyConstraintShape to place a new external
@@ -9288,9 +9494,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (notSpecified == null)
 				{
-					notSpecified = new RingConstraintTypeNotSpecifiedError(this.Store);
+					notSpecified = new RingConstraintTypeNotSpecifiedError(Partition);
 					notSpecified.RingConstraint = this;
-					notSpecified.Model = this.Model;
+					notSpecified.Model = ResolvedModel;
 					notSpecified.GenerateErrorText();
 					if (notifyAdded != null)
 					{

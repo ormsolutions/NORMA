@@ -57,40 +57,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
-		#region FactType domain role code
-		
-		/// <summary>
-		/// FactType domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid FactTypeDomainRoleId = new global::System.Guid(0xd60cb2bf, 0x7de7, 0x4ced, 0xa0, 0x0f, 0xbf, 0x7c, 0x3a, 0x2e, 0x52, 0x48);
-		
-		/// <summary>
-		/// DomainRole FactType
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.FactType
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("d60cb2bf-7de7-4ced-a00f-bf7c3a2e5248")]
-		public abstract FactType FactType
-		{
-			get;
-			set;
-		}
-				
-		#endregion
-		#region Static methods to access FactTypeCollection of a ORMNamedElement
-		/// <summary>
-		/// Gets a list of FactTypeCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::ReadOnlyLinkedElementCollection<FactType> GetFactTypeCollection(ORMNamedElement element)
-		{
-			return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<FactType>, FactType>(element, ConstraintDomainRoleId);
-		}
-		#endregion
 		#region Constraint domain role code
 		
 		/// <summary>
@@ -105,7 +71,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/Constraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/Constraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/Constraint.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/Constraint.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("9b305629-1efa-404f-ae8e-475117b287ae")]
 		public abstract ORMNamedElement Constraint
 		{
@@ -123,6 +89,40 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static DslModeling::ReadOnlyLinkedElementCollection<ORMNamedElement> GetConstraintCollection(FactType element)
 		{
 			return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<ORMNamedElement>, ORMNamedElement>(element, FactTypeDomainRoleId);
+		}
+		#endregion
+		#region FactType domain role code
+		
+		/// <summary>
+		/// FactType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid FactTypeDomainRoleId = new global::System.Guid(0xd60cb2bf, 0x7de7, 0x4ced, 0xa0, 0x0f, 0xbf, 0x7c, 0x3a, 0x2e, 0x52, 0x48);
+		
+		/// <summary>
+		/// DomainRole FactType
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.FactType
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("d60cb2bf-7de7-4ced-a00f-bf7c3a2e5248")]
+		public abstract FactType FactType
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access FactTypeCollection of a ORMNamedElement
+		/// <summary>
+		/// Gets a list of FactTypeCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<FactType> GetFactTypeCollection(ORMNamedElement element)
+		{
+			return GetRoleCollection<DslModeling::ReadOnlyLinkedElementCollection<FactType>, FactType>(element, ConstraintDomainRoleId);
 		}
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
@@ -143,17 +143,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion
 		#endregion
-		#region FactType link accessor
-		/// <summary>
-		/// Get the list of FactConstraint links to a FactType.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint> GetLinksToConstraintCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factTypeInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint>(factTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.FactTypeDomainRoleId);
-		}
-		#endregion
 		#region Constraint link accessor
 		/// <summary>
 		/// Get the list of FactConstraint links to a ORMNamedElement.
@@ -165,20 +154,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint>(constraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.ConstraintDomainRoleId);
 		}
 		#endregion
-		#region FactConstraint instance accessors
-		
+		#region FactType link accessor
 		/// <summary>
-		/// Get any FactConstraint links between a given FactType and a ORMNamedElement.
+		/// Get the list of FactConstraint links to a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMNamedElement target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint> GetLinksToConstraintCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factTypeInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint>(factTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.FactTypeDomainRoleId);
+		}
+		#endregion
+		#region FactConstraint instance accessors
+		
+		/// <summary>
+		/// Get any FactConstraint links between a given ORMNamedElement and a FactType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMNamedElement source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.FactTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.ConstraintDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint link in links )
 			{
-				if ( target.Equals(link.Constraint) )
+				if ( target.Equals(link.FactType) )
 				{
 					outLinks.Add(link);
 				}
@@ -186,16 +186,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one FactConstraint link between a given FactTypeand a ORMNamedElement.
+		/// Get the one FactConstraint link between a given ORMNamedElementand a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMNamedElement target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMNamedElement source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.FactTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.ConstraintDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint link in links )
 			{
-				if ( target.Equals(link.Constraint) )
+				if ( target.Equals(link.FactType) )
 				{
 					return link;
 				}
@@ -231,12 +231,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a FactSetComparisonConstraint link in the same Partition as the given FactType
+		/// Creates a FactSetComparisonConstraint link in the same Partition as the given SetComparisonConstraint
 		/// </summary>
-		/// <param name="source">FactType to use as the source of the relationship.</param>
-		/// <param name="target">SetComparisonConstraint to use as the target of the relationship.</param>
-		public FactSetComparisonConstraint(FactType source, SetComparisonConstraint target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactSetComparisonConstraint.FactTypeDomainRoleId, source), new DslModeling::RoleAssignment(FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId, target)}, null)
+		/// <param name="source">SetComparisonConstraint to use as the source of the relationship.</param>
+		/// <param name="target">FactType to use as the target of the relationship.</param>
+		public FactSetComparisonConstraint(SetComparisonConstraint source, FactType target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId, source), new DslModeling::RoleAssignment(FactSetComparisonConstraint.FactTypeDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -282,48 +282,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
-		#region FactType domain role code
-		
-		/// <summary>
-		/// FactType domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid FactTypeDomainRoleId = new global::System.Guid(0xf7733faf, 0x1029, 0x480e, 0x8f, 0xea, 0x96, 0xfd, 0xd6, 0x5a, 0xb2, 0x12);
-		
-		/// <summary>
-		/// DomainRole FactType
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.FactType
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("f7733faf-1029-480e-8fea-96fdd65ab212")]
-		public override FactType FactType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access FactTypeCollection of a SetComparisonConstraint
-		/// <summary>
-		/// Gets a list of FactTypeCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<FactType> GetFactTypeCollection(SetComparisonConstraint element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<FactType>, FactType>(element, SetComparisonConstraintDomainRoleId);
-		}
-		#endregion
 		#region SetComparisonConstraint domain role code
 		
 		/// <summary>
@@ -338,7 +296,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/SetComparisonConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/SetComparisonConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/SetComparisonConstraint.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/SetComparisonConstraint.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("575f65e4-682e-427a-b273-3d30d909a816")]
 		public virtual SetComparisonConstraint SetComparisonConstraint
 		{
@@ -388,15 +346,46 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region FactType link accessor
+		#region FactType domain role code
+		
 		/// <summary>
-		/// Get the list of FactSetComparisonConstraint links to a FactType.
+		/// FactType domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid FactTypeDomainRoleId = new global::System.Guid(0xf7733faf, 0x1029, 0x480e, 0x8f, 0xea, 0x96, 0xfd, 0xd6, 0x5a, 0xb2, 0x12);
+		
+		/// <summary>
+		/// DomainRole FactType
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.FactType
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetComparisonConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("f7733faf-1029-480e-8fea-96fdd65ab212")]
+		public override FactType FactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FactTypeCollection of a SetComparisonConstraint
+		/// <summary>
+		/// Gets a list of FactTypeCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint> GetLinksToSetComparisonConstraintCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factTypeInstance )
+		public static DslModeling::LinkedElementCollection<FactType> GetFactTypeCollection(SetComparisonConstraint element)
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint>(factTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.FactTypeDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<FactType>, FactType>(element, SetComparisonConstraintDomainRoleId);
 		}
 		#endregion
 		#region SetComparisonConstraint link accessor
@@ -410,20 +399,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint>(setComparisonConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
 		}
 		#endregion
-		#region FactSetComparisonConstraint instance accessors
-		
+		#region FactType link accessor
 		/// <summary>
-		/// Get any FactSetComparisonConstraint links between a given FactType and a SetComparisonConstraint.
+		/// Get the list of FactSetComparisonConstraint links to a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint> GetLinksToSetComparisonConstraintCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factTypeInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint>(factTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.FactTypeDomainRoleId);
+		}
+		#endregion
+		#region FactSetComparisonConstraint instance accessors
+		
+		/// <summary>
+		/// Get any FactSetComparisonConstraint links between a given SetComparisonConstraint and a FactType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.FactTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint link in links )
 			{
-				if ( target.Equals(link.SetComparisonConstraint) )
+				if ( target.Equals(link.FactType) )
 				{
 					outLinks.Add(link);
 				}
@@ -431,16 +431,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one FactSetComparisonConstraint link between a given FactTypeand a SetComparisonConstraint.
+		/// Get the one FactSetComparisonConstraint link between a given SetComparisonConstraintand a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.FactTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint link in links )
 			{
-				if ( target.Equals(link.SetComparisonConstraint) )
+				if ( target.Equals(link.FactType) )
 				{
 					return link;
 				}
@@ -475,12 +475,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a FactSetConstraint link in the same Partition as the given FactType
+		/// Creates a FactSetConstraint link in the same Partition as the given SetConstraint
 		/// </summary>
-		/// <param name="source">FactType to use as the source of the relationship.</param>
-		/// <param name="target">SetConstraint to use as the target of the relationship.</param>
-		public FactSetConstraint(FactType source, SetConstraint target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactSetConstraint.FactTypeDomainRoleId, source), new DslModeling::RoleAssignment(FactSetConstraint.SetConstraintDomainRoleId, target)}, null)
+		/// <param name="source">SetConstraint to use as the source of the relationship.</param>
+		/// <param name="target">FactType to use as the target of the relationship.</param>
+		public FactSetConstraint(SetConstraint source, FactType target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(FactSetConstraint.SetConstraintDomainRoleId, source), new DslModeling::RoleAssignment(FactSetConstraint.FactTypeDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -526,48 +526,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
-		#region FactType domain role code
-		
-		/// <summary>
-		/// FactType domain role Id.
-		/// </summary>
-		public static readonly new global::System.Guid FactTypeDomainRoleId = new global::System.Guid(0xde9a381f, 0x5346, 0x4c95, 0x9d, 0x48, 0xe4, 0x68, 0xb8, 0xcf, 0x8a, 0x29);
-		
-		/// <summary>
-		/// DomainRole FactType
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.FactType
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "SetConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("de9a381f-5346-4c95-9d48-e468b8cf8a29")]
-		public override FactType FactType
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access FactTypeCollection of a SetConstraint
-		/// <summary>
-		/// Gets a list of FactTypeCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<FactType> GetFactTypeCollection(SetConstraint element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<FactType>, FactType>(element, SetConstraintDomainRoleId);
-		}
-		#endregion
 		#region SetConstraint domain role code
 		
 		/// <summary>
@@ -582,7 +540,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/SetConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/SetConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/SetConstraint.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "FactTypeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/SetConstraint.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("7789fd46-6e28-4ab7-afc5-7f17b95ac4d9")]
 		public virtual SetConstraint SetConstraint
 		{
@@ -632,15 +590,46 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
-		#region FactType link accessor
+		#region FactType domain role code
+		
 		/// <summary>
-		/// Get the list of FactSetConstraint links to a FactType.
+		/// FactType domain role Id.
+		/// </summary>
+		public static readonly new global::System.Guid FactTypeDomainRoleId = new global::System.Guid(0xde9a381f, 0x5346, 0x4c95, 0x9d, 0x48, 0xe4, 0x68, 0xb8, 0xcf, 0x8a, 0x29);
+		
+		/// <summary>
+		/// DomainRole FactType
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.FactType
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "SetConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("de9a381f-5346-4c95-9d48-e468b8cf8a29")]
+		public override FactType FactType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (FactType)DslModeling::DomainRoleInfo.GetRolePlayer(this, FactTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, FactTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access FactTypeCollection of a SetConstraint
+		/// <summary>
+		/// Gets a list of FactTypeCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint> GetLinksToSetConstraintCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factTypeInstance )
+		public static DslModeling::LinkedElementCollection<FactType> GetFactTypeCollection(SetConstraint element)
 		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint>(factTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.FactTypeDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<FactType>, FactType>(element, SetConstraintDomainRoleId);
 		}
 		#endregion
 		#region SetConstraint link accessor
@@ -654,20 +643,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint>(setConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.SetConstraintDomainRoleId);
 		}
 		#endregion
-		#region FactSetConstraint instance accessors
-		
+		#region FactType link accessor
 		/// <summary>
-		/// Get any FactSetConstraint links between a given FactType and a SetConstraint.
+		/// Get the list of FactSetConstraint links to a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint> GetLinksToSetConstraintCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factTypeInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint>(factTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.FactTypeDomainRoleId);
+		}
+		#endregion
+		#region FactSetConstraint instance accessors
+		
+		/// <summary>
+		/// Get any FactSetConstraint links between a given SetConstraint and a FactType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.FactTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.SetConstraintDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint link in links )
 			{
-				if ( target.Equals(link.SetConstraint) )
+				if ( target.Equals(link.FactType) )
 				{
 					outLinks.Add(link);
 				}
@@ -675,16 +675,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one FactSetConstraint link between a given FactTypeand a SetConstraint.
+		/// Get the one FactSetConstraint link between a given SetConstraintand a FactType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.FactTypeDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.SetConstraintDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint link in links )
 			{
-				if ( target.Equals(link.SetConstraint) )
+				if ( target.Equals(link.FactType) )
 				{
 					return link;
 				}
@@ -3815,7 +3815,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetConstraint/SetConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetConstraint/SetConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetConstraint/SetConstraint.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetConstraint/SetConstraint.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("550f7793-1381-4d37-a5e2-78c48d0f1331")]
 		public virtual SetConstraint SetConstraint
 		{
@@ -4318,7 +4318,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint/SetComparisonConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint/SetComparisonConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint/SetComparisonConstraint.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint/SetComparisonConstraint.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("c176da76-1a98-4369-b25f-bc1ded5b388c")]
 		public virtual SetComparisonConstraint SetComparisonConstraint
 		{
@@ -7460,12 +7460,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ConstraintRoleSequenceHasRole link in the same Partition as the given Role
+		/// Creates a ConstraintRoleSequenceHasRole link in the same Partition as the given ConstraintRoleSequence
 		/// </summary>
-		/// <param name="source">Role to use as the source of the relationship.</param>
-		/// <param name="target">ConstraintRoleSequence to use as the target of the relationship.</param>
-		public ConstraintRoleSequenceHasRole(Role source, ConstraintRoleSequence target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConstraintRoleSequenceHasRole.RoleDomainRoleId, source), new DslModeling::RoleAssignment(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId, target)}, null)
+		/// <param name="source">ConstraintRoleSequence to use as the source of the relationship.</param>
+		/// <param name="target">Role to use as the target of the relationship.</param>
+		public ConstraintRoleSequenceHasRole(ConstraintRoleSequence source, Role target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId, source), new DslModeling::RoleAssignment(ConstraintRoleSequenceHasRole.RoleDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -7511,48 +7511,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 		}
 		#endregion
-		#region Role domain role code
-		
-		/// <summary>
-		/// Role domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid RoleDomainRoleId = new global::System.Guid(0x1a5a347e, 0x1d5d, 0x4045, 0x9e, 0xa0, 0x13, 0xb2, 0x33, 0x8f, 0xc8, 0x98);
-		
-		/// <summary>
-		/// DomainRole Role
-		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.Role
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ConstraintRoleSequenceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
-		[DslModeling::DomainObjectId("1a5a347e-1d5d-4045-9ea0-13b2338fc898")]
-		public virtual Role Role
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access RoleCollection of a ConstraintRoleSequence
-		/// <summary>
-		/// Gets a list of RoleCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Role> GetRoleCollection(ConstraintRoleSequence element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<Role>, Role>(element, ConstraintRoleSequenceDomainRoleId);
-		}
-		#endregion
 		#region ConstraintRoleSequence domain role code
 		
 		/// <summary>
@@ -7567,7 +7525,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RoleCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("9ad53904-280a-4329-a6f0-20e2c44f5607")]
 		public virtual ConstraintRoleSequence ConstraintRoleSequence
 		{
@@ -7593,6 +7551,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static DslModeling::LinkedElementCollection<ConstraintRoleSequence> GetConstraintRoleSequenceCollection(Role element)
 		{
 			return GetRoleCollection<DslModeling::LinkedElementCollection<ConstraintRoleSequence>, ConstraintRoleSequence>(element, RoleDomainRoleId);
+		}
+		#endregion
+		#region Role domain role code
+		
+		/// <summary>
+		/// Role domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RoleDomainRoleId = new global::System.Guid(0x1a5a347e, 0x1d5d, 0x4045, 0x9e, 0xa0, 0x13, 0xb2, 0x33, 0x8f, 0xc8, 0x98);
+		
+		/// <summary>
+		/// DomainRole Role
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.Role
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ConstraintRoleSequenceCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("1a5a347e-1d5d-4045-9ea0-13b2338fc898")]
+		public virtual Role Role
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, RoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RoleCollection of a ConstraintRoleSequence
+		/// <summary>
+		/// Gets a list of RoleCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<Role> GetRoleCollection(ConstraintRoleSequence element)
+		{
+			return GetRoleCollection<DslModeling::LinkedElementCollection<Role>, Role>(element, ConstraintRoleSequenceDomainRoleId);
 		}
 		#endregion
 		#region Accessors for roles that this REL plays in other RELs
@@ -7629,17 +7629,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion
 		#endregion
-		#region Role link accessor
-		/// <summary>
-		/// Get the list of ConstraintRoleSequenceHasRole links to a Role.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole> GetLinksToConstraintRoleSequenceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role roleInstance )
-		{
-			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole>(roleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.RoleDomainRoleId);
-		}
-		#endregion
 		#region ConstraintRoleSequence link accessor
 		/// <summary>
 		/// Get the list of ConstraintRoleSequenceHasRole links to a ConstraintRoleSequence.
@@ -7651,20 +7640,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole>(constraintRoleSequenceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 		}
 		#endregion
-		#region ConstraintRoleSequenceHasRole instance accessors
-		
+		#region Role link accessor
 		/// <summary>
-		/// Get any ConstraintRoleSequenceHasRole links between a given Role and a ConstraintRoleSequence.
+		/// Get the list of ConstraintRoleSequenceHasRole links to a Role.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole> GetLinksToConstraintRoleSequenceCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role roleInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole>(roleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.RoleDomainRoleId);
+		}
+		#endregion
+		#region ConstraintRoleSequenceHasRole instance accessors
+		
+		/// <summary>
+		/// Get any ConstraintRoleSequenceHasRole links between a given ConstraintRoleSequence and a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.RoleDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole link in links )
 			{
-				if ( target.Equals(link.ConstraintRoleSequence) )
+				if ( target.Equals(link.Role) )
 				{
 					outLinks.Add(link);
 				}
@@ -7672,16 +7672,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ConstraintRoleSequenceHasRole link between a given Roleand a ConstraintRoleSequence.
+		/// Get the one ConstraintRoleSequenceHasRole link between a given ConstraintRoleSequenceand a Role.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence target )
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.RoleDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole link in links )
 			{
-				if ( target.Equals(link.ConstraintRoleSequence) )
+				if ( target.Equals(link.Role) )
 				{
 					return link;
 				}

@@ -42,13 +42,13 @@ namespace Neumont.Tools.ORM.OIALModel
 						typeof(OIALModel).GetNestedType("ModelHasFactTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasFactTypeDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasSetConstraintAddRule", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(OIALModel).GetNestedType("ModelHasSetConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ModelHasSetConstraintDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ConstraintRoleSequenceHasRoleAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("ConstraintRoleSequenceHasRoleDeletingRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("UniquenessConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("MandatoryConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("RoleBaseChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(OIALModel).GetNestedType("SetConstraintChangeRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("OIALModelHasConceptTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("OIALModelHasConceptTypeDeleteRule", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(OIALModel).GetNestedType("CheckConceptTypeParentExclusiveMandatory", BindingFlags.Public | BindingFlags.NonPublic).GetNestedType("ConceptTypeAbsorbedConceptTypeAddRule", BindingFlags.Public | BindingFlags.NonPublic),
@@ -188,17 +188,6 @@ namespace Neumont.Tools.ORM.OIALModel
 	}
 	partial class OIALModel
 	{
-		partial class ModelHasSetConstraintChangeRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public ModelHasSetConstraintChangeRule()
-			{
-				base.IsEnabled = false;
-			}
-		}
-	}
-	partial class OIALModel
-	{
 		partial class ModelHasSetConstraintDeletingRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -258,6 +247,17 @@ namespace Neumont.Tools.ORM.OIALModel
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
 			public RoleBaseChangeRule()
+			{
+				base.IsEnabled = false;
+			}
+		}
+	}
+	partial class OIALModel
+	{
+		partial class SetConstraintChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public SetConstraintChangeRule()
 			{
 				base.IsEnabled = false;
 			}

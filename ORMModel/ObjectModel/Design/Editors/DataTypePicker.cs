@@ -58,7 +58,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		{
 			Debug.Assert(!(value is object[]));
 			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, true); // true to pick any element. We can use any element to get at the datatypes on the model
-			IList dataTypes = instance.Model.DataTypeCollection;
+			IList dataTypes = instance.ResolvedModel.DataTypeCollection;
 			int count = dataTypes.Count;
 			if (count > 1)
 			{

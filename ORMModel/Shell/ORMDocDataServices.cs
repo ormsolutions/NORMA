@@ -1,7 +1,6 @@
 #region Common Public License Copyright Notice
 /**************************************************************************\
 * Natural Object-Role Modeling Architect for Visual Studio                 *
- * 
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
 * Copyright © ORM Solutions, LLC. All rights reserved.                     *
@@ -22,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -176,6 +176,49 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					return OptionsPage.CurrentDelayActivateModelBrowserLabelEdits;
 				}
+			}
+			bool myCheckedColors;
+			bool myColorsEnabled;
+			/// <summary>
+			/// Turn on dynamic coloring if any extensions are loaded that support it.
+			/// </summary>
+			protected override bool DynamicColorsEnabled
+			{
+				get
+				{
+					Store store;
+					if (null == (store = Utility.ValidateStore(SurveyContext)))
+					{
+						return false;
+					}
+					if (!myCheckedColors)
+					{
+						myCheckedColors = true;
+						myColorsEnabled = null != ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>();
+					}
+					return myColorsEnabled;
+				}
+			}
+			protected override Color GetDynamicColor(object element, SurveyDynamicColor colorRole)
+			{
+				ModelElement mel;
+				Store store;
+				if (null != (mel = element as ModelElement) &&
+					null != (store = Utility.ValidateStore(this.SurveyContext)))
+				{
+					// We know the next one will succeed because it worked for DynamicColorsEnabled
+					IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>[] providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>();
+					ORMModelBrowserDynamicColor checkColor = (colorRole == SurveyDynamicColor.ForeColor) ? ORMModelBrowserDynamicColor.Foreground : ORMModelBrowserDynamicColor.Background;
+					for (int i = 0; i < providers.Length; ++i)
+					{
+						Color alternateColor = providers[i].GetDynamicColor(checkColor, null, mel);
+						if (alternateColor != Color.Empty)
+						{
+							return alternateColor;
+						}
+					}
+				}
+				return Color.Empty;
 			}
 		}
 		#endregion //SurveyTreeSetup
@@ -600,9 +643,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			#region AddUndoUnit filtering
 			#region Dynamic Microsoft.VisualStudio.Modeling.TransactionItem.ChangesPartition implementation
 #if	DEBUG_MODIFIED_PARITION_COMMAND
-			private delegate int TransactionItemChangesPartitionDelegate(TransactionItem @this, Partition partition);
+			private delegate int TransactionItemChangesPartitionDelegate(TransactionItem @this, Partition partition, Predicate<EventArgs> isIgnored);
 #else
-			private delegate bool TransactionItemChangesPartitionDelegate(TransactionItem @this, Partition partition);
+			private delegate bool TransactionItemChangesPartitionDelegate(TransactionItem @this, Partition partition, Predicate<EventArgs> isIgnored);
 #endif
 			/// <summary>
 			/// Microsoft.VisualStudio.Modeling.UndoManager has a TopmostUndoableTransaction property,
@@ -618,10 +661,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Type modelCommandType;
 				Type modelCommandListType;
 				Type elementCommandType;
+				Type notifyEventType = typeof(Predicate<EventArgs>);
 				PropertyInfo commandsProperty;
 				MethodInfo getCommandsMethod;
 				PropertyInfo partitionProperty;
 				MethodInfo getPartitionMethod;
+				PropertyInfo eventArgsProperty;
+				MethodInfo getEventArgsMethod;
 				if (null == (modelCommandType = modelingAssembly.GetType(privateTypeBaseName + "ModelCommand", false)) ||
 					null == (elementCommandType = modelingAssembly.GetType(privateTypeBaseName + "ElementCommand", false)) ||
 					!modelCommandType.IsAssignableFrom(elementCommandType) ||
@@ -631,21 +677,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					null == (getCommandsMethod = commandsProperty.GetGetMethod(true)) ||
 					null == (partitionProperty = elementCommandType.GetProperty("Partition", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)) ||
 					partitionProperty.PropertyType != partitionType ||
-					null == (getPartitionMethod = partitionProperty.GetGetMethod(true)))
+					null == (getPartitionMethod = partitionProperty.GetGetMethod(true)) ||
+					null == (eventArgsProperty = modelCommandType.GetProperty("EventArgs", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly)) ||
+					eventArgsProperty.PropertyType != typeof(EventArgs) ||
+					null == (getEventArgsMethod = eventArgsProperty.GetGetMethod(true)))
 				{
 					// The structure of the internal dll implementation has changed, il generation will fail
 					return null;
 				}
 
 				// Approximate method being written (assuming TransactionItem context):
-				// bool ChangesPartitionDelegate(Partition partition)
+				// bool ChangesPartitionDelegate(Partition partition, Predicate<EventArgs> isIgnored)
 				// {
 				//     List<ModelCommand> commands = Commands;
 				//     commandsCount = commands.Count;
 				//     for (int i = 0; i < commandsCount; ++i)
 				//     {
 				//         ElementCommand currentCommand = commands[i] as ElementCommand;
-				//         if (currentCommand != null && currentCommand.Partition == partition)
+				//         if (currentCommand != null && currentCommand.Partition == partition && !ignored(currentCommand.EventArgs))
 				//         {
 				//             return true;
 				//         }
@@ -659,17 +708,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 #else
  typeof(bool),
 #endif
- new Type[] { transactionItemType, partitionType },
+ new Type[] { transactionItemType, partitionType, notifyEventType },
 					transactionItemType, true);
 				// ILGenerator tends to be rather aggressive with capacity checks, so we'll ask for more than the required 55 bytes
 				// to avoid a resize to an even larger buffer.
-				ILGenerator il = dynamicMethod.GetILGenerator(64);
+				ILGenerator il = dynamicMethod.GetILGenerator(128); // Test this
 				Label loopBodyLabel = il.DefineLabel();
 				Label loopTestLabel = il.DefineLabel();
-				Label notAnElementCommandLabel = il.DefineLabel();
+				Label notAnElementCommandOrForeignPartitionLabel = il.DefineLabel();
 				Label loopIncrementLabel = il.DefineLabel();
 				il.DeclareLocal(typeof(int)); // commandsCount
 				il.DeclareLocal(typeof(int)); // i
+				il.DeclareLocal(typeof(EventArgs)); // eventArgs
 				il.Emit(OpCodes.Ldarg_0);
 				il.Emit(OpCodes.Call, getCommandsMethod);
 				il.Emit(OpCodes.Dup); // Save for the loop, repush each time before getting instance
@@ -689,11 +739,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				il.Emit(OpCodes.Ldloc_1); // push i
 				il.Emit(OpCodes.Call, modelCommandListType.GetProperty("Item").GetGetMethod());
 				il.Emit(OpCodes.Isinst, elementCommandType);
-				il.Emit(OpCodes.Dup); // For test
-				il.Emit(OpCodes.Brfalse_S, notAnElementCommandLabel);
+				il.Emit(OpCodes.Dup); // Keep copy of element command for getting partition
+				il.Emit(OpCodes.Brfalse_S, notAnElementCommandOrForeignPartitionLabel);
+				il.Emit(OpCodes.Dup); // Keep copy of element command to get event args
 				il.Emit(OpCodes.Call, getPartitionMethod);
 				il.Emit(OpCodes.Ldarg_1);
-				il.Emit(OpCodes.Bne_Un_S, loopIncrementLabel);
+				il.Emit(OpCodes.Bne_Un_S, notAnElementCommandOrForeignPartitionLabel);
+				il.Emit(OpCodes.Call, getEventArgsMethod);
+				il.Emit(OpCodes.Stloc_2); // store eventArgs
+				il.Emit(OpCodes.Ldarg_2); // push callback delegate
+				il.Emit(OpCodes.Ldloc_2); // push eventArgs
+				il.Emit(OpCodes.Callvirt, notifyEventType.GetMethod("Invoke"));
+				il.Emit(OpCodes.Brtrue_S, loopIncrementLabel);
 
 				// Have a match, get out
 				il.Emit(OpCodes.Pop); // Pop commands
@@ -705,7 +762,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				il.Emit(OpCodes.Ret);
 
 				// Cast failed, pop extra item
-				il.MarkLabel(notAnElementCommandLabel);
+				il.MarkLabel(notAnElementCommandOrForeignPartitionLabel);
 				il.Emit(OpCodes.Pop); // Pops elementCommand instance
 
 				// Loop index increment
@@ -832,14 +889,54 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					return myLatestUndoItemChangesDefaultPartition;
 				}
 			}
+			/// <summary>
+			/// Cache property handlers to determine when a property change should be ignored.
+			/// The DocStore is recreated on reload, so we do not need to worry about clearing
+			/// this cache.
+			/// </summary>
+			private Dictionary<Guid, Predicate<ElementPropertyChangedEventArgs>> myIgnoredProperties;
 			private void UndoItemAddedFilter(object sender, UndoItemEventArgs e)
 			{
 				TransactionItem transactionItem = e.TransactionItem;
 #if DEBUG_MODIFIED_PARITION_COMMAND
-				int changedAt = TransactionItemChangesPartition(transactionItem, transactionItem.Store.DefaultPartition);
+				int changedAt =
+#else
+				if (
+#endif
+					TransactionItemChangesPartition(
+						transactionItem,
+						transactionItem.Store.DefaultPartition,
+						delegate(EventArgs args)
+						{
+							// Determine if the current change is meaningful to the user.
+							ElementPropertyChangedEventArgs propChangeArgs;
+							if (null != (propChangeArgs = args as ElementPropertyChangedEventArgs))
+							{
+								Dictionary<Guid, Predicate<ElementPropertyChangedEventArgs>> ignoredProps = myIgnoredProperties;
+								if (ignoredProps == null)
+								{
+									myIgnoredProperties = ignoredProps = new Dictionary<Guid, Predicate<ElementPropertyChangedEventArgs>>();
+									foreach (IRegisterSignalChanges changes in ((IFrameworkServices)propChangeArgs.ModelElement.Store).GetTypedDomainModelProviders <IRegisterSignalChanges>())
+									{
+										foreach (KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>> changePair in changes.GetSignalPropertyChanges())
+										{
+											ignoredProps[changePair.Key] = changePair.Value;
+										}
+									}
+								}
+								Predicate<ElementPropertyChangedEventArgs> test;
+								if (ignoredProps.TryGetValue(propChangeArgs.DomainProperty.Id, out test) &&
+									(test == null || test(propChangeArgs)))
+								{
+									return true;
+								}
+							}
+							return false;
+						})
+#if DEBUG_MODIFIED_PARITION_COMMAND
 				if (changedAt != -1)
 #else
-				if (TransactionItemChangesPartition(transactionItem, transactionItem.Store.DefaultPartition))
+				)
 #endif
 				{
 					myLatestUndoItemChangesDefaultPartition = true;

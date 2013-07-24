@@ -1087,6 +1087,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return element;
 		}
 		/// <summary>
+		/// Check if the element has valid ownership for appearing
+		/// on this diagram. Allows ORM elements to be used in structures
+		/// outside the core model without appearing on a diagram.
+		/// </summary>
+		/// <param name="element">An element that may be added to the diagram.</param>
+		/// <returns><see langword="true"/> if the element has correct ownership.</returns>
+		protected bool VerifyElementOwnership(ModelElement element)
+		{
+			// Use the partition id instead of the partition itself so that dragging
+			// from other models is supported.
+			return element.Partition.AlternateId == this.Partition.AlternateId && !(element is IHasAlternateOwner);
+		}
+		/// <summary>
 		/// Called as a result of the FixUpDiagram calls
 		/// with the diagram as the first element
 		/// </summary>
@@ -1095,6 +1108,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// surface. Nesting object types are not displayed</returns>
 		protected override bool ShouldAddShapeForElement(ModelElement element)
 		{
+			if (!VerifyElementOwnership(element))
+			{
+				return false;
+			}
 			ElementLink link = element as ElementLink;
 			SubtypeFact subtypeFact = null;
 			ModelElement element1 = null;
@@ -3388,27 +3405,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	}
 	#endregion // ORMDiagramDynamicColor enum
 	#region IDynamicColorSetConsumer implementation
-	partial class ORMShapeDomainModel : IDynamicColorSetConsumer<ORMDiagram>
+	partial class ORMShapeDomainModel : IDynamicColorSetConsumer
 	{
 		#region IDynamicColorSetConsumer Implementation
 		/// <summary>
-		/// Implements <see cref="IDynamicColorSetConsumer{ORMDiagram}.DynamicColorSet"/>
+		/// Implements <see cref="IDynamicColorSetConsumer.GetDynamicColorSet"/>
 		/// </summary>
-		protected static Type DynamicColorSet
+		protected static Type GetDynamicColorSet(Type renderingType)
 		{
-			get
+			if (renderingType == typeof(ORMDiagram))
 			{
 				return typeof(ORMDiagramDynamicColor);
 			}
+			return null;
 		}
-		Type IDynamicColorSetConsumer<ORMDiagram>.DynamicColorSet
+		Type IDynamicColorSetConsumer.GetDynamicColorSet(Type renderingType)
 		{
-			get
-			{
-				return DynamicColorSet;
-			}
+			return GetDynamicColorSet(renderingType);
 		}
-		#endregion // IDynamicColorSetConsumer Implementation
+		#endregion // IDynamicColorSetConsumer implementation
 	}
 	#endregion // IDynamicColorSetConsumer implementation
 	#region INotifyCultureChange implementation
@@ -3432,6 +3447,63 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 	}
 	#endregion // INotifyCultureChange implementation
+	#region IRegisterSignalChanges interface
+	partial class ORMShapeDomainModel : IRegisterSignalChanges
+	{
+		#region IRegisterSignalChanges Implementation
+		/// <summary>
+		/// Implements <see cref="IRegisterSignalChanges.GetSignalPropertyChanges"/>
+		/// </summary>
+		protected IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> GetSignalPropertyChanges()
+		{
+			// The core diagram processing creates a number of signal changes
+			// that are meaningless outside of the transaction. They also
+			// create a meaningless change for the EdgePoints property on a
+			// link shape. These are all registered here because the core doesn't
+			// know about this method.
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(Diagram.DoLineRoutingDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(Diagram.DoResizeParentDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(Diagram.DoShapeAnchoringDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(Diagram.DoViewFixupDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(LinkShape.EdgePointsDomainPropertyId, delegate(ElementPropertyChangedEventArgs e)
+			{
+				object oldVal = e.OldValue;
+				object newVal = e.NewValue;
+				if (oldVal == null || newVal == null)
+				{
+					return false;
+				}
+				EdgePointCollection oldPoints = (EdgePointCollection)oldVal;
+				EdgePointCollection newPoints = (EdgePointCollection)newVal;
+				int pointCount = oldPoints.Count;
+				if (pointCount != newPoints.Count)
+				{
+					return false;
+				}
+				for (int i = 0; i < pointCount; ++i)
+				{
+					EdgePoint oldPoint = oldPoints[i];
+					EdgePoint newPoint = newPoints[i];
+					if (oldPoint.Flag != newPoint.Flag ||
+						oldPoint.Point != newPoint.Point)
+					{
+						return false;
+					}
+				}
+				return true;
+			});
+
+			// Our UpdateCounter properties are also signals that should not trigger a user-visible change.
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(ORMBaseShape.UpdateCounterDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(ORMBaseBinaryLinkShape.UpdateCounterDomainPropertyId, null);
+		}
+		IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> IRegisterSignalChanges.GetSignalPropertyChanges()
+		{
+			return GetSignalPropertyChanges();
+		}
+		#endregion // IRegisterSignalChanges Implementation
+	}
+	#endregion // IRegisterSignalChanges interface
 	#region IStickyObject interface
 	/// <summary>
 	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky

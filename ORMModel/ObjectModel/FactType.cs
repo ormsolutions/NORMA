@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -161,7 +161,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ReadingOrder retval = null;
 			if (roleOrder.Count > 0)
 			{
-				retval = new ReadingOrder(Store);
+				retval = new ReadingOrder(Partition);
 				LinkedElementCollection<RoleBase> readingRoles = retval.RoleCollection;
 				Role unaryRole;
 				if (null != (unaryRole = UnaryRole))
@@ -455,8 +455,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private void SetDerivationNoteDisplayValue(string newValue)
 		{
-			Store store = Store;
-			if (!store.InUndoRedoOrRollback)
+			Partition partition = Partition;
+			if (!Store.InUndoRedoOrRollback)
 			{
 				FactTypeDerivationRule derivationRule;
 				DerivationNote derivationNote;
@@ -477,7 +477,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					new FactTypeHasDerivationRule(
 						this,
 						derivationRule = new FactTypeDerivationRule(
-							store,
+							partition,
 							new PropertyAssignment(FactTypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
 					derivationNote = null;
 				}
@@ -486,7 +486,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					new FactTypeDerivationRuleHasDerivationNote(
 						derivationRule,
 						new DerivationNote(
-							store,
+							partition,
 							new PropertyAssignment(DerivationNote.BodyDomainPropertyId, newValue)));
 				}
 				else
@@ -545,8 +545,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private void SetDefinitionTextValue(string newValue)
 		{
-			Store store;
-			if (!(store = Store).InUndoRedoOrRollback)
+			if (!Store.InUndoRedoOrRollback)
 			{
 				Definition definition = Definition;
 				if (definition != null)
@@ -555,7 +554,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Definition = new Definition(store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+					Definition = new Definition(Partition, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -566,8 +565,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private void SetNoteTextValue(string newValue)
 		{
-			Store store;
-			if (!(store = Store).InUndoRedoOrRollback)
+			if (!Store.InUndoRedoOrRollback)
 			{
 				Note note = Note;
 				if (note != null)
@@ -576,7 +574,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Note = new Note(store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+					Note = new Note(Partition, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -941,7 +939,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				ORMModel model = Model;
+				ORMModel model = ResolvedModel;
 				return string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorDisplayContextFactType, Name, model != null ? model.Name : "");
 			}
 		}
@@ -1090,9 +1088,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (noReadingError == null)
 					{
-						noReadingError = new FactTypeRequiresReadingError(Store);
+						noReadingError = new FactTypeRequiresReadingError(Partition);
 						noReadingError.FactType = this;
-						noReadingError.Model = Model;
+						noReadingError.Model = ResolvedModel;
 						noReadingError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -1118,13 +1116,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private void ValidateRequiresInternalUniqueness(INotifyElementAdded notifyAdded)
 		{
-			ORMModel theModel;
-			if (!IsDeleted && (null != (theModel = Model)) && !(this is QueryBase))
+			ORMModel model;
+			IHasAlternateOwner<FactType> toAlternateOwner;
+			IAlternateElementOwner<FactType> alternateOwner;
+			if (!IsDeleted &&
+				!(this is QueryBase) &&
+				(null == (toAlternateOwner = this as IHasAlternateOwner<FactType>) ||
+				null == (alternateOwner = toAlternateOwner.AlternateOwner) ||
+				alternateOwner.ValidateErrorFor(this, typeof(FactTypeRequiresInternalUniquenessConstraintError))) &&
+				(null != (model = ResolvedModel)))
 			{
 				FactTypeDerivationRule derivationRule;
 				bool hasError = RoleCollection.Count > 1 &&
 					(null == (derivationRule = DerivationRule as FactTypeDerivationRule) || derivationRule.DerivationCompleteness != DerivationCompleteness.FullyDerived || derivationRule.ExternalDerivation);
-				Store theStore = Store;
 
 				if (hasError)
 				{
@@ -1144,9 +1148,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (noUniquenessError == null)
 					{
-						noUniquenessError = new FactTypeRequiresInternalUniquenessConstraintError(theStore);
+						noUniquenessError = new FactTypeRequiresInternalUniquenessConstraintError(Partition);
 						noUniquenessError.FactType = this;
-						noUniquenessError.Model = theModel;
+						noUniquenessError.Model = model;
 						noUniquenessError.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -1170,10 +1174,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private void ValidateImpliedInternalUniqueness(INotifyElementAdded notifyAdded)
 		{
 
-			ORMModel theModel;
-			if (!IsDeleted && (null != (theModel = Model)))
+			ORMModel model;
+			IHasAlternateOwner<FactType> toAlternateOwner;
+			IAlternateElementOwner<FactType> alternateOwner;
+			if (!IsDeleted &&
+				(null == (toAlternateOwner = this as IHasAlternateOwner<FactType>) ||
+				null == (alternateOwner = toAlternateOwner.AlternateOwner) ||
+				alternateOwner.ValidateErrorFor(this, typeof(ImpliedInternalUniquenessConstraintError))) &&
+				(null != (model = ResolvedModel)))
 			{
-				Store theStore = Store;
 				LinkedElementCollection<RoleBase> factRoles = RoleCollection;
 				bool hasError = false;
 				int iucCount = GetInternalConstraintsCount(ConstraintType.InternalUniqueness);
@@ -1236,9 +1245,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (impConstraint == null)
 					{
-						impConstraint = new ImpliedInternalUniquenessConstraintError(theStore);
+						impConstraint = new ImpliedInternalUniquenessConstraintError(Partition);
 						impConstraint.FactType = this;
-						impConstraint.Model = theModel;
+						impConstraint.Model = model;
 						impConstraint.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -1767,6 +1776,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // Automatic Name Generation
 		#region Model Validation Rules
+		/// <summary>
+		/// Determine the <see cref="ORMModel"/> for this element.
+		/// If the element is owned by an alternate owner, then retrieve
+		/// the model through that owner.
+		/// </summary>
+		public ORMModel ResolvedModel
+		{
+			get
+			{
+				IHasAlternateOwner<FactType> toAlternateOwner;
+				IAlternateElementOwner<FactType> alternateOwner;
+				return (null != (toAlternateOwner = this as IHasAlternateOwner<FactType>) &&
+					null != (alternateOwner = toAlternateOwner.AlternateOwner)) ?
+						alternateOwner.Model :
+						this.Model;
+			}
+		}
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(FactTypeHasRole)
 		/// Other rules are not set up to handle roles jumping from one FactType to another.
@@ -3349,7 +3375,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Equality Overrides
 		}
 		#endregion // DefaultBinaryMissingUniquenessVerbalizer
-		#region IHierarchyContextEnabled Members
+		#region IHierarchyContextEnabled Implementation
 		/// <summary>
 		/// Gets the contextable object that this instance should resolve to.
 		/// </summary>
@@ -3459,7 +3485,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get { return true; }
 		}
-		#region IHierarchyContextEnabled Members
 		int IHierarchyContextEnabled.HierarchyContextDecrementCount
 		{
 			get { return HierarchyContextDecrementCount; }
@@ -3480,8 +3505,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get { return HierarchyContextPlacementPriority; }
 		}
-		#endregion
-		#endregion
+		ORMModel IHierarchyContextEnabled.Model
+		{
+			get
+			{
+				return ResolvedModel;
+			}
+		}
+		#endregion // IHierarchyContextEnabled Implementation
 		#region UnaryFactTypeFixupListener
 		/// <summary>
 		/// This fixup listener handles the automatic binarization of unary facts that are stored as single-role facts.

@@ -107,17 +107,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 					// Resolve reference reasons
 					ISurveyNodeReference reference = trackingObject as ISurveyNodeReference;
-					if (reference != null)
+					while (reference != null)
 					{
 						switch (reference.SurveyNodeReferenceOptions & (SurveyNodeReferenceOptions.SelectReferenceReason | SurveyNodeReferenceOptions.SelectSelf))
 						{
 							case SurveyNodeReferenceOptions.SelectSelf:
+								reference = null;
 								break;
 							case SurveyNodeReferenceOptions.SelectReferenceReason:
 								trackingObject = reference.SurveyNodeReferenceReason;
+								reference = (trackingObject == reference) ? null : trackingObject as ISurveyNodeReference;
 								break;
 							default:
 								trackingObject = reference.ReferencedElement;
+								reference = trackingObject as ISurveyNodeReference;
 								break;
 						}
 					}

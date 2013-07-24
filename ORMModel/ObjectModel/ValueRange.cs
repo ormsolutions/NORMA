@@ -299,7 +299,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool newRange = existingValueRange == null;
 					if (newRange)
 					{
-						existingValueRange = new ValueRange(contextConstraint.Store);
+						existingValueRange = new ValueRange(contextConstraint.Partition);
 					}
 					existingValueRange.MinValue = minValue;
 					existingValueRange.MaxValue = maxValue;
@@ -354,7 +354,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Definition = new Definition(Store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+					Definition = new Definition(Partition, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -369,7 +369,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+					Note = new Note(Partition, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -522,7 +522,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					minMismatch = range.MinValueMismatchError;
 					if (minMismatch == null)
 					{
-						minMismatch = new MinValueMismatchError(range.Store);
+						minMismatch = new MinValueMismatchError(range.Partition);
 						minMismatch.ValueRange = range;
 						minMismatch.Model = dataType.Model;
 						minMismatch.GenerateErrorText();
@@ -541,7 +541,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						maxMismatch = range.MaxValueMismatchError;
 						if (maxMismatch == null)
 						{
-							maxMismatch = new MaxValueMismatchError(range.Store);
+							maxMismatch = new MaxValueMismatchError(range.Partition);
 							maxMismatch.ValueRange = range;
 							maxMismatch.Model = dataType.Model;
 							maxMismatch.GenerateErrorText();
@@ -635,7 +635,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (error == null)
 				{
-					error = new ValueConstraintValueTypeDetachedError(Store);
+					error = new ValueConstraintValueTypeDetachedError(Partition);
 					error.ValueConstraint = this;
 					error.Model = Model;
 					error.GenerateErrorText();
@@ -757,11 +757,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (hasValueConstraint)
 				{
 					// Convert this value type into an entity type with a reference mode
-					ORMModel model = oldValueType.Model;
-					if (model != null)
+					IHasAlternateOwner<ObjectType> toAlternateOwner;
+					IAlternateElementOwner<ObjectType> alternateOwner = (null == (toAlternateOwner = oldValueType as IHasAlternateOwner<ObjectType>)) ? null : toAlternateOwner.AlternateOwner;
+					DomainClassInfo alternateCtor = (alternateOwner != null) ? alternateOwner.GetOwnedElementClassInfo(typeof(ObjectType)) : null;
+					ORMModel model = (alternateCtor == null) ? oldValueType.Model : null;
+					if (alternateCtor != null || model != null)
 					{
 						// Get a unique name for a new value type
-						INamedElementDictionary existingObjectsDictionary = model.ObjectTypesDictionary;
+						INamedElementDictionaryOwner dictionaryOwner;
+						INamedElementDictionary objectsDictionary;
+						if (null == alternateCtor ||
+							null == (dictionaryOwner = alternateOwner as INamedElementDictionaryOwner) ||
+							null == (objectsDictionary = dictionaryOwner.FindNamedElementDictionary(typeof(ObjectType))))
+						{
+							objectsDictionary = model.ObjectTypesDictionary;
+						}
 						string newNamePattern = ResourceStrings.ValueTypeAutoCreateReferenceModeNamePattern;
 						string baseName = oldValueType.Name;
 						string newName = null;
@@ -770,18 +780,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							newName = string.Format(CultureInfo.InvariantCulture, newNamePattern, baseName, (i == 0) ? "" : i.ToString(CultureInfo.InvariantCulture));
 							++i;
-						} while (!existingObjectsDictionary.GetElement(newName).IsEmpty);
+						} while (!objectsDictionary.GetElement(newName).IsEmpty);
 
 						// Create the value type and attach it to a clone of the deleting datatype link
-						Partition partition = model.Partition;
-						ObjectType newValueType = new ObjectType(partition, new PropertyAssignment[] { new PropertyAssignment(ORMNamedElement.NameDomainPropertyId, newName) });
+						Partition partition = oldValueType.Partition;
+						PropertyAssignment[] assignments = new PropertyAssignment[] { new PropertyAssignment(ORMNamedElement.NameDomainPropertyId, newName) };
+						ObjectType newValueType;
+						if (alternateCtor != null)
+						{
+							// Create the object type subtype for this owner and attach it to the owner.
+							newValueType = (ObjectType)partition.ElementFactory.CreateElement(alternateCtor);
+							((IHasAlternateOwner<ObjectType>)newValueType).AlternateOwner = alternateOwner;
+						}
+						else
+						{
+							// Create a standard object type and attach it to the model
+							newValueType = new ObjectType(partition, assignments);
+							newValueType.Model = model;
+						}
+
+						// Set facet properties
 						ValueTypeHasDataType newDataTypeLink = new ValueTypeHasDataType(
 							partition,
 							new RoleAssignment[] { new RoleAssignment(ValueTypeHasDataType.ValueTypeDomainRoleId, newValueType), new RoleAssignment(ValueTypeHasDataType.DataTypeDomainRoleId, link.DataType) },
 							new PropertyAssignment[] { new PropertyAssignment(ValueTypeHasDataType.ScaleDomainPropertyId, link.Scale), new PropertyAssignment(ValueTypeHasDataType.LengthDomainPropertyId, link.Length) });
-
-						// Attach the new value type to the model
-						newValueType.Model = model;
 
 						// Change the old ValueTypeValueConstraint to a new RoleValueConstraint
 						RoleValueConstraint newValueConstraint = null;
@@ -1395,7 +1417,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (error == null)
 				{
-					error = new ValueRangeOverlapError(Store);
+					error = new ValueRangeOverlapError(Partition);
 					error.ValueConstraint = this;
 					error.Model = DataType.Model;
 					error.GenerateErrorText();
@@ -1844,7 +1866,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				ObjectType valueType = ValueType;
-				return valueType != null ? valueType.Model : null;
+				return valueType != null ? valueType.ResolvedModel : null;
 			}
 		}
 		#endregion // Base overrides
@@ -1915,7 +1937,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (null != (role = Role) &&
 					null != (factType = role.FactType))
 				{
-					return factType.Model;
+					return factType.ResolvedModel;
 				}
 				return null;
 			}
@@ -2066,7 +2088,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				RolePathObjectTypeRoot pathRoot = PathRoot;
-				return null != pathRoot ? pathRoot.RootObjectType.Model : null;
+				return null != pathRoot ? pathRoot.RootObjectType.ResolvedModel : null;
 			}
 		}
 		#endregion // Base overrides

@@ -861,6 +861,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'ReflexiveQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used in place of a reflexive pronoun when an antecedent is not guaranteed.  Format: {0} itself</remark>
 		ReflexiveQuantifier,
+		/// <summary>The 'RolePathBlockLeadCollapseForSnippetDirective' simple snippet value.</summary>
+		/// <remark>Description: Specify a space-separated list of snippet names to specify list snippets that
+		/// would allow lead role collapsing based on the RolePathCollapsibleLeadDirective, but do not actually support this construct.
+		/// This allows a final override to block the collapsing behavior for specific snippets. This is checked for the
+		/// (Negated)[And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] snippets.
+		/// Format: AndTailListOpen OrTailListOpen</remark>
+		RolePathBlockLeadCollapseForSnippetDirective,
 		/// <summary>The 'RolePathCollapsibleLeadDirective' simple snippet value.</summary>
 		/// <remark>Description: Specify a space-separated list of items to determine if a list style supports
 		/// collapsing a repeated lead role. Allowed values are {Chain, And, Or, Xor, !And, !Or, !Xor, !Chain}. The !Chain directive
@@ -1348,6 +1355,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
+				"AndTailListOpen OrTailListOpen",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -1686,6 +1694,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
+				"AndTailListOpen OrTailListOpen",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -2024,6 +2033,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
+				"AndTailListOpen OrTailListOpen",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -2362,6 +2372,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
+				"AndTailListOpen OrTailListOpen",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",

@@ -75,6 +75,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				factTypeShape.DisplayAsObjectType))
 			{
 				ObjectType objectType = null;
+				ORMModel model;
 				NodeShape targetShape;
 				if (objectTypeShape != null)
 				{
@@ -98,7 +99,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					targetShape = factTypeShape;
 				}
-				if (objectType == null)
+				if (objectType == null ||
+					null == (model = objectType.Model))
 				{
 					return;
 				}
@@ -165,7 +167,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						{
 							if (AllowElementFixup(factType))
 							{
-								Diagram.FixUpDiagram(objectType.Model, factType);
+								Diagram.FixUpDiagram(model, factType);
 							}
 
 							foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, factType))
@@ -197,7 +199,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							{
 								if (AllowElementFixup(valueType))
 								{
-									Diagram.FixUpDiagram(objectType.Model, valueType);
+									Diagram.FixUpDiagram(model, valueType);
 								}
 
 								foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, valueType))
@@ -786,41 +788,38 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			// Make sure the fact type and link are displayed on the diagram
 			RoleValueConstraint roleValueConstraint = link.ValueConstraint;
-			Role role = roleValueConstraint.Role;
-			FactType factType = role.FactType;
+			FactType factType;
+			ORMModel model;
 
-			if (factType != null)
+			if (null != (factType = roleValueConstraint.Role.FactType) &&
+				null != (model = factType.Model))
 			{
-				ORMModel model = factType.Model;
-				if (model != null)
+				object AllowMultipleShapes;
+				Dictionary<object, object> topLevelContextInfo;
+				bool containedAllowMultipleShapes;
+				if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
 				{
-					object AllowMultipleShapes;
-					Dictionary<object, object> topLevelContextInfo;
-					bool containedAllowMultipleShapes;
-					if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
-					{
-						topLevelContextInfo.Add(AllowMultipleShapes, null);
-					}
+					topLevelContextInfo.Add(AllowMultipleShapes, null);
+				}
 
-					Diagram.FixUpDiagram(factType, roleValueConstraint);
+				Diagram.FixUpDiagram(factType, roleValueConstraint);
 
-					foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+				foreach (PresentationViewsSubject presentationViewsSubject in DomainRoleInfo.GetElementLinks<PresentationViewsSubject>(model, PresentationViewsSubject.SubjectDomainRoleId))
+				{
+					ORMDiagram diagram;
+					if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
 					{
-						ORMDiagram diagram;
-						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
+						//add a link shape for each constraint shape
+						foreach (ValueConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ValueConstraintShape>(diagram, roleValueConstraint))
 						{
-							//add a link shape for each constraint shape
-							foreach (ValueConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ValueConstraintShape>(diagram, roleValueConstraint))
-							{
-								diagram.FixUpLocalDiagram(link);
-							}
+							diagram.FixUpLocalDiagram(link);
 						}
 					}
+				}
 
-					if (!containedAllowMultipleShapes)
-					{
-						topLevelContextInfo.Remove(AllowMultipleShapes);
-					}
+				if (!containedAllowMultipleShapes)
+				{
+					topLevelContextInfo.Remove(AllowMultipleShapes);
 				}
 			}
 		}

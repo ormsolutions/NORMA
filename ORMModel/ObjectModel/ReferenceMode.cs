@@ -420,6 +420,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>A ReferenceMode instance, or null</returns>
 		public static ReferenceMode FindReferenceModeFromEntityNameAndValueName(string valueTypeName, string entityTypeName, ORMModel model)
 		{
+			// UNDONE: AlternateOwner Support alternate owners for reference mode and reference mode kind.
+			// In the meantime, pass the resolved model to this method.
 			ReferenceMode retVal = null;
 			foreach (ReferenceMode mode in model.ReferenceModeCollection)
 			{
@@ -456,7 +458,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach (EntityTypeHasPreferredIdentifier link in model.Store.ElementDirectory.FindElements<EntityTypeHasPreferredIdentifier>())
 			{
 				ObjectType entity = link.PreferredIdentifierFor;
-				if (model == entity.Model)
+				if (model == entity.ResolvedModel)
 				{
 					UniquenessConstraint constraint = link.PreferredIdentifier;
 					LinkedElementCollection<Role> roles;

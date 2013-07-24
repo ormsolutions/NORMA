@@ -86,7 +86,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		protected sealed override IList GetContentList(ITypeDescriptorContext context, object value)
 		{
 			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, true);
-			IList candidates = instance.Model.ReferenceModeCollection;
+			IList candidates = instance.ResolvedModel.ReferenceModeCollection;
 			int candidateCount = candidates.Count;
 			if (candidateCount == 0)
 			{

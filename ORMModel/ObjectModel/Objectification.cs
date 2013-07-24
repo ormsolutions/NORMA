@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -366,7 +366,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="nestingType">The nesting object type to process. Pulled from objectification.NestingType if null.</param>
 		private static void ProcessObjectificationAdded(Objectification objectification, FactType nestedFactType, ObjectType nestingType)
 		{
-			Store store = objectification.Store;
 			if (nestedFactType == null)
 			{
 				nestedFactType = objectification.NestedFactType;
@@ -380,7 +379,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				nestingType = objectification.NestingType;
 			}
 			FrameworkDomainModel.DelayValidateElement(nestingType, DelayProcessObjectifyingTypeForPreferredIdentifier);
-			ORMModel model = nestedFactType.Model;
+			// Note that the model (or owner) of the nesting type is not usually set at
+			// this point. It is set in CreateObjectificationForFactTypeInternal, which
+			// indirectly triggers this code.
+			IHasAlternateOwner<FactType> toAlternateOwner;
+			IAlternateElementOwner<FactType> alternateFactTypeOwner = null;
+			ORMModel model = null;
+			if (null == (toAlternateOwner = nestedFactType as IHasAlternateOwner<FactType>) ||
+				null == (alternateFactTypeOwner = toAlternateOwner.AlternateOwner))
+			{
+				model = nestedFactType.Model;
+			}
 
 			// Comments in this and other related procedures will refer to
 			// the 'near' end and 'far' end of the implied elements. The
@@ -390,8 +399,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// role players on the implied fact types always have a single role internal
 			// constraint and a simple mandatory constraint.
 
-			// Once we have a model, we can begin to add implied
-			// facts and constraints. Note that we do not set the
+			// Begin to add implied facts and constraints to create a
+			// fully coreferenced structure. Note that we do not set the
 			// ImpliedByObjectification property on any object
 			// until all are completed because any modifications
 			// to these implied elements is strictly monitored once
@@ -428,7 +437,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						if (proxy == null && objectifiedUnaryRole == null)
 						{
-							CreateImpliedFactTypeForRole(model, nestingType, role, objectification, unaryRole != null);
+							CreateImpliedFactTypeForRole(model, alternateFactTypeOwner, nestingType, role, objectification, unaryRole != null);
 						}
 						else
 						{
@@ -441,7 +450,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								// Move an existing proxy fact to the correct nesting type
 								if (ruleManager == null)
 								{
-									ruleManager = store.RuleManager;
+									ruleManager = objectification.Store.RuleManager;
 									ruleManager.DisableRule(typeof(RolePlayerAddedRuleClass));
 									ruleManager.DisableRule(typeof(RolePlayerRolePlayerChangedRuleClass));
 								}
@@ -562,8 +571,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				oldFactType = (FactType)e.OldRolePlayer;
 			}
-			Store store = link.Store;
-			RuleManager ruleManager = store.RuleManager;
+			RuleManager ruleManager = link.Store.RuleManager;
 			try
 			{
 				ruleManager.DisableRule(typeof(RoleDeletingRuleClass));
@@ -635,7 +643,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			ConstraintRoleSequenceHasRole sequenceRoleLink;
 			FactSetConstraint internalConstraintLink;
-			FactType fact;
+			FactType factType;
 			Objectification objectificationLink;
 			bool disallowed = false;
 			if (null != (sequenceRoleLink = element as ConstraintRoleSequenceHasRole))
@@ -654,8 +662,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							LinkedElementCollection<FactType> facts = (constraint as SetConstraint).FactTypeCollection;
 							if (facts.Count == 1)
 							{
-								fact = facts[0];
-								if (null != fact.ImpliedByObjectification)
+								factType = facts[0];
+								if (null != factType.ImpliedByObjectification)
 								{
 									disallowed = true; // We don't trigger adds when this rule is active
 								}
@@ -673,26 +681,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
-				FactTypeHasRole factRoleLink = element as FactTypeHasRole;
-				fact = factRoleLink.FactType;
-				if (null != (objectificationLink = fact.ImpliedByObjectification))
+				FactTypeHasRole roleLink = element as FactTypeHasRole;
+				factType = roleLink.FactType;
+				if (null != (objectificationLink = factType.ImpliedByObjectification))
 				{
 					// Our code only adds these before linking the implied objectification,
 					// so we always throw at this point
 					disallowed = true;
 				}
-				else if (null != (objectificationLink = fact.Objectification))
+				else if (null != (objectificationLink = factType.Objectification))
 				{
 					ObjectType nestingType = objectificationLink.NestingType;
-					Role nestedRole = factRoleLink.Role.Role;
+					Role nestedRole = roleLink.Role.Role;
 
 					// Create and populate new fact type
 					if (nestedRole.Proxy == null)
 					{
-						Role unaryRole = fact.UnaryRole;
+						Role unaryRole = factType.UnaryRole;
 						if (unaryRole == null || nestedRole == unaryRole)
 						{
-							CreateImpliedFactTypeForRole(nestingType.Model, nestingType, nestedRole, objectificationLink, unaryRole != null);
+							IHasAlternateOwner<ObjectType> toAlternateOwner;
+							IAlternateElementOwner<FactType> alternateFactTypeOwner = (null != (toAlternateOwner = nestingType as IHasAlternateOwner<ObjectType>)) ? toAlternateOwner.AlternateOwner as IAlternateElementOwner<FactType> : null;
+							CreateImpliedFactTypeForRole(alternateFactTypeOwner == null ? null : nestingType.Model, alternateFactTypeOwner, nestingType, nestedRole, objectificationLink, unaryRole != null);
 						}
 					}
 				}
@@ -880,8 +890,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							!objectifiedUnaryRole.IsDeleting &&
 							null != (impliedFactType = objectifiedUnaryRole.FactType))
 						{
-							ORMModel model = impliedFactType.Model;
-							RuleManager ruleManager = model.Store.RuleManager;
+							IHasAlternateOwner<FactType> toAlternateOwner;
+							IAlternateElementOwner<FactType> alternateOwner = (null != (toAlternateOwner = impliedFactType as IHasAlternateOwner<FactType>)) ? toAlternateOwner.AlternateOwner : null;
+							ORMModel model = (alternateOwner == null) ? impliedFactType.Model : null;
+							RuleManager ruleManager = impliedFactType.Store.RuleManager;
 							try
 							{
 								ruleManager.DisableRule(typeof(RoleDeletingRuleClass));
@@ -892,12 +904,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								ruleManager.EnableRule(typeof(RoleDeletingRuleClass));
 							}
 							ObjectType nestingType = objectification.NestingType;
-							CreateImpliedFactTypeForRole(model, nestingType, otherRole, objectification, false);
+							CreateImpliedFactTypeForRole(model, alternateOwner, nestingType, otherRole, objectification, false);
 							// Note that even if this role is not currently being deleted it will be soon. There
 							// is no reason to keep these. Anything we create here will simply be deleted
 							if (!role.IsDeleting && role.Proxy == null)
 							{
-								CreateImpliedFactTypeForRole(model, nestingType, role, objectification, false);
+								CreateImpliedFactTypeForRole(model, alternateOwner, nestingType, role, objectification, false);
 							}
 							break;
 						}
@@ -1074,16 +1086,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (playedRole != null)
 			{
-				FactType playedFact = playedRole.FactType;
-				if (playedFact != null)
+				FactType playedFactType = playedRole.FactType;
+				if (playedFactType != null)
 				{
 					LinkedElementCollection<RoleBase> roles;
 					// If the fact is implied, we don't need to do anything else
-					if (playedFact.ImpliedByObjectification != null)
+					if (playedFactType.ImpliedByObjectification != null)
 					{
 						return;
 					}
-					else if ((roles = playedFact.RoleCollection).Count > 0)
+					else if ((roles = playedFactType.RoleCollection).Count > 0)
 					{
 						foreach (RoleBase testRole in roles)
 						{
@@ -1100,7 +1112,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (rolePlayer.IsImplicitBooleanValue)
 						{
-							if (null != (objectification = playedFact.Objectification) &&
+							if (null != (objectification = playedFactType.Objectification) &&
 								!objectification.IsImplied)
 							{
 								// Note that implied objectification will be cleared out with a different
@@ -1149,7 +1161,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											if (role != playedRole)
 											{
-												CreateImpliedFactTypeForRole(playedFact.Model, objectification.NestingType, role.Role, objectification, true);
+												IHasAlternateOwner<FactType> toAlternateOwner;
+												IAlternateElementOwner<FactType> alternateOwner = (null != (toAlternateOwner = playedFactType as IHasAlternateOwner<FactType>)) ? toAlternateOwner.AlternateOwner : null;
+												CreateImpliedFactTypeForRole(alternateOwner == null ? playedFactType.Model : null, alternateOwner, objectification.NestingType, role.Role, objectification, true);
 												break;
 											}
 										}
@@ -1332,7 +1346,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				isIndependent = isImplied && preferredConstraint != null && preferredConstraint.RoleCollection.Count == factRoleCount;
 			}
-			Store store = factType.Store;
+			Partition partition = factType.Partition;
 			FactTypeDerivationRule derivationRule;
 			string objectTypeName;
 			if (null == (derivationRule = factType.DerivationRule as FactTypeDerivationRule) ||
@@ -1345,10 +1359,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				objectTypeName = factType.Name;
 			}
-			ObjectType objectifyingType = new ObjectType(store,
+
+			ORMModel model = null;
+			IHasAlternateOwner<FactType> toAlternateOwner;
+			IAlternateElementOwner<FactType> alternateFactTypeOwner;
+			IAlternateElementOwner<ObjectType> alternateObjectTypeOwner = null;
+			DomainClassInfo alternateCtor = null;
+			if (null != (toAlternateOwner = factType as IHasAlternateOwner<FactType>) &&
+				null != (alternateFactTypeOwner = toAlternateOwner.AlternateOwner))
+			{
+				if (null == (alternateObjectTypeOwner = alternateFactTypeOwner as IAlternateElementOwner<ObjectType>) ||
+					null == (alternateCtor = alternateObjectTypeOwner.GetOwnedElementClassInfo(typeof(ObjectType))))
+				{
+					alternateObjectTypeOwner = null;
+					model = alternateFactTypeOwner.Model;
+				}
+			}
+			else
+			{
+				model = factType.Model;
+			}
+
+			ObjectType objectifyingType = (ObjectType)partition.ElementFactory.CreateElement(
+				alternateCtor ?? partition.DomainDataDirectory.GetDomainClass(ObjectType.DomainClassId),
 				new PropertyAssignment(ObjectType.NameDomainPropertyId, objectTypeName),
 				new PropertyAssignment(ObjectType.IsIndependentDomainPropertyId, isIndependent));
-			new Objectification(store,
+			new Objectification(partition,
 				new RoleAssignment[]
 				{
 					new RoleAssignment(Objectification.NestedFactTypeDomainRoleId, factType),
@@ -1361,11 +1397,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 			if (notifyAdded == null)
 			{
-				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				Dictionary<object, object> contextInfo = factType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 				try
 				{
 					contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
-					objectifyingType.Model = factType.Model;
+					if (null != alternateObjectTypeOwner)
+					{
+						((IHasAlternateOwner<ObjectType>)objectifyingType).AlternateOwner = alternateObjectTypeOwner;
+					}
+					else if (model != null)
+					{
+						objectifyingType.Model = model;
+					}
 				}
 				finally
 				{
@@ -1378,7 +1421,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
-				objectifyingType.Model = factType.Model;
+				if (null != alternateObjectTypeOwner)
+				{
+					((IHasAlternateOwner<ObjectType>)objectifyingType).AlternateOwner = alternateObjectTypeOwner;
+				}
+				else if (model != null)
+				{
+					objectifyingType.Model = model;
+				}
 				// The true addLinks parameter here will pick up both the Objectification and
 				// the ModelHasObjectType links, so is sufficient to get all of the elements we
 				// created here.
@@ -1392,49 +1442,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Create an implied fact type, set its far constraints, and add
-		/// it to the model. Associating the implied fact with the objectifying
-		/// relationship is delayed and left to the caller to avoid triggering
-		/// rules prematurely.
+		/// it to the same owner as the nesting type. Associating the
+		/// implied fact with the objectifying relationship is delayed
+		/// and left to the caller to avoid triggering rules prematurely.
 		/// </summary>
-		/// <param name="model">The model to include the fact in</param>
+		/// <param name="model">The model to include the fact in.</param>
+		/// <param name="alternateFactTypeOwner">An alternate fact type owner, prioritized over the <paramref name="model"/></param>
 		/// <param name="nestingType">The objectifying object type</param>
 		/// <param name="nestedRole">The role associated with this element</param>
 		/// <param name="objectification">The Objectification that implies the FactType</param>
 		/// <param name="roleIsUnary">The <paramref name="nestedRole"/> parameter is a unary role, create a pattern with no proxy and an equality constraint</param>
 		/// <returns>The created fact type</returns>
-		private static FactType CreateImpliedFactTypeForRole(ORMModel model, ObjectType nestingType, Role nestedRole, Objectification objectification, bool roleIsUnary)
+		private static FactType CreateImpliedFactTypeForRole(ORMModel model, IAlternateElementOwner<FactType> alternateFactTypeOwner, ObjectType nestingType, Role nestedRole, Objectification objectification, bool roleIsUnary)
 		{
 			// Create the implied fact and attach roles to it
-			Store store = model.Store;
-			FactType impliedFact = new FactType(store);
+			Partition partition = nestingType.Partition;
+			FactType impliedFactType = null;
+			DomainClassInfo alternateCtor = null;
+			if (null != alternateFactTypeOwner)
+			{
+				if (null != (alternateCtor = alternateFactTypeOwner.GetOwnedElementClassInfo(typeof(FactType))))
+				{
+					impliedFactType = (FactType)partition.ElementFactory.CreateElement(alternateCtor);
+				}
+				else
+				{
+					if (model != null)
+					{
+						model = alternateFactTypeOwner.Model;
+					}
+					alternateFactTypeOwner = null;
+				}
+			}
+			if (impliedFactType == null)
+			{
+				impliedFactType = new FactType(partition);
+			}
 			RoleBase nearRole;
 			if (roleIsUnary)
 			{
-				ObjectifiedUnaryRole objectifiedNearRole = new ObjectifiedUnaryRole(store);
+				ObjectifiedUnaryRole objectifiedNearRole = new ObjectifiedUnaryRole(partition);
 				objectifiedNearRole.TargetRole = nestedRole;
 				nearRole = objectifiedNearRole;
 			}
 			else
 			{
-				RoleProxy nearRoleProxy = new RoleProxy(store);
+				RoleProxy nearRoleProxy = new RoleProxy(partition);
 				nearRoleProxy.TargetRole = nestedRole;
 				nearRole = nearRoleProxy;
 			}
-			Role farRole = new Role(store);
-			LinkedElementCollection<RoleBase> impliedRoles = impliedFact.RoleCollection;
+			Role farRole = new Role(partition);
+			LinkedElementCollection<RoleBase> impliedRoles = impliedFactType.RoleCollection;
 			impliedRoles.Add(nearRole);
 			impliedRoles.Add(farRole);
 
 			// Add standard constraints and role players
 			MandatoryConstraint.CreateSimpleMandatoryConstraint(farRole);
-			UniquenessConstraint.CreateInternalUniquenessConstraint(store).RoleCollection.Add(farRole);
+			new ConstraintRoleSequenceHasRole(UniquenessConstraint.CreateInternalUniquenessConstraint(impliedFactType), farRole);
 			farRole.RolePlayer = nestingType;
 
 			if (roleIsUnary)
 			{
 				Role nearRoleRole = nearRole.Role;
-				UniquenessConstraint unaryUniqueness = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
-				unaryUniqueness.RoleCollection.Add(nearRoleRole);
+				UniquenessConstraint unaryUniqueness = UniquenessConstraint.CreateInternalUniquenessConstraint(impliedFactType);
+				new ConstraintRoleSequenceHasRole(unaryUniqueness, nearRoleRole);
 				if (nestingType.PreferredIdentifier == null)
 				{
 					nestingType.PreferredIdentifier = unaryUniqueness;
@@ -1442,43 +1513,42 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				nearRoleRole.RolePlayer = nestedRole.RolePlayer;
 			}
 
-			// UNDONE: Each of the readings need to be modified if we're in
-			// a ring situation. The replacement values needs to be the (1-based)
-			// number of the occurrence of that role player type in the collection.
-			// Alternately, the readings we'll be able to generate are so ugly anyway
-			// that the validation error with a direct jump to improve them will actually
-			// be beneficial, not harmful, so we should not try to automatically repair
-			// the readings at this point.
-
 			// Add forward reading
-			LinkedElementCollection<ReadingOrder> readingOrders = impliedFact.ReadingOrderCollection;
-			ReadingOrder order = new ReadingOrder(store);
+			LinkedElementCollection<ReadingOrder> readingOrders = impliedFactType.ReadingOrderCollection;
+			ReadingOrder order = new ReadingOrder(partition);
 			LinkedElementCollection<RoleBase> orderRoles;
 			readingOrders.Add(order);
 			orderRoles = order.RoleCollection;
 			orderRoles.Add(nearRole);
 			orderRoles.Add(farRole);
-			Reading reading = new Reading(store);
+			Reading reading = new Reading(partition);
 			reading.ReadingOrder = order;
 			reading.Text = ResourceStrings.ImpliedFactTypePredicateReading;
 
 			// Add inverse reading
-			order = new ReadingOrder(store);
+			order = new ReadingOrder(partition);
 			readingOrders.Add(order);
 			orderRoles = order.RoleCollection;
 			orderRoles.Add(farRole);
 			orderRoles.Add(nearRole);
-			reading = new Reading(store);
+			reading = new Reading(partition);
 			reading.ReadingOrder = order;
 			reading.Text = ResourceStrings.ImpliedFactTypePredicateInverseReading;
 
 			// Attach the objectification to the fact
-			impliedFact.ImpliedByObjectification = objectification;
+			impliedFactType.ImpliedByObjectification = objectification;
 
-			// Attach the fact to the model
-			impliedFact.Model = model;
+			// Attach the fact to the model or owner.
+			if (alternateFactTypeOwner != null)
+			{
+				((IHasAlternateOwner<FactType>)impliedFactType).AlternateOwner = alternateFactTypeOwner;
+			}
+			else if (model != null)
+			{
+				impliedFactType.Model = model;
+			}
 
-			return impliedFact;
+			return impliedFactType;
 		}
 		/// <summary>
 		/// Creates an <see cref="Objectification"/> between the specified <see cref="FactType"/> and <see cref="ObjectType"/>. If the
@@ -1627,7 +1697,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					// Since the existing object type needs to survive and the fact type needs an implied objectification,
 					// we'll have to create a new object type to take over the objectification duties from the old one.
-					ObjectType newObjectifyingType = new ObjectType(explicitObjectification.Partition,
+					Partition partition = factType.Partition;
+					ORMModel model = null;
+					IHasAlternateOwner<FactType> toAlternateOwner;
+					IAlternateElementOwner<FactType> alternateFactTypeOwner;
+					IAlternateElementOwner<ObjectType> alternateObjectTypeOwner = null;
+					DomainClassInfo alternateCtor = null;
+					if (null != (toAlternateOwner = factType as IHasAlternateOwner<FactType>) &&
+						null != (alternateFactTypeOwner = toAlternateOwner.AlternateOwner))
+					{
+						if (null == (alternateObjectTypeOwner = alternateFactTypeOwner as IAlternateElementOwner<ObjectType>) ||
+							null == (alternateCtor = alternateObjectTypeOwner.GetOwnedElementClassInfo(typeof(ObjectType))))
+						{
+							alternateObjectTypeOwner = null;
+							model = alternateFactTypeOwner.Model;
+						}
+					}
+					else
+					{
+						model = factType.Model;
+					}
+					ObjectType newObjectifyingType = (ObjectType)partition.ElementFactory.CreateElement(
+						alternateCtor ?? partition.DomainDataDirectory.GetDomainClass(ObjectType.DomainClassId),
 						new PropertyAssignment(ObjectType.NameDomainPropertyId, factType.Name),
 						new PropertyAssignment(ObjectType.IsIndependentDomainPropertyId, isIndependent));
 
@@ -1721,7 +1812,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					try
 					{
 						contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
-						newObjectifyingType.Model = factType.Model;
+						if (alternateObjectTypeOwner != null)
+						{
+							((IHasAlternateOwner<ObjectType>)newObjectifyingType).AlternateOwner = alternateObjectTypeOwner;
+						}
+						else if (model != null)
+						{
+							newObjectifyingType.Model = model;
+						}
 					}
 					finally
 					{
@@ -1889,7 +1987,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// is 1 Role and 1 RoleProxy or two Roles for a unary objectification, and implied facts must be
 				// attached to an Objectification relationship).
 				FactType nestedFact = element.NestedFactType;
-				ORMModel model = nestedFact.Model;
+				Partition partition = nestedFact.Partition;
+				bool checkedOwner = false;
+				ORMModel model = null;
+				DomainClassInfo alternateFactTypeCtor = null;
+				IAlternateElementOwner<FactType> alternateOwner = null;
 				ObjectType nestingType = element.NestingType;
 				LinkedElementCollection<RoleBase> factRoles = nestedFact.RoleCollection;
 				int factRolesCount = factRoles.Count;
@@ -2002,7 +2104,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 
 							// Create the objectified unary role
-							objectifiedUnaryRole = new ObjectifiedUnaryRole(store);
+							objectifiedUnaryRole = new ObjectifiedUnaryRole(partition);
 							objectifiedUnaryRole.TargetRole = factRole;
 							objectifiedUnaryRole.RolePlayer = factRole.RolePlayer;
 							notifyAdded.ElementAdded(objectifiedUnaryRole, true);
@@ -2011,58 +2113,84 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						else
 						{
 							// Create the proxy role
-							proxy = new RoleProxy(store);
+							proxy = new RoleProxy(partition);
 							proxy.TargetRole = factRole;
 							notifyAdded.ElementAdded(proxy, true);
 							nearRole = proxy;
 						}
 
 						// Create the non-proxy role
-						farRole = new Role(store);
+						farRole = new Role(partition);
 						farRole.RolePlayer = nestingType;
 						notifyAdded.ElementAdded(nearRole, true);
 
 						// Create the implied fact and set relationships to existing objects
-						impliedFact = new FactType(store);
+						if (!checkedOwner)
+						{
+							checkedOwner = true;
+							IHasAlternateOwner<FactType> toAlternateOwner;
+							if (null != (toAlternateOwner = nestedFact as IHasAlternateOwner<FactType>) &&
+								null != (alternateOwner = toAlternateOwner.AlternateOwner))
+							{
+								if (null == (alternateFactTypeCtor = alternateOwner.GetOwnedElementClassInfo(typeof(FactType))))
+								{
+									model = alternateOwner.Model;
+									alternateOwner = null;
+								}
+							}
+							else
+							{
+								model = nestedFact.Model;
+							}
+						}
+						impliedFact = (alternateFactTypeCtor != null) ?
+							(FactType)partition.ElementFactory.CreateElement(alternateFactTypeCtor) :
+							new FactType(partition);
 						nearRole.FactType = impliedFact;
 						farRole.FactType = impliedFact;
 						impliedFact.ImpliedByObjectification = element;
-						impliedFact.Model = model;
+						if (alternateOwner != null)
+						{
+							((IHasAlternateOwner<FactType>)impliedFact).AlternateOwner = alternateOwner;
+						}
+						else
+						{
+							impliedFact.Model = model;
+						}
 						notifyAdded.ElementAdded(impliedFact, true);
 
 						if (objectifiedUnaryRole != null)
 						{
 							UniquenessConstraint objectifiedUnaryUniqueness = UniquenessConstraint.CreateInternalUniquenessConstraint(impliedFact);
-							objectifiedUnaryUniqueness.RoleCollection.Add(objectifiedUnaryRole);
+							new ConstraintRoleSequenceHasRole(objectifiedUnaryUniqueness, objectifiedUnaryRole);
 							if (nestingType.PreferredIdentifier == null)
 							{
 								nestingType.PreferredIdentifier = objectifiedUnaryUniqueness;
 							}
-							objectifiedUnaryUniqueness.Model = model;
 							notifyAdded.ElementAdded(objectifiedUnaryUniqueness, true);
 						}
 
 						// Add forward reading
 						LinkedElementCollection<ReadingOrder> readingOrders = impliedFact.ReadingOrderCollection;
-						ReadingOrder order = new ReadingOrder(store);
+						ReadingOrder order = new ReadingOrder(partition);
 						LinkedElementCollection<RoleBase> orderRoles;
 						readingOrders.Add(order);
 						orderRoles = order.RoleCollection;
 						orderRoles.Add(nearRole);
 						orderRoles.Add(farRole);
-						Reading reading = new Reading(store);
+						Reading reading = new Reading(partition);
 						reading.ReadingOrder = order;
 						reading.Text = ResourceStrings.ImpliedFactTypePredicateReading;
 						notifyAdded.ElementAdded(order, true);
 						notifyAdded.ElementAdded(reading, false);
 
 						// Add inverse reading
-						order = new ReadingOrder(store);
+						order = new ReadingOrder(partition);
 						readingOrders.Add(order);
 						orderRoles = order.RoleCollection;
 						orderRoles.Add(farRole);
 						orderRoles.Add(nearRole);
-						reading = new Reading(store);
+						reading = new Reading(partition);
 						reading.ReadingOrder = order;
 						reading.Text = ResourceStrings.ImpliedFactTypePredicateInverseReading;
 						notifyAdded.ElementAdded(order, true);
@@ -2074,7 +2202,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 
 					// Make sure the internal constraint pattern is correct on the far role
-					EnsureSingleColumnUniqueAndMandatory(store, model, farRole, notifyAdded);
+					EnsureSingleColumnUniqueAndMandatory(impliedFact, farRole, notifyAdded);
 				}
 
 				// Verify that that are no innapropriate implied facts are attached to the objectification
@@ -2337,7 +2465,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 													if (factInstance != null)
 													{
 														// Create a new corresponding EntityTypeInstance
-														entityInstance = new EntityTypeInstance(store);
+														entityInstance = new EntityTypeInstance(partition);
 														entityInstance.EntityType = nestingType;
 														entityInstance.ObjectifiedInstance = factInstance;
 														notifyAdded.ElementAdded(entityInstance, true);
@@ -2362,7 +2490,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												if (entityInstance != null)
 												{
 													// Create a new corresponding FactTypeInstance
-													factInstance = new FactTypeInstance(store);
+													factInstance = new FactTypeInstance(partition);
 													factInstance.FactType = nestedFact;
 													factInstance.ObjectifyingInstance = entityInstance;
 													notifyAdded.ElementAdded(factInstance, true);
@@ -2534,7 +2662,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				factType.Delete();
 			}
-			private static void EnsureSingleColumnUniqueAndMandatory(Store store, ORMModel model, Role role, INotifyElementAdded notifyAdded)
+			private static void EnsureSingleColumnUniqueAndMandatory(FactType factType, Role role, INotifyElementAdded notifyAdded)
 			{
 				LinkedElementCollection<ConstraintRoleSequence> sequences = role.ConstraintRoleSequenceCollection;
 				int sequenceCount = sequences.Count;
@@ -2580,16 +2708,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (!haveUniqueness)
 				{
-					ic = UniquenessConstraint.CreateInternalUniquenessConstraint(store);
+					ic = UniquenessConstraint.CreateInternalUniquenessConstraint(factType);
 					ic.RoleCollection.Add(role);
-					ic.Model = model;
 					notifyAdded.ElementAdded(ic, true);
 				}
 				if (!haveMandatory)
 				{
-					ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(store);
-					ic.RoleCollection.Add(role);
-					ic.Model = model;
+					ic = MandatoryConstraint.CreateSimpleMandatoryConstraint(role);
 					notifyAdded.ElementAdded(ic, true);
 				}
 			}

@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -268,9 +268,53 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			}
 		}
 		#endregion // ProviderInstance struct
+		#region CountedProviderInstance struct
+		/// <summary>
+		/// Create a struct for tracking a use count along
+		/// with a provider instance.
+		/// </summary>
+		private struct CountedProviderInstance
+		{
+			/// <summary>
+			/// The provider instance provided to the constructor
+			/// </summary>
+			public readonly ProviderInstance Instance;
+			private readonly int myCount;
+			/// <summary>
+			/// Create a new CountedProviderInstance
+			/// </summary>
+			/// <param name="instance">The instance to track</param>
+			public CountedProviderInstance(ProviderInstance instance)
+				: this(instance, 1)
+			{
+			}
+			private CountedProviderInstance(ProviderInstance instance, int count)
+			{
+				Instance = instance;
+				myCount = count;
+			}
+			/// <summary>
+			/// Return a provider instance with a higher use count
+			/// </summary>
+			/// <returns>An updated <see cref="CountedProviderInstance"/></returns>
+			public CountedProviderInstance Increment()
+			{
+				return new CountedProviderInstance(Instance, myCount + 1);
+			}
+			/// <summary>
+			/// 
+			/// </summary>
+			/// <returns>An updated <see cref="CountedProviderInstance"/>, or <see langword="null"/>
+			/// if the provider instance is no longer in use.</returns>
+			public CountedProviderInstance? Decrement()
+			{
+				return (myCount == 1) ? (CountedProviderInstance?)null : new CountedProviderInstance(Instance, myCount - 1);
+			}
+		}
+		#endregion // CountedProviderInstance struct
 		#region Member Variables
 		private readonly Store myStore;
-		private readonly Dictionary<RuntimeTypeHandle, LinkedNode<ProviderInstance>> myProviderDictionary;
+		private readonly Dictionary<RuntimeTypeHandle, LinkedNode<CountedProviderInstance>> myProviderDictionary;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -281,7 +325,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		{
 			Debug.Assert(store != null);
 			this.myStore = store;
-			this.myProviderDictionary = new Dictionary<RuntimeTypeHandle, LinkedNode<ProviderInstance>>(RuntimeTypeHandleComparer.Instance);
+			this.myProviderDictionary = new Dictionary<RuntimeTypeHandle, LinkedNode<CountedProviderInstance>>(RuntimeTypeHandleComparer.Instance);
 		}
 		#endregion // Constructor
 		#region Accessor Properties
@@ -346,48 +390,62 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		}
 		private void RegisterPropertyProvider(RuntimeTypeHandle extendableElementRuntimeTypeHandle, ProviderInstance providerInstance)
 		{
-			Dictionary<RuntimeTypeHandle, LinkedNode<ProviderInstance>> providerDictionary = this.myProviderDictionary;
-			LinkedNode<ProviderInstance> existingProviderNode;
+			Dictionary<RuntimeTypeHandle, LinkedNode<CountedProviderInstance>> providerDictionary = this.myProviderDictionary;
+			LinkedNode<CountedProviderInstance> existingProviderNode;
 			if (providerDictionary.TryGetValue(extendableElementRuntimeTypeHandle, out existingProviderNode))
 			{
-				LinkedNode<ProviderInstance> lastNode = null;
-				LinkedNode<ProviderInstance> testNode = existingProviderNode;
+				LinkedNode<CountedProviderInstance> lastNode = null;
+				LinkedNode<CountedProviderInstance> testNode = existingProviderNode;
 				while (testNode != null)
 				{
-					if (testNode.Value.IsEquivalentTo(providerInstance))
+					CountedProviderInstance countedInstance;
+					if ((countedInstance = testNode.Value).Instance.IsEquivalentTo(providerInstance))
 					{
-						return; // Don't add the same callback twice
+						// Don't add the same callback twice, but increment the use count
+						// so that we do not remove it prematurely. Assumes balanced calls
+						// to RegisterPropertyProvider and UnregisterPropertyProvider.
+						testNode.Value = countedInstance.Increment();
+						return;
 					}
 					lastNode = testNode;
 					testNode = testNode.Next;
 				}
-				lastNode.SetNext(new LinkedNode<ProviderInstance>(providerInstance), ref existingProviderNode);
+				lastNode.SetNext(new LinkedNode<CountedProviderInstance>(new CountedProviderInstance(providerInstance)), ref existingProviderNode);
 			}
 			else
 			{
-				providerDictionary[extendableElementRuntimeTypeHandle] = new LinkedNode<ProviderInstance>(providerInstance);
+				providerDictionary[extendableElementRuntimeTypeHandle] = new LinkedNode<CountedProviderInstance>(new CountedProviderInstance(providerInstance));
 			}
 		}
 		private void UnregisterPropertyProvider(RuntimeTypeHandle extendableElementRuntimeTypeHandle, ProviderInstance providerInstance)
 		{
-			Dictionary<RuntimeTypeHandle, LinkedNode<ProviderInstance>> providerDictionary = this.myProviderDictionary;
-			LinkedNode<ProviderInstance> existingProviderNode;
+			Dictionary<RuntimeTypeHandle, LinkedNode<CountedProviderInstance>> providerDictionary = this.myProviderDictionary;
+			LinkedNode<CountedProviderInstance> existingProviderNode;
 			if (providerDictionary.TryGetValue(extendableElementRuntimeTypeHandle, out existingProviderNode))
 			{
-				LinkedNode<ProviderInstance> testNode = existingProviderNode;
+				LinkedNode<CountedProviderInstance> testNode = existingProviderNode;
 				while (testNode != null)
 				{
-					if (testNode.Value.IsEquivalentTo(providerInstance))
+					CountedProviderInstance countedInstance;
+					if ((countedInstance = testNode.Value).Instance.IsEquivalentTo(providerInstance))
 					{
-						LinkedNode<ProviderInstance> head = existingProviderNode;
-						testNode.Detach(ref head);
-						if (head == null)
+						CountedProviderInstance? newCountedInstance = countedInstance.Decrement();
+						if (newCountedInstance.HasValue)
 						{
-							providerDictionary.Remove(extendableElementRuntimeTypeHandle);
+							testNode.Value = newCountedInstance.Value;
 						}
-						else if (head != existingProviderNode)
+						else
 						{
-							providerDictionary[extendableElementRuntimeTypeHandle] = head;
+							LinkedNode<CountedProviderInstance> head = existingProviderNode;
+							testNode.Detach(ref head);
+							if (head == null)
+							{
+								providerDictionary.Remove(extendableElementRuntimeTypeHandle);
+							}
+							else if (head != existingProviderNode)
+							{
+								providerDictionary[extendableElementRuntimeTypeHandle] = head;
+							}
 						}
 						return;
 					}
@@ -406,12 +464,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 				throw new ArgumentNullException("properties");
 			}
 
-			LinkedNode<ProviderInstance> providerNode;
+			LinkedNode<CountedProviderInstance> providerNode;
 			if (myProviderDictionary.TryGetValue(extendableElement.GetType().TypeHandle, out providerNode))
 			{
 				while (providerNode != null)
 				{
-					providerNode.Value.GetProvidedProperties(extendableElement, properties);
+					providerNode.Value.Instance.GetProvidedProperties(extendableElement, properties);
 					providerNode = providerNode.Next;
 				}
 			}
@@ -427,12 +485,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 				throw new ArgumentNullException("properties");
 			}
 
-			LinkedNode<ProviderInstance> providerNode;
+			LinkedNode<CountedProviderInstance> providerNode;
 			if (myProviderDictionary.TryGetValue(extendableElementType.TypeHandle, out providerNode))
 			{
 				while (providerNode != null)
 				{
-					providerNode.Value.GetProvidedProperties(extendableElementType, properties);
+					providerNode.Value.Instance.GetProvidedProperties(extendableElementType, properties);
 					providerNode = providerNode.Next;
 				}
 			}
@@ -447,12 +505,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			{
 				throw new ArgumentNullException("handler");
 			}
-			LinkedNode<ProviderInstance> providerNode;
+			LinkedNode<CountedProviderInstance> providerNode;
 			if (myProviderDictionary.TryGetValue(extendableElementType.TypeHandle, out providerNode))
 			{
 				while (providerNode != null)
 				{
-					providerNode.Value.AddOrRemoveChangeListener(handler, action);
+					providerNode.Value.Instance.AddOrRemoveChangeListener(handler, action);
 					providerNode = providerNode.Next;
 				}
 			}

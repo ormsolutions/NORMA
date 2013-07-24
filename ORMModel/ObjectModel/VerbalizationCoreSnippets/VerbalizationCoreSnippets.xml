@@ -297,6 +297,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="RolePathHeaderListDirective"><![CDATA[!And !Or Xor !Xor]]></Snippet>
 			<Snippet type="RolePathCollapsibleLeadDirective"><![CDATA[And Or Chain]]></Snippet>
 			<Snippet type="RolePathCollapsibleListOpenForBackReferenceDirective"><![CDATA[And Or Chain]]></Snippet>
+			<Snippet type="RolePathBlockLeadCollapseForSnippetDirective"><![CDATA[AndTailListOpen OrTailListOpen]]></Snippet>
 			<Snippet type="ImpersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier">that is</span> {1}]]></Snippet>
 			<Snippet type="ImpersonalLeadIdentityCorrelation"><![CDATA[{1} <span class="quantifier">is</span> {0} <span class="quantifier">that</span>]]></Snippet>
 			<Snippet type="PersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier">who is</span> {1}]]></Snippet>

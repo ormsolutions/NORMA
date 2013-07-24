@@ -2762,7 +2762,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								pid.Modality == ConstraintModality.Alethic &&
 								null != (preferredFor = pid.PreferredIdentifierFor) &&
 								pid.RoleCollection.Count == 1 &&
-								null != (mode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(originalName, preferredFor.Name, model ?? (model = objectType.Model))))
+								null != (mode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(originalName, preferredFor.Name, model ?? (model = objectType.ResolvedModel))))
 							{
 								ReferenceModeType modeType = mode.Kind.ReferenceModeType;
 								if (modeType == ReferenceModeType.General)
@@ -6619,6 +6619,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private int myCollapsibleListOpenForBackReferenceBranchingBits;
 		/// <summary>
+		/// An array of snippets that determine when lead role collapsing is blocked
+		/// for a specific snippet;
+		/// </summary>
+		private CoreVerbalizationSnippetType[] myCollapseBlockingSnippets;
+		/// <summary>
 		/// Bits to track which snippets result in an outdent operation.
 		/// Enables trailing outdent tracking so that text on the same
 		/// line as the end of a complex path verbalization maintains
@@ -6647,6 +6652,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			myHeaderListBranchingBits = -1;
 			myCollapsibleLeadBranchingBits = -1;
 			myCollapsibleListOpenForBackReferenceBranchingBits = -1;
+			myCollapseBlockingSnippets = null;
 			myOutdentSnippetBits = new BitTracker(0);
 			// A use phase of 1 instead of 0 eliminates the need for an
 			// explicit call to BeginVerbalization for the first verbalization pass
@@ -7371,6 +7377,56 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				myCollapsibleListOpenForBackReferenceBranchingBits = collapsibleLeadBits = TranslateBranchTypeDirective(CoreVerbalizationSnippetType.RolePathCollapsibleListOpenForBackReferenceDirective);
 			}
 			return 0 != (collapsibleLeadBits & (1 << ((int)branchType - 1)));
+		}
+		/// <summary>
+		/// Determine if lead role collapsing should be blocked for a given snippet type.
+		/// Final test for list types allowed by <see cref="GetCollapsibleLeadAllowedFromBranchType"/>.
+		/// </summary>
+		private bool BlockFollowingLeadCollapseForBranchSnippet(CoreVerbalizationSnippetType snippet)
+		{
+			CoreVerbalizationSnippetType[] collapseBlockingSnippets = myCollapseBlockingSnippets;
+			if (null == collapseBlockingSnippets)
+			{
+				string[] directiveStrings = myRenderer.GetSnippet(CoreVerbalizationSnippetType.RolePathBlockLeadCollapseForSnippetDirective).Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+				List<CoreVerbalizationSnippetType> snippetList = null;
+				if (directiveStrings != null)
+				{
+					Type enumType = typeof(CoreVerbalizationSnippetType);
+					for (int i = 0; i < directiveStrings.Length; ++i)
+					{
+						try
+						{
+							CoreVerbalizationSnippetType testSnippet = (CoreVerbalizationSnippetType)Enum.Parse(enumType, directiveStrings[i], true);
+							(snippetList ?? (snippetList = new List<CoreVerbalizationSnippetType>())).Add(testSnippet);
+						}
+						catch (ArgumentException)
+						{
+							// Swallow error if the string is not recognized
+						}
+					}
+				}
+				if (snippetList != null)
+				{
+					collapseBlockingSnippets = snippetList.ToArray();
+					if (collapseBlockingSnippets.Length > 1)
+					{
+						Array.Sort<CoreVerbalizationSnippetType>(collapseBlockingSnippets);
+					}
+				}
+				else
+				{
+					collapseBlockingSnippets = new CoreVerbalizationSnippetType[] { };
+				}
+			}
+			switch (collapseBlockingSnippets.Length)
+			{
+				case 0:
+					return false;
+				case 1:
+					return snippet == collapseBlockingSnippets[0];
+				default:
+					return Array.BinarySearch<CoreVerbalizationSnippetType>(collapseBlockingSnippets, snippet) >= 0;
+			}
 		}
 		/// <summary>
 		/// Translate a directive snippet consisting of a space-separated string
@@ -10462,6 +10518,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									snippet = isTailBranch ? CoreVerbalizationSnippetType.NegatedXorTailListSeparator : (isNestedBranch ? CoreVerbalizationSnippetType.NegatedXorNestedListSeparator : CoreVerbalizationSnippetType.NegatedXorLeadListSeparator);
 									break;
 							}
+						}
+						if (!blockNextLeadRoleCollapse &&
+							BlockFollowingLeadCollapseForBranchSnippet(snippet))
+						{
+							blockNextLeadRoleCollapse = true;
 						}
 						string separatorText;
 						if (snippet != (CoreVerbalizationSnippetType)(-1) &&

@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -874,9 +874,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (tooFew == null)
 					{
-						tooFew = new TooFewFactTypeRoleInstancesError(this.Store);
+						tooFew = new TooFewFactTypeRoleInstancesError(Partition);
 						tooFew.FactTypeInstance = this;
-						tooFew.Model = parent.Model;
+						tooFew.Model = parent.ResolvedModel;
 						tooFew.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -933,9 +933,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (error == null)
 					{
-						error = new ObjectifyingInstanceRequiredError(Store);
+						error = new ObjectifyingInstanceRequiredError(Partition);
 						error.FactTypeInstance = this;
-						error.Model = factType.Model;
+						error.Model = factType.ResolvedModel;
 						error.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -1109,8 +1109,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// Create a new EntityTypeInstance, populate it based on existing
 					// population in the FactTypeInstance, and associated it with
 					// the FactTypeInstance.
-					Store store = factType.Store;
-					EntityTypeInstance entityInstance = new EntityTypeInstance(store);
+					EntityTypeInstance entityInstance = new EntityTypeInstance(factType.Partition);
 					entityInstance.EntityType = entityType;
 					entityInstance.ObjectifiedInstance = factInstance;
 
@@ -1648,9 +1647,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (tooFew == null)
 					{
-						tooFew = new TooFewEntityTypeRoleInstancesError(this.Store);
+						tooFew = new TooFewEntityTypeRoleInstancesError(Partition);
 						tooFew.EntityTypeInstance = this;
-						tooFew.Model = parent.Model;
+						tooFew.Model = parent.ResolvedModel;
 						tooFew.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -1673,7 +1672,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void DelayValidateObjectificationInstances(ModelElement element)
 		{
 			Objectification objectification = (Objectification)element;
-			Store store = objectification.Store;
+			Partition partition = objectification.Partition;
 			FactType factType = objectification.NestedFactType;
 			ObjectType entityType = objectification.NestingType;
 			bool deletedLink = objectification.IsDeleted;
@@ -1703,7 +1702,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (factInstance.ObjectifyingInstance == null)
 					{
 						factInstance.ObjectifyingInstanceRequiredError = null;
-						EntityTypeInstance entityInstance = new EntityTypeInstance(store);
+						EntityTypeInstance entityInstance = new EntityTypeInstance(partition);
 						entityInstance.EntityType = entityType;
 						entityInstance.ObjectifiedInstance = factInstance;
 
@@ -1781,9 +1780,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (error == null)
 						{
-							error = new ObjectifyingInstanceRequiredError(store);
+							error = new ObjectifyingInstanceRequiredError(partition);
 							error.FactTypeInstance = factInstance;
-							error.Model = model ?? (model = factType.Model);
+							error.Model = model ?? (model = factType.ResolvedModel);
 							error.GenerateErrorText();
 						}
 					}
@@ -1799,9 +1798,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (error == null)
 						{
-							error = new ObjectifiedInstanceRequiredError(store);
+							error = new ObjectifiedInstanceRequiredError(partition);
 							error.ObjectTypeInstance = objectInstance;
-							error.Model = model ?? (model = entityType.Model);
+							error.Model = model ?? (model = entityType.ResolvedModel);
 							error.GenerateErrorText();
 						}
 					}
@@ -2140,10 +2139,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												{
 													if (error == null)
 													{
-														error = new PopulationMandatoryError(element.Store);
+														error = new PopulationMandatoryError(element.Partition);
 														error.ObjectTypeInstance = identifyingInstance;
 														error.MandatoryConstraint = constraint;
-														error.Model = constraint.Model;
+														error.Model = constraint.ResolvedModel;
 													}
 													error.GenerateErrorText();
 												}
@@ -2326,7 +2325,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					pidFactTypes[0] == factType)
 				{
 					Role newRole = link.Role;
-					Store store = newRole.Store;
 					foreach (FactTypeInstance factInstance in factType.FactTypeInstanceCollection)
 					{
 						EntityTypeInstance entityInstance;
@@ -2674,9 +2672,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (badValue == null)
 					{
-						badValue = new CompatibleValueTypeInstanceValueError(this.Store);
+						badValue = new CompatibleValueTypeInstanceValueError(Partition);
 						badValue.ValueTypeInstance = this;
-						badValue.Model = parent.Model;
+						badValue.Model = parent.ResolvedModel;
 						badValue.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -2972,7 +2970,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						else if (duplicate)
 						{
-							error = new PopulationUniquenessError(roleInstance.Store);
+							error = new PopulationUniquenessError(roleInstance.Partition);
 							for (int j = 0; j < knownInstanceCount; ++j)
 							{
 								RoleInstance knownInstance = knownInstances[j];
@@ -2985,7 +2983,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									new EntityTypeRoleInstanceHasPopulationUniquenessError((EntityTypeRoleInstance)knownInstance, error);
 								}
 							}
-							error.Model = this.FactType.Model;
+							error.Model = this.FactType.ResolvedModel;
 							error.GenerateErrorText();
 							if (notifyAdded != null)
 							{
@@ -3326,7 +3324,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!element.IsDeleted)
 			{
 				ObjectTypeInstance objectTypeInstance = (ObjectTypeInstance)element;
-				Store store = element.Store;
 				bool logEmptyName = false;
 				bool logEmptyIdentifierName = false;
 				if (objectTypeInstance.HasGeneratedNames)
@@ -4075,10 +4072,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										}
 										if (k == errorCount)
 										{
-											PopulationMandatoryError error = new PopulationMandatoryError(this.Store);
+											PopulationMandatoryError error = new PopulationMandatoryError(Partition);
 											error.ObjectTypeInstance = this;
 											error.MandatoryConstraint = constraint;
-											error.Model = constraint.Model;
+											error.Model = constraint.ResolvedModel;
 											error.GenerateErrorText();
 											if (notifyAdded != null)
 											{
@@ -4148,7 +4145,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (!existingInstance)
 			{
-				EntityTypeInstance newInstance = new EntityTypeInstance(identifiedEntityType.Store);
+				EntityTypeInstance newInstance = new EntityTypeInstance(identifiedEntityType.Partition);
 				newInstance.EntityType = identifiedEntityType;
 				new EntityTypeRoleInstance(identifierRole, instance).EntityTypeInstance = newInstance;
 			}
@@ -4342,10 +4339,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												if (!seenInstances[i])
 												{
 													++seenInstanceCount;
-													PopulationMandatoryError error = new PopulationMandatoryError(role.Store);
+													PopulationMandatoryError error = new PopulationMandatoryError(role.Partition);
 													error.ObjectTypeInstance = instances[i];
 													error.MandatoryConstraint = constraint;
-													error.Model = constraint.Model;
+													error.Model = constraint.ResolvedModel;
 													error.GenerateErrorText();
 												}
 											}
@@ -4433,9 +4430,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (error == null)
 					{
-						error = new ObjectifiedInstanceRequiredError(Store);
+						error = new ObjectifiedInstanceRequiredError(Partition);
 						error.ObjectTypeInstance = this;
-						error.Model = entityType.Model;
+						error.Model = entityType.ResolvedModel;
 						error.GenerateErrorText();
 						if (notifyAdded != null)
 						{
@@ -5152,7 +5149,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					subtypeInstanceCount = subtypeInstances.Count;
 					if (subtypeInstanceCount != 0)
 					{
-						Store store = element.Store;
 						EntityTypeInstance[] supertypeInstances = null;
 						bool[] instanceMatches = null;
 						IComparer<EntityTypeInstance> comparer = null;
@@ -5520,7 +5516,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (forceCreate)
 			{
-				EntityTypeSubtypeInstance newSubtypeInstance = new EntityTypeSubtypeInstance(entityInstance.Store);
+				EntityTypeSubtypeInstance newSubtypeInstance = new EntityTypeSubtypeInstance(entityInstance.Partition);
 				newSubtypeInstance.SupertypeInstance = entityInstance;
 				newSubtypeInstance.EntityTypeSubtype = subtype;
 				return newSubtypeInstance;

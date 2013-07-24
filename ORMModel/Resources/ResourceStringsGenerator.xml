@@ -163,6 +163,7 @@
 	<ResourceString name="MoveRoleSequenceUpTransactionName" model="Diagram" resourceName="MoveRoleSequenceUp.TransactionName"/>
 	<ResourceString name="InterpretFactEditorLineTransactionName" model="Diagram" resourceName="InterpretFactEditorLine.TransactionName"/>
 	<ResourceString name="ModelBrowserWindowTitle" model="Diagram" resourceName="ORMModelBrowser.WindowTitle"/>
+	<ResourceString name="LoadExceptionIncompatibleAssembly" model="Model" resourceName="LoadException.IncompatibleAssembly"/>
 	<ResourceString name="ModelExceptionModelErrorCategoryInvalid" model="Model" resourceName="ModelException.ModelErrorCategory.TypeNotDerivedFromModelErrorCategory"/>
 	<ResourceString name="ModelExceptionObjectificationImpliedElementModified" model="Model" resourceName="ModelException.Objectification.DirectModificationOfImpliedElement"/>
 	<ResourceString name="ModelExceptionObjectificationImpliedFactObjectified" model="Model" resourceName="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified"/>

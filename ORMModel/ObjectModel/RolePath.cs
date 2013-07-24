@@ -827,7 +827,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+					Note = new Note(Partition, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -1861,13 +1861,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						// Work backwards. Injecting these roles into the entry fact type will
 						// at least give some semblance of order.
 						RoleSubPath lastSubpath = null;
-						Store store = rolePath.Store;
+						Partition partition = rolePath.Partition;
 						for (int j = i - 1; j >= 1; --j)
 						{
 							replacePathedRole = currentPathedRoles[j];
 							correlatedRole = InjectPathedRole(replacePathedRole, ref entryPathedRoles, entryRoleIndex, false, notifyAdded, out injectedRoleAtEnd);
 							RoleSubPath subpath;
-							notifyAdded.ElementAdded(subpath = new RoleSubPath(store));
+							notifyAdded.ElementAdded(subpath = new RoleSubPath(partition));
 							if (null != (replacementPathRoot = CreateCorrelatedRoot(subpath, correlatedRole, notifyAdded)))
 							{
 								TransferAdherents(replacePathedRole, replacementPathRoot, null, notifyAdded);
@@ -2019,7 +2019,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (null != (roleValueConstraint = fromRole.ValueConstraint))
 				{
 					PathConditionRootValueConstraint rootConstraint;
-					notifyAdded.ElementAdded(rootConstraint = new PathConditionRootValueConstraint(store));
+					notifyAdded.ElementAdded(rootConstraint = new PathConditionRootValueConstraint(roleValueConstraint.Partition));
 					foreach (ValueConstraintHasValueRange rangeLink in ValueConstraintHasValueRange.GetLinksToValueRangeCollection(roleValueConstraint))
 					{
 						rangeLink.ValueConstraint = rootConstraint;
@@ -2247,7 +2247,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				notifyAdded.ElementAdded(pathRoot = new RolePathObjectTypeRoot(rolePath, unifyWithPathedRole.Role.RolePlayer), false);
 				if (null == (unifier = unifyWithPathedRole.ObjectUnifier))
 				{
-					notifyAdded.ElementAdded(unifier = new PathObjectUnifier(rolePath.Store), false);
+					notifyAdded.ElementAdded(unifier = new PathObjectUnifier(rolePath.Partition), false);
 					notifyAdded.ElementAdded(new LeadRolePathHasObjectUnifier(unifyWithPathedRole.RolePath.RootRolePath, unifier));
 					notifyAdded.ElementAdded(new PathObjectUnifierUnifiesPathedRole(unifier, unifyWithPathedRole));
 				}
@@ -2356,7 +2356,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					else
 					{
 						PathObjectUnifier newUnifier;
-						notifyAdded.ElementAdded(newUnifier = new PathObjectUnifier(leadRolePath.Store));
+						notifyAdded.ElementAdded(newUnifier = new PathObjectUnifier(leadRolePath.Partition));
 						notifyAdded.ElementAdded(new LeadRolePathHasObjectUnifier(leadRolePath, newUnifier));
 						if (!firstPathNode.IsEmpty)
 						{
@@ -3654,7 +3654,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="notifyAdded">Notification callback for added errors.</param>
 		private void ValidateRolePaths(bool validateCalculations, INotifyElementAdded notifyAdded)
 		{
-			Store store = Store;
+			Partition partition = Partition;
 			ORMModel model = null;
 			BitTracker roleUseTracker = new BitTracker(0);
 			Stack<LinkedElementCollection<RoleBase>> factTypeRolesStack = new Stack<LinkedElementCollection<RoleBase>>();
@@ -3933,7 +3933,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								PathRequiresRootObjectTypeError rootError = currentPath.RootObjectTypeRequiredError;
 								if (rootError == null)
 								{
-									rootError = new PathRequiresRootObjectTypeError(store);
+									rootError = new PathRequiresRootObjectTypeError(partition);
 									rootError.RolePath = currentPath;
 									rootError.Model = model ?? (model = this.Model);
 									rootError.GenerateErrorText();
@@ -3977,7 +3977,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								{
 									if (sameFactTypeWithoutJoinError == null)
 									{
-										sameFactTypeWithoutJoinError = new PathSameFactTypeRoleFollowsJoinError(store);
+										sameFactTypeWithoutJoinError = new PathSameFactTypeRoleFollowsJoinError(partition);
 										sameFactTypeWithoutJoinError.PathedRole = currentPathedRole;
 										sameFactTypeWithoutJoinError.Model = model ?? (model = this.Model);
 										sameFactTypeWithoutJoinError.GenerateErrorText();
@@ -3997,7 +3997,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								{
 									if (outerJoinError == null)
 									{
-										outerJoinError = new PathOuterJoinRequiresOptionalRoleError(store);
+										outerJoinError = new PathOuterJoinRequiresOptionalRoleError(partition);
 										outerJoinError.PathedRole = currentPathedRole;
 										outerJoinError.Model = model ?? (model = this.Model);
 										outerJoinError.GenerateErrorText();
@@ -4017,7 +4017,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								{
 									if (joinCompatibilityError == null)
 									{
-										joinCompatibilityError = new JoinedPathRoleRequiresCompatibleRolePlayerError(store);
+										joinCompatibilityError = new JoinedPathRoleRequiresCompatibleRolePlayerError(partition);
 										joinCompatibilityError.PathedRole = currentPathedRole;
 										joinCompatibilityError.Model = model ?? (model = this.Model);
 										joinCompatibilityError.GenerateErrorText();
@@ -4047,7 +4047,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					PathRequiresRootObjectTypeError rootError = leadRolePath.RootObjectTypeRequiredError;
 					if (rootError == null)
 					{
-						rootError = new PathRequiresRootObjectTypeError(store);
+						rootError = new PathRequiresRootObjectTypeError(partition);
 						rootError.RolePath = leadRolePath;
 						rootError.Model = model ?? (model = this.Model);
 						rootError.GenerateErrorText();
@@ -4111,7 +4111,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							if (unifierCompatibilityError == null)
 							{
-								unifierCompatibilityError = new PathObjectUnifierRequiresCompatibleObjectTypesError(store);
+								unifierCompatibilityError = new PathObjectUnifierRequiresCompatibleObjectTypesError(partition);
 								unifierCompatibilityError.ObjectUnifier = objectUnifier;
 								unifierCompatibilityError.Model = model ?? (model = this.Model);
 								unifierCompatibilityError.GenerateErrorText();
@@ -4203,7 +4203,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void ValidateCalculatedPathValue(CalculatedPathValue calculation, RolePathOwner rolePathOwner, INotifyElementAdded notifyAdded, ref ORMModel contextModel)
 		{
 			Function function = calculation.Function;
-			Store store = calculation.Store;
+			Partition partition = calculation.Partition;
 			CalculatedPathValueRequiresFunctionError functionRequiredError = calculation.FunctionRequiredError;
 			CalculatedPathValueRequiresAggregationContextError aggregationContextRequiredError = calculation.AggregationContextRequiredError;
 			if (function == null)
@@ -4218,7 +4218,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (functionRequiredError == null &&
 					(null != contextModel || null != (contextModel = calculation.Model)))
 				{
-					functionRequiredError = new CalculatedPathValueRequiresFunctionError(store);
+					functionRequiredError = new CalculatedPathValueRequiresFunctionError(partition);
 					functionRequiredError.CalculatedPathValue = calculation;
 					functionRequiredError.Model = contextModel;
 					functionRequiredError.GenerateErrorText();
@@ -4317,7 +4317,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (hasError &&
 							(null != contextModel || null != (contextModel = calculation.Model)))
 						{
-							CalculatedPathValueParameterBindingError bindingError = new CalculatedPathValueParameterBindingError(store);
+							CalculatedPathValueParameterBindingError bindingError = new CalculatedPathValueParameterBindingError(partition);
 							CalculatedPathValueHasUnboundParameterError bindingErrorLink = new CalculatedPathValueHasUnboundParameterError(calculation, bindingError);
 							bindingErrorLink.Parameter = parameter;
 							bindingError.Model = contextModel;
@@ -4357,7 +4357,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else if (null == aggregationContextRequiredError &&
 					(null != contextModel || null != (contextModel = calculation.Model)))
 				{
-					aggregationContextRequiredError = new CalculatedPathValueRequiresAggregationContextError(store);
+					aggregationContextRequiredError = new CalculatedPathValueRequiresAggregationContextError(partition);
 					aggregationContextRequiredError.CalculatedPathValue = calculation;
 					aggregationContextRequiredError.Model = contextModel;
 					aggregationContextRequiredError.GenerateErrorText();
@@ -4379,7 +4379,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (consumptionError == null &&
 					(null != contextModel || null != (contextModel = rolePathOwner.Model)))
 				{
-					consumptionError = new CalculatedPathValueMustBeConsumedError(store);
+					consumptionError = new CalculatedPathValueMustBeConsumedError(partition);
 					consumptionError.CalculatedPathValue = calculation;
 					consumptionError.Model = contextModel;
 					consumptionError.GenerateErrorText();
@@ -4751,7 +4751,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											notifyAdded.ElementAdded(projectionSet, false);
 										}
 									}
-									projection = new DerivedRoleProjection(store,
+									projection = new DerivedRoleProjection(Partition,
 										new RoleAssignment[]{
 											new RoleAssignment(DerivedRoleProjection.DerivationProjectionDomainRoleId, projectionSet),
 											new RoleAssignment(DerivedRoleProjection.ProjectedRoleDomainRoleId, info.Role)},
@@ -4808,7 +4808,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (error == null &&
 							null != (contextModel ?? (contextModel = this.Model)))
 						{
-							error = new DerivedRoleRequiresCompatibleProjectionError(Store);
+							error = new DerivedRoleRequiresCompatibleProjectionError(Partition);
 							error.Projection = projection;
 							error.Model = contextModel;
 							error.GenerateErrorText();
@@ -4845,7 +4845,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			bool seenProjection = false;
 			int factTypeRoleCount = 0;
-			Store store = Store;
+			Partition partition = Partition;
 			ORMModel model = null;
 			foreach (RoleSetDerivationProjection projection in RoleSetDerivationProjection.GetLinksToProjectedPathComponentCollection(this))
 			{
@@ -4894,7 +4894,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (partialProjectionError == null)
 					{
-						partialProjectionError = new PartialRoleSetDerivationProjectionError(store);
+						partialProjectionError = new PartialRoleSetDerivationProjectionError(partition);
 						partialProjectionError.DerivationProjection = projection;
 						partialProjectionError.Model = model ?? (model = Model);
 						partialProjectionError.GenerateErrorText();
@@ -4914,7 +4914,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (projectionRequiredError == null)
 				{
-					projectionRequiredError = new RoleProjectedDerivationRequiresProjectionError(store);
+					projectionRequiredError = new RoleProjectedDerivationRequiresProjectionError(partition);
 					projectionRequiredError.DerivationRule = this;
 					projectionRequiredError.Model = model ?? (model = Model);
 					projectionRequiredError.GenerateErrorText();
@@ -5325,7 +5325,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				FactType factType = FactType;
-				return factType != null ? factType.Model : null;
+				return factType != null ? factType.ResolvedModel : null;
 			}
 		}
 		/// <summary>
@@ -5481,7 +5481,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			QueryBase query = (QueryBase)element;
 			if (!query.IsDeleted && null == query.DerivationRule)
 			{
-				query.DerivationRule = new QueryDerivationRule(query.Store);
+				query.DerivationRule = new QueryDerivationRule(query.Partition);
 			}
 		}
 		/// <summary>
@@ -5581,7 +5581,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				QueryBase query;
-				return null != (query = this.FactType as QueryBase) ? query.Model : null;
+				return null != (query = this.FactType as QueryBase) ? query.ResolvedModel : null;
 			}
 		}
 		/// <summary>
@@ -6089,7 +6089,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				ObjectType objectType = Subtype;
-				return objectType != null ? objectType.Model : null;
+				return objectType != null ? objectType.ResolvedModel : null;
 			}
 		}
 		#endregion // Base overrides
@@ -6107,7 +6107,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (subType != null)
 				{
 					subTypeName = subType.Name;
-					ORMModel model = subType.Model;
+					ORMModel model = subType.ResolvedModel;
 					if (model != null)
 					{
 						modelName = model.Name;
@@ -6304,7 +6304,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (error == null &&
 							null != (contextModel ?? (contextModel = this.Model)))
 						{
-							error = new ConstraintRoleRequiresCompatibleJoinPathProjectionError(Store);
+							error = new ConstraintRoleRequiresCompatibleJoinPathProjectionError(Partition);
 							error.Projection = projection;
 							error.Model = contextModel;
 							error.GenerateErrorText();
@@ -6599,7 +6599,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											notifyAdded.ElementAdded(projectionSet, false);
 										}
 									}
-									projection = new ConstraintRoleProjection(store,
+									projection = new ConstraintRoleProjection(Partition,
 										new RoleAssignment[]{
 											new RoleAssignment(ConstraintRoleProjection.JoinPathProjectionDomainRoleId, projectionSet),
 											new RoleAssignment(ConstraintRoleProjection.ProjectedConstraintRoleDomainRoleId, info.ConstraintRole)},
@@ -6652,7 +6652,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			bool seenProjection = false;
 			int constraintRoleCount = 0;
-			Store store = Store;
+			Partition partition = Partition;
 			ORMModel model = null;
 			foreach (ConstraintRoleSequenceJoinPathProjection projection in ConstraintRoleSequenceJoinPathProjection.GetLinksToProjectedPathComponentCollection(this))
 			{
@@ -6695,7 +6695,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (partialProjectionError == null)
 					{
-						partialProjectionError = new PartialConstraintRoleSequenceJoinPathProjectionError(store);
+						partialProjectionError = new PartialConstraintRoleSequenceJoinPathProjectionError(partition);
 						partialProjectionError.JoinPathProjection = projection;
 						partialProjectionError.Model = model ?? (model = Model);
 						partialProjectionError.GenerateErrorText();
@@ -6715,7 +6715,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (projectionRequiredError == null)
 				{
-					projectionRequiredError = new ConstraintRoleSequenceJoinPathRequiresProjectionError(store);
+					projectionRequiredError = new ConstraintRoleSequenceJoinPathRequiresProjectionError(partition);
 					projectionRequiredError.JoinPath = this;
 					projectionRequiredError.Model = model ?? (model = Model);
 					projectionRequiredError.GenerateErrorText();
@@ -6756,7 +6756,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (constraint != null)
 					{
 						constraintName = constraint.Name;
-						ORMModel model = constraint.Model;
+						ORMModel model = constraint.ResolvedModel;
 						if (model != null)
 						{
 							modelName = model.Name;
@@ -8213,6 +8213,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!element.IsDeleted)
 				{
 					FactType factType = element.FactType;
+					Partition partition = factType.Partition;
 					FactTypeDerivationRule derivationRule = factType.DerivationRule as FactTypeDerivationRule;
 					FactTypeDerivationExpression derivationExpression = element.DerivationRule;
 					string expressionBody = derivationExpression.Body;
@@ -8224,7 +8225,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					else
 					{
 						notifyAdded.ElementAdded(derivationRule = new FactTypeDerivationRule(
-							store,
+							partition,
 							new PropertyAssignment(FactTypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
 						notifyAdded.ElementAdded(new FactTypeHasDerivationRule(factType, derivationRule));
 						derivationNote = null;
@@ -8258,7 +8259,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (derivationNote == null)
 						{
 							notifyAdded.ElementAdded(derivationNote = new DerivationNote(
-								store,
+								partition,
 								new PropertyAssignment(DerivationNote.BodyDomainPropertyId, expressionBody)));
 							notifyAdded.ElementAdded(new FactTypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
 						}
@@ -8335,6 +8336,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						SubtypeDerivationRule derivationRule = subType.DerivationRule;
 						DerivationNote derivationNote;
+						Partition partition = subType.Partition;
 						if (derivationRule != null)
 						{
 							derivationNote = derivationRule.DerivationNote;
@@ -8342,7 +8344,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						else
 						{
 							notifyAdded.ElementAdded(derivationRule = new SubtypeDerivationRule(
-								store,
+								partition,
 								new PropertyAssignment(SubtypeDerivationRule.ExternalDerivationDomainPropertyId, true)));
 							notifyAdded.ElementAdded(new SubtypeHasDerivationRule(subType, derivationRule));
 							derivationNote = null;
@@ -8350,7 +8352,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (derivationNote == null)
 						{
 							notifyAdded.ElementAdded(derivationNote = new DerivationNote(
-								store,
+								partition,
 								new PropertyAssignment(DerivationNote.BodyDomainPropertyId, expressionBody)));
 							notifyAdded.ElementAdded(new SubtypeDerivationRuleHasDerivationNote(derivationRule, derivationNote));
 						}

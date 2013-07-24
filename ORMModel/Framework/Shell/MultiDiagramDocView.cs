@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -605,6 +605,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			{
 				if (disposing)
 				{
+					Store store;
+					ModelingEventManager eventMgr;
+					if (null != (store = Store) &&
+						DocData.IsLoaded &&
+						null != (eventMgr = ModelingEventManager.GetModelingEventManager(store)))
+					{
+						ManageModelingEventHandlers(eventMgr, EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents, EventHandlerAction.Remove);
+					}
 					if (myDocViewControl != null)
 					{
 						myDocViewControl.Parent.Dispose();

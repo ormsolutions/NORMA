@@ -395,7 +395,8 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
-				switch ((SurveyColumnClassificationType)answer)
+				SurveyColumnClassificationType typedAnswer = (SurveyColumnClassificationType)answer;
+				switch (typedAnswer)
 				{
 					case SurveyColumnClassificationType.Required:
 					case SurveyColumnClassificationType.PrimaryRequired:

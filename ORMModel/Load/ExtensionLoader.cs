@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Globalization;
 using System.Reflection;
 using System.Xml;
 using System.Xml.XPath;
@@ -1033,4 +1034,222 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		#endregion // Extension Stripping
 	}
 	#endregion // ExtensionLoader class
+	#region NORMAExtensionLoadException class
+	/// <summary>
+	/// An exception representing the failure of an extension to load
+	/// due to version incompatibility, licensing, or other issues.
+	/// </summary>
+	public class NORMAExtensionLoadException : Exception
+	{
+		/// <summary>
+		/// Create a new extension load exception.
+		/// </summary>
+		/// <param name="message">The message to display.</param>
+		public NORMAExtensionLoadException(string message)
+			: base(message)
+		{
+		}
+	}
+	#endregion // NORMAExtensionLoadException class
+	#region NORMAExtensionCompatibilityAttribute class
+	/// <summary>
+	/// Create an assembly attribute to place on NORMA-loaded extension assemblies
+	/// to determine if they are compatible with the current NORMA version.
+	/// Extensions should call the <see cref="NORMAExtensionCompatibilityAttribute.VerifyCompatibility"/>
+	/// method from the class construct of each extension <see cref="DomainModel"/>.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Assembly, AllowMultiple=false, Inherited=false)]
+	public sealed class NORMAExtensionCompatibilityAttribute : Attribute
+	{
+		#region Fields and Constructor
+		private int myMinBuild;
+		private int myMaxBuild;
+		private int myMinRevision;
+		private int myMaxRevision;
+		private bool myMatchRevision;
+		private bool myMatchBuild;
+		/// <summary>
+		/// Create a new extension attribute. The type of check
+		/// to make is set through the named properties.
+		/// </summary>
+		public NORMAExtensionCompatibilityAttribute()
+		{
+			// Everything defaults to off
+		}
+		#endregion // Fields and Constructor
+		#region Helper Methods
+		/// <summary>
+		/// Call from the class constructor of an extension <see cref="DomainModel"/> to
+		/// verify that the extension will work with the current NORMA version.
+		/// </summary>
+		/// <param name="extensionAssembly">The extension assembly. Can be retrieved with
+		/// <see cref="Assembly.GetExecutingAssembly"/> in the calling class constructor.</param>
+		/// <exception cref="NORMAExtensionLoadException">A load exception is thrown if the compatibility attributes do not match.</exception>
+		public static void VerifyCompatibility(Assembly extensionAssembly)
+		{
+			object[] attributes;
+			if (null != (attributes = extensionAssembly.GetCustomAttributes(typeof(NORMAExtensionCompatibilityAttribute), false)) &&
+				attributes.Length != 0)
+			{
+				bool compatible = true;
+				NORMAExtensionCompatibilityAttribute compatAttr = (NORMAExtensionCompatibilityAttribute)attributes[0];
+				Version NORMAVersion = new Version(((AssemblyFileVersionAttribute)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false)[0]).Version);
+				attributes = extensionAssembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
+				Version extensionVersion = (attributes != null && attributes.Length != 0) ? new Version(((AssemblyFileVersionAttribute)attributes[0]).Version) : null;
+				if (extensionVersion != null &&
+					(NORMAVersion.Major != extensionVersion.Major ||
+					NORMAVersion.Minor != extensionVersion.Minor))
+				{
+					compatible = false;
+				}
+				else
+				{
+					int NORMAVer = NORMAVersion.Build;
+					int minVer = compatAttr.MinBuild;
+					int maxVer = compatAttr.MaxBuild;
+					if ((minVer != 0 || maxVer != 0) ?
+							((minVer != 0 && NORMAVer < minVer) || (maxVer != 0 && NORMAVer > maxVer)) :
+							(compatAttr.MatchBuild ? (extensionVersion == null || extensionVersion.Build != NORMAVer) : false))
+					{
+						compatible = false;
+					}
+					else
+					{
+						NORMAVer = NORMAVersion.Revision;
+						minVer = compatAttr.MinRevision;
+						maxVer = compatAttr.MaxRevision;
+						if ((minVer != 0 || maxVer != 0) ?
+								((minVer != 0 && NORMAVer < minVer) || (maxVer != 0 && NORMAVer > maxVer)) :
+								(compatAttr.MatchRevision ? (extensionVersion == null || extensionVersion.Revision != NORMAVer) : false))
+						{
+							compatible = false;
+						}
+					}
+				}
+				if (!compatible)
+				{
+					string assemblyName = extensionAssembly.GetName().Name;
+					string assemblyDescription = (null != (attributes = extensionAssembly.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false)) && attributes.Length != 0) ?
+						((AssemblyDescriptionAttribute)attributes[0]).Description :
+						null;
+					if (!string.IsNullOrEmpty(assemblyDescription))
+					{
+						assemblyName += "\r\n" + assemblyDescription;
+					}
+					throw new NORMAExtensionLoadException(string.Format(CultureInfo.CurrentCulture, ResourceStrings.LoadExceptionIncompatibleAssembly, assemblyName));
+				}
+			}
+		}
+		#endregion // Helper Methods
+		#region Base Overrides
+		/// <summary>
+		/// Default extension compatibility checks for a matching
+		/// build number and no other settings.
+		/// </summary>
+		public override bool IsDefaultAttribute()
+		{
+			return !myMatchBuild &&
+				!myMatchRevision &&
+				myMinBuild == 0 &&
+				myMaxBuild == 0 &&
+				myMinRevision == 0 &&
+				myMaxRevision == 0;
+		}
+		#endregion // Base Overrides
+		#region Accessor Properties
+		/// <summary>
+		/// This extension will fail to load if the build number
+		/// does not match the NORMA build number. Ignored if <see cref="MinBuild"/>
+		/// or <see cref="MaxBuild"/> are set.
+		/// </summary>
+		public bool MatchBuild
+		{
+			get
+			{
+				return myMatchBuild;
+			}
+			set
+			{
+				myMatchBuild = value;
+			}
+		}
+		/// <summary>
+		/// This extension will fail to load if the revision number
+		/// does not match the NORMA revision number. Ignored if <see cref="MinRevision"/>
+		/// or <see cref="MaxRevision"/> are set.
+		/// </summary>
+		public bool MatchRevision
+		{
+			get
+			{
+				return myMatchRevision;
+			}
+			set
+			{
+				myMatchRevision = value;
+			}
+		}
+		/// <summary>
+		/// This extension will fail to load if the NORMA
+		/// build number is not at or after the specified version.
+		/// </summary>
+		public int MinBuild
+		{
+			get
+			{
+				return myMinBuild;
+			}
+			set
+			{
+				myMinBuild = value;
+			}
+		}
+		/// <summary>
+		/// This extension will fail to load if the NORMA
+		/// build number is not before or at the specified version.
+		/// </summary>
+		public int MaxBuild
+		{
+			get
+			{
+				return myMaxBuild;
+			}
+			set
+			{
+				myMaxBuild = value;
+			}
+		}
+		/// <summary>
+		/// This extension will fail to load if the NORMA
+		/// build number is not at or after the specified version.
+		/// </summary>
+		public int MinRevision
+		{
+			get
+			{
+				return myMinRevision;
+			}
+			set
+			{
+				myMinRevision = value;
+			}
+		}
+		/// <summary>
+		/// This extension will fail to load if the NORMA
+		/// build number is not before or at the specified version.
+		/// </summary>
+		public int MaxRevision
+		{
+			get
+			{
+				return myMaxRevision;
+			}
+			set
+			{
+				myMaxRevision = value;
+			}
+		}
+		#endregion // Accessor Properties
+	}
+	#endregion // NORMAExtensionCompatibilityAttribute class
 }

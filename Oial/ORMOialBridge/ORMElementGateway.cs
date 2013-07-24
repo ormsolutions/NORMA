@@ -32,11 +32,11 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		#region ORM Error Filtering Methods
 		private bool ShouldIgnoreObjectType(ObjectType objectType)
 		{
-			return ORMElementGateway.IsElementExcluded(objectType);
+			return ORMElementGateway.IsElementExcluded(objectType) || objectType is IHasAlternateOwner<ObjectType>;
 		}
 		private bool ShouldIgnoreFactType(FactType factType)
 		{
-			return ORMElementGateway.IsElementExcluded(factType) || factType is QueryBase || (null != factType.Objectification && factType.UnaryRole == null);
+			return ORMElementGateway.IsElementExcluded(factType) || factType is QueryBase || factType is IHasAlternateOwner<FactType> || (null != factType.Objectification && factType.UnaryRole == null);
 		}
 		#endregion // ORM Error Filtering Methods
 		#region ORMElementGateway class
@@ -105,7 +105,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				if (null == objectType.ReferenceSchemeError &&
 					null == objectType.PreferredIdentifierRequiresMandatoryError &&
 					null == objectType.CompatibleSupertypesError &&
-					null == objectType.DataTypeNotSpecifiedError)
+					null == objectType.DataTypeNotSpecifiedError &&
+					!(objectType is IHasAlternateOwner<ObjectType>))
 				{
 					UniquenessConstraint pid = objectType.PreferredIdentifier;
 					if (pid != null)
@@ -192,7 +193,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				// FactTypeErrorAddedRule and FactTypeErrorDeletedRule
 				if (null == factType.InternalUniquenessConstraintRequiredError &&
 					null == factType.ImpliedInternalUniquenessConstraintError &&
-					!(factType is QueryBase))
+					!(factType is QueryBase) &&
+					!(factType is IHasAlternateOwner<FactType>))
 				{
 					if (!(factType is SubtypeFact))
 					{
@@ -235,8 +237,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			[DelayValidatePriority(ValidationPriority.GatewayNewFactType, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void FilterNewFactType(ModelElement element)
 			{
-				ModelHasFactType link = element as ModelHasFactType;
-				FactType factType = link.FactType;
+				FactType factType = ((ModelHasFactType)element).FactType;
 				if (ShouldConsiderFactType(factType, null, false))
 				{
 					AddFactType(factType);
@@ -249,8 +250,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			[DelayValidatePriority(ValidationPriority.GatewayNewObjectType, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void FilterNewObjectType(ModelElement element)
 			{
-				ModelHasObjectType link = element as ModelHasObjectType;
-				ObjectType objectType = link.ObjectType;
+				ObjectType objectType = ((ModelHasObjectType)element).ObjectType;
 				if (ShouldConsiderObjectType(objectType, null, false))
 				{
 					AddObjectType(objectType);
@@ -270,7 +270,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			/// <param name="filterImpliedFactTypes">Set to <see langword="true"/> to check for and filter implied fact types</param>
 			private static void FilterModifiedFactType(FactType factType, bool filterImpliedFactTypes)
 			{
-				if (factType != null && !factType.IsDeleted)
+				if (factType != null &&
+					!factType.IsDeleted &&
+					!(factType is QueryBase) &&
+					!(factType is IHasAlternateOwner<FactType>))
 				{
 					FrameworkDomainModel.DelayValidateElement(factType, FilterModifiedFactTypeDelayed);
 					Objectification objectification;
@@ -287,7 +290,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			[DelayValidatePriority(ValidationPriority.GatewayReconsiderFactType, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void FilterModifiedFactTypeDelayed(ModelElement element)
 			{
-				if (!element.IsDeleted)
+				if (!element.IsDeleted &&
+					!(element is IHasAlternateOwner<FactType>))
 				{
 					FactType factType = (FactType)element;
 					ExcludedORMModelElement exclusionLink = ExcludedORMModelElement.GetLinkToAbstractionModel(factType);
@@ -329,7 +333,9 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			/// <param name="objectType">The modified <see cref="ObjectType"/></param>
 			private static void FilterModifiedObjectType(ObjectType objectType)
 			{
-				if (objectType != null && !objectType.IsDeleted)
+				if (objectType != null &&
+					!objectType.IsDeleted &&
+					!(objectType is IHasAlternateOwner<ObjectType>))
 				{
 					FrameworkDomainModel.DelayValidateElement(objectType, FilterModifiedObjectTypeDelayed);
 				}
@@ -337,7 +343,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			[DelayValidatePriority(ValidationPriority.GatewayReconsiderObjectType, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void FilterModifiedObjectTypeDelayed(ModelElement element)
 			{
-				if (!element.IsDeleted)
+				if (!element.IsDeleted &&
+					!(element is IHasAlternateOwner<ObjectType>))
 				{
 					ObjectType objectType = (ObjectType)element;
 					ExcludedORMModelElement exclusionLink = ExcludedORMModelElement.GetLinkToAbstractionModel(objectType);
@@ -405,8 +412,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			#region Exclude* methods, exclude elements from absorption consideration
 			private static void ExcludeFactType(FactType factType)
 			{
-				AbstractionModel model = AbstractionModelIsForORMModel.GetAbstractionModel(factType.Model);
-				if (model != null)
+				ORMModel ormModel;
+				AbstractionModel model;
+				if (null != (ormModel = factType.Model) &&
+					null != (model = AbstractionModelIsForORMModel.GetAbstractionModel(ormModel)))
 				{
 					ExcludeFactType(factType, model, false, null);
 				}
@@ -442,8 +451,10 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			}
 			private static void ExcludeObjectType(ObjectType objectType)
 			{
-				AbstractionModel model = AbstractionModelIsForORMModel.GetAbstractionModel(objectType.Model);
-				if (model != null)
+				ORMModel ormModel;
+				AbstractionModel model;
+				if (null != (ormModel = objectType.Model) &&
+					null != (model = AbstractionModelIsForORMModel.GetAbstractionModel(ormModel)))
 				{
 					ExcludeObjectType(objectType, model, false, null);
 				}
@@ -521,11 +532,13 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				if (!element.IsDeleted)
 				{
 					FactType factType = (FactType)element;
+					ORMModel model;
 					// Do a final exclusion check. FactTypes may be added to the list for consideration
 					// but removed later on.
-					if (!IsElementExcluded(factType))
+					if (!IsElementExcluded(factType) &&
+						null != (model = factType.Model))
 					{
-						FrameworkDomainModel.DelayValidateElement(factType.Model, DelayValidateModel);
+						FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 						AddTransactedModelElement(factType, ModelElementModification.ORMElementAdded);
 					}
 				}
@@ -551,11 +564,13 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				if (!element.IsDeleted)
 				{
 					ObjectType objectType = (ObjectType)element;
+					ORMModel model;
 					// Do a final exclusion check. FactTypes may be added to the list for consideration
 					// but removed later on.
-					if (!IsElementExcluded(objectType))
+					if (!IsElementExcluded(objectType) &&
+						null != (model = objectType.Model))
 					{
-						FrameworkDomainModel.DelayValidateElement(objectType.Model, DelayValidateModel);
+						FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
 						AddTransactedModelElement(objectType, ModelElementModification.ORMElementAdded);
 					}
 				}
@@ -645,7 +660,9 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				FactType factType = (FactType)link.AssociatedElement;
 				// If we're currently excluded, then adding either of these errors will
 				// not change the situation
-				if (!IsElementExcluded(factType))
+				if (!IsElementExcluded(factType) &&
+					!(factType is QueryBase) &&
+					!(factType is IHasAlternateOwner<FactType>))
 				{
 					FilterModifiedFactType(factType, true);
 				}
@@ -659,7 +676,9 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			{
 				ElementAssociatedWithModelError link = (ElementAssociatedWithModelError)e.ModelElement;
 				FactType factType = (FactType)link.AssociatedElement;
-				if (!factType.IsDeleted)
+				if (!factType.IsDeleted &&
+					!(factType is QueryBase) &&
+					!(factType is IHasAlternateOwner<FactType>))
 				{
 					FilterModifiedFactType(factType, true);
 				}
@@ -707,8 +726,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					// Handles the ValueTypeHasUnspecifiedDataTypeError
 					(null != (dataTypeLink = element as ValueTypeHasDataType) &&
 					!dataTypeLink.IsDeleted &&
-					null != (objectType = dataTypeLink.ValueType))) &&
-					!objectType.IsDeleted)
+					null != (objectType = dataTypeLink.ValueType))))
 				{
 					FilterModifiedObjectType(objectType);
 				}
@@ -754,7 +772,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					if (excludedLink != null)
 					{
 						// We don't keep the exclusion link on objectified FactTypes, but deleting
-						// it does not imply any additional processing because we were already not
+						// it does not imply any additional processing because we we're already not
 						// considering this FactType
 						excludedLink.Delete();
 					}
@@ -766,7 +784,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			}
 			private static void ProcessFactTypeForObjectificationDeleted(FactType factType)
 			{
-				if (!factType.IsDeleted && factType.UnaryRole == null)
+				if (!factType.IsDeleted &&
+					factType.UnaryRole == null)
 				{
 					FilterModifiedFactType(factType, false); // false because there are no implied facttypes without an objectification
 				}

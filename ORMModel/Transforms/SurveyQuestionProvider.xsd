@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="XSDtoHTML.xslt"?>
 <xs:schema
 	id="SurveyQuestionProvider"
@@ -142,41 +142,56 @@
 		<xs:annotation>
 			<xs:documentation>Associate an answer with different display data settings.</xs:documentation>
 		</xs:annotation>
-		<xs:choice maxOccurs="unbounded">
-			<xs:element name="displayData">
+		<xs:sequence>
+			<xs:element name="colorMap" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A call to a static or 'this' call. Three parameters are passed to the function.
+The first parameter is the answer enum value, the second and third are 'ref' Color parameters corresponding
+to the fore and background colors of the item. The colors will initially be set to Color.Empty.</xs:documentation>
+				</xs:annotation>
 				<xs:complexType>
-					<xs:attribute name="enumValue" type="xs:token" use="required">
-						<xs:annotation>
-							<xs:documentation>The value from the questionType enum to associate with these display settings.</xs:documentation>
-						</xs:annotation>
-					</xs:attribute>
-					<xs:attribute name="bold" type="xs:boolean" default="false">
-						<xs:annotation>
-							<xs:documentation>Display answers from this category in bold text</xs:documentation>
-						</xs:annotation>
-					</xs:attribute>
-					<xs:attribute name="gray" type="xs:boolean" default="false">
-						<xs:annotation>
-							<xs:documentation>Display answers from this category in gray text</xs:documentation>
-						</xs:annotation>
-					</xs:attribute>
+					<xs:choice>
+						<xs:element ref="plx:callStatic"/>
+						<xs:element ref="plx:callThis"/>
+					</xs:choice>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="displayDataSameAs">
-				<xs:complexType>
-					<xs:attribute name="enumValue" type="xs:token" use="required">
-						<xs:annotation>
-							<xs:documentation>The value from the questionType enum to associate with these display settings.</xs:documentation>
-						</xs:annotation>
-					</xs:attribute>
-					<xs:attribute name="targetEnumValue" type="xs:token" use="required">
-						<xs:annotation>
-							<xs:documentation>This value should have the same display settings as the targeted value.</xs:documentation>
-						</xs:annotation>
-					</xs:attribute>
-				</xs:complexType>
-			</xs:element>
-		</xs:choice>
+			<xs:choice maxOccurs="unbounded" minOccurs="0">
+				<xs:element name="displayData">
+					<xs:complexType>
+						<xs:attribute name="enumValue" type="xs:token" use="required">
+							<xs:annotation>
+								<xs:documentation>The value from the questionType enum to associate with these display settings.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="bold" type="xs:boolean" default="false">
+							<xs:annotation>
+								<xs:documentation>Display answers from this category in bold text</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="gray" type="xs:boolean" default="false">
+							<xs:annotation>
+								<xs:documentation>Display answers from this category in gray text</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="displayDataSameAs">
+					<xs:complexType>
+						<xs:attribute name="enumValue" type="xs:token" use="required">
+							<xs:annotation>
+								<xs:documentation>The value from the questionType enum to associate with these display settings.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+						<xs:attribute name="targetEnumValue" type="xs:token" use="required">
+							<xs:annotation>
+								<xs:documentation>This value should have the same display settings as the targeted value.</xs:documentation>
+							</xs:annotation>
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="imageMapType">
 		<xs:sequence>

@@ -776,7 +776,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			public SurveyQuestionDisplayData GetDisplayData(int answer)
 			{
-				switch ((SurveyGroupingReferenceType)answer)
+				SurveyGroupingReferenceType typedAnswer = (SurveyGroupingReferenceType)answer;
+				switch (typedAnswer)
 				{
 					case SurveyGroupingReferenceType.Exclusion:
 					case SurveyGroupingReferenceType.Contradiction:

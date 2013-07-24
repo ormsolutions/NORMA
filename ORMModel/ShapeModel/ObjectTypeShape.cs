@@ -585,6 +585,66 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		/// <summary>
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeKind), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// A reference mode kind format string can be changed in such a way
+		/// that it matches preexisting reference scheme patterns, requiring
+		/// possible resizing of the associated entity types.
+		/// </summary>
+		private static void ReferenceModeKindChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ReferenceModeKind.FormatStringDomainPropertyId)
+			{
+				ReferenceModeKind kind;
+				if (!(kind = (ReferenceModeKind)e.ModelElement).IsDeleted)
+				{
+					foreach (ReferenceMode mode in kind.ReferenceModeCollection)
+					{
+						foreach (ObjectType objectType in mode.AssociatedEntityTypeCollection(null, null))
+						{
+							ResizeAssociatedShapes(objectType);
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.CustomReferenceMode), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// The reference custom format string can be changed in such a way
+		/// that it matches preexisting reference scheme patterns, requiring
+		/// possible resizing of the associated entity types.
+		/// </summary>
+		private static void CustomReferenceModeChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == CustomReferenceMode.CustomFormatStringDomainPropertyId)
+			{
+				ReferenceMode mode;
+				if (!(mode = (CustomReferenceMode)e.ModelElement).IsDeleted)
+				{
+					foreach (ObjectType objectType in mode.AssociatedEntityTypeCollection(null, null))
+					{
+						ResizeAssociatedShapes(objectType);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+		/// Changing a reference mode type can force it to match the pattern for
+		/// an existing entity type reference scheme.
+		/// </summary>
+		private static void ReferenceModeKindRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+		{
+			ReferenceMode mode;
+			if (e.DomainRole.Id == ReferenceModeHasReferenceModeKind.KindDomainRoleId &&
+				!(mode = ((ReferenceModeHasReferenceModeKind)e.ElementLink).ReferenceMode).IsDeleted)
+			{
+				foreach (ObjectType objectType in mode.AssociatedEntityTypeCollection(null, null))
+				{
+					ResizeAssociatedShapes(objectType);
+				}
+			}
+		}
+		/// <summary>
 		/// ChangeRule: typeof(ObjectTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
 		/// Keep relative child elements a fixed distance away from the object type shape
 		/// when the shape changes.

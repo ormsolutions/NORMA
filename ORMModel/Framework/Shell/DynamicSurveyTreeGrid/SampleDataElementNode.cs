@@ -93,15 +93,25 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					object textElement = element;
 					ISurveyNode node = textElement as ISurveyNode;
+					object resolvedReferencedElement = referencedElement;
 					if (node == null ||
 						null == (displayText = node.SurveyName))
 					{
-						if (null == referencedElement ||
-							null == (node = (textElement = referencedElement) as ISurveyNode) ||
-							null == (displayText = node.SurveyName))
+						do
 						{
-							displayText = textElement.ToString();
-						}
+							if (null == resolvedReferencedElement ||
+								null == (node = (textElement = resolvedReferencedElement) as ISurveyNode) ||
+								null == (displayText = node.SurveyName))
+							{
+								ISurveyNodeReference nextReference;
+								if (null != (resolvedReferencedElement = (null != (nextReference = resolvedReferencedElement as ISurveyNodeReference)) ? nextReference.ReferencedElement : null))
+								{
+									continue;
+								}
+								displayText = textElement.ToString();
+								break;
+							}
+						} while (displayText == null && resolvedReferencedElement != null);
 					}
 				}
 				myDisplayText = displayText;

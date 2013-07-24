@@ -14,19 +14,15 @@
 \**************************************************************************/
 #endregion
 
-#region Using directives
-
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.Modeling;
-using System.Collections.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework;
-
-#endregion
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
@@ -47,8 +43,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				throw new ArgumentException(ResourceStrings.ModelExceptionFactAddReadingInvalidReadingText, "readingText");
 			}
 
-			Store store = Store;
-			Reading retVal = new Reading(store, new PropertyAssignment(Reading.TextDomainPropertyId, readingText));
+			Reading retVal = new Reading(Partition, new PropertyAssignment(Reading.TextDomainPropertyId, readingText));
 			retVal.ReadingOrder = this;
 			return retVal;
 		}
@@ -71,7 +66,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else
 				{
-					reading = new Reading(Store);
+					reading = new Reading(Partition);
 					readings.Add(reading);
 				}
 				reading.Text = newValue;
@@ -273,8 +268,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void ValidateReadingOrdersRoleCollection(FactType factType, RoleBase addedRole)
 		{
-			Debug.Assert(factType.Store.TransactionManager.InTransaction);
-
 			LinkedElementCollection<ReadingOrder> readingOrders;
 			int orderCount;
 			if (null == factType.UnaryRole &&

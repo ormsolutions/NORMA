@@ -3925,11 +3925,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					object pDocView = null;
 					ErrorHandler.ThrowOnFailure(pNewWindowFrame.GetProperty((int)__VSFPROPID.VSFPROPID_DocView, out pDocView));
 					ORMDesignerDocView newView;
-					Diagram selectDiagram;
-					if (null != (newView = pDocView as ORMDesignerDocView) &&
-						null != (selectDiagram = view.CurrentDiagram))
+					if (null != (newView = pDocView as ORMDesignerDocView))
 					{
-						newView.SelectDiagram(selectDiagram);
+						Store store;
+						ModelingEventManager eventMgr;
+						if (null != (store = newView.Store) &&
+							null != (eventMgr = ModelingEventManager.GetModelingEventManager(store)))
+						{
+							((IModelingEventSubscriber)newView).ManageModelingEventHandlers(eventMgr, EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.ModelStateEvents | EventSubscriberReasons.UserInterfaceEvents, EventHandlerAction.Add);
+						}
+						Diagram selectDiagram;
+						if (null != (selectDiagram = view.CurrentDiagram))
+						{
+							newView.SelectDiagram(selectDiagram);
+						}
 					}
 				}
 				finally

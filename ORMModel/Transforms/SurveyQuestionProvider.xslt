@@ -794,60 +794,123 @@
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="GetDisplayData"/>
 				<plx:param name="answer" dataTypeName=".i4"/>
 				<plx:returns dataTypeName="SurveyQuestionDisplayData"/>
-				<xsl:if test="qp:displaySupport[@displayCategory='DisplayData']">
-					<xsl:variable name="displayDataMaps" select="qp:displayDataMap/qp:displayData[(@bold='true' or @bold='1') or (@gray='true' or @gray='1')]"/>
-					<xsl:if test="$displayDataMaps">
+				<xsl:choose>
+					<xsl:when test="qp:displaySupport[@displayCategory='DisplayData']">
+						<xsl:variable name="colorMap" select="qp:displayDataMap/qp:colorMap/plx:*"/>
+						<xsl:variable name="displayDataMaps" select="qp:displayDataMap/qp:displayData[(@bold='true' or @bold='1') or (@gray='true' or @gray='1')]"/>
 						<xsl:variable name="questionType" select="string(@questionType)"/>
-						<plx:switch>
-							<plx:condition>
-								<plx:cast dataTypeName="{$questionType}">
-									<plx:nameRef name="answer" type="parameter"/>
-								</plx:cast>
-							</plx:condition>
-							<xsl:for-each select="$displayDataMaps">
-								<plx:case>
-									<plx:condition>
-										<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
-									</plx:condition>
-									<xsl:for-each select="../qp:displayDataSameAs[@targetEnumValue=current()/@enumValue]">
+						<xsl:if test="$colorMap | $displayDataMaps">
+							<plx:local name="typedAnswer" dataTypeName="{$questionType}">
+								<plx:initialize>
+									<plx:cast dataTypeName="{$questionType}">
+										<plx:nameRef name="answer" type="parameter"/>
+									</plx:cast>
+								</plx:initialize>
+							</plx:local>
+						</xsl:if>
+						<xsl:if test="$colorMap">
+							<plx:local name="foreColor" dataTypeName="Color" dataTypeQualifier="System.Drawing">
+								<plx:initialize>
+									<plx:callStatic name="Empty" type="field" dataTypeName="Color" dataTypeQualifier="System.Drawing"/>
+								</plx:initialize>
+							</plx:local>
+							<plx:local name="backColor" dataTypeName="Color" dataTypeQualifier="System.Drawing">
+								<plx:initialize>
+									<plx:callStatic name="Empty" type="field" dataTypeName="Color" dataTypeQualifier="System.Drawing"/>
+								</plx:initialize>
+							</plx:local>
+							<xsl:for-each select="$colorMap">
+								<xsl:copy>
+									<xsl:copy-of select="@*"/>
+									<plx:passParam>
+										<plx:nameRef name="typedAnswer"/>
+									</plx:passParam>
+									<plx:passParam type="inOut">
+										<plx:nameRef name="foreColor"/>
+									</plx:passParam>
+									<plx:passParam type="inOut">
+										<plx:nameRef name="backColor"/>
+									</plx:passParam>
+								</xsl:copy>
+							</xsl:for-each>
+						</xsl:if>
+						<xsl:if test="$displayDataMaps">
+							<plx:switch>
+								<plx:condition>
+									<plx:nameRef name="typedAnswer"/>
+								</plx:condition>
+								<xsl:for-each select="$displayDataMaps">
+									<plx:case>
 										<plx:condition>
 											<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
 										</plx:condition>
-									</xsl:for-each>
-									<plx:return>
-										<plx:callNew dataTypeName="SurveyQuestionDisplayData">
-											<plx:passParam>
-												<!-- The isBold parameter -->
-												<xsl:choose>
-													<xsl:when test="@bold='true' or @bold='1'">
-														<plx:trueKeyword/>
-													</xsl:when>
-													<xsl:otherwise>
-														<plx:falseKeyword/>
-													</xsl:otherwise>
-												</xsl:choose>
-											</plx:passParam>
-											<plx:passParam>
-												<!-- The isGrayText parameter -->
-												<xsl:choose>
-													<xsl:when test="@gray='true' or @gray='1'">
-														<plx:trueKeyword/>
-													</xsl:when>
-													<xsl:otherwise>
-														<plx:falseKeyword/>
-													</xsl:otherwise>
-												</xsl:choose>
-											</plx:passParam>
-										</plx:callNew>
-									</plx:return>
-								</plx:case>
-							</xsl:for-each>
-						</plx:switch>
-					</xsl:if>	
-				</xsl:if>
-				<plx:return>
-					<plx:callStatic name="Default" dataTypeName="SurveyQuestionDisplayData" type="property"/>
-				</plx:return>
+										<xsl:for-each select="../qp:displayDataSameAs[@targetEnumValue=current()/@enumValue]">
+											<plx:condition>
+												<plx:callStatic dataTypeName="{$questionType}" name="{@enumValue}" type="field"/>
+											</plx:condition>
+										</xsl:for-each>
+										<plx:return>
+											<plx:callNew dataTypeName="SurveyQuestionDisplayData">
+												<plx:passParam>
+													<!-- The isBold parameter -->
+													<xsl:choose>
+														<xsl:when test="@bold='true' or @bold='1'">
+															<plx:trueKeyword/>
+														</xsl:when>
+														<xsl:otherwise>
+															<plx:falseKeyword/>
+														</xsl:otherwise>
+													</xsl:choose>
+												</plx:passParam>
+												<plx:passParam>
+													<!-- The isGrayText parameter -->
+													<xsl:choose>
+														<xsl:when test="@gray='true' or @gray='1'">
+															<plx:trueKeyword/>
+														</xsl:when>
+														<xsl:otherwise>
+															<plx:falseKeyword/>
+														</xsl:otherwise>
+													</xsl:choose>
+												</plx:passParam>
+												<xsl:if test="$colorMap">
+													<plx:passParam>
+														<plx:nameRef name="foreColor"/>
+													</plx:passParam>
+													<plx:passParam>
+														<plx:nameRef name="backColor"/>
+													</plx:passParam>
+												</xsl:if>
+											</plx:callNew>
+										</plx:return>
+									</plx:case>
+								</xsl:for-each>
+							</plx:switch>
+						</xsl:if>
+						<plx:return>
+							<xsl:choose>
+								<xsl:when test="$colorMap">
+									<plx:callNew dataTypeName="SurveyQuestionDisplayData">
+										<plx:passParam>
+											<plx:nameRef name="foreColor"/>
+										</plx:passParam>
+										<plx:passParam>
+											<plx:nameRef name="backColor"/>
+										</plx:passParam>
+									</plx:callNew>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:callStatic name="Default" dataTypeName="SurveyQuestionDisplayData" type="property"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</plx:return>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:return>
+							<plx:callStatic name="Default" dataTypeName="SurveyQuestionDisplayData" type="property"/>
+						</plx:return>
+					</xsl:otherwise>
+				</xsl:choose>
 			</plx:function>
 			<plx:property name="UISupport" visibility="public">
 				<plx:interfaceMember dataTypeName="ISurveyQuestionTypeInfo" memberName="UISupport"/>

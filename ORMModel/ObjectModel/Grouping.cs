@@ -271,7 +271,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Definition = new Definition(Store, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
+					Definition = new Definition(Partition, new PropertyAssignment(Definition.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -286,7 +286,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (!string.IsNullOrEmpty(newValue))
 				{
-					Note = new Note(Store, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
+					Note = new Note(Partition, new PropertyAssignment(Note.TextDomainPropertyId, newValue));
 				}
 			}
 		}
@@ -676,7 +676,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			LinkedElementCollection<ElementGroupingMembershipContradictionError> contradictionsError = MembershipContradictionErrorCollection;
 			int startContradictionErrorCount = contradictionsError.Count;
 			ORMModel model = null;
-			Store store = Store;
 
 			// State locals, set repeatedly
 			bool notApplicable;
@@ -1103,7 +1102,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="grouping">The context <see cref="ElementGrouping"/></param>
 		/// <param name="element">The target element</param>
 		public ElementGroupingMembershipContradictionError(ElementGrouping grouping, ModelElement element)
-			: this(grouping.Store)
+			: this(grouping.Partition)
 		{
 			(new ElementGroupingHasMembershipContradictionError(grouping, this)).Element = element;
 			Grouping = grouping;
@@ -1150,7 +1149,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // GroupMembershipContradictionError class
 	#region NamedElementDictionary Integration
-	partial class ElementGroupingSet : INamedElementDictionaryParent
+	partial class ElementGroupingSet : INamedElementDictionaryParent, INamedElementDictionaryOwner
 	{
 		#region INamedElementDictionaryParent implementation
 		[NonSerialized]
@@ -1280,7 +1279,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							if (error == null)
 							{
-								error = new ElementGroupingDuplicateNameError(grouping.Store);
+								error = new ElementGroupingDuplicateNameError(grouping.Partition);
 								grouping.DuplicateNameError = error;
 								error.Model = grouping.GroupingSet.Model;
 								error.GenerateErrorText();
@@ -1345,6 +1344,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Base overrides
 		}
 		#endregion // GroupNamedElementDictionary class
+		#region INamedElementDictionaryOwner Implementation
+		INamedElementDictionary INamedElementDictionaryOwner.FindNamedElementDictionary(Type childType)
+		{
+			if (childType == typeof(ElementGrouping))
+			{
+				return GroupsDictionary;
+			}
+			return null;
+		}
+		#endregion // INamedElementDictionaryOwner Implementation
 	}
 	partial class ElementGroupingSetContainsElementGrouping : INamedElementDictionaryLink
 	{

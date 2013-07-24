@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -17,10 +17,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.VisualStudio.Modeling;
+using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
+using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 
 namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
@@ -70,6 +71,22 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		EmptyGroups = 0x20,
 	}
 	#endregion // SurveyQuestionUISupport enum
+	#region SurveyDynamicColor enum
+	/// <summary>
+	/// The types of colors that can be dynamically modified for survey elements.
+	/// </summary>
+	public enum SurveyDynamicColor
+	{
+		/// <summary>
+		/// The text foreground color
+		/// </summary>
+		ForeColor,
+		/// <summary>
+		/// The text background color.
+		/// </summary>
+		BackColor,
+	}
+	#endregion // SurveyDynamicColor enum
 	#region ISurveyQuestionProvider interface
 	/// <summary>
 	/// An ISurveyQuestionProvider provides ISurveyQuestionTypeInfo instance for a survey
@@ -111,12 +128,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 	{
 		private bool myIsBold;
 		private bool myIsGrayText;
+		private Color myForeColor;
+		private Color myBackColor;
 		/// <summary>
 		/// Default display settings
 		/// </summary>
-		public static readonly SurveyQuestionDisplayData Default = new SurveyQuestionDisplayData();
+		public static readonly SurveyQuestionDisplayData Default = new SurveyQuestionDisplayData(false, false);
 		/// <summary>
-		/// Create a new <see cref="SurveyQuestionDisplayData"/>
+		/// Create a new <see cref="SurveyQuestionDisplayData"/> with
+		/// bold and/or gray text settings.
 		/// </summary>
 		/// <param name="isBold">Display text as bold</param>
 		/// <param name="isGrayText">Display text as gray text</param>
@@ -124,6 +144,36 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		{
 			myIsBold = isBold;
 			myIsGrayText = isGrayText;
+			myForeColor = Color.Empty;
+			myBackColor = Color.Empty;
+		}
+		/// <summary>
+		/// Create a new <see cref="SurveyQuestionDisplayData"/> with
+		/// color settings.
+		/// </summary>
+		/// <param name="foreColor">The foreground color.</param>
+		/// <param name="backColor">The background color.</param>
+		public SurveyQuestionDisplayData(Color foreColor, Color backColor)
+		{
+			myIsBold = false;
+			myIsGrayText = false;
+			myForeColor = foreColor;
+			myBackColor = backColor;
+		}
+		/// <summary>
+		/// Create a new <see cref="SurveyQuestionDisplayData"/> with
+		/// all settings.
+		/// </summary>
+		/// <param name="isBold">Display text as bold</param>
+		/// <param name="isGrayText">Display text as gray text</param>
+		/// <param name="foreColor">The foreground color.</param>
+		/// <param name="backColor">The background color.</param>
+		public SurveyQuestionDisplayData(bool isBold, bool isGrayText, Color foreColor, Color backColor)
+		{
+			myIsBold = isBold;
+			myIsGrayText = isGrayText;
+			myForeColor = foreColor;
+			myBackColor = backColor;
 		}
 		/// <summary>
 		/// Return <see langword="true"/> if these are the default settings
@@ -132,7 +182,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		{
 			get
 			{
-				return !(myIsBold || myIsGrayText);
+				return !(myIsBold || myIsGrayText || !myForeColor.IsEmpty || !myBackColor.IsEmpty);
 			}
 		}
 		/// <summary>
@@ -153,6 +203,26 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			get
 			{
 				return myIsGrayText;
+			}
+		}
+		/// <summary>
+		/// Should the text display with a custom foreground color?
+		/// </summary>
+		public Color ForeColor
+		{
+			get
+			{
+				return myForeColor;
+			}
+		}
+		/// <summary>
+		/// Should the text display with a custom background color?
+		/// </summary>
+		public Color BackColor
+		{
+			get
+			{
+				return myBackColor;
 			}
 		}
 	}
@@ -618,6 +688,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// </summary>
 		/// <param name="element">The object that has been changed.</param>
 		/// <param name="questionTypes">The question types.</param>
+		/// <remarks>This can also be used without providing questionTypes to
+		/// force an element redraw. As a final 'emergency' redraw request,
+		/// calling this with no element and no questionTypes will simply
+		/// force a full redraw of the visible tree.</remarks>
 		void ElementChanged(object element, params Type[] questionTypes);
 		/// <summary>
 		/// Called if the answers provided by a node reference have been changed.

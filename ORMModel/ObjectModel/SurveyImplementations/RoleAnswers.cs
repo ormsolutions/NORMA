@@ -42,7 +42,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactType factType;
 			ORMModel model;
-			return (null == (factType = FactType) || null == (model = factType.Model)) ?
+			return (null == (factType = FactType) || null == (model = factType.ResolvedModel)) ?
 				-1 :
 				(int)(ModelError.HasErrors(this, ModelErrorUses.DisplayPrimary, model.ModelErrorDisplayFilter) ? SurveyErrorState.HasError : SurveyErrorState.NoError);
 		}

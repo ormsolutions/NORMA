@@ -16,12 +16,13 @@
 #endregion
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
-using System.Diagnostics;
-using System.Collections;
 
 namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 {
@@ -447,6 +448,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 									SurveyQuestionDisplayData displayData = questionInfo.GetDisplayData(answer);
 									retVal.Bold = displayData.Bold;
 									retVal.GrayText = displayData.GrayText;
+									Color alternateColor;
+									if (!(alternateColor = displayData.ForeColor).IsEmpty)
+									{
+										retVal.ForeColor = alternateColor;
+									}
+									if (!(alternateColor = displayData.BackColor).IsEmpty)
+									{
+										retVal.BackColor = alternateColor;
+									}
 								}
 							}
 						}
@@ -510,6 +520,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					retVal.OverlayIndices = myOverlayIndices;
 					retVal.OverlayIndex = (short)overlayBitField;
+				}
+
+				if (surveyTree.DynamicColorsEnabled)
+				{
+					Color alternateColor;
+					if (!(alternateColor = surveyTree.GetDynamicColor(node.Element, SurveyDynamicColor.ForeColor)).IsEmpty)
+					{
+						retVal.ForeColor = alternateColor;
+					}
+					if (!(alternateColor = surveyTree.GetDynamicColor(node.Element, SurveyDynamicColor.BackColor)).IsEmpty)
+					{
+						retVal.BackColor = alternateColor;
+					}
 				}
 
 				return retVal;
@@ -966,7 +989,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					return;
 				}
-				if (!displayChangeOnly)
+				if (!displayChangeOnly && questionTypes.Length != 0)
 				{
 					node.Update(questionTypes, myContextElement, mySurvey);
 					myNodes[index] = node;
@@ -1165,6 +1188,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					SampleDataElementNode.Create(mySurveyTree, mySurvey, myContextElement, elementReference),
 					true,
 					0 != (elementReference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.InlineExpansion) && mySurveyTree.myMainListDictionary.ContainsKey(previousTarget));
+			}
+			/// <summary>
+			/// A fallback method to force a redraw of the full tree. Should be used
+			/// only in broad deletion cases where side effects cannot be determined
+			/// during events.
+			/// </summary>
+			public void ForceRedraw()
+			{
+				BranchModificationEventHandler modificationEvents = myModificationEvents;
+				if (modificationEvents != null)
+				{
+					modificationEvents(this, BranchModificationEventArgs.Redraw(false));
+					modificationEvents(this, BranchModificationEventArgs.Redraw(true));
+				}
 			}
 			/// <summary>
 			/// Update a node by either moving it or updating the display in line.

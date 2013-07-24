@@ -100,6 +100,9 @@
 			<arg:ChangeRule methodName="ConnectionPropertyChangeRule">
 				<arg:RuleOn targetType="ObjectTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:ChangeRule>
+			<arg:ChangeRule methodName="CustomReferenceModeChangeRule">
+				<arg:RuleOn targetType="CustomReferenceMode" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:ChangeRule>
 			<arg:AddRule methodName="DataTypeAddedRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="LocalCommit"/>
 			</arg:AddRule>
@@ -130,6 +133,12 @@
 			<arg:DeleteRule methodName="PreferredIdentifierShortenedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:DeleteRule>
+			<arg:ChangeRule methodName="ReferenceModeKindChangeRule">
+				<arg:RuleOn targetType="ReferenceModeKind" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:ChangeRule>
+			<arg:RolePlayerChangeRule methodName="ReferenceModeKindRolePlayerChangeRule">
+				<arg:RuleOn targetType="ReferenceModeHasReferenceModeKind" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="RolePlayerAddedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="LocalCommit"/>
 			</arg:AddRule>

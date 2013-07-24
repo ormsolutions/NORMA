@@ -37,7 +37,9 @@ namespace ORMSolutions.ORMArchitect.ExtensionExample
 		/// <param name="objectType">The ObjectType you wish to be validated.</param>
 		private static void ValidateObjectTypeName(ObjectType objectType, INotifyElementAdded notifyAdded)
 		{
-			if (!objectType.IsDeleted)
+			ORMModel model;
+			if (!objectType.IsDeleted &&
+				null != (model = objectType.Model))
 			{
 				Regex regex = objectTypeRegex;
 				if (regex == null)
@@ -71,7 +73,7 @@ namespace ORMSolutions.ORMArchitect.ExtensionExample
 					{
 						nameError = new ObjectTypeRequiresMeaningfulNameError(objectType.Store);
 						ExtensionElementUtility.AddExtensionModelError(objectType, nameError);
-						nameError.Model = objectType.Model;
+						nameError.Model = model;
 						nameError.GenerateErrorText();
 						if (notifyAdded != null)
 						{

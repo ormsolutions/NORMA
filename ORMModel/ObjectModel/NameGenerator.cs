@@ -268,7 +268,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int requiredDescendantsCount = requiredDescendantsCollection.Count;
 			Type[] requiredUsageTypes = GetSupportedNameUsageTypes();
 			int requiredUsageCount = requiredUsageTypes.Length;
-			Store store = Store;
 			if (requiredDescendantsCount != 0 || requiredUsageCount != 0)
 			{
 				DomainClassInfo[] requiredDescendants = new DomainClassInfo[requiredDescendantsCount];
@@ -375,9 +374,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			DomainClassInfo nameGeneratorClass = GetDomainClass();
 			Debug.Assert(childType == nameGeneratorClass || childType.BaseDomainClass == nameGeneratorClass);
-			Store store = Store;
 			ReadOnlyCollection<DomainPropertyInfo> properties = nameGeneratorClass.AllDomainProperties;
 			PropertyAssignment[] propertyAssignments = new PropertyAssignment[properties.Count + (nameUsageType == null ? -1 : 0)];
+			Partition partition = Partition;
 			int i = 0;
 			foreach (DomainPropertyInfo property in properties)
 			{
@@ -388,11 +387,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				else if (nameUsageType != null)
 				{
-					propertyAssignments[i] = new PropertyAssignment(property.Id, ObjectModel.NameUsage.TranslateToNameUsageIdentifier(store.DomainDataDirectory.FindDomainClass(nameUsageType)));
+					propertyAssignments[i] = new PropertyAssignment(property.Id, ObjectModel.NameUsage.TranslateToNameUsageIdentifier(partition.DomainDataDirectory.FindDomainClass(nameUsageType)));
 					++i;
 				}
 			}
-			NameGenerator retVal = (NameGenerator)store.GetDomainModel(childType.DomainModel.Id).CreateElement(store.DefaultPartition, childType.ImplementationClass, propertyAssignments);
+			NameGenerator retVal = (NameGenerator)Store.GetDomainModel(childType.DomainModel.Id).CreateElement(partition, childType.ImplementationClass, propertyAssignments);
 			retVal.RefinesGenerator = this;
 			return retVal;
 		}

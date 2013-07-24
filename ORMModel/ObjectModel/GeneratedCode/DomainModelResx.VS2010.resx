@@ -2644,18 +2644,6 @@
     <value>Fact Constraint</value>
     <comment>DisplayName for DomainClass &apos;FactConstraint&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.FactType</value>
-    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactConstraint&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.DisplayName" xml:space="preserve">
-    <value>FactType</value>
-    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactConstraint&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.PropertyDisplayName" xml:space="preserve">
-    <value>Constraint Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactConstraint&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/Constraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.Constraint</value>
     <comment>Description for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;FactConstraint&apos;</comment>
@@ -2668,6 +2656,18 @@
     <value>Fact Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;FactConstraint&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.FactType</value>
+    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.DisplayName" xml:space="preserve">
+    <value>FactType</value>
+    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint/FactType.PropertyDisplayName" xml:space="preserve">
+    <value>Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactConstraint&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint</value>
     <comment>Description for DomainClass &apos;FactSetComparisonConstraint&apos;</comment>
@@ -2675,18 +2675,6 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.DisplayName" xml:space="preserve">
     <value>Fact Set Comparison Constraint</value>
     <comment>DisplayName for DomainClass &apos;FactSetComparisonConstraint&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.FactType</value>
-    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetComparisonConstraint&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.DisplayName" xml:space="preserve">
-    <value>FactType</value>
-    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetComparisonConstraint&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.PropertyDisplayName" xml:space="preserve">
-    <value>Set Comparison Constraint Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetComparisonConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/SetComparisonConstraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.SetComparisonConstraint</value>
@@ -2700,6 +2688,18 @@
     <value>Fact Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;FactSetComparisonConstraint&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint.FactType</value>
+    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetComparisonConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.DisplayName" xml:space="preserve">
+    <value>FactType</value>
+    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetComparisonConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetComparisonConstraint/FactType.PropertyDisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetComparisonConstraint&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint</value>
     <comment>Description for DomainClass &apos;FactSetConstraint&apos;</comment>
@@ -2707,18 +2707,6 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.DisplayName" xml:space="preserve">
     <value>Fact Set Constraint</value>
     <comment>DisplayName for DomainClass &apos;FactSetConstraint&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.FactType</value>
-    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetConstraint&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.DisplayName" xml:space="preserve">
-    <value>FactType</value>
-    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetConstraint&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.PropertyDisplayName" xml:space="preserve">
-    <value>Set Constraint Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/SetConstraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.SetConstraint</value>
@@ -2731,6 +2719,18 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/SetConstraint.PropertyDisplayName" xml:space="preserve">
     <value>Fact Type Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;SetConstraint&apos; on DomainRelationship &apos;FactSetConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint.FactType</value>
+    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.DisplayName" xml:space="preserve">
+    <value>FactType</value>
+    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint/FactType.PropertyDisplayName" xml:space="preserve">
+    <value>Set Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;FactSetConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasExtensionElement.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModelElementHasExtensionElement</value>
@@ -3580,18 +3580,6 @@
     <value>Constraint Role Sequence Has Role</value>
     <comment>DisplayName for DomainClass &apos;ConstraintRoleSequenceHasRole&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.Role</value>
-    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.DisplayName" xml:space="preserve">
-    <value>Role</value>
-    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRole&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.PropertyDisplayName" xml:space="preserve">
-    <value>Constraint Role Sequence Collection</value>
-    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRole&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.ConstraintRoleSequence</value>
     <comment>Description for DomainRole &apos;ConstraintRoleSequence&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRole&apos;</comment>
@@ -3603,6 +3591,18 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/ConstraintRoleSequence.PropertyDisplayName" xml:space="preserve">
     <value>Role Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ConstraintRoleSequence&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole.Role</value>
+    <comment>Description for DomainRole &apos;Role&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.DisplayName" xml:space="preserve">
+    <value>Role</value>
+    <comment>DisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRole&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole/Role.PropertyDisplayName" xml:space="preserve">
+    <value>Constraint Role Sequence Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Role&apos; on DomainRelationship &apos;ConstraintRoleSequenceHasRole&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraintHasTooFewRoleSequencesError</value>

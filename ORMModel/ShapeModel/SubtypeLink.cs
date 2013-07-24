@@ -582,9 +582,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			protected sealed override void ProcessElement(ModelHasFactType element, Store store, INotifyElementAdded notifyAdded)
 			{
 				SubtypeFact subTypeFact = element.FactType as SubtypeFact;
-				if (subTypeFact != null && !subTypeFact.IsDeleted)
+				ORMModel model;
+				if (null != (subTypeFact = element.FactType as SubtypeFact) &&
+					!subTypeFact.IsDeleted &&
+					null != (model = subTypeFact.Model))
 				{
-					ORMModel model = subTypeFact.Model;
 					ObjectType rolePlayer = subTypeFact.Subtype;
 					FactType nestedFact = rolePlayer.NestedFactType;
 					if (FactTypeShape.ShouldDrawObjectification(nestedFact))
