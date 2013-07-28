@@ -1220,7 +1220,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 
 				ReadOnlyCollection<DerivedRoleProjection> projections = DerivedRoleProjection.GetLinksToDerivationProjectionCollection(this);
-				count = roleInstances.Count;
+				count = projections.Count;
 				for (int i = 0; i < count; ++i)
 				{
 					DerivedRoleRequiresCompatibleProjectionError compatibilityError = projections[i].IncompatibleProjectionError;
