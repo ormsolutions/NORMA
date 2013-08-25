@@ -571,6 +571,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				using (Transaction t = store.TransactionManager.BeginTransaction("Create Context Diagram"))
 				{
 					diagram = new ORMDiagram(partition);
+					diagram.ForeignPartitionTest = delegate(Partition elementPartition)
+					{
+						return elementPartition.AlternateId == null;
+					};
 					diagram.Associate(myDiagramView);
 					myDiagramView.HasWatermark = false;
 					diagram.ModelElement = model;

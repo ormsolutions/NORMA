@@ -1087,6 +1087,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return element;
 		}
 		/// <summary>
+		/// Customizable test to determine if shapes should be
+		/// created for elements in a given partition. Allows a
+		/// diagram and the elements it is displaying to be in
+		/// different partitions. Implementations of this callback
+		/// should use the <see cref="Partition.AlternateId"/> property
+		/// of the provided partition instead of the <see cref="Partition"/>
+		/// instance so that drag-drop from others models is supported.
+		/// </summary>
+		[NonSerialized]
+		public Predicate<Partition> ForeignPartitionTest = null;
+		/// <summary>
 		/// Check if the element has valid ownership for appearing
 		/// on this diagram. Allows ORM elements to be used in structures
 		/// outside the core model without appearing on a diagram.
@@ -1097,7 +1108,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			// Use the partition id instead of the partition itself so that dragging
 			// from other models is supported.
-			return element.Partition.AlternateId == this.Partition.AlternateId && !(element is IHasAlternateOwner);
+			Predicate<Partition> partitionTest = ForeignPartitionTest;
+			return (partitionTest != null ?
+					partitionTest(element.Partition) :
+					element.Partition.AlternateId == this.Partition.AlternateId) &&
+				!(element is IHasAlternateOwner);
 		}
 		/// <summary>
 		/// Called as a result of the FixUpDiagram calls

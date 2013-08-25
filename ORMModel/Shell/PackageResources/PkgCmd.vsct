@@ -944,8 +944,13 @@
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReferenceModeEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="E" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewContextWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="C" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewDiagramSpyWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="D" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoom100" editor="guidORMDesignerEditor" key1="48" mod1="Control"/>
+		<!-- Note that Control-Shift-0 is a default windows hotkey in and after Windows 7. This was the original setting, but the control-only
+			versionts needed to be added so that Zoom100 would have a normal hotkey. -->
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoom100" editor="guidORMDesignerEditor" key1="48" mod1="Control Shift"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomIn" editor="guidORMDesignerEditor" key1="187" mod1="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomIn" editor="guidORMDesignerEditor" key1="187" mod1="Control Shift"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomOut" editor="guidORMDesignerEditor" key1="189" mod1="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomOut" editor="guidORMDesignerEditor" key1="189" mod1="Control Shift"/>
 
 		<!-- Fact editor key bindings-->

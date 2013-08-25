@@ -3903,6 +3903,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (null != (objectType = this.ObjectType))
 				{
 					LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
+					LinkedElementCollection<EntityTypeSubtypeInstance> subtypeInstances = null;
+					bool retrievedSubtypeInstances = false;
 					int playedRoleCount = playedRoles.Count;
 					LinkedElementCollection<PopulationMandatoryError> errors = this.PopulationMandatoryErrorCollection;
 					if (playedRoleCount == 0)
@@ -4048,8 +4050,59 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												}
 												else
 												{
-													ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == constraintRole) ? currentRoleInstances : constraintRole.ObjectTypeInstanceCollection;
-													if (roleInstances.Contains(this))
+													ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances;
+													ObjectTypeInstance findInstance;
+													if (currentRole == constraintRole)
+													{
+														roleInstances = currentRoleInstances;
+														findInstance = this;
+													}
+													else
+													{
+														roleInstances = constraintRole.ObjectTypeInstanceCollection;
+														ObjectType roleType = constraintRole.RolePlayer;
+														if (roleType == objectType)
+														{
+															findInstance = this;
+														}
+														else
+														{
+															findInstance = null;
+															if (!retrievedSubtypeInstances)
+															{
+																retrievedSubtypeInstances = true;
+																EntityTypeInstance entityInstance;
+																EntityTypeSubtypeInstance subtypeInstance;
+																if (null != (entityInstance = this as EntityTypeInstance))
+																{
+																	subtypeInstances = entityInstance.EntityTypeSubtypeInstanceCollection;
+																}
+																else if (null != (subtypeInstance = this as EntityTypeSubtypeInstance))
+																{
+																	subtypeInstances = subtypeInstance.SupertypeInstance.EntityTypeSubtypeInstanceCollection;
+																}
+																if (subtypeInstances != null &&
+																	subtypeInstances.Count == 0)
+																{
+																	subtypeInstances = null;
+																}
+															}
+															if (subtypeInstances != null)
+															{
+																foreach (EntityTypeSubtypeInstance subtypeInstance in subtypeInstances)
+																{
+																	if (subtypeInstance.EntityTypeSubtype == roleType)
+																	{
+																		findInstance = subtypeInstance;
+																		break;
+																	}
+																}
+															}
+														}
+													}
+													//= (currentRole == constraintRole) ? currentRoleInstances : constraintRole.ObjectTypeInstanceCollection;
+													if (findInstance != null &&
+														roleInstances.Contains(findInstance))
 													{
 														break;
 													}

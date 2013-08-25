@@ -72,7 +72,7 @@
 			<xsl:if test="$RequireReadingModification">
 				<orm:ModelErrors>
 					<xsl:for-each select="$allFactTypes/orm:ReadingOrders/orm:ReadingOrder/orm:Readings/orm:Reading">
-						<orm:ReadingRequiresUserModificationError id="ReadingRequiresUserModificationError.{@id}">
+						<orm:ReadingRequiresUserModificationError Name="" id="ReadingRequiresUserModificationError.{@id}">
 							<orm:Reading ref="{@id}"/>
 						</orm:ReadingRequiresUserModificationError>
 					</xsl:for-each>
