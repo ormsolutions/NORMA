@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -307,6 +307,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						TooFewReadingRolesError tooFew;
 						TooManyReadingRolesError tooMany;
 						ReadingRequiresUserModificationError userModification;
+						DuplicateReadingSignatureError duplicateSignature;
 						FactTypeRequiresReadingError noReading;
 						ValueConstraintError valueError;
 						FactType factType;
@@ -336,6 +337,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						else if (null != (userModification = error as ReadingRequiresUserModificationError))
 						{
 							reading = userModification.Reading;
+						}
+						else if (null != (duplicateSignature = error as DuplicateReadingSignatureError))
+						{
+							factType = (FactType)selectedElement;
+							LinkedElementCollection<Reading> readings = duplicateSignature.ReadingCollection;
+							foreach (Reading testReading in readings)
+							{
+								if (testReading.ReadingOrder.FactType == factType)
+								{
+									reading = testReading;
+									break;
+								}
+							}
+							if (reading == null)
+							{
+								Objectification objectification;
+								if (null != (objectification = factType.Objectification))
+								{
+									foreach (Reading testReading in readings)
+									{
+										if (testReading.ReadingOrder.FactType.ImpliedByObjectification == objectification)
+										{
+											reading = testReading;
+											break;
+										}
+									}
+								}
+								if (reading == null)
+								{
+									// Defensive, shouldn't happen.
+									reading = readings[0];
+								}
+							}
 						}
 						else if (null != (implConstraint = error as ImpliedInternalUniquenessConstraintError))
 						{

@@ -1550,6 +1550,14 @@
     <value>Duplicate Function Names</value>
     <comment>DisplayName for DomainClass &apos;FunctionDuplicateNameError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DuplicateReadingSignatureError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.DisplayName" xml:space="preserve">
+    <value>Duplicate Readings</value>
+    <comment>DisplayName for DomainClass &apos;DuplicateReadingSignatureError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationUniquenessError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;PopulationUniquenessError&apos;</comment>
@@ -2157,6 +2165,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Reading/Text.DisplayName" xml:space="preserve">
     <value>Text</value>
     <comment>DisplayName for DomainProperty &apos;Text&apos; on DomainClass &apos;Reading&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Reading/Signature.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.Signature</value>
+    <comment>Description for DomainProperty &apos;Signature&apos; on DomainClass &apos;Reading&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Reading/Signature.DisplayName" xml:space="preserve">
+    <value>Signature</value>
+    <comment>DisplayName for DomainProperty &apos;Signature&apos; on DomainClass &apos;Reading&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.Reading/IsPrimaryForReadingOrder.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.IsPrimaryForReadingOrder</value>
@@ -3475,6 +3491,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError/DuplicateNameError.PropertyDisplayName" xml:space="preserve">
     <value>Function Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;FunctionHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError</value>
+    <comment>Description for DomainClass &apos;ReadingHasDuplicateSignatureError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.DisplayName" xml:space="preserve">
+    <value>Reading Has Duplicate Signature Error</value>
+    <comment>DisplayName for DomainClass &apos;ReadingHasDuplicateSignatureError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/Reading.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.Reading</value>
+    <comment>Description for DomainRole &apos;Reading&apos; on DomainRelationship &apos;ReadingHasDuplicateSignatureError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/Reading.DisplayName" xml:space="preserve">
+    <value>Reading</value>
+    <comment>DisplayName for DomainRole &apos;Reading&apos; on DomainRelationship &apos;ReadingHasDuplicateSignatureError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/Reading.PropertyDisplayName" xml:space="preserve">
+    <value>Duplicate Signature Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Reading&apos; on DomainRelationship &apos;ReadingHasDuplicateSignatureError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/DuplicateSignatureError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.DuplicateSignatureError</value>
+    <comment>Description for DomainRole &apos;DuplicateSignatureError&apos; on DomainRelationship &apos;ReadingHasDuplicateSignatureError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/DuplicateSignatureError.DisplayName" xml:space="preserve">
+    <value>DuplicateSignatureError</value>
+    <comment>DisplayName for DomainRole &apos;DuplicateSignatureError&apos; on DomainRelationship &apos;ReadingHasDuplicateSignatureError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/DuplicateSignatureError.PropertyDisplayName" xml:space="preserve">
+    <value>Reading Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DuplicateSignatureError&apos; on DomainRelationship &apos;ReadingHasDuplicateSignatureError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ExternalRoleConstraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ExternalRoleConstraint</value>

@@ -899,6 +899,9 @@
 			<arg:DeleteRule methodName="DuplicateFunctionNameDeletedRule">
 				<arg:RuleOn targetType="FunctionHasDuplicateNameError"/>
 			</arg:DeleteRule>
+			<arg:DeleteRule methodName="DuplicateReadingSignatureDeletedRule">
+				<arg:RuleOn targetType="ReadingHasDuplicateSignatureError"/>
+			</arg:DeleteRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="QueryBase">
 			<arg:AddRule methodName="QueryAddedRule">
@@ -928,6 +931,9 @@
 			</arg:DeleteRule>
 			<arg:ChangeRule methodName="ReadingPropertiesChangedRule">
 				<arg:RuleOn targetType="Reading"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="ReadingSignatureChangedRule">
+				<arg:RuleOn targetType="FactType"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="RecognizedPhrase">

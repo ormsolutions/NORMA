@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -519,10 +520,36 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ProcessModelErrorChange(link);
 			}
 		}
+		/// <summary>
+		/// DeletingRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError)
+		/// If multiple elements are associated with a model error, then an individual element can be removed
+		/// from the collection without deleting the error. This element will not be reachable when the
+		/// error itself is removed, and the display will not update.
+		/// </summary>
+		private static void ModelErrorComponentDeletingRule(ElementDeletingEventArgs e)
+		{
+			ElementAssociatedWithModelError link = (ElementAssociatedWithModelError)e.ModelElement;
+			ModelError error;
+			if (!(error = link.ModelError).IsDeleting)
+			{
+				foreach (DomainRoleInfo roleInfo in link.GetDomainRelationship().DomainRoles)
+				{
+					if (!roleInfo.IsSource && roleInfo.IsMany)
+					{
+						ModelHasError errorLink;
+						if (null != (errorLink = ModelHasError.GetLinkToModel(error)))
+						{
+							ProcessModelErrorChange(errorLink);
+						}
+						break;
+					}
+				}
+			}
+		}
 		private static void ProcessModelErrorChange(ModelHasError errorLink)
 		{
 			ModelError error = errorLink.Error;
-			// Give the error itself a change to have an indirect owner.
+			// Give the error itself a chance to have an indirect owner.
 			// A ModelError can own itself.
 			InvalidateIndirectErrorOwnerDisplay(error, null, null);
 			DomainClassInfo classInfo = error.GetDomainClass();
@@ -555,7 +582,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					ORMBaseShape shape = pels[i] as ORMBaseShape;
 					if (shape != null && !shape.IsDeleting)
 					{
-						shape.InvalidateRequired();
+						shape.InvalidateRequired(true);
 					}
 				}
 			}

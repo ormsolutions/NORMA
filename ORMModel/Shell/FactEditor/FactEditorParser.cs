@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -148,7 +149,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				ParsedFactTypeRolePlayerCollection rolePlayers = new ParsedFactTypeRolePlayerCollection();
 				// Loop the objects. Inside this loop, loop the quantifiers collection.
 				// Remove quantifiers that are positioned before the object.
-				int counter = -1;
 				int position = 0;
 				StringBuilder builderFact = new StringBuilder();
 				int nrObjects = objectTypes.Count;
@@ -164,7 +164,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					newObject.Name = objectNameGroup.Value;
 					newObject.RefMode = refModeGroup.Value;
 					newObject.RefModeHasParenthesis = refModeWithParensGroup.Value.Length > 0;
-					newObject.Position = ++counter;
 
 					// set the colorization for the object
 					int objColorStart = objectNameGroup.Index;
@@ -387,7 +386,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			private bool myRefModeHasParenthesis;
 			// TODO: Uncomment
 			//		private FactQuantifierCollection myRoleQuantifiers;
-			private int myPositionNr;
 
 			/// <summary>
 			/// Construct a new FactObject. This initialized the RoleQuantifiers collection
@@ -428,14 +426,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			//		{
 			//			get { return myRoleQuantifiers; }
 			//		}
-			/// <summary>
-			/// The position of this object in the parsed fact
-			/// </summary>
-			public int Position
-			{
-				get { return myPositionNr; }
-				set { myPositionNr = value; }
-			}
 		}
 		#endregion // ParsedFactTypeRolePlayer class
 		#region Helper classes

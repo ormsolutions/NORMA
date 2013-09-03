@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -677,7 +678,11 @@ namespace ORMSolutions.ORMArchitect.Framework
 				return rootName;
 			}
 			forceAllowDuplicateName = false;
-			rootName = GetRootNamePattern(element);
+			if (string.IsNullOrEmpty(rootName = GetRootNamePattern(element)))
+			{
+				// Indicates unique names are not supported
+				return null;
+			}
 			if (!rootName.Contains("{0}"))
 			{
 				rootName += "{0}";
@@ -876,11 +881,14 @@ namespace ORMSolutions.ORMArchitect.Framework
 					ModelElement singleElement = locateData.SingleElement;
 					if (singleElement != null)
 					{
-						if (!afterTransaction)
+						if (singleElement == element)
 						{
-							EntryStateChange.OnEntryChange(element, this, elementName, singleElement);
+							if (!afterTransaction)
+							{
+								EntryStateChange.OnEntryChange(element, this, elementName, singleElement);
+							}
+							myDictionary.Remove(elementName);
 						}
-						myDictionary.Remove(elementName);
 					}
 					else
 					{
@@ -889,40 +897,54 @@ namespace ORMSolutions.ORMArchitect.Framework
 						Debug.Assert(elementCount >= 2);
 						if (elementCount == 2)
 						{
-							ModelElement otherElement = null;
-							foreach (ModelElement testOtherElement in existingCollection)
+							ModelElement oppositeElement = null;
+							bool seenElement = false;
+							foreach (ModelElement otherElement in existingCollection)
 							{
-								if (element != testOtherElement)
+								if (element == otherElement)
 								{
-									otherElement = testOtherElement;
-									break;
+									seenElement = true;
+								}
+								else
+								{
+									oppositeElement = otherElement;
 								}
 							}
-							Debug.Assert(otherElement != null);
-							myDuplicateManager.OnDuplicateElementRemoved(
-								myDuplicateManager.OnDuplicateElementRemoved(existingCollection, element, afterTransaction),
-								otherElement,
-								afterTransaction);
-							if (!afterTransaction)
+							if (seenElement &&
+								oppositeElement != null)
 							{
-								EntryStateChange.OnEntryChange(element, this, elementName, existingCollection);
-							}
-							myDictionary[elementName] = otherElement;
-						}
-						else
-						{
-							ICollection newCollection = myDuplicateManager.OnDuplicateElementRemoved(existingCollection, element, afterTransaction);
-							if (newCollection != existingCollection)
-							{
+								myDuplicateManager.OnDuplicateElementRemoved(
+									myDuplicateManager.OnDuplicateElementRemoved(existingCollection, element, afterTransaction),
+									oppositeElement,
+									afterTransaction);
 								if (!afterTransaction)
 								{
 									EntryStateChange.OnEntryChange(element, this, elementName, existingCollection);
 								}
-								myDictionary[elementName] = newCollection;
+								myDictionary[elementName] = oppositeElement;
+								return true;
+							}
+						}
+						else
+						{
+							foreach (ModelElement testElement in existingCollection)
+							{
+								if (testElement == element)
+								{
+									ICollection newCollection = myDuplicateManager.OnDuplicateElementRemoved(existingCollection, element, afterTransaction);
+									if (newCollection != existingCollection)
+									{
+										if (!afterTransaction)
+										{
+											EntryStateChange.OnEntryChange(element, this, elementName, existingCollection);
+										}
+										myDictionary[elementName] = newCollection;
+									}
+									return true;
+								}
 							}
 						}
 					}
-					return true;
 				}
 			}
 			return false;

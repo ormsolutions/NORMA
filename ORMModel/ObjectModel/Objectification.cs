@@ -26,7 +26,7 @@ using System.Collections.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
-	public partial class Objectification
+	public partial class Objectification : IElementLinkRoleHasIndirectModelErrorOwner
 	{
 		#region Implied Objectification creation, removal, and pattern enforcement
 		#region FactTypeDerivationRule rule methods
@@ -1539,15 +1539,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			impliedFactType.ImpliedByObjectification = objectification;
 
 			// Attach the fact to the model or owner.
-			if (alternateFactTypeOwner != null)
+			Dictionary<object, object> contextInfo = partition.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+			bool flagDuplicateNames = !contextInfo.ContainsKey(duplicateNamesKey);
+			
+			try
 			{
-				((IHasAlternateOwner<FactType>)impliedFactType).AlternateOwner = alternateFactTypeOwner;
+				if (flagDuplicateNames)
+				{
+					contextInfo[duplicateNamesKey] = null;
+				}
+				if (alternateFactTypeOwner != null)
+				{
+					((IHasAlternateOwner<FactType>)impliedFactType).AlternateOwner = alternateFactTypeOwner;
+				}
+				else if (model != null)
+				{
+					impliedFactType.Model = model;
+				}
+				// Force the reading signatures to be created now instead of during
+				// normal rule processing so that the 'allow duplicate names' setting
+				// does not need to be applied during all transactions that trigger
+				// this change.
+				Reading.UpdateReadingSignatures(impliedFactType);
 			}
-			else if (model != null)
+			finally
 			{
-				impliedFactType.Model = model;
+				if (flagDuplicateNames)
+				{
+					contextInfo.Remove(duplicateNamesKey);
+				}
 			}
-
 			return impliedFactType;
 		}
 		/// <summary>
@@ -2801,5 +2823,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion Deserialization Fixup
+		#region IElementLinkRoleHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				// Show link fact type reading errors on the fact type.
+				// Directed here from IHasIndirectModelErrorOwner on FactType,
+				// which redirects link fact types to here.
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { Objectification.NestedFactTypeDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IElementLinkRoleHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerElementLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerElementLinkRoles();
+		}
+		#endregion // IElementLinkRoleHasIndirectModelErrorOwner Implementation
 	}
 }

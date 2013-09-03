@@ -6680,7 +6680,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
 		/// </summary>
-		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
 			// Creating a static readonly guid array is causing static field initialization
 			// ordering issues with the partial classes. Defer initialization.
@@ -8436,7 +8436,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
 		/// </summary>
-		protected Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
 		{
 			// Note that the roles are only indirect error owners when
 			// the PopulationMandatoryErrorCollection is not empty. However,

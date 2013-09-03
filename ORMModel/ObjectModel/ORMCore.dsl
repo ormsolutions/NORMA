@@ -1423,6 +1423,12 @@
 			</BaseClass>
 		</DomainClass>
 
+		<DomainClass Name="DuplicateReadingSignatureError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7495D7F0-16A5-403E-85D6-082CF1AD7DF9" DisplayName="Duplicate Readings" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="DuplicateNameError"/>
+			</BaseClass>
+		</DomainClass>
+
 		<DomainClass Name="PopulationUniquenessError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="BA0A8F9E-91E1-4D56-8A44-9F49432C63C5" DisplayName="Population Violates Uniqueness Constraint" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
@@ -1905,6 +1911,11 @@
 			</BaseClass>
 			<Properties>
 				<DomainProperty Name="Text" DefaultValue="" DisplayName="Text" Id="A6239359-0AC5-4934-B38A-011AA1F935A6" Description="The text of this reading. Includes ordered replacement fields corresponding to the parent ReadingOrder.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="Signature" DefaultValue="" DisplayName="Signature" IsElementName="true" Id="18252981-A5B1-4DB9-BA7A-C7F3DDBDF609" IsBrowsable="false">
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
@@ -2915,6 +2926,26 @@
 				<DomainRole Name="DuplicateNameError" PropertyName="FunctionCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DuplicateNameError" Id="7C4C1204-9BAC-4E3E-BABC-4D849F4CF30A">
 					<RolePlayer>
 						<DomainClassMoniker Name="FunctionDuplicateNameError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ReadingHasDuplicateSignatureError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E0F0BA86-0330-49F7-A931-A99F7ED79500">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="Reading" PropertyName="DuplicateSignatureError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="Reading" Id="B5033D2D-59EA-4E81-8B1D-73F423EB19D8">
+					<RolePlayer>
+						<DomainClassMoniker Name="Reading"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DuplicateSignatureError" PropertyName="ReadingCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DuplicateSignatureError" Id="2EF193A3-51E9-407A-A4E6-1491805BFD14">
+					<RolePlayer>
+						<DomainClassMoniker Name="DuplicateReadingSignatureError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

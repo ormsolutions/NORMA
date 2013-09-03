@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -359,8 +359,73 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 							// Handle an empty forward direction in the parse
 							string readingText = myParsedFactType.ReadingText;
+							if (Reading.ReplaceFields(readingText, "").Trim().Length == 0)
+							{
+								readingText = null;
+							}
 							string reverseReadingText = (newFactArity == 2) ? myParsedFactType.ReverseReadingText : null;
 							bool deleteReverseReading = false;
+							Reading matchedReading = (readingText != null && startingFactType == null) ?
+								FindExistingReading(model, readingText, objectTypes, false) :
+								null;
+							Reading matchedReverseReading = (reverseReadingText != null && startingFactType == null) ?
+								FindExistingReading(model, reverseReadingText, objectTypes, true) :
+								null;
+							if (matchedReading != null)
+							{
+								ReadingOrder matchedReadingOrder = matchedReading.ReadingOrder;
+								FactType matchedFactType = matchedReadingOrder.FactType;
+								if (matchedReverseReading != null)
+								{
+									if (matchedReverseReading.ReadingOrder.FactType == matchedFactType)
+									{
+										matchedReverseReading.Text = reverseReadingText;
+										reverseReadingText = null;
+									}
+									else
+									{
+										// If we matched two different fact types with the forward and reverse readings,
+										// then there is nothing we can do to fix this.
+										// Fall through as if we had no match and let duplication exceptions fire naturally.
+										matchedReading = matchedReverseReading = null;
+										matchedFactType = null;
+									}
+								}
+								if (matchedFactType != null)
+								{
+									matchedReading.Text = readingText;
+									tracker.Add(matchedFactType, true);
+									readingText = null;
+									// Add in the reverse reading text
+									if (reverseReadingText != null)
+									{
+										mySelectedRoleOrder = null;
+										mySelectedReadingOrder = matchedReadingOrder;
+										startingFactType = matchedFactType;
+									}
+								}
+							}
+							else if (matchedReverseReading != null)
+							{
+								// Update the reverse reading here
+								ReadingOrder matchedReadingOrder = matchedReverseReading.ReadingOrder;
+								FactType matchedFactType = matchedReadingOrder.FactType;
+								tracker.Add(matchedFactType, true);
+								matchedReverseReading.Text = reverseReadingText;
+								reverseReadingText = null;
+								if (readingText != null)
+								{
+									// Use the matched reading order roles in reverse for the forward reading
+									LinkedElementCollection<RoleBase> readingRoles = matchedReadingOrder.RoleCollection;
+									mySelectedReadingOrder = null;
+									RoleBase[] reversedRoles = new RoleBase[readingRoles.Count];
+									readingRoles.CopyTo(reversedRoles, 0);
+									Array.Reverse(reversedRoles);
+									mySelectedRoleOrder = reversedRoles;
+									mySelectedReadingOrder = null;
+									startingFactType = matchedFactType;
+								}
+							}
 							if (string.IsNullOrEmpty(readingText) &&
 								!(string.IsNullOrEmpty(reverseReadingText)))
 							{
@@ -369,6 +434,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								// order, ring fact types will not reverse correctly.
 								readingText = reverseReadingText;
 								reverseReadingText = null;
+								matchedReading = matchedReverseReading;
+								matchedReverseReading = null;
 								ReadingOrder selectedReadingOrder;
 								if (mySelectedRoleOrder == null &&
 									null != (selectedReadingOrder = mySelectedReadingOrder))
@@ -408,7 +475,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							// Add a FactType unless there is no information other than ObjectTypes
 							if (startingFactType != null ||
 								!string.IsNullOrEmpty(reverseReadingText) ||
-								Reading.ReplaceFields(readingText, "").Trim().Length != 0)
+								!string.IsNullOrEmpty(readingText))
 							{
 								RoleBase[] matchedRoles = new RoleBase[newFactArity];
 
@@ -687,14 +754,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 							}
 
+							// Attempt a layout even if there were no elements created.
+							// This will place shapes of preexisting elements on the diagram
+							tracker.BlockAllElements = false;
+							if (diagram != null && tracker.HasElements)
+							{
+								AutoLayout(diagram, layoutManager, tracker, rightOfShape);
+							}
+							tracker.BlockAllElements = true;
+
 							if (t.HasPendingChanges)
 							{
-								tracker.BlockAllElements = false;
-								if (diagram != null && tracker.HasElements)
-								{
-									AutoLayout(diagram, layoutManager, tracker, rightOfShape);
-								}
-								tracker.BlockAllElements = true;
 								t.Commit();
 							}
 						} // end transaction
@@ -720,6 +790,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			private static void AutoLayout(ORMDiagram diagram, LayoutManager layoutManager, IEnumerable<KeyValuePair<ModelElement, bool>> newlyCreatedElements, NodeShape rightOfShape)
 			{
+				bool placedElement = false;
 				// New stuff for autolayout
 				foreach (KeyValuePair<ModelElement, bool> keyPair in newlyCreatedElements)
 				{
@@ -731,6 +802,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					else if (keyPair.Value)
 					{
+						placedElement = true;
 						diagram.PlaceORMElementOnDiagram(
 							null,
 							modelElement,
@@ -746,9 +818,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							null);
 					}
 				}
-				layoutManager.Layout(false, rightOfShape, true, false);
+				if (placedElement)
+				{
+					layoutManager.Layout(false, rightOfShape, true, false);
+				}
 			}
-
 			private FactType ObjectificationCheck(FactType startingFact)
 			{
 				ObjectType nestingType = startingFact.NestingType;
@@ -764,6 +838,47 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 				return startingFact;
+			}
+			/// <summary>
+			/// Find a reading that has the same signature and role
+			/// players that match the given reading text and role players.
+			/// </summary>
+			/// <param name="dictionaryOwner">The owner of a <see cref="Reading"/> dictionary
+			/// keyed off of reading signatures.</param>
+			/// <param name="readingText">The reading format text.</param>
+			/// <param name="rolePlayers">Replacement role players.</param>
+			/// <param name="reverseReading">Set to use this as a reverse reading.</param>
+			/// <returns>An existing <see cref="FactType"/>, or <see langword="null"/>.</returns>
+			private static Reading FindExistingReading(INamedElementDictionaryOwner dictionaryOwner, string readingText, IList<ObjectType> rolePlayers, bool reverseReading)
+			{
+				INamedElementDictionary readingDictionary;
+				LocatedElement element;
+				if (null != dictionaryOwner &&
+					null != (readingDictionary = dictionaryOwner.FindNamedElementDictionary(typeof(Reading))) &&
+					!(element = readingDictionary.GetElement(Reading.GenerateReadingSignature(readingText, rolePlayers, reverseReading))).IsEmpty)
+				{
+					Reading reading = ((Reading)element.FirstElement);
+					LinkedElementCollection<RoleBase> roles;
+					ReadingOrder order;
+					int roleCount;
+					if (null != (order = reading.ReadingOrder) &&
+						(roleCount = (roles = order.RoleCollection).Count) == rolePlayers.Count)
+					{
+						int i = 0;
+						for (; i < roleCount; ++i)
+						{
+							if (rolePlayers[reverseReading ? (roleCount - i - 1) : i] != roles[i].Role.RolePlayer)
+							{
+								break;
+							}
+						}
+						if (i == roleCount)
+						{
+							return reading;
+						}
+					}
+				}
+				return null;
 			}
 		}
 	}

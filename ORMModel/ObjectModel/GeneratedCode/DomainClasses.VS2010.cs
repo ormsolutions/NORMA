@@ -16899,6 +16899,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass DuplicateReadingSignatureError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("7495d7f0-16a5-403e-85d6-082cf1ad7df9")]
+	public partial class DuplicateReadingSignatureError : DuplicateNameError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// DuplicateReadingSignatureError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7495d7f0, 0x16a5, 0x403e, 0x85, 0xd6, 0x08, 0x2c, 0xf1, 0xad, 0x7d, 0xf9);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DuplicateReadingSignatureError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DuplicateReadingSignatureError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ReadingCollection opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of ReadingCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.DuplicateSignatureError
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<Reading> ReadingCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<Reading>, Reading>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.DuplicateSignatureErrorDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass PopulationUniquenessError
 	/// </summary>
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PopulationUniquenessError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
@@ -21028,6 +21084,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
 	[global::System.CLSCompliant(true)]
+	[global::System.Diagnostics.DebuggerDisplay("{GetType().Name,nq} (Signature = {signaturePropertyStorage})")]
 	[DslModeling::DomainObjectId("7544854f-a4a7-4429-8859-f1d3b0e52b03")]
 	public partial class Reading : ORMModelElement
 	{
@@ -21140,6 +21197,96 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.textPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Signature domain property code
+		
+		/// <summary>
+		/// Signature domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid SignatureDomainPropertyId = new global::System.Guid(0x18252981, 0xa5b1, 0x4db9, 0xba, 0x7a, 0xc7, 0xf3, 0xdd, 0xbd, 0xf6, 0x09);
+		
+		/// <summary>
+		/// Storage for Signature
+		/// </summary>
+		private global::System.String signaturePropertyStorage = string.Empty;
+		
+		/// <summary>
+		/// Gets or sets the value of Signature domain property.
+		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.Signature
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Reading/Signature.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.Reading/Signature.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::ElementName]
+		[DslModeling::DomainObjectId("18252981-a5b1-4db9-ba7a-c7f3ddbdf609")]
+		public global::System.String Signature
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return signaturePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				SignaturePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Reading.Signature domain property.
+		/// </summary>
+		internal sealed partial class SignaturePropertyHandler : DslModeling::DomainPropertyValueHandler<Reading, global::System.String>
+		{
+			private SignaturePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Reading.Signature domain property value handler.
+			/// </summary>
+			public static readonly SignaturePropertyHandler Instance = new SignaturePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Reading.Signature domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return SignatureDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(Reading element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.signaturePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Reading element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.signaturePropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -21418,6 +21565,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		
+		#endregion
+		#region DuplicateSignatureError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DuplicateSignatureError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.Reading
+		/// </summary>
+		public virtual DuplicateReadingSignatureError DuplicateSignatureError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.ReadingDomainRoleId) as DuplicateReadingSignatureError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.ReadingDomainRoleId, value);
+			}
+		}
 		#endregion
 		#region ReadingOrder opposite domain role accessor
 		/// <summary>

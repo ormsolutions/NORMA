@@ -476,6 +476,88 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // ReadingOrderHasRoleDeletedRule
+		#region ReadingSignatureChangedRule
+		/// <summary>
+		/// ChangeRule: typeof(FactType)
+		/// </summary>
+		private static void ReadingSignatureChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == FactType.NameChangedDomainPropertyId)
+			{
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayUpdateReadingSignatures);
+			}
+		}
+		private static void DelayUpdateReadingSignatures(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				UpdateReadingSignatures((FactType)element);
+			}
+		}
+		private static Dictionary<string, object> mySignatureRenderingOptions;
+		private static IDictionary<string, object> SignatureRenderingOptions
+		{
+			get
+			{
+				Dictionary<string, object> options;
+				if (null == (options = mySignatureRenderingOptions))
+				{
+					options = new Dictionary<string, object>();
+					options[CoreVerbalizationOption.ObjectTypeNameDisplay] = ObjectTypeNameVerbalizationStyle.SeparateCombinedNames;
+					options[CoreVerbalizationOption.RemoveObjectTypeNameCharactersOnSeparate] = ".:_";
+					System.Threading.Interlocked.CompareExchange<Dictionary<string, object>>(ref mySignatureRenderingOptions, options, null);
+					options = mySignatureRenderingOptions;
+				}
+				return options;
+			}
+		}
+		/// <summary>
+		/// Update all reading signatures for readings owned by a given fact type.
+		/// </summary>
+		public static void UpdateReadingSignatures(FactType factType)
+		{
+			foreach (ReadingOrder order in factType.ReadingOrderCollection)
+			{
+				LinkedElementCollection<RoleBase> roles = order.RoleCollection;
+				int roleCount = roles.Count;
+				foreach (Reading reading in order.ReadingCollection)
+				{
+					reading.Signature = Reading.ReplaceFields(
+						VerbalizationHyphenBinder.DehyphenateReadingText(reading.Text),
+						delegate(int replaceIndex)
+						{
+							if (replaceIndex < roleCount)
+							{
+								ObjectType rolePlayer = roles[replaceIndex].Role.RolePlayer;
+								return rolePlayer != null ? VerbalizationHelper.NormalizeObjectTypeName(rolePlayer, SignatureRenderingOptions) : "";
+							}
+							return "";
+						});
+				}
+			}
+		}
+		/// <summary>
+		/// Create a reading signature from a reading text format string and a list
+		/// of role players.
+		/// </summary>
+		/// <param name="readingText">Reading format text.</param>
+		/// <param name="rolePlayers">A list of role players, with one role player per replacement field.</param>
+		/// <param name="reverseReading">Set if <paramref name="readingText"/> represents a reverse reading</param>
+		/// <returns>An expanded reading signature.</returns>
+		public static string GenerateReadingSignature(string readingText, IList<ObjectType> rolePlayers, bool reverseReading)
+		{
+			int rolePlayerCount = rolePlayers.Count;
+			return Reading.ReplaceFields(
+				VerbalizationHyphenBinder.DehyphenateReadingText(readingText),
+				delegate(int replaceIndex)
+				{
+					ObjectType rolePlayer;
+					return (replaceIndex < rolePlayerCount && null != (rolePlayer = rolePlayers[reverseReading ? (rolePlayerCount - replaceIndex - 1) : replaceIndex])) ?
+						VerbalizationHelper.NormalizeObjectTypeName(rolePlayer, SignatureRenderingOptions) :
+						"";
+				});
+		}
+		#endregion // ReadingSignatureChangedRule
 		#endregion // rule classes and helpers
 		#region IModelErrorOwner implementation
 		/// <summary>
@@ -506,6 +588,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (null != (userModificationRequired = RequiresUserModificationError))
 				{
 					yield return new ModelErrorUsage(userModificationRequired, ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary);
+				}
+				DuplicateReadingSignatureError duplicateSignature;
+				if (null != (duplicateSignature = DuplicateSignatureError))
+				{
+					yield return new ModelErrorUsage(duplicateSignature, ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary);
 				}
 			}
 			// Get errors off the base
@@ -1010,6 +1097,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // IXmlSerializable Implementation
+		#region Deserialization Fixup
+		/// <summary>
+		/// Return a deserialization fixup listener. The listener
+		/// populates the initial values for the <see cref="Reading.Signature"/> property.
+		/// </summary>
+		public static IDeserializationFixupListener SignatureFixupListener
+		{
+			get
+			{
+				return new ReadingSignatureFixupListener();
+			}
+		}
+		/// <summary>
+		/// Fixup listener implementation. Properly initializes the Reading.Signature property
+		/// </summary>
+		private sealed class ReadingSignatureFixupListener : DeserializationFixupListener<FactType>
+		{
+			/// <summary>
+			/// SignatureFixupListener constructor
+			/// </summary>
+			public ReadingSignatureFixupListener()
+				: base((int)ORMDeserializationFixupPhase.GenerateElementNames)
+			{
+			}
+			/// <summary>
+			/// Process derivation elements
+			/// </summary>
+			/// <param name="element">A <see cref="FactTypeDerivationRule"/> element</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)
+			{
+				if (!element.IsDeleted)
+				{
+					UpdateReadingSignatures(element);
+				}
+			}
+		}
+		#endregion // Deserialization Fixup
 	}
 	#endregion // Reading class
 	#region TooFewReadingRolesError class

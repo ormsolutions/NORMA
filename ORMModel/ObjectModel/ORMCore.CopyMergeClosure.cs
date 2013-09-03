@@ -294,6 +294,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddIgnoredProperty(ORMModel.NoteTextDomainPropertyId);
 			closureManager.AddIgnoredProperty(Reading.IsPrimaryForFactTypeDomainPropertyId);
 			closureManager.AddIgnoredProperty(Reading.IsPrimaryForReadingOrderDomainPropertyId);
+			closureManager.AddIgnoredProperty(Reading.SignatureDomainPropertyId);
 			closureManager.AddIgnoredProperty(ReadingOrder.ReadingTextDomainPropertyId);
 			closureManager.AddIgnoredProperty(Role.IsMandatoryDomainPropertyId);
 			closureManager.AddIgnoredProperty(Role.MandatoryConstraintModalityDomainPropertyId);

@@ -60,7 +60,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
+	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
 		#region Public token values
 		/// <summary>
@@ -718,12 +718,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryChild implementation
 		#region INamedElementDictionaryRemoteParent implementation
-		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { FactTypeHasRole.FactTypeDomainRoleId };
+		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { FactTypeHasRole.FactTypeDomainRoleId, FactTypeHasReadingOrder.FactTypeDomainRoleId };
 		/// <summary>
 		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
-		/// this as a remote parent for the 'ModelHasConstraint' naming set.
+		/// this as a remote parent for the 'ModelHasConstraint' naming set and the duplicate reading set of names.
 		/// </summary>
-		/// <returns>Guid for the FactTypeHasInternalConstraint.FactType role</returns>
+		/// <returns>Guid for the FactTypeHasRole.FactType and the FactTypeHasReadingOrder.FactType role</returns>
 		protected static Guid[] GetNamedElementDictionaryLinkRoles()
 		{
 			return myRemoteNamedElementDictionaryRoles;
@@ -811,12 +811,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
+			LinkedElementCollection<RoleBase> roles = null;
 			if (filter == (ModelErrorUses)(-1))
 			{
 				// Show the fact type as an owner of the role errors as well
 				// so the fact can be accurately named in the error text. However,
 				// we do not validate this error on the fact type, it is done on the role.
-				foreach (RoleBase roleBase in RoleCollection)
+				foreach (RoleBase roleBase in (roles = RoleCollection))
 				{
 					Role role = roleBase as Role;
 					if (role != null)
@@ -857,14 +858,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// If we're objectified, list primary errors from the objectifying type
 				// here as well. Note that we should verbalize anything we list in our
 				// validation errors
-				ObjectType nestingType = NestingType;
-				if (nestingType != null)
+				Objectification objectification;
+				if (null != (objectification = Objectification))
 				{
 					// Always ask for 'DisplayPrimary', even if we're verbalizing
 					// None of these should list as blocking verbalization here, even if they're blocking on the nesting
-					foreach (ModelError nestingError in (nestingType as IModelErrorOwner).GetErrorCollection(ModelErrorUses.DisplayPrimary))
+					foreach (ModelError nestingError in (objectification.NestingType as IModelErrorOwner).GetErrorCollection(ModelErrorUses.DisplayPrimary))
 					{
 						yield return new ModelErrorUsage(nestingError, ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary);
+					}
+					foreach (FactType linkFactType in objectification.ImpliedFactTypeCollection)
+					{
+						foreach (ModelError nestingError in (linkFactType as IModelErrorOwner).GetErrorCollection(ModelErrorUses.DisplayPrimary))
+						{
+							yield return new ModelErrorUsage(nestingError, ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary);
+						}
 					}
 				}
 			}
@@ -931,6 +939,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements <see cref="IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles"/>
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				// Show link fact type reading errors on the owning fact type.
+				// This passes onto the Objectification class, which maps towards
+				// the fact type.
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] {
+					ObjectificationImpliesFactType.ImpliedFactTypeDomainRoleId };
+				// Note that this method is hidden by SubQuery.GetIndirectModelErrorOwnerLinkRoles
+				// because a subquery is never an implied fact type. Check other owner list
+				// if this one changes.
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region IModelErrorDisplayContext Implementation
 		/// <summary>
 		/// Implements <see cref="IModelErrorDisplayContext.ErrorDisplayContext"/>
@@ -1543,8 +1579,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					for (int j = 0; j < readingsCount; ++j)
 					{
 						Reading reading = readings[j];
-						if (!ModelError.HasErrors(reading, ModelErrorUses.DisplayPrimary))
+						if (reading.TooFewRolesError == null && reading.TooManyRolesError == null)
 						{
+							// Don't block this for all errors. Just filter out readings with
+							// structural errors. Anything else (duplicate signature, user
+							// modification required, etc.) should not affect the default naming.
 							return reading;
 						}
 					}
@@ -1681,8 +1720,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						for (int j = 0; j < readingsCount; ++j)
 						{
 							Reading reading = readings[j];
-							if (!ModelError.HasErrors(reading, ModelErrorUses.DisplayPrimary))
+							if (reading.TooFewRolesError == null && reading.TooManyRolesError == null)
 							{
+								// Don't block this for all errors. Just filter out readings with
+								// structural errors. Anything else (duplicate signature, user
+								// modification required, etc.) should not affect the default naming.
 								roles = order.RoleCollection;
 								formatText = reading.Text;
 								break;

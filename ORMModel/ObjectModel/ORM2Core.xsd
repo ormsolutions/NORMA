@@ -2573,6 +2573,7 @@
 			<xs:element name="RecognizedPhraseDuplicateNameError" type="RecognizedPhraseDuplicateNameErrorType"/>
 			<xs:element name="GroupDuplicateNameError" type="GroupDuplicateNameErrorType"/>
 			<xs:element name="FunctionDuplicateNameError" type="FunctionDuplicateNameErrorType"/>
+			<xs:element name="DuplicateReadingSignatureError" type="DuplicateReadingSignatureErrorType"/>
 			<xs:element name="GroupMembershipContradictionError" type="GroupMembershipContradictionErrorType"/>
 			<xs:element name="ExternalConstraintRoleSequenceArityMismatchError" type="ExternalConstraintRoleSequenceArityMismatchErrorType"/>
 			<xs:element name="FactTypeRequiresInternalUniquenessConstraintError" type="FactTypeRequiresInternalUniquenessConstraintErrorType"/>
@@ -2737,6 +2738,27 @@
 						<xs:complexType>
 							<xs:sequence minOccurs="2" maxOccurs="unbounded">
 								<xs:element name="Function" type="FunctionRef"/>
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="DuplicateReadingSignatureErrorType">
+		<xs:annotation>
+			<xs:documentation>Multiple readings have the same normalized signature, which is a normalized expanded form of the reading text and role player names.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="Readings">
+						<xs:annotation>
+							<xs:documentation>Readings with equivalent signatures.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence minOccurs="2" maxOccurs="unbounded">
+								<xs:element name="Reading" type="ReadingRef"/>
 							</xs:sequence>
 						</xs:complexType>
 					</xs:element>

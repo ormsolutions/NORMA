@@ -383,6 +383,7 @@
 			<cmc:IgnoredProperty class="SetConstraint" property="DefinitionText"/>
 			<cmc:IgnoredProperty class="Reading" property="IsPrimaryForReadingOrder"/>
 			<cmc:IgnoredProperty class="Reading" property="IsPrimaryForFactType"/>
+			<cmc:IgnoredProperty class="Reading" property="Signature"/>
 			<cmc:IgnoredProperty class="ReadingOrder" property="ReadingText"/>
 			<cmc:IgnoredProperty class="ValueConstraint" property="DefinitionText"/>
 			<cmc:IgnoredProperty class="ValueConstraint" property="NoteText"/>

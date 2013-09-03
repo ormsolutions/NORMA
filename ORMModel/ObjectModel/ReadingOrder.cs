@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -26,7 +27,7 @@ using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
-	public partial class ReadingOrder : IRedirectVerbalization, IHasIndirectModelErrorOwner
+	public partial class ReadingOrder : IRedirectVerbalization, IHasIndirectModelErrorOwner, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent
 	{
 		#region Reading facade method
 		/// <summary>
@@ -413,5 +414,76 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region INamedElementDictionaryParent implementation
+		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
+		{
+			return GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryParent.GetCounterpartRoleDictionary
+		/// </summary>
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		/// <returns>Model-owned dictionary for duplicate readings</returns>
+		protected INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
+		{
+			INamedElementDictionary dictionary = null;
+			if (parentDomainRoleId == ReadingOrderHasReading.ReadingOrderDomainRoleId)
+			{
+				FactType factType;
+				if (null != (factType = FactType))
+				{
+					// If the object type has an alternate owner with a dictionary, then see if that
+					// owner has a dictionary that supports this relationship. Otherwise just use
+					// dictionary from the model.
+					IHasAlternateOwner<FactType> toAlternateOwner;
+					INamedElementDictionaryParent dictionaryParent;
+					ORMModel model;
+					if ((null == (toAlternateOwner = factType as IHasAlternateOwner<FactType>) ||
+						null == (dictionaryParent = toAlternateOwner.AlternateOwner as INamedElementDictionaryParent) ||
+						null == (dictionary = dictionaryParent.GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId))) &&
+						null != (model = factType.Model))
+					{
+						dictionary = ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
+					}
+				}
+			}
+			return dictionary;
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey
+		/// </summary>
+		protected object GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
+		{
+			object retVal = null;
+			Dictionary<object, object> contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+			if (!contextInfo.ContainsKey(NamedElementDictionary.DefaultAllowDuplicateNamesKey) &&
+				contextInfo.ContainsKey(ORMModel.AllowDuplicateNamesKey))
+			{
+				// Use their value so they don't have to look up ours again
+				retVal = NamedElementDictionary.AllowDuplicateNamesKey;
+			}
+			return retVal;
+		}
+		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
+		{
+			return GetAllowDuplicateNamesContextKey(parentDomainRoleId, childDomainRoleId);
+		}
+		#endregion // INamedElementDictionaryParent implementation
+		#region INamedElementDictionaryRemoteParent implementation
+		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { ReadingOrderHasReading.ReadingOrderDomainRoleId };
+		/// <summary>
+		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles.
+		/// </summary>
+		/// <returns>Guid for the ReadingOrderHasReading.ReadingOrder role</returns>
+		protected static Guid[] GetNamedElementDictionaryLinkRoles()
+		{
+			return myRemoteNamedElementDictionaryRoles;
+		}
+		Guid[] INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles()
+		{
+			return GetNamedElementDictionaryLinkRoles();
+		}
+		#endregion // INamedElementDictionaryRemoteParent implementation
 	}
 }

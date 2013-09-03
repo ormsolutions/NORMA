@@ -59,6 +59,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		AddImplicitElements = StandardFixupPhase.AddImplicitElements,
 		/// <summary>
+		/// If an element name is both derived and validated, then it needs
+		/// to be in place before names are validated.
+		/// </summary>
+		GenerateElementNames = StandardFixupPhase.LastModelElementPhase + 90,
+		/// <summary>
 		/// Element names should be tracked and validated after
 		/// all intrinsic, implicitstored, and implicit elements are in place.
 		/// </summary>
@@ -516,6 +521,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private RecognizedPhraseNamedElementDictionary myRecognizedPhrasesDictionary;
 		[NonSerialized]
 		private NamedElementDictionary myFunctionsDictionary;
+		[NonSerialized]
+		private NamedElementDictionary myReadingSignaturesDictionary;
 		/// <summary>
 		/// A <see cref="INamedElementDictionary"/> for retrieving <see cref="ObjectType"/> instances by name.
 		/// </summary>
@@ -573,6 +580,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (retVal == null)
 				{
 					retVal = myFunctionsDictionary = new FunctionNamedElementDictionary();
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// A <see cref="INamedElementDictionary"/> for retrieving <see cref="Reading"/> instances in the model by normalized reading name.
+		/// Reading lookup is case insensitive.
+		/// </summary>
+		public INamedElementDictionary ReadingSignaturesDictionary
+		{
+			get
+			{
+				INamedElementDictionary retVal = myReadingSignaturesDictionary;
+				if (retVal == null)
+				{
+					retVal = myReadingSignaturesDictionary = new ReadingSignatureNamedElementDictionary();
 				}
 				return retVal;
 			}
@@ -673,6 +696,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return FunctionsDictionary;
 			}
+			else if (parentDomainRoleId == ReadingOrderHasReading.ReadingOrderDomainRoleId)
+			{
+				return ReadingSignaturesDictionary;
+			}
 			return null;
 		}
 		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
@@ -768,6 +795,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!error.IsDeleted)
 			{
 				if (error.FunctionCollection.Count < 2)
+				{
+					error.Delete();
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ReadingHasDuplicateSignatureError)
+		/// </summary>
+		private static void DuplicateReadingSignatureDeletedRule(ElementDeletedEventArgs e)
+		{
+			ReadingHasDuplicateSignatureError link = e.ModelElement as ReadingHasDuplicateSignatureError;
+			DuplicateReadingSignatureError error = link.DuplicateSignatureError;
+			if (!error.IsDeleted)
+			{
+				if (error.ReadingCollection.Count < 2)
 				{
 					error.Delete();
 				}
@@ -1613,6 +1655,149 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Base overrides
 		}
 		#endregion // FunctionNamedElementDictionary class
+		#region ReadingSignatureNamedElementDictionary class
+		/// <summary>
+		/// Dictionary used to lookup readings by reading signature and to generate
+		/// model validation errors and exceptions for duplicate reading signatures.
+		/// </summary>
+		protected class ReadingSignatureNamedElementDictionary : NamedElementDictionary
+		{
+			private sealed class DuplicateNameManager : IDuplicateNameCollectionManager
+			{
+				#region TrackingList class
+				private sealed class TrackingList : List<Reading>
+				{
+					private readonly LinkedElementCollection<Reading> myNativeCollection;
+					public TrackingList(DuplicateReadingSignatureError error)
+					{
+						myNativeCollection = error.ReadingCollection;
+					}
+					public LinkedElementCollection<Reading> NativeCollection
+					{
+						get
+						{
+							return myNativeCollection;
+						}
+					}
+				}
+				#endregion // TrackingList class
+				#region IDuplicateNameCollectionManager Implementation
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ModelElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
+				{
+					Reading reading = (Reading)element;
+					if (afterTransaction)
+					{
+						if (elementCollection == null)
+						{
+							DuplicateReadingSignatureError error = reading.DuplicateSignatureError;
+							if (error != null)
+							{
+								// We're not in a transaction, but the object model will be in
+								// the state we need it because we put it there during a transaction.
+								// Just return the collection from the current state of the object model.
+								TrackingList trackingList = new TrackingList(error);
+								trackingList.Add(reading);
+								elementCollection = trackingList;
+							}
+						}
+						else
+						{
+							((TrackingList)elementCollection).Add(reading);
+						}
+						return elementCollection;
+					}
+					else
+					{
+						// Modify the object model to add the error.
+						if (elementCollection == null)
+						{
+							DuplicateReadingSignatureError error = null;
+							if (notifyAdded != null)
+							{
+								// During deserialization fixup, an error
+								// may already be attached to the object. Track
+								// it down and verify that it is a legitimate error.
+								// If it is not legitimate, then generate a new one.
+								error = reading.DuplicateSignatureError;
+								if (error != null && !error.ValidateDuplicates(reading))
+								{
+									error = null;
+								}
+							}
+							if (error == null)
+							{
+								error = new DuplicateReadingSignatureError(reading.Partition);
+								reading.DuplicateSignatureError = error;
+								error.Model = reading.ReadingOrder.FactType.Model;
+								error.GenerateErrorText();
+								if (notifyAdded != null)
+								{
+									notifyAdded.ElementAdded(error, true);
+								}
+							}
+							TrackingList trackingList = new TrackingList(error);
+							trackingList.Add(reading);
+							elementCollection = trackingList;
+						}
+						else
+						{
+							TrackingList trackingList = (TrackingList)elementCollection;
+							trackingList.Add(reading);
+							// During deserialization fixup (notifyAdded != null), we need
+							// to make sure that the element is not already in the collection
+							LinkedElementCollection<Reading> typedCollection = trackingList.NativeCollection;
+							if (notifyAdded == null || !typedCollection.Contains(reading))
+							{
+								typedCollection.Add(reading);
+							}
+						}
+						return elementCollection;
+					}
+				}
+				ICollection IDuplicateNameCollectionManager.OnDuplicateElementRemoved(ICollection elementCollection, ModelElement element, bool afterTransaction)
+				{
+					TrackingList trackingList = (TrackingList)elementCollection;
+					Reading reading = (Reading)element;
+					trackingList.Remove(reading);
+					if (!afterTransaction)
+					{
+						// Just clear the error. A rule is used to remove the error
+						// object itself when there is no longer a duplicate.
+						reading.DuplicateSignatureError = null;
+					}
+					return elementCollection;
+				}
+				#endregion // IDuplicateNameCollectionManager Implementation
+			}
+			#region Constructors
+			/// <summary>
+			/// Default constructor for ReadingSignatureNamedElementDictionary
+			/// </summary>
+			public ReadingSignatureNamedElementDictionary()
+				: base(new DuplicateNameManager(), StringComparer.OrdinalIgnoreCase)
+			{
+			}
+			#endregion // Constructors
+			#region Base overrides
+			/// <summary>
+			/// Raise an exception with text specific to a name in a model
+			/// </summary>
+			/// <param name="element">Element we're attempting to name</param>
+			/// <param name="requestedName">The in-use requested name</param>
+			protected override void ThrowDuplicateNameException(ModelElement element, string requestedName)
+			{
+				throw new InvalidOperationException(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelExceptionReadingDuplicateSignature, requestedName));
+			}
+			/// <summary>
+			/// Readings are not given default names.
+			/// </summary>
+			protected override string GetRootNamePattern(ModelElement element)
+			{
+				return null;
+			}
+			#endregion // Base overrides
+		}
+		#endregion // ReadingSignatureNamedElementDictionary class
 		#endregion // Relationship-specific NamedElementDictionary implementations
 		#region INamedElementDictionaryOwner Implementation
 		/// <summary>
@@ -1637,6 +1822,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else if (typeof(RecognizedPhrase).IsAssignableFrom(childType))
 			{
 				return RecognizedPhrasesDictionary;
+			}
+			else if (typeof(Reading).IsAssignableFrom(childType))
+			{
+				return ReadingSignaturesDictionary;
 			}
 			return null;
 		}
@@ -1953,6 +2142,84 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
+	partial class FactTypeHasReadingOrder : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// </summary>
+		protected static INamedElementDictionaryParent ParentRolePlayer
+		{
+			get { return null; }
+		}
+		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// </summary>
+		protected static INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return null; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null
+		/// </summary>
+		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return ReadingOrder as INamedElementDictionaryRemoteParent; }
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
+	partial class ReadingOrderHasReading : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// </summary>
+		protected INamedElementDictionaryParent ParentRolePlayer
+		{
+			get { return ReadingOrder; }
+		}
+		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// </summary>
+		protected INamedElementDictionaryChild ChildRolePlayer
+		{
+			get { return Reading; }
+		}
+		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		{
+			get { return RemoteParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
+		/// Returns null
+		/// </summary>
+		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		{
+			get { return null; }
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
 	partial class ModelContainsRecognizedPhrase : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
@@ -2128,6 +2395,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			parentDomainRoleId = ModelDefinesFunction.ModelDomainRoleId;
 			childDomainRoleId = ModelDefinesFunction.FunctionDomainRoleId;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
+	partial class Reading : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
+		}
+		/// <summary>
+		/// Implementation of INamedElementDictionaryChild.GetRoleGuids.
+		/// </summary>
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			parentDomainRoleId = ReadingOrderHasReading.ReadingOrderDomainRoleId;
+			childDomainRoleId = ReadingOrderHasReading.ReadingDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}
@@ -2706,6 +2992,63 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (linkRoles == null)
 			{
 				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { FunctionHasDuplicateNameError.DuplicateNameErrorDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
+	}
+	[ModelErrorDisplayFilter(typeof(FactTypeDefinitionErrorCategory))]
+	partial class DuplicateReadingSignatureError : DuplicateNameError, IHasIndirectModelErrorOwner
+	{
+		#region Base overrides
+		/// <summary>
+		/// Get the duplicate elements represented by this DuplicateNameError
+		/// </summary>
+		/// <returns><see cref="Reading"/> elements.</returns>
+		protected override IList<ModelElement> DuplicateElements
+		{
+			get
+			{
+				return ReadingCollection.ToArray();
+			}
+		}
+		/// <summary>
+		/// Provide an efficient name lookup
+		/// </summary>
+		protected override string GetElementName(ModelElement element)
+		{
+			return ((Reading)element).Signature;
+		}
+		/// <summary>
+		/// Get the text to display the duplicate error information. Replacement
+		/// field {0} is replaced by the model name, field {1} is replaced by the
+		/// element name.
+		/// </summary>
+		protected override string ErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorReadingDuplicateSignature;
+			}
+		}
+		#endregion // Base overrides
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { ReadingHasDuplicateSignatureError.DuplicateSignatureErrorDomainRoleId };
 			}
 			return linkRoles;
 		}

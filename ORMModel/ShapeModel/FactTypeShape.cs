@@ -4852,6 +4852,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			TooFewReadingRolesError tooFew;
 			TooManyReadingRolesError tooMany;
 			ReadingRequiresUserModificationError userModification;
+			DuplicateReadingSignatureError duplicateSignature;
 			FactTypeRequiresReadingError noReading;
 			FactTypeRequiresInternalUniquenessConstraintError noUniqueness;
 			NMinusOneError nMinusOne;
@@ -4861,6 +4862,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ImpliedInternalUniquenessConstraintError implConstraint;
 			Reading reading = null;
 			UniquenessConstraint activateConstraint = null;
+			Role activateRole = null;
 			ValueConstraintError valueConstraintError;
 			RoleValueConstraint errorValueConstraint = null;
 			bool addActiveRoles = false;
@@ -4892,10 +4894,69 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				reading = tooMany.Reading;
 			}
+			else if (null != (duplicateSignature = error as DuplicateReadingSignatureError))
+			{
+				factType = AssociatedFactType;
+				LinkedElementCollection<Reading> readings = duplicateSignature.ReadingCollection;
+				foreach (Reading testReading in readings)
+				{
+					if (testReading.ReadingOrder.FactType == factType)
+					{
+						reading = testReading;
+						break;
+					}
+				}
+				if (reading == null)
+				{
+					Objectification objectification;
+					if (null != (objectification = factType.Objectification))
+					{
+						foreach (Reading testReading in readings)
+						{
+							FactType linkFactType;
+							if ((linkFactType = testReading.ReadingOrder.FactType).ImpliedByObjectification == objectification)
+							{
+								foreach (RoleBase role in linkFactType.RoleCollection)
+								{
+									RoleProxy proxy;
+									if (null != (proxy = role as RoleProxy))
+									{
+										activateRole = proxy.Role;
+										break;
+									}
+								}
+								reading = testReading;
+								break;
+							}
+						}
+					}
+					if (reading == null)
+					{
+						// Defensive, shouldn't happen.
+						reading = readings[0];
+					}
+				}
+			}
 			else if (null != (noReading = error as FactTypeRequiresReadingError))
 			{
 				factType = noReading.FactType;
 				Debug.Assert(factType != null);
+				FactType subjectFactType;
+				if (null != (subjectFactType = AssociatedFactType) &&
+					factType != subjectFactType &&
+					factType.ImpliedByObjectification == subjectFactType.Objectification)
+				{
+					foreach (RoleBase role in factType.RoleCollection)
+					{
+						RoleProxy proxy;
+						if (null != (proxy = role as RoleProxy))
+						{
+							Diagram.ActiveDiagramView.Selection.Set(GetDiagramItem(proxy.Role));
+							break;
+						}
+					}
+				}
+
 				ORMReadingEditorToolWindow newWindow = ORMDesignerPackage.ReadingEditorWindow;
 				newWindow.Show();
 				newWindow.ActivateReading(factType);
@@ -4903,6 +4964,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			else if (null != (userModification = error as ReadingRequiresUserModificationError))
 			{
 				reading = userModification.Reading;
+				FactType subjectFactType;
+				if (null != (subjectFactType = AssociatedFactType) &&
+					(factType = reading.ReadingOrder.FactType) != subjectFactType &&
+					factType.ImpliedByObjectification == subjectFactType.Objectification)
+				{
+					foreach (RoleBase role in factType.RoleCollection)
+					{
+						RoleProxy proxy;
+						if (null != (proxy = role as RoleProxy))
+						{
+							activateRole = proxy.Role;
+							break;
+						}
+					}
+				}
 			}
 			else if (null != (noUniqueness = error as FactTypeRequiresInternalUniquenessConstraintError))
 			{
@@ -4933,7 +5009,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			else if (null != (requireRolePlayer = error as RolePlayerRequiredError))
 			{
 				// The role will be selected by the IProxyDisplayProvider implementation
-				Role activateRole = requireRolePlayer.Role;
+				activateRole = requireRolePlayer.Role;
 				if (retVal = (activateRole.FactType == AssociatedFactType)) // Subquery roles can get here through embedding chain, ignore to force to model browser
 				{
 					ORMDiagram ormDiagram = Diagram as ORMDiagram;
@@ -5010,6 +5086,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 			if (reading != null)
 			{
+				if (activateRole != null)
+				{
+					Diagram.ActiveDiagramView.Selection.Set(GetDiagramItem(activateRole));
+				}
 				// Open the reading editor window and activate the reading  
 				ORMReadingEditorToolWindow window = ORMDesignerPackage.ReadingEditorWindow;
 				window.Show();
@@ -5060,6 +5140,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Role role;
 			UniquenessConstraint uniquenessConstraint;
 			MandatoryConstraint mandatoryConstraint;
+			Reading reading;
 			FactType factType;
 			if (null != (role = element as Role))
 			{
@@ -5076,6 +5157,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					constraintFactTypes[0] == AssociatedFactType)
 				{
 					return GetDiagramItem(uniquenessConstraint);
+				}
+			}
+			else if (null != (reading = element as Reading))
+			{
+				ReadingOrder order;
+				if (null != (order = reading.ReadingOrder) &&
+					null != (factType = order.FactType))
+				{
+					return ElementDisplayedAs(factType, forError);
 				}
 			}
 			else if (null != (mandatoryConstraint = element as MandatoryConstraint))

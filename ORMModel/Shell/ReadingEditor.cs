@@ -1712,11 +1712,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 						if (factType == FactType)
 						{
-							return new LocateObjectData(OrderBranchRow, 1, (int)TrackingObjectAction.NextLevel);
+							return new LocateObjectData(OrderBranchRow, 0, (int)TrackingObjectAction.NextLevel);
 						}
 						else if (factType == SecondaryFactType)
 						{
-							return new LocateObjectData(ImpliedBranchRow, 1, (int)TrackingObjectAction.NextLevel);
+							return new LocateObjectData(ImpliedBranchRow, 0, (int)TrackingObjectAction.NextLevel);
 						}
 						break;
 				}

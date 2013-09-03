@@ -2611,7 +2611,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType/ObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType/ObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType/ObjectType.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType/ObjectType.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("f827bd9b-9eda-41c6-bae9-acfd8a19ba08")]
 		public virtual ObjectType ObjectType
 		{
@@ -6699,6 +6699,292 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.FunctionHasDuplicateNameError link in links )
 			{
 				if ( target.Equals(link.DuplicateNameError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship ReadingHasDuplicateSignatureError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("e0f0ba86-0330-49f7-a931-a99f7ed79500")]
+	public partial class ReadingHasDuplicateSignatureError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ReadingHasDuplicateSignatureError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe0f0ba86, 0x0330, 0x49f7, 0xa9, 0x31, 0xa9, 0x9f, 0x7e, 0xd7, 0x95, 0x00);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ReadingHasDuplicateSignatureError link in the same Partition as the given Reading
+		/// </summary>
+		/// <param name="source">Reading to use as the source of the relationship.</param>
+		/// <param name="target">DuplicateReadingSignatureError to use as the target of the relationship.</param>
+		public ReadingHasDuplicateSignatureError(Reading source, DuplicateReadingSignatureError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ReadingHasDuplicateSignatureError.ReadingDomainRoleId, source), new DslModeling::RoleAssignment(ReadingHasDuplicateSignatureError.DuplicateSignatureErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ReadingHasDuplicateSignatureError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ReadingHasDuplicateSignatureError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ReadingHasDuplicateSignatureError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ReadingHasDuplicateSignatureError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Reading domain role code
+		
+		/// <summary>
+		/// Reading domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ReadingDomainRoleId = new global::System.Guid(0xb5033d2d, 0x59ea, 0x4e81, 0x8b, 0x1d, 0x73, 0xf4, 0x23, 0xeb, 0x19, 0xd8);
+		
+		/// <summary>
+		/// DomainRole Reading
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.Reading
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/Reading.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/Reading.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateSignatureError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/Reading.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("b5033d2d-59ea-4e81-8b1d-73f423eb19d8")]
+		public virtual Reading Reading
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Reading)DslModeling::DomainRoleInfo.GetRolePlayer(this, ReadingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ReadingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ReadingCollection of a DuplicateReadingSignatureError
+		/// <summary>
+		/// Gets a list of ReadingCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<Reading> GetReadingCollection(DuplicateReadingSignatureError element)
+		{
+			return GetRoleCollection<DslModeling::LinkedElementCollection<Reading>, Reading>(element, DuplicateSignatureErrorDomainRoleId);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing Reading domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.Reading;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.Reading = (Reading)value;
+			}
+		}
+		
+		#endregion
+		#region DuplicateSignatureError domain role code
+		
+		/// <summary>
+		/// DuplicateSignatureError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DuplicateSignatureErrorDomainRoleId = new global::System.Guid(0x2ef193a3, 0x51e9, 0x407a, 0xa4, 0xe6, 0x14, 0x91, 0x80, 0x5b, 0xfd, 0x14);
+		
+		/// <summary>
+		/// DomainRole DuplicateSignatureError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.DuplicateSignatureError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/DuplicateSignatureError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/DuplicateSignatureError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReadingCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError/DuplicateSignatureError.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("2ef193a3-51e9-407a-a4e6-1491805bfd14")]
+		public virtual DuplicateReadingSignatureError DuplicateSignatureError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DuplicateReadingSignatureError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DuplicateSignatureErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DuplicateSignatureErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DuplicateSignatureError of a Reading
+		/// <summary>
+		/// Gets DuplicateSignatureError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DuplicateReadingSignatureError GetDuplicateSignatureError(Reading element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ReadingDomainRoleId) as DuplicateReadingSignatureError;
+		}
+		
+		/// <summary>
+		/// Sets DuplicateSignatureError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDuplicateSignatureError(Reading element, DuplicateReadingSignatureError newDuplicateSignatureError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReadingDomainRoleId, newDuplicateSignatureError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateSignatureError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateSignatureError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateSignatureError = (DuplicateReadingSignatureError)value;
+			}
+		}
+		
+		#endregion
+		#region Reading link accessor
+		/// <summary>
+		/// Get the ReadingHasDuplicateSignatureError link to a Reading.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError GetLinkToDuplicateSignatureError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Reading readingInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError>(readingInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.ReadingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Reading not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DuplicateSignatureError link accessor
+		/// <summary>
+		/// Get the list of ReadingHasDuplicateSignatureError links to a DuplicateReadingSignatureError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError> GetLinksToReadingCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError duplicateSignatureErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError>(duplicateSignatureErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.DuplicateSignatureErrorDomainRoleId);
+		}
+		#endregion
+		#region ReadingHasDuplicateSignatureError instance accessors
+		
+		/// <summary>
+		/// Get any ReadingHasDuplicateSignatureError links between a given Reading and a DuplicateReadingSignatureError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Reading source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.ReadingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError link in links )
+			{
+				if ( target.Equals(link.DuplicateSignatureError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ReadingHasDuplicateSignatureError link between a given Readingand a DuplicateReadingSignatureError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Reading source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError.ReadingDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingHasDuplicateSignatureError link in links )
+			{
+				if ( target.Equals(link.DuplicateSignatureError) )
 				{
 					return link;
 				}

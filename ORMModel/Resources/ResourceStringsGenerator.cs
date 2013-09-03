@@ -972,6 +972,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.ObjectificationInstance.IncompleteRolePlayers");
 			}
 		}
+		/// <summary>Exception message when a reading signature change in the editor attempts to introduce a duplicate signature into the model.</summary>
+		public static string ModelExceptionReadingDuplicateSignature
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.Reading.DuplicateSignature.Text");
+			}
+		}
 		/// <summary>Exception message output when an attempt is made to set the IsPrimaryForReadingOrder or IsPrimaryForFactType properties of a Reading to false.</summary>
 		public static string ModelExceptionReadingIsPrimaryToFalse
 		{
@@ -2544,6 +2552,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModePicker.FormatString");
+			}
+		}
+		/// <summary>Model validation error text used when multiple readings have the same normalized reading signature.Field 0 is the model name, field 1 is the expanded reading signature.</summary>
+		public static string ModelErrorReadingDuplicateSignature
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.DuplicateSignature.Text");
 			}
 		}
 		/// <summary>Text displayed in the text of the TooFewRolesError. {0}=fact type display context,{1}=reading text</summary>

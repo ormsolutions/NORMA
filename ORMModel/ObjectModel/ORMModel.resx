@@ -452,6 +452,10 @@
 		<value>{0} has a preferred identification scheme with no corresponding mandatory roles. One or more near roles in the facts attached to the preferred identifier must be mandatory.</value>
 		<comment>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=object type display context</comment>
 	</data>
+	<data name="ModelError.Reading.DuplicateSignature.Text" xml:space="preserve">
+		<value>Model '{0}' contains multiple readings with an expanded reading signature of '{1}'. Each reading must be unique in the model.</value>
+		<comment>Model validation error text used when multiple readings have the same normalized reading signature.Field 0 is the model name, field 1 is the expanded reading signature.</comment>
+	</data>
 	<data name="ModelError.Reading.RequiresUserModification.Message" xml:space="preserve">
 		<value>{0} requires user modification of the reading text '{1}'.</value>
 		<comment>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact type display context,{1}=reading text</comment>
@@ -727,6 +731,10 @@
 	<data name="ModelException.ObjectTypeInstance.EnforceFixedRolePlayers" xml:space="preserve">
 		<value>The role players of an ObjectTypeHasObjectTypeInstance relationship cannot be changed.</value>
 		<comment>Exception message when an attempt is made to change the role players of an ObjectTypeHasObjectTypeInstance relationship.</comment>
+	</data>
+	<data name="ModelException.Reading.DuplicateSignature.Text" xml:space="preserve">
+		<value>The reading signatue '{0}' is already used in this model.</value>
+		<comment>Exception message when a reading signature change in the editor attempts to introduce a duplicate signature into the model.</comment>
 	</data>
 	<data name="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse" xml:space="preserve">
 		<value>The IsPrimaryForReadingOrder and IsPrimaryForFactType properties cannot be set to false, set these properties to true for the new primary reading and this will occur automatically</value>

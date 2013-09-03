@@ -922,10 +922,12 @@
 	</se:Element>
 	<se:Element Class="Reading" Override="true">
 		<se:Attribute ID="Text" Name="Data" WriteStyle="Element"/>
+		<se:Attribute ID="Signature" WriteStyle="NotWritten"/>
 		<se:Attribute ID="Language" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingHasTooManyRolesError" RoleName="TooManyRolesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingHasTooFewRolesError" RoleName="TooFewRolesError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ReadingHasReadingRequiresUserModificationError" RoleName="RequiresUserModificationError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ReadingHasDuplicateSignatureError" RoleName="DuplicateSignatureError" WriteStyle="NotWritten"/>
 	</se:Element>
 	<!--Role-->
 	<se:Element Class="Role" Override="true" SortChildElements="true">
@@ -1552,6 +1554,12 @@
 			<se:Link RelationshipName="FunctionHasDuplicateNameError" RoleName="Function"/>
 		</se:Container>
 		<se:Link RelationshipName="FunctionHasDuplicateNameError" RoleName="Function" Name="Function"/>
+	</se:Element>
+	<se:Element Class="DuplicateReadingSignatureError" Override="true">
+		<se:Container Name="Readings">
+			<se:Link RelationshipName="ReadingHasDuplicateSignatureError" RoleName="Reading"/>
+		</se:Container>
+		<se:Link RelationshipName="ReadingHasDuplicateSignatureError" RoleName="Reading" Name="Reading"/>
 	</se:Element>
 	<se:Element Class="EntityTypeRequiresReferenceSchemeError" Override="true">
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ObjectType" Name="EntityType"/>

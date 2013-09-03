@@ -2302,10 +2302,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (useProxy && !usedProxy)
 					{
 						// Second pass, we were unable to find a suitable shape for the first
-						usedProxy = true;
 						selectElement = proxyProvider.ElementDisplayedAs(element, modelError) as ModelElement;
 						if (selectElement != null)
 						{
+							usedProxy = true;
 							if (selectElement == element)
 							{
 								selectElement = null;

@@ -171,6 +171,7 @@
 	<ResourceString name="ModelExceptionObjectificationImpliedObjectificationNotAllowed" model="Model" resourceName="ModelException.Objectification.ImpliedObjectificationNotAllowed"/>
 	<ResourceString name="ModelExceptionObjectificationInstanceDirectModificationOfImpliedEntityTypeInstance" model="Model" resourceName="ModelException.ObjectificationInstance.DirectModificationOfImpliedEntityTypeInstance"/>
 	<ResourceString name="ModelExceptionObjectificationInstanceIncompleteRolePlayers" model="Model" resourceName="ModelException.ObjectificationInstance.IncompleteRolePlayers"/>
+	<ResourceString name="ModelExceptionReadingDuplicateSignature" model="Model" resourceName="ModelException.Reading.DuplicateSignature.Text"/>
 	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse"/>
 	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText"/>
 	<ResourceString name="ModelErrorCalculatedPathValueRequiresAggregationContext" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.Text"/>
@@ -369,6 +370,7 @@
 	<ResourceString name="ModelExceptionSupertypeMetaRoleExclusionMustBeSingleColumn" model="Model" resourceName="ModelException.SupertypeMetaRole.ExclusionMustBeSingleColumn"/>
 	<ResourceString name="ModelExceptionSupertypeMetaRoleUnsupportedConstraintType" model="Model" resourceName="ModelException.SupertypeMetaRole.UnsupportedConstraintType"/>
 	<ResourceString name="ModelReferenceModePickerFormatString" model="Model" resourceName="ModelReferenceModePicker.FormatString"/>
+	<ResourceString name="ModelErrorReadingDuplicateSignature" model="Model" resourceName="ModelError.Reading.DuplicateSignature.Text"/>
 	<ResourceString name="ModelErrorReadingTooFewRolesMessage" model="Model" resourceName="ModelError.Reading.TooFewRoles.Message"/>
 	<ResourceString name="ModelErrorReadingRequiresUserModificationMessage" model="Model" resourceName="ModelError.Reading.RequiresUserModification.Message"/>
 	<ResourceString name="ModelErrorReadingTooManyRolesMessage" model="Model" resourceName="ModelError.Reading.TooManyRoles.Message"/>

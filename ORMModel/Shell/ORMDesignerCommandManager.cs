@@ -1328,10 +1328,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									displayFilter = model.ModelErrorDisplayFilter;
 								}
+								Dictionary<ModelError, object> seenErrors = null;
 								foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 								{
 									if (displayFilter == null || displayFilter.ShouldDisplay(error))
 									{
+										if (seenErrors == null)
+										{
+											if (errorIndex != 0)
+											{
+												seenErrors = new Dictionary<ModelError, object>();
+												seenErrors[error] = null;
+											}
+										}
+										else if (seenErrors.ContainsKey(error))
+										{
+											continue;
+										}
+										else
+										{
+											seenErrors[error] = null;
+										}
 										if (errorIndex == 0)
 										{
 											errorText = error.ErrorText;
@@ -2673,10 +2690,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						displayFilter = model.ModelErrorDisplayFilter;
 					}
+					Dictionary<ModelError, object> seenErrors = null;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 					{
 						if (displayFilter == null || displayFilter.ShouldDisplay(error))
 						{
+							if (seenErrors == null)
+							{
+								if (errorIndex != 0)
+								{
+									seenErrors = new Dictionary<ModelError, object>();
+									seenErrors[error] = null;
+								}
+							}
+							else if (seenErrors.ContainsKey(error))
+							{
+								continue;
+							}
+							else
+							{
+								seenErrors[error] = null;
+							}
 							if (errorIndex == 0)
 							{
 								IORMToolTaskItem task;

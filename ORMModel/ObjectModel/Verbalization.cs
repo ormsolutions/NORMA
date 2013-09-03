@@ -1858,6 +1858,47 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return rightWord;
 		}
+		/// <summary>
+		/// Remove hyphen bound hyphens from the given reading text.
+		/// </summary>
+		/// <param name="readingText">Standard reading text</param>
+		/// <returns>Reading text with hyphens removed.</returns>
+		public static string DehyphenateReadingText(string readingText)
+		{
+			// First test if there is any hyphen to look for. If not,
+			// return unmodified text.
+			if (-1 == readingText.IndexOf('-'))
+			{
+				return readingText;
+			}
+			return MainRegex.Replace(
+				readingText,
+				delegate(Match match)
+				{
+					string retVal;
+					GroupCollection groups = match.Groups;
+					string stringReplaceIndex = groups["ReplaceIndex"].Value;
+					int replaceIndex = int.Parse(stringReplaceIndex, CultureInfo.InvariantCulture);
+					string leftWord = groups["LeftHyphenWord"].Value;
+					string rightWord = groups["RightHyphenWord"].Value;
+					string leadText = groups["BeforeLeftHyphenWord"].Value;
+					if (leftWord.Length != 0 || rightWord.Length != 0)
+					{
+						retVal = string.Concat(
+							leadText,
+							NormalizeLeftHyphen(leftWord, groups["AfterLeftHyphen"].Value),
+							"{",
+							stringReplaceIndex,
+							"}",
+							NormalizeRightHyphen(groups["BeforeRightHyphen"].Value, rightWord));
+					}
+					else
+					{
+						retVal = match.Value;
+					}
+					return retVal;
+				});
+		}
 		#endregion // Static Functions
 	}
 	#endregion // VerbalizationHyphenBinder struct
