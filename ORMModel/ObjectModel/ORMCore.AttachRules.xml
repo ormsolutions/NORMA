@@ -1428,7 +1428,7 @@
 				<arg:RuleOn targetType="ObjectTypePlaysRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:AddRule>
 			<arg:AddRule methodName="InitializeSubtypeAddRule">
-				<arg:RuleOn targetType="SubtypeFact"/>
+				<arg:RuleOn targetType="ModelHasFactType" priority="-1"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="LimitSubtypeConstraintChangeRule">
 				<arg:RuleOn targetType="SetConstraint"/>

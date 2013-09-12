@@ -2914,6 +2914,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ValueTypeHasDataType link = ValueTypeHasDataType.GetLinkToDataType(this);
 			if (link != null)
 			{
+				if (SkipErrorValidationFor(typeof(DataTypeNotSpecifiedError)))
+				{
+					link.DataTypeNotSpecifiedError = null;
+					return;
+				}
 				DataTypeNotSpecifiedError error = link.DataTypeNotSpecifiedError;
 				if (!(link.DataType is UnspecifiedDataType))
 				{
@@ -3230,6 +3235,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Small helper function, used in multiple rules.
+		/// </summary>
+		private bool SkipErrorValidationFor(Type errorType)
+		{
+			IHasAlternateOwner<ObjectType> toAlternateOwner;
+			IAlternateElementOwner<ObjectType> alternateOwner;
+			if (null != (toAlternateOwner = this as IHasAlternateOwner<ObjectType>) &&
+				null != (alternateOwner = toAlternateOwner.AlternateOwner))
+			{
+				return !alternateOwner.ValidateErrorFor(this, errorType);
+			}
+			return false;
+		}
+		/// <summary>
 		/// Validator callback for EntityTypeRequiresReferenceSchemeError
 		/// </summary>
 		private static void DelayValidateEntityTypeRequiresReferenceSchemeError(ModelElement element)
@@ -3240,6 +3259,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (!IsDeleted)
 			{
+				if (SkipErrorValidationFor(typeof(EntityTypeRequiresReferenceSchemeError)))
+				{
+					this.ReferenceSchemeError = null;
+					return;
+				}
 				bool verifyDownstream = false;
 				bool hasError = true;
 				Store store = Store;
@@ -3631,6 +3655,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (!IsDeleted)
 			{
+				if (SkipErrorValidationFor(typeof(PreferredIdentifierRequiresMandatoryError)))
+				{
+					this.PreferredIdentifierRequiresMandatoryError = null;
+					return;
+				}
 				bool hasError = false;
 				UniquenessConstraint pid = PreferredIdentifier;
 				if (pid != null && !pid.IsInternal)
@@ -3754,6 +3783,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (!IsDeleted)
 			{
+				if (SkipErrorValidationFor(typeof(CompatibleSupertypesError)))
+				{
+					this.CompatibleSupertypesError = null;
+					return;
+				}
 				bool hasError = false;
 				Dictionary<ObjectType, int> visitedNodes = null;
 				bool firstSupertypeComplete = false;
@@ -3763,32 +3797,40 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				const int FirstSupertypeBranchFlag = 0x40000000;
 				const int AllFlags = MultipleVisitsFlag | FirstSupertypeBranchFlag;
 				bool sawMultiples = false;
-				WalkSupertypes(this, delegate(ObjectType type, int depth, bool isPrimary)
+				WalkSupertypeRelationships(this, delegate(SubtypeFact subtypeFact, ObjectType type, int depth)
 				{
-					switch (depth)
+					IHasAlternateOwner<FactType> toAlternateOwner;
+					IAlternateElementOwner<FactType> alternateOwner;
+					if (null != (toAlternateOwner = subtypeFact as IHasAlternateOwner<FactType>) &&
+						null != (alternateOwner = toAlternateOwner.AlternateOwner) &&
+						!alternateOwner.ValidateErrorFor(subtypeFact, typeof(CompatibleSupertypesError)))
 					{
-						case 0:
-							return ObjectTypeVisitorResult.Continue; // Called for this object
-						case 1:
-							if (null == visitedNodes)
+						// Although this error is validated on the individual object types, it
+						// is possible for an external owner to add a subtype fact type should
+						// also be ignored during this validation. If the owner wants to skip subtype
+						// validation for this case, then
+						return ObjectTypeVisitorResult.SkipChildren;
+					}
+					if (depth == 0)
+					{
+						if (null == visitedNodes)
+						{
+							// UNDONE: We shouldn't need to create the dictionary until we know
+							// we have at least two elements to track
+							visitedNodes = new Dictionary<ObjectType, int>();
+						}
+						else if (firstSupertypeComplete)
+						{
+							if (lastResult != ObjectTypeVisitorResult.SkipChildren)
 							{
-								// UNDONE: We shouldn't need to create the dictionary until we know
-								// we have at least two elements to track
-								visitedNodes = new Dictionary<ObjectType, int>();
+								hasError = true;
+								return ObjectTypeVisitorResult.Stop;
 							}
-							else if (firstSupertypeComplete)
-							{
-								if (lastResult != ObjectTypeVisitorResult.SkipChildren)
-								{
-									hasError = true;
-									return ObjectTypeVisitorResult.Stop;
-								}
-							}
-							else
-							{
-								firstSupertypeComplete = true;
-							}
-							break;
+						}
+						else
+						{
+							firstSupertypeComplete = true;
+						}
 					}
 					ObjectTypeVisitorResult retVal = ObjectTypeVisitorResult.Continue;
 					int existingDepth;
@@ -3801,7 +3843,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							// If our current depth is one or the existing depth
 							// is one then we're in a transitive condition, which
 							// is not allowed.
-							if (depth == 1 || existingDepth == 1)
+							if (depth == 0 || existingDepth == 0)
 							{
 								hasError = true;
 								retVal = ObjectTypeVisitorResult.Stop;

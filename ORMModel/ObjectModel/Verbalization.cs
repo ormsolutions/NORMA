@@ -4131,6 +4131,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			private ObjectType myRolePlayer;
 			private int mySubscript;
 			private int myUsePhase;
+			private int myDescopedUseCount;
 			/// <summary>
 			/// Create a <see cref="RolePlayerVariable"/> with default settings
 			/// </summary>
@@ -4179,6 +4180,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			/// <summary>
+			/// The number of times this variable has been descoped
+			/// </summary>
+			public int DescopedCount
+			{
+				get
+				{
+					return myDescopedUseCount;
+				}
+			}
+			/// <summary>
 			/// Mark a variable as used during a given phase of the verbalization.
 			/// </summary>
 			/// <param name="usePhase">The use phase to test. The use of a phase enables
@@ -4197,6 +4208,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 				return false;
+			}
+			/// <summary>
+			/// Mark a variable as having been used, but now being out of scope.
+			/// </summary>
+			public void Descope()
+			{
+				myUsePhase = 0;
+				mySubscript = -1;
+				++myDescopedUseCount;
 			}
 			/// <summary>
 			/// Test if a variable has been used during a given use phase.
@@ -4377,18 +4397,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					LinkedNode<RolePlayerVariable> node = myHeadNode;
 					LinkedNode<RolePlayerVariable> nextNode = node.Next;
+					int descopedCount = 0;
 					if (nextNode == null)
 					{
 						// Single node, nothing to search for
 						Debug.Assert(variable == node.Value);
 						retVal = (myUsedFullyExistentially && !variable.MinimizeHeadSubscripting) ? 1 : 0;
+						descopedCount = variable.DescopedCount;
 					}
 					else
 					{
-						retVal = Math.Max(node.Value.Subscript, retVal);
+						RolePlayerVariable currentVariable = node.Value;
+						retVal = Math.Max(currentVariable.Subscript, retVal);
+						descopedCount += currentVariable.DescopedCount;
 						while (nextNode != null)
 						{
-							retVal = Math.Max(nextNode.Value.Subscript, retVal);
+							currentVariable = nextNode.Value;
+							retVal = Math.Max(currentVariable.Subscript, retVal);
+							descopedCount += currentVariable.DescopedCount;
 							nextNode = nextNode.Next;
 						}
 						if (retVal == -1)
@@ -4396,6 +4422,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							retVal = 0;
 						}
 						++retVal;
+					}
+					if (retVal != 0)
+					{
+						retVal += descopedCount;
 					}
 					variable.Subscript = retVal;
 				}
@@ -6592,6 +6622,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// phase, which will always be the first element in this list.
 		/// </summary>
 		private List<int> myUsePhases;
+		/// <summary>
+		/// Track variables that are introduced with a use phase, which
+		/// corresponds to an isolated variable scope, so variables used
+		/// within that scope cannot be used after the scope closes. This
+		/// stack does not include the top use phase, which is assumed to
+		/// never go out of scope.
+		/// </summary>
+		private Stack<LinkedNode<RolePlayerVariable>> myPhaseIntroducedVariables;
 		/// <summary>
 		/// Track the use phase when a <see cref="CorrelatedVariablePairing"/> was last
 		/// applied.
@@ -9311,7 +9349,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					// Track use phase during registration to see if the root variable is
 					// referenced by the path.
-					existingVariable.Use(myLatestUsePhase, false);
+					UseVariable(existingVariable, myLatestUsePhase, false);
 					return existingVariable;
 				}
 				else
@@ -9432,7 +9470,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						CustomCorrelateVariables(joinToVariable, existingVariable);
 					}
 				}
-				existingVariable.Use(myLatestUsePhase, false);
+				UseVariable(existingVariable, myLatestUsePhase, false);
 				return existingVariable;
 			}
 		}
@@ -9715,22 +9753,60 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private void PushPairingUsePhase()
 		{
 			List<int> phases = myUsePhases;
+			Stack<LinkedNode<RolePlayerVariable>> variableTracker = myPhaseIntroducedVariables;
 			if (phases == null)
 			{
-				phases = new List<int>();
-				myUsePhases = phases;
+				myUsePhases = phases = new List<int>();
 				phases.Add(myLatestUsePhase);
+				// Note that we do not add anything here for the initial
+				// phase because we never descope a top-level variable.
+				myPhaseIntroducedVariables = variableTracker = new Stack<LinkedNode<RolePlayerVariable>>();
 			}
 			else if (phases.Count == 0)
 			{
 				phases.Add(myLatestUsePhase);
 			}
 			phases.Add(++myLatestUsePhase);
+			variableTracker.Push(null);
 		}
 		private void PopPairingUsePhase()
 		{
 			List<int> phases = myUsePhases;
 			phases.RemoveAt(phases.Count - 1);
+			LinkedNode<RolePlayerVariable> introducedVariableNode = myPhaseIntroducedVariables.Pop();
+			while (introducedVariableNode != null)
+			{
+				introducedVariableNode.Value.Descope();
+				introducedVariableNode = introducedVariableNode.Next;
+			}
+		}
+		/// <summary>
+		/// Mark a variable as being used while tracking phase information.
+		/// If a variable is introduced during a use phase, then the variable
+		/// is 'unused' when the use phase is popped.
+		/// </summary>
+		/// <param name="variable">The variable to use.</param>
+		/// <param name="usePhase">The use phase to test. The use of a phase enables
+		/// a new phase to begin a clean use slate without touching the current data.</param>
+		/// <param name="treatHeadVariablesAsUsed">Set to <see langword="true"/> if a head variable should
+		/// be treated as used.</param>
+		/// <returns>Returns <see langword="true"/> if this the first use of the variable during the specified phase.</returns>
+		private bool UseVariable(RolePlayerVariable variable, int usePhase, bool treatHeadVariablesAsUsed)
+		{
+			Stack<LinkedNode<RolePlayerVariable>> variableTracker;
+			if (!variable.HasBeenUsed(usePhase, treatHeadVariablesAsUsed) &&
+				null != (variableTracker = myPhaseIntroducedVariables) &&
+				variableTracker.Count != 0)
+			{
+				LinkedNode<RolePlayerVariable> oldHead;
+				LinkedNode<RolePlayerVariable> newNode = new LinkedNode<RolePlayerVariable>(variable);
+				if (null != (oldHead = variableTracker.Pop()))
+				{
+					newNode.SetNext(oldHead, ref newNode);
+				}
+				variableTracker.Push(newNode);
+			}
+			return variable.Use(usePhase, treatHeadVariablesAsUsed);
 		}
 		#endregion // Analysis Methods
 		#region Rendering Methods
@@ -9815,7 +9891,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						variable.MinimizeHeadSubscripting = true;
 					}
 				}
-				firstUse = variable.Use(CurrentQuantificationUsePhase, false);
+				firstUse = UseVariable(variable, CurrentQuantificationUsePhase, false);
 				Dictionary<RolePlayerVariable, LinkedNode<RolePlayerVariable>> customCorrelations;
 				LinkedNode<RolePlayerVariable> customCorrelationNode;
 
@@ -10247,7 +10323,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												replacement = string.Format(
 													renderer.FormatProvider,
 													renderer.GetSnippet(rolePlayer != null && rolePlayer.TreatAsPersonal ? CoreVerbalizationSnippetType.PersonalLeadIdentityCorrelation : CoreVerbalizationSnippetType.ImpersonalLeadIdentityCorrelation),
-													QuantifyRolePlayerName(GetSubscriptedRolePlayerName(primaryVariable), primaryVariable.Use(CurrentQuantificationUsePhase, true), false),
+													QuantifyRolePlayerName(GetSubscriptedRolePlayerName(primaryVariable), UseVariable(primaryVariable, CurrentQuantificationUsePhase, true), false),
 													replacement);
 												if (pairings == null)
 												{
@@ -10692,7 +10768,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						renderer.RenderConstant(node.Constant));
 				case VerbalizationPlanNodeType.ChainedRootVariable:
 					rootVariable = node.RootVariable;
-					return QuantifyRolePlayerName(GetSubscriptedRolePlayerName(rootVariable), rootVariable.Use(CurrentQuantificationUsePhase, true), false);
+					return QuantifyRolePlayerName(GetSubscriptedRolePlayerName(rootVariable), UseVariable(rootVariable, CurrentQuantificationUsePhase, true), false);
 				case VerbalizationPlanNodeType.VariableExistence:
 					variableUse = GetRolePlayerVariableUse(node.VariableKey).Value;
 					bool negateExistence = node.NegateExistence;
@@ -10945,7 +11021,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (basicLeadRole && !negateExistentialQuantifier && preRenderedPartnerWith == null)
 						{
 							// Use the optimized lead version of the identity correlation.
-							return PartnerVariables(primaryVariable, QuantifyRolePlayerName(result, primaryVariable.Use(quantificationUsePhase, true), negateExistentialQuantifier), partnerWithVariable, preRenderedPartnerWith, true);
+							return PartnerVariables(primaryVariable, QuantifyRolePlayerName(result, UseVariable(primaryVariable, quantificationUsePhase, true), negateExistentialQuantifier), partnerWithVariable, preRenderedPartnerWith, true);
 						}
 						// Note that we never chain with the optimized lead form
 						result = PartnerVariables(primaryVariable, result, partnerWithVariable, preRenderedPartnerWith, false);
@@ -10965,7 +11041,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				result = GetSubscriptedRolePlayerName(primaryVariable);
 			}
-			return QuantifyRolePlayerName(hyphenBinderRoleIndex >= 0 ? hyphenBinder.HyphenBindRoleReplacement(result, hyphenBinderRoleIndex) : result, primaryVariable.Use(quantificationUsePhase, true), negateExistentialQuantifier);
+			return QuantifyRolePlayerName(hyphenBinderRoleIndex >= 0 ? hyphenBinder.HyphenBindRoleReplacement(result, hyphenBinderRoleIndex) : result, UseVariable(primaryVariable, quantificationUsePhase, true), negateExistentialQuantifier);
 		}
 		/// <summary>
 		/// Test if two variables can be partnered, meaning that they represent different types
@@ -11127,7 +11203,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						primaryVariable.Subscript = primarySubscript = partnerSubscript;
 						if (IsPairingUsePhaseInScope(partnerWithVariable.UsePhase))
 						{
-							primaryVariable.Use(CurrentQuantificationUsePhase, false);
+							UseVariable(primaryVariable, CurrentQuantificationUsePhase, false);
 						}
 					}
 					if (render)
@@ -11154,7 +11230,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						partnerWithVariable.Subscript = partnerSubscript = primarySubscript;
 						if (IsPairingUsePhaseInScope(primaryVariable.UsePhase))
 						{
-							partnerWithVariable.Use(CurrentQuantificationUsePhase, false);
+							UseVariable(partnerWithVariable, CurrentQuantificationUsePhase, false);
 						}
 					}
 				}
@@ -11330,7 +11406,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				renderer.FormatProvider,
 				renderer.GetSnippet(leftRolePlayer != null && leftRolePlayer.TreatAsPersonal ? (leadRolePattern ? CoreVerbalizationSnippetType.PersonalLeadIdentityCorrelation : CoreVerbalizationSnippetType.PersonalIdentityCorrelation) : (leadRolePattern ? CoreVerbalizationSnippetType.ImpersonalLeadIdentityCorrelation : CoreVerbalizationSnippetType.ImpersonalIdentityCorrelation)),
 				preRenderedPrimary,
-				QuantifyRolePlayerName(preRenderedPartner, partnerWithVariable.Use(CurrentQuantificationUsePhase, true), false));
+				QuantifyRolePlayerName(preRenderedPartner, UseVariable(partnerWithVariable, CurrentQuantificationUsePhase, true), false));
 			if (pairings == null)
 			{
 				myCorrelatedVariablePairing = pairings = new Dictionary<CorrelatedVariablePairing, int>();

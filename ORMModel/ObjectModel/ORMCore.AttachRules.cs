@@ -11885,7 +11885,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.EnsureConsistentRolePlayerTypesAddRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SubtypeFact), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ModelHasFactType), Priority=(-1 + ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority))]
 		private sealed class InitializeSubtypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -11897,7 +11897,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// Provide the following method in class: 
 			/// ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact
 			/// /// <summary>
-			/// /// AddRule: typeof(SubtypeFact)
+			/// /// AddRule: typeof(ModelHasFactType), Priority=-1;
 			/// /// </summary>
 			/// private static void InitializeSubtypeAddRule(ElementAddedEventArgs e)
 			/// {

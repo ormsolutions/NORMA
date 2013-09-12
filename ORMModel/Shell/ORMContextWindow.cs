@@ -54,6 +54,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private ORMDiagram myDiagram;
 		private IHierarchyContextEnabled myCurrentlySelectedObject;
 		private int myGenerations = 1;
+		private object mySelectedPartitionId;
 		private Control myPanel;
 		private NumericUpDown myUpDownGenerations;
 
@@ -249,6 +250,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			IHierarchyContextEnabled hierarchyElement = null;
 			ModelElement element = null;
 			object[] selectedElements = GetSelectedElements();
+
 			foreach (object obj in selectedElements)
 			{
 				if (null != (element = EditorUtility.ResolveContextInstance(obj, false) as ModelElement) &&
@@ -286,6 +288,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (element != null && ((element.IsDeleted || element.Store == null) || storeChange))
 				{
 					myCurrentlySelectedObject = null;
+					mySelectedPartitionId = null;
 					RemoveDiagram();
 				}
 				hierarchyElement = myCurrentlySelectedObject;
@@ -307,6 +310,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return;
 			}
 			myCurrentlySelectedObject = hierarchyElement;
+			mySelectedPartitionId = ((ModelElement)hierarchyElement).Partition.AlternateId;
 			ORMModel model = hierarchyElement.Model;
 			if (model == null)
 			{
@@ -573,7 +577,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					diagram = new ORMDiagram(partition);
 					diagram.ForeignPartitionTest = delegate(Partition elementPartition)
 					{
-						return elementPartition.AlternateId == null;
+						object testId = elementPartition.AlternateId;
+						return (testId == null) || (testId == this.mySelectedPartitionId);
 					};
 					diagram.Associate(myDiagramView);
 					myDiagramView.HasWatermark = false;
@@ -642,7 +647,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			myDiagram = null;
 			myDiagramView.Diagram = null;
-			myCurrentlySelectedObject = null;
 		}
 		#endregion
 		#region ORMToolWindow Implementation
@@ -666,6 +670,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				if (null != Utility.ValidateStore(myDiagram.Store))
 				{
+					myCurrentlySelectedObject = null;
+					mySelectedPartitionId = null;
 					this.RemoveDiagram();
 				}
 			}

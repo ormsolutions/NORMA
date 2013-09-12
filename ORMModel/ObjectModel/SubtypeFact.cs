@@ -195,33 +195,64 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Implicit Reading Support
 		#region Initialize pattern rules
 		/// <summary>
-		/// AddRule: typeof(SubtypeFact)
+		/// AddRule: typeof(ModelHasFactType), Priority=-1;
 		/// Make sure a SubtypeFact is a 1-1 fact with a mandatory role
 		/// on the base type (role 0)
 		/// </summary>
 		private static void InitializeSubtypeAddRule(ElementAddedEventArgs e)
 		{
-			FactType factType = (FactType)e.ModelElement;
-			if (CopyMergeUtility.GetIntegrationPhase(factType.Store) == CopyClosureIntegrationPhase.None)
+			SubtypeFact factType;
+			if (null != (factType = ((ModelHasFactType)e.ModelElement).FactType as SubtypeFact))
 			{
-				// Establish role collecton
-				LinkedElementCollection<RoleBase> roles = factType.RoleCollection;
-				Partition partition = factType.Partition;
-				SubtypeMetaRole subTypeMetaRole = new SubtypeMetaRole(partition);
-				SupertypeMetaRole superTypeMetaRole = new SupertypeMetaRole(partition);
-				roles.Add(subTypeMetaRole);
-				roles.Add(superTypeMetaRole);
+				factType.InitializeIdentityFactType();
+			}
+		}
+		/// <summary>
+		/// A key to use to stop 'pattern modified' exceptions from throwing
+		/// while a subtype fact is initializing after the owner is attached.
+		/// </summary>
+		private readonly static object InitializingIdentityFactTypeKey = new object();
+		/// <summary>
+		/// Initial the role pattern and constraints for a standard
+		/// subtype. This should be called after the subtype is parented
+		/// by either the model or an alternate owner so that the created
+		/// elements can also be properly parented.
+		/// </summary>
+		protected void InitializeIdentityFactType()
+		{
+			Store store;
+			if (CopyMergeUtility.GetIntegrationPhase(store = this.Store) == CopyClosureIntegrationPhase.None)
+			{
+				IDictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				try
+				{
+					// Establish role collecton
+					contextInfo[InitializingIdentityFactTypeKey] = null;
+					LinkedElementCollection<RoleBase> roles = this.RoleCollection;
+					Partition partition = this.Partition;
+					SubtypeMetaRole subTypeMetaRole = new SubtypeMetaRole(partition);
+					SupertypeMetaRole superTypeMetaRole = new SupertypeMetaRole(partition);
+					roles.Add(subTypeMetaRole);
+					roles.Add(superTypeMetaRole);
 
-				// Add injection constraints
-				superTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
-				subTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
+					// Add injection constraints
+					superTypeMetaRole.Multiplicity = RoleMultiplicity.ExactlyOne;
+					subTypeMetaRole.Multiplicity = RoleMultiplicity.ZeroToOne;
+				}
+				finally
+				{
+					contextInfo.Remove(InitializingIdentityFactTypeKey);
+				}
 			}
 		}
 		#endregion Initialize pattern rules
 		#region Role and constraint pattern locking rules
-		private static void ThrowPatternModifiedException()
+		private static void ThrowPatternModifiedException(Store store)
 		{
-			throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeConstraintAndRolePatternFixed);
+			if (!store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(InitializingIdentityFactTypeKey))
+			{
+				throw new InvalidOperationException(ResourceStrings.ModelExceptionSubtypeConstraintAndRolePatternFixed);
+			}
 		}
 		private static void ThrowInvalidExclusionSubtypeConstraint()
 		{
@@ -244,14 +275,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactSetConstraint link = (FactSetConstraint)e.ModelElement;
 			SubtypeFact subtypeFact;
+			Store store;
 			if (link.SetConstraint.Constraint.ConstraintIsInternal &&
 				null != (subtypeFact = link.FactType as SubtypeFact) &&
 				subtypeFact.ResolvedModel != null &&
-				CopyMergeUtility.GetIntegrationPhase(link.Store) == CopyClosureIntegrationPhase.None)
+				CopyMergeUtility.GetIntegrationPhase(store = link.Store) == CopyClosureIntegrationPhase.None)
 			{
 				// Allow before adding to model, not afterwards,
 				// unless there is an active copy operation.
-				ThrowPatternModifiedException();
+				ThrowPatternModifiedException(store);
 			}
 		}
 		/// <summary>
@@ -269,7 +301,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				subtypeFact.ResolvedModel != null)
 			{
 				// Allow before adding to model, not afterwards
-				ThrowPatternModifiedException();
+				ThrowPatternModifiedException(subtypeFact.Store);
 			}
 		}
 		/// <summary>
@@ -283,11 +315,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SubtypeFact subtypeFact;
 			if (null != (subtypeFact = link.FactType as SubtypeFact))
 			{
+				Store store;
 				if (subtypeFact.ResolvedModel != null &&
-					CopyMergeUtility.GetIntegrationPhase(link.Store) == CopyClosureIntegrationPhase.None)
+					CopyMergeUtility.GetIntegrationPhase(store = link.Store) == CopyClosureIntegrationPhase.None)
 				{
 					// Allow before adding to model, not afterwards
-					ThrowPatternModifiedException();
+					ThrowPatternModifiedException(store);
 				}
 			}
 			else
@@ -313,7 +346,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				subtypeFact.ResolvedModel != null)
 			{
 				// Allow before adding to model, not afterwards
-				ThrowPatternModifiedException();
+				ThrowPatternModifiedException(subtypeFact.Store);
 			}
 		}
 		/// <summary>
@@ -342,12 +375,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (constraint.ConstraintIsInternal)
 					{
 						SubtypeFact subtypeFact;
+						Store store;
 						if (null != (subtypeFact = untypedRole.FactType as SubtypeFact) &&
 							subtypeFact.ResolvedModel != null &&
-							CopyMergeUtility.GetIntegrationPhase(subtypeFact.Store) == CopyClosureIntegrationPhase.None)
+							CopyMergeUtility.GetIntegrationPhase(store = subtypeFact.Store) == CopyClosureIntegrationPhase.None)
 						{
 							// Allow before adding to model, not afterwards
-							ThrowPatternModifiedException();
+							ThrowPatternModifiedException(store);
 						}
 					}
 					else if (constraint.ConstraintType == ConstraintType.ImpliedMandatory)
@@ -565,7 +599,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					subtypeFact.ResolvedModel != null)
 				{
 					// Allow before adding to model, not afterwards
-					ThrowPatternModifiedException();
+					ThrowPatternModifiedException(subtypeFact.Store);
 				}
 			}
 		}
@@ -597,13 +631,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (testFacts != null)
 				{
 					int testFactsCount = testFacts.Count;
+					Store store = constraint.Store;
 					for (int i = 0; i < testFactsCount; ++i)
 					{
 						if (testFacts[i] is SubtypeFact)
 						{
 							// We never do this internally, so block any modification,
 							// not just those after the subtype fact is added to the model
-							ThrowPatternModifiedException();
+							ThrowPatternModifiedException(store);
 						}
 					}
 				}

@@ -1878,84 +1878,106 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				using (Transaction t = store.TransactionManager.BeginTransaction(commandText.Replace("&", string.Empty)))
 				{
 					Dictionary<object, object> contextInfo = t.TopLevelTransaction.Context.ContextInfo;
-
-					IList selectedElements = view.SelectedElements;
-					// account for multiple selection
-					for (int i = selectedElements.Count - 1; i >= 0; i--)
+					object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+					object deleteReferenceModeValueTypeKey = null;
+					bool deleteAllowDuplicateNames = !contextInfo.ContainsKey(duplicateNamesKey);
+					bool deleteReferenceModeValueTypeInContext = false;
+					if (deleteAllowDuplicateNames)
 					{
-						object selectedObject = selectedElements[i];
-						ShapeElement pel; // just the shape
-						ModelElement mel;
-						ICustomElementDeletion customDeletion;
-						bool deleteReferenceModeValueTypeInContext = false;
-						if (null != (pel = selectedObject as ShapeElement))
+						contextInfo[duplicateNamesKey] = true;
+					}
+					try
+					{
+						IList selectedElements = view.SelectedElements;
+						// account for multiple selection
+						for (int i = selectedElements.Count - 1; i >= 0; i--)
 						{
-							// Note that if the ORMDiagram.SelectionRules property is overridden
-							// or any shape overrides the AllowChildrenInSelection property, then
-							// the delete propagation on child shapes can force the pel to be deleted
-							// without deleting the underlying mel. This would require resolving all
-							// model elements before any pels are deleted because the pel could
-							// now be deleted without the underlying mel having been touched.
-							if (pel.IsDeleted)
+							object selectedObject = selectedElements[i];
+							ShapeElement pel; // just the shape
+							ModelElement mel;
+							ICustomElementDeletion customDeletion;
+							if (null != (pel = selectedObject as ShapeElement))
 							{
-								continue;
-							}
-							if (diagram == null)
-							{
-								diagram = pel.Diagram;
-							}
-
-							if (null != (customDeletion = pel as ICustomElementDeletion))
-							{
-								customDeletion.DeleteCustomElement();
-								continue;
-							}
-
-							// Get the actual object inside the pel before
-							// removing the pel.
-							mel = pel.ModelElement;
-
-							// Remove the actual object in the model
-							if (mel != null && !mel.IsDeleted)
-							{
-								// Check if the object shape was in expanded mode
-								bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
-								ObjectTypeShape objectShape;
-								ObjectifiedFactTypeNameShape objectifiedShape;
-								FactTypeShape factTypeShape;
-								FactType factType;
-								if (testRefModeCollapse &&
-									((null != (objectShape = pel as ObjectTypeShape) &&
-									!objectShape.ExpandRefMode) ||
-									(null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape) &&
-									!objectifiedShape.ExpandRefMode))
-									)
+								// Note that if the ORMDiagram.SelectionRules property is overridden
+								// or any shape overrides the AllowChildrenInSelection property, then
+								// the delete propagation on child shapes can force the pel to be deleted
+								// without deleting the underlying mel. This would require resolving all
+								// model elements before any pels are deleted because the pel could
+								// now be deleted without the underlying mel having been touched.
+								if (pel.IsDeleted)
 								{
-									if (!deleteReferenceModeValueTypeInContext)
+									continue;
+								}
+								if (diagram == null)
+								{
+									diagram = pel.Diagram;
+								}
+
+								if (null != (customDeletion = pel as ICustomElementDeletion))
+								{
+									customDeletion.DeleteCustomElement();
+									continue;
+								}
+
+								// Get the actual object inside the pel before
+								// removing the pel.
+								mel = pel.ModelElement;
+
+								// Remove the actual object in the model
+								if (mel != null && !mel.IsDeleted)
+								{
+									// Check if the object shape was in expanded mode
+									bool testRefModeCollapse = complexSelection || 0 != (enabledCommands & ORMDesignerCommands.DeleteObjectType);
+									ObjectTypeShape objectShape;
+									ObjectifiedFactTypeNameShape objectifiedShape;
+									FactTypeShape factTypeShape;
+									FactType factType;
+									if (testRefModeCollapse &&
+										((null != (objectShape = pel as ObjectTypeShape) &&
+										!objectShape.ExpandRefMode) ||
+										(null != (objectifiedShape = pel as ObjectifiedFactTypeNameShape) &&
+										!objectifiedShape.ExpandRefMode))
+										)
 									{
-										contextInfo[ObjectType.DeleteReferenceModeValueType] = null;
-										deleteReferenceModeValueTypeInContext = true;
+										if (!deleteReferenceModeValueTypeInContext)
+										{
+											contextInfo[deleteReferenceModeValueTypeKey ?? (deleteReferenceModeValueTypeKey = ObjectType.DeleteReferenceModeValueType)] = null;
+											deleteReferenceModeValueTypeInContext = true;
+										}
+									}
+									else if (deleteReferenceModeValueTypeInContext)
+									{
+										deleteReferenceModeValueTypeInContext = false;
+										contextInfo.Remove(deleteReferenceModeValueTypeKey);
+									}
+									if (null != (factTypeShape = pel as FactTypeShape))
+									{
+										if (null != (factType = pel.ModelElement as FactType) &&
+											null != factType.ImpliedByObjectification)
+										{
+											// Deletion tolerated by link fact type shapes, but the command is not
+											// enabled individually and is ignored.
+											continue;
+										}
+									}
+
+									// Get rid of the model element. Delete propagation on the PresentationViewsSubject
+									// relationship will automatically delete the pel.
+									if (null != (customDeletion = mel as ICustomElementDeletion))
+									{
+										customDeletion.DeleteCustomElement();
+									}
+									else
+									{
+										mel.Delete();
 									}
 								}
-								else if (deleteReferenceModeValueTypeInContext)
-								{
-									deleteReferenceModeValueTypeInContext = false;
-									contextInfo.Remove(ObjectType.DeleteReferenceModeValueType);
-								}
-								if (null != (factTypeShape = pel as FactTypeShape))
-								{
-									if (null != (factType = pel.ModelElement as FactType) &&
-										null != factType.ImpliedByObjectification)
-									{
-										// Deletion tolerated by link fact type shapes, but the command is not
-										// enabled individually and is ignored.
-										continue;
-									}
-								}
-
-								// Get rid of the model element. Delete propagation on the PresentationViewsSubject
-								// relationship will automatically delete the pel.
-								if (null != (customDeletion = mel as ICustomElementDeletion))
+							}
+							else if (null != (mel = selectedObject as ModelElement) && !mel.IsDeleted)
+							{
+								// Remove the item
+								customDeletion = mel as ICustomElementDeletion;
+								if (customDeletion != null)
 								{
 									customDeletion.DeleteCustomElement();
 								}
@@ -1965,24 +1987,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								}
 							}
 						}
-						else if (null != (mel = selectedObject as ModelElement) && !mel.IsDeleted)
+
+						if (t.HasPendingChanges)
 						{
-							// Remove the item
-							customDeletion = mel as ICustomElementDeletion;
-							if (customDeletion != null)
-							{
-								customDeletion.DeleteCustomElement();
-							}
-							else
-							{
-								mel.Delete();
-							}
+							t.Commit();
 						}
 					}
-
-					if (t.HasPendingChanges)
+					finally
 					{
-						t.Commit();
+						if (deleteReferenceModeValueTypeInContext)
+						{
+							contextInfo.Remove(deleteReferenceModeValueTypeKey);
+						}
+						if (deleteAllowDuplicateNames)
+						{
+							contextInfo.Remove(duplicateNamesKey);
+						}
 					}
 				}
 

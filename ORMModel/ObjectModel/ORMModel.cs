@@ -337,7 +337,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Get all elements of the given type that are owned by this owner.
 		/// </summary>
-		IList<ORMElementType> OwnedElements { get;}
+		IEnumerable<ORMElementType> OwnedElements { get;}
 		/// <summary>
 		/// Determine if the core model validation routines should validate
 		/// this element for a given error type.

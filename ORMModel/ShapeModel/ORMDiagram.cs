@@ -1111,8 +1111,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Predicate<Partition> partitionTest = ForeignPartitionTest;
 			return (partitionTest != null ?
 					partitionTest(element.Partition) :
-					element.Partition.AlternateId == this.Partition.AlternateId) &&
-				!(element is IHasAlternateOwner);
+					element.Partition.AlternateId == this.Partition.AlternateId); // &&
+				//!(element is IHasAlternateOwner);
+			// UNDONE: AlternateOwner Currently there are no alternate owners generating
+			// in the same partition. The current implementation is incomplete because
+			// the hierarchy context also needs to check whether the element should be
+			// traversed when determining the hierarchy. Filtering at this point in the
+			// process is much too late.
 		}
 		/// <summary>
 		/// Called as a result of the FixUpDiagram calls
