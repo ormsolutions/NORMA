@@ -83,7 +83,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// </summary>
 	public delegate void SubtypeHierarchyChange(ObjectType objectType);
 	#endregion // SubtypeHierarchyChange delegate definition
-	partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IDefaultNamePattern, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
+	partial class ObjectType : INamedElementDictionaryChild, INamedElementDictionaryParent, INamedElementDictionaryRemoteChild, IDefaultNamePattern, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
 		#region Public token values
 		/// <summary>
@@ -2224,22 +2224,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			childDomainRoleId = ModelHasObjectType.ObjectTypeDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
-		#region INamedElementDictionaryRemoteParent implementation
-		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { ValueTypeHasValueConstraint.ValueTypeDomainRoleId };
+		#region INamedElementDictionaryRemoteChild implementation
+		private static readonly Guid[] myRemoteNamedElementDictionaryChildRoles = new Guid[] { ValueTypeHasValueConstraint.ValueTypeDomainRoleId };
 		/// <summary>
-		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
+		/// Implements <see cref="INamedElementDictionaryRemoteChild.GetNamedElementDictionaryChildRoles"/>. Identifies
 		/// this as a remote parent for the 'ModelHasConstraint' naming set.
 		/// </summary>
 		/// <returns>Guid for the ValueTypeHasValueConstraint.ValueType role</returns>
-		protected static Guid[] GetNamedElementDictionaryLinkRoles()
+		protected static Guid[] GetNamedElementDictionaryChildRoles()
 		{
-			return myRemoteNamedElementDictionaryRoles;
+			return myRemoteNamedElementDictionaryChildRoles;
 		}
-		Guid[] INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles()
+		Guid[] INamedElementDictionaryRemoteChild.GetNamedElementDictionaryChildRoles()
 		{
-			return GetNamedElementDictionaryLinkRoles();
+			return GetNamedElementDictionaryChildRoles();
 		}
-		#endregion // INamedElementDictionaryRemoteParent implementation
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryRemoteChild.NamedElementDictionaryParentRole"/>
+		/// </summary>
+		protected static Guid NamedElementDictionaryParentRole
+		{
+			get
+			{
+				return ModelHasObjectType.ObjectTypeDomainRoleId;
+			}
+		}
+		Guid INamedElementDictionaryRemoteChild.NamedElementDictionaryParentRole
+		{
+			get
+			{
+				return NamedElementDictionaryParentRole;
+			}
+		}
+		#endregion // INamedElementDictionaryRemoteChild implementation
 		#region INamedElementDictionaryParent implementation
 		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
@@ -2268,6 +2285,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null != (model = Model))
 				{
 					dictionary = ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
+				}
+				if (dictionary == null)
+				{
+					dictionary = NamedElementDictionary.GetRemoteDictionaryToken(typeof(ValueConstraint));
 				}
 			}
 			return dictionary;

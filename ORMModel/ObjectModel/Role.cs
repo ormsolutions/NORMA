@@ -114,7 +114,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ImpliedObjectificationRole,
 	}
 	#endregion // ReferenceSchemePattern enum
-	partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, IVerbalizeCustomChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
+	partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, IVerbalizeCustomChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteChild, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
 	{
 		#region Helper methods
 		#region IndexOf helper method for LinkedElementCollection<RoleBase>
@@ -1576,6 +1576,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						dictionary = ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
 					}
 				}
+				if (dictionary == null)
+				{
+					dictionary = NamedElementDictionary.GetRemoteDictionaryToken(typeof(ValueConstraint));
+				}
 			}
 			return dictionary;
 		}
@@ -1599,22 +1603,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetAllowDuplicateNamesContextKey(parentDomainRoleId, childDomainRoleId);
 		}
 		#endregion // INamedElementDictionaryParent implementation
-		#region INamedElementDictionaryRemoteParent implementation
-		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { RoleHasValueConstraint.RoleDomainRoleId };
+		#region INamedElementDictionaryRemoteChild implementation
+		private static readonly Guid[] myRemoteNamedElementDictionaryChildRoles = new Guid[] { RoleHasValueConstraint.RoleDomainRoleId };
 		/// <summary>
-		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
+		/// Implements <see cref="INamedElementDictionaryRemoteChild.GetNamedElementDictionaryChildRoles"/>. Identifies
 		/// this as a remote parent for the 'ModelHasConstraint' naming set.
 		/// </summary>
 		/// <returns>Guid for the ValueTypeHasValueConstraint.ValueType role</returns>
-		protected static Guid[] GetNamedElementDictionaryLinkRoles()
+		protected static Guid[] GetNamedElementDictionaryChildRoles()
 		{
-			return myRemoteNamedElementDictionaryRoles;
+			return myRemoteNamedElementDictionaryChildRoles;
 		}
-		Guid[] INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles()
+		Guid[] INamedElementDictionaryRemoteChild.GetNamedElementDictionaryChildRoles()
 		{
-			return GetNamedElementDictionaryLinkRoles();
+			return GetNamedElementDictionaryChildRoles();
 		}
-		#endregion // INamedElementDictionaryRemoteParent implementation
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryRemoteChild.NamedElementDictionaryParentRole"/>
+		/// </summary>
+		protected static Guid NamedElementDictionaryParentRole
+		{
+			get
+			{
+				return FactTypeHasRole.FactTypeDomainRoleId;
+			}
+		}
+		Guid INamedElementDictionaryRemoteChild.NamedElementDictionaryParentRole
+		{
+			get
+			{
+				return NamedElementDictionaryParentRole;
+			}
+		}
+		#endregion // INamedElementDictionaryRemoteChild implementation
 		#region IHierarchyContextEnabled Members
 		/// <summary>
 		/// Gets the model that the current <see cref="T:ORMModel"/> that the <see cref="T:ModelElement"/> is related to.

@@ -710,7 +710,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						foreach (DiagramItem selectedItem in myDesignerView.CurrentDesigner.Selection)
 						{
 							FactTypeShape factTypeShape = selectedItem.Shape as FactTypeShape;
-							if (factTypeShape.AssociatedFactType.ImpliedByObjectification == objectification)
+							FactType testLinkFactType;
+							if (null != (factTypeShape = selectedItem.Shape as FactTypeShape) &&
+								null != (testLinkFactType = factTypeShape.AssociatedFactType) &&
+								testLinkFactType.ImpliedByObjectification == objectification)
 							{
 								isLinkFactType = true;
 								break;

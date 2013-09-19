@@ -1358,17 +1358,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	partial class ElementGroupingSetContainsElementGrouping : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return GroupingSet; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return Grouping; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return null; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}

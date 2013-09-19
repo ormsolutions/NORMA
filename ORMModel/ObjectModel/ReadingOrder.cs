@@ -27,7 +27,7 @@ using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
-	public partial class ReadingOrder : IRedirectVerbalization, IHasIndirectModelErrorOwner, INamedElementDictionaryParent, INamedElementDictionaryRemoteParent
+	public partial class ReadingOrder : IRedirectVerbalization, IHasIndirectModelErrorOwner, INamedElementDictionaryParent, INamedElementDictionaryRemoteChild
 	{
 		#region Reading facade method
 		/// <summary>
@@ -447,6 +447,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						dictionary = ((INamedElementDictionaryParent)model).GetCounterpartRoleDictionary(parentDomainRoleId, childDomainRoleId);
 					}
 				}
+				if (dictionary == null)
+				{
+					dictionary = NamedElementDictionary.GetRemoteDictionaryToken(typeof(Reading));
+				}
 			}
 			return dictionary;
 		}
@@ -470,20 +474,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetAllowDuplicateNamesContextKey(parentDomainRoleId, childDomainRoleId);
 		}
 		#endregion // INamedElementDictionaryParent implementation
-		#region INamedElementDictionaryRemoteParent implementation
-		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { ReadingOrderHasReading.ReadingOrderDomainRoleId };
+		#region INamedElementDictionaryRemoteChild implementation
+		private static readonly Guid[] myRemoteNamedElementDictionaryChildRoles = new Guid[] { ReadingOrderHasReading.ReadingOrderDomainRoleId };
 		/// <summary>
-		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles.
+		/// Implements <see cref="INamedElementDictionaryRemoteChild.GetNamedElementDictionaryChildRoles"/>.
 		/// </summary>
 		/// <returns>Guid for the ReadingOrderHasReading.ReadingOrder role</returns>
-		protected static Guid[] GetNamedElementDictionaryLinkRoles()
+		protected static Guid[] GetNamedElementDictionaryChildRoles()
 		{
-			return myRemoteNamedElementDictionaryRoles;
+			return myRemoteNamedElementDictionaryChildRoles;
 		}
-		Guid[] INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles()
+		Guid[] INamedElementDictionaryRemoteChild.GetNamedElementDictionaryChildRoles()
 		{
-			return GetNamedElementDictionaryLinkRoles();
+			return GetNamedElementDictionaryChildRoles();
 		}
-		#endregion // INamedElementDictionaryRemoteParent implementation
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryRemoteChild.NamedElementDictionaryParentRole"/>
+		/// </summary>
+		protected static Guid NamedElementDictionaryParentRole
+		{
+			get
+			{
+				return FactTypeHasReadingOrder.ReadingOrderDomainRoleId;
+			}
+		}
+		Guid INamedElementDictionaryRemoteChild.NamedElementDictionaryParentRole
+		{
+			get
+			{
+				return NamedElementDictionaryParentRole;
+			}
+		}
+		#endregion // INamedElementDictionaryRemoteChild implementation
 	}
 }

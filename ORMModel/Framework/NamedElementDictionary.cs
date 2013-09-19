@@ -283,14 +283,52 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <returns>A LocatedElement structure, indicating no, 1, or
 		/// multiple matches.</returns>
 		LocatedElement GetElement(string elementName);
+		/// <summary>
+		/// If the dictionary is remote and cannot be reached due
+		/// to deleted links, then the rest of these methods are
+		/// vacant and this returns a type. The type is sent to a
+		/// resolved ancestor element that implements <see cref="INamedElementDictionaryOwner"/>
+		/// to get the dictionary. This is used only during event
+		/// resolution and will be ignored during transacted processing,
+		/// where the path is still fully navigable during 'deleting' events.
+		/// </summary>
+		Type RemoteDictionaryType { get;}
 	}
 	#endregion // INamedElementDictionary interface
+	#region INamedElementDictionaryParentNode interface
+	/// <summary>
+	/// An empty interface used to represent a parent node in
+	/// a named element dictionary link. This is implicitly
+	/// implemented by <see cref="INamedElementDictionaryParent"/>
+	/// and must be explicitly implemented by any object that
+	/// implements <see cref="INamedElementDictionaryRemoteChild"/>
+	/// where that child also acts as a parent. This occurs only
+	/// if the remote dictionary chain passes multiple intermediate
+	/// steps.
+	/// </summary>
+	public interface INamedElementDictionaryParentNode
+	{
+		// No contents
+	}
+	#endregion // INamedElementDictionaryParentNode interface
+	#region INamedElementDictionaryChildNode interface
+	/// <summary>
+	/// An empty interface used to represent a child node in
+	/// a named element dictionary link. This is implicitly
+	/// implemented by <see cref="INamedElementDictionaryChild"/>
+	/// and <see cref="INamedElementDictionaryRemoteChild"/>.
+	/// </summary>
+	public interface INamedElementDictionaryChildNode
+	{
+		// No contents
+	}
+	#endregion // INamedElementDictionaryChildNode interface
 	#region INamedElementDictionaryParent interface
 	/// <summary>
 	/// An interface implemented on the parent role player
 	/// in a name dictionary setup.
 	/// </summary>
-	public interface INamedElementDictionaryParent
+	public interface INamedElementDictionaryParent : INamedElementDictionaryParentNode
 	{
 		/// <summary>
 		/// Get the dictionary corresponding to the elements
@@ -326,7 +364,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 	/// in a named element dictionary. This interface should
 	/// only be specified on ModelElement-derived classes.
 	/// </summary>
-	public interface INamedElementDictionaryChild
+	public interface INamedElementDictionaryChild : INamedElementDictionaryChildNode
 	{
 		/// <summary>
 		/// Return the role guids to get from a child element
@@ -337,6 +375,32 @@ namespace ORMSolutions.ORMArchitect.Framework
 		void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId);
 	}
 	#endregion // INamedElementDictionaryChild interface
+	#region NamedElementDictionaryLinkUse enum
+	/// <summary>
+	/// Specify how the parent and child information in
+	/// a <see cref="INamedElementDictionaryLink"/> is used.
+	/// Links can be used for both direct naming relationships,
+	/// where the parent owns the dictionary, or for indirect
+	/// dictionary ownership, where the dictionary specified
+	/// by the direct parent is owned by a more distant ancestor.
+	/// </summary>
+	[Flags]
+	public enum NamedElementDictionaryLinkUse
+	{
+		/// <summary>
+		/// The parent element has an <see cref="INamedElementDictionaryParent"/>
+		/// implementation to retrieve a dictionary that manages
+		/// names for the child element.
+		/// </summary>
+		DirectDictionary = 1,
+		/// <summary>
+		/// The child element has an <see cref="INamedElementDictionaryRemoteChild"/>
+		/// implementation pointing towards the managed elements, and the
+		/// parent element moves up the chain to the true dictionary owner.
+		/// </summary>
+		DictionaryConnector = 2,
+	}
+	#endregion // NamedElementDictionaryLinkUse enum
 	#region INamedElementDictionaryLink interface
 	/// <summary>
 	/// An interface to mark an ElementLink as the relationship
@@ -348,25 +412,26 @@ namespace ORMSolutions.ORMArchitect.Framework
 	public interface INamedElementDictionaryLink
 	{
 		/// <summary>
-		/// Get the parent role player. Can be null if this
-		/// link is used solely for retrieving remote role
-		/// players through this link.
+		/// Get the parent role player. This will either be a
+		/// <see cref="INamedElementDictionaryParent"/> implementation
+		/// or a <see cref="INamedElementDictionaryRemoteChild"/> implementation
+		/// that is part of a multi-step remote dictionary.
 		/// </summary>
-		INamedElementDictionaryParent ParentRolePlayer{get;}
+		INamedElementDictionaryParentNode ParentRolePlayer{get;}
 		/// <summary>
-		/// Get the child role player. Can be null if this
-		/// link is used solely for retrieving remote role
-		/// players through this link.
+		/// Get the child role player. This will either be a
+		/// <see cref="INamedElementDictionaryChild"/> or a
+		/// <see cref="INamedElementDictionaryRemoteChild"/> implementation.
 		/// </summary>
-		INamedElementDictionaryChild ChildRolePlayer { get;}
+		INamedElementDictionaryChildNode ChildRolePlayer { get;}
 		/// <summary>
-		/// Get the role player from this link that acts as
-		/// a remote parent link.
+		/// Indicate whether the link is used for direct dictionary
+		/// ownership or as a path to a remote dictionary, or both.
 		/// </summary>
-		INamedElementDictionaryRemoteParent RemoteParentRolePlayer { get;}
+		NamedElementDictionaryLinkUse DictionaryLinkUse { get;}
 	}
 	#endregion // INamedElementDictionaryLink interface
-	#region INamedElementDictionaryRemoteParent interface
+	#region INamedElementDictionaryRemoteChild interface
 	/// <summary>
 	/// By default, the assumption is made that the object implementing
 	/// INamedElementDictionaryParent also owns the dictionary. However, this
@@ -375,21 +440,35 @@ namespace ORMSolutions.ORMArchitect.Framework
 	/// child and grandchild elements and the dictionary is owned by the
 	/// parent/grandparent, then the dictionary cannot be reached if the grandchildren
 	/// are associated with the child before the child is associated with the
-	/// parent. Implementing this interface and pointing to it from the
-	/// INamedElementDictionaryLink.RemoteParentRolePlayer property
-	/// enables the dictionary implementation to include remote objects
-	/// in the dictionary.
+	/// parent. Implementing this interface on an object returned by the
+	/// <see cref="INamedElementDictionaryLink.ChildRolePlayer"/> property of a link with
+	/// a <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/> that includes the
+	/// to <see cref="NamedElementDictionaryLinkUse.DictionaryConnector"/> flag enables the
+	/// dictionary implementation to include remote objects in the dictionary.
 	/// </summary>
-	public interface INamedElementDictionaryRemoteParent
+	/// <remarks>If there is more than one remote step between the named element
+	/// and the object that owns the dictionary, then the object implementing
+	/// this interface should also implement the empty <see cref="INamedElementDictionaryParentNode"/>
+	/// interface so that it can be returned by the <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+	/// property in an intermediate link.</remarks>
+	public interface INamedElementDictionaryRemoteChild : INamedElementDictionaryChildNode
 	{
 		/// <summary>
 		/// Get the meta-role guids for all roles on this object that
 		/// attach to a link that implements <see cref="INamedElementDictionaryLink"/>
+		/// and move from this element towards the named element stored in
+		/// the dictionary.
 		/// </summary>
 		/// <returns>An array of supported guids, or null.</returns>
-		Guid[] GetNamedElementDictionaryLinkRoles();
+		Guid[] GetNamedElementDictionaryChildRoles();
+		/// <summary>
+		/// Get the parent role that leads to the named element dictionaries
+		/// associated with this element. Returns <see cref="Guid.Empty"/>
+		/// if no parent role is available.
+		/// </summary>
+		Guid NamedElementDictionaryParentRole { get;}
 	}
-	#endregion // INamedElementDictionaryRemoteParent interface
+	#endregion // INamedElementDictionaryRemoteChild interface
 	#region INamedElementDictionaryOwner interface
 	/// <summary>
 	/// Retrieve a named element dictionary based on the type of
@@ -998,6 +1077,25 @@ namespace ORMSolutions.ORMArchitect.Framework
 			object element;
 			return myDictionary.TryGetValue(elementName, out element) ? new LocatedElement(element) : LocatedElement.Empty;
 		}
+		Type INamedElementDictionary.RemoteDictionaryType
+		{
+			get
+			{
+				return RemoteDictionaryType;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionary.RemoteDictionaryType"/>
+		/// If this object is in use, then the dictionary has been found and
+		/// there is no remote type.
+		/// </summary>
+		protected static Type RemoteDictionaryType
+		{
+			get
+			{
+				return null;
+			}
+		}
 		#endregion // INamedElementDictionary Members
 		#region Deserialization Fixup
 		/// <summary>
@@ -1047,7 +1145,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 		}
 		#endregion Deserialization Fixup
-		#region IMS integration
+		#region Store integration
 		/// <summary>
 		/// Translate the current store context settings into
 		/// a duplicate name action setting
@@ -1353,12 +1451,120 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 		}
 		private static Dictionary<ModelElement, DetachedElementRecord> myDetachedElementRecords;
+		// Track direct connections for link elements with a remote dictionary type.
+		// This item is keyed off the parent element of the link. This parent key
+		// will be a child in the immediate connector parent, which is what the
+		// remote links are keyed off. The remote links are then followed up the
+		// remote chain until the parent is an owner of the remote dictionary key
+		// provided by the parent object, or the parent is not deleted and can be
+		// directly followed.
+		private struct LinkAndDictionaryType
+		{
+			public readonly INamedElementDictionaryLink Link;
+			public readonly Type DictionaryType;
+			public LinkAndDictionaryType(INamedElementDictionaryLink link, Type dictionaryType)
+			{
+				Link = link;
+				DictionaryType = dictionaryType;
+			}
+		}
+		private static Dictionary<ModelElement, LinkAndDictionaryType> myDetachedLinksWithRemoteDictionary;
+		private static Dictionary<ModelElement, INamedElementDictionaryLink> myDetachedRemoteDictionaryConnectorLinks;
 		private static void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
 			Dictionary<ModelElement, DetachedElementRecord> changes = myDetachedElementRecords;
+			Dictionary<ModelElement, LinkAndDictionaryType> detachedRemotePrimaryLinks = myDetachedLinksWithRemoteDictionary;
+			Dictionary<ModelElement, INamedElementDictionaryLink> detachedRemoteConnectorLinks = myDetachedRemoteDictionaryConnectorLinks;
 
 			// Toss unused tracked changes when events are finished
 			myDetachedElementRecords = null;
+			myDetachedLinksWithRemoteDictionary = null;
+			myDetachedRemoteDictionaryConnectorLinks = null;
+
+			if (detachedRemotePrimaryLinks != null &&
+				detachedRemoteConnectorLinks != null)
+			{
+				foreach (KeyValuePair<ModelElement, LinkAndDictionaryType> primaryLinkPair in detachedRemotePrimaryLinks)
+				{
+					ModelElement primaryParent = primaryLinkPair.Key;
+					LinkAndDictionaryType linkAndType = primaryLinkPair.Value;
+					INamedElementDictionaryLink primaryLink = linkAndType.Link;
+					Type dictionaryType = linkAndType.DictionaryType;
+
+					// Go up the deleted chain as far as we can
+					ModelElement resolvedParent = primaryParent;
+					INamedElementDictionary resolvedDictionary = null;
+					INamedElementDictionaryOwner dictionaryOwner;
+					for (; ; )
+					{
+						INamedElementDictionaryLink deletedConnectingLink;
+						if (detachedRemoteConnectorLinks.TryGetValue(resolvedParent, out deletedConnectingLink))
+						{
+							resolvedParent = (ModelElement)deletedConnectingLink.ParentRolePlayer;
+							if (null != (dictionaryOwner = resolvedParent as INamedElementDictionaryOwner) &&
+								null != (resolvedDictionary = dictionaryOwner.FindNamedElementDictionary(dictionaryType)))
+							{
+								break;
+							}
+							resolvedParent = (ModelElement)deletedConnectingLink.ParentRolePlayer;
+							if (!(resolvedParent is INamedElementDictionaryRemoteChild))
+							{
+								resolvedParent = null; // The next loop won't resolve, so don't bother.
+								break;
+							}
+							continue;
+						}
+						else if (null != (dictionaryOwner = resolvedParent as INamedElementDictionaryOwner))
+						{
+							// Check current parent for a dictionary before going into the loop below.
+							resolvedDictionary = dictionaryOwner.FindNamedElementDictionary(dictionaryType);
+						}
+						break;
+					}
+
+					if (null == resolvedDictionary &&
+						null != resolvedParent)
+					{
+						// We got as far up the parent stack as we could get using
+						// cached detached objects. We can now assume that the remainder
+						// of the links are still in the model. Use the available information
+						// on the named element dictionary interfaces to find the dictionary.
+						INamedElementDictionaryRemoteChild remoteChildInfo;
+						Guid parentRoleId;
+						DomainRoleInfo parentRoleInfo;
+						DomainDataDirectory dataDirectory = resolvedParent.Store.DomainDataDirectory;
+						while (null != resolvedParent &&
+							!resolvedParent.IsDeleted &&
+							null != (remoteChildInfo = resolvedParent as INamedElementDictionaryRemoteChild) &&
+							(parentRoleId = remoteChildInfo.NamedElementDictionaryParentRole) != Guid.Empty &&
+							null != (parentRoleInfo = dataDirectory.FindDomainRole(parentRoleId)) &&
+							parentRoleInfo.IsOne &&
+							null != (resolvedParent = parentRoleInfo.GetLinkedElement(resolvedParent)))
+						{
+							if (null != (dictionaryOwner = resolvedParent as INamedElementDictionaryOwner) &&
+								null != (resolvedDictionary = dictionaryOwner.FindNamedElementDictionary(dictionaryType)))
+							{
+								resolvedParent = null;
+							}
+						}
+					}
+					if (null != resolvedDictionary)
+					{
+						ModelElement namedChild = (ModelElement)primaryLink.ChildRolePlayer;
+						DetachedElementRecord changeRecord;
+						if (changes != null &&
+							changes.TryGetValue(namedChild, out changeRecord))
+						{
+							changeRecord.AddDictionary(resolvedDictionary);
+							changes[namedChild] = changeRecord;
+						}
+						else
+						{
+							resolvedDictionary.RemoveElement(namedChild, null, DuplicateNameAction.RetrieveDuplicateCollection);
+						}
+					}
+				}
+			}
 
 			// The name will have stabilized at this point, remove it
 			if (changes != null)
@@ -1431,13 +1637,19 @@ namespace ORMSolutions.ORMArchitect.Framework
 		private static void HandleAddRemove(INamedElementDictionaryLink link, ModelElement element, bool remove, bool forEvent, INotifyElementAdded notifyAdded)
 		{
 			Debug.Assert(element != null || !forEvent);
-			if (link != null)
+			INamedElementDictionaryChildNode childNode;
+			INamedElementDictionaryParentNode parentNode;
+			if (null != link &&
+				null != (childNode = link.ChildRolePlayer) &&
+				null != (parentNode = link.ParentRolePlayer))
 			{
 				INamedElementDictionaryParent parent;
 				INamedElementDictionaryChild child;
 				ModelElement namedChild;
-				if ((null != (parent = link.ParentRolePlayer)) &&
-					(null != (child = link.ChildRolePlayer)) &&
+				NamedElementDictionaryLinkUse linkUse = link.DictionaryLinkUse;
+				if (0 != (linkUse & NamedElementDictionaryLinkUse.DirectDictionary) &&
+					(null != (parent = parentNode as INamedElementDictionaryParent)) &&
+					(null != (child = childNode as INamedElementDictionaryChild)) &&
 					(null != (namedChild = child as ModelElement)))
 				{
 					Guid parentRoleGuid;
@@ -1446,61 +1658,77 @@ namespace ORMSolutions.ORMArchitect.Framework
 					INamedElementDictionary dictionary = parent.GetCounterpartRoleDictionary(parentRoleGuid, childRoleGuid);
 					if (dictionary != null)
 					{
-						DuplicateNameAction duplicateAction;
-						if (forEvent)
+						Type remoteType = dictionary.RemoteDictionaryType;
+						if (remoteType == null) // The dictionary is reachable from the connected objects
 						{
-							duplicateAction = DuplicateNameAction.RetrieveDuplicateCollection;
-							if (remove && element.IsDeleted && myDetachedElementRecords != null)
+							DuplicateNameAction duplicateAction;
+							if (forEvent)
 							{
-								DetachedElementRecord changeRecord;
-								if (myDetachedElementRecords.TryGetValue(namedChild, out changeRecord))
-								{
-									changeRecord.AddDictionary(dictionary);
-									myDetachedElementRecords[namedChild] = changeRecord;
-									return; // Handle all of these at the end of the events
-								}
-							}
-						}
-						else
-						{
-							duplicateAction = GetDuplicateNameActionForRule(
-								namedChild,
-								parent.GetAllowDuplicateNamesContextKey(parentRoleGuid, childRoleGuid));
-						}
-						if (remove)
-						{
-							if (!dictionary.RemoveElement(namedChild, null, duplicateAction) &&
-								forEvent)
-							{
-								string elementName = DomainClassInfo.GetName(namedChild);
-								if (elementName != null)
+								duplicateAction = DuplicateNameAction.RetrieveDuplicateCollection;
+								if (remove && element.IsDeleted && myDetachedElementRecords != null)
 								{
 									DetachedElementRecord changeRecord;
-									if (myDetachedElementRecords == null)
+									if (myDetachedElementRecords.TryGetValue(namedChild, out changeRecord))
 									{
-										myDetachedElementRecords = new Dictionary<ModelElement, DetachedElementRecord>();
-										changeRecord = new DetachedElementRecord(dictionary);
+										changeRecord.AddDictionary(dictionary);
+										myDetachedElementRecords[namedChild] = changeRecord;
+										return; // Handle all of these at the end of the events
 									}
-									else
+								}
+							}
+							else
+							{
+								duplicateAction = GetDuplicateNameActionForRule(
+									namedChild,
+									parent.GetAllowDuplicateNamesContextKey(parentRoleGuid, childRoleGuid));
+							}
+							if (remove)
+							{
+								if (!dictionary.RemoveElement(namedChild, null, duplicateAction) &&
+									forEvent)
+								{
+									string elementName = DomainClassInfo.GetName(namedChild);
+									if (elementName != null)
 									{
-										DetachedElementRecord existingRecord;
-										if (myDetachedElementRecords.TryGetValue(namedChild, out existingRecord))
+										DetachedElementRecord changeRecord;
+										if (myDetachedElementRecords == null)
 										{
-											existingRecord.AddDictionary(dictionary);
-											changeRecord = existingRecord;
+											myDetachedElementRecords = new Dictionary<ModelElement, DetachedElementRecord>();
+											changeRecord = new DetachedElementRecord(dictionary);
 										}
 										else
 										{
-											changeRecord = new DetachedElementRecord(dictionary);
+											DetachedElementRecord existingRecord;
+											if (myDetachedElementRecords.TryGetValue(namedChild, out existingRecord))
+											{
+												existingRecord.AddDictionary(dictionary);
+												changeRecord = existingRecord;
+											}
+											else
+											{
+												changeRecord = new DetachedElementRecord(dictionary);
+											}
 										}
+										myDetachedElementRecords[namedChild] = changeRecord;
 									}
-									myDetachedElementRecords[namedChild] = changeRecord;
 								}
 							}
+							else
+							{
+								dictionary.AddElement(namedChild, duplicateAction, notifyAdded);
+							}
 						}
-						else
+						else if (forEvent)
 						{
-							dictionary.AddElement(namedChild, duplicateAction, notifyAdded);
+							// Cache the link keyed off the parent element. We also cache remote
+							// connectors for events, which cache of the child element. The child
+							// element in those cases matches the primary element here.
+							Dictionary<ModelElement, LinkAndDictionaryType> remoteLinks = myDetachedLinksWithRemoteDictionary;
+							if (remoteLinks == null)
+							{
+								myDetachedLinksWithRemoteDictionary = remoteLinks = new Dictionary<ModelElement, LinkAndDictionaryType>();
+							}
+							remoteLinks[(ModelElement)parent] = new LinkAndDictionaryType(link, remoteType);
 						}
 					}
 				}
@@ -1508,18 +1736,37 @@ namespace ORMSolutions.ORMArchitect.Framework
 				// Now handle any remote parents associated with this link. Remote
 				// work only needs to be done for adds inside a transaction. The rest
 				// handles itself automatically.
-				INamedElementDictionaryRemoteParent remoteParent;
-				if (!forEvent && !remove && notifyAdded == null && null != (remoteParent = link.RemoteParentRolePlayer))
+				INamedElementDictionaryRemoteChild remoteChild;
+				if (forEvent)
 				{
-					Guid[] remoteRoleGuids = remoteParent.GetNamedElementDictionaryLinkRoles();
+					if (remove &&
+						0 != (linkUse & NamedElementDictionaryLinkUse.DictionaryConnector) &&
+						null != (remoteChild = childNode as INamedElementDictionaryRemoteChild))
+					{
+						// Cache the link keyed off the child element to allow us to reconstruct
+						// the remote ownership chain.
+						Dictionary<ModelElement, INamedElementDictionaryLink> remoteConnectors = myDetachedRemoteDictionaryConnectorLinks;
+						if (remoteConnectors == null)
+						{
+							myDetachedRemoteDictionaryConnectorLinks = remoteConnectors = new Dictionary<ModelElement, INamedElementDictionaryLink>();
+						}
+						remoteConnectors[(ModelElement)childNode] = link;
+					}
+				}
+				else if (!remove &&
+					notifyAdded == null &&
+					0 != (linkUse & NamedElementDictionaryLinkUse.DictionaryConnector) &&
+					null != (remoteChild = childNode as INamedElementDictionaryRemoteChild))
+				{
+					Guid[] remoteRoleGuids = remoteChild.GetNamedElementDictionaryChildRoles();
 					int remoteRoleGuidsCount;
 					if (remoteRoleGuids != null && 0 != (remoteRoleGuidsCount = remoteRoleGuids.Length))
 					{
-						ModelElement parentElement = (ModelElement)remoteParent;
+						ModelElement parentElement = (ModelElement)remoteChild;
 						for (int i = 0; i < remoteRoleGuidsCount; ++i)
 						{
 
-							ReadOnlyCollection<ElementLink> remoteLinks = DomainRoleInfo.GetElementLinks<ElementLink>(parentElement, remoteRoleGuids[i]); ;
+							ReadOnlyCollection<ElementLink> remoteLinks = DomainRoleInfo.GetElementLinks<ElementLink>(parentElement, remoteRoleGuids[i]);
 							int remoteLinksCount = remoteLinks.Count;
 							for (int j = 0; j < remoteLinksCount; ++j)
 							{
@@ -1595,25 +1842,24 @@ namespace ORMSolutions.ORMArchitect.Framework
 					}
 					for (int i = 0; i < parentsCount; ++i)
 					{
-						INamedElementDictionaryParent parent = parents[i] as INamedElementDictionaryParent;
-						if (parent != null)
+						INamedElementDictionaryParent parent;
+						INamedElementDictionary dictionary;
+						if (null != (parent = parents[i] as INamedElementDictionaryParent) &&
+							null != (dictionary = parent.GetCounterpartRoleDictionary(parentRoleGuid, childRoleGuid)) &&
+							null == dictionary.RemoteDictionaryType)
 						{
-							INamedElementDictionary dictionary = parent.GetCounterpartRoleDictionary(parentRoleGuid, childRoleGuid);
-							if (dictionary != null)
+							DuplicateNameAction duplicateAction;
+							if (forEvent)
 							{
-								DuplicateNameAction duplicateAction;
-								if (forEvent)
-								{
-									duplicateAction = DuplicateNameAction.RetrieveDuplicateCollection;
-								}
-								else
-								{
-									duplicateAction = GetDuplicateNameActionForRule(
-										namedChild,
-										parent.GetAllowDuplicateNamesContextKey(parentRoleGuid, childRoleGuid));
-								}
-								dictionary.RenameElement(namedChild, e.OldValue as string, e.NewValue as string, duplicateAction);
+								duplicateAction = DuplicateNameAction.RetrieveDuplicateCollection;
 							}
+							else
+							{
+								duplicateAction = GetDuplicateNameActionForRule(
+									namedChild,
+									parent.GetAllowDuplicateNamesContextKey(parentRoleGuid, childRoleGuid));
+							}
+							dictionary.RenameElement(namedChild, e.OldValue as string, e.NewValue as string, duplicateAction);
 						}
 					}
 				}
@@ -1647,7 +1893,85 @@ namespace ORMSolutions.ORMArchitect.Framework
 			eventManager.AddOrRemoveHandler(new EventHandler<TransactionCommitEventArgs>(TransactionCommittedEvent), action);
 			eventManager.AddOrRemoveHandler(new EventHandler<TransactionRollbackEventArgs>(TransactionRolledBackEvent), action);
 		}
-		#endregion // IMS integration
+		#endregion // Store integration
+		#region Remote handling
+		#region RemoteDictionaryToken class
+		private sealed class RemoteDictionaryToken : INamedElementDictionary
+		{
+			#region Member Variables
+			private Type myDictionaryType;
+			#endregion // Member Variables
+			#region Constructor
+			/// <summary>
+			/// Create a dictionary token for a given type
+			/// </summary>
+			public RemoteDictionaryToken(Type dictionaryType)
+			{
+				myDictionaryType = dictionaryType;
+			}
+			#endregion // Constructor
+			#region INamedElementDictionary Implementation
+			void INamedElementDictionary.AddElement(ModelElement element, DuplicateNameAction duplicateAction, INotifyElementAdded notifyAdded)
+			{
+			}
+			bool INamedElementDictionary.RemoveElement(ModelElement element, string alternateElementName, DuplicateNameAction duplicateAction)
+			{
+				return false;
+			}
+			void INamedElementDictionary.ReplaceElement(ModelElement originalElement, ModelElement replacementElement, DuplicateNameAction duplicateAction)
+			{
+			}
+			void INamedElementDictionary.RenameElement(ModelElement element, string oldName, string newName, DuplicateNameAction duplicateAction)
+			{
+			}
+			LocatedElement INamedElementDictionary.GetElement(string elementName)
+			{
+				return LocatedElement.Empty;
+			}
+			Type INamedElementDictionary.RemoteDictionaryType
+			{
+				get
+				{
+					return myDictionaryType;
+				}
+			}
+			#endregion // INamedElementDictionary Implementation
+		}
+		#endregion // RemoteDictionaryToken class
+		private static Dictionary<Type, RemoteDictionaryToken> myDictionaryTokens;
+		/// <summary>
+		/// Get a token representing a remote dictionary that is
+		/// not currently reachable by a direct path.
+		/// </summary>
+		/// <param name="dictionaryType">A type tha will retrieve the dictionary
+		/// from the resolve <see cref="INamedElementDictionaryOwner"/></param>
+		/// <returns>A bare <see cref="INamedElementDictionary"/> implementation
+		/// setting the remote dictionary type.</returns>
+		public static INamedElementDictionary GetRemoteDictionaryToken(Type dictionaryType)
+		{
+			Dictionary<Type, RemoteDictionaryToken> tokens;
+			RemoteDictionaryToken retVal;
+			if (null == (tokens = myDictionaryTokens))
+			{
+				System.Threading.Interlocked.CompareExchange<Dictionary<Type, RemoteDictionaryToken>>(ref myDictionaryTokens, new Dictionary<Type, RemoteDictionaryToken>(), null);
+				tokens = myDictionaryTokens;
+			}
+			else if (tokens.TryGetValue(dictionaryType, out retVal))
+			{
+				return retVal;
+			}
+			lock (tokens)
+			{
+				if (tokens.TryGetValue(dictionaryType, out retVal))
+				{
+					return retVal;
+				}
+				retVal = new RemoteDictionaryToken(dictionaryType);
+				tokens.Add(dictionaryType, retVal);
+			}
+			return retVal;
+		}
+		#endregion // Remote handling
 	}
 	#endregion // NamedElementDictionary class
 }

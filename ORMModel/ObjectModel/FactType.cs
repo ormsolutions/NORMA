@@ -60,7 +60,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteParent, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
+	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteChild, INamedElementDictionaryParentNode, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
 	{
 		#region Public token values
 		/// <summary>
@@ -717,22 +717,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			childDomainRoleId = ModelHasFactType.FactTypeDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
-		#region INamedElementDictionaryRemoteParent implementation
-		private static readonly Guid[] myRemoteNamedElementDictionaryRoles = new Guid[] { FactTypeHasRole.FactTypeDomainRoleId, FactTypeHasReadingOrder.FactTypeDomainRoleId };
+		#region INamedElementDictionaryRemoteChild implementation
+		private static readonly Guid[] myRemoteNamedElementDictionaryChildRoles = new Guid[] { FactTypeHasRole.FactTypeDomainRoleId, FactTypeHasReadingOrder.FactTypeDomainRoleId };
 		/// <summary>
-		/// Implementation of INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles. Identifies
+		/// Implements <see cref="INamedElementDictionaryRemoteChild.GetNamedElementDictionaryChildRoles"/>. Identifies
 		/// this as a remote parent for the 'ModelHasConstraint' naming set and the duplicate reading set of names.
 		/// </summary>
 		/// <returns>Guid for the FactTypeHasRole.FactType and the FactTypeHasReadingOrder.FactType role</returns>
-		protected static Guid[] GetNamedElementDictionaryLinkRoles()
+		protected static Guid[] GetNamedElementDictionaryChildRoles()
 		{
-			return myRemoteNamedElementDictionaryRoles;
+			return myRemoteNamedElementDictionaryChildRoles;
 		}
-		Guid[] INamedElementDictionaryRemoteParent.GetNamedElementDictionaryLinkRoles()
+		Guid[] INamedElementDictionaryRemoteChild.GetNamedElementDictionaryChildRoles()
 		{
-			return GetNamedElementDictionaryLinkRoles();
+			return GetNamedElementDictionaryChildRoles();
 		}
-		#endregion // INamedElementDictionaryRemoteParent implementation
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryRemoteChild.NamedElementDictionaryParentRole"/>
+		/// </summary>
+		protected static Guid NamedElementDictionaryParentRole
+		{
+			get
+			{
+				return ModelHasFactType.FactTypeDomainRoleId;
+			}
+		}
+		Guid INamedElementDictionaryRemoteChild.NamedElementDictionaryParentRole
+		{
+			get
+			{
+				return NamedElementDictionaryParentRole;
+			}
+		}
+		#endregion // INamedElementDictionaryRemoteChild implementation
 		#region FactTypeNameChangeRule
 		/// <summary>
 		/// ChangeRule: typeof(FactType)

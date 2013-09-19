@@ -1838,123 +1838,143 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	partial class ModelHasObjectType : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
-		/// Returns Model.
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:Model"/>.
 		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
 			get { return Model; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns ObjectTypeCollection.
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:ObjectType"/>.
 		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return ObjectType; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns ObjectType.
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This link is used both directly for object type names in the model,
+		/// and indirectly for value constraint names on value types.
 		/// </summary>
-		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return ObjectType; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary | NamedElementDictionaryLinkUse.DictionaryConnector;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	partial class ModelHasFactType : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
-		/// Returns Model.
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:Model"/>.
 		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
 			get { return Model; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns ObjectTypeCollection.
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:FactType"/>.
 		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return FactType; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns FactTypeCollection.
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This link is used as a connector for role value constraint names and
+		/// reading signatures. Fact type names are not directly tracked.
 		/// </summary>
-		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return FactType; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DictionaryConnector;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	partial class ModelHasSetComparisonConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
-		/// Returns Model.
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:Model"/>.
 		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
 			get { return Model; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns SetComparisonConstraintCollection.
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:SetComparisonConstraint"/>.
 		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return SetComparisonConstraint; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null.
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// The model owns the dictionary for constraint names, so this is a direct link. 
 		/// </summary>
-		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return null; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
@@ -1981,324 +2001,385 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	partial class ModelHasSetConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
-		/// Returns Model.
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:Model"/>.
 		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
 			get { return Model; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns SetConstraintCollection.
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:SetConstraint"/>.
 		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return SetConstraint; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null.
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// The model owns the dictionary for constraint names, so this is a direct link. 
 		/// </summary>
-		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return null; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	partial class ValueTypeHasValueConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
-		/// Returns FactType.
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:ValueType"/>.
 		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
 			get { return ValueType; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns InternalConstraintCollection.
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:ValueConstraint"/>.
 		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return ValueConstraint; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This is the direct parent link for the dictionary used to record value
+		/// type value constraint names. The returned parent indicates that the
+		/// dictionary itself is remotely managed by implementing the
+		/// <see cref="INamedElementDictionaryRemoteChild"/> interface.
 		/// </summary>
-		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return null; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	partial class RoleHasValueConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
-		/// Returns FactType.
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:Role"/>.
 		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
 			get { return Role; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns InternalConstraintCollection.
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:ValueConstraint"/>.
 		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return ValueConstraint; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This is the direct parent link for the dictionary used to record role
+		/// type value constraint names. The returned parent indicates that the
+		/// dictionary itself is remotely managed by implementing the
+		/// <see cref="INamedElementDictionaryRemoteChild"/> interface.
 		/// </summary>
-		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return null; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	partial class FactTypeHasRole : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
-		/// Returns FactType.
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:FactType"/>.
 		/// </summary>
-		protected static INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
-			get { return null; }
+			get { return FactType; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns InternalConstraintCollection.
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:Role"/>.
 		/// </summary>
-		protected static INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
-			get { return null; }
+			get { return Role.Role; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This connects the dictionary for role value constraints.
 		/// </summary>
-		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return Role as INamedElementDictionaryRemoteParent; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DictionaryConnector;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	partial class FactTypeHasReadingOrder : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:FactType"/>
 		/// </summary>
-		protected static INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
-			get { return null; }
+			get { return FactType; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:ReadingOrder"/>
 		/// </summary>
-		protected static INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
-			get { return null; }
+			get { return ReadingOrder; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This connects the dictionary for reading signatures.
 		/// </summary>
-		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return ReadingOrder as INamedElementDictionaryRemoteParent; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DictionaryConnector;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	partial class ReadingOrderHasReading : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ParentRolePlayer
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:ReadingOrder"/>
 		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
 			get { return ReadingOrder; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:Reading"/>.
 		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return Reading; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This is the direct parent link for the dictionary used to record reading
+		/// signatures. The returned parent indicates that the
+		/// dictionary itself is remotely managed by implementing the
+		/// <see cref="INamedElementDictionaryRemoteChild"/> interface.
 		/// </summary>
-		protected static INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return null; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	partial class ModelContainsRecognizedPhrase : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
 		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
-		/// Returns Model.
+		/// Returns the associated <see cref="p:Model"/>
 		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
 			get { return Model; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
 		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
-		/// Returns <see cref="RecognizedPhrase"/>.
+		/// Returns the associated <see cref="p:RecognizedPhrase"/>.
 		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return RecognizedPhrase; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements <see cref="INamedElementDictionaryLink.RemoteParentRolePlayer"/>
-		/// Returns <see langword="null"/>
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
 		/// </summary>
-		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return null; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
 	partial class ModelDefinesFunction : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
-		INamedElementDictionaryParent INamedElementDictionaryLink.ParentRolePlayer
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
 		{
 			get { return ParentRolePlayer; }
 		}
 		/// <summary>
 		/// Implements INamedElementDictionaryLink.ParentRolePlayer
-		/// Returns Model.
+		/// Returns the associated <see cref="p:Model"/>
 		/// </summary>
-		protected INamedElementDictionaryParent ParentRolePlayer
+		protected INamedElementDictionaryParentNode ParentRolePlayer
 		{
 			get { return Model; }
 		}
-		INamedElementDictionaryChild INamedElementDictionaryLink.ChildRolePlayer
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
 		{
 			get { return ChildRolePlayer; }
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.ChildRolePlayer
-		/// Returns Function.
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:Function"/>.
 		/// </summary>
-		protected INamedElementDictionaryChild ChildRolePlayer
+		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return Function; }
 		}
-		INamedElementDictionaryRemoteParent INamedElementDictionaryLink.RemoteParentRolePlayer
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
-			get { return RemoteParentRolePlayer; }
+			get
+			{
+				return DictionaryLinkUse;
+			}
 		}
 		/// <summary>
-		/// Implements INamedElementDictionaryLink.RemoteParentRolePlayer
-		/// Returns null.
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This link directly connects the named object to the parent model,
+		/// which owns the dictionary.
 		/// </summary>
-		protected INamedElementDictionaryRemoteParent RemoteParentRolePlayer
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
 		{
-			get { return null; }
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
