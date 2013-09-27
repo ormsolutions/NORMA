@@ -48,6 +48,7 @@
 			<xs:enumeration value="DisjunctiveMandatoryVerbalizer"/>
 			<xs:enumeration value="FrequencyConstraint"/>
 			<xs:enumeration value="RingConstraint"/>
+			<xs:enumeration value="ValueComparisonConstraint"/>
 			<xs:enumeration value="SubsetConstraint"/>
 			<xs:enumeration value="ExclusionConstraint"/>
 			<xs:enumeration value="EqualityConstraint"/>
@@ -835,6 +836,36 @@
 					<xs:enumeration value="BinaryRingFactType">
 						<xs:annotation>
 							<xs:documentation>Check if the current binary fact type is a ring fact type. Binary is already assumed.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ValueComparisonOperatorLessThan">
+						<xs:annotation>
+							<xs:documentation>Check if the operator for the context ValueComparisonConstraint is 'less than'.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ValueComparisonOperatorLessThanOrEqual">
+						<xs:annotation>
+							<xs:documentation>Check if the operator for the context ValueComparisonConstraint is 'less than or equal'.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ValueComparisonOperatorGreaterThan">
+						<xs:annotation>
+							<xs:documentation>Check if the operator for the context ValueComparisonConstraint is 'greater than'.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ValueComparisonOperatorGreaterThanOrEqual">
+						<xs:annotation>
+							<xs:documentation>Check if the operator for the context ValueComparisonConstraint is 'greater than or equal'.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ValueComparisonOperatorEqual">
+						<xs:annotation>
+							<xs:documentation>Check if the operator for the context ValueComparisonConstraint is 'equal'.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="ValueComparisonOperatorNotEqual">
+						<xs:annotation>
+							<xs:documentation>Check if the operator for the context ValueComparisonConstraint is 'not equal'.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
 				</xs:restriction>

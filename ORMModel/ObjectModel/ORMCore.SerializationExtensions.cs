@@ -247,6 +247,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("ExclusionConstraint", ExclusionConstraint.DomainClassId);
 				classNameMap.Add("SubsetConstraint", SubsetConstraint.DomainClassId);
 				classNameMap.Add("RingConstraint", RingConstraint.DomainClassId);
+				classNameMap.Add("ValueComparisonConstraint", ValueComparisonConstraint.DomainClassId);
 				classNameMap.Add("Function", Function.DomainClassId);
 				classNameMap.Add("Parameter", FunctionParameter.DomainClassId);
 				classNameMap.Add("RolePathOwner", RolePathOwner.DomainClassId);
@@ -276,6 +277,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("ValueRangeOverlapError", ValueRangeOverlapError.DomainClassId);
 				classNameMap.Add("ValueTypeDetachedError", ValueConstraintValueTypeDetachedError.DomainClassId);
 				classNameMap.Add("RingConstraintTypeNotSpecifiedError", RingConstraintTypeNotSpecifiedError.DomainClassId);
+				classNameMap.Add("ValueComparisonConstraintOperatorNotSpecifiedError", ValueComparisonConstraintOperatorNotSpecifiedError.DomainClassId);
 				classNameMap.Add("CompatibleValueTypeInstanceValueError", CompatibleValueTypeInstanceValueError.DomainClassId);
 				classNameMap.Add("TooFewEntityTypeRoleInstancesError", TooFewEntityTypeRoleInstancesError.DomainClassId);
 				classNameMap.Add("TooFewFactTypeRoleInstancesError", TooFewFactTypeRoleInstancesError.DomainClassId);
@@ -8606,6 +8608,88 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // RingConstraint serialization
+	#region ValueComparisonConstraint serialization
+	partial class ValueComparisonConstraint : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected new CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == ValueComparisonConstraint.OperatorDomainPropertyId)
+			{
+				return new CustomSerializedPropertyInfo(null, "Operator", null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedErrorDomainRoleId)
+			{
+				return CustomSerializedElementInfo.NotWritten;
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = ValueComparisonConstraint.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("Operator", ValueComparisonConstraint.OperatorDomainPropertyId);
+				ValueComparisonConstraint.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
+			{
+				rVal = base.MapAttribute(xmlNamespace, attributeName);
+			}
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+	}
+	#endregion // ValueComparisonConstraint serialization
 	#region Function serialization
 	partial class Function : ICustomSerializedElement
 	{
@@ -11969,6 +12053,68 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // RingConstraintTypeNotSpecifiedError serialization
+	#region ValueComparisonConstraintOperatorNotSpecifiedError serialization
+	partial class ValueComparisonConstraintOperatorNotSpecifiedError : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.LinkInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "ValueComparisonConstraint", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = ValueComparisonConstraintOperatorNotSpecifiedError.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ValueComparisonConstraint", match);
+				ValueComparisonConstraintOperatorNotSpecifiedError.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+	}
+	#endregion // ValueComparisonConstraintOperatorNotSpecifiedError serialization
 	#region CompatibleValueTypeInstanceValueError serialization
 	partial class CompatibleValueTypeInstanceValueError : ICustomSerializedElement
 	{

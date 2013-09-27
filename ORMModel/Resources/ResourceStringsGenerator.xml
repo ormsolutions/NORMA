@@ -443,7 +443,8 @@
 	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesError" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message"/>
 	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message"/>
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message"/>
-	<ResourceString name="RingConstraintTypeNotSpecifiedError" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message"/>
+	<ResourceString name="ModelErrorRingConstraintTypeNotSpecified" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message"/>
+	<ResourceString name="ModelErrorValueComparisonConstraintOperatorNotSpecified" model ="Model" resourceName="ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.Message"/>
 	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text"/>
 	<ResourceString name="ModelErrorFrequencyConstraintExactlyOneError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintExactlyOneError.Text"/>
 	<ResourceString name="ModelErrorFrequencyConstraintNonRestrictiveRangeError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.Text"/>

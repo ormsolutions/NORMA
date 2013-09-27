@@ -232,6 +232,11 @@
 				<GeometryShapeMoniker Name="ExternalConstraintShape"/>
 			</BaseGeometryShape>
 		</GeometryShape>
+		<GeometryShape Name="ValueComparisonConstraintShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="BC15C87A-50BA-4743-BC56-788804ADECFD" FillGradientMode="None" InitialWidth=".16" InitialHeight=".16">
+			<BaseGeometryShape>
+				<GeometryShapeMoniker Name="ExternalConstraintShape"/>
+			</BaseGeometryShape>
+		</GeometryShape>
 		<GeometryShape Name="FloatingTextShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" InheritanceModifier="Abstract" Id="0904999F-D9C5-4C4E-A08F-F8DD4B2F29A3" FillGradientMode="None">
 			<BaseGeometryShape>
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
@@ -448,6 +453,13 @@
 				<GeometryShapeMoniker Name="RingConstraintShape"/>
 			</ShapeMap>
 			<ShapeMap>
+				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ValueComparisonConstraint"/>
+				<ParentElementPath>
+					<DomainPath>ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetConstraint.Model/!Model</DomainPath>
+				</ParentElementPath>
+				<GeometryShapeMoniker Name="ValueComparisonConstraintShape"/>
+			</ShapeMap>
+			<ShapeMap>
 				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ObjectType"/>
 				<ParentElementPath>
 					<DomainPath>ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType.Model/!Model</DomainPath>
@@ -580,6 +592,9 @@
 			</ElementTool>
 			<ElementTool Name="RingConstraint" ToolboxIcon="../Resources/Toolbox.RingConstraint.Bitmap.Id.bmp" Caption="Ring Constraint" Tooltip="New Ring Constraint">
 				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/RingConstraint"/>
+			</ElementTool>
+			<ElementTool Name="ValueComparisonConstraint" ToolboxIcon="../Resources/Toolbox.ValueComparisonConstraint.Bitmap.Id.bmp" Caption="Value Comparison Constraint" Tooltip="New Value Comparison Constraint">
+				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ValueComparisonConstraint"/>
 			</ElementTool>
 			<ConnectionTool Name="ExternalConstraintConnector" ToolboxIcon="../Resources/Toolbox.ExternalConstraintConnector.Bitmap.Id.bmp" Caption="Constraint Connector" Tooltip="Constraint Connector Tool"/>
 			<ElementTool Name="ModelNote" ToolboxIcon="../Resources/Toolbox.ModelNote.Bitmap.Id.bmp" Caption="Model Note" Tooltip="New Model Note">

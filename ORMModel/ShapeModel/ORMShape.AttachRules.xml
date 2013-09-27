@@ -309,6 +309,11 @@
 				<arg:RuleOn targetType="RingConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="ValueComparisonConstraintShape">
+			<arg:ChangeRule methodName="ValueComparisonConstraintPropertyChangeRule">
+				<arg:RuleOn targetType="ValueComparisonConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+			</arg:ChangeRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="ValueConstraintShape">
 			<arg:ChangeRule methodName="ValueConstraintTextChangedRule">
 				<arg:RuleOn targetType="ValueConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>

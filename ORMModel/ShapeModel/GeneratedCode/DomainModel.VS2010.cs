@@ -100,6 +100,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				typeof(ExternalConstraintShape),
 				typeof(FrequencyConstraintShape),
 				typeof(RingConstraintShape),
+				typeof(ValueComparisonConstraintShape),
 				typeof(FloatingTextShape),
 				typeof(ObjectifiedFactTypeNameShape),
 				typeof(ReadingShape),
@@ -169,7 +170,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(23);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(24);
 				createElementMap.Add(typeof(ORMDiagram), 0);
 				createElementMap.Add(typeof(RolePlayerLink), 1);
 				createElementMap.Add(typeof(RolePlayerProxyLink), 2);
@@ -182,13 +183,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				createElementMap.Add(typeof(ExternalConstraintShape), 9);
 				createElementMap.Add(typeof(FrequencyConstraintShape), 10);
 				createElementMap.Add(typeof(RingConstraintShape), 11);
-				createElementMap.Add(typeof(ObjectifiedFactTypeNameShape), 12);
-				createElementMap.Add(typeof(ReadingShape), 13);
-				createElementMap.Add(typeof(ValueConstraintShape), 14);
-				createElementMap.Add(typeof(RoleNameShape), 15);
-				createElementMap.Add(typeof(ModelNoteShape), 16);
-				createElementMap.Add(typeof(LinkConnectorShape), 17);
-				createElementMap.Add(typeof(FactTypeLinkConnectorShape), 18);
+				createElementMap.Add(typeof(ValueComparisonConstraintShape), 12);
+				createElementMap.Add(typeof(ObjectifiedFactTypeNameShape), 13);
+				createElementMap.Add(typeof(ReadingShape), 14);
+				createElementMap.Add(typeof(ValueConstraintShape), 15);
+				createElementMap.Add(typeof(RoleNameShape), 16);
+				createElementMap.Add(typeof(ModelNoteShape), 17);
+				createElementMap.Add(typeof(LinkConnectorShape), 18);
+				createElementMap.Add(typeof(FactTypeLinkConnectorShape), 19);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -216,13 +218,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				case 9: return new ExternalConstraintShape(partition, propertyAssignments);
 				case 10: return new FrequencyConstraintShape(partition, propertyAssignments);
 				case 11: return new RingConstraintShape(partition, propertyAssignments);
-				case 12: return new ObjectifiedFactTypeNameShape(partition, propertyAssignments);
-				case 13: return new ReadingShape(partition, propertyAssignments);
-				case 14: return new ValueConstraintShape(partition, propertyAssignments);
-				case 15: return new RoleNameShape(partition, propertyAssignments);
-				case 16: return new ModelNoteShape(partition, propertyAssignments);
-				case 17: return new LinkConnectorShape(partition, propertyAssignments);
-				case 18: return new FactTypeLinkConnectorShape(partition, propertyAssignments);
+				case 12: return new ValueComparisonConstraintShape(partition, propertyAssignments);
+				case 13: return new ObjectifiedFactTypeNameShape(partition, propertyAssignments);
+				case 14: return new ReadingShape(partition, propertyAssignments);
+				case 15: return new ValueConstraintShape(partition, propertyAssignments);
+				case 16: return new RoleNameShape(partition, propertyAssignments);
+				case 17: return new ModelNoteShape(partition, propertyAssignments);
+				case 18: return new LinkConnectorShape(partition, propertyAssignments);
+				case 19: return new FactTypeLinkConnectorShape(partition, propertyAssignments);
 				default: return null;
 			}
 		}

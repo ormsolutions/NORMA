@@ -121,6 +121,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(ReadingShape).GetNestedType("RolePlayerDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("RolePlayerRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RingConstraintShape).GetNestedType("RingConstraintPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueComparisonConstraintShape).GetNestedType("ValueComparisonConstraintPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueConstraintTextChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraintShape).GetNestedType("ValueConstraintShapeDisplayChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic)};
 					ORMShapeDomainModel.myCustomDomainModelTypes = retVal;
@@ -156,7 +157,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 89; ++i)
+			for (int i = 0; i < 90; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -2492,6 +2493,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 	}
 	#endregion // Rule classes for RingConstraintShape
+	#region Rule classes for ValueComparisonConstraintShape
+	partial class ValueComparisonConstraintShape
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ValueComparisonConstraintPropertyChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ValueComparisonConstraintPropertyChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void ValueComparisonConstraintPropertyChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape.ValueComparisonConstraintPropertyChangeRule");
+				ValueComparisonConstraintShape.ValueComparisonConstraintPropertyChangeRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape.ValueComparisonConstraintPropertyChangeRule");
+			}
+		}
+	}
+	#endregion // Rule classes for ValueComparisonConstraintShape
 	#region Rule classes for ValueConstraintShape
 	partial class ValueConstraintShape
 	{

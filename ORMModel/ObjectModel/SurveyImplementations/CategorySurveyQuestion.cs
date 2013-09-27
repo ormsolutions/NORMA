@@ -293,6 +293,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		RingTransitiveIrreflexive,
 		/// <summary>
+		/// ValueComparison Undefined
+		/// </summary>
+		ValueComparisonUndefined,
+		/// <summary>
+		/// ValueComparison Equal
+		/// </summary>
+		ValueComparisonEqual,
+		/// <summary>
+		/// ValueComparison Not Equal
+		/// </summary>
+		ValueComparisonNotEqual,
+		/// <summary>
+		/// ValueComparison Less Than
+		/// </summary>
+		ValueComparisonLessThan,
+		/// <summary>
+		/// ValueComparison Greater Than
+		/// </summary>
+		ValueComparisonGreaterThan,
+		/// <summary>
+		/// ValueComparison Less Than Or Equal
+		/// </summary>
+		ValueComparisonLessThanOrEqual,
+		/// <summary>
+		/// ValueComparison Greater Than Or Equal
+		/// </summary>
+		ValueComparisonGreaterThanOrEqual,
+		/// <summary>
 		/// Internal uniqueness constraint
 		/// </summary>
 		InternalUniquenessConstraintDeontic,
@@ -440,6 +468,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		///Transitive Irreflexive deontic
 		/// </summary>
 		RingTransitiveIrreflexiveDeontic,
+		/// <summary>
+		/// ValueComparison Undefined Deontic
+		/// </summary>
+		ValueComparisonUndefinedDeontic,
+		/// <summary>
+		/// ValueComparison Equal Deontic
+		/// </summary>
+		ValueComparisonEqualDeontic,
+		/// <summary>
+		/// ValueComparison Not Equal Deontic
+		/// </summary>
+		ValueComparisonNotEqualDeontic,
+		/// <summary>
+		/// ValueComparison Less Than Deontic
+		/// </summary>
+		ValueComparisonLessThanDeontic,
+		/// <summary>
+		/// ValueComparison Greater Than Deontic
+		/// </summary>
+		ValueComparisonGreaterThanDeontic,
+		/// <summary>
+		/// ValueComparison Less Than Or Equal Deontic
+		/// </summary>
+		ValueComparisonLessThanOrEqualDeontic,
+		/// <summary>
+		/// ValueComparison Greater Than Or Equal Deontic
+		/// </summary>
+		ValueComparisonGreaterThanOrEqualDeontic,
 		/// <summary>
 		/// Primary Subtype Relationship
 		/// </summary>

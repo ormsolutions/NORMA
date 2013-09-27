@@ -230,6 +230,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						return retVal;
 					});
 				#endregion // RingConstraint error activation
+				#region ValueComparisonConstraint error activation
+				activationService.RegisterErrorActivator(
+					typeof(ValueComparisonConstraint),
+					false,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						bool retVal = true;
+						if (error is ValueComparisonConstraintOperatorNotSpecifiedError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ValueComparisonConstraint.OperatorDomainPropertyId),
+								true);
+						}
+						else
+						{
+							retVal = false;
+						}
+						return retVal;
+					});
+				#endregion // ValueComparisonConstraint error activation
 				#region SetComparisonConstraint error activation
 				activationService.RegisterErrorActivator(
 					typeof(SetComparisonConstraint),

@@ -224,6 +224,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						{
 							case ConstraintType.ExternalUniqueness:
 							case ConstraintType.Frequency:
+							case ConstraintType.ValueComparison:
 								// Translate selected unary roles back to the implied role
 								bool duplicatedSelectedRoles = false;
 								for (int i = 0; i < rolesCount; ++i)

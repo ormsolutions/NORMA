@@ -1149,6 +1149,10 @@
 		<se:Attribute ID="RingType" Name="Type"/>
 		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraintTypeNotSpecifiedError" WriteStyle="NotWritten"/>
 	</se:Element>
+	<se:Element Class="ValueComparisonConstraint" Override="true">
+		<se:Attribute ID="Operator" Name="Operator"/>
+		<se:Link RelationshipName="ValueComparisonConstraintHasOperatorNotSpecifiedError" RoleName="OperatorNotSpecifiedError" WriteStyle="NotWritten"/>
+	</se:Element>
 
 	<se:Element Class="Function" Override="true">
 		<se:ConditionalSerialization>
@@ -1599,6 +1603,9 @@
 	</se:Element>
 	<se:Element Class="RingConstraintTypeNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="RingConstraintHasRingConstraintTypeNotSpecifiedError" RoleName="RingConstraint" Name="RingConstraint"/>
+	</se:Element>
+	<se:Element Class="ValueComparisonConstraintOperatorNotSpecifiedError" Override="true">
+		<se:Link RelationshipName="ValueComparisonConstraintHasOperatorNotSpecifiedError" RoleName="ValueComparisonConstraint" Name="ValueComparisonConstraint"/>
 	</se:Element>
 	<se:Element Class="CompatibleValueTypeInstanceValueError" Override="true">
 		<se:ConditionalSerialization>

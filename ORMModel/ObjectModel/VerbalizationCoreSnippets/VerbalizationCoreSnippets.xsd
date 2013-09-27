@@ -1071,6 +1071,54 @@ Format: No {0} may cycle back to itself via one or more instances of the role pa
 Format: it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="LessThanValueComparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to compare the two values in a value comparison constraint with a 'less than' operator.
+							Format: {0} is less than {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="LessThanOrEqualValueComparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to compare the two values in a value comparison constraint with a 'less than or equal' operator.
+							Format: {0} is less than or equal to {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GreaterThanValueComparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to compare the two values in a value comparison constraint with a 'greater than' operator.
+							Format: {0} is greater than {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="GreaterThanOrEqualValueComparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
+							Format: {0} is greater than or equal to {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="EqualValueComparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to compare the two values in a value comparison constraint with a 'equal' operator.
+							Format: {0} is equal to {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="NotEqualValueComparator">
+					<xs:annotation>
+						<xs:documentation>
+							Description: Used to compare the two values in a value comparison constraint with a 'not equal' operator.
+							Format: {0} is not equal to {1}
+						</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="FullFactTypeDerivation">
 					<xs:annotation>
 						<xs:documentation>Description: Used to specify a fully derived fact type with its derivation rule.

@@ -445,6 +445,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					case ConstraintType.Exclusion:
 					case ConstraintType.Equality:
 					case ConstraintType.Subset:
+					case ConstraintType.ValueComparison:
 						retVal = 1;
 						break;
 					case ConstraintType.Frequency:
@@ -475,6 +476,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					case ConstraintType.Exclusion:
 					case ConstraintType.Subset:
 					case ConstraintType.Frequency:
+					case ConstraintType.ValueComparison:
 						return true;
 				}
 				return false;
@@ -3908,6 +3910,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				case ConstraintType.Subset:
 				case ConstraintType.Equality:
 				case ConstraintType.Frequency:
+				case ConstraintType.ValueComparison:
 					if (rolePositionChangeOnly)
 					{
 						redraw = true;

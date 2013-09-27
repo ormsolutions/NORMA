@@ -1840,6 +1840,144 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
+	/// DomainClass ValueComparisonConstraintShape
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("bc15c87a-50ba-4743-bc56-788804adecfd")]
+	public partial class ValueComparisonConstraintShape : ExternalConstraintShape
+	{
+		#region DiagramElement boilerplate
+		private static DslDiagrams::StyleSet classStyleSet;
+		private static global::System.Collections.Generic.IList<DslDiagrams::ShapeField> shapeFields;
+		private static global::System.Collections.Generic.IList<DslDiagrams::Decorator> decorators;
+		
+		/// <summary>
+		/// Per-class style set for this shape.
+		/// </summary>
+		protected override DslDiagrams::StyleSet ClassStyleSet
+		{
+			get
+			{
+				if (classStyleSet == null)
+				{
+					classStyleSet = CreateClassStyleSet();
+				}
+				return classStyleSet;
+			}
+		}
+		
+		/// <summary>
+		/// Per-class ShapeFields for this shape.
+		/// </summary>
+		public override global::System.Collections.Generic.IList<DslDiagrams::ShapeField> ShapeFields
+		{
+			get
+			{
+				if (shapeFields == null)
+				{
+					shapeFields = CreateShapeFields();
+				}
+				return shapeFields;
+			}
+		}
+		
+		/// <summary>
+		/// Event fired when decorator initialization is complete for this shape type.
+		/// </summary>
+		public static new event global::System.EventHandler DecoratorsInitialized;
+		
+		/// <summary>
+		/// List containing decorators used by this type.
+		/// </summary>
+		public override global::System.Collections.Generic.IList<DslDiagrams::Decorator> Decorators
+		{
+			get 
+			{
+				if(decorators == null)
+				{
+					decorators = CreateDecorators();
+					
+					// fire this event to allow the diagram to initialize decorator mappings for this shape type.
+					if(DecoratorsInitialized != null)
+					{
+						DecoratorsInitialized(this, global::System.EventArgs.Empty);
+					}
+				}
+				
+				return decorators; 
+			}
+		}
+		
+		/// <summary>
+		/// Finds a decorator associated with ValueComparisonConstraintShape.
+		/// </summary>
+		public static DslDiagrams::Decorator FindValueComparisonConstraintShapeDecorator(string decoratorName)
+		{	
+			if(decorators == null) return null;
+			return DslDiagrams::ShapeElement.FindDecorator(decorators, decoratorName);
+		}
+		
+		#endregion
+		#region Shape size
+		
+		/// <summary>
+		/// Default size for this shape.
+		/// </summary>
+		public override DslDiagrams::SizeD DefaultSize
+		{
+			get
+			{
+				return new DslDiagrams::SizeD(0.16, 0.16);
+			}
+		}
+		#endregion
+		#region Shape styles
+		/// <summary>
+		/// Indicates whether this shape displays a background gradient.
+		/// </summary>
+		public override bool HasBackgroundGradient
+		{
+			get
+			{
+				return false;
+			}
+		}
+		#endregion
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ValueComparisonConstraintShape domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xbc15c87a, 0x50ba, 0x4743, 0xbc, 0x56, 0x78, 0x88, 0x04, 0xad, 0xec, 0xfd);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueComparisonConstraintShape(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueComparisonConstraintShape(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
 	/// DomainClass FloatingTextShape
 	/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape
 	/// </summary>

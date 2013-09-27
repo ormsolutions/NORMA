@@ -155,9 +155,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 		/// </summary>
 		SimpleMandatoryConstraints = 0x800,
 		/// <summary>
+		/// Reports all Value Comparison constraints in the Model
+		/// </summary>
+		ValueComparisonConstraints = 0x1000,
+		/// <summary>
 		/// Reports all Set Constraints in the Model
 		/// </summary>
-		AllSetConstraints = (InternalUniquenessConstraints | ExternalUniquenessConstraints | RingConstraints | FrequencyConstraints | SimpleMandatoryConstraints | DisjunctiveMandatoryConstraints),
+		AllSetConstraints = (InternalUniquenessConstraints | ExternalUniquenessConstraints | RingConstraints | FrequencyConstraints | ValueComparisonConstraints | SimpleMandatoryConstraints | DisjunctiveMandatoryConstraints),
 		/// <summary>
 		/// Reports all Set Constraints in the Model
 		/// </summary>
@@ -459,6 +463,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					case ConstraintType.Ring:
 						allowedContent = VerbalizationReportContent.RingConstraints;
 						break;
+					case ConstraintType.ValueComparison:
+						allowedContent = VerbalizationReportContent.ValueComparisonConstraints;
+						break;
 					case ConstraintType.SimpleMandatory:
 						allowedContent = VerbalizationReportContent.SimpleMandatoryConstraints;
 						break;
@@ -530,6 +537,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			if ((reportContent & VerbalizationReportContent.RingConstraints) != 0)
 			{
 				constraintList.Add(ConstraintType.Ring, new List<IConstraint>());
+			}
+			if ((reportContent & VerbalizationReportContent.ValueComparisonConstraints) != 0)
+			{
+				constraintList.Add(ConstraintType.ValueComparison, new List<IConstraint>());
 			}
 			if ((reportContent & VerbalizationReportContent.SimpleMandatoryConstraints) != 0)
 			{
@@ -1443,6 +1454,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 					}
 				}
+				// Value Comparison Constraints
+				if ((myReportContent & VerbalizationReportContent.ValueComparisonConstraints) != 0)
+				{
+					IList<IConstraint> constraintList = myConstraintList[ConstraintType.ValueComparison];
+					int constraintCount = constraintList.Count;
+					for (int i = 0; i < constraintCount; ++i)
+					{
+						wrapper.VerbalizationObject = constraintList[i];
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+					}
+				}
 				// Equality Constraints
 				if ((myReportContent & VerbalizationReportContent.EqualityConstraints) != 0)
 				{
@@ -1816,6 +1838,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 				if ((myReportContent & VerbalizationReportContent.RingConstraints) != 0)
 				{
 					IList<IConstraint> constraintList = myConstraintList[ConstraintType.Ring];
+					int constraintCount = constraintList.Count;
+					for (int i = 0; i < constraintCount; ++i)
+					{
+						wrapper.VerbalizationObject = constraintList[i];
+						verbalize.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+					}
+				}
+				// Value Comparison Constraints
+				if ((myReportContent & VerbalizationReportContent.ValueComparisonConstraints) != 0)
+				{
+					IList<IConstraint> constraintList = myConstraintList[ConstraintType.ValueComparison];
 					int constraintCount = constraintList.Count;
 					for (int i = 0; i < constraintCount; ++i)
 					{

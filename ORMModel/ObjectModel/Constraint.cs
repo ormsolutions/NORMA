@@ -3703,7 +3703,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainRole.Id == ConstraintRoleProjectedFromPathedRole.SourceDomainRoleId)
 			{
-				ConstraintRoleProjection projection = ((ConstraintRoleProjectedFromRolePathRoot)e.ElementLink).ConstraintRoleProjection;
+				ConstraintRoleProjection projection = ((ConstraintRoleProjectedFromPathedRole)e.ElementLink).ConstraintRoleProjection;
 				if (projection.IsAutomatic && !ConstraintRoleProjection.ChangingAutomaticProjection(projection.Store, null))
 				{
 					projection.IsAutomatic = false;
@@ -5176,6 +5176,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						break;
 					case ConstraintType.Frequency:
 					case ConstraintType.ExternalUniqueness:
+					case ConstraintType.ValueComparison:
 						checkBinaryOppositeRolePlayerPatternMinArity = 1;
 						allowStepOverRolePlayer = false;
 						break;
@@ -9803,6 +9804,148 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Verbalization
 	}
 	#endregion //Ring Constraint class
+	#region ValueComparisonConstraint class
+	public partial class ValueComparisonConstraint : IModelErrorOwner
+	{
+		#region Helper Methods
+		/// <summary>
+		/// Test if a provided comparison operator is directional,
+		/// running from the first constrained role to the second.
+		/// </summary>
+		public static bool IsDirectionalOperator(ValueComparisonOperator comparisonOperator)
+		{
+			switch (comparisonOperator)
+			{
+				case ValueComparisonOperator.LessThan:
+				case ValueComparisonOperator.LessThanOrEqual:
+				case ValueComparisonOperator.GreaterThan:
+				case ValueComparisonOperator.GreaterThanOrEqual:
+					return true;
+			}
+			return false;
+		}
+		/// <summary>
+		/// Test if the current comparison operator is directional,
+		/// running from the first constrained role to the second.
+		/// </summary>
+		public bool IsDirectional
+		{
+			get
+			{
+				return IsDirectionalOperator(Operator);
+			}
+		}
+		#endregion // Helper Methods
+		#region IModelErrorOwner Implementation
+		/// <summary>
+		/// Return errors associated with the constraint
+		/// </summary>
+		protected new IEnumerable<ModelErrorUsage> GetErrorCollection(ModelErrorUses filter)
+		{
+			if (filter == 0)
+			{
+				filter = (ModelErrorUses)(-1);
+			}
+			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
+			{
+				yield return baseError;
+			}
+			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)))
+			{
+				ValueComparisonConstraintOperatorNotSpecifiedError notSpecified = this.OperatorNotSpecifiedError;
+				if (notSpecified != null)
+				{
+					yield return new ModelErrorUsage(notSpecified, ModelErrorUses.BlockVerbalization);
+				}
+			}
+		}
+		IEnumerable<ModelErrorUsage> IModelErrorOwner.GetErrorCollection(ModelErrorUses filter)
+		{
+			return GetErrorCollection(filter);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.ValidateErrors
+		/// </summary>
+		/// <param name="notifyAdded">INotifyElementAdded</param>
+		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			base.ValidateErrors(notifyAdded);
+			VerifyOperatorNotSpecifiedRule(notifyAdded);
+		}
+		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
+		{
+			this.ValidateErrors(notifyAdded);
+		}
+		/// <summary>
+		/// Implements IModelErrorOwner.DelayValidateErrors
+		/// </summary>
+		protected new void DelayValidateErrors()
+		{
+			base.DelayValidateErrors();
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateOperatorNotSpecifiedError);
+		}
+		void IModelErrorOwner.DelayValidateErrors()
+		{
+			DelayValidateErrors();
+		}
+		#endregion // IModelErrorOwner Implementation
+		#region ValueComparisonConstraintOperatorNotSpecifiedError Rule
+		/// <summary>
+		/// Validator callback for ValueComparisonConstraintOperatorNotSpecifiedError
+		/// </summary>
+		private static void DelayValidateOperatorNotSpecifiedError(ModelElement element)
+		{
+			((ValueComparisonConstraint)element).VerifyOperatorNotSpecifiedRule(null);
+		}
+		/// <summary>
+		/// Add, remove, and otherwise validate ValueComparisonConstraintOperatorNotSpecifiedError error
+		/// </summary>
+		/// <param name="notifyAdded">If not null, this is being called during
+		/// load when rules are not in place. Any elements that are added
+		/// must be notified back to the caller.</param>
+		private void VerifyOperatorNotSpecifiedRule(INotifyElementAdded notifyAdded)
+		{
+			if (this.IsDeleted)
+			{
+				return;
+			}
+
+			ValueComparisonConstraintOperatorNotSpecifiedError notSpecified = this.OperatorNotSpecifiedError;
+			// Error appears if the operator is not definded
+			if (this.Operator == ValueComparisonOperator.Undefined)
+			{
+				if (notSpecified == null)
+				{
+					notSpecified = new ValueComparisonConstraintOperatorNotSpecifiedError(Partition);
+					notSpecified.ValueComparisonConstraint = this;
+					notSpecified.Model = ResolvedModel;
+					notSpecified.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(notSpecified);
+					}
+				}
+			}
+			else if (notSpecified != null)
+			{
+				notSpecified.Delete();
+			}
+		}
+		#endregion // ValueComparisonConstraintOperatorNotSpecifiedError Rule
+		#region ValueComparisonConstraintOperatorChangeRule
+		/// <summary>
+		/// ChangeRule: typeof(ValueComparisonConstraint)
+		/// </summary>
+		private static void ValueComparisonConstraintOperatorChangeRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == ValueComparisonConstraint.OperatorDomainPropertyId)
+			{
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateOperatorNotSpecifiedError);
+			}
+		}
+		#endregion // ValueComparisonConstraintOperatorChangeRule
+	}
+	#endregion // ValueComparisonConstraint class
 	#region PreferredIdentifierFor implementation
 	public partial class UniquenessConstraint
 	{
@@ -10170,6 +10313,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion
 	}
 	#endregion // ImpliedInternalUniquenessConstraintError class
+	#region ValueComparisonConstraintOperatorNotSpecifiedError class
+	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
+	public partial class ValueComparisonConstraintOperatorNotSpecifiedError
+	{
+		#region Base overrides
+		/// <summary>
+		/// Get Text to display for the ValueComparisonConstraintOperatorNotSpecifiedError error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ValueComparisonConstraint parent = this.ValueComparisonConstraint;
+			string parentName = (parent != null) ? parent.Name : "";
+			string modelName = this.Model.Name;
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorValueComparisonConstraintOperatorNotSpecified, parentName, modelName);
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion //Base overrides
+	}
+	#endregion // ValueComparisonConstraintOperatorNotSpecifiedError class
 	#region RingConstraintTypeNotSpecifiedError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class RingConstraintTypeNotSpecifiedError
@@ -10183,7 +10354,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RingConstraint parent = this.RingConstraint;
 			string parentName = (parent != null) ? parent.Name : "";
 			string modelName = this.Model.Name;
-			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.RingConstraintTypeNotSpecifiedError, parentName, modelName);
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRingConstraintTypeNotSpecified, parentName, modelName);
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -10412,7 +10583,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // IRepresentModelElements Implementation
 	}
 	#endregion
-
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class NotWellModeledSubsetAndMandatoryError
 	{
@@ -10540,8 +10710,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		Frequency,
 		/// <summary>
-		/// A ring constraint. Applied to two roles
-		/// from the same fact type. Directional.
+		/// A ring constraint. Applied to two compatible roles.
 		/// </summary>
 		Ring,
 		/// <summary>
@@ -10574,6 +10743,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// sets of compatible roles.
 		/// </summary>
 		Subset,
+		/// <summary>
+		/// A value comparison constraint. Applied to two comparable roles.
+		/// </summary>
+		ValueComparison,
 	}
 	#endregion // ConstraintType enum
 	#region ConstraintStorageStyle enum
@@ -10686,6 +10859,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.OneRolePerSequence | RoleSequenceStyles.CompatibleColumns;
+			}
+		}
+		RoleSequenceStyles IConstraint.RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles;
+			}
+		}
+		#endregion // IConstraint Implementation
+	}
+	public partial class ValueComparisonConstraint : IConstraint
+	{
+		#region IConstraint Implementation
+		/// <summary>
+		/// Implements IConstraint.ConstraintType. Returns ConstraintType.ValueComparison.
+		/// </summary>
+		protected static ConstraintType ConstraintType
+		{
+			get
+			{
+				return ConstraintType.ValueComparison;
+			}
+		}
+		ConstraintType IConstraint.ConstraintType
+		{
+			get
+			{
+				return ConstraintType;
+			}
+		}
+		/// <summary>
+		/// Implements IConstraint.RoleSequenceStyles. Returns {TwoRoleSequences, OneRolePerSequence}.
+		/// </summary>
+		protected static RoleSequenceStyles RoleSequenceStyles
+		{
+			get
+			{
+				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.OneRolePerSequence;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles

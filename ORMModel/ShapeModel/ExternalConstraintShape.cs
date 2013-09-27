@@ -262,6 +262,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 			Pen pen = helper.Pen;
 			Brush brush = helper.Brush;
+			bool noDeonticDot = false;
 
 			switch (constraint.ConstraintType)
 			{
@@ -276,8 +277,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// Note: goto default here restores the frowny face. However,
 					// with the error feedback, we already have UI indicating there
 					// is a problem.
+					noDeonticDot = true;
 					break;
 				#endregion
+				#region ValueComparison
+				case ConstraintType.ValueComparison:
+					noDeonticDot = true;
+					break;
+				#endregion // ValueComparison
 				#region Equality
 				case ConstraintType.Equality:
 					{
@@ -389,7 +396,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 				#endregion
 			}
-			if (constraint.Modality == ConstraintModality.Deontic && constraint.ConstraintType != ConstraintType.Ring)
+			if (!noDeonticDot && constraint.Modality == ConstraintModality.Deontic)
 			{
 				float startPenWidth = pen.Width;
 				pen.Width = startPenWidth * .70f;

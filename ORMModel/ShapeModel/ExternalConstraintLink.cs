@@ -29,21 +29,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	public partial class ExternalConstraintLink : IReconfigureableLink, IConfigureAsChildShape, IDynamicColorGeometryHost
 	{
-		#region SubsetDecorator class
+		#region TargetArrowDecorator class
 		/// <summary>
-		/// The link decorator used to draw the mandatory
-		/// constraint dot on a link.
+		/// The link decorator used to draw the arrow head
+		/// for subset and value comparison constraints.
 		/// </summary>
-		protected class SubsetDecorator : DynamicColorDecoratorFilledArrow, ILinkDecoratorSettings
+		protected class TargetArrowDecorator : DynamicColorDecoratorFilledArrow, ILinkDecoratorSettings
 		{
 			/// <summary>
 			/// Singleton instance of this decorator
 			/// </summary>
-			public new static readonly LinkDecorator Decorator = new SubsetDecorator();
+			public new static readonly LinkDecorator Decorator = new TargetArrowDecorator();
 			/// <summary>
-			/// Instantiates a new SubsetDecorator
+			/// Instantiates a new TargetArrowDecorator
 			/// </summary>
-			protected SubsetDecorator()
+			protected TargetArrowDecorator()
 			{
 				FillDecorator = true;
 			}
@@ -84,21 +84,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			#endregion // ILinkDecoratorSettings Implementation
 		}
-		#endregion // SubsetDecorator class
-		#region SubsetStickyDecorator class
+		#endregion // TargetArrowDecorator class
+		#region TargetArrowStickyDecorator class
 		/// <summary>
-		/// A SubsetDecorator to be used when the connector is currently selected (i.e. is sticky)
+		/// A TargetArrowDecorator to be used when the connector is currently selected (i.e. is sticky)
 		/// </summary>
-		protected class SubsetStickyDecorator : SubsetDecorator
+		protected class TargetArrowStickyDecorator : TargetArrowDecorator
 		{
 			/// <summary>
 			/// Singleton instance of this decorator
 			/// </summary>
-			public static new readonly LinkDecorator Decorator = new SubsetStickyDecorator();
+			public static new readonly LinkDecorator Decorator = new TargetArrowStickyDecorator();
 			/// <summary>
-			/// Instantiates a new SubsetStickyDecorator
+			/// Instantiates a new TargetArrowStickyDecorator
 			/// </summary>
-			protected SubsetStickyDecorator() { }
+			protected TargetArrowStickyDecorator() { }
 			/// <summary>
 			/// The StyleSetResource containing the pen to use for drawing this decorator.
 			/// </summary>
@@ -114,7 +114,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				get { return ORMDiagram.StickyForegroundResource; }
 			}
 		}
-		#endregion // SubsetStickyDecorator class
+		#endregion // TargetArrowStickyDecorator class
 		#region Customize appearance
 #if VISUALSTUDIO_10_0
 		// Based on reflecting the code, VS2010 attempts to 'fix' the GDI+ rendering
@@ -255,15 +255,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				FactConstraint efc = AssociatedFactConstraint;
+				FactConstraint factConstraint = AssociatedFactConstraint;
+				bool showArrow = false;
 				//Only change the decorator if the ExternalConstraintLink being worked on
 				//is for the second constraint role sequence since we need the arrow to make
 				//it look like the constraint links point from the role of the first sequence
 				//to the role of the second sequence.
-				if (efc is FactSetComparisonConstraint)
+				if (factConstraint is FactSetComparisonConstraint)
 				{
-					SubsetConstraint sConstraint;
-					if (null != (sConstraint = efc.LinkedElements[0] as SubsetConstraint))
+					SubsetConstraint subsetConstraint;
+					if (null != (subsetConstraint = factConstraint.LinkedElements[0] as SubsetConstraint))
 					{
 						NodeShape connectedShape = FromLinkConnectsToNode.Nodes;
 						FactTypeShape factTypeShape;
@@ -281,32 +282,43 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								factType = subtypeLink.AssociatedSubtypeFact;
 							}
 						}
-						if (factType == null)
+						if (factType != null)
 						{
-							return base.DecoratorFrom;
-						}
-						LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
-						LinkedElementCollection<SetComparisonConstraintRoleSequence> sequenceCollection = sConstraint.RoleSequenceCollection;
-						if (sequenceCollection.Count > 1)
-						{
-							foreach (Role r in sequenceCollection[1].RoleCollection)
+							LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
+							LinkedElementCollection<SetComparisonConstraintRoleSequence> sequenceCollection = subsetConstraint.RoleSequenceCollection;
+							if (sequenceCollection.Count > 1)
 							{
-								if (factTypeRoles.Contains(r))
+								foreach (Role r in sequenceCollection[1].RoleCollection)
 								{
-									if (IsSticky())
+									if (factTypeRoles.Contains(r))
 									{
-										return SubsetStickyDecorator.Decorator;
-									}
-									else
-									{
-										return SubsetDecorator.Decorator;
+										showArrow = true;
+										break;
 									}
 								}
 							}
 						}
 					}
 				}
-				return base.DecoratorFrom;
+				else if (factConstraint is FactSetConstraint)
+				{
+					ValueComparisonConstraint comparisonConstraint;
+					if (null != (comparisonConstraint = factConstraint.LinkedElements[0] as ValueComparisonConstraint) &&
+						comparisonConstraint.IsDirectional)
+					{
+						NodeShape connectedShape = FromLinkConnectsToNode.Nodes;
+						FactTypeShape factTypeShape;
+						FactType factType;
+						LinkedElementCollection<Role> constraintRoles;
+						showArrow = (null != (factTypeShape = connectedShape as FactTypeShape) &&
+							null != (factType = factTypeShape.AssociatedFactType) &&
+							2 == (constraintRoles = comparisonConstraint.RoleCollection).Count &&
+							factType.RoleCollection.Contains(constraintRoles[1]));
+					}
+				}
+				return showArrow ?
+					(IsSticky() ? TargetArrowStickyDecorator.Decorator : TargetArrowDecorator.Decorator) :
+					base.DecoratorFrom;
 			}
 			set
 			{

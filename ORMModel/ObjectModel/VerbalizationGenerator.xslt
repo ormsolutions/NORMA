@@ -1923,7 +1923,7 @@
 									</plx:local>
 								</xsl:otherwise>
 							</xsl:choose>
-							<xsl:if test="not(@type='RingConstraint' or @childHelperFor='RingConstraint' or @type='FrequencyConstraint' or @type='SimpleMandatoryVerbalizer' or @type='UniquenessPossibilityVerbalizer' or $isSetComparisonConstraint)">
+							<xsl:if test="not(@type='RingConstraint' or @childHelperFor='RingConstraint' or @type='FrequencyConstraint' or @type='SimpleMandatoryVerbalizer' or @type='UniquenessPossibilityVerbalizer' or @type='ValueComparisonConstraint' or $isSetComparisonConstraint)">
 								<!-- UNDONE: Temporary workaround for RingConstraint and FrequencyConstraint compile errors. Use StripUnusedLocals to test demand. -->
 								<plx:local name="contextBasicReplacementIndex" dataTypeName=".i4"/>
 							</xsl:if>
@@ -2150,12 +2150,14 @@
 										</plx:callInstance>
 									</plx:initialize>
 								</plx:local>
-								<xsl:if test="@automaticJoinPathPattern">
+								<xsl:if test="@automaticJoinPathPattern or cvg:ConstrainedRoles[@blockHelpers and contains(@blockHelpers,'preProjectionKeys')]">
 									<plx:local name="joinPath" dataTypeName="ConstraintRoleSequenceJoinPath">
 										<plx:initialize>
 											<plx:callThis name="JoinPath" type="property"/>
 										</plx:initialize>
 									</plx:local>
+								</xsl:if>
+								<xsl:if test="@automaticJoinPathPattern">
 									<plx:local name="singleLeadRolePath" dataTypeName="LeadRolePath">
 										<plx:initialize>
 											<plx:nullKeyword/>
@@ -9494,6 +9496,16 @@
 									</plx:callInstance>
 								</plx:callObject>
 							</plx:callInstance>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="starts-with($ConditionalMatch,'ValueComparisonOperator')">
+					<plx:binaryOperator type="equality">
+						<plx:left>
+							<plx:callThis type="property" name="Operator"/>
+						</plx:left>
+						<plx:right>
+							<plx:callStatic dataTypeName="ValueComparisonOperator" name="{substring-after($ConditionalMatch,'ValueComparisonOperator')}" type="field"/>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>

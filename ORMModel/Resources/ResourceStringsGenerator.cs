@@ -3148,11 +3148,19 @@ namespace ORMSolutions.ORMArchitect.Core
 			}
 		}
 		/// <summary>The ring constraint type must be specified. {0} is the constraint name and {1} is the model name.</summary>
-		public static string RingConstraintTypeNotSpecifiedError
+		public static string ModelErrorRingConstraintTypeNotSpecified
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message");
+			}
+		}
+		/// <summary>The value comparison constraint operator must be specified. {0} is the constraint name and {1} is the model name.</summary>
+		public static string ModelErrorValueComparisonConstraintOperatorNotSpecified
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.Message");
 			}
 		}
 		/// <summary>The frequency constraint minimum must be less than or equal to the maximum. {0}=constraint name {1}=model name</summary>

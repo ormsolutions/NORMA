@@ -481,6 +481,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneFactTypeRoleAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("NMinusOneFactTypeRoleDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(UniquenessConstraint).GetNestedType("UniquenessConstraintChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ValueComparisonConstraint).GetNestedType("ValueComparisonConstraintOperatorChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("DataTypeChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("DataTypeDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ValueConstraint).GetNestedType("DataTypeRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -535,7 +536,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 467; ++i)
+			for (int i = 0; i < 468; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -12386,6 +12387,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for UniquenessConstraint
+	#region Rule classes for ValueComparisonConstraint
+	partial class ValueComparisonConstraint
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueComparisonConstraint), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ValueComparisonConstraintOperatorChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ValueComparisonConstraintOperatorChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ValueComparisonConstraint)
+			/// /// </summary>
+			/// private static void ValueComparisonConstraintOperatorChangeRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ValueComparisonConstraintOperatorChangeRule");
+				ValueComparisonConstraint.ValueComparisonConstraintOperatorChangeRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ValueComparisonConstraintOperatorChangeRule");
+			}
+		}
+	}
+	#endregion // Rule classes for ValueComparisonConstraint
 	#region Rule classes for ValueConstraint
 	partial class ValueConstraint
 	{

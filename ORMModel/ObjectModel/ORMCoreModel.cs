@@ -248,6 +248,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				propertyInfo = directory.FindDomainProperty(RingConstraint.RingTypeDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);
 
+				//ValueComparison Operator changed
+				propertyInfo = directory.FindDomainProperty(ValueComparisonConstraint.OperatorDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);
+
 				//Preferred Identifier Changed
 				propertyInfo = directory.FindDomainProperty(UniquenessConstraint.IsPreferredDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);

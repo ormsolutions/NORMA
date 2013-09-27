@@ -214,6 +214,10 @@ namespace ORMSolutions.ORMArchitect.Core
 		/// </summary>
 		public const string ToolboxRingConstraintItemId = "RingConstraintToolboxItem";
 		/// <summary>
+		/// The identifier for a Value Comparison Constraint
+		/// </summary>
+		public const string ToolboxValueComparisonConstraintItemId = "ValueComparisonConstraintToolboxItem";
+		/// <summary>
 		/// The identifier for a ModelNote toolbox item
 		/// </summary>
 		public const string ToolboxModelNoteItemId = "ModelNoteToolboxItem";

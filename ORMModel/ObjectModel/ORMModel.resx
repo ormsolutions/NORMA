@@ -352,6 +352,10 @@
 		<value>Constraint '{0}' has too many role sequences.</value>
 		<comment>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
+	<data name="ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.Message" xml:space="preserve">
+		<value>The comparison operator for value comparison constraint '{0}' in model '{1}' is not specified.</value>
+		<comment>The value comparison constraint operator must be specified. {0} is the constraint name and {1} is the model name.</comment>
+	</data>
 	<data name="ModelError.ConstraintRoleProjection.IncompatibleProjection.Text" xml:space="preserve">
 		<value>{0} has a constrained role with an incompatible join path projection.</value>
 		<comment>Model validation error text for projection on a constraint role from a join path where the type of projection does not match the type of the constrained role. {0}=error display context (from join path)</comment>
@@ -1613,6 +1617,27 @@ The remaining replacements are trimmed for leading/trailing whitespace
 	<data name="SurveyFactTypeDetailType.ImpliedFactType" xml:space="preserve">
 		<value>Implied Fact Types</value>
 	</data>
+	<data name="ValueComparisonOperator.Undefined" xml:space="preserve">
+		<value>Undefined</value>
+	</data>
+	<data name="ValueComparisonOperator.Equal" xml:space="preserve">
+		<value>=</value>
+	</data>
+	<data name="ValueComparisonOperator.NotEqual" xml:space="preserve">
+		<value>&lt;&gt;</value>
+	</data>
+	<data name="ValueComparisonOperator.LessThan" xml:space="preserve">
+		<value>&lt;</value>
+	</data>
+	<data name="ValueComparisonOperator.GreaterThan" xml:space="preserve">
+		<value>&gt;</value>
+	</data>
+	<data name="ValueComparisonOperator.LessThanOrEqual" xml:space="preserve">
+		<value>&#x2264;</value>
+	</data>
+	<data name="ValueComparisonOperator.GreaterThanOrEqual" xml:space="preserve">
+		<value>&#x2265;</value>
+	</data>
 	<data name="Verbalization.ReportSnippetsDefaultDescription" xml:space="preserve">
 		<value>Default Report</value>
 		<comment>The description for the default verbalization report snippets.</comment>
@@ -1675,10 +1700,13 @@ The remaining replacements are trimmed for leading/trailing whitespace
 		<value>Subset Constraints</value>
 	</data>
 	<data name="VerbalizationReportContent.SuperTypes" xml:space="preserve">
-		<value>Super Types</value>
+		<value>Supertypes</value>
 	</data>
 	<data name="VerbalizationReportContent.ValidationReport" xml:space="preserve">
 		<value>Validation Report</value>
+	</data>
+	<data name="VerbalizationReportContent.ValueComparisonConstraints" xml:space="preserve">
+		<value>Value Comparison Constraints</value>
 	</data>
 	<data name="VerbalizationTarget.HtmlReport.DisplayName" xml:space="preserve">
 		<value>Html Report Settings</value>

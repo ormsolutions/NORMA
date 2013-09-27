@@ -1008,6 +1008,19 @@
 			</Properties>
 		</DomainClass>
 
+		<DomainClass Name="ValueComparisonConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="865FECE5-1DF2-4D6F-A33F-6E4862D10374" DisplayName="ValueComparisonConstraint" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="SetConstraint"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="Operator" DefaultValue="Undefined" DisplayName="Operator" Id="02BD277D-FA64-4DC5-9E38-327CEB0DEA03" Description="The operator used for comparing constrained values.">
+					<Type>
+						<DomainEnumerationMoniker Name="ValueComparisonOperator"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+
 		<DomainClass Name="SetConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="1B85E4BE-0C95-45BD-A76F-2087456F891B" DisplayName="SetConstraint" InheritanceModifier="Abstract" Description="">
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
@@ -2113,6 +2126,12 @@
 		</DomainClass>
 
 		<DomainClass Name="RingConstraintTypeNotSpecifiedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="15026270-DFD6-470D-A997-233173E644DC" DisplayName="Ring Constraint Type Not Specified" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="ValueComparisonConstraintOperatorNotSpecifiedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7D7D1A71-6B49-4EBE-A649-AB25C5863E84" DisplayName="Value Comparison Operator Not Specified" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -4057,6 +4076,26 @@
 				<DomainRole Name="RingConstraintTypeNotSpecifiedError" PropertyName="RingConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RingConstraintTypeNotSpecifiedError" Id="46F7EF6E-7A37-44A3-A221-26D0D99AE4BD">
 					<RolePlayer>
 						<DomainClassMoniker Name="RingConstraintTypeNotSpecifiedError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ValueComparisonConstraintHasOperatorNotSpecifiedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8736DDC0-C274-4F19-80D1-63372345EDF8">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ValueComparisonConstraint" PropertyName="OperatorNotSpecifiedError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueComparisonConstraint" Id="20C21E3B-8BAC-416E-B5C3-BF248E6821F3">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueComparisonConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="OperatorNotSpecifiedError" PropertyName="ValueComparisonConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="OperatorNotSpecifiedError" Id="4486D925-4B7F-49D1-B2D5-9BDAC4409012">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueComparisonConstraintOperatorNotSpecifiedError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -6890,6 +6929,32 @@
 					<Parameters>
 						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.RingConstraintTypePicker)"/>
 						<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ValueComparisonOperator">
+			<Literals>
+				<EnumerationLiteral Name="Undefined" Value="0" Description="">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Browsable">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+				</EnumerationLiteral>
+				<EnumerationLiteral Name="LessThan" Value="1" Description=""/>
+				<EnumerationLiteral Name="GreaterThan" Value="2" Description=""/>
+				<EnumerationLiteral Name="LessThanOrEqual" Value="3" Description=""/>
+				<EnumerationLiteral Name="GreaterThanOrEqual" Value="4" Description=""/>
+				<EnumerationLiteral Name="Equal" Value="5" Description=""/>
+				<EnumerationLiteral Name="NotEqual" Value="6" Description=""/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;ValueComparisonOperator, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

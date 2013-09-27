@@ -532,6 +532,7 @@
     <Compile Include="ShapeModel\Design\ValueConstraintShapeDisplayBoundConverter.cs" />
     <Compile Include="ShapeModel\Design\ObjectTypeShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\DynamicColorTextField.cs" />
+    <Compile Include="ShapeModel\ValueComparisonConstraintShape.cs" />
     <Compile Include="Shell\ORMDesignerCommandManager.cs" />
     <Compile Include="Shell\ORMDiagramSpy.cs">
     </Compile>
@@ -677,6 +678,7 @@
     <None Include="Resources\ToolWindowIcons.png" />
     <None Include="Resources\VerbalizationToolbarImages.png" />
     <EmbeddedResource Include="ShapeModel\ConnectRoleReorderAllowed.cur" />
+    <None Include="Resources\Toolbox.ValueComparisonConstraint.Bitmap.Id.bmp" />
     <Content Include="Shell\ORMDesignerSettings.xml" />
     <None Include="Transforms\ResourceStringsGenerator.xslt" />
     <None Include="Transforms\SurveyQuestionProvider.xslt" />

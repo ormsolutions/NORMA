@@ -22559,6 +22559,310 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ValueComparisonConstraintHasOperatorNotSpecifiedError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("8736ddc0-c274-4f19-80d1-63372345edf8")]
+	public partial class ValueComparisonConstraintHasOperatorNotSpecifiedError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ValueComparisonConstraintHasOperatorNotSpecifiedError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8736ddc0, 0xc274, 0x4f19, 0x80, 0xd1, 0x63, 0x37, 0x23, 0x45, 0xed, 0xf8);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ValueComparisonConstraintHasOperatorNotSpecifiedError link in the same Partition as the given ValueComparisonConstraint
+		/// </summary>
+		/// <param name="source">ValueComparisonConstraint to use as the source of the relationship.</param>
+		/// <param name="target">ValueComparisonConstraintOperatorNotSpecifiedError to use as the target of the relationship.</param>
+		public ValueComparisonConstraintHasOperatorNotSpecifiedError(ValueComparisonConstraint source, ValueComparisonConstraintOperatorNotSpecifiedError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId, source), new DslModeling::RoleAssignment(ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueComparisonConstraintHasOperatorNotSpecifiedError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueComparisonConstraintHasOperatorNotSpecifiedError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueComparisonConstraintHasOperatorNotSpecifiedError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueComparisonConstraintHasOperatorNotSpecifiedError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ValueComparisonConstraint domain role code
+		
+		/// <summary>
+		/// ValueComparisonConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueComparisonConstraintDomainRoleId = new global::System.Guid(0x20c21e3b, 0x8bac, 0x416e, 0xb5, 0xc3, 0xbf, 0x24, 0x8e, 0x68, 0x21, 0xf3);
+		
+		/// <summary>
+		/// DomainRole ValueComparisonConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/ValueComparisonConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/ValueComparisonConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "OperatorNotSpecifiedError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/ValueComparisonConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("20c21e3b-8bac-416e-b5c3-bf248e6821f3")]
+		public virtual ValueComparisonConstraint ValueComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ValueComparisonConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueComparisonConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueComparisonConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ValueComparisonConstraint of a ValueComparisonConstraintOperatorNotSpecifiedError
+		/// <summary>
+		/// Gets ValueComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ValueComparisonConstraint GetValueComparisonConstraint(ValueComparisonConstraintOperatorNotSpecifiedError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, OperatorNotSpecifiedErrorDomainRoleId) as ValueComparisonConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ValueComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetValueComparisonConstraint(ValueComparisonConstraintOperatorNotSpecifiedError element, ValueComparisonConstraint newValueComparisonConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, OperatorNotSpecifiedErrorDomainRoleId, newValueComparisonConstraint);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueComparisonConstraint domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueComparisonConstraint = (ValueComparisonConstraint)value;
+			}
+		}
+		
+		#endregion
+		#region OperatorNotSpecifiedError domain role code
+		
+		/// <summary>
+		/// OperatorNotSpecifiedError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid OperatorNotSpecifiedErrorDomainRoleId = new global::System.Guid(0x4486d925, 0x4b7f, 0x49d1, 0xb2, 0xd5, 0x9b, 0xda, 0xc4, 0x40, 0x90, 0x12);
+		
+		/// <summary>
+		/// DomainRole OperatorNotSpecifiedError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/OperatorNotSpecifiedError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/OperatorNotSpecifiedError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueComparisonConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/OperatorNotSpecifiedError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("4486d925-4b7f-49d1-b2d5-9bdac4409012")]
+		public virtual ValueComparisonConstraintOperatorNotSpecifiedError OperatorNotSpecifiedError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ValueComparisonConstraintOperatorNotSpecifiedError)DslModeling::DomainRoleInfo.GetRolePlayer(this, OperatorNotSpecifiedErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, OperatorNotSpecifiedErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access OperatorNotSpecifiedError of a ValueComparisonConstraint
+		/// <summary>
+		/// Gets OperatorNotSpecifiedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ValueComparisonConstraintOperatorNotSpecifiedError GetOperatorNotSpecifiedError(ValueComparisonConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueComparisonConstraintDomainRoleId) as ValueComparisonConstraintOperatorNotSpecifiedError;
+		}
+		
+		/// <summary>
+		/// Sets OperatorNotSpecifiedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetOperatorNotSpecifiedError(ValueComparisonConstraint element, ValueComparisonConstraintOperatorNotSpecifiedError newOperatorNotSpecifiedError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueComparisonConstraintDomainRoleId, newOperatorNotSpecifiedError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing OperatorNotSpecifiedError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.OperatorNotSpecifiedError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.OperatorNotSpecifiedError = (ValueComparisonConstraintOperatorNotSpecifiedError)value;
+			}
+		}
+		
+		#endregion
+		#region ValueComparisonConstraint link accessor
+		/// <summary>
+		/// Get the ValueComparisonConstraintHasOperatorNotSpecifiedError link to a ValueComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError GetLinkToOperatorNotSpecifiedError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint valueComparisonConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError>(valueComparisonConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueComparisonConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region OperatorNotSpecifiedError link accessor
+		/// <summary>
+		/// Get the ValueComparisonConstraintHasOperatorNotSpecifiedError link to a ValueComparisonConstraintOperatorNotSpecifiedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError GetLinkToValueComparisonConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintOperatorNotSpecifiedError operatorNotSpecifiedErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError>(operatorNotSpecifiedErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of OperatorNotSpecifiedError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ValueComparisonConstraintHasOperatorNotSpecifiedError instance accessors
+		
+		/// <summary>
+		/// Get any ValueComparisonConstraintHasOperatorNotSpecifiedError links between a given ValueComparisonConstraint and a ValueComparisonConstraintOperatorNotSpecifiedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintOperatorNotSpecifiedError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError link in links )
+			{
+				if ( target.Equals(link.OperatorNotSpecifiedError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ValueComparisonConstraintHasOperatorNotSpecifiedError link between a given ValueComparisonConstraintand a ValueComparisonConstraintOperatorNotSpecifiedError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintOperatorNotSpecifiedError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError link in links )
+			{
+				if ( target.Equals(link.OperatorNotSpecifiedError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ValueConstraintHasDuplicateNameError
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDuplicateNameError

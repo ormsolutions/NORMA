@@ -3355,6 +3355,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					ResourceStrings.ToolboxExternalUniquenessConstraintItemId,
 					ResourceStrings.ToolboxInclusiveOrConstraintItemId,
 					ResourceStrings.ToolboxRingConstraintItemId,
+					ResourceStrings.ToolboxValueComparisonConstraintItemId,
 					ResourceStrings.ToolboxSubsetConstraintItemId,
 					ResourceStrings.ToolboxFrequencyConstraintItemId};
 				for (int i = 0; i < itemIds.Length; ++i)

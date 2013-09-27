@@ -125,7 +125,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				return 20;
+				return 21;
 			}
 		}
 		
@@ -450,12 +450,28 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
 						});
 					break;
+				case "ValueComparisonConstraintToolboxItem":
+					// Add ValueComparisonConstraint shape tool.
+					result = new DslDesign::ModelingToolboxItem(
+						"ValueComparisonConstraintToolboxItem", // Unique identifier (non-localized) for the toolbox item.
+						18, // Position relative to other items in the same toolbox tab.
+						resourceManager.GetString("ValueComparisonConstraintToolboxItem", resourceCulture), // Localized display name for the item.
+						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ValueComparisonConstraintToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
+						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
+						resourceManager.GetString("ORM DesignerToolboxTab", resourceCulture), // Localized display name for the toolbox tab.
+						"ValueComparisonConstraint", // F1 help keyword for the toolbox item.
+						resourceManager.GetString("ValueComparisonConstraintToolboxTooltip", resourceCulture), // Localized tooltip text for the toolbox item.
+						CreateElementToolPrototype(store, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.DomainClassId), // ElementGroupPrototype (data object) representing model element on the toolbox.
+						new global::System.ComponentModel.ToolboxItemFilterAttribute[] { // Collection of ToolboxItemFilterAttribute objects that determine visibility of the toolbox item.
+						new global::System.ComponentModel.ToolboxItemFilterAttribute(ToolboxFilterString, global::System.ComponentModel.ToolboxItemFilterType.Require) 
+						});
+					break;
 				case "ExternalConstraintConnectorToolboxItem":
 
 					// Add ExternalConstraintConnector connector tool.
 					result = new DslDesign::ModelingToolboxItem(
 						"ExternalConstraintConnectorToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						18, // Position relative to other items in the same toolbox tab.
+						19, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ExternalConstraintConnectorToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ExternalConstraintConnectorToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.				
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -472,7 +488,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// Add ModelNote shape tool.
 					result = new DslDesign::ModelingToolboxItem(
 						"ModelNoteToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						19, // Position relative to other items in the same toolbox tab.
+						20, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ModelNoteToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ModelNoteToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.
@@ -489,7 +505,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// Add ModelNoteConnector connector tool.
 					result = new DslDesign::ModelingToolboxItem(
 						"ModelNoteConnectorToolboxItem", // Unique identifier (non-localized) for the toolbox item.
-						20, // Position relative to other items in the same toolbox tab.
+						21, // Position relative to other items in the same toolbox tab.
 						resourceManager.GetString("ModelNoteConnectorToolboxItem", resourceCulture), // Localized display name for the item.
 						(global::System.Drawing.Bitmap)DslDiagrams::ImageHelper.GetImage(resourceManager.GetObject("ModelNoteConnectorToolboxBitmap", resourceCulture)), // Image displayed next to the toolbox item.				
 						"ORM DesignerToolboxTab", // Unique identifier (non-localized) for the toolbox item tab.

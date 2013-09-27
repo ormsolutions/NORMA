@@ -166,6 +166,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				retVal.Add(GetToolboxItem("SubsetConstraintToolboxItem", store));
 				retVal.Add(GetToolboxItem("FrequencyConstraintToolboxItem", store));
 				retVal.Add(GetToolboxItem("RingConstraintToolboxItem", store));
+				retVal.Add(GetToolboxItem("ValueComparisonConstraintToolboxItem", store));
 				retVal.Add(GetToolboxItem("ExternalConstraintConnectorToolboxItem", store));
 				retVal.Add(GetToolboxItem("ModelNoteToolboxItem", store));
 				retVal.Add(GetToolboxItem("ModelNoteConnectorToolboxItem", store));

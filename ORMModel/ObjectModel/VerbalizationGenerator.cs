@@ -256,6 +256,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'EqualsListSeparator' simple snippet value.</summary>
 		/// <remark>Description: Used to separate items in an equals list.  Format: =</remark>
 		EqualsListSeparator,
+		/// <summary>The 'EqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>
+		/// 							Description: Used to compare the two values in a value comparison constraint with a 'equal' operator.
+		/// 							Format: {0} is equal to {1}
+		/// 						</remark>
+		EqualValueComparator,
 		/// <summary>The 'ErrorClosePrimaryReport' simple snippet value.</summary>
 		/// <remark>Description: Close a primary error report opened with ErrorOpenPrimaryReport</remark>
 		ErrorClosePrimaryReport,
@@ -400,6 +406,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used to specify a fully derived (and stored) subtype derivation rule.
 		/// Format: **each {0} is {1}</remark>
 		FullSubtypeStoredDerivation,
+		/// <summary>The 'GreaterThanOrEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>
+		/// 							Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
+		/// 							Format: {0} is greater than or equal to {1}
+		/// 						</remark>
+		GreaterThanOrEqualValueComparator,
+		/// <summary>The 'GreaterThanValueComparator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>
+		/// 							Description: Used to compare the two values in a value comparison constraint with a 'greater than' operator.
+		/// 							Format: {0} is greater than {1}
+		/// 						</remark>
+		GreaterThanValueComparator,
 		/// <summary>The 'GroupEquality' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Assert group equality. Format: all or none of the following hold: {0}</remark>
 		GroupEquality,
@@ -522,6 +540,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used to specify that one instance is identified by the other instance.
 		/// Format: {0} is identified by {1}</remark>
 		IsIdentifiedBy,
+		/// <summary>The 'LessThanOrEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>
+		/// 							Description: Used to compare the two values in a value comparison constraint with a 'less than or equal' operator.
+		/// 							Format: {0} is less than or equal to {1}
+		/// 						</remark>
+		LessThanOrEqualValueComparator,
+		/// <summary>The 'LessThanValueComparator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>
+		/// 							Description: Used to compare the two values in a value comparison constraint with a 'less than' operator.
+		/// 							Format: {0} is less than {1}
+		/// 						</remark>
+		LessThanValueComparator,
 		/// <summary>The 'LogicalAndOperator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to 'and' together exactly two other snippets.
 		/// Format: {0} and {1}</remark>
@@ -707,6 +737,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'NonTextInstanceValue' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used to output a non-text instance value. Format: {0}</remark>
 		NonTextInstanceValue,
+		/// <summary>The 'NotEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>
+		/// 							Description: Used to compare the two values in a value comparison constraint with a 'not equal' operator.
+		/// 							Format: {0} is not equal to {1}
+		/// 						</remark>
+		NotEqualValueComparator,
 		/// <summary>The 'NotesVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes the text specified for a model note. Format: Notes: {0}</remark>
 		NotesVerbalization,
@@ -1176,6 +1212,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> = </span>",
 				@"<span class=""logicalOperator""> = </span>",
+				@"{0}<span class=""quantifier""> is equal to </span>{1}",
 				"</span>",
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
@@ -1215,6 +1252,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -1253,6 +1292,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"{0}<span class=""quantifier""> is identified by </span>{1}",
+				@"{0}<span class=""quantifier""> is less than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is less than </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -1310,6 +1351,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
+				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
@@ -1515,6 +1557,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> = </span>",
 				@"<span class=""logicalOperator""> = </span>",
+				@"{0}<span class=""quantifier""> is equal to </span>{1}",
 				"</span>",
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
@@ -1554,6 +1597,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -1592,6 +1637,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"{0}<span class=""quantifier""> is identified by </span>{1}",
+				@"{0}<span class=""quantifier""> is less than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is less than </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -1649,6 +1696,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
+				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
@@ -1854,6 +1902,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> = </span>",
 				@"<span class=""logicalOperator""> = </span>",
+				@"{0}<span class=""quantifier""> is equal to </span>{1}",
 				"</span>",
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
@@ -1893,6 +1942,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -1931,6 +1982,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"{0}<span class=""quantifier""> is identified by </span>{1}",
+				@"{0}<span class=""quantifier""> is less than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is less than </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -1988,6 +2041,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
+				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
@@ -2193,6 +2247,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> = </span>",
 				@"<span class=""logicalOperator""> = </span>",
+				@"{0}<span class=""quantifier""> is equal to </span>{1}",
 				"</span>",
 				"</span>",
 				@"<span class=""primaryErrorReport"">",
@@ -2232,6 +2287,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
 				@"<span class=""quantifier"">exactly one of the following holds:</span> {0}",
@@ -2270,6 +2327,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"{0}<span class=""quantifier""> is identified by </span>{1}",
+				@"{0}<span class=""quantifier""> is less than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is less than </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
 				@"<span class=""quantifier"">at least {0} to at most {1}</span>",
 				@"<span class=""quantifier"">at least {0} to below {1}</span>",
@@ -2327,6 +2386,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""listSeparator"">;</span><br/>",
 				@"<span class=""quantifier"">some</span> {0} <span class=""quantifier"">participates in none of the following:</span>{1}",
 				@"<span class=""instance"">{0}</span>",
+				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
@@ -11104,6 +11164,566 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // FrequencyConstraint verbalization
+	#region ValueComparisonConstraint verbalization
+	public partial class ValueComparisonConstraint : IVerbalize
+	{
+		/// <summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			#region Preliminary
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			#region Prerequisite error check
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			bool blockingErrors = false;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			#endregion // Prerequisite error check
+			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
+			bool isDeontic = (this as IConstraint).Modality == ConstraintModality.Deontic;
+			StringBuilder sbTemp = null;
+			FactType parentFact;
+			string predicatePartFormatString;
+			LinkedElementCollection<ReadingOrder> allReadingOrders;
+			IList<RoleBase> factRoles = null;
+			Nullable<int> unaryRoleIndex = null;
+			int factArity = 0;
+			int unaryRoleOffset = 0;
+			LinkedElementCollection<Role> allConstraintRoles = this.RoleCollection;
+			LinkedElementCollection<FactType> allFacts = this.FactTypeCollection;
+			int allFactsCount = allFacts.Count;
+			if (allFactsCount == 0)
+			{
+				#region Error report
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
+				#endregion // Error report
+				return false;
+			}
+			string[][,] allBasicRoleReplacements = new string[allFactsCount][,];
+			VerbalizationSubscripter subscripter = new VerbalizationSubscripter(writer.FormatProvider);
+			bool[] unaryReplacements = new bool[allFactsCount];
+			int minFactArity = int.MaxValue;
+			int maxFactArity = int.MinValue;
+			for (int iFact = 0; iFact < allFactsCount; ++iFact)
+			{
+				FactType currentFact = allFacts[iFact];
+				if (currentFact.ReadingRequiredError != null)
+				{
+					#region Error report
+					if (errorOwner != null)
+					{
+						firstErrorPending = true;
+						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+						{
+							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							{
+								continue;
+							}
+							if (firstErrorPending)
+							{
+								firstErrorPending = false;
+								verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+								writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+							}
+							else
+							{
+								writer.WriteLine();
+							}
+							writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+						}
+						if (!firstErrorPending)
+						{
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+						}
+					}
+					#endregion // Error report
+					return false;
+				}
+				allReadingOrders = currentFact.ReadingOrderCollection;
+				factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : currentFact.RoleCollection;
+				unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
+				factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+				unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
+				if (factArity < minFactArity)
+				{
+					minFactArity = factArity;
+				}
+				if (factArity > maxFactArity)
+				{
+					maxFactArity = factArity;
+				}
+				string[,] basicRoleReplacements = new string[factArity, 3];
+				bool generateSubscripts = allFactsCount == 1;
+				for (int i = 0; i < factArity; ++i)
+				{
+					Role factRole = factRoles[i + unaryRoleOffset].Role;
+					ObjectType rolePlayer = factRole.RolePlayer;
+					string basicReplacement;
+					string basicSubscriptedReplacement = null;
+					if (rolePlayer != null)
+					{
+						bool useSubscript = false;
+						if (generateSubscripts)
+						{
+							int j = 0;
+							for (; j < factArity; ++j)
+							{
+								if (i != j && rolePlayer == factRoles[j].Role.RolePlayer)
+								{
+									useSubscript = true;
+									break;
+								}
+							}
+						}
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
+						if (useSubscript)
+						{
+							basicSubscriptedReplacement = subscripter.PrepareSubscriptFormatString(snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeWithSubscript, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
+						}
+					}
+					else
+					{
+						basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+					}
+					basicRoleReplacements[i, 0] = basicReplacement;
+					if (basicSubscriptedReplacement == null)
+					{
+						basicRoleReplacements[i, 1] = basicReplacement;
+						basicRoleReplacements[i, 2] = null;
+					}
+					else
+					{
+						basicRoleReplacements[i, 1] = basicSubscriptedReplacement;
+						basicRoleReplacements[i, 2] = string.Empty;
+					}
+				}
+				allBasicRoleReplacements[iFact] = basicRoleReplacements;
+				unaryReplacements[iFact] = unaryRoleIndex.HasValue;
+			}
+			int constraintRoleArity = allConstraintRoles.Count;
+			ConstraintRoleSequenceJoinPath joinPath = this.JoinPath;
+			IReading[] allConstraintRoleReadings = new IReading[constraintRoleArity];
+			string[] roleReplacements = new string[maxFactArity];
+			IReading reading;
+			VerbalizationHyphenBinder hyphenBinder;
+			#endregion // Preliminary
+			#region Pattern Matches
+			if (!isNegative && allFactsCount == 1)
+			{
+				parentFact = allFacts[0];
+				predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
+				allReadingOrders = parentFact.ReadingOrderCollection;
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+				string snippet1Replace1 = null;
+				string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ConditionalMultiLine, isDeontic, isNegative);
+				string snippet1Replace1Replace1 = null;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				FactType[] snippet1Replace1ReplaceUniqueFactTypes1 = new FactType[constraintRoleArity];
+				FactType snippet1Replace1ReplaceTestUniqueFactType1;
+				int snippet1Replace1ReplaceFilteredIter1;
+				int snippet1Replace1ReplaceFilteredCount1 = 0;
+				for (snippet1Replace1ReplaceFilteredIter1 = 0; snippet1Replace1ReplaceFilteredIter1 < constraintRoleArity; ++snippet1Replace1ReplaceFilteredIter1)
+				{
+					RoleBase primaryRole = allConstraintRoles[snippet1Replace1ReplaceFilteredIter1];
+					if (Array.IndexOf(snippet1Replace1ReplaceUniqueFactTypes1, snippet1Replace1ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					{
+						snippet1Replace1ReplaceUniqueFactTypes1[snippet1Replace1ReplaceFilteredIter1] = snippet1Replace1ReplaceTestUniqueFactType1;
+						++snippet1Replace1ReplaceFilteredCount1;
+					}
+				}
+				Array.Clear(snippet1Replace1ReplaceUniqueFactTypes1, 0, snippet1Replace1ReplaceUniqueFactTypes1.Length);
+				snippet1Replace1ReplaceFilteredIter1 = 0;
+				for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
+				{
+					RoleBase primaryRole = allConstraintRoles[RoleIter1];
+					parentFact = primaryRole.FactType;
+					predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
+					allReadingOrders = parentFact.ReadingOrderCollection;
+					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
+					unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
+					factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+					if (Array.IndexOf(snippet1Replace1ReplaceUniqueFactTypes1, snippet1Replace1ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					{
+						snippet1Replace1ReplaceUniqueFactTypes1[RoleIter1] = snippet1Replace1ReplaceTestUniqueFactType1;
+						CoreVerbalizationSnippetType listSnippet;
+						if (snippet1Replace1ReplaceFilteredIter1 == 0)
+						{
+							listSnippet = CoreVerbalizationSnippetType.CompoundListOpen;
+						}
+						else if (snippet1Replace1ReplaceFilteredIter1 == snippet1Replace1ReplaceFilteredCount1 - 1)
+						{
+							if (snippet1Replace1ReplaceFilteredIter1 == 1)
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompoundListPairSeparator;
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompoundListFinalSeparator;
+							}
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.CompoundListSeparator;
+						}
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+						for (int snippet1Replace1ReplaceFactRoleIter1 = 0; snippet1Replace1ReplaceFactRoleIter1 < factArity; ++snippet1Replace1ReplaceFactRoleIter1)
+						{
+							RoleBase currentRole = factRoles[snippet1Replace1ReplaceFactRoleIter1];
+							string roleReplacement = null;
+							string basicReplacement = hyphenBinder.HyphenBindRoleReplacement(subscripter.GetSubscriptedName(snippet1Replace1ReplaceFactRoleIter1, allBasicRoleReplacements[0]), snippet1Replace1ReplaceFactRoleIter1);
+							if (currentRole == primaryRole)
+							{
+								roleReplacement = basicReplacement;
+							}
+							else
+							{
+								roleReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ExistentialQuantifier, isDeontic, isNegative), basicReplacement);
+							}
+							if (roleReplacement == null)
+							{
+								roleReplacement = basicReplacement;
+							}
+							roleReplacements[snippet1Replace1ReplaceFactRoleIter1] = roleReplacement;
+						}
+						snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, roleReplacements, false);
+						sbTemp.Append(snippet1Replace1Replace1);
+						if (snippet1Replace1ReplaceFilteredIter1 == snippet1Replace1ReplaceFilteredCount1 - 1)
+						{
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompoundListClose, isDeontic, isNegative));
+						}
+						++snippet1Replace1ReplaceFilteredIter1;
+					}
+				}
+				snippet1Replace1Replace1 = sbTemp.ToString();
+				string snippet1Replace1Replace2 = null;
+				CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType2 = 0;
+				if (this.Operator == ValueComparisonOperator.LessThan)
+				{
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.LessThanValueComparator;
+				}
+				else if (this.Operator == ValueComparisonOperator.LessThanOrEqual)
+				{
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.LessThanOrEqualValueComparator;
+				}
+				else if (this.Operator == ValueComparisonOperator.GreaterThan)
+				{
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.GreaterThanValueComparator;
+				}
+				else if (this.Operator == ValueComparisonOperator.GreaterThanOrEqual)
+				{
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.GreaterThanOrEqualValueComparator;
+				}
+				else if (this.Operator == ValueComparisonOperator.Equal)
+				{
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.EqualValueComparator;
+				}
+				else if (this.Operator == ValueComparisonOperator.NotEqual)
+				{
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.NotEqualValueComparator;
+				}
+				string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(snippet1Replace1ReplaceSnippetType2, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace1 = null;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				for (int RoleIter1 = 0; RoleIter1 < 1; ++RoleIter1)
+				{
+					RoleBase primaryRole = allConstraintRoles[RoleIter1];
+					parentFact = primaryRole.FactType;
+					allReadingOrders = parentFact.ReadingOrderCollection;
+					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
+					sbTemp.Append(subscripter.GetSubscriptedName(unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, primaryRole), allBasicRoleReplacements[0]));
+				}
+				snippet1Replace1Replace2Replace1 = sbTemp.ToString();
+				string snippet1Replace1Replace2Replace2 = null;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				for (int RoleIter2 = 1; RoleIter2 < constraintRoleArity; ++RoleIter2)
+				{
+					RoleBase primaryRole = allConstraintRoles[RoleIter2];
+					parentFact = primaryRole.FactType;
+					allReadingOrders = parentFact.ReadingOrderCollection;
+					factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
+					sbTemp.Append(subscripter.GetSubscriptedName(unaryReplacements[0] ? 0 : FactType.IndexOfRole(factRoles, primaryRole), allBasicRoleReplacements[0]));
+				}
+				snippet1Replace1Replace2Replace2 = sbTemp.ToString();
+				snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1, snippet1Replace1Replace2Replace2);
+				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			else if (!isNegative)
+			{
+				RolePathVerbalizer pathVerbalizer = RolePathVerbalizer.Create(this, new StandardRolePathRenderer(snippets, verbalizationContext, writer.FormatProvider));
+				IList<ConstraintRoleSequenceHasRole> includedConstraintRoles = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection(this);
+				IList<object> preProjectionKeys = pathVerbalizer.GetPreProjectionPrimaryNodeKeys(includedConstraintRoles);
+				int preProjectionKeyCount = preProjectionKeys != null ? preProjectionKeys.Count : 0;
+				if (0 != preProjectionKeyCount)
+				{
+					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, isNegative);
+					string snippet1Replace1 = null;
+					string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ForEachIndentedQuantifier, isDeontic, isNegative);
+					string snippet1Replace1Replace1 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					for (int RoleIter1 = 0; RoleIter1 < preProjectionKeyCount; ++RoleIter1)
+					{
+						CoreVerbalizationSnippetType listSnippet;
+						if (RoleIter1 == 0)
+						{
+							listSnippet = CoreVerbalizationSnippetType.SimpleListOpen;
+						}
+						else if (RoleIter1 == preProjectionKeyCount - 1)
+						{
+							if (RoleIter1 == 1)
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleListPairSeparator;
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.SimpleListFinalSeparator;
+							}
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.SimpleListSeparator;
+						}
+						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+						sbTemp.Append(pathVerbalizer.RenderAssociatedRolePlayer(preProjectionKeys[RoleIter1], null, RolePathRolePlayerRenderingOptions.UsedInVerbalizationHead));
+						if (RoleIter1 == preProjectionKeyCount - 1)
+						{
+							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.SimpleListClose, isDeontic, isNegative));
+						}
+					}
+					snippet1Replace1Replace1 = sbTemp.ToString();
+					string snippet1Replace1Replace2 = null;
+					string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ConditionalMultiLine, isDeontic, isNegative);
+					string snippet1Replace1Replace2Replace1 = null;
+					if (pathVerbalizer.HasPathVerbalization(joinPath))
+					{
+						pathVerbalizer.Options = RolePathVerbalizerOptions.None;
+						if (sbTemp == null)
+						{
+							sbTemp = new StringBuilder();
+						}
+						else
+						{
+							sbTemp.Length = 0;
+						}
+						snippet1Replace1Replace2Replace1 = pathVerbalizer.RenderPathVerbalization(joinPath, sbTemp);
+					}
+					string snippet1Replace1Replace2Replace2 = null;
+					CoreVerbalizationSnippetType snippet1Replace1Replace2ReplaceSnippetType2 = 0;
+					if (this.Operator == ValueComparisonOperator.LessThan)
+					{
+						snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.LessThanValueComparator;
+					}
+					else if (this.Operator == ValueComparisonOperator.LessThanOrEqual)
+					{
+						snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.LessThanOrEqualValueComparator;
+					}
+					else if (this.Operator == ValueComparisonOperator.GreaterThan)
+					{
+						snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.GreaterThanValueComparator;
+					}
+					else if (this.Operator == ValueComparisonOperator.GreaterThanOrEqual)
+					{
+						snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.GreaterThanOrEqualValueComparator;
+					}
+					else if (this.Operator == ValueComparisonOperator.Equal)
+					{
+						snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.EqualValueComparator;
+					}
+					else if (this.Operator == ValueComparisonOperator.NotEqual)
+					{
+						snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.NotEqualValueComparator;
+					}
+					string snippet1Replace1Replace2ReplaceFormat2 = snippets.GetSnippet(snippet1Replace1Replace2ReplaceSnippetType2, isDeontic, isNegative);
+					string snippet1Replace1Replace2Replace2Replace1 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					for (int RoleIter1 = 0; RoleIter1 < 1; ++RoleIter1)
+					{
+						snippet1Replace1Replace2Replace2Replace1 = pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter1], null, RolePathRolePlayerRenderingOptions.None);
+						sbTemp.Append(snippet1Replace1Replace2Replace2Replace1);
+					}
+					snippet1Replace1Replace2Replace2Replace1 = sbTemp.ToString();
+					string snippet1Replace1Replace2Replace2Replace2 = null;
+					if (sbTemp == null)
+					{
+						sbTemp = new StringBuilder();
+					}
+					else
+					{
+						sbTemp.Length = 0;
+					}
+					for (int RoleIter2 = 1; RoleIter2 < constraintRoleArity; ++RoleIter2)
+					{
+						snippet1Replace1Replace2Replace2Replace2 = pathVerbalizer.RenderAssociatedRolePlayer(includedConstraintRoles[RoleIter2], null, RolePathRolePlayerRenderingOptions.None);
+						sbTemp.Append(snippet1Replace1Replace2Replace2Replace2);
+					}
+					snippet1Replace1Replace2Replace2Replace2 = sbTemp.ToString();
+					snippet1Replace1Replace2Replace2 = string.Format(writer.FormatProvider, snippet1Replace1Replace2ReplaceFormat2, snippet1Replace1Replace2Replace2Replace1, snippet1Replace1Replace2Replace2Replace2);
+					snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1, snippet1Replace1Replace2Replace2);
+					snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
+					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				}
+			}
+			else if (0 != (sign & VerbalizationSign.AttemptOppositeSign))
+			{
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, isNegative ? VerbalizationSign.Positive : VerbalizationSign.Negative);
+			}
+			#endregion // Pattern Matches
+			#region Error report
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			#endregion // Error report
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+		}
+	}
+	#endregion // ValueComparisonConstraint verbalization
 	#region RoleValueConstraint verbalization
 	public partial class RoleValueConstraint : IVerbalize
 	{

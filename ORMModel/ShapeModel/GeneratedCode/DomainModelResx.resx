@@ -389,6 +389,14 @@
     <value>Ring Constraint Shape</value>
     <comment>DisplayName for DomainClass &apos;RingConstraintShape&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape</value>
+    <comment>Description for DomainClass &apos;ValueComparisonConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape.DisplayName" xml:space="preserve">
+    <value>Value Comparison Constraint Shape</value>
+    <comment>DisplayName for DomainClass &apos;ValueComparisonConstraintShape&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FloatingTextShape</value>
     <comment>Description for DomainClass &apos;FloatingTextShape&apos;</comment>
@@ -701,6 +709,14 @@
     <value>New Ring Constraint</value>
     <comment>Toolbox tooltip text</comment>
   </data>
+  <data name="ValueComparisonConstraintToolboxItem" xml:space="preserve">
+    <value>Value Comparison Constraint</value>
+    <comment>Toolbox item name</comment>
+  </data>
+  <data name="ValueComparisonConstraintToolboxTooltip" xml:space="preserve">
+    <value>New Value Comparison Constraint</value>
+    <comment>Toolbox tooltip text</comment>
+  </data>
   <data name="ExternalConstraintConnectorToolboxItem" xml:space="preserve">
     <value>Constraint Connector</value>
     <comment>Toolbox item name</comment>
@@ -883,6 +899,10 @@ A DomainClass can be serialized as a moniker only if
   </data>
   <data name="RingConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
     <value>..\..\Resources\Toolbox.RingConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+    <comment>Toolbox item image</comment>
+  </data>
+  <data name="ValueComparisonConstraintToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">
+    <value>..\..\Resources\Toolbox.ValueComparisonConstraint.Bitmap.Id.bmp;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
     <comment>Toolbox item image</comment>
   </data>
   <data name="ExternalConstraintConnectorToolboxBitmap" type="System.Resources.ResXFileRef, System.Windows.Forms" xml:space="preserve">

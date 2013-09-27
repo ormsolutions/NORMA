@@ -9991,7 +9991,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						RolePathObjectTypeRoot pathRoot = null;
 						if (null != (pathedRole = node.PathedRole))
 						{
-							if (pathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+							// Treat a unified same fact type role the same as a join role by
+							// returning it as a primary node. Otherwise, leave these alone to
+							// be introduced and treated existentially in the rule body.
+							if (pathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType ||
+								pathedRole.ObjectUnifier != null)
 							{
 								resolvedNode = cache.GetCorrelationRoot(node);
 								correlatedNodes[resolvedNode] = resolvedNode;

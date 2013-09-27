@@ -1242,6 +1242,68 @@
 				</ConstrainedRoles>
 			</Constraint>
 			<!-- End Frequency Constraint -->
+			<!-- Begin Value Comparison Constraint  -->
+			<Constraint type="ValueComparisonConstraint" patternGroup="SetConstraint">
+				<EnableSubscripts custom="defaultSubscript" factCount="1"/>
+				<ConstrainedRoles sign="positive" factCount="1">
+					<!-- UNDONE: Don't have a proper spec. -->
+					<Snippet ref="ImpliedModalNecessityOperator">
+						<Snippet ref="ConditionalMultiLine">
+							<IterateRoles match="constraintRoles" uniqueFactType="true" listStyle="CompoundList">
+								<Fact>
+									<PredicateReplacement match="included">
+										<Snippet ref="SelfReference"/>
+									</PredicateReplacement>
+									<PredicateReplacement>
+										<Snippet ref="ExistentialQuantifier"/>
+									</PredicateReplacement>
+								</Fact>
+							</IterateRoles>
+							<ConditionalSnippet>
+								<!-- Match one of the six verbalizable value comparison operators. Note that the 'Undefined' operators blocks verbalization. -->
+								<Snippet ref="LessThanValueComparator" conditionalMatch="ValueComparisonOperatorLessThan"/>
+								<Snippet ref="LessThanOrEqualValueComparator" conditionalMatch="ValueComparisonOperatorLessThanOrEqual"/>
+								<Snippet ref="GreaterThanValueComparator" conditionalMatch="ValueComparisonOperatorGreaterThan"/>
+								<Snippet ref="GreaterThanOrEqualValueComparator" conditionalMatch="ValueComparisonOperatorGreaterThanOrEqual"/>
+								<Snippet ref="EqualValueComparator" conditionalMatch="ValueComparisonOperatorEqual"/>
+								<Snippet ref="NotEqualValueComparator" conditionalMatch="ValueComparisonOperatorNotEqual"/>
+								<SnippetReplacements>
+									<IterateRoles match="constraintRoles" pass="first" listStyle="null"/>
+									<IterateRoles match="constraintRoles" pass="notFirst" listStyle="null"/>
+								</SnippetReplacements>
+							</ConditionalSnippet>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+				<ConstrainedRoles sign="positive" blockHelpers="pathVerbalizer preProjectionKeys">
+					<Snippet ref="ImpliedModalNecessityOperator" conditionalMatch="HasPreProjectionKeys">
+						<Snippet ref="ForEachIndentedQuantifier">
+							<IterateRoles match="preProjectionKeys" markProvidedConstraintRolesAsHead="true" listStyle="SimpleList"/>
+							<Snippet ref="ConditionalMultiLine">
+								<SequenceJoinPath/>
+								<ConditionalSnippet>
+									<!-- Match one of the six verbalizable value comparison operators. Note that the 'Undefined' operators blocks verbalization. -->
+									<Snippet ref="LessThanValueComparator" conditionalMatch="ValueComparisonOperatorLessThan"/>
+									<Snippet ref="LessThanOrEqualValueComparator" conditionalMatch="ValueComparisonOperatorLessThanOrEqual"/>
+									<Snippet ref="GreaterThanValueComparator" conditionalMatch="ValueComparisonOperatorGreaterThan"/>
+									<Snippet ref="GreaterThanOrEqualValueComparator" conditionalMatch="ValueComparisonOperatorGreaterThanOrEqual"/>
+									<Snippet ref="EqualValueComparator" conditionalMatch="ValueComparisonOperatorEqual"/>
+									<Snippet ref="NotEqualValueComparator" conditionalMatch="ValueComparisonOperatorNotEqual"/>
+									<SnippetReplacements>
+										<IterateRoles match="providedConstraintRoles" pass="first" listStyle="null">
+											<ProvidedRolePlayer rolePlayerKey="ConstraintRole"/>
+										</IterateRoles>
+										<IterateRoles match="providedConstraintRoles" pass="notFirst" listStyle="null">
+											<ProvidedRolePlayer rolePlayerKey="ConstraintRole"/>
+										</IterateRoles>
+									</SnippetReplacements>
+								</ConditionalSnippet>
+							</Snippet>
+						</Snippet>
+					</Snippet>
+				</ConstrainedRoles>
+			</Constraint>
+			<!-- End Value Comparison Constraint  -->
 			<!-- Begin Role Value Constraint -->
 			<Constraint patternGroup="RoleValueConstraint" type="RoleValueConstraint">
 				<ConditionalSnippet>

@@ -19,18 +19,19 @@
 	</xs:annotation>
 
 	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
-	<xs:element name="ORMDiagram" type="ORMDiagram"/>
-	<xs:complexType name="ORMDiagram">
+	<xs:element name="ORMDiagram" type="ORMDiagramType"/>
+	<xs:complexType name="ORMDiagramType">
 		<xs:sequence>
 			<xs:element name="Shapes" minOccurs="0">
 				<xs:complexType>
 					<xs:choice minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="ObjectTypeShape" type="ObjectTypeShape"/>
-						<xs:element name="FactTypeShape" type="FactTypeShape"/>
-						<xs:element name="ExternalConstraintShape" type="ExternalConstraintShape"/>
-						<xs:element name="FrequencyConstraintShape" type="FrequencyConstraintShape"/>
-						<xs:element name="RingConstraintShape" type="RingConstraintShape"/>
-						<xs:element name="ModelNoteShape" type="ModelNoteShape"/>
+						<xs:element name="ObjectTypeShape" type="ObjectTypeShapeType"/>
+						<xs:element name="FactTypeShape" type="FactTypeShapeType"/>
+						<xs:element name="ExternalConstraintShape" type="ExternalConstraintShapeType"/>
+						<xs:element name="FrequencyConstraintShape" type="FrequencyConstraintShapeType"/>
+						<xs:element name="RingConstraintShape" type="RingConstraintShapeType"/>
+						<xs:element name="ValueComparisonConstraintShape" type="ValueComparisonConstraintShapeType"/>
+						<xs:element name="ModelNoteShape" type="ModelNoteShapeType"/>
 						<xs:element ref="DiagramExtensionShape"/>
 					</xs:choice>
 				</xs:complexType>
@@ -56,14 +57,14 @@
 	<xs:element name="DiagramExtensionShape" type="ShapeType" abstract="true"/>
 	<xs:element name="ObjectTypeRelativeExtensionShape" type="ShapeType" abstract="true"/>
 	<xs:element name="FactTypeRelativeExtensionShape" type="ShapeType" abstract="true"/>
-	<xs:complexType name="ObjectTypeShape">
+	<xs:complexType name="ObjectTypeShapeType">
 		<xs:complexContent>
 			<xs:extension base="ShapeType">
 				<xs:sequence>
 					<xs:element name="RelativeShapes" minOccurs="0">
 						<xs:complexType>
 							<xs:choice minOccurs="0" maxOccurs="unbounded">
-								<xs:element name="ValueConstraintShape" type="ValueConstraintShape"/>
+								<xs:element name="ValueConstraintShape" type="ValueConstraintShapeType"/>
 								<xs:element ref="ObjectTypeRelativeExtensionShape"/>
 							</xs:choice>
 						</xs:complexType>
@@ -75,17 +76,17 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FactTypeShape">
+	<xs:complexType name="FactTypeShapeType">
 		<xs:complexContent>
 			<xs:extension base="ShapeType">
 				<xs:sequence>
 					<xs:element name="RelativeShapes" minOccurs="0">
 						<xs:complexType>
 							<xs:choice minOccurs="0" maxOccurs="unbounded">
-								<xs:element name="ObjectifiedFactTypeNameShape" type="ObjectTypeShape"/>
-								<xs:element name="ReadingShape" type="ReadingShape"/>
-								<xs:element name="ValueConstraintShape" type="ValueConstraintShape"/>
-								<xs:element name="RoleNameShape" type="RoleNameShape"/>
+								<xs:element name="ObjectifiedFactTypeNameShape" type="ObjectTypeShapeType"/>
+								<xs:element name="ReadingShape" type="ReadingShapeType"/>
+								<xs:element name="ValueConstraintShape" type="ValueConstraintShapeType"/>
+								<xs:element name="RoleNameShape" type="RoleNameShapeType"/>
 								<xs:element ref="FactTypeRelativeExtensionShape"/>
 							</xs:choice>
 						</xs:complexType>
@@ -159,7 +160,7 @@
 			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
-	<xs:complexType name="ReadingShape">
+	<xs:complexType name="ReadingShapeType">
 		<xs:complexContent>
 			<xs:extension base="ShapeType">
 				<xs:sequence>
@@ -168,7 +169,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ValueConstraintShape">
+	<xs:complexType name="ValueConstraintShapeType">
 		<xs:complexContent>
 			<xs:extension base="ShapeType">
 				<xs:sequence>
@@ -197,7 +198,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="RoleNameShape">
+	<xs:complexType name="RoleNameShapeType">
 		<xs:complexContent>
 			<xs:extension base="ShapeType">
 				<xs:sequence>
@@ -206,7 +207,7 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ExternalConstraintShape">
+	<xs:complexType name="ExternalConstraintShapeType">
 		<xs:complexContent>
 			<xs:extension base="ShapeType">
 				<xs:sequence>
@@ -215,17 +216,22 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="FrequencyConstraintShape">
+	<xs:complexType name="FrequencyConstraintShapeType">
 		<xs:complexContent>
-			<xs:extension base="ExternalConstraintShape"/>
+			<xs:extension base="ExternalConstraintShapeType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="RingConstraintShape">
+	<xs:complexType name="RingConstraintShapeType">
 		<xs:complexContent>
-			<xs:extension base="ExternalConstraintShape"/>
+			<xs:extension base="ExternalConstraintShapeType"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:complexType name="ModelNoteShape">
+	<xs:complexType name="ValueComparisonConstraintShapeType">
+		<xs:complexContent>
+			<xs:extension base="ExternalConstraintShapeType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ModelNoteShapeType">
 		<xs:complexContent>
 			<xs:extension base="ShapeType">
 				<xs:sequence>

@@ -10844,6 +10844,166 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass ValueComparisonConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("865fece5-1df2-4d6f-a33f-6e4862d10374")]
+	public partial class ValueComparisonConstraint : SetConstraint
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ValueComparisonConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x865fece5, 0x1df2, 0x4d6f, 0xa3, 0x3f, 0x6e, 0x48, 0x62, 0xd1, 0x03, 0x74);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueComparisonConstraint(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueComparisonConstraint(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Operator domain property code
+		
+		/// <summary>
+		/// Operator domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid OperatorDomainPropertyId = new global::System.Guid(0x02bd277d, 0xfa64, 0x4dc5, 0x9e, 0x38, 0x32, 0x7c, 0xeb, 0x0d, 0xea, 0x03);
+		
+		/// <summary>
+		/// Storage for Operator
+		/// </summary>
+		private ValueComparisonOperator operatorPropertyStorage = ValueComparisonOperator.Undefined;
+		
+		/// <summary>
+		/// Gets or sets the value of Operator domain property.
+		/// The operator used for comparing constrained values.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint/Operator.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint/Operator.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ValueComparisonOperator.Undefined)]
+		[DslModeling::DomainObjectId("02bd277d-fa64-4dc5-9e38-327ceb0dea03")]
+		public ValueComparisonOperator Operator
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return operatorPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				OperatorPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueComparisonConstraint.Operator domain property.
+		/// </summary>
+		internal sealed partial class OperatorPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueComparisonConstraint, ValueComparisonOperator>
+		{
+			private OperatorPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueComparisonConstraint.Operator domain property value handler.
+			/// </summary>
+			public static readonly OperatorPropertyHandler Instance = new OperatorPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueComparisonConstraint.Operator domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return OperatorDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed ValueComparisonOperator GetValue(ValueComparisonConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.operatorPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueComparisonConstraint element, ValueComparisonOperator newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				ValueComparisonOperator oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.operatorPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region OperatorNotSpecifiedError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets OperatorNotSpecifiedError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraint
+		/// </summary>
+		public virtual ValueComparisonConstraintOperatorNotSpecifiedError OperatorNotSpecifiedError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId) as ValueComparisonConstraintOperatorNotSpecifiedError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass SetConstraint
 	/// </summary>
 	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<SetConstraint, Design.SetConstraintTypeDescriptor<SetConstraint>>))]
@@ -23799,6 +23959,78 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError.RingConstraintTypeNotSpecifiedErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ValueComparisonConstraintOperatorNotSpecifiedError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintOperatorNotSpecifiedError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintOperatorNotSpecifiedError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("7d7d1a71-6b49-4ebe-a649-ab25c5863e84")]
+	public partial class ValueComparisonConstraintOperatorNotSpecifiedError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ValueComparisonConstraintOperatorNotSpecifiedError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7d7d1a71, 0x6b49, 0x4ebe, 0xa6, 0x49, 0xab, 0x25, 0xc5, 0x86, 0x3e, 0x84);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueComparisonConstraintOperatorNotSpecifiedError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueComparisonConstraintOperatorNotSpecifiedError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ValueComparisonConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueComparisonConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedError
+		/// </summary>
+		public virtual ValueComparisonConstraint ValueComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedErrorDomainRoleId) as ValueComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedErrorDomainRoleId, value);
 				}
 			}
 		}

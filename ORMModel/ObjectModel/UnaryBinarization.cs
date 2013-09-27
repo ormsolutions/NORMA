@@ -411,6 +411,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						case ConstraintType.InternalUniqueness:
 						case ConstraintType.ExternalUniqueness:
+						case ConstraintType.ValueComparison:
 						case ConstraintType.Frequency:
 							if (constraintRoleSequence != unaryRoleUniquenessConstraint)
 							{

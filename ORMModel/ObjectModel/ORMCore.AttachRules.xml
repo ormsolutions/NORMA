@@ -1487,6 +1487,11 @@
 				<arg:RuleOn targetType="UniquenessConstraint"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="ValueComparisonConstraint">
+			<arg:ChangeRule methodName="ValueComparisonConstraintOperatorChangeRule">
+				<arg:RuleOn targetType="ValueComparisonConstraint"/>
+			</arg:ChangeRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="ValueConstraint">
 			<arg:ChangeRule methodName="DataTypeChangeRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType"/>

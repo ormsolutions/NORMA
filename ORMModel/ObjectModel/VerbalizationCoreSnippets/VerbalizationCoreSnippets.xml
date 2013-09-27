@@ -292,6 +292,12 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="Acyclicity"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more traversals through </span>{1}]]></Snippet>
 			<Snippet type="AcyclicityWithRoleNumbers"><![CDATA[<span class="quantifier">no {0} may cycle back to itself via one or more instances of the role pair:</span><br/><span class="smallIndent"><span class="quantifier">roles <span class="objectType">{2}</span> and <span class="objectType">{3}</span> of </span>{1}</span>]]></Snippet>
 			<Snippet type="StronglyIntransitiveConsequent"><![CDATA[<span class="quantifier">it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</span>]]></Snippet>
+			<Snippet type="LessThanValueComparator"><![CDATA[{0}<span class="quantifier"> is less than </span>{1}]]></Snippet>
+			<Snippet type="LessThanOrEqualValueComparator"><![CDATA[{0}<span class="quantifier"> is less than or equal to </span>{1}]]></Snippet>
+			<Snippet type="GreaterThanValueComparator"><![CDATA[{0}<span class="quantifier"> is greater than </span>{1}]]></Snippet>
+			<Snippet type="GreaterThanOrEqualValueComparator"><![CDATA[{0}<span class="quantifier"> is greather than or equal to </span>{1}]]></Snippet>
+			<Snippet type="EqualValueComparator"><![CDATA[{0}<span class="quantifier"> is equal to </span>{1}]]></Snippet>
+			<Snippet type="NotEqualValueComparator"><![CDATA[{0}<span class="quantifier"> is not equal to </span>{1}]]></Snippet>
 
 			<!-- Role path snippets -->
 			<Snippet type="RolePathHeaderListDirective"><![CDATA[!And !Or Xor !Xor]]></Snippet>

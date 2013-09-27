@@ -1041,6 +1041,22 @@
     <value>IsImplied</value>
     <comment>DisplayName for DomainProperty &apos;IsImplied&apos; on DomainClass &apos;MandatoryConstraint&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ValueComparisonConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>ValueComparisonConstraint</value>
+    <comment>DisplayName for DomainClass &apos;ValueComparisonConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint/Operator.Description" xml:space="preserve">
+    <value>The operator used for comparing constrained values.</value>
+    <comment>Description for DomainProperty &apos;Operator&apos; on DomainClass &apos;ValueComparisonConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint/Operator.DisplayName" xml:space="preserve">
+    <value>Operator</value>
+    <comment>DisplayName for DomainProperty &apos;Operator&apos; on DomainClass &apos;ValueComparisonConstraint&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;SetConstraint&apos;</comment>
@@ -2393,6 +2409,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintTypeNotSpecifiedError.DisplayName" xml:space="preserve">
     <value>Ring Constraint Type Not Specified</value>
     <comment>DisplayName for DomainClass &apos;RingConstraintTypeNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintOperatorNotSpecifiedError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ValueComparisonConstraintOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintOperatorNotSpecifiedError.DisplayName" xml:space="preserve">
+    <value>Value Comparison Operator Not Specified</value>
+    <comment>DisplayName for DomainClass &apos;ValueComparisonConstraintOperatorNotSpecifiedError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeMetaRole.Description" xml:space="preserve">
     <value></value>
@@ -5315,6 +5339,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintHasRingConstraintTypeNotSpecifiedError/RingConstraintTypeNotSpecifiedError.PropertyDisplayName" xml:space="preserve">
     <value>Ring Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;RingConstraintTypeNotSpecifiedError&apos; on DomainRelationship &apos;RingConstraintHasRingConstraintTypeNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError</value>
+    <comment>Description for DomainClass &apos;ValueComparisonConstraintHasOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.DisplayName" xml:space="preserve">
+    <value>Value Comparison Constraint Has Operator Not Specified Error</value>
+    <comment>DisplayName for DomainClass &apos;ValueComparisonConstraintHasOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/ValueComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.ValueComparisonConstraint</value>
+    <comment>Description for DomainRole &apos;ValueComparisonConstraint&apos; on DomainRelationship &apos;ValueComparisonConstraintHasOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/ValueComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>ValueComparisonConstraint</value>
+    <comment>DisplayName for DomainRole &apos;ValueComparisonConstraint&apos; on DomainRelationship &apos;ValueComparisonConstraintHasOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/ValueComparisonConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Operator Not Specified Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueComparisonConstraint&apos; on DomainRelationship &apos;ValueComparisonConstraintHasOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/OperatorNotSpecifiedError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedError</value>
+    <comment>Description for DomainRole &apos;OperatorNotSpecifiedError&apos; on DomainRelationship &apos;ValueComparisonConstraintHasOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/OperatorNotSpecifiedError.DisplayName" xml:space="preserve">
+    <value>OperatorNotSpecifiedError</value>
+    <comment>DisplayName for DomainRole &apos;OperatorNotSpecifiedError&apos; on DomainRelationship &apos;ValueComparisonConstraintHasOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/OperatorNotSpecifiedError.PropertyDisplayName" xml:space="preserve">
+    <value>Value Comparison Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;OperatorNotSpecifiedError&apos; on DomainRelationship &apos;ValueComparisonConstraintHasOperatorNotSpecifiedError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDuplicateNameError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDuplicateNameError</value>
@@ -10371,6 +10427,62 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraintType/TransitiveAsymmetric.Description" xml:space="preserve">
     <value></value>
     <comment>Description for EnumerationLiteral &apos;TransitiveAsymmetric&apos; on DomainEnumeration &apos;RingConstraintType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/Undefined.DisplayName" xml:space="preserve">
+    <value>Undefined</value>
+    <comment>Display name for EnumerationLiteral &apos;Undefined&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/Undefined.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;Undefined&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/LessThan.DisplayName" xml:space="preserve">
+    <value>LessThan</value>
+    <comment>Display name for EnumerationLiteral &apos;LessThan&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/LessThan.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;LessThan&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/GreaterThan.DisplayName" xml:space="preserve">
+    <value>GreaterThan</value>
+    <comment>Display name for EnumerationLiteral &apos;GreaterThan&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/GreaterThan.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;GreaterThan&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/LessThanOrEqual.DisplayName" xml:space="preserve">
+    <value>LessThanOrEqual</value>
+    <comment>Display name for EnumerationLiteral &apos;LessThanOrEqual&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/LessThanOrEqual.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;LessThanOrEqual&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/GreaterThanOrEqual.DisplayName" xml:space="preserve">
+    <value>GreaterThanOrEqual</value>
+    <comment>Display name for EnumerationLiteral &apos;GreaterThanOrEqual&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/GreaterThanOrEqual.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;GreaterThanOrEqual&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/Equal.DisplayName" xml:space="preserve">
+    <value>Equal</value>
+    <comment>Display name for EnumerationLiteral &apos;Equal&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/Equal.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;Equal&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/NotEqual.DisplayName" xml:space="preserve">
+    <value>NotEqual</value>
+    <comment>Display name for EnumerationLiteral &apos;NotEqual&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonOperator/NotEqual.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for EnumerationLiteral &apos;NotEqual&apos; on DomainEnumeration &apos;ValueComparisonOperator&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType/General.DisplayName" xml:space="preserve">
     <value>General</value>
