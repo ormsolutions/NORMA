@@ -571,7 +571,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ConstraintDuplicateNameError duplicateName;
 			if (error is TooFewRoleSequencesError)
 			{
-				ActivateNewRoleSequenceAction(null);
+				ActivateNewRoleSequenceConnectAction(null);
 			}
 			else if (null != (duplicateName = error as ConstraintDuplicateNameError))
 			{
@@ -680,10 +680,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					case ConstraintStorageStyle.SetConstraint:
 						SetConstraint scec = constraint as SetConstraint;
+						bool individualRoles = 0 != (constraint.RoleSequenceStyles & RoleSequenceStyles.ConnectIndividualRoles);
 						foreach (FactSetConstraint factConstraint in DomainRoleInfo.GetElementLinks<FactSetConstraint>(scec, FactSetConstraint.SetConstraintDomainRoleId))
 						{
 							// Redraw the line
-							RedrawPelsOnDiagram(factConstraint, diagram);
+							if (individualRoles)
+							{
+								foreach (ConstraintRoleSequenceHasRole constraintRole in factConstraint.ConstrainedRoleCollection)
+								{
+									RedrawPelsOnDiagram(constraintRole, diagram);
+								}
+							}
+							else
+							{
+								RedrawPelsOnDiagram(factConstraint, diagram);
+							}
 							if (includeFacts)
 							{
 								// Redraw the fact type
@@ -750,11 +761,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			if (!ORMBaseShape.AttemptErrorActivation(e))
 			{
-				ActivateNewRoleSequenceAction(e.DiagramClientView);
+				ActivateNewRoleSequenceConnectAction(e.DiagramClientView);
 			}
 			base.OnDoubleClick(e);
 		}
-		private void ActivateNewRoleSequenceAction(DiagramClientView clientView)
+		/// <summary>
+		/// Activate a new role sequence connect action. For a set comparison constraint
+		/// this adds a new sequence. For a set constraint it activates the current sequence.
+		/// </summary>
+		/// <param name="clientView">The active diagram client view. This can be retrieved
+		/// from the shape if it is not specified.</param>
+		protected void ActivateNewRoleSequenceConnectAction(DiagramClientView clientView)
 		{
 			ORMDiagram diagram;
 			IConstraint constraint;
@@ -826,18 +843,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static void RolePlayerOrderChangedEvent(object sender, RolePlayerOrderChangedEventArgs e)
 		{
 			SetComparisonConstraint constraint;
-			ExternalConstraintShape ecs;
+			ExternalConstraintShape constraintShape;
 			ORMDiagram ormDiagram;
 			if (null != (constraint = e.SourceElement as SetComparisonConstraint))
 			{
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
 				{
-					if (null != (ecs = pel as ExternalConstraintShape))
+					if (null != (constraintShape = pel as ExternalConstraintShape))
 					{
 						// If the constraint being changed is also the current stick object,
 						// then refresh the linked facts as well
-						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
-							&& ecs == ormDiagram.StickyObject);
+						constraintShape.RedrawAssociatedPels(null != (ormDiagram = constraintShape.Diagram as ORMDiagram)
+							&& constraintShape == ormDiagram.StickyObject);
 					}
 				}
 			}
@@ -845,18 +862,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static void SetComparisonConstraintChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			SetComparisonConstraint constraint;
-			ExternalConstraintShape ecs;
+			ExternalConstraintShape constraintShape;
 			ORMDiagram ormDiagram;
 			if (null != (constraint = e.ModelElement as SetComparisonConstraint))
 			{
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
 				{
-					if (null != (ecs = pel as ExternalConstraintShape))
+					if (null != (constraintShape = pel as ExternalConstraintShape))
 					{
 						// If the constraint being changed is also the current stick object,
 						// then refresh the linked facts as well
-						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
-							&& ecs == ormDiagram.StickyObject);
+						constraintShape.RedrawAssociatedPels(null != (ormDiagram = constraintShape.Diagram as ORMDiagram)
+							&& constraintShape == ormDiagram.StickyObject);
 					}
 				}
 			}
@@ -864,18 +881,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static void SetConstraintChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
 			SetConstraint constraint;
-			ExternalConstraintShape ecs;
+			ExternalConstraintShape constraintShape;
 			ORMDiagram ormDiagram;
 			if (null != (constraint = e.ModelElement as SetConstraint))
 			{
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
 				{
-					if (null != (ecs = pel as ExternalConstraintShape))
+					if (null != (constraintShape = pel as ExternalConstraintShape))
 					{
 						// If the constraint being changed is also the current stick object,
 						// then refresh the linked facts as well
-						ecs.RedrawAssociatedPels(null != (ormDiagram = ecs.Diagram as ORMDiagram)
-							&& ecs == ormDiagram.StickyObject);
+						constraintShape.RedrawAssociatedPels(null != (ormDiagram = constraintShape.Diagram as ORMDiagram)
+							&& constraintShape == ormDiagram.StickyObject);
 					}
 				}
 			}

@@ -502,7 +502,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				// Now emulate a mouse click in the middle of the added constraint. The click
 				// actions provide a starting point for the connect action, so a mouse move
 				// provides a drag line.
-				Point emulateClickPoint = clientView.WorldToDevice(attachToShape.GetAbsoluteConstraintAttachPoint(constraint));
+				Point emulateClickPoint = clientView.WorldToDevice(attachToShape.GetAbsoluteConstraintAttachPoint(constraint, FactSetConstraint.GetLink(constraint, attachToShape.AssociatedFactType)));
 				DiagramMouseEventArgs mouseEventArgs = new DiagramMouseEventArgs(new MouseEventArgs(MouseButtons.Left, 1, emulateClickPoint.X, emulateClickPoint.Y, 0), clientView);
 				MouseDown(mouseEventArgs);
 				Click(new DiagramPointEventArgs(emulateClickPoint.X, emulateClickPoint.Y, PointRelativeTo.Client, clientView));

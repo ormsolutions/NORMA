@@ -667,6 +667,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Role.WalkDescendedValueRoles(valueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 			{
 				DelayValidateValueConstraint(currentValueConstraint, true);
+				if (pathedRole == null && pathRoot == null)
+				{
+					ValueComparisonConstraint.DelayValidateAttachedConstraint(role);
+				}
 				return true;
 			});
 		}
@@ -710,6 +714,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Role.WalkDescendedValueRoles(anchorType, unattachedRole, unattachedPreferredIdentifier, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
 			{
 				DelayValidateValueConstraint(currentValueConstraint, true);
+				if (pathedRole == null && pathRoot == null)
+				{
+					ValueComparisonConstraint.DelayValidateAttachedConstraint(role);
+				}
 				return true; // Continue walking
 			});
 		}
@@ -846,14 +854,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (preserveValueConstraintName != null)
 							{
 								Dictionary<object, object> contextInfo = partition.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+								object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+								bool removeDuplicateNamesKey = false;
 								try
 								{
-									contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
+									if (!contextInfo.ContainsKey(duplicateNamesKey))
+									{
+										contextInfo[duplicateNamesKey] = null;
+										removeDuplicateNamesKey = true;
+									}
 									newValueConstraint.Name = preserveValueConstraintName;
 								}
 								finally
 								{
-									contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+									if (removeDuplicateNamesKey)
+									{
+										contextInfo.Remove(duplicateNamesKey);
+									}
 								}
 							}
 						}
@@ -1162,6 +1179,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						// Make sure that this value constraint is compatible with
 						// other constraints above it.
 						DelayValidateValueConstraint(currentValueConstraint, true);
+						if (pathedRole == null && pathRoot == null)
+						{
+							ValueComparisonConstraint.DelayValidateAttachedConstraint(role);
+						}
 						return true;
 					});
 					if (!visited)

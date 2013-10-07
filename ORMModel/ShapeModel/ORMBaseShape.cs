@@ -302,9 +302,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							{
 								displayFilter = model.ModelErrorDisplayFilter;
 							}
+							MouseAction startingMouseAction = clientView.ActiveMouseAction;
 							foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 							{
-								if (displayFilter == null || displayFilter.ShouldDisplay(error))
+								if (ModelError.IsDisplayed(error, displayFilter))
 								{
 									if (activator.ActivateModelError(error))
 									{
@@ -319,7 +320,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 										// twice. If this is fixed, then any OnDoubleClick/OnSubFieldDoubleClick implementation
 										// that simply defers to this method then calls the base can be eliminated in favor
 										// of the same methods here.
-										//e.Handled = true;
+										if (clientView.ActiveMouseAction == startingMouseAction)
+										{
+											e.Handled = true;
+										}
 										retVal = true;
 										break;
 									}
@@ -544,6 +548,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						break;
 					}
 				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError)
+		/// If the state changes on a displayed error, then the displayed error state
+		/// needs to change as well.
+		/// </summary>
+		private static void ModelErrorStateChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			ModelHasError errorLink;
+			if (e.DomainProperty.Id == ModelError.ErrorStateDomainPropertyId &&
+				null != (errorLink = ModelHasError.GetLinkToModel((ModelError)e.ModelElement)))
+			{
+				ProcessModelErrorChange(errorLink);
 			}
 		}
 		private static void ProcessModelErrorChange(ModelHasError errorLink)

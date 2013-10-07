@@ -207,18 +207,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				IFactConstraint factConstraint;
 				IConstraint constraint;
-				if (null != (factConstraint = AssociatedFactConstraint as IFactConstraint) &&
-					null != (constraint = factConstraint.Constraint) &&
-					constraint.Modality == ConstraintModality.Deontic)
-				{
+				return (null != (constraint = AssociatedConstraint) && constraint.Modality == ConstraintModality.Deontic) ?
 					// Note that we don't do anything with fonts with this style set, so the
 					// static one is sufficient. Instance style sets also go through a font initialization
-					// step inside the framework
-					return DeonticClassStyleSet;
-				}
-				return base.StyleSet;
+					// step inside the framework.
+					DeonticClassStyleSet :
+					base.StyleSet;
 			}
 		}
 		/// <summary>
@@ -243,10 +238,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private bool IsSticky()
 		{
 			PresentationElement stickyPel;
-			IFactConstraint factConstraint;
-			return (null != (stickyPel = (Diagram as ORMDiagram).StickyObject as PresentationElement) &&
-				null != (factConstraint = AssociatedFactConstraint as IFactConstraint) &&
-				stickyPel.ModelElement == factConstraint.Constraint);
+			IConstraint constraint;
+			return (null != (stickyPel = ((ORMDiagram)Diagram).StickyObject as PresentationElement) &&
+				null != (constraint = AssociatedConstraint) &&
+				stickyPel.ModelElement == constraint);
 		}
 		/// <summary>
 		/// Draw an arrow on the subtype end
@@ -255,16 +250,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				FactConstraint factConstraint = AssociatedFactConstraint;
+				ModelElement element = ModelElement;
+				FactSetComparisonConstraint factConstraint;
+				ConstraintRoleSequenceHasRole constraintRole;
 				bool showArrow = false;
 				//Only change the decorator if the ExternalConstraintLink being worked on
 				//is for the second constraint role sequence since we need the arrow to make
 				//it look like the constraint links point from the role of the first sequence
 				//to the role of the second sequence.
-				if (factConstraint is FactSetComparisonConstraint)
+				if (null != (factConstraint = element as FactSetComparisonConstraint))
 				{
 					SubsetConstraint subsetConstraint;
-					if (null != (subsetConstraint = factConstraint.LinkedElements[0] as SubsetConstraint))
+					if (null != (subsetConstraint = factConstraint.Constraint as SubsetConstraint))
 					{
 						NodeShape connectedShape = FromLinkConnectsToNode.Nodes;
 						FactTypeShape factTypeShape;
@@ -300,21 +297,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 					}
 				}
-				else if (factConstraint is FactSetConstraint)
+				else if (null != (constraintRole = element as ConstraintRoleSequenceHasRole))
 				{
 					ValueComparisonConstraint comparisonConstraint;
-					if (null != (comparisonConstraint = factConstraint.LinkedElements[0] as ValueComparisonConstraint) &&
-						comparisonConstraint.IsDirectional)
-					{
-						NodeShape connectedShape = FromLinkConnectsToNode.Nodes;
-						FactTypeShape factTypeShape;
-						FactType factType;
-						LinkedElementCollection<Role> constraintRoles;
-						showArrow = (null != (factTypeShape = connectedShape as FactTypeShape) &&
-							null != (factType = factTypeShape.AssociatedFactType) &&
-							2 == (constraintRoles = comparisonConstraint.RoleCollection).Count &&
-							factType.RoleCollection.Contains(constraintRoles[1]));
-					}
+					showArrow = null != (comparisonConstraint = constraintRole.ConstraintRoleSequence as ValueComparisonConstraint) &&
+						comparisonConstraint.IsDirectional &&
+						1 == comparisonConstraint.RoleCollection.IndexOf(constraintRole.Role);
 				}
 				return showArrow ?
 					(IsSticky() ? TargetArrowStickyDecorator.Decorator : TargetArrowDecorator.Decorator) :
@@ -343,7 +331,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Color retVal = Color.Empty;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>[] providers;
-			IFactConstraint factConstraint;
 			IConstraint constraint;
 			Store store;
 			if ((penId ==
@@ -353,9 +340,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				DiagramPens.ConnectionLine ||
 #endif
 				penId == DiagramPens.ConnectionLineDecorator) &&
-				null != (factConstraint = ModelElement as IFactConstraint) &&
-				null != (constraint = factConstraint.Constraint) &&
 				null != (store = Utility.ValidateStore(Store)) &&
+				null != (constraint = AssociatedConstraint) &&
 				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>>()))
 			{
 				ORMDiagramDynamicColor requestColor = constraint.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
@@ -384,14 +370,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Color retVal = Color.Empty;
 			SolidBrush solidBrush;
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>[] providers;
-			IFactConstraint factConstraint;
 			IConstraint constraint;
 			Store store;
 			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
-				null != (factConstraint = ModelElement as IFactConstraint) &&
-				null != (constraint = factConstraint.Constraint) &&
-				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
+				null != (constraint = AssociatedConstraint) &&
+				null != (solidBrush = brush as SolidBrush) &&
 				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintLink, IConstraint>>()))
 			{
 				ORMDiagramDynamicColor requestColor = constraint.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
@@ -415,14 +399,53 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#endregion // IDynamicColorGeometryHost Implementation
 		#region ExternalConstraintLink specific
 		/// <summary>
-		/// Get the FactConstraint link associated with this link shape. The
-		/// fact constraint link can be used to get the associated roles.
+		/// Get the <see cref="FactConstraint"/> link associated with this
+		/// link shape. The fact constraint link can be used to get the
+		/// associated roles. Use <see cref="AssociatedConstraintRole"/>
+		/// if the constraint connects directly to individual roles.
 		/// </summary>
 		public FactConstraint AssociatedFactConstraint
 		{
 			get
 			{
 				return ModelElement as FactConstraint;
+			}
+		}
+		/// <summary>
+		/// Get the <see cref="ConstraintRoleSequenceHasRole"/> associated
+		/// with this link shape. This is set only for constraints that
+		/// connect to individual roles instead of fact types.
+		/// </summary>
+		public ConstraintRoleSequenceHasRole AssociatedConstraintRole
+		{
+			get
+			{
+				return ModelElement as ConstraintRoleSequenceHasRole;
+			}
+		}
+		/// <summary>
+		/// Get the constraint associated with this link.
+		/// </summary>
+		public IConstraint AssociatedConstraint
+		{
+			get
+			{
+				IConstraint constraint = null;
+				IFactConstraint factConstraint;
+				ConstraintRoleSequenceHasRole constraintRole;
+				ModelElement element = ModelElement;
+				if (null != (element = ModelElement))
+				{
+					if (null != (factConstraint = element as IFactConstraint))
+					{
+						constraint = factConstraint.Constraint;
+					}
+					else if (null != (constraintRole = element as ConstraintRoleSequenceHasRole))
+					{
+						constraint = constraintRole.ConstraintRoleSequence as IConstraint;
+					}
+				}
+				return constraint;
 			}
 		}
 		/// <summary>
@@ -442,13 +465,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		protected void Reconfigure(ShapeElement discludedShape)
 		{
-			IFactConstraint modelLink = ModelElement as IFactConstraint;
-			//During the delete routine for an external constrant, 
+			ModelElement element = ModelElement;
+			// During the delete process for an external constrant, 
 			// the model element reference gets removed before checking ShouldVisitRelationship,
 			// so we have to check the null case.
-			if (modelLink != null)
+			if (element != null)
 			{
-				MultiShapeUtility.ReconfigureLink(this, modelLink.FactType, modelLink.Constraint as ModelElement, discludedShape);
+				IFactConstraint factConstraint;
+				ConstraintRoleSequenceHasRole constraintRole;
+				FactType factType;
+				if (null != (factConstraint = element as IFactConstraint))
+				{
+					MultiShapeUtility.ReconfigureLink(this, factConstraint.FactType, factConstraint.Constraint as ModelElement, discludedShape);
+				}
+				else if (null != (constraintRole = element as ConstraintRoleSequenceHasRole) &&
+					null != (factType = constraintRole.Role.FactType))
+				{
+					MultiShapeUtility.ReconfigureLink(this, factType, constraintRole.ConstraintRoleSequence, discludedShape);
+				}
 			}
 		}
 		void IReconfigureableLink.Reconfigure(ShapeElement discludedShape)

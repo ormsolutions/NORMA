@@ -10999,6 +10999,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region RolesNotComparableError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets RolesNotComparableError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraint
+		/// </summary>
+		public virtual ValueComparisonRolesNotComparableError RolesNotComparableError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraintDomainRoleId) as ValueComparisonRolesNotComparableError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
@@ -19257,6 +19289,95 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region ErrorState domain property code
+		
+		/// <summary>
+		/// ErrorState domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ErrorStateDomainPropertyId = new global::System.Guid(0xbcf4414e, 0x89a0, 0x4ec0, 0x9b, 0x3a, 0x11, 0x8a, 0xbe, 0xfa, 0xdf, 0xe2);
+		
+		/// <summary>
+		/// Storage for ErrorState
+		/// </summary>
+		private ModelErrorState errorStatePropertyStorage = ModelErrorState.Error;
+		
+		/// <summary>
+		/// Gets or sets the value of ErrorState domain property.
+		/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError.ErrorState
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError/ErrorState.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError/ErrorState.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ModelErrorState.Error)]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("bcf4414e-89a0-4ec0-9b3a-118abefadfe2")]
+		public ModelErrorState ErrorState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return errorStatePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ErrorStatePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ModelError.ErrorState domain property.
+		/// </summary>
+		internal sealed partial class ErrorStatePropertyHandler : DslModeling::DomainPropertyValueHandler<ModelError, ModelErrorState>
+		{
+			private ErrorStatePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ModelError.ErrorState domain property value handler.
+			/// </summary>
+			public static readonly ErrorStatePropertyHandler Instance = new ErrorStatePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ModelError.ErrorState domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ErrorStateDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed ModelErrorState GetValue(ModelError element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.errorStatePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ModelError element, ModelErrorState newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				ModelErrorState oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.errorStatePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Model opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Model.
@@ -24031,6 +24152,78 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError.OperatorNotSpecifiedErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ValueComparisonRolesNotComparableError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonRolesNotComparableError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonRolesNotComparableError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("0a851db7-569f-4ad8-990e-416e2e9a0adb")]
+	public partial class ValueComparisonRolesNotComparableError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ValueComparisonRolesNotComparableError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x0a851db7, 0x569f, 0x4ad8, 0x99, 0x0e, 0x41, 0x6e, 0x2e, 0x9a, 0x0a, 0xdb);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueComparisonRolesNotComparableError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ValueComparisonRolesNotComparableError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ValueComparisonConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ValueComparisonConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableError
+		/// </summary>
+		public virtual ValueComparisonConstraint ValueComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableErrorDomainRoleId) as ValueComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableErrorDomainRoleId, value);
 				}
 			}
 		}

@@ -1814,6 +1814,14 @@
     <value>ErrorText</value>
     <comment>DisplayName for DomainProperty &apos;ErrorText&apos; on DomainClass &apos;ModelError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError/ErrorState.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError.ErrorState</value>
+    <comment>Description for DomainProperty &apos;ErrorState&apos; on DomainClass &apos;ModelError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError/ErrorState.DisplayName" xml:space="preserve">
+    <value>ErrorState</value>
+    <comment>DisplayName for DomainProperty &apos;ErrorState&apos; on DomainClass &apos;ModelError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeKind.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ReferenceModeKind&apos;</comment>
@@ -2417,6 +2425,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintOperatorNotSpecifiedError.DisplayName" xml:space="preserve">
     <value>Value Comparison Operator Not Specified</value>
     <comment>DisplayName for DomainClass &apos;ValueComparisonConstraintOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonRolesNotComparableError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ValueComparisonRolesNotComparableError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonRolesNotComparableError.DisplayName" xml:space="preserve">
+    <value>Value Comparison Roles Not Comparable</value>
+    <comment>DisplayName for DomainClass &apos;ValueComparisonRolesNotComparableError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeMetaRole.Description" xml:space="preserve">
     <value></value>
@@ -5371,6 +5387,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasOperatorNotSpecifiedError/OperatorNotSpecifiedError.PropertyDisplayName" xml:space="preserve">
     <value>Value Comparison Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;OperatorNotSpecifiedError&apos; on DomainRelationship &apos;ValueComparisonConstraintHasOperatorNotSpecifiedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError</value>
+    <comment>Description for DomainClass &apos;ValueComparisonConstraintHasRolesNotComparableError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.DisplayName" xml:space="preserve">
+    <value>Value Comparison Constraint Has Roles Not Comparable Error</value>
+    <comment>DisplayName for DomainClass &apos;ValueComparisonConstraintHasRolesNotComparableError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/ValueComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraint</value>
+    <comment>Description for DomainRole &apos;ValueComparisonConstraint&apos; on DomainRelationship &apos;ValueComparisonConstraintHasRolesNotComparableError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/ValueComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>ValueComparisonConstraint</value>
+    <comment>DisplayName for DomainRole &apos;ValueComparisonConstraint&apos; on DomainRelationship &apos;ValueComparisonConstraintHasRolesNotComparableError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/ValueComparisonConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Roles Not Comparable Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ValueComparisonConstraint&apos; on DomainRelationship &apos;ValueComparisonConstraintHasRolesNotComparableError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/RolesNotComparableError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableError</value>
+    <comment>Description for DomainRole &apos;RolesNotComparableError&apos; on DomainRelationship &apos;ValueComparisonConstraintHasRolesNotComparableError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/RolesNotComparableError.DisplayName" xml:space="preserve">
+    <value>RolesNotComparableError</value>
+    <comment>DisplayName for DomainRole &apos;RolesNotComparableError&apos; on DomainRelationship &apos;ValueComparisonConstraintHasRolesNotComparableError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/RolesNotComparableError.PropertyDisplayName" xml:space="preserve">
+    <value>Value Comparison Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RolesNotComparableError&apos; on DomainRelationship &apos;ValueComparisonConstraintHasRolesNotComparableError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDuplicateNameError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDuplicateNameError</value>
@@ -10699,6 +10747,22 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingMembershipTypeCompliance/FullyApproved.Description" xml:space="preserve">
     <value>Allow elements that are explicitly approved by all GroupTypes.</value>
     <comment>Description for EnumerationLiteral &apos;FullyApproved&apos; on DomainEnumeration &apos;GroupingMembershipTypeCompliance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelErrorState/Error.DisplayName" xml:space="preserve">
+    <value>Error</value>
+    <comment>Display name for EnumerationLiteral &apos;Error&apos; on DomainEnumeration &apos;ModelErrorState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelErrorState/Error.Description" xml:space="preserve">
+    <value>Error is fully enabled.</value>
+    <comment>Description for EnumerationLiteral &apos;Error&apos; on DomainEnumeration &apos;ModelErrorState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelErrorState/Ignored.DisplayName" xml:space="preserve">
+    <value>Ignored</value>
+    <comment>Display name for EnumerationLiteral &apos;Ignored&apos; on DomainEnumeration &apos;ModelErrorState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelErrorState/Ignored.Description" xml:space="preserve">
+    <value>Error state is tracked, but ignored.</value>
+    <comment>Description for EnumerationLiteral &apos;Ignored&apos; on DomainEnumeration &apos;ModelErrorState&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>

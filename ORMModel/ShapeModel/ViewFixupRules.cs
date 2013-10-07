@@ -41,8 +41,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static void ObjectTypedAddedRule(ElementAddedEventArgs e)
 		{
 			ModelElement element = e.ModelElement;
-			ModelHasObjectType link = e.ModelElement as ModelHasObjectType;
-			ObjectType objectType = link.ObjectType;
+			ModelHasObjectType link;
+			ObjectType objectType;
 			if (!element.IsDeleted &&
 				(objectType = (link = (ModelHasObjectType)element).ObjectType).NestedFactType == null && // Otherwise, fix up with the fact type
 				AllowElementFixup(objectType))
@@ -339,9 +339,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void SetComparisonConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			ModelHasSetComparisonConstraint link = e.ModelElement as ModelHasSetComparisonConstraint;
-			if (link != null)
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted)
 			{
+				ModelHasSetComparisonConstraint link = (ModelHasSetComparisonConstraint)element;
 				SetComparisonConstraint constraint = link.SetComparisonConstraint;
 				if (AllowElementFixup(constraint))
 				{
@@ -378,10 +379,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void ConstraintRoleSequenceRoleAddedRule(ElementAddedEventArgs e)
 		{
-			ConstraintRoleSequenceHasRole link = e.ModelElement as ConstraintRoleSequenceHasRole;
+			ModelElement element = e.ModelElement;
+			ConstraintRoleSequenceHasRole link;
 			FactType factType;
 			IConstraint constraint;
-			if (null != (factType = link.Role.FactType) &&
+			if (!element.IsDeleted &&
+				null != (factType = (link = (ConstraintRoleSequenceHasRole)element).Role.FactType) &&
 				null != (constraint = link.ConstraintRoleSequence.Constraint))
 			{
 				FactTypeShape.ConstraintSetChanged(factType, constraint, true, false);
@@ -476,15 +479,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void RoleAddedRule(ElementAddedEventArgs e)
 		{
-			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-			FactType factType = link.FactType;
-
-			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted)
 			{
-				FactTypeShape shape = pel as FactTypeShape;
-				if (shape != null)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(((FactTypeHasRole)element).FactType))
 				{
-					shape.AutoResize();
+					FactTypeShape shape = pel as FactTypeShape;
+					if (shape != null)
+					{
+						shape.AutoResize();
+					}
 				}
 			}
 		}
@@ -496,56 +500,60 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void RoleAddedRuleInline(ElementAddedEventArgs e)
 		{
-			FactTypeHasRole link = e.ModelElement as FactTypeHasRole;
-			FactType factType = link.FactType;
-
-			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted)
 			{
-				FactTypeShape shape = pel as FactTypeShape;
-				if (shape != null)
-				{
-					//This part handles inserting the role in the correct location if the facttypeshape has 
-					//a different display order for the roles than the native one.
-					LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
+				FactTypeHasRole link = (FactTypeHasRole)element;
+				FactType factType = link.FactType;
+				RoleBase newRoleBase = link.Role;
+				ObjectType rolePlayer = null;
 
-					RoleBase newRole = link.Role;
-					if (factType.UnaryRole != null)
+				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(factType))
+				{
+					FactTypeShape shape = pel as FactTypeShape;
+					if (shape != null)
 					{
-						ObjectType rolePlayer;
-						if (!(null != (rolePlayer = newRole.Role.RolePlayer) && rolePlayer.IsImplicitBooleanValue))
+						//This part handles inserting the role in the correct location if the facttypeshape has 
+						//a different display order for the roles than the native one.
+						LinkedElementCollection<RoleBase> roles = shape.RoleDisplayOrderCollection;
+
+						if (factType.UnaryRole != null)
 						{
-							if (!roles.Contains(newRole))
+							if (!(null != (rolePlayer ?? (rolePlayer = newRoleBase.Role.RolePlayer)) && rolePlayer.IsImplicitBooleanValue))
 							{
-								roles.Add(newRole);
+								if (!roles.Contains(newRoleBase))
+								{
+									roles.Add(newRoleBase);
+								}
 							}
+							return;
 						}
-						return;
-					}
-					if (roles.Count != 0 && !roles.Contains(newRole))
-					{
-						Store store = shape.Store;
-						Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-						object contextRole;
-						int insertIndex = -1;
-						if (contextInfo.TryGetValue(FactType.InsertAfterRoleKey, out contextRole))
+						if (roles.Count != 0 && !roles.Contains(newRoleBase))
 						{
-							insertIndex = roles.IndexOf(contextRole as RoleBase);
+							Store store = shape.Store;
+							Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+							object contextRole;
+							int insertIndex = -1;
+							if (contextInfo.TryGetValue(FactType.InsertAfterRoleKey, out contextRole))
+							{
+								insertIndex = roles.IndexOf(contextRole as RoleBase);
+								if (insertIndex != -1)
+								{
+									++insertIndex;
+								}
+							}
+							else if (contextInfo.TryGetValue(FactType.InsertBeforeRoleKey, out contextRole))
+							{
+								insertIndex = roles.IndexOf(contextRole as RoleBase);
+							}
 							if (insertIndex != -1)
 							{
-								++insertIndex;
+								roles.Insert(insertIndex, newRoleBase);
 							}
-						}
-						else if (contextInfo.TryGetValue(FactType.InsertBeforeRoleKey, out contextRole))
-						{
-							insertIndex = roles.IndexOf(contextRole as RoleBase);
-						}
-						if (insertIndex != -1)
-						{
-							roles.Insert(insertIndex, newRole);
-						}
-						else
-						{
-							roles.Add(newRole);
+							else
+							{
+								roles.Add(newRoleBase);
+							}
 						}
 					}
 				}
@@ -735,11 +743,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void RoleValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			RoleHasValueConstraint link = e.ModelElement as RoleHasValueConstraint;
-			if (link != null)
+			ModelElement element = e.ModelElement;
+			FactType factType;
+			RoleHasValueConstraint link;
+			if (!element.IsDeleted &&
+				null != (factType = (link = (RoleHasValueConstraint)element).Role.FactType))
 			{
-				Role r = link.Role;
-				FactType factType = r.FactType;
 				ReadOnlyCollection<PresentationViewsSubject> links = PresentationViewsSubject.GetLinksToPresentation(factType);
 				//If the factType has no presentation elements, it must be hidden. In which case,
 				//we need to fixup the ValueTypeValueConstraint with this link.
@@ -831,10 +840,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void ValueTypeValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			ValueTypeHasValueConstraint link = e.ModelElement as ValueTypeHasValueConstraint;
-			if (link != null)
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted)
 			{
-				FixupValueTypeValueConstraintLink(link, null);
+				FixupValueTypeValueConstraintLink((ValueTypeHasValueConstraint)element, null);
 			}
 		}
 		#endregion // ValueTypeValueConstraintAdded class
@@ -937,11 +946,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void FactConstraintAddedRule(ElementAddedEventArgs e)
 		{
-			FactConstraint link = e.ModelElement as FactConstraint;
-			if (link != null)
-			{
-				FixupExternalConstraintLink(link);
-			}
+			FixupExternalConstraintLink((FactConstraint)e.ModelElement);
 		}
 		#endregion // FactConstraintAddedRule
 		#region FactConstraintDeletedRule
@@ -985,30 +990,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(FactConstraint element, Store store, INotifyElementAdded notifyAdded)
 			{
-				if (!element.IsDeleted)
-				{
-					FixupExternalConstraintLink(element);
-				}
+				FixupExternalConstraintLink(element);
 			}
 		}
 		#endregion // DisplayExternalConstraintLinksFixupListener class
 		/// <summary>
 		/// Helper function to display external constraint links.
 		/// </summary>
-		/// <param name="link">An ObjectTypePlaysRole element</param>
 		private static void FixupExternalConstraintLink(FactConstraint link)
 		{
 			// Make sure the constraint, fact type, and link
 			// are displayed on the diagram
-			IFactConstraint ifc = link as IFactConstraint;
-			IConstraint constraint = ifc.Constraint;
+			IFactConstraint ifc;
+			IConstraint constraint;
 			FactType factType;
 			ORMModel model;
-			ModelElement constraintElement = (ModelElement)constraint;
-			if (!constraintElement.IsDeleted &&
+			if (!link.IsDeleted &&
+				null != (constraint = (ifc = (IFactConstraint)link).Constraint) &&
 				!constraint.ConstraintIsImplied &&
-				null != (factType = ifc.FactType) &&
-				!factType.IsDeleted)
+				null != (factType = ifc.FactType))
 			{
 				if (constraint.ConstraintIsInternal)
 				{
@@ -1016,6 +1016,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				else if (null != (model = factType.Model))
 				{
+					ModelElement constraintElement = (ModelElement)constraint;
 					if (AllowElementFixup(constraintElement))
 					{
 						Diagram.FixUpDiagram(model, constraintElement);
@@ -1023,6 +1024,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (AllowElementFixup(factType))
 					{
 						Diagram.FixUpDiagram(model, factType);
+					}
+					LinkedElementCollection<ConstraintRoleSequenceHasRole> singleRoleFixups =
+						(0 == (constraint.RoleSequenceStyles & RoleSequenceStyles.ConnectIndividualRoles)) ?
+							null :
+							link.ConstrainedRoleCollection;
+					int roleCount;
+					BitTracker tracker;
+					if (singleRoleFixups != null)
+					{
+						roleCount = singleRoleFixups.Count;
+						tracker = new BitTracker(roleCount);
+					}
+					else
+					{
+						roleCount = 0;
+						tracker = default(BitTracker);
 					}
 
 					object AllowMultipleShapes;
@@ -1039,21 +1056,58 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						if ((diagram = presentationViewsSubject.Presentation as ORMDiagram) != null)
 						{
 							//add a link shape for each constraint shape
-							foreach (ExternalConstraintShape shapeElement in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(diagram, constraint as ModelElement))
+							foreach (ExternalConstraintShape constraintShape in MultiShapeUtility.FindAllShapesForElement<ExternalConstraintShape>(diagram, constraintElement))
 							{
-								bool haveExistingShape = false;
-								foreach (ExternalConstraintLink attachedLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<ExternalConstraintLink>(shapeElement))
+								if (singleRoleFixups == null)
 								{
-									if (attachedLink.AssociatedFactConstraint == link)
+									bool haveExistingShape = false;
+									foreach (ExternalConstraintLink attachedLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<ExternalConstraintLink>(constraintShape))
 									{
-										haveExistingShape = true;
-										break;
+										if (attachedLink.AssociatedFactConstraint == link)
+										{
+											haveExistingShape = true;
+											break;
+										}
+									}
+									if (!haveExistingShape &&
+										null == diagram.FixUpLocalDiagram(link))
+									{
+										constraintShape.Delete();
 									}
 								}
-								if (!haveExistingShape &&
-									null == diagram.FixUpLocalDiagram(link))
+								else
 								{
-									shapeElement.Delete();
+									tracker.Reset();
+									int matchedConstraintRoles = 0;
+									foreach (ExternalConstraintLink attachedLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<ExternalConstraintLink>(constraintShape))
+									{
+										ConstraintRoleSequenceHasRole attachedConstraintRole = attachedLink.AssociatedConstraintRole;
+										int attachedIndex;
+										if (attachedConstraintRole != null &&
+											-1 != (attachedIndex = singleRoleFixups.IndexOf(attachedConstraintRole)))
+										{
+											if (!tracker[attachedIndex])
+											{
+												tracker[attachedIndex] = true;
+												if (++matchedConstraintRoles == roleCount)
+												{
+													break;
+												}
+											}
+										}
+									}
+									if (matchedConstraintRoles < roleCount)
+									{
+										for (int i = 0; i < roleCount; ++i)
+										{
+											if (!tracker[i] &&
+												null == diagram.FixUpLocalDiagram(singleRoleFixups[i]))
+											{
+												constraintShape.Delete();
+												break;
+											}
+										}
+									}
 								}
 							}
 						}
@@ -1101,7 +1155,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void ReadingOrderAddedRule(ElementAddedEventArgs e)
 		{
-			FixupReadingOrderLink(e.ModelElement as FactTypeHasReadingOrder);
+			FixupReadingOrderLink((FactTypeHasReadingOrder)e.ModelElement);
 		}
 		#region DisplayReadingsFixupListener class
 		/// <summary>
@@ -1182,7 +1236,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void ModelNoteReferenceAddedRule(ElementAddedEventArgs e)
 		{
-			FixupModelNoteLink(e.ModelElement as ModelNoteReferencesModelElement);
+			FixupModelNoteLink((ModelNoteReferencesModelElement)e.ModelElement);
 		}
 		#endregion // ModelNoteReferencedAddedRule
 		#region DisplayModelNoteLinksFixupListener class

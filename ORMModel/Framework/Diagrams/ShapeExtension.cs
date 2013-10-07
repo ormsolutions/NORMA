@@ -190,4 +190,43 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		void InvalidateRequired(bool refreshBitmap);
 	}
 	#endregion // IInvalidateDisplay interface
+	#region IStickyObject interface
+	/// <summary>
+	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky
+	/// will maintain their selected status when compatible objects are clicked.
+	/// </summary>
+	public interface IStickyObject
+	{
+		/// <summary>
+		/// Call this on an object when you're setting it as a StickyObject.  This method
+		/// will go through the object's associated elements to perform any actions needed
+		/// such as calling Invalidate().
+		/// </summary>
+		void StickyInitialize();
+		/// <summary>
+		/// Returns whether the Presentation Element that was passed in is selectable in the
+		/// context of this StickyObject.  For example, when an external constraint is the
+		/// active StickyObject, roles are selectable and objects are not.
+		/// </summary>
+		/// <returns>Whether the PresentationElement passed in is selectable in this StickyObject's context</returns>
+		bool StickySelectable(ModelElement mel);
+		/// <summary>
+		/// Needed to allow outside entities to tell the StickyObject to redraw itself and its children.
+		/// </summary>
+		void StickyRedraw();
+	}
+	#endregion // IStickyObject interface
+	#region IStickyObjectDiagram interface
+	/// <summary>
+	/// The diagram supports shapes that implement the <see cref="IStickyObject"/>
+	/// interface.
+	/// </summary>
+	public interface IStickyObjectDiagram
+	{
+		/// <summary>
+		/// The current sticky object on the diagram.
+		/// </summary>
+		IStickyObject StickyObject { get;set;}
+	}
+	#endregion // IStickyObjectDiagram interface
 }

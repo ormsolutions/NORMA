@@ -184,7 +184,14 @@
 	<ResourceString name="ModelErrorConstraintImplicationSubsetMandatory" model="Model" resourceName="ModelError.Constraint.SubsetImpliedByMandatoryError.Text"/>
 	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text"/>
 	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text"/>
-	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.Text"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesExactlyTwo" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.ExactlyTwo"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesTwoOrMore" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.TwoOrMore"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesNoSequenceAddendum" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.NoSequenceAddendum"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesOneSequenceAddendum" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.OneSequenceAddendum"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesExactlyTwo" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.ExactlyTwo"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesTwoOrMore" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.TwoOrMore"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendum" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendum" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum"/>
 	<ResourceString name="ModelErrorDisplayContextFactType" model="Model" resourceName="ModelError.DisplayContext.FactType"/>
 	<ResourceString name="ModelErrorDisplayContextFactTypeRole" model="Model" resourceName="ModelError.DisplayContext.FactTypeRole"/>
 	<ResourceString name="ModelErrorDisplayContextObjectType" model="Model" resourceName="ModelError.DisplayContext.ObjectType"/>
@@ -445,6 +452,7 @@
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message"/>
 	<ResourceString name="ModelErrorRingConstraintTypeNotSpecified" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message"/>
 	<ResourceString name="ModelErrorValueComparisonConstraintOperatorNotSpecified" model ="Model" resourceName="ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.Message"/>
+	<ResourceString name="ModelErrorValueComparisonRolesNotComparable" model ="Model" resourceName="ModelError.Constraint.ValueComparisonRolesNotComparableError.Message"/>
 	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text"/>
 	<ResourceString name="ModelErrorFrequencyConstraintExactlyOneError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintExactlyOneError.Text"/>
 	<ResourceString name="ModelErrorFrequencyConstraintNonRestrictiveRangeError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.Text"/>

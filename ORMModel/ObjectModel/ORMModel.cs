@@ -930,6 +930,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					return elementCollection;
 				}
+				void IDuplicateNameCollectionManager.AfterCollectionRollback(ICollection collection)
+				{
+					TrackingList trackingList;
+					if (null != (trackingList = collection as TrackingList))
+					{
+						trackingList.Clear();
+						foreach (ObjectType objectType in trackingList.NativeCollection)
+						{
+							trackingList.Add(objectType);
+						}
+					}
+				}
 				#endregion // IDuplicateNameCollectionManager Implementation
 			}
 			#region Constructors
@@ -982,34 +994,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#region TrackingList class
 				private sealed class TrackingList : List<ModelElement>
 				{
-					private readonly LinkedElementCollection<SetComparisonConstraint> myNativeMCCollection;
-					private readonly LinkedElementCollection<SetConstraint> myNativeSCCollection;
-					private readonly LinkedElementCollection<ValueConstraint> myNativeVCCollection;
+					private readonly LinkedElementCollection<SetComparisonConstraint> myNativeSetComparisonConstraintCollection;
+					private readonly LinkedElementCollection<SetConstraint> myNativeSetConstraintCollection;
+					private readonly LinkedElementCollection<ValueConstraint> myNativeValueConstraintCollection;
 					public TrackingList(ConstraintDuplicateNameError error)
 					{
-						myNativeMCCollection = error.SetComparisonConstraintCollection;
-						myNativeSCCollection = error.SetConstraintCollection;
-						myNativeVCCollection = error.ValueConstraintCollection;
+						myNativeSetComparisonConstraintCollection = error.SetComparisonConstraintCollection;
+						myNativeSetConstraintCollection = error.SetConstraintCollection;
+						myNativeValueConstraintCollection = error.ValueConstraintCollection;
 					}
-					public LinkedElementCollection<SetComparisonConstraint> NativeMultiColumnCollection
+					public LinkedElementCollection<SetComparisonConstraint> NativeSetComparisonConstraintCollection
 					{
 						get
 						{
-							return myNativeMCCollection;
+							return myNativeSetComparisonConstraintCollection;
 						}
 					}
-					public LinkedElementCollection<SetConstraint> NativeSingleColumnCollection
+					public LinkedElementCollection<SetConstraint> NativeSetConstraintCollection
 					{
 						get
 						{
-							return myNativeSCCollection;
+							return myNativeSetConstraintCollection;
 						}
 					}
-					public LinkedElementCollection<ValueConstraint> NativeValueCollection
+					public LinkedElementCollection<ValueConstraint> NativeValueConstraintCollection
 					{
 						get
 						{
-							return myNativeVCCollection;
+							return myNativeValueConstraintCollection;
 						}
 					}
 				}
@@ -1018,23 +1030,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ICollection IDuplicateNameCollectionManager.OnDuplicateElementAdded(ICollection elementCollection, ModelElement element, bool afterTransaction, INotifyElementAdded notifyAdded)
 				{
 					ORMNamedElement namedElement = (ORMNamedElement)element;
-					SetConstraint scConstraint = null;
-					SetComparisonConstraint mcConstraint = null;
-					ValueConstraint vConstraint = null;
+					SetConstraint setConstraint = null;
+					SetComparisonConstraint setComparisonConstraint = null;
+					ValueConstraint valueConstraint = null;
 					ConstraintDuplicateNameError existingError = null;
-					if (null != (scConstraint = element as SetConstraint))
+					if (null != (setConstraint = element as SetConstraint))
 					{
-						existingError = scConstraint.DuplicateNameError;
+						existingError = setConstraint.DuplicateNameError;
 					}
-					else if (null != (mcConstraint = element as SetComparisonConstraint))
+					else if (null != (setComparisonConstraint = element as SetComparisonConstraint))
 					{
-						existingError = mcConstraint.DuplicateNameError;
+						existingError = setComparisonConstraint.DuplicateNameError;
 					}
-					else if (null != (vConstraint = element as ValueConstraint))
+					else if (null != (valueConstraint = element as ValueConstraint))
 					{
-						existingError = vConstraint.DuplicateNameError;
+						existingError = valueConstraint.DuplicateNameError;
 					}
-					Debug.Assert(scConstraint != null || mcConstraint != null || vConstraint != null);
+					Debug.Assert(setConstraint != null || setComparisonConstraint != null || valueConstraint != null);
 					if (afterTransaction)
 					{
 						if (elementCollection == null)
@@ -1076,26 +1088,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (error == null)
 							{
 								error = new ConstraintDuplicateNameError(element.Partition);
-								if (scConstraint != null)
+								if (setConstraint != null)
 								{
-									scConstraint.DuplicateNameError = error;
-									error.Model = scConstraint.Model;
+									setConstraint.DuplicateNameError = error;
+									error.Model = setConstraint.Model;
 								}
-								else if (mcConstraint != null)
+								else if (setComparisonConstraint != null)
 								{
-									mcConstraint.DuplicateNameError = error;
-									error.Model = mcConstraint.Model;
+									setComparisonConstraint.DuplicateNameError = error;
+									error.Model = setComparisonConstraint.Model;
 								}
-								else if (vConstraint != null)
+								else if (valueConstraint != null)
 								{
-									vConstraint.DuplicateNameError = error;
+									valueConstraint.DuplicateNameError = error;
 									ValueTypeValueConstraint vTypeValue;
 									RoleValueConstraint roleValue;
-									if (null != (vTypeValue = vConstraint as ValueTypeValueConstraint))
+									if (null != (vTypeValue = valueConstraint as ValueTypeValueConstraint))
 									{
 										error.Model = vTypeValue.ValueType.ResolvedModel;
 									}
-									else if (null != (roleValue = vConstraint as RoleValueConstraint))
+									else if (null != (roleValue = valueConstraint as RoleValueConstraint))
 									{
 										error.Model = roleValue.Role.FactType.ResolvedModel;
 									}
@@ -1116,28 +1128,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							trackingList.Add(element);
 							// During deserialization fixup (notifyAdded != null), we need
 							// to make sure that the element is not already in the collection
-							if (null != mcConstraint)
+							if (null != setComparisonConstraint)
 							{
-								LinkedElementCollection<SetComparisonConstraint> typedCollection = trackingList.NativeMultiColumnCollection;
-								if (notifyAdded == null || !typedCollection.Contains(mcConstraint))
+								LinkedElementCollection<SetComparisonConstraint> typedCollection = trackingList.NativeSetComparisonConstraintCollection;
+								if (notifyAdded == null || !typedCollection.Contains(setComparisonConstraint))
 								{
-									typedCollection.Add(mcConstraint);
+									typedCollection.Add(setComparisonConstraint);
 								}
 							}
-							else if (null != scConstraint)
+							else if (null != setConstraint)
 							{
-								LinkedElementCollection<SetConstraint> typedCollection = trackingList.NativeSingleColumnCollection;
-								if (notifyAdded == null || !typedCollection.Contains(scConstraint))
+								LinkedElementCollection<SetConstraint> typedCollection = trackingList.NativeSetConstraintCollection;
+								if (notifyAdded == null || !typedCollection.Contains(setConstraint))
 								{
-									typedCollection.Add(scConstraint);
+									typedCollection.Add(setConstraint);
 								}
 							}
-							else if (null != vConstraint)
+							else if (null != valueConstraint)
 							{
-								LinkedElementCollection<ValueConstraint> typedCollection = trackingList.NativeValueCollection;
-								if (notifyAdded == null || !typedCollection.Contains(vConstraint))
+								LinkedElementCollection<ValueConstraint> typedCollection = trackingList.NativeValueConstraintCollection;
+								if (notifyAdded == null || !typedCollection.Contains(valueConstraint))
 								{
-									typedCollection.Add(vConstraint);
+									typedCollection.Add(valueConstraint);
 								}
 							}
 						}
@@ -1152,23 +1164,43 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						// Just clear the error. A rule is used to remove the error
 						// object itself when there is no longer a duplicate.
-						SetComparisonConstraint mcConstraint;
-						SetConstraint scConstraint;
-						ValueConstraint vConstraint;
-						if (null != (scConstraint = element as SetConstraint))
+						SetComparisonConstraint setComparisonConstraint;
+						SetConstraint setConstraint;
+						ValueConstraint valueConstraint;
+						if (null != (setConstraint = element as SetConstraint))
 						{
-							scConstraint.DuplicateNameError = null;
+							setConstraint.DuplicateNameError = null;
 						}
-						else if (null != (mcConstraint = element as SetComparisonConstraint))
+						else if (null != (setComparisonConstraint = element as SetComparisonConstraint))
 						{
-							mcConstraint.DuplicateNameError = null;
+							setComparisonConstraint.DuplicateNameError = null;
 						}
-						else if (null != (vConstraint = element as ValueConstraint))
+						else if (null != (valueConstraint = element as ValueConstraint))
 						{
-							vConstraint.DuplicateNameError = null;
+							valueConstraint.DuplicateNameError = null;
 						}
 					}
 					return elementCollection;
+				}
+				void IDuplicateNameCollectionManager.AfterCollectionRollback(ICollection collection)
+				{
+					TrackingList trackingList;
+					if (null != (trackingList = collection as TrackingList))
+					{
+						trackingList.Clear();
+						foreach (SetConstraint setConstraint in trackingList.NativeSetConstraintCollection)
+						{
+							trackingList.Add(setConstraint);
+						}
+						foreach (SetComparisonConstraint setComparisonConstraint in trackingList.NativeSetComparisonConstraintCollection)
+						{
+							trackingList.Add(setComparisonConstraint);
+						}
+						foreach (ValueConstraint valueConstraint in trackingList.NativeValueConstraintCollection)
+						{
+							trackingList.Add(valueConstraint);
+						}
+					}
 				}
 				#endregion // IDuplicateNameCollectionManager Implementation
 			}
@@ -1331,6 +1363,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						recognizedPhrase.DuplicateNameError = null;
 					}
 					return elementCollection;
+				}
+				void IDuplicateNameCollectionManager.AfterCollectionRollback(ICollection collection)
+				{
+					TrackingList trackingList;
+					if (null != (trackingList = collection as TrackingList))
+					{
+						trackingList.Clear();
+						foreach (RecognizedPhrase phrase in trackingList.RecognizedPhrases)
+						{
+							trackingList.Add(phrase);
+						}
+					}
 				}
 				#endregion // IDuplicateNameCollectionManager Implementation
 			}
@@ -1631,6 +1675,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					return elementCollection;
 				}
+				void IDuplicateNameCollectionManager.AfterCollectionRollback(ICollection collection)
+				{
+					TrackingList trackingList;
+					if (null != (trackingList = collection as TrackingList))
+					{
+						trackingList.Clear();
+						foreach (Function function in trackingList.NativeCollection)
+						{
+							trackingList.Add(function);
+						}
+					}
+				}
 				#endregion // IDuplicateNameCollectionManager Implementation
 			}
 			#region Constructors
@@ -1766,6 +1822,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						reading.DuplicateSignatureError = null;
 					}
 					return elementCollection;
+				}
+				void IDuplicateNameCollectionManager.AfterCollectionRollback(ICollection collection)
+				{
+					TrackingList trackingList;
+					if (null != (trackingList = collection as TrackingList))
+					{
+						trackingList.Clear();
+						foreach (Reading reading in trackingList.NativeCollection)
+						{
+							trackingList.Add(reading);
+						}
+					}
 				}
 				#endregion // IDuplicateNameCollectionManager Implementation
 			}
@@ -3138,6 +3206,85 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetIndirectModelErrorOwnerLinkRoles();
 		}
 		#endregion // IHasIndirectModelErrorOwner Implementation
+		#region Rule Methods
+		/// <summary>
+		/// ChangeRule: typeof(Objectification)
+		/// </summary>
+		private static void ImpliedObjectificationChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			if (e.DomainProperty.Id == Objectification.IsImpliedDomainPropertyId)
+			{
+				foreach (FactType linkFactType in ((Objectification)e.ModelElement).ImpliedFactTypeCollection)
+				{
+					foreach (ReadingOrder order in linkFactType.ReadingOrderCollection)
+					{
+						foreach (Reading reading in order.ReadingCollection)
+						{
+							DuplicateReadingSignatureError error;
+							if (null != (error = reading.DuplicateSignatureError))
+							{
+								FrameworkDomainModel.DelayValidateElement(error, DelayValidateLinkFactTypeReadings);
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ReadingHasDuplicateSignatureError)
+		/// </summary>
+		private static void DuplicateReadingAddedRule(ElementAddedEventArgs e)
+		{
+			FrameworkDomainModel.DelayValidateElement(((ReadingHasDuplicateSignatureError)e.ModelElement).DuplicateSignatureError, DelayValidateLinkFactTypeReadings);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ReadingHasDuplicateSignatureError)
+		/// </summary>
+		private static void DuplicateReadingDeletedRule(ElementDeletedEventArgs e)
+		{
+			DuplicateReadingSignatureError error = ((ReadingHasDuplicateSignatureError)e.ModelElement).DuplicateSignatureError;
+			if (!error.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(error, DelayValidateLinkFactTypeReadings);
+			}
+		}
+		/// <summary>
+		/// Delay validation callback for checking if duplicate readings are associated
+		/// with a link fact type.
+		/// </summary>
+		private static void DelayValidateLinkFactTypeReadings(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				((DuplicateReadingSignatureError)element).FixupErrorState();
+			}
+		}
+		/// <summary>
+		/// Make sure that our error state ignores link fact type duplicates
+		/// for implied objectifications.
+		/// </summary>
+		protected override void FixupErrorState()
+		{
+			int nonImpliedLinkReadingCount = 0;
+			foreach (Reading reading in ReadingCollection)
+			{
+				ReadingOrder order;
+				FactType factType;
+				Objectification objectification;
+				if (null == (order = reading.ReadingOrder) ||
+					null == (factType = order.FactType) ||
+					null == (objectification = factType.ImpliedByObjectification) ||
+					!objectification.IsImplied)
+				{
+					if (++nonImpliedLinkReadingCount == 2)
+					{
+						break;
+					}
+				}
+			}
+			ErrorState = (nonImpliedLinkReadingCount < 2) ? ModelErrorState.Ignored : ModelErrorState.Error;
+		}
+		#endregion // Rule Methods
 	}
 	#endregion // Relationship-specific derivations of DuplicateNameError
 	#endregion // NamedElementDictionary and DuplicateNameError integration

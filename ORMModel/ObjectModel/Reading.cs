@@ -484,7 +484,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.DomainProperty.Id == FactType.NameChangedDomainPropertyId)
 			{
-				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayUpdateReadingSignatures);
+				ModelElement element = e.ModelElement;
+				// Check whether duplicate names are currently allowed. If so, then
+				// make sure the names are also allowed in the delay validator so
+				// that we don't get unwanted errors being thrown.
+				FrameworkDomainModel.DelayValidateElement(
+					element,
+					element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMModel.AllowDuplicateNamesKey) ?
+						(ElementValidation)DelayUpdateReadingSignaturesAllowDuplicates :
+						DelayUpdateReadingSignatures);
 			}
 		}
 		private static void DelayUpdateReadingSignatures(ModelElement element)
@@ -492,6 +500,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!element.IsDeleted)
 			{
 				UpdateReadingSignatures((FactType)element);
+			}
+		}
+		[DelayValidateReplaces("DelayUpdateReadingSignatures")]
+		private static void DelayUpdateReadingSignaturesAllowDuplicates(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				Dictionary<object, object> contextInfo = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+				bool removeDuplicateNamesKey = false;
+				try
+				{
+					if (!contextInfo.ContainsKey(duplicateNamesKey))
+					{
+						contextInfo[duplicateNamesKey] = null;
+						removeDuplicateNamesKey = true;
+					}
+					UpdateReadingSignatures((FactType)element);
+				}
+				finally
+				{
+					if (removeDuplicateNamesKey)
+					{
+						contextInfo.Remove(duplicateNamesKey);
+					}
+				}
 			}
 		}
 		private static Dictionary<string, object> mySignatureRenderingOptions;

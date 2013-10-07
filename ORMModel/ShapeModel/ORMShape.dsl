@@ -516,6 +516,10 @@
 				<DomainRelationshipMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/FactConstraint"/>
 			</ConnectorMap>
 			<ConnectorMap>
+				<ConnectorMoniker Name="ExternalConstraintLink"/>
+				<DomainRelationshipMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ConstraintRoleSequenceHasRole"/>
+			</ConnectorMap>
+			<ConnectorMap>
 				<ConnectorMoniker Name="ValueRangeLink"/>
 				<DomainRelationshipMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/RoleHasValueConstraint"/>
 			</ConnectorMap>

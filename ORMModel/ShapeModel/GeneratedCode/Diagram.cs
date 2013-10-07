@@ -256,21 +256,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
@@ -289,9 +277,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
@@ -312,12 +312,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesFactType)
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesObjectType)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink(this.Partition);
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesObjectType)
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesFactType)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink(this.Partition);
 				return newShape;
@@ -332,6 +332,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink(this.Partition);
 				return newShape;
 			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
+				return newShape;
+			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
 			{
 				// Multiple mappings have been defined for the class ObjectTypePlaysRole.
@@ -344,11 +354,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				// must be implemented in a partial class of ORMDiagramBase.  Given an instance of ObjectTypePlaysRole,
 				// the method should return a new shape or connector instance that should be associated with this element.  If no shape or connector should be created, the method should return null.
 				DslDiagrams::LinkShape newShape = CreateConnectorForObjectTypePlaysRole((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)element);
-				return newShape;
-			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
 				return newShape;
 			}
 			return base.CreateChildShape(element);
@@ -515,20 +520,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		internal sealed partial class FixUpDiagram : DslModeling::AddRule
 		{
 			[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
@@ -568,10 +574,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					parentElement = GetParentForValueTypeValueConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)childElement);
 				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)
-				{
-					parentElement = GetParentForObjectType((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)childElement);
-				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote)
 				{
 					parentElement = GetParentForModelNote((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote)childElement);
@@ -587,6 +589,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint)
 				{
 					parentElement = GetParentForSetComparisonConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint)childElement);
+				} else
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)
+				{
+					parentElement = GetParentForObjectType((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)childElement);
 				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder)
 				{
@@ -802,6 +808,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]

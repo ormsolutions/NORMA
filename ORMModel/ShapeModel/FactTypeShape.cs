@@ -76,6 +76,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// </summary>
 			private RectangleD myBounds;
 			/// <summary>
+			/// The constraint for this constraint box
+			/// </summary>
+			private IConstraint myConstraint;
+			/// <summary>
 			/// The type of constraint contained is this box.
 			/// </summary>
 			private ConstraintType myConstraintType;
@@ -85,9 +89,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// </summary>
 			private ConstraintBoxRoleActivity[] myActiveRoles;
 			/// <summary>
-			/// The constraint object this box is for.
+			/// The backing object that corresponds to the external
+			/// constraint link attached to this box.
 			/// </summary>
-			private IFactConstraint myFactConstraint;
+			private ModelElement myBackingElement;
 			/// <summary>
 			/// True if the box is explicitly hidden 
 			/// </summary>
@@ -96,6 +101,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// The cached role collection
 			/// </summary>
 			private IList<Role> myRoleCollection;
+			/// <summary>
+			/// The cached single role
+			/// </summary>
+			private Role mySingleRole;
 			private bool? myIsValid;
 			#endregion // Member Variables
 			#region Constructors
@@ -108,15 +117,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// <param name="factRoleCount">The number of roles for the context fact.</param>
 			public ConstraintBox(IFactConstraint factConstraint, IList<Role> uniqueConstraintRoles, int factRoleCount)
 			{
-				Debug.Assert(factConstraint != null);
-				Debug.Assert(uniqueConstraintRoles != null);
-				Debug.Assert(factRoleCount > 0 && factRoleCount >= uniqueConstraintRoles.Count);
 				myBounds = new RectangleD();
 				IConstraint constraint = factConstraint.Constraint;
+				myConstraint = constraint;
 				myConstraintType = constraint.ConstraintType;
 				myActiveRoles = new ConstraintBoxRoleActivity[factRoleCount];
-				myFactConstraint = factConstraint;
+				myBackingElement = (ModelElement)factConstraint;
 				myRoleCollection = uniqueConstraintRoles;
+				mySingleRole = null;
 				myIsHidden = false;
 				myIsValid = null;
 			}
@@ -129,24 +137,50 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// <param name="roleActivity">A representation of the factConstraint's role activity within the fact.</param>
 			public ConstraintBox(IFactConstraint factConstraint, IList<Role> uniqueConstraintRoles, ConstraintBoxRoleActivity[] roleActivity)
 			{
-				Debug.Assert(factConstraint != null);
-				Debug.Assert(uniqueConstraintRoles != null);
-				Debug.Assert(roleActivity != null);
-				if (roleActivity != PreDefinedConstraintBoxRoleActivities_FullySpanning && roleActivity != PreDefinedConstraintBoxRoleActivities_AntiSpanning)
-				{
-					int roleActivityCount = roleActivity.Length;
-					Debug.Assert(roleActivityCount > 0 && roleActivityCount >= uniqueConstraintRoles.Count);
-					myBounds = new RectangleD();
-				}
-				else
-				{
-					myBounds = new RectangleD();
-				}
+				myBounds = new RectangleD();
 				IConstraint constraint = factConstraint.Constraint;
+				myConstraint = constraint;
 				myConstraintType = constraint.ConstraintType;
 				myActiveRoles = roleActivity;
-				myFactConstraint = factConstraint;
+				myBackingElement = (ModelElement)factConstraint;
 				myRoleCollection = uniqueConstraintRoles;
+				mySingleRole = null;
+				myIsHidden = false;
+				myIsValid = null;
+			}
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			/// <param name="constraintRoleLink">A link to a single role that this constraint box is based on.</param>
+			/// <param name="factRoleCount">The number of roles for the context fact.</param>
+			public ConstraintBox(ConstraintRoleSequenceHasRole constraintRoleLink, int factRoleCount)
+			{
+				myBounds = new RectangleD();
+				IConstraint constraint = (IConstraint)constraintRoleLink.ConstraintRoleSequence;
+				myConstraint = constraint;
+				myConstraintType = constraint.ConstraintType;
+				myActiveRoles = new ConstraintBoxRoleActivity[factRoleCount];
+				myBackingElement = constraintRoleLink;
+				myRoleCollection = null;
+				mySingleRole = constraintRoleLink.Role;
+				myIsHidden = false;
+				myIsValid = null;
+			}
+			/// <summary>
+			/// Constructor
+			/// </summary>
+			/// <param name="constraintRoleLink">A link to a single role that this constraint box is based on.</param>
+			/// <param name="roleActivity">A representation of the factConstraint's role activity within the fact.</param>
+			public ConstraintBox(ConstraintRoleSequenceHasRole constraintRoleLink, ConstraintBoxRoleActivity[] roleActivity)
+			{
+				myBounds = new RectangleD();
+				IConstraint constraint = (IConstraint)constraintRoleLink.ConstraintRoleSequence;
+				myConstraint = constraint;
+				myConstraintType = constraint.ConstraintType;
+				myActiveRoles = roleActivity;
+				myBackingElement = constraintRoleLink;
+				myRoleCollection = null;
+				mySingleRole = constraintRoleLink.Role;
 				myIsHidden = false;
 				myIsValid = null;
 			}
@@ -167,7 +201,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 			/// <summary>
-			/// The type of constraint contained is this box.
+			///  The constraint associated with this constraint box.
+			/// </summary>
+			public IConstraint Constraint
+			{
+				get
+				{
+					return myConstraint;
+				}
+			}
+			/// <summary>
+			/// The type of constraint contained in this box.
 			/// </summary>
 			public ConstraintType ConstraintType
 			{
@@ -208,13 +252,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 			/// <summary>
-			/// The constraint object this box is for.
+			/// The backing element that corresponds to the external
+			/// constraint link box is created for.
 			/// </summary>
-			public IFactConstraint FactConstraint
+			public ModelElement BackingElement
 			{
 				get
 				{
-					return myFactConstraint;
+					return myBackingElement;
 				}
 			}
 			/// <summary>
@@ -225,6 +270,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				get
 				{
 					return myRoleCollection;
+				}
+			}
+			/// <summary>
+			/// A (cached) reference to a single role. If this is set,
+			/// then <see cref="RoleCollection"/> is null.
+			/// </summary>
+			public Role SingleRole
+			{
+				get
+				{
+					return mySingleRole;
 				}
 			}
 			/// <summary>
@@ -280,7 +336,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						else
 						{
-							IConstraint constraint = myFactConstraint.Constraint;
+							IConstraint constraint = myConstraint;
 							ORMModel model = constraint.Model;
 							retVal = !ModelError.HasErrors(constraint as ModelElement, ModelErrorUses.DisplayPrimary, (null != model) ? model.ModelErrorDisplayFilter : null);
 						}
@@ -297,8 +353,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// with internal followed by external. This allows for group
 			/// analysis and hiding of individual boxes prior to a full sort.
 			/// </summary>
-			/// <param name="boxes"></param>
-			/// <returns></returns>
 			public static int GroupConstraintBoxes(ConstraintBox[] boxes)
 			{
 				Array.Sort(
@@ -352,7 +406,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				public sealed override int Compare(ConstraintBox c1, ConstraintBox c2)
 				{
-					if (c1.FactConstraint == c2.FactConstraint)
+					if (c1.BackingElement == c2.BackingElement)
 					{
 						// Same object
 						return 0;
@@ -392,8 +446,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						else if (IsConstraintTypeVisible(ct1))
 						{
 							// Constraints with less roles sink to the bottom.
-							int c1RoleCount = c1.RoleCollection.Count;
-							int c2RoleCount = c2.RoleCollection.Count;
+							int c1RoleCount = (c1.SingleRole != null) ? 1 : c1.RoleCollection.Count;
+							int c2RoleCount = (c2.SingleRole != null) ? 1 : c2.RoleCollection.Count;
 							if (c1RoleCount < c2RoleCount)
 							{
 								retVal = 1;
@@ -736,15 +790,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an ternary facts with first role only
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_Left = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Inactive };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryLeft = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Inactive };
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an ternary facts with second role only
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_Center = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryCenter = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active, ConstraintBoxRoleActivity.Inactive };
 		/// <summary>
 		/// A ConstraintBoxRoleActivity[] for an ternary facts with third role only
 		/// </summary>
-		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_Right = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active };
+		private static readonly ConstraintBoxRoleActivity[] PreDefinedConstraintBoxRoleActivities_TernaryRight = new ConstraintBoxRoleActivity[3] { ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Inactive, ConstraintBoxRoleActivity.Active };
 		#endregion //Pre-defined ConstraintBoxRoleActivity arrays
 		#region WalkConstraintBoxes implementation
 		/// <summary>
@@ -862,10 +916,29 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					++fullConstraintCount;
 				}
 			}
-			ConstraintBox[] constraintBoxes = new ConstraintBox[fullConstraintCount];
-
 			if (fullConstraintCount != 0)
 			{
+				ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
+				bool displaySingleRoleBoxes = displayOption == ExternalConstraintRoleBarDisplay.AnyRole;
+				// Find any constraints that attach individual roles instead of a full fact type.
+				// These do not need constraint boxes unless the 'AnyRole' display option is in force, in which
+				// case they get one constraint box per attached role.
+				foreach (IFactConstraint factConstraint in factConstraints)
+				{
+					if (0 != (factConstraint.Constraint.RoleSequenceStyles & RoleSequenceStyles.ConnectIndividualRoles))
+					{
+						--fullConstraintCount;
+						if (displaySingleRoleBoxes)
+						{
+							fullConstraintCount += factConstraint.RoleCollection.Count;
+						}
+					}
+				}
+				if (fullConstraintCount == 0)
+				{
+					return;
+				}
+				ConstraintBox[] constraintBoxes = new ConstraintBox[fullConstraintCount];
 				int currentConstraintIndex = 0;
 				if (proxyUniqueness != null)
 				{
@@ -877,11 +950,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					IList<Role> constraintRoles = factConstraint.RoleCollection;
 					int constraintRoleCount = constraintRoles.Count;
-					if (factConstraint.Constraint.ConstraintStorageStyle == ConstraintStorageStyle.SetComparisonConstraint)
+					IConstraint constraint = factConstraint.Constraint;
+					bool individualRoles;
+					if (constraint.ConstraintStorageStyle == ConstraintStorageStyle.SetComparisonConstraint)
 					{
 						// The constraint can have multiple role sequences, and there is nothing stopping
-						// them from overlapping. Although this is a pathological state, it is a valid model
+						// them from overlapping. Although this is an unusual state, it is a valid model
 						// and needs to draw without crashing.
+						individualRoles = false; // Individual roles don't occur for set comparisons
 						int duplicateCount = 0;
 						for (int i = constraintRoleCount - 1; i > 0; --i)
 						{
@@ -928,12 +1004,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							constraintRoleCount -= duplicateCount;
 						}
 					}
+					else
+					{
+						if ((individualRoles = (0 != (constraint.RoleSequenceStyles & RoleSequenceStyles.ConnectIndividualRoles))) &&
+							!displaySingleRoleBoxes)
+						{
+							continue;
+						}
+					}
 					#region Optimized ConstraintRoleBox assignments
 					// Optimization time: If we're dealing with binary or ternary constraints,
 					// use the pre-defined ConstraintBoxRoleActivity collections.  This saves
 					// on allocating tons of arrays every time the constraints are drawn or hit tested.
 					ConstraintBoxRoleActivity[] predefinedActivityRoles = null;
-					if (constraintRoleCount == factRoleCount)
+					bool usePredefinedIndividualRoles = false;
+					if (individualRoles)
+					{
+						usePredefinedIndividualRoles = factRoleCount < 4;
+					}
+					else if (constraintRoleCount == factRoleCount)
 					{
 						predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_FullySpanning;
 					}
@@ -974,13 +1063,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 										switch (roleIndex)
 										{
 											case 0:
-												predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_Left;
+												predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeft;
 												break;
 											case 1:
-												predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_Center;
+												predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryCenter;
 												break;
 											case 2:
-												predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_Right;
+												predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryRight;
 												break;
 										}
 										break;
@@ -1030,7 +1119,63 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					#endregion // Optimized ConstraintRoleBox assignments
 					#region Manual ConstraintRoleBox assignment
-					if (predefinedActivityRoles != null)
+					if (usePredefinedIndividualRoles)
+					{
+						// Retrieve all constraint roles links at once so that we don't have to look them up individually.
+						ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoleLinks = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection((ConstraintRoleSequence)constraint);
+						for (int i = 0; i < constraintRoleCount; ++i)
+						{
+							ConstraintRoleSequenceHasRole constraintRoleLink = constraintRoleLinks[i];
+							// Grab the first predefined role if possible, pick up others below
+							switch (factRoleCount)
+							{
+								case 1:
+									predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_FullySpanning;
+									break;
+								case 2:
+									switch (factRoles.IndexOf(constraintRoleLink.Role))
+									{
+										case 0:
+											predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_BinaryLeft;
+											break;
+										case 1:
+											predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_BinaryRight;
+											break;
+									}
+									break;
+								case 3:
+									switch (factRoles.IndexOf(constraintRoleLink.Role))
+									{
+										case 0:
+											predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryLeft;
+											break;
+										case 1:
+											predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryCenter;
+											break;
+										case 2:
+											predefinedActivityRoles = PreDefinedConstraintBoxRoleActivities_TernaryRight;
+											break;
+									}
+									break;
+							}
+							constraintBoxes[currentConstraintIndex + i] = new ConstraintBox(constraintRoleLink, predefinedActivityRoles);
+						}
+						currentConstraintIndex += constraintRoleCount - 1;
+					}
+					else if (individualRoles)
+					{
+						// Retrieve all constraint roles links at once so that we don't have to look them up individually.
+						ReadOnlyCollection<ConstraintRoleSequenceHasRole> constraintRoleLinks = ConstraintRoleSequenceHasRole.GetLinksToRoleCollection((ConstraintRoleSequence)constraint);
+						for (int i = 0; i < constraintRoleCount; ++i)
+						{
+							ConstraintRoleSequenceHasRole constraintRoleLink = constraintRoleLinks[i];
+							ConstraintBox currentBox = new ConstraintBox(constraintRoleLink, factRoleCount);
+							currentBox.ActiveRoles[factRoles.IndexOf(constraintRoleLink.Role)] = ConstraintBoxRoleActivity.Active;
+							constraintBoxes[currentConstraintIndex + i] = currentBox;
+						}
+						currentConstraintIndex += constraintRoleCount - 1;
+					}
+					else if (predefinedActivityRoles != null)
 					{
 						constraintBoxes[currentConstraintIndex] = new ConstraintBox(factConstraint, constraintRoles, predefinedActivityRoles);
 					}
@@ -1088,8 +1233,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 
 				// Hide all the internals if we're walking the wrong box
-				ConstraintDisplayPosition currentDisplayPosition = ConstraintDisplayPosition;
-				if (displayPosition != currentDisplayPosition)
+				ConstraintDisplayPosition currentShapeDisplayPosition = ConstraintDisplayPosition;
+				if (displayPosition != currentShapeDisplayPosition)
 				{
 					if (!haveExternals)
 					{
@@ -1122,21 +1267,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						Location.X + myLeftSpacerShapeField.GetMinimumSize(this).Width + RoleBoxHeight / 2 :
 						Location.Y + myTopSpacerShapeField.GetMinimumSize(this).Height + RoleBoxHeight / 2;
 					ORMDiagram diagram = Diagram as ORMDiagram;
-					if (currentDisplayPosition == ConstraintDisplayPosition.Top)
+					if (currentShapeDisplayPosition == ConstraintDisplayPosition.Top)
 					{
 						testCenter += internalsCount * ConstraintHeight;
 					}
 					for (int i = internalsCount; i < significantConstraintCount; ++i)
 					{
 						bool showConstraint;
-						ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
-						if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
+						IList<Role> roles;
+						if (displaySingleRoleBoxes)
 						{
 							showConstraint = true;
 						}
+						else if (null == (roles = constraintBoxes[i].RoleCollection))
+						{
+							// The previous block handles the SingleRole case, which will
+							// be set if RoleCollection is null.
+							showConstraint = false;
+						}
 						else
 						{
-							IList<Role> roles = constraintBoxes[i].RoleCollection;
 							switch (roles.Count)
 							{
 								case 1:
@@ -1163,17 +1313,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						{
 							// Find ths shape connected to this shape for this constraint
 							ShapeElement constraintShape;
-							IFactConstraint factConstraint = constraintBoxes[i].FactConstraint;
-							ModelElement factConstraintElem = (ModelElement)factConstraint;
+							ModelElement backingElement = constraintBoxes[i].BackingElement;
 							if (assumeAttached)
 							{
 								constraintShape = null;
-								foreach (LinkConnectsToNode nodeLink in LinkConnectsToNode.GetLinksToLink(this))
+								foreach (ExternalConstraintLink constraintLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<ExternalConstraintLink>(this, false, true))
 								{
-									ExternalConstraintLink constraintLink;
-									if (!nodeLink.IsDeleting &&
-										null != (constraintLink = nodeLink.Link as ExternalConstraintLink) &&
-										constraintLink.Subject == factConstraintElem)
+									if (constraintLink.ModelElement == backingElement)
 									{
 										constraintShape = constraintLink.ToShape;
 									}
@@ -1181,7 +1327,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							}
 							else
 							{
-								constraintShape = MultiShapeUtility.FindNearestShapeForElement(diagram, this, (ModelElement)factConstraint.Constraint, factConstraintElem);
+								constraintShape = MultiShapeUtility.FindNearestShapeForElement(diagram, this, (ModelElement)constraintBoxes[i].Constraint, backingElement);
 							}
 							if (constraintShape == null)
 							{
@@ -1226,7 +1372,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				int iBox;
 				int incr;
-				if (currentDisplayPosition == ((orientation == DisplayOrientation.VerticalRotatedRight) ? ConstraintDisplayPosition.Top : ConstraintDisplayPosition.Bottom))
+				if (displayPosition == ((orientation == DisplayOrientation.VerticalRotatedRight) ? ConstraintDisplayPosition.Top : ConstraintDisplayPosition.Bottom))
 				{
 					// walk the constraints from top to bottom
 					iBox = significantConstraintCount - 1;
@@ -1558,8 +1704,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						RectangleD fullBounds = constraintBox.Bounds;
 						if (fullBounds.Contains(point))
 						{
-							IFactConstraint factConstraint = constraintBox.FactConstraint;
-							diagramHitTestInfo.HitDiagramItem = new DiagramItem(parentShape, this, new ConstraintSubField(factConstraint.Constraint));
+							diagramHitTestInfo.HitDiagramItem = new DiagramItem(parentShape, this, new ConstraintSubField(constraintBox.BackingElement));
 							return false; // Don't continue, we got our item
 						}
 						return true;
@@ -1599,7 +1744,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						if (index == 0)
 						{
-							retVal = new ConstraintSubField(constraintBox.FactConstraint.Constraint);
+							retVal = new ConstraintSubField(constraintBox.BackingElement);
 							return false; // Don't continue, we got our item
 						}
 						--index;
@@ -1731,6 +1876,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ConstraintDisplayPosition position = factShape.DisplayPositionFromAttachPosition(attachPosition);
 				ORMDiagram diagram = (ORMDiagram)factShape.Diagram;
 				StyleSet diagramStyleSet = diagram.StyleSet;
+				int factArity = 0;
 
 				factShape.WalkConstraintBoxes(
 					this,
@@ -1740,8 +1886,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						bool isInternalConstraint = constraintBox.ConstraintType == ConstraintType.InternalUniqueness;
 
 						//default variables
-						IFactConstraint factConstraint = constraintBox.FactConstraint;
-						IConstraint currentConstraint = factConstraint.Constraint;
+						IConstraint currentConstraint = constraintBox.Constraint;
 						RectangleF boundsF = RectangleD.ToRectangleF(constraintBox.Bounds);
 						float verticalPos = (isVertical ? boundsF.Left : boundsF.Top) + (float)(ConstraintHeight / 2);
 						ConstraintBoxRoleActivity[] rolePosToDraw = constraintBox.ActiveRoles;
@@ -1826,9 +1971,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								}
 							}
 						}
-						IConstraint constraint = factConstraint.Constraint;
 						ORMModel model;
-						if (ModelError.HasErrors(constraint as ModelElement, ModelErrorUses.DisplayPrimary, (null != (model = constraint.Model)) ? model.ModelErrorDisplayFilter : null) && isInternalConstraint && !isSticky)
+						ModelElement constraintElement = (ModelElement)currentConstraint;
+						if (ModelError.HasErrors(constraintElement, ModelErrorUses.DisplayPrimary, (null != (model = currentConstraint.Model)) ? model.ModelErrorDisplayFilter : null) && isInternalConstraint && !isSticky)
 						{
 							Brush backBrush;
 							if (factShapeHighlighted || isHighlighted || isSticky)
@@ -1856,12 +2001,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							{
 								if (testSubField == null)
 								{
-									testSubField = new ConstraintSubField(currentConstraint);
+									testSubField = new ConstraintSubField(constraintElement);
 									testSelect = new DiagramItem(parentShape, this, testSubField);
 								}
 								else
 								{
-									testSubField.AssociatedConstraint = currentConstraint;
+									testSubField.BackingElement = constraintElement;
 								}
 								if (selection.Contains(testSelect))
 								{
@@ -1978,7 +2123,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							bool fullySpanning = rolePosToDraw == PreDefinedConstraintBoxRoleActivities_FullySpanning;
 							if (fullySpanning)
 							{
-								numRoles = factConstraint.FactType.RoleCollection.Count;
+								numRoles = (factArity == 0) ? (factArity = factShape.DisplayedRoleOrder.Count) : factArity;
 							}
 							float startPos = isVertical ? (reverseVertical ? boundsF.Bottom : boundsF.Top) : boundsF.Left;
 							for (int i = 0; i < numRoles; ++i)
@@ -2165,7 +2310,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				DiagramClientView clientView = e.DiagramClientView;
 				ORMDiagram diagram = clientView.Diagram as ORMDiagram;
-				UniquenessConstraint iuc = AssociatedConstraint as UniquenessConstraint;
+				UniquenessConstraint iuc;
 				FactTypeShape shape;
 				FactType factType;
 				if (null != (iuc = AssociatedConstraint as UniquenessConstraint) &&
@@ -2199,29 +2344,30 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			#endregion // Mouse handling
 			#region Member variables
-			private IConstraint myAssociatedConstraint;
+			private ModelElement myBackingElement;
 			#endregion // Member variables
 			#region Construction
 			/// <summary>
 			/// Default constructor
 			/// </summary>
-			/// <param name="associatedConstraint">The Constraint that this ConstraintSubfield will represent.</param>
-			public ConstraintSubField(IConstraint associatedConstraint)
+			/// <param name="backingElement">The backing <see cref="ModelElement"/> this ConstraintSubField
+			/// will represent.</param>
+			public ConstraintSubField(ModelElement backingElement)
 			{
-				Debug.Assert(associatedConstraint != null);
-				myAssociatedConstraint = associatedConstraint;
+				Debug.Assert(backingElement != null);
+				myBackingElement = backingElement;
 			}
 			#endregion // Construction
 			#region Required ShapeSubField overrides
 			/// <summary>
-			/// Returns true if the fields have the same associated role
+			/// Returns true if the fields have the same backing object
 			/// </summary>
 			public sealed override bool SubFieldEquals(object obj)
 			{
 				ConstraintSubField compareTo;
 				if (null != (compareTo = obj as ConstraintSubField))
 				{
-					return myAssociatedConstraint == compareTo.myAssociatedConstraint;
+					return myBackingElement == compareTo.myBackingElement;
 				}
 				return false;
 			}
@@ -2232,7 +2378,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				get
 				{
-					return myAssociatedConstraint.GetHashCode();
+					return myBackingElement.GetHashCode();
 				}
 			}
 			/// <summary>
@@ -2261,15 +2407,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public sealed override RectangleD GetBounds(ShapeElement parentShape, ShapeField parentField)
 			{
 				RectangleD retVal = RectangleD.Empty;
-				IConstraint testConstraint = myAssociatedConstraint;
-				if (testConstraint != null)
+				ModelElement backingElement;
+				if (null != (backingElement = myBackingElement))
 				{
 					((FactTypeShape)parentShape).WalkConstraintBoxes(
 						parentField,
 						((ConstraintShapeField)parentField).AttachPosition,
 						delegate(ref ConstraintBox constraintBox)
 						{
-							if (constraintBox.FactConstraint.Constraint == testConstraint)
+							if (constraintBox.BackingElement == backingElement)
 							{
 								retVal = constraintBox.Bounds;
 								return false; // Don't continue, we got our item
@@ -2286,17 +2432,40 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			#endregion // Required ShapeSubField
 			#region Accessor functions
 			/// <summary>
+			/// Get the backing object that identifies this
+			/// sub field within its shape field.
+			/// </summary>
+			public ModelElement BackingElement
+			{
+				get
+				{
+					return myBackingElement;
+				}
+				set
+				{
+					myBackingElement = value;
+				}
+			}
+			/// <summary>
 			/// Get the Constraint element associated with this sub field
 			/// </summary>
 			public IConstraint AssociatedConstraint
 			{
 				get
 				{
-					return myAssociatedConstraint;
-				}
-				set
-				{
-					myAssociatedConstraint = value;
+					IConstraint constraint = null;
+					IFactConstraint factConstraint;
+					ConstraintRoleSequenceHasRole constraintRole;
+					ModelElement backingElement = myBackingElement;
+					if (null != (factConstraint = backingElement as IFactConstraint))
+					{
+						constraint = factConstraint.Constraint;
+					}
+					else if (null != (constraintRole = backingElement as ConstraintRoleSequenceHasRole))
+					{
+						constraint = constraintRole.ConstraintRoleSequence as IConstraint;
+					}
+					return constraint;
 				}
 			}
 			#endregion // Accessor functions
@@ -2306,14 +2475,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// </summary>
 			public override string GetAccessibleName(ShapeElement parentShape, ShapeField parentField)
 			{
-				return TypeDescriptor.GetClassName(myAssociatedConstraint);
+				return TypeDescriptor.GetClassName(AssociatedConstraint);
 			}
 			/// <summary>
 			/// Defer to the associated constraint for the accessible value
 			/// </summary>
 			public override string GetAccessibleValue(ShapeElement parentShape, ShapeField parentField)
 			{
-				return TypeDescriptor.GetComponentName(myAssociatedConstraint);
+				return TypeDescriptor.GetComponentName(AssociatedConstraint);
 			}
 			#endregion // Accessibility Overrides
 		}
@@ -4487,8 +4656,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			else if (null != (constraintShape = oppositeShape as ExternalConstraintShape))
 			{
 				IConstraint constraint = constraintShape.AssociatedConstraint;
-				factType = AssociatedFactType;
-				if (factType != null)
+				if (0 != (constraint.RoleSequenceStyles & RoleSequenceStyles.ConnectIndividualRoles))
+				{
+					ConstraintRoleSequenceHasRole constraintRole;
+					if (null != (constraintRole = linkElement as ConstraintRoleSequenceHasRole))
+					{
+						if (OptionsPage.CurrentExternalConstraintRoleBarDisplay == ExternalConstraintRoleBarDisplay.AnyRole)
+						{
+							return GetAbsoluteConstraintAttachPoint(constraint, constraintRole);
+						}
+						else
+						{
+							LinkedElementCollection<RoleBase> factRoles = DisplayedRoleOrder;
+							factRoleCount = factRoles.Count;
+							roleIndex = factRoles.IndexOf(constraintRole.Role);
+						}
+					}
+				}
+				else if (null != (factType = AssociatedFactType))
 				{
 					SetConstraint scec;
 					SetComparisonConstraint mcec = null;
@@ -4505,9 +4690,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (factConstraints != null)
 					{
 						int factConstraintCount = factConstraints.Count;
+						IFactConstraint factConstraint = null;
 						for (int i = 0; i < factConstraintCount; ++i)
 						{
-							IFactConstraint factConstraint = (IFactConstraint)factConstraints[i];
+							factConstraint = (IFactConstraint)factConstraints[i];
 							if (factConstraint.FactType == factType)
 							{
 								roles = factConstraint.RoleCollection;
@@ -4519,7 +4705,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
 							if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
 							{
-								return GetAbsoluteConstraintAttachPoint(constraint);
+								return GetAbsoluteConstraintAttachPoint(constraint, (ModelElement)factConstraint);
 							}
 							else
 							{
@@ -4605,7 +4791,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 												}
 											}
 										}
-										return GetAbsoluteConstraintAttachPoint(constraint);
+										return GetAbsoluteConstraintAttachPoint(constraint, (ModelElement)factConstraint);
 								}
 							}
 						}
@@ -5568,8 +5754,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// Gets the attach point of the specific constraint within this shape.
 		/// </summary>
 		/// <param name="constraint">The constraint to find the location of.</param>
-		/// <returns></returns>
-		public PointD GetAbsoluteConstraintAttachPoint(IConstraint constraint)
+		/// <param name="backingElement">The element associated with the attached external
+		/// constraint link.</param>
+		/// <returns>A <see cref="PointD"/>, possibly <see cref="PointD.Empty"/></returns>
+		public PointD GetAbsoluteConstraintAttachPoint(IConstraint constraint, ModelElement backingElement)
 		{
 			RectangleD rect = RectangleD.Empty;
 			PointD retVal = PointD.Empty;
@@ -5583,7 +5771,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					true,
 					delegate(ref ConstraintBox constraintBox)
 					{
-						if (constraintBox.FactConstraint.Constraint == constraint)
+						if (constraintBox.BackingElement == backingElement)
 						{
 							rect = constraintBox.Bounds;
 							return false;
@@ -5628,7 +5816,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						true,
 						delegate(ref ConstraintBox constraintBox)
 						{
-							if (constraintBox.FactConstraint.Constraint == constraint)
+							if (constraintBox.BackingElement == backingElement)
 							{
 								rect = constraintBox.Bounds;
 								ConstraintBoxRoleActivity[] roles = constraintBox.ActiveRoles;
@@ -5641,7 +5829,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								{
 									if (roles == PreDefinedConstraintBoxRoleActivities_FullySpanning)
 									{
-										roleCount = AssociatedFactType.RoleCollection.Count;
+										roleCount = DisplayedRoleOrder.Count;
 										firstActive = 0;
 										lastActive = roleCount - 1;
 									}
@@ -6267,7 +6455,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							bool needObjectShape = false;
 							bool needFactShape = false;
 							// The contents of the enumerator change over the course of this function, get a snapshot enumerator
-							IEnumerable<BinaryLinkShape> factShapeAttachedLinkShapes = MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factTypeShape, true);
+							IEnumerable<BinaryLinkShape> factShapeAttachedLinkShapes = MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factTypeShape, false, true);
 							foreach (BinaryLinkShape linkShape in factShapeAttachedLinkShapes)
 							{
 								RolePlayerLink rolePlayerLink;
@@ -6653,17 +6841,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					foreach (BinaryLinkShape binaryLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(externalConstraintShape))
 					{
 						Debug.Assert(binaryLink.ToShape == externalConstraintShape);
-						FactTypeShape factShape = MultiShapeUtility.ResolvePrimaryShape(binaryLink.FromShape) as FactTypeShape;
-						if (factShape != null)
+						FactTypeShape factTypeShape = MultiShapeUtility.ResolvePrimaryShape(binaryLink.FromShape) as FactTypeShape;
+						if (factTypeShape != null)
 						{
-							IFactConstraint factConstraint = binaryLink.ModelElement as IFactConstraint;
+							ModelElement linkElement = binaryLink.ModelElement;
+							IFactConstraint factConstraint;
 							IList<Role> roles;
-							if (null != (factConstraint = binaryLink.ModelElement as IFactConstraint) &&
+							ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
+							bool constraintBarVisible = false;
+							LinkedElementCollection<RoleBase> factRoles = null;
+							if (null != (factConstraint = linkElement as IFactConstraint) &&
 								null != (roles = factConstraint.RoleCollection))
 							{
-								ExternalConstraintRoleBarDisplay displayOption = OptionsPage.CurrentExternalConstraintRoleBarDisplay;
-								bool constraintBarVisible;
-								LinkedElementCollection<RoleBase> factRoles = null;
 								switch (roles.Count)
 								{
 									case 0:
@@ -6683,7 +6872,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 											}
 											else if (displayOption == ExternalConstraintRoleBarDisplay.SplitRoles)
 											{
-												factRoles = factShape.DisplayedRoleOrder;
+												factRoles = factTypeShape.DisplayedRoleOrder;
 												constraintBarVisible = Math.Abs(factRoles.IndexOf(role0) - factRoles.IndexOf(role1)) > 1;
 											}
 											else
@@ -6696,38 +6885,38 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 										constraintBarVisible = true;
 										break;
 								}
-								if (constraintBarVisible)
+							}
+							else if (linkElement is ConstraintRoleSequenceHasRole)
+							{
+								constraintBarVisible = displayOption == ExternalConstraintRoleBarDisplay.AnyRole;
+							}
+							if (constraintBarVisible)
+							{
+								bool resized = false;
+								if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
 								{
-									bool resized = false;
-									if (displayOption == ExternalConstraintRoleBarDisplay.AnyRole)
+									if ((factRoles ?? factTypeShape.DisplayedRoleOrder).Count == 2)
 									{
-										if (factRoles == null)
-										{
-											factRoles = factConstraint.FactType.RoleCollection;
-										}
-										if (factRoles.Count == 2)
-										{
-											// If AnyRole is on, then a binary fact can compress the display
-											// of an external constraint role. Moving the connection point from
-											// the top to the bottom will require more space and change the
-											// size of the fact shape.
-											factShape.AutoResize();
-											resized = true;
-										}
+										// If AnyRole is on, then a binary fact can compress the display
+										// of an external constraint role. Moving the connection point from
+										// the top to the bottom will require more space and change the
+										// size of the fact shape.
+										factTypeShape.AutoResize();
+										resized = true;
 									}
-									// All links going into the FactTypeShape are
-									// suspect, get rid of all of them.
-									foreach (BinaryLinkShape binaryLinkToFact in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factShape))
+								}
+								// All links going into the FactTypeShape are
+								// suspect, get rid of all of them.
+								foreach (BinaryLinkShape binaryLinkToFact in MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(factTypeShape))
+								{
+									if (binaryLink != binaryLinkToFact)
 									{
-										if (binaryLink != binaryLinkToFact)
-										{
-											binaryLinkToFact.RecalculateRoute();
-										}
+										binaryLinkToFact.RecalculateRoute();
 									}
-									if (!resized)
-									{
-										factShape.UpdateRolesPosition(SizeD.Empty, 0d);
-									}
+								}
+								if (!resized)
+								{
+									factTypeShape.UpdateRolesPosition(SizeD.Empty, 0d);
 								}
 							}
 						}

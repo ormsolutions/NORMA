@@ -1034,21 +1034,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 			classInfo = dataDirectory.FindDomainClass(ModelError.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorRemovedEvent), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent), action);
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ModelError.ErrorTextDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorChangedEvent), action);
 
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasModelErrorDisplayFilter.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ErrorDisplayChangedEvent), action);
 
+			EventHandler<ElementPropertyChangedEventArgs> errorDisplayPropertyChanged = new EventHandler<ElementPropertyChangedEventArgs>(ErrorDisplayChangedEvent);
+			propertyInfo = dataDirectory.FindDomainProperty(ModelError.ErrorStateDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, errorDisplayPropertyChanged, action);
+			
 			classInfo = dataDirectory.FindDomainClass(ModelErrorDisplayFilter.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ErrorDisplayChangedEvent), action);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorDisplayChangedEvent), action);
-
-			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(ModelErrorDisplayFilter.ExcludedCategoriesDomainPropertyId);
-			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorDisplayChangedEvent), action);
-			propertyInfo = dataDirectory.FindDomainProperty(ModelErrorDisplayFilter.ExcludedErrorsDomainPropertyId);
-			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorDisplayChangedEvent), action);
-			propertyInfo = dataDirectory.FindDomainProperty(ModelErrorDisplayFilter.IncludedErrorsDomainPropertyId);
-			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ErrorDisplayChangedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, errorDisplayPropertyChanged, action);
 			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ErrorEventsEnded), action);
 		}
 		private void ErrorAddedEvent(object sender, ElementAddedEventArgs e)
@@ -1100,7 +1098,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					foreach (ModelError error in model.ErrorCollection)
 					{
 						object taskData = error.TaskData;
-						if (filter == null || filter.ShouldDisplay(error))
+						if (ModelError.IsDisplayed(error, filter))
 						{
 							if (taskData == null)
 							{

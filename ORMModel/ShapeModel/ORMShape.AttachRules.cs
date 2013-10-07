@@ -81,6 +81,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(ORMBaseShape).GetNestedType("ModelErrorAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMBaseShape).GetNestedType("ModelErrorComponentDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ORMBaseShape).GetNestedType("ModelErrorStateChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ClearCachesOnCommittingRuleClass),
 						typeof(ConstraintRoleSequenceRoleAddedRuleClass),
 						typeof(ConstraintRoleSequenceRoleDeletedRuleClass),
@@ -157,7 +158,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 90; ++i)
+			for (int i = 0; i < 91; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -1427,6 +1428,32 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.ModelErrorComponentDeletingRule");
 				ORMBaseShape.ModelErrorComponentDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.ModelErrorComponentDeletingRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ModelErrorStateChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ModelErrorStateChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError)
+			/// /// </summary>
+			/// private static void ModelErrorStateChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.ModelErrorStateChangedRule");
+				ORMBaseShape.ModelErrorStateChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.ModelErrorStateChangedRule");
 			}
 		}
 	}

@@ -107,7 +107,20 @@
 	</se:Element>
 	<se:Element Class="ORMNamedElement" Override="true"/>
 	<se:Element Class="ModelError" Override="true">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:binaryOperator type="inequality">
+					<plx:left>
+						<plx:callThis name="ErrorState" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Ignored" type="field" dataTypeName="ModelErrorState"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
 		<se:Attribute ID="ErrorText" Name="Name"/>
+		<se:Attribute ID="ErrorState" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ORMModel" Name="ORMModel" SortChildElements="true" Override="true">
 		<se:Container Name="Definitions">
@@ -1152,6 +1165,7 @@
 	<se:Element Class="ValueComparisonConstraint" Override="true">
 		<se:Attribute ID="Operator" Name="Operator"/>
 		<se:Link RelationshipName="ValueComparisonConstraintHasOperatorNotSpecifiedError" RoleName="OperatorNotSpecifiedError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="ValueComparisonConstraintHasRolesNotComparableError" RoleName="RolesNotComparableError" WriteStyle="NotWritten"/>
 	</se:Element>
 
 	<se:Element Class="Function" Override="true">
@@ -1606,6 +1620,9 @@
 	</se:Element>
 	<se:Element Class="ValueComparisonConstraintOperatorNotSpecifiedError" Override="true">
 		<se:Link RelationshipName="ValueComparisonConstraintHasOperatorNotSpecifiedError" RoleName="ValueComparisonConstraint" Name="ValueComparisonConstraint"/>
+	</se:Element>
+	<se:Element Class="ValueComparisonRolesNotComparableError" Override="true">
+		<se:Link RelationshipName="ValueComparisonConstraintHasRolesNotComparableError" RoleName="ValueComparisonConstraint" Name="ValueComparisonConstraint"/>
 	</se:Element>
 	<se:Element Class="CompatibleValueTypeInstanceValueError" Override="true">
 		<se:ConditionalSerialization>

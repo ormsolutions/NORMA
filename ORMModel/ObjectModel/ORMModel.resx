@@ -301,8 +301,8 @@
 		<comment>Model validation error text when a single-column equality constraint is put on a set of mandatory roles.</comment>
 	</data>
 	<data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text" xml:space="preserve">
-		<value>Constraint '{0}' has role sequences with different numbers of roles.</value>
-		<comment>Model validation error text when role sequences in a multi column constraint have different role counts (arity).</comment>
+		<value>Constraint '{0}' in model '{1}' has role sequences with different numbers of roles.</value>
+		<comment>Model validation error text when role sequences in a multi column constraint have different role counts (arity). {0}=constraint name, {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintExactlyOneError.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' has a range of exactly one, should be a Uniqueness constraint.</value>
@@ -344,17 +344,49 @@
 		<value>Subset constraint '{0}' in model '{1}' is from a subtype and has a superset role player that is a subtype of the supertype in that relationship.</value>
 		<comment>When a subset constraint goes from a subtype relationship to an normal role, the role player must not be a subtype of the role player for that role. This would indicates that the supertype must be a subset of one of its subtypes. Replacement field {0} is the constraint name, {1} is the model name.</comment>
 	</data>
-	<data name="ModelError.Constraint.TooFewRoleSequences.Text" xml:space="preserve">
-		<value>Constraint '{0}' does not have enough role sequences.</value>
-		<comment>Model validation error text when too few role sequences are specified for a constraint. This is a common condition when constraints are being created.</comment>
+	<data name="ModelError.Constraint.TooFewRoleSequences.ExactlyTwo" xml:space="preserve">
+		<value>Constraint '{0}' in model '{1}' requires exactly two constrained role sequences.{2}</value>
+		<comment>Model validation error text when too few role sequences are specified for a constraint that requires exactly two role sequences. {0}=constraint name, {1}=model name, {2}=addendum describing current sequence state for the constraint.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewRoleSequences.TwoOrMore" xml:space="preserve">
+		<value>Constraint '{0}' in model '{1}' requires two or more constrained role sequences.{2}</value>
+		<comment>Model validation error text when too few role sequences are specified for a constraint that requires multiple role sequences. {0}=constraint name, {1}=model name, {2}=addendum describing current sequence state for the constraint.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewRoleSequences.NoSequenceAddendum" xml:space="preserve">
+		<value> No role sequences are currently constrained.</value>
+		<comment>Addendum for too few role sequences messages when no sequences are constrained.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewRoleSequences.OneSequenceAddendum" xml:space="preserve">
+		<value> One role sequence with '{0}' role(s) is currently constrained.</value>
+		<comment>Addendum for too few role sequences messages when one sequence is constrained. {0}=count of roles in the single sequence.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewSequenceRoles.ExactlyTwo" xml:space="preserve">
+		<value>Constraint '{0}' in model '{1}' requires exactly two roles.{2}</value>
+		<comment>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring exactly two roles. {0}=constraint name, {1}=model name, {2}=addendum describing current role count for the constraint.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewSequenceRoles.TwoOrMore" xml:space="preserve">
+		<value>Constraint '{0}' in model '{1}' requires two or more roles.{2}</value>
+		<comment>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring two or more roles. {0}=constraint name, {1}=model name, {2}=addendum describing current role count for the constraint.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum" xml:space="preserve">
+		<value> No roles are currently constrained.</value>
+		<comment>Addendum for too few sequence roles messages when no roles are constrained.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum" xml:space="preserve">
+		<value> A single role is currently constrained.</value>
+		<comment>Addendum for too few sequence roles messages when a single role is constrained.</comment>
 	</data>
 	<data name="ModelError.Constraint.TooManyRoleSequences.Text" xml:space="preserve">
-		<value>Constraint '{0}' has too many role sequences.</value>
-		<comment>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+		<value>Constraint '{0}' in model '{1}' has too many role sequences.</value>
+		<comment>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file. {0}=constraint name, {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.Message" xml:space="preserve">
 		<value>The comparison operator for value comparison constraint '{0}' in model '{1}' is not specified.</value>
 		<comment>The value comparison constraint operator must be specified. {0} is the constraint name and {1} is the model name.</comment>
+	</data>
+	<data name="ModelError.Constraint.ValueComparisonRolesNotComparableError.Message" xml:space="preserve">
+		<value>The roles compared by value comparison constraint '{0}' in model '{1}' must resolve to the same unit or to value types with comparable data types.</value>
+		<comment>The two value comparison constraint roles must be single-valued and comparable. {0} is the constraint name and {1} is the model name.</comment>
 	</data>
 	<data name="ModelError.ConstraintRoleProjection.IncompatibleProjection.Text" xml:space="preserve">
 		<value>{0} has a constrained role with an incompatible join path projection.</value>
@@ -1624,7 +1656,7 @@ The remaining replacements are trimmed for leading/trailing whitespace
 		<value>=</value>
 	</data>
 	<data name="ValueComparisonOperator.NotEqual" xml:space="preserve">
-		<value>&lt;&gt;</value>
+		<value>&#x2260;</value>
 	</data>
 	<data name="ValueComparisonOperator.LessThan" xml:space="preserve">
 		<value>&lt;</value>

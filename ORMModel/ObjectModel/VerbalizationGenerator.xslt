@@ -2816,30 +2816,16 @@
 						<plx:condition>
 							<plx:binaryOperator type="booleanOr">
 								<plx:left>
-									<plx:binaryOperator type="booleanAnd">
-										<plx:left>
-											<plx:binaryOperator type="identityInequality">
-												<plx:left>
-													<plx:nameRef name="errorDisplayFilter"/>
-												</plx:left>
-												<plx:right>
-													<plx:nullKeyword/>
-												</plx:right>
-											</plx:binaryOperator>
-										</plx:left>
-										<plx:right>
-											<plx:unaryOperator type="booleanNot">
-												<plx:callInstance name="ShouldDisplay">
-													<plx:callObject>
-														<plx:nameRef name="errorDisplayFilter"/>
-													</plx:callObject>
-													<plx:passParam>
-														<plx:nameRef name="error"/>
-													</plx:passParam>
-												</plx:callInstance>
-											</plx:unaryOperator>
-										</plx:right>
-									</plx:binaryOperator>
+									<plx:unaryOperator type="booleanNot">
+										<plx:callStatic dataTypeName="ModelError" name="IsDisplayed">
+											<plx:passParam>
+												<plx:nameRef name="error"/>
+											</plx:passParam>
+											<plx:passParam>
+												<plx:nameRef name="errorDisplayFilter"/>
+											</plx:passParam>
+										</plx:callStatic>
+									</plx:unaryOperator>
 								</plx:left>
 								<plx:right>
 									<xsl:copy-of select="$alreadyVerbalized"/>

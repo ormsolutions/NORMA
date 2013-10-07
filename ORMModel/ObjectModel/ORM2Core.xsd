@@ -2668,6 +2668,7 @@
 			<xs:element name="ValueTypeDetachedError" type="ValueTypeDetachedErrorType"/>
 			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedErrorType"/>
 			<xs:element name="ValueComparisonConstraintOperatorNotSpecifiedError" type="ValueComparisonConstraintOperatorNotSpecifiedErrorType"/>
+			<xs:element name="ValueComparisonRolesNotComparableError" type="ValueComparisonRolesNotComparableErrorType"/>
 			<xs:element name="ImplicationError" type="ImplicationErrorType"/>
 			<xs:element name="SubsetConstraintImpliedByMandatoryConstraintsError" type="SubsetConstraintImpliedByMandatoryConstraintsErrorType"/>
 			<xs:element name="EqualityConstraintImpliedByMandatoryConstraintsError" type="EqualityConstraintImpliedByMandatoryConstraintsErrorType"/>
@@ -3140,6 +3141,18 @@
 	<xs:complexType name="ValueComparisonConstraintOperatorNotSpecifiedErrorType">
 		<xs:annotation>
 			<xs:documentation>The operator of a value comparison constraint is not specified.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="ValueComparisonConstraint" type="ValueComparisonConstraintRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="ValueComparisonRolesNotComparableErrorType">
+		<xs:annotation>
+			<xs:documentation>The roles in a value comparison constraint cannot be compared.</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="ModelError">

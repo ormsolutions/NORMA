@@ -205,6 +205,15 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// In this state, a collection implemented through the IMS should not be modified.</param>
 		/// <returns>A new (or modified) collection containing all elements.</returns>
 		ICollection OnDuplicateElementRemoved(ICollection elementCollection, ModelElement element, bool afterTransaction);
+		/// <summary>
+		/// After a rollback has occurred, any collection returned by the other two methods
+		/// that was changed without a snapshot may be in an inconsistent state. This gives the
+		/// duplicate name manager the chance to resynchronize these collections with the current
+		/// state of a backing collection, which will be correct after the rollback if it is
+		/// implemented using the backing store.
+		/// </summary>
+		/// <param name="collection">The collection to update</param>
+		void AfterCollectionRollback(ICollection collection);
 	}
 	#endregion // IDuplicateNameCollectionManager
 	#region DuplicateNameAction enum
@@ -544,7 +553,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 		#region Default duplicate collection manager
 		/// <summary>
 		/// A simple collection implementation using arrays. Does not participate
-		/// with IMS in any way.
+		/// with the state of a <see cref="Store"/> in any way.
 		/// </summary>
 		private sealed class SimpleDuplicateCollectionManager : IDuplicateNameCollectionManager
 		{
@@ -623,6 +632,11 @@ namespace ORMSolutions.ORMArchitect.Framework
 					}
 				}
 				return retVal;
+			}
+			void IDuplicateNameCollectionManager.AfterCollectionRollback(ICollection collection)
+			{
+				// Intentionally empty. The simple duplicate collection manager does not use
+				// state from a Store.
 			}
 		}
 		#endregion // Default duplicate collection manager
@@ -1326,17 +1340,48 @@ namespace ORMSolutions.ORMArchitect.Framework
 			private static void RollBackDictionary(NamedElementDictionary elementDictionary)
 			{
 				Stack<EntryStateChange> stack = elementDictionary.myChangeStack;
-				Dictionary<string, object> dic = elementDictionary.myDictionary;
-				while (stack.Count != 0)
+				if (stack.Count != 0)
 				{
-					EntryStateChange change = stack.Pop();
-					if (change.Value == null)
+					Dictionary<string, object> dic = elementDictionary.myDictionary;
+					// Even if we restore the original objects, the objects themselves
+					// may not be in the original state they were in when they were added
+					// to the dictionary. This happens specifically when a native backing
+					// collection is maintained by a collection that stores multiple elements,
+					// and a collection snapshot is not returned by the duplicate name collection
+					// manager. In this case, we need to give the dictionary a chance to restore
+					// the state on its objects after the dictionary itself is restored.
+					Dictionary<string, object> trackingDictionary = null;
+					while (stack.Count != 0)
 					{
-						dic.Remove(change.Name);
+						EntryStateChange change = stack.Pop();
+						string changeName = change.Name;
+						if (change.Value == null)
+						{
+							dic.Remove(changeName);
+							if (trackingDictionary != null &&
+								trackingDictionary.ContainsKey(changeName))
+							{
+								trackingDictionary.Remove(changeName);
+							}
+						}
+						else
+						{
+							object changeValue = change.Value;
+							dic[changeName] = changeValue;
+							(trackingDictionary ?? (trackingDictionary = new Dictionary<string, object>()))[changeName] = changeValue;
+						}
 					}
-					else
+					if (trackingDictionary != null)
 					{
-						dic[change.Name] = change.Value;
+						IDuplicateNameCollectionManager duplicateNameManager = elementDictionary.myDuplicateManager;
+						foreach (object latestValue in trackingDictionary.Values)
+						{
+							ICollection collection;
+							if (null != (collection = latestValue as ICollection))
+							{
+								duplicateNameManager.AfterCollectionRollback(collection);
+							}
+						}
 					}
 				}
 				elementDictionary.myChangeStack = null;

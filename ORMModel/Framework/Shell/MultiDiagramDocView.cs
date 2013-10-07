@@ -26,6 +26,7 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using System.Drawing.Design;
 
 namespace ORMSolutions.ORMArchitect.Framework.Shell
@@ -86,7 +87,35 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		protected override void OnSelectionChanged(EventArgs e)
 		{
 			base.OnSelectionChanged(e);
-			if (UpdateToolboxDiagram(CurrentDiagram))
+			Diagram diagram = CurrentDiagram;
+			IStickyObjectDiagram stickyDiagram;
+			if (null != (stickyDiagram = diagram as IStickyObjectDiagram))
+			{
+				if (SelectionCount == 1)
+				{
+					ModelElement selectedElement = (ModelElement)SelectedElements[0];
+					ContextElementParts elementParts = ContextElementParts.ResolveContextInstance(selectedElement);
+
+					// Support sticky objects
+					IStickyObject stickyObject;
+					if (null != (stickyObject = elementParts.PresentationElement as IStickyObject))
+					{
+						stickyDiagram.StickyObject = stickyObject;
+					}
+					// The currently selected item is not selection-compatible with the StickyObject.
+					else if (null != (stickyObject = stickyDiagram.StickyObject)
+						&& !stickyObject.StickySelectable(selectedElement))
+					{
+						stickyDiagram.StickyObject = null;
+					}
+				}
+				else
+				{
+					// Sticky objects require a single item to be selected
+					stickyDiagram.StickyObject = null;
+				}
+			}
+			if (UpdateToolboxDiagram(diagram))
 			{
 				RefreshDiagramToolboxItems();
 			}

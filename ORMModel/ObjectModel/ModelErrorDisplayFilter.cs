@@ -227,21 +227,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // Private Helper Methods
 		#region Public accessor methods
 		/// <summary>
-		/// Determines if an error should be displayed or not.
-		/// </summary>
-		/// <param name="error">The model error to check.</param>
-		/// <returns>True if the error should be displayed.</returns>
-		public bool ShouldDisplay(ModelError error)
-		{
-			if (error == null)
-			{
-				throw new ArgumentNullException("error");
-			}
-
-			return !IsErrorExcluded(error.GetType());
-		}
-
-		/// <summary>
 		/// Toggles an error category to include or exclude.
 		/// </summary>
 		/// <param name="category">The error category.</param>

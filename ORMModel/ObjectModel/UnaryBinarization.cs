@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -181,9 +182,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					(ObjectType)partition.ElementFactory.CreateElement(alternateCtor, implicitBooleanProperty) :
 					new ObjectType(partition, implicitBooleanProperty);
 				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+				bool removeDuplicateNamesKey = false;
 				try
 				{
-					contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
+					if (!contextInfo.ContainsKey(duplicateNamesKey))
+					{
+						contextInfo[duplicateNamesKey] = null;
+						removeDuplicateNamesKey = true;
+					}
 					implicitBooleanValueType.Name = implicitBooleanValueTypeName;
 					if (alternateCtor != null)
 					{
@@ -200,7 +207,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				finally
 				{
-					contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+					if (removeDuplicateNamesKey)
+					{
+						contextInfo.Remove(duplicateNamesKey);
+					}
 				}
 				implicitBooleanValueType.DataType = store.ElementDirectory.FindElements<TrueOrFalseLogicalDataType>(false)[0];
 
@@ -340,14 +350,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (implicitBooleanRole.RolePlayer.Name != implicitBooleanValueTypeName)
 						{
 							Dictionary<object, object> contextInfo = factType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+							object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+							bool removeDuplicateNamesKey = false;
 							try
 							{
-								contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
+								if (!contextInfo.ContainsKey(duplicateNamesKey))
+								{
+									contextInfo[duplicateNamesKey] = null;
+									removeDuplicateNamesKey = true;
+								}
 								implicitBooleanRole.RolePlayer.Name = implicitBooleanValueTypeName;
 							}
 							finally
 							{
-								contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+								if (removeDuplicateNamesKey)
+								{
+									contextInfo.Remove(duplicateNamesKey);
+								}
 							}
 						}
 						if (!ValidateConstraints(unaryRole, implicitBooleanRole) || !ValidateImplicitBooleanValueType(implicitBooleanRole.RolePlayer))
@@ -435,6 +454,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						case ConstraintType.SimpleMandatory:
 						case ConstraintType.Subset:
 						case ConstraintType.InternalUniqueness:
+						case ConstraintType.ValueComparison:
 							// The implicit boolean role has a constraint attached to it that it shouldn't
 							return false;
 					}

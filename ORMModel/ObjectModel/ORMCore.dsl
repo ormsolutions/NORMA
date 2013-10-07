@@ -1627,6 +1627,11 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="ErrorState" DefaultValue="Error" DisplayName="ErrorState" IsBrowsable="false" Id="BCF4414E-89A0-4EC0-9B3A-118ABEFADFE2">
+					<Type>
+						<DomainEnumerationMoniker Name="ModelErrorState"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 
@@ -2132,6 +2137,12 @@
 		</DomainClass>
 
 		<DomainClass Name="ValueComparisonConstraintOperatorNotSpecifiedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7D7D1A71-6B49-4EBE-A649-AB25C5863E84" DisplayName="Value Comparison Operator Not Specified" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="ValueComparisonRolesNotComparableError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="0A851DB7-569F-4AD8-990E-416E2E9A0ADB" DisplayName="Value Comparison Roles Not Comparable" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
@@ -4096,6 +4107,26 @@
 				<DomainRole Name="OperatorNotSpecifiedError" PropertyName="ValueComparisonConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="OperatorNotSpecifiedError" Id="4486D925-4B7F-49D1-B2D5-9BDAC4409012">
 					<RolePlayer>
 						<DomainClassMoniker Name="ValueComparisonConstraintOperatorNotSpecifiedError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="ValueComparisonConstraintHasRolesNotComparableError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="AC162B03-18DB-4BDF-A20D-986AC12E3F15">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="ValueComparisonConstraint" PropertyName="RolesNotComparableError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ValueComparisonConstraint" Id="71756360-7B6C-45B6-90C8-819B5CCDA6AF">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueComparisonConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RolesNotComparableError" PropertyName="ValueComparisonConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="RolesNotComparableError" Id="B171C1B7-73A9-49A8-8625-3D2036483F85">
+					<RolePlayer>
+						<DomainClassMoniker Name="ValueComparisonRolesNotComparableError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -7100,6 +7131,12 @@
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ModelErrorState">
+			<Literals>
+				<EnumerationLiteral Name="Error" Value="0" Description="Error is fully enabled."/>
+				<EnumerationLiteral Name="Ignored" Value="1" Description="Error state is tracked, but ignored."/>
+			</Literals>
 		</DomainEnumeration>
 	</Types>
 

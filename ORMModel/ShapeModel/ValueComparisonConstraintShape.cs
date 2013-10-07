@@ -143,6 +143,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				boundsF = RectangleD.ToRectangleF(bounds);
 				bool drawComparator = true;
 				bool drawEquality = false;
+				bool slashEquality = false;
 
 				float penWidth = pen.Width;
 				float openSideX = 0f;
@@ -169,6 +170,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						break;
 					case ValueComparisonOperator.NotEqual:
 						drawComparator = false;
+						drawEquality = true;
+						slashEquality = true;
 						break;
 				}
 
@@ -215,41 +218,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					bottomTip = middle + equalsOffset;
 					g.DrawLine(pen, openSideX, topTip, closedSideX, topTip);
 					g.DrawLine(pen, openSideX, bottomTip, closedSideX, bottomTip);
-				}
-				else
-				{
-					// Draw not equal as a less than and a greater than with a pen width between them.
-					double offsetSin = Math.Sin(Math.PI / noEqualityPiDivisor);
-					topTip = (float)(top + halfHeight * (1d - offsetSin));
-					bottomTip = (float)(top + halfHeight * (1d + offsetSin));
-					RectangleF clipRect = boundsF;
-					clipRect.Offset(-(boundsF.Width + penWidth) / 2, 0f);
-					g.SetClip(clipRect);
-					using (GraphicsPath path = new GraphicsPath())
+					if (slashEquality)
 					{
-						// Draw the left hand less than symbol
-						float symbolWidth = (clipRect.Width + penWidth) / 2;
-						openSideX = clipRect.Right;
-						closedSideX = openSideX - symbolWidth;
-						path.AddLines(new PointF[] {
-							new PointF(openSideX, topTip),
-							new PointF(closedSideX, middle),
-							new PointF(openSideX, bottomTip) });
-						g.DrawPath(pen, path);
-
-						// Draw the right hand less than symbol
-						path.Reset();
+						// Clip tighter so that the top and bottom of the lines
+						// are clipped horizontally and don't touch the edge lines.
 						g.ResetClip();
-						clipRect = boundsF;
-						clipRect.Offset(symbolWidth, 0f);
-						g.SetClip(clipRect);
-						openSideX = clipRect.Left;
-						closedSideX = openSideX + symbolWidth;
-						path.AddLines(new PointF[] {
-							new PointF(openSideX, topTip),
-							new PointF(closedSideX, middle),
-							new PointF(openSideX, bottomTip) });
-						g.DrawPath(pen, path);
+						boundsF.Inflate(0f, -penWidth * 1.25f);
+						g.SetClip(boundsF);
+						g.DrawLine(pen, openSideX + penWidth, boundsF.Bottom, closedSideX - penWidth, boundsF.Top);
 					}
 				}
 				g.ResetClip();
@@ -306,15 +282,79 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		protected new bool ActivateModelError(ModelError error)
 		{
 			ValueComparisonConstraintOperatorNotSpecifiedError operatorError;
+			ValueComparisonRolesNotComparableError comparabilityError;
+			ValueComparisonConstraint constraint;
+			Store store;
 			bool retVal = true;
 			if (null != (operatorError = error as ValueComparisonConstraintOperatorNotSpecifiedError))
 			{
-				Store store = Store;
-				ValueComparisonConstraint constraint = operatorError.ValueComparisonConstraint;
+				store = Store;
+				constraint = operatorError.ValueComparisonConstraint;
 				EditorUtility.ActivatePropertyEditor(
 					(store as IORMToolServices).ServiceProvider,
 					DomainTypeDescriptor.CreatePropertyDescriptor(constraint, ValueComparisonConstraint.OperatorDomainPropertyId),
 					true);
+			}
+			else if (null != (comparabilityError = error as ValueComparisonRolesNotComparableError))
+			{
+				constraint = comparabilityError.ValueComparisonConstraint;
+				LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
+				Role role1;
+				Role role2;
+				ObjectTypePlaysRole rolePlayerLink1;
+				ObjectTypePlaysRole rolePlayerLink2;
+				ObjectType rolePlayer1 = null;
+				ObjectType rolePlayer2 = null;
+				Role[] valueRoles1 = null;
+				Role[] valueRoles2 = null;
+				// The default behavior is to activate the role sequence
+				// for editing. However, if the problem is with a single
+				// resolved value type, and the units are correct, then
+				// we need to select the first directly detached object.
+				if (constraintRoles.Count == 2 &&
+					null != (rolePlayerLink1 = ObjectTypePlaysRole.GetLinkToRolePlayer(role1 = constraintRoles[0])) &&
+					null != (rolePlayerLink2 = ObjectTypePlaysRole.GetLinkToRolePlayer(role2 = constraintRoles[1])) &&
+					(rolePlayerLink1.RolePlayer == rolePlayerLink2.RolePlayer ||
+					(null != (valueRoles1 = role1.GetValueRoles()) &&
+					null != (valueRoles2 = role2.GetValueRoles()) &&
+					DataType.IsComparableValueType(rolePlayer1 = valueRoles1[0].RolePlayer, rolePlayer2 = valueRoles2[0].RolePlayer, !constraint.IsDirectional))))
+				{
+					bool verifiedReferenceMode = true;
+					if (valueRoles1 != null)
+					{
+						ORMModel model = null;
+						ReferenceMode referenceMode1 = (valueRoles1.Length > 1) ?
+							ReferenceMode.FindReferenceModeFromEntityNameAndValueName(rolePlayer1.Name, valueRoles1[1].RolePlayer.Name, model = constraint.ResolvedModel) :
+							null;
+						ReferenceMode referenceMode2 = (valueRoles2.Length > 1) ?
+							ReferenceMode.FindReferenceModeFromEntityNameAndValueName(rolePlayer2.Name, valueRoles2[1].RolePlayer.Name, model ?? constraint.ResolvedModel) :
+							null;
+						bool referenceMode1IsUnit = referenceMode1 != null && referenceMode1.Kind.ReferenceModeType == ReferenceModeType.UnitBased;
+						bool referenceMode2IsUnit = referenceMode2 != null && referenceMode2.Kind.ReferenceModeType == ReferenceModeType.UnitBased;
+						verifiedReferenceMode = referenceMode1IsUnit ? (referenceMode2IsUnit && referenceMode1 == referenceMode2) : !referenceMode2IsUnit;
+					}
+					if (verifiedReferenceMode)
+					{
+						// Find a connected role player
+						foreach (ExternalConstraintLink constraintLink in MultiShapeUtility.GetEffectiveAttachedLinkShapes<ExternalConstraintLink>(this))
+						{
+							FactTypeShape factTypeShape;
+							if (constraintLink.AssociatedConstraintRole.Role == role1 &&
+								null != (factTypeShape = constraintLink.FromShape as FactTypeShape))
+							{
+								foreach (RolePlayerLink rolePlayerLinkShape in MultiShapeUtility.GetEffectiveAttachedLinkShapes<RolePlayerLink>(factTypeShape))
+								{
+									if (rolePlayerLinkShape.AssociatedRolePlayerLink == rolePlayerLink1)
+									{
+										Diagram.ActiveDiagramView.Selection.Set(new DiagramItem(rolePlayerLinkShape.ToShape));
+										return true;
+									}
+								}
+							}
+						}
+					}
+				}
+				ActivateNewRoleSequenceConnectAction(null);
 			}
 			else
 			{

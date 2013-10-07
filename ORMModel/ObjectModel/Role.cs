@@ -519,7 +519,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Retrieve an array of roles starting with a role
 		/// attached to a ValueType and ending with this role.
 		/// If this role cannot have a ValueConstraint attached
-		/// to it, then an empty array will get returned.
+		/// to it, then return <see langword="null"/>.
 		/// </summary>
 		public Role[] GetValueRoles()
 		{
@@ -622,7 +622,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="visitor">A <see cref="ValueRoleVisitor"/> callback delegate.</param>
 		public static void WalkDescendedValueRoles(ObjectType anchorType, Role unattachedRole, UniquenessConstraint unattachedPreferredIdentifier, ValueRoleVisitor visitor)
 		{
-			ValueTypeHasDataType dataTypeLink = anchorType.GetDataTypeLink();
+			ValueTypeHasDataType dataTypeLink;
 			if (null == unattachedPreferredIdentifier &&
 				null != (dataTypeLink = anchorType.GetDataTypeLink()))
 			{

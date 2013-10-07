@@ -176,6 +176,9 @@
 			<arg:DeletingRule methodName="ModelErrorComponentDeletingRule">
 				<arg:RuleOn targetType="ElementAssociatedWithModelError" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			 </arg:DeletingRule>
+			<arg:ChangeRule methodName="ModelErrorStateChangedRule">
+				<arg:RuleOn targetType="ModelError" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ORMShapeDomainModel">
 			<arg:TransactionCommittingRule methodName="ClearCachesOnCommittingRule">

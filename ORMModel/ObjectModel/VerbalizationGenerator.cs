@@ -2579,7 +2579,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -2621,7 +2621,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -2696,7 +2696,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -2776,7 +2776,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -2866,7 +2866,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -2925,7 +2925,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -3000,7 +3000,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -3152,7 +3152,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -3227,7 +3227,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -3313,7 +3313,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -3661,7 +3661,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -3701,7 +3701,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -3776,7 +3776,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -3816,7 +3816,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -3891,7 +3891,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -3931,7 +3931,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -4028,7 +4028,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -4111,7 +4111,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -4164,7 +4164,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -4203,7 +4203,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -4807,7 +4807,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -5601,7 +5601,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -5646,7 +5646,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -5812,7 +5812,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -5887,7 +5887,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -5922,7 +5922,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -7380,7 +7380,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -7415,7 +7415,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -9966,7 +9966,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -10012,7 +10012,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -10052,7 +10052,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -11134,7 +11134,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -11208,7 +11208,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -11254,7 +11254,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -11295,7 +11295,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -11694,7 +11694,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -11768,7 +11768,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -11815,7 +11815,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -12066,7 +12066,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -12140,7 +12140,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -12310,7 +12310,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -12567,7 +12567,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -12602,7 +12602,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -16273,7 +16273,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -16326,7 +16326,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -16365,7 +16365,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -16917,7 +16917,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -16991,7 +16991,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -17044,7 +17044,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -17083,7 +17083,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -17995,7 +17995,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 				{
 					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-					if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 					{
 						continue;
 					}
@@ -18192,7 +18192,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -18290,7 +18290,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}
@@ -18395,7 +18395,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 						{
 							ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-							if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+							if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 							{
 								continue;
 							}
@@ -18471,7 +18471,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
 					{
 						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
-						if (errorDisplayFilter != null && !errorDisplayFilter.ShouldDisplay(error) || verbalizationContext.TestVerbalizedLocally(error))
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
 						{
 							continue;
 						}

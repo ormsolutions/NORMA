@@ -121,13 +121,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			get
 			{
-				ORMDiagram diagram = Diagram as ORMDiagram;
-				ExternalConstraintConnectAction action = diagram.ExternalConstraintConnectAction;
+				ORMDiagram ormDiagram = (ORMDiagram)Diagram;
+				ExternalConstraintConnectAction action = ormDiagram.ExternalConstraintConnectAction;
 				IConstraint testConstraint = action.ActiveConstraint;
 				IList<Role> selectedRoles = null;
 				if (testConstraint == null)
 				{
-					IStickyObject sticky = diagram.StickyObject;
+					IStickyObject sticky = ormDiagram.StickyObject;
 					if (sticky != null)
 					{
 						ExternalConstraintShape shape = sticky as ExternalConstraintShape;

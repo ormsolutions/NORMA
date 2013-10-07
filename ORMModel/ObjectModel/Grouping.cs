@@ -1320,6 +1320,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					return elementCollection;
 				}
+				void IDuplicateNameCollectionManager.AfterCollectionRollback(ICollection collection)
+				{
+					TrackingList trackingList;
+					if (null != (trackingList = collection as TrackingList))
+					{
+						trackingList.Clear();
+						foreach (ElementGrouping grouping in trackingList.NativeCollection)
+						{
+							trackingList.Add(grouping);
+						}
+					}
+				}
 				#endregion // IDuplicateNameCollectionManager Implementation
 			}
 			#region Constructors

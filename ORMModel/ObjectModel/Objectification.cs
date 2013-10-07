@@ -1398,9 +1398,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (notifyAdded == null)
 			{
 				Dictionary<object, object> contextInfo = factType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+				bool removeDuplicateNamesKey = false;
 				try
 				{
-					contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
+					if (!contextInfo.ContainsKey(duplicateNamesKey))
+					{
+						contextInfo[duplicateNamesKey] = null;
+						removeDuplicateNamesKey = true;
+					}
 					if (null != alternateObjectTypeOwner)
 					{
 						((IHasAlternateOwner<ObjectType>)objectifyingType).AlternateOwner = alternateObjectTypeOwner;
@@ -1412,7 +1418,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				finally
 				{
-					contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+					if (removeDuplicateNamesKey)
+					{
+						contextInfo.Remove(duplicateNamesKey);
+					}
 				}
 				if (preferredConstraint != null)
 				{
@@ -1831,9 +1840,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					explicitObjectification.IsImplied = true;
 
 					Dictionary<object, object> contextInfo = explicitObjectification.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+					object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+					bool removeDuplicateNamesKey = false;
 					try
 					{
-						contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
+						if (!contextInfo.ContainsKey(duplicateNamesKey))
+						{
+							contextInfo[duplicateNamesKey] = null;
+							removeDuplicateNamesKey = true;
+						}
 						if (alternateObjectTypeOwner != null)
 						{
 							((IHasAlternateOwner<ObjectType>)newObjectifyingType).AlternateOwner = alternateObjectTypeOwner;
@@ -1845,7 +1860,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					finally
 					{
-						contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+						if (removeDuplicateNamesKey)
+						{
+							contextInfo.Remove(duplicateNamesKey);
+						}
 					}
 				}
 				else

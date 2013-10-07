@@ -392,14 +392,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case RoleSequenceStyles.TwoRoleSequences:
 					retVal = 2;
 					break;
-#if DEBUG
-				case RoleSequenceStyles.OneOrMoreRoleSequences:
-				case RoleSequenceStyles.OneRoleSequence:
-					break;
-				default:
-					Debug.Fail("Shouldn't be here");
-					break;
-#endif // DEBUG
 			}
 			return retVal;
 		}
@@ -423,13 +415,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				case RoleSequenceStyles.TwoRoleSequences:
 					retVal = 2;
 					break;
-#if DEBUG
-				case RoleSequenceStyles.OneRoleSequence:
-					break;
-				default:
-					Debug.Fail("Shouldn't be here");
-					break;
-#endif // DEBUG
 			}
 			return retVal;
 		}
@@ -2273,11 +2258,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region Error synchronization rules
 		#region VerifyRoleSequenceCountForRule
 		/// <summary>
-		/// Validator callback for CompatibleRolePlayerTypeError
+		/// Validator callback for all role sequence count errors
 		/// </summary>
 		private static void DelayValidateRoleSequenceCountErrors(ModelElement element)
 		{
 			(element as SetComparisonConstraint).VerifyRoleSequenceCountForRule(null);
+		}
+		/// <summary>
+		/// Update error text as needed.
+		/// </summary>
+		[DelayValidatePriority(1)] // Run after other validation
+		private static void DelayValidateErrorText(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				((ModelError)element).GenerateErrorText();
+			}
 		}
 		/// <summary>
 		/// Add, remove, and otherwise validate the current set of
@@ -2301,7 +2297,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (currentCount < minCount)
 				{
 					tooFewOrTooMany = true;
-					if (null == this.TooFewRoleSequencesError)
+					if (null == (insufficientError = this.TooFewRoleSequencesError))
 					{
 						insufficientError = new TooFewRoleSequencesError(Partition);
 						insufficientError.SetComparisonConstraint = this;
@@ -2311,6 +2307,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							notifyAdded.ElementAdded(insufficientError, true);
 						}
+					}
+					else
+					{
+						// Make sure the error text is updated.
+						insufficientError.GenerateErrorText();
 					}
 					removeTooMany = true;
 				}
@@ -2802,6 +2803,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateArityMismatchError);
 					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
+					TooFewRoleSequencesError sequenceCountError;
+					if (null != (sequenceCountError = constraint.TooFewRoleSequencesError))
+					{
+						// This change won't add or remove this error, but it will change the text of an existing message.
+						FrameworkDomainModel.DelayValidateElement(sequenceCountError, DelayValidateErrorText);
+					}
 				}
 			}
 		}
@@ -2815,11 +2822,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SetComparisonConstraintRoleSequence sequence = link.ConstraintRoleSequence as SetComparisonConstraintRoleSequence;
 			if (sequence != null)
 			{
-				SetComparisonConstraint externalConstraint = sequence.ExternalConstraint;
-				if (externalConstraint != null && !externalConstraint.IsDeleted)
+				SetComparisonConstraint constraint = sequence.ExternalConstraint;
+				if (constraint != null && !constraint.IsDeleted)
 				{
-					FrameworkDomainModel.DelayValidateElement(externalConstraint, DelayValidateArityMismatchError);
-					FrameworkDomainModel.DelayValidateElement(externalConstraint, DelayValidateCompatibleRolePlayerTypeError);
+					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateArityMismatchError);
+					FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateCompatibleRolePlayerTypeError);
+					TooFewRoleSequencesError sequenceCountError;
+					if (null != (sequenceCountError = constraint.TooFewRoleSequencesError))
+					{
+						// This change won't add or remove this error, but it will change the text of an existing message.
+						FrameworkDomainModel.DelayValidateElement(sequenceCountError, DelayValidateErrorText);
+					}
 				}
 			}
 		}
@@ -9848,7 +9861,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			foreach (ModelErrorUsage baseError in base.GetErrorCollection(filter))
 			{
-				yield return baseError;
+				// We don't have verbalization patterns without a join path. Elevate
+				// the join path error to block verbalization.
+				ModelErrorUses uses;
+				ModelError error;
+				if ((error = baseError.Error) is JoinPathRequiredError &&
+					0 == ((uses = baseError.UseFor) & ModelErrorUses.BlockVerbalization))
+				{
+					yield return new ModelErrorUsage(error, (uses & ~ModelErrorUses.Verbalize) | ModelErrorUses.BlockVerbalization);
+				}
+				else
+				{
+					yield return baseError;
+				}
 			}
 			if (0 != (filter & (ModelErrorUses.BlockVerbalization | ModelErrorUses.DisplayPrimary)))
 			{
@@ -9856,6 +9881,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (notSpecified != null)
 				{
 					yield return new ModelErrorUsage(notSpecified, ModelErrorUses.BlockVerbalization);
+				}
+			}
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
+			{
+				ValueComparisonRolesNotComparableError notComparable = this.RolesNotComparableError;
+				if (notComparable != null)
+				{
+					yield return new ModelErrorUsage(notComparable, ModelErrorUses.Verbalize);
 				}
 			}
 		}
@@ -9870,7 +9903,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			base.ValidateErrors(notifyAdded);
-			VerifyOperatorNotSpecifiedRule(notifyAdded);
+			ValidateOperatorNotSpecifiedError(notifyAdded);
+			ValidateRoleComparability(notifyAdded);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -9883,6 +9917,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			base.DelayValidateErrors();
 			FrameworkDomainModel.DelayValidateElement(this, DelayValidateOperatorNotSpecifiedError);
+			FrameworkDomainModel.DelayValidateElement(this, DelayValidateRoleComparability);
 		}
 		void IModelErrorOwner.DelayValidateErrors()
 		{
@@ -9895,7 +9930,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void DelayValidateOperatorNotSpecifiedError(ModelElement element)
 		{
-			((ValueComparisonConstraint)element).VerifyOperatorNotSpecifiedRule(null);
+			if (!element.IsDeleted)
+			{
+				((ValueComparisonConstraint)element).ValidateOperatorNotSpecifiedError(null);
+			}
 		}
 		/// <summary>
 		/// Add, remove, and otherwise validate ValueComparisonConstraintOperatorNotSpecifiedError error
@@ -9903,13 +9941,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="notifyAdded">If not null, this is being called during
 		/// load when rules are not in place. Any elements that are added
 		/// must be notified back to the caller.</param>
-		private void VerifyOperatorNotSpecifiedRule(INotifyElementAdded notifyAdded)
+		private void ValidateOperatorNotSpecifiedError(INotifyElementAdded notifyAdded)
 		{
-			if (this.IsDeleted)
-			{
-				return;
-			}
-
 			ValueComparisonConstraintOperatorNotSpecifiedError notSpecified = this.OperatorNotSpecifiedError;
 			// Error appears if the operator is not definded
 			if (this.Operator == ValueComparisonOperator.Undefined)
@@ -9932,18 +9965,174 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // ValueComparisonConstraintOperatorNotSpecifiedError Rule
-		#region ValueComparisonConstraintOperatorChangeRule
+		#region Data type validation
+		/// <summary>
+		/// Validate that a constrained role is valid with the data types.
+		/// </summary>
+		/// <remarks>This internal so that it can be called from the ValueConstraint
+		/// validation code.</remarks>
+		/// <param name="role">Value role</param>
+		internal static void DelayValidateAttachedConstraint(Role role)
+		{
+			foreach (ConstraintRoleSequence constraintSequence in ConstraintRoleSequenceHasRole.GetConstraintRoleSequenceCollection(role))
+			{
+				if (constraintSequence is ValueComparisonConstraint &&
+					!constraintSequence.IsDeleted &&
+					!constraintSequence.IsDeleting)
+				{
+					FrameworkDomainModel.DelayValidateElement(constraintSequence, DelayValidateRoleComparability);
+				}
+			}
+		}
+		/// <summary>
+		/// Delay validation to verify that constraint roles are properly attached to
+		/// single-valued roles and have comparable data types.
+		/// </summary>
+		private static void DelayValidateRoleComparability(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				((ValueComparisonConstraint)element).ValidateRoleComparability(null);
+			}
+		}
+		private void ValidateRoleComparability(INotifyElementAdded notifyAdded)
+		{
+			bool hasComparabilityError = false;
+			ValueComparisonRolesNotComparableError notComparable = RolesNotComparableError;
+			ValueComparisonOperator comparisonOperator;
+			LinkedElementCollection<Role> roles;
+			ORMModel model = null;
+			// Only check this error if the operator is specified and
+			// if there are the right number of roles. The operator
+			// can change the
+			if (ValueComparisonOperator.Undefined != (comparisonOperator = Operator) &&
+				(roles = RoleCollection).Count == 2) // Don't run this if there aren't the right number of roles
+			{
+				hasComparabilityError = true;
+				Role[] valueRoles1;
+				Role[] valueRoles2;
+				if (null != (valueRoles1 = roles[0].GetValueRoles()) &&
+					null != (valueRoles2 = roles[1].GetValueRoles()))
+				{
+					ObjectType valueType1 = valueRoles1[0].RolePlayer;
+					ObjectType valueType2 = valueRoles2[0].RolePlayer;
+					int valueRoleCount;
+					bool equalityOnly;
+					ReferenceMode referenceMode;
+					if (valueType1 == valueType2 ||
+						(!(2 <= (valueRoleCount = valueRoles1.Length) &&
+						null != (referenceMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueType1.Name, valueRoles1[1].RolePlayer.Name, model ?? (model = ResolvedModel))) &&
+						referenceMode.Kind.ReferenceModeType == ReferenceModeType.UnitBased) &&
+						!((2 <= (valueRoleCount = valueRoles2.Length) &&
+						null != (referenceMode = ReferenceMode.FindReferenceModeFromEntityNameAndValueName(valueType2.Name, valueRoles2[1].RolePlayer.Name, model ?? (model = ResolvedModel))) &&
+						referenceMode.Kind.ReferenceModeType == ReferenceModeType.UnitBased))))
+					{
+						// If one or both role players resolve to a unit-based reference
+						// mode and do not have the same value type, then we have a unit
+						// mismatch and do not bother with checking the data types.
+						// UNDONE: UNIT This needs to consider quantity kind, not just unit.
+						switch (comparisonOperator)
+						{
+							case ValueComparisonOperator.Equal:
+							case ValueComparisonOperator.NotEqual:
+								equalityOnly = true;
+								break;
+							default:
+								equalityOnly = false;
+								break;
+						}
+
+						// Note that we compare a value type to itself because there are
+						// some data types that do not support comparison at all, so matching
+						// the data type is not sufficient for comparability.
+						hasComparabilityError = !DataType.IsComparableValueType(valueType1, valueType2, equalityOnly);
+					}
+				}
+			}
+			if (hasComparabilityError)
+			{
+				if (notComparable == null)
+				{
+					notComparable = new ValueComparisonRolesNotComparableError(Partition);
+					notComparable.ValueComparisonConstraint = this;
+					notComparable.Model = model ?? ResolvedModel;
+					notComparable.GenerateErrorText();
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(notComparable);
+					}
+				}
+			}
+			else if (notComparable != null)
+			{
+				notComparable.Delete();
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void ComparedRoleAddedRule(ElementAddedEventArgs e)
+		{
+			ValueComparisonConstraint constraint;
+			if (null != (constraint = ((ConstraintRoleSequenceHasRole)e.ModelElement).ConstraintRoleSequence as ValueComparisonConstraint))
+			{
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateRoleComparability);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ConstraintRoleSequenceHasRole)
+		/// </summary>
+		private static void ComparedRoleDeletedRule(ElementDeletedEventArgs e)
+		{
+			ValueComparisonConstraint constraint;
+			ConstraintRoleSequence sequence;
+			if (!(sequence = ((ConstraintRoleSequenceHasRole)e.ModelElement).ConstraintRoleSequence).IsDeleted &&
+				null != (constraint = sequence as ValueComparisonConstraint))
+			{
+				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidateRoleComparability);
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(ObjectType), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
+		/// Changing a value type name can change the unit associated with a value constraint,
+		/// which is used to assure value comparison validity.
+		/// </summary>
+		private static void ObjectTypeNameChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			// UNDONE: UNITS This will no longer be needed when units and quantity kinds
+			// are formally attached to value types.
+			ModelElement element = e.ModelElement;
+			ObjectType valueType;
+			if (!element.IsDeleted &&
+				(valueType = (ObjectType)element).IsValueType)
+			{
+				Role.WalkDescendedValueRoles(valueType, null, null, delegate(Role role, PathedRole pathedRole, RolePathObjectTypeRoot pathRoot, ValueTypeHasDataType dataTypeLink, ValueConstraint currentValueConstraint, ValueConstraint previousValueConstraint)
+				{
+					if (pathedRole == null && pathRoot == null)
+					{
+						DelayValidateAttachedConstraint(role);
+					}
+					return true;
+				});
+			}
+		}
+		#endregion // Data type validation
+		#region ComparisonOperatorChangedRule
 		/// <summary>
 		/// ChangeRule: typeof(ValueComparisonConstraint)
 		/// </summary>
-		private static void ValueComparisonConstraintOperatorChangeRule(ElementPropertyChangedEventArgs e)
+		private static void ComparisonOperatorChangedRule(ElementPropertyChangedEventArgs e)
 		{
 			if (e.DomainProperty.Id == ValueComparisonConstraint.OperatorDomainPropertyId)
 			{
-				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateOperatorNotSpecifiedError);
+				ModelElement element = e.ModelElement;
+				FrameworkDomainModel.DelayValidateElement(element, DelayValidateOperatorNotSpecifiedError);
+				// Role comparability changes based on the operator kind and is not validated for
+				// an undefined operator.
+				FrameworkDomainModel.DelayValidateElement(element, DelayValidateRoleComparability);
 			}
 		}
-		#endregion // ValueComparisonConstraintOperatorChangeRule
+		#endregion // ComparisonOperatorChangedRule
 	}
 	#endregion // ValueComparisonConstraint class
 	#region PreferredIdentifierFor implementation
@@ -9973,14 +10162,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ORMNamedElement parent = SetComparisonConstraint;
-			if (parent == null)
-			{
-				parent = SetConstraint;
-				Debug.Assert(parent != null);
-			}
-			string parentName = (parent != null) ? parent.Name : string.Empty;
-			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText, parentName);
+			ORMNamedElement parent = (ORMNamedElement)SetComparisonConstraint ?? SetConstraint;
+			ORMModel model = Model;
+			ErrorText = string.Format(
+				CultureInfo.InvariantCulture,
+				ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText,
+				(parent != null) ? parent.Name : "",
+				(model != null) ? model.Name : "");
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -10001,18 +10189,54 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	{
 		#region Base overrides
 		/// <summary>
-		/// Generate text for the error
+		/// Generate text for the error.
 		/// </summary>
+		/// <remarks>We make this message very specific to the underlying
+		/// constraint pattern to help novice users who can easily put in
+		/// incorrect constraint patterns.</remarks>
 		public override void GenerateErrorText()
 		{
-			ORMNamedElement parent = SetComparisonConstraint;
-			if (parent == null)
+			string parentName = "";
+			ORMModel model = Model;
+			string modelName = (model != null) ? model.Name : "";
+			SetConstraint setConstraint;
+			SetComparisonConstraint setComparisonConstraint;
+			string formatString = "";
+			string addendum = "";
+			if (null != (setConstraint = SetConstraint))
 			{
-				parent = SetConstraint;
-				Debug.Assert(parent != null);
+				parentName = setConstraint.Name;
+				formatString = (0 != (((IConstraint)setConstraint).RoleSequenceStyles & RoleSequenceStyles.TwoRoleSequences)) ?
+					ResourceStrings.ModelErrorConstraintHasTooFewSequenceRolesExactlyTwo :
+					ResourceStrings.ModelErrorConstraintHasTooFewSequenceRolesTwoOrMore;
+				switch (setConstraint.RoleCollection.Count)
+				{
+					case 0:
+						addendum = ResourceStrings.ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendum;
+						break;
+					case 1:
+						addendum = ResourceStrings.ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendum;
+						break;
+				}
 			}
-			string parentName = (parent != null) ? parent.Name : "";
-			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesText, parentName);
+			else if (null != (setComparisonConstraint = SetComparisonConstraint))
+			{
+				parentName = setComparisonConstraint.Name;
+				formatString = (0 != (((IConstraint)setComparisonConstraint).RoleSequenceStyles & RoleSequenceStyles.TwoRoleSequences)) ?
+					ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesExactlyTwo :
+					ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesTwoOrMore;
+				LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences;
+				switch ((sequences = setComparisonConstraint.RoleSequenceCollection).Count)
+				{
+					case 0:
+						addendum = ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesNoSequenceAddendum;
+						break;
+					case 1:
+						addendum = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesOneSequenceAddendum, sequences[0].RoleCollection.Count);
+						break;
+				}
+			}
+			ErrorText = string.Format(CultureInfo.InvariantCulture, formatString, parentName, modelName, addendum);
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -10021,7 +10245,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return RegenerateErrorTextEvents.OwnerNameChange;
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
 			}
 		}
 		#endregion // Base overrides
@@ -10038,8 +10262,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			SetComparisonConstraint parent = this.Constraint;
-			string parentName = (parent != null) ? parent.Name : "";
-			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintExternalConstraintArityMismatch, parentName);
+			ORMModel model = this.Model;
+			ErrorText = string.Format(
+				CultureInfo.InvariantCulture,
+				ResourceStrings.ModelErrorConstraintExternalConstraintArityMismatch,
+				(parent != null) ? parent.Name : "",
+				(model != null) ? model.Name : "");
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -10324,8 +10552,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			ValueComparisonConstraint parent = this.ValueComparisonConstraint;
+			ORMModel model = this.Model;
 			string parentName = (parent != null) ? parent.Name : "";
-			string modelName = this.Model.Name;
+			string modelName = (model != null) ? model.Name : "";
 			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorValueComparisonConstraintOperatorNotSpecified, parentName, modelName);
 		}
 		/// <summary>
@@ -10341,6 +10570,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion //Base overrides
 	}
 	#endregion // ValueComparisonConstraintOperatorNotSpecifiedError class
+	#region ValueComparisonRolesNotComparableError class
+	[ModelErrorDisplayFilter(typeof(DataTypeAndValueErrorCategory))]
+	public partial class ValueComparisonRolesNotComparableError
+	{
+		#region Base overrides
+		/// <summary>
+		/// Get Text to display for the ValueComparisonRolesNotComparableError error
+		/// </summary>
+		public override void GenerateErrorText()
+		{
+			ValueComparisonConstraint parent = this.ValueComparisonConstraint;
+			ORMModel model = this.Model;
+			string parentName = (parent != null) ? parent.Name : "";
+			string modelName = (model != null) ? model.Name : "";
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorValueComparisonRolesNotComparable, parentName, modelName);
+		}
+		/// <summary>
+		/// Regenerate the error text when the constraint name changes
+		/// </summary>
+		public override RegenerateErrorTextEvents RegenerateEvents
+		{
+			get
+			{
+				return RegenerateErrorTextEvents.OwnerNameChange | RegenerateErrorTextEvents.ModelNameChange;
+			}
+		}
+		#endregion //Base overrides
+	}
+	#endregion // ValueComparisonRolesNotComparableError class
 	#region RingConstraintTypeNotSpecifiedError class
 	[ModelErrorDisplayFilter(typeof(ConstraintStructureErrorCategory))]
 	public partial class RingConstraintTypeNotSpecifiedError
@@ -10662,30 +10920,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		OneRolePerSequence = 0x10,
 		/// <summary>
-		/// Each role sequence contains exactly two roles
-		/// </summary>
-		TwoRolesPerSequence = 0x20,
-		/// <summary>
 		/// Each role sequence can contain >=1 roles
 		/// </summary>
-		MultipleRolesPerSequence = 0x40,
+		MultipleRolesPerSequence = 0x20,
 		/// <summary>
 		/// The role sequence must contain n or n-1 roles. Applicable
 		/// to OneRoleSequence constraints only
 		/// </summary>
-		AtLeastCountMinusOneRolesPerSequence = 0x80,
+		AtLeastCountMinusOneRolesPerSequence = 0x50,
 		/// <summary>
 		/// A mask to extract the row multiplicity values
 		/// </summary>
-		RoleMultiplicityMask = OneRolePerSequence | TwoRolesPerSequence | MultipleRolesPerSequence | AtLeastCountMinusOneRolesPerSequence,
+		RoleMultiplicityMask = OneRolePerSequence | MultipleRolesPerSequence | AtLeastCountMinusOneRolesPerSequence,
 		/// <summary>
 		/// The order of the role sequences is significant
 		/// </summary>
-		OrderedRoleSequences = 0x100,
+		OrderedRoleSequences = 0x80,
 		/// <summary>
 		/// Each of the columns must be type compatible
 		/// </summary>
-		CompatibleColumns = 0x200,
+		CompatibleColumns = 0x100,
+		/// <summary>
+		/// The individual roles in this constraint are significant. Create
+		/// one connector per role instead of per fact type.
+		/// </summary>
+		ConnectIndividualRoles = 0x200,
 	}
 	#endregion // RoleSequenceStyles enum
 	#region ConstraintType enum
@@ -10897,7 +11156,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.OneRolePerSequence;
+				// Note that we could set RoleSequenceStyles.OrderedRoleSequences here as well as the
+				// order is significant. However, the only place this is relevant now is when tracking
+				// element equivalence. The SetConstraint code does not track this now because nothing
+				// uses it. Even if it did, we want to value comparison constraints over the same roles
+				// to track as equivalent objects so dragging a modified constraint over an existing one
+				// replaces the existing constraint. This may change in the future if we want to use a
+				// stronger equivalence notion for version tracking.
+				return RoleSequenceStyles.TwoRoleSequences | RoleSequenceStyles.OneRolePerSequence | RoleSequenceStyles.ConnectIndividualRoles;
 			}
 		}
 		RoleSequenceStyles IConstraint.RoleSequenceStyles

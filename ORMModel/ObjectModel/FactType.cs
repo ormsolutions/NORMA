@@ -1441,108 +1441,156 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Deserialization Fixup
+		/// <summary>
+		/// Schedule delayed validation for a name part change.
+		/// </summary>
+		private void DelayValidateNamePartChanged()
+		{
+			FrameworkDomainModel.DelayValidateElement(
+				this,
+				Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMModel.AllowDuplicateNamesKey) ?
+					(ElementValidation)DelayValidateFactTypeNamePartChangedAllowDuplicateNames :
+					DelayValidateFactTypeNamePartChanged);
+		}
+		[DelayValidateReplaces("DelayValidateFactTypeNamePartChanged")]
+		private static void DelayValidateFactTypeNamePartChangedAllowDuplicateNames(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				Dictionary<object, object> contextInfo = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+				bool removeDuplicateNamesKey = false;
+				try
+				{
+					if (!contextInfo.ContainsKey(duplicateNamesKey))
+					{
+						contextInfo[duplicateNamesKey] = null;
+						removeDuplicateNamesKey = true;
+					}
+					((FactType)element).ValidateFactTypeNamePartChanged();
+				}
+				finally
+				{
+					if (removeDuplicateNamesKey)
+					{
+						contextInfo.Remove(duplicateNamesKey);
+					}
+				}
+			}
+		}
 		private static void DelayValidateFactTypeNamePartChanged(ModelElement element)
 		{
-			FactType factType = element as FactType;
-			if (!factType.IsDeleted)
+			if (!element.IsDeleted)
 			{
-				Store store = element.Store;
-				string oldGeneratedName = factType.myGeneratedName;
-				bool haveNewName = false;
-				string newGeneratedName = null;
-				bool renameValidationErrors = true;
+				((FactType)element).ValidateFactTypeNamePartChanged();
+			}
+		}
+		private void ValidateFactTypeNamePartChanged()
+		{
+			string oldGeneratedName = myGeneratedName;
+			bool haveNewName = false;
+			string newGeneratedName = null;
+			bool renameValidationErrors = true;
 
-				// See if the objectifying type or derivation rule
-				// uses the old automatic name. If it does, then
-				// update the automatic name to the the new name.
-				ObjectType objectifyingType;
-				FactTypeDerivationRule derivationRule = null;
-				if (null != (objectifyingType = factType.NestingType) ||
-					(null != (derivationRule = factType.DerivationRule as FactTypeDerivationRule) &&
-					derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
-					!derivationRule.ExternalDerivation))
+			// See if the objectifying type or derivation rule
+			// uses the old automatic name. If it does, then
+			// update the automatic name to the the new name.
+			ObjectType objectifyingType;
+			FactTypeDerivationRule derivationRule = null;
+			if (null != (objectifyingType = NestingType) ||
+				(null != (derivationRule = DerivationRule as FactTypeDerivationRule) &&
+				derivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+				!derivationRule.ExternalDerivation))
+			{
+				newGeneratedName = GenerateName();
+				haveNewName = true;
+				if (newGeneratedName != oldGeneratedName)
 				{
-					newGeneratedName = factType.GenerateName();
-					haveNewName = true;
-					if (newGeneratedName != oldGeneratedName)
+					string storedName = objectifyingType != null ? objectifyingType.Name : derivationRule.Name;
+					if (storedName == oldGeneratedName)
 					{
-						string storedName = objectifyingType != null ? objectifyingType.Name : derivationRule.Name;
-						if (storedName == oldGeneratedName)
+						Dictionary<object, object> contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+						object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+						bool removeDuplicateNamesKey = false;
+						try
 						{
-							Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-							try
+							// Force a change in the transaction log so that we can
+							// update the generated name as needed
+							GeneratedNamePropertyHandler.SetGeneratedName(this, oldGeneratedName, newGeneratedName);
+							if (!contextInfo.ContainsKey(duplicateNamesKey))
 							{
-								// Force a change in the transaction log so that we can
-								// update the generated name as needed
-								GeneratedNamePropertyHandler.SetGeneratedName(factType, oldGeneratedName, newGeneratedName);
-								contextInfo[ORMModel.AllowDuplicateNamesKey] = null;
-								if (objectifyingType != null)
-								{
-									objectifyingType.Name = newGeneratedName;
-								}
-								else
-								{
-									derivationRule.Name = newGeneratedName;
-								}
+								contextInfo[duplicateNamesKey] = null;
+								removeDuplicateNamesKey = true;
 							}
-							finally
+							if (objectifyingType != null)
 							{
-								contextInfo.Remove(ORMModel.AllowDuplicateNamesKey);
+								objectifyingType.Name = newGeneratedName;
+							}
+							else
+							{
+								derivationRule.Name = newGeneratedName;
 							}
 						}
-						else
+						finally
 						{
-							// Rule updates for this case are handled in ValidateFactTypeNameForObjectTypeNameChangeRule
-							// and DerivationRuleChangedRule
-							haveNewName = false;
-							newGeneratedName = null;
-							renameValidationErrors = false;
+							if (removeDuplicateNamesKey)
+							{
+								contextInfo.Remove(duplicateNamesKey);
+							}
 						}
 					}
 					else
 					{
+						// Rule updates for this case are handled in ValidateFactTypeNameForObjectTypeNameChangeRule
+						// and DerivationRuleChangedRule
+						haveNewName = false;
 						newGeneratedName = null;
+						renameValidationErrors = false;
 					}
 				}
-
-				if (renameValidationErrors && (!haveNewName || newGeneratedName != null))
+				else
 				{
-					// Now move on to any model errors
-					foreach (ModelError error in (factType as IModelErrorOwner).GetErrorCollection(ModelErrorUses.None))
-					{
-						if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
-						{
-							if (newGeneratedName == null)
-							{
-								newGeneratedName = factType.GenerateName();
-								haveNewName = true;
-								if (newGeneratedName == oldGeneratedName)
-								{
-									newGeneratedName = null;
-									break; // Look no further, name did not change
-								}
-								else
-								{
-									// Force a change in the transaction log so that we can
-									// undo the generated name as needed
-									GeneratedNamePropertyHandler.SetGeneratedName(factType, oldGeneratedName, newGeneratedName);
-								}
-							}
-							error.GenerateErrorText();
-						}
-					}
+					newGeneratedName = null;
 				}
-				if (newGeneratedName == null && !haveNewName)
-				{
-					// Name did not change, but no one cared, add a simple entry to the transaction log
-					// Note that we add an entry changing a blank to a blank. If we do not do this, then
-					// there is no transaction record, and a name that is generated on demand outside
-					// the transaction is not cleared on undo, so it does not get regenerated with
-					// the original name.
-					GeneratedNamePropertyHandler.ClearGeneratedName(factType, !string.IsNullOrEmpty(oldGeneratedName) ? "" : oldGeneratedName);
-				}
-				factType.OnFactTypeNameChanged();
 			}
+
+			if (renameValidationErrors && (!haveNewName || newGeneratedName != null))
+			{
+				// Now move on to any model errors
+				foreach (ModelError error in GetErrorCollection(ModelErrorUses.None))
+				{
+					if (0 != (error.RegenerateEvents & RegenerateErrorTextEvents.OwnerNameChange))
+					{
+						if (newGeneratedName == null)
+						{
+							newGeneratedName = GenerateName();
+							haveNewName = true;
+							if (newGeneratedName == oldGeneratedName)
+							{
+								newGeneratedName = null;
+								break; // Look no further, name did not change
+							}
+							else
+							{
+								// Force a change in the transaction log so that we can
+								// undo the generated name as needed
+								GeneratedNamePropertyHandler.SetGeneratedName(this, oldGeneratedName, newGeneratedName);
+							}
+						}
+						error.GenerateErrorText();
+					}
+				}
+			}
+			if (newGeneratedName == null && !haveNewName)
+			{
+				// Name did not change, but no one cared, add a simple entry to the transaction log
+				// Note that we add an entry changing a blank to a blank. If we do not do this, then
+				// there is no transaction record, and a name that is generated on demand outside
+				// the transaction is not cleared on undo, so it does not get regenerated with
+				// the original name.
+				GeneratedNamePropertyHandler.ClearGeneratedName(this, !string.IsNullOrEmpty(oldGeneratedName) ? "" : oldGeneratedName);
+			}
+			OnFactTypeNameChanged();
 		}
 		partial class GeneratedNamePropertyHandler
 		{
@@ -1872,7 +1920,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactType factType = (e.ModelElement as FactTypeHasRole).FactType;
 			FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-			FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+			factType.DelayValidateNamePartChanged();
 		}
 		/// <summary>
 		/// DeleteRule: typeof(FactTypeHasRole)
@@ -1885,7 +1933,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!factType.IsDeleted)
 			{
 				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresInternalUniquenessConstraintError);
-				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+				factType.DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -1995,7 +2043,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FactType factType = (e.ModelElement as FactTypeHasReadingOrder).FactType;
 			FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-			FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+			factType.DelayValidateNamePartChanged();
 		}
 		/// <summary>
 		/// DeleteRule: typeof(FactTypeHasReadingOrder)
@@ -2007,7 +2055,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!factType.IsDeleted)
 			{
 				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+				factType.DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2020,7 +2068,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (factType != null)
 			{
 				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+				factType.DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2036,7 +2084,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				!factType.IsDeleted)
 			{
 				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeRequiresReadingError);
-				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+				factType.DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2056,7 +2104,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null != (factType = order.FactType) &&
 					!factType.IsDeleted)
 				{
-					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					factType.DelayValidateNamePartChanged();
 				}
 			}
 		}
@@ -2070,7 +2118,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				FactType factType = (FactType)e.SourceElement;
 				if (!factType.IsDeleted)
 				{
-					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					factType.DelayValidateNamePartChanged();
 				}
 			}
 		}
@@ -2087,7 +2135,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null != (factType = order.FactType) &&
 					!factType.IsDeleted)
 				{
-					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					factType.DelayValidateNamePartChanged();
 				}
 			}
 		}
@@ -2110,13 +2158,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FactType factType = playedRole.FactType;
 			if (factType != null)
 			{
-				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+				factType.DelayValidateNamePartChanged();
 			}
 			RoleProxy proxy;
 			if (null != (proxy = playedRole.Proxy) &&
 				null != (factType = proxy.FactType))
 			{
-				FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+				factType.DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2140,13 +2188,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (null != (factType = playedRole.FactType))
 				{
-					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					factType.DelayValidateNamePartChanged();
 				}
 				RoleProxy proxy;
 				if (null != (proxy = playedRole.Proxy) &&
 					null != (factType = proxy.FactType))
 				{
-					FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+					factType.DelayValidateNamePartChanged();
 				}
 			}
 		}
@@ -2182,13 +2230,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					FactType factType = role.FactType;
 					if (factType != null)
 					{
-						FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+						factType.DelayValidateNamePartChanged();
 					}
 					RoleProxy proxy;
 					if (null != (proxy = role.Proxy) &&
 						null != (factType = proxy.FactType))
 					{
-						FrameworkDomainModel.DelayValidateElement(factType, DelayValidateFactTypeNamePartChanged);
+						factType.DelayValidateNamePartChanged();
 					}
 				}
 				FactType nestedFact = objectType.NestedFactType;
@@ -2514,7 +2562,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.SourceDomainRole.Id == FactTypeHasRole.FactTypeDomainRoleId)
 			{
-				FrameworkDomainModel.DelayValidateElement(e.SourceElement, DelayValidateFactTypeNamePartChanged);
+				((FactType)e.SourceElement).DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2528,7 +2576,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				QueryBase queryBase;
 				if (null != (queryBase = ((Role)e.ModelElement).FactType as QueryBase))
 				{
-					FrameworkDomainModel.DelayValidateElement(queryBase, DelayValidateFactTypeNamePartChanged);
+					queryBase.DelayValidateNamePartChanged();
 				}
 			}
 		}
@@ -2538,7 +2586,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void QueryParameterAddedRule(ElementAddedEventArgs e)
 		{
-			FrameworkDomainModel.DelayValidateElement(((QueryDefinesParameter)e.ModelElement).Query, DelayValidateFactTypeNamePartChanged);
+			((QueryDefinesParameter)e.ModelElement).Query.DelayValidateNamePartChanged();
 		}
 		/// <summary>
 		/// ChangeRule: typeof(QueryParameter)
@@ -2550,7 +2598,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (e.DomainProperty.Id == QueryParameter.NameDomainPropertyId &&
 				null != (query = ((QueryParameter)e.ModelElement).Query))
 			{
-				FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+				query.DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2562,7 +2610,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			QueryBase query = ((QueryDefinesParameter)e.ModelElement).Query;
 			if (!query.IsDeleted)
 			{
-				FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+				query.DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2573,7 +2621,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (e.SourceDomainRole.Id == QueryDefinesParameter.QueryDomainRoleId)
 			{
-				FrameworkDomainModel.DelayValidateElement(e.SourceElement, DelayValidateFactTypeNamePartChanged);
+				((QueryBase)e.SourceElement).DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2585,7 +2633,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			QueryBase query;
 			if (null != (query = ((QueryParameterHasParameterType)e.ModelElement).Parameter.Query))
 			{
-				FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+				query.DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2599,7 +2647,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!parameter.IsDeleted &&
 				null != (query = parameter.Query))
 			{
-				FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+				query.DelayValidateNamePartChanged();
 			}
 		}
 		/// <summary>
@@ -2613,7 +2661,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				QueryBase query;
 				if (null != (query = ((QueryParameterHasParameterType)e.ElementLink).Parameter.Query))
 				{
-					FrameworkDomainModel.DelayValidateElement(query, DelayValidateFactTypeNamePartChanged);
+					query.DelayValidateNamePartChanged();
 				}
 			}
 		}

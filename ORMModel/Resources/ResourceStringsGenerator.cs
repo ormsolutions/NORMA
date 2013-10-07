@@ -1076,12 +1076,68 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ContradictionError.Text");
 			}
 		}
-		/// <summary>Model validation error text when too few role sequences are specified for a constraint. This is a common condition when constraints are being created.</summary>
-		public static string ModelErrorConstraintHasTooFewRoleSequencesText
+		/// <summary>Model validation error text when too few role sequences are specified for a constraint that requires exactly two role sequences. {0}=constraint name, {1}=model name, {2}=addendum describing current sequence state for the constraint.</summary>
+		public static string ModelErrorConstraintHasTooFewRoleSequencesExactlyTwo
 		{
 			get
 			{
-				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.Text");
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.ExactlyTwo");
+			}
+		}
+		/// <summary>Model validation error text when too few role sequences are specified for a constraint that requires multiple role sequences. {0}=constraint name, {1}=model name, {2}=addendum describing current sequence state for the constraint.</summary>
+		public static string ModelErrorConstraintHasTooFewRoleSequencesTwoOrMore
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.TwoOrMore");
+			}
+		}
+		/// <summary>Addendum for too few role sequences messages when no sequences are constrained.</summary>
+		public static string ModelErrorConstraintHasTooFewRoleSequencesNoSequenceAddendum
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.NoSequenceAddendum");
+			}
+		}
+		/// <summary>Addendum for too few role sequences messages when one sequence is constrained. {0}=count of roles in the single sequence.</summary>
+		public static string ModelErrorConstraintHasTooFewRoleSequencesOneSequenceAddendum
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.OneSequenceAddendum");
+			}
+		}
+		/// <summary>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring exactly two roles. {0}=constraint name, {1}=model name, {2}=addendum describing current role count for the constraint.</summary>
+		public static string ModelErrorConstraintHasTooFewSequenceRolesExactlyTwo
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.ExactlyTwo");
+			}
+		}
+		/// <summary>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring two or more roles. {0}=constraint name, {1}=model name, {2}=addendum describing current role count for the constraint.</summary>
+		public static string ModelErrorConstraintHasTooFewSequenceRolesTwoOrMore
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.TwoOrMore");
+			}
+		}
+		/// <summary>Addendum for too few sequence roles messages when no roles are constrained.</summary>
+		public static string ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendum
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum");
+			}
+		}
+		/// <summary>Addendum for too few sequence roles messages when a single role is constrained.</summary>
+		public static string ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendum
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum");
 			}
 		}
 		/// <summary>Dynamic text replacement for an error associated a normal FactType. Automatically capitalized on replacement. {0}=FactType {1}=Model.</summary>
@@ -1172,7 +1228,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text");
 			}
 		}
-		/// <summary>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		/// <summary>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file. {0}=constraint name, {1}=model name</summary>
 		public static string ModelErrorConstraintHasTooManyRoleSequencesText
 		{
 			get
@@ -1180,7 +1236,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooManyRoleSequences.Text");
 			}
 		}
-		/// <summary>Model validation error text when role sequences in a multi column constraint have different role counts (arity).</summary>
+		/// <summary>Model validation error text when role sequences in a multi column constraint have different role counts (arity). {0}=constraint name, {1}=model name</summary>
 		public static string ModelErrorConstraintExternalConstraintArityMismatch
 		{
 			get
@@ -3161,6 +3217,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.Message");
+			}
+		}
+		/// <summary>The two value comparison constraint roles must be single-valued and comparable. {0} is the constraint name and {1} is the model name.</summary>
+		public static string ModelErrorValueComparisonRolesNotComparable
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ValueComparisonRolesNotComparableError.Message");
 			}
 		}
 		/// <summary>The frequency constraint minimum must be less than or equal to the maximum. {0}=constraint name {1}=model name</summary>

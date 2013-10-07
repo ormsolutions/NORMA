@@ -212,6 +212,17 @@
 				<arg:RuleOn targetType="DerivedRoleProjectedFromRolePathRoot"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="DuplicateReadingSignatureError">
+			<arg:ChangeRule methodName="ImpliedObjectificationChangedRule">
+				<arg:RuleOn targetType="Objectification"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="DuplicateReadingAddedRule">
+				<arg:RuleOn targetType="ReadingHasDuplicateSignatureError"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="DuplicateReadingDeletedRule">
+				<arg:RuleOn targetType="ReadingHasDuplicateSignatureError"/>
+			</arg:DeleteRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="EntityTypeHasPreferredIdentifier">
 			<arg:ChangeRule methodName="ModalityChangeRule">
 				<arg:RuleOn targetType="SetConstraint"/>
@@ -1488,8 +1499,17 @@
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ValueComparisonConstraint">
-			<arg:ChangeRule methodName="ValueComparisonConstraintOperatorChangeRule">
+			<arg:AddRule methodName="ComparedRoleAddedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ComparedRoleDeletedRule">
+				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole"/>
+			</arg:DeleteRule>
+			<arg:ChangeRule methodName="ComparisonOperatorChangedRule">
 				<arg:RuleOn targetType="ValueComparisonConstraint"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="ObjectTypeNameChangedRule">
+				<arg:RuleOn targetType="ObjectType" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ValueConstraint">

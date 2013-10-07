@@ -72,10 +72,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				bool retVal = false;
 				if (sourceShapeElement is ExternalConstraintShape)
 				{
-					// The source and target shapes are allowed here so we can display instructions in CanCreateConnection
-					retVal = targetShapeElement is FactTypeShape ||
-						targetShapeElement is SubtypeLink ||
-						sourceShapeElement == targetShapeElement;
+					FactTypeShape factTypeShape;
+					retVal = null != (factTypeShape = targetShapeElement as FactTypeShape)?
+						((sourceShapeElement.ModelElement is ValueComparisonConstraint) ? factTypeShape.AssociatedFactType.UnaryRole == null : true) :
+						(targetShapeElement is SubtypeLink ||
+						// The source and target shapes are allowed here so we can display instructions in CanCreateConnection
+						sourceShapeElement == targetShapeElement);
 				}
 				return retVal;
 			}
@@ -129,21 +131,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					(null != (selectedRoles = action.SelectedRoleCollection)) &&
 					(0 != (rolesCount = selectedRoles.Count)))
 				{
-					SetComparisonConstraint mcConstraint;
-					SetConstraint scConstraint;
+					SetComparisonConstraint setComparisonConstraint;
+					SetConstraint setConstraint;
 					ConstraintRoleSequence modifyRoleSequence = null;
-					if (null != (mcConstraint = constraint as SetComparisonConstraint))
+					if (null != (setComparisonConstraint = constraint as SetComparisonConstraint))
 					{
 						ConstraintRoleSequence constraintRoleSequenceBeingEdited = action.ConstraintRoleSequenceToEdit;
 						// Add a new role set
 						if (null == constraintRoleSequenceBeingEdited)
 						{
-							LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = mcConstraint.RoleSequenceCollection;
+							LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = setComparisonConstraint.RoleSequenceCollection;
 							if (action.mySubtypeConnection)
 							{
 								// All editing is done as a single column, add role sequences to the constraint
 								// instead of roles to the sequence
-								Store store = mcConstraint.Store;
+								Store store = setComparisonConstraint.Store;
 								for (int i = 0; i < rolesCount; ++i)
 								{
 									SetComparisonConstraintRoleSequence roleSequence = new SetComparisonConstraintRoleSequence(store);
@@ -153,7 +155,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							}
 							else
 							{
-								SetComparisonConstraintRoleSequence roleSequence = new SetComparisonConstraintRoleSequence(mcConstraint.Store);
+								SetComparisonConstraintRoleSequence roleSequence = new SetComparisonConstraintRoleSequence(setComparisonConstraint.Store);
 								LinkedElementCollection<Role> roles = roleSequence.RoleCollection;
 								for (int i = 0; i < rolesCount; ++i)
 								{
@@ -164,7 +166,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						else if (action.mySubtypeConnection)
 						{
-							LinkedElementCollection<SetComparisonConstraintRoleSequence> existingSequences = mcConstraint.RoleSequenceCollection;
+							LinkedElementCollection<SetComparisonConstraintRoleSequence> existingSequences = setComparisonConstraint.RoleSequenceCollection;
 							int existingSequenceCount = existingSequences.Count;
 							// Pull out removed ones first
 							for (int i = existingSequenceCount - 1; i >= 0; --i)
@@ -177,7 +179,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 									--existingSequenceCount;
 								}
 							}
-							Store store = mcConstraint.Store;
+							Store store = setComparisonConstraint.Store;
 							for (int i = 0; i < rolesCount; ++i)
 							{
 								Role selectedRole = selectedRoles[i];
@@ -216,15 +218,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							modifyRoleSequence = constraintRoleSequenceBeingEdited;
 						}
 					}
-					else if (null != (scConstraint = constraint as SetConstraint))
+					else if (null != (setConstraint = constraint as SetConstraint))
 					{
 						// The single-column constraint is its own role set, just add the roles.
-						modifyRoleSequence = scConstraint;
+						modifyRoleSequence = setConstraint;
 						switch (constraint.ConstraintType)
 						{
 							case ConstraintType.ExternalUniqueness:
 							case ConstraintType.Frequency:
-							case ConstraintType.ValueComparison:
 								// Translate selected unary roles back to the implied role
 								bool duplicatedSelectedRoles = false;
 								for (int i = 0; i < rolesCount; ++i)
@@ -324,6 +325,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private bool myOriginalSubtypeAnchoredSubset;
 		private bool myAllowSubtypeConnection;
 		private bool myOriginalAllowSubtypeConnection;
+		private bool myBlockUnarySelection;
 		private int mySelectedSupertypeRoleCount;
 		private IList<Role> myInitialSelectedRoles;
 		private IList<Role> mySelectedRoles;
@@ -472,6 +474,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences;
 						mySubtypeAnchoredSubset = false;
 						myAllowSubtypeConnection = false;
+						myBlockUnarySelection = false;
 						switch (activeConstraint.ConstraintType)
 						{
 							case ConstraintType.DisjunctiveMandatory:
@@ -497,6 +500,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								sequences = exclusion.RoleSequenceCollection;
 								// Allow subtypes to be included in any single column exclusion constraint
 								myAllowSubtypeConnection = sequences.Count == 0 || (sequences[0].RoleCollection.Count == 1 && exclusion.ArityMismatchError == null);
+								break;
+							case ConstraintType.ValueComparison:
+								myBlockUnarySelection = true;
 								break;
 						}
 						if (null != (ormDiagram = mySourceShape.Diagram as ORMDiagram))
@@ -593,7 +599,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							{
 								myAllowSubtypeConnection = false;
 							}
-							allowAdd = true;
+							allowAdd = !myBlockUnarySelection || (role.FactType.UnaryRole == null);
 						}
 						if (allowAdd)
 						{
@@ -760,6 +766,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			myOriginalAllowSubtypeConnection = false;
 			mySubtypeAnchoredSubset = false;
 			myOriginalSubtypeAnchoredSubset = false;
+			myBlockUnarySelection = false;
 			mySelectedSupertypeRoleCount = 0;
 			FactTypeShape.ActiveExternalConstraintConnectAction = null;
 		}

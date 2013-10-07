@@ -302,13 +302,26 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
 		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapes<LinkShapeType>(ShapeElement shape) where LinkShapeType : LinkShape
 		{
+			return GetEffectiveAttachedLinkShapes<LinkShapeType>(shape, false);
+		}
+		/// <summary>
+		/// Get all link shapes of a given type attached to the specified <paramref name="shape"/>
+		/// or to any relative child shapes that implement <see cref="IProxyConnectorShape"/>.
+		/// </summary>
+		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="LinkShape"/></typeparam>
+		/// <param name="shape">The shape to retrieve links for</param>
+		/// <param name="checkDeleting">Ignore links attached to 'deleting' connections.</param>
+		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapes<LinkShapeType>(ShapeElement shape, bool checkDeleting) where LinkShapeType : LinkShape
+		{
 			NodeShape nodeShape = shape as NodeShape;
 			if (nodeShape != null)
 			{
-				foreach (LinkShape link in LinkConnectsToNode.GetLink(nodeShape))
+				foreach (LinkConnectsToNode linkToLinkShape in LinkConnectsToNode.GetLinksToLink(nodeShape))
 				{
-					LinkShapeType linkShape = link as LinkShapeType;
-					if (linkShape != null)
+					LinkShapeType linkShape;
+					if ((!checkDeleting || !linkToLinkShape.IsDeleting) &&
+						null != (linkShape = linkToLinkShape.Link as LinkShapeType))
 					{
 						yield return linkShape;
 					}
@@ -324,10 +337,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 						null != (proxy = childShape as IProxyConnectorShape))
 					{
 						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
-						foreach (LinkShape link in LinkConnectsToNode.GetLink(childShape))
+						foreach (LinkConnectsToNode linkToLinkShape in LinkConnectsToNode.GetLinksToLink(childShape))
 						{
-							LinkShapeType linkShape = link as LinkShapeType;
-							if (linkShape != null)
+							LinkShapeType linkShape;
+							if ((!checkDeleting || !linkToLinkShape.IsDeleting) &&
+								null != (linkShape = linkToLinkShape.Link as LinkShapeType))
 							{
 								yield return linkShape;
 							}
@@ -342,11 +356,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// </summary>
 		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="LinkShape"/></typeparam>
 		/// <param name="shape">The shape to retrieve links for</param>
+		/// <param name="checkDeleting">Ignore links attached to 'deleting' connections.</param>
 		/// <param name="snapshot">The caller may change the resulting set, return a snapshot copy of the current data. Default false.</param>
 		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
-		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapes<LinkShapeType>(ShapeElement shape, bool snapshot) where LinkShapeType : LinkShape
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapes<LinkShapeType>(ShapeElement shape, bool checkDeleting, bool snapshot) where LinkShapeType : LinkShape
 		{
-			IEnumerable<LinkShapeType> retVal = GetEffectiveAttachedLinkShapes<LinkShapeType>(shape);
+			IEnumerable<LinkShapeType> retVal = GetEffectiveAttachedLinkShapes<LinkShapeType>(shape, checkDeleting);
 			return snapshot ? new List<LinkShapeType>(retVal) : retVal;
 		}
 		/// <summary>
@@ -358,13 +373,27 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
 		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(ShapeElement shape) where LinkShapeType : BinaryLinkShape
 		{
+			return GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(shape, false);
+		}
+		/// <summary>
+		/// Get all <see cref="BinaryLinkShape">binary link shapes</see> of a given type originating from
+		/// the specified <paramref name="shape"/> or to any relative child shapes that implement <see cref="IProxyConnectorShape"/>.
+		/// </summary>
+		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="LinkShape"/></typeparam>
+		/// <param name="shape">The shape to retrieve links for</param>
+		/// <param name="checkDeleting">Ignore links attached to 'deleting' connections.</param>
+		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(ShapeElement shape, bool checkDeleting) where LinkShapeType : BinaryLinkShape
+		{
 			NodeShape nodeShape = shape as NodeShape;
 			if (nodeShape != null)
 			{
-				foreach (LinkShape link in LinkConnectsToNode.GetLink(nodeShape))
+				foreach (LinkConnectsToNode linkToLinkShape in LinkConnectsToNode.GetLinksToLink(nodeShape))
 				{
-					LinkShapeType linkShape = link as LinkShapeType;
-					if (linkShape != null && linkShape.FromShape == shape)
+					LinkShapeType linkShape;
+					if ((!checkDeleting || !linkToLinkShape.IsDeleting) &&
+						null != (linkShape = linkToLinkShape.Link as LinkShapeType) &&
+						linkShape.FromShape == shape)
 					{
 						yield return linkShape;
 					}
@@ -380,10 +409,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 						null != (proxy = childShape as IProxyConnectorShape))
 					{
 						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
-						foreach (LinkShape link in LinkConnectsToNode.GetLink(childShape))
+						foreach (LinkConnectsToNode linkToLinkShape in LinkConnectsToNode.GetLinksToLink(childShape))
 						{
-							LinkShapeType linkShape = link as LinkShapeType;
-							if (linkShape != null && linkShape.FromShape == childShape)
+							LinkShapeType linkShape;
+							if ((!checkDeleting || !linkToLinkShape.IsDeleting) &&
+								null != (linkShape = linkToLinkShape.Link as LinkShapeType) &&
+								linkShape.FromShape == childShape)
 							{
 								yield return linkShape;
 							}
@@ -398,11 +429,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// </summary>
 		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="LinkShape"/></typeparam>
 		/// <param name="shape">The shape to retrieve links for</param>
+		/// <param name="checkDeleting">Ignore links attached to 'deleting' connections.</param>
 		/// <param name="snapshot">The caller may change the resulting set, return a snapshot copy of the current data. Default false.</param>
 		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
-		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(ShapeElement shape, bool snapshot) where LinkShapeType : BinaryLinkShape
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(ShapeElement shape, bool checkDeleting, bool snapshot) where LinkShapeType : BinaryLinkShape
 		{
-			IEnumerable<LinkShapeType> retVal = GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(shape);
+			IEnumerable<LinkShapeType> retVal = GetEffectiveAttachedLinkShapesFrom<LinkShapeType>(shape, checkDeleting);
 			return snapshot ? new List<LinkShapeType>(retVal) : retVal;
 		}
 		/// <summary>
@@ -414,13 +446,27 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
 		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesTo<LinkShapeType>(ShapeElement shape) where LinkShapeType : BinaryLinkShape
 		{
+			return GetEffectiveAttachedLinkShapesTo<LinkShapeType>(shape, false);
+		}
+		/// <summary>
+		/// Get all <see cref="BinaryLinkShape">binary link shapes</see> of a given type going to
+		/// the specified <paramref name="shape"/> or to any relative child shapes that implement <see cref="IProxyConnectorShape"/>.
+		/// </summary>
+		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="BinaryLinkShape"/></typeparam>
+		/// <param name="shape">The shape to retrieve links for</param>
+		/// <param name="checkDeleting">Ignore links attached to 'deleting' connections.</param>
+		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesTo<LinkShapeType>(ShapeElement shape, bool checkDeleting) where LinkShapeType : BinaryLinkShape
+		{
 			NodeShape nodeShape = shape as NodeShape;
 			if (nodeShape != null)
 			{
-				foreach (LinkShape link in LinkConnectsToNode.GetLink(nodeShape))
+				foreach (LinkConnectsToNode linkToLinkShape in LinkConnectsToNode.GetLinksToLink(nodeShape))
 				{
-					LinkShapeType linkShape = link as LinkShapeType;
-					if (linkShape != null && linkShape.ToShape == shape)
+					LinkShapeType linkShape;
+					if ((!checkDeleting || !linkToLinkShape.IsDeleting) &&
+						null != (linkShape = linkToLinkShape.Link as LinkShapeType) &&
+						linkShape.ToShape == shape)
 					{
 						yield return linkShape;
 					}
@@ -436,10 +482,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 						null != (proxy = childShape as IProxyConnectorShape))
 					{
 						Debug.Assert(proxy.ProxyConnectorShapeFor == shape);
-						foreach (LinkShape link in LinkConnectsToNode.GetLink(childShape))
+						foreach (LinkConnectsToNode linkToLinkShape in LinkConnectsToNode.GetLinksToLink(childShape))
 						{
-							LinkShapeType linkShape = link as LinkShapeType;
-							if (linkShape != null && linkShape.ToShape == childShape)
+							LinkShapeType linkShape;
+							if ((!checkDeleting || !linkToLinkShape.IsDeleting) &&
+								null != (linkShape = linkToLinkShape.Link as LinkShapeType) &&
+								linkShape.ToShape == childShape)
 							{
 								yield return linkShape;
 							}
@@ -454,11 +502,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 		/// </summary>
 		/// <typeparam name="LinkShapeType">A link shape type derived from <see cref="BinaryLinkShape"/></typeparam>
 		/// <param name="shape">The shape to retrieve links for</param>
+		/// <param name="checkDeleting">Ignore links attached to 'deleting' connections.</param>
 		/// <param name="snapshot">The caller may change the resulting set, return a snapshot copy of the current data. Default false.</param>
 		/// <returns><see cref="IEnumerable{LinkShapeType}"/></returns>
-		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesTo<LinkShapeType>(ShapeElement shape, bool snapshot) where LinkShapeType : BinaryLinkShape
+		public static IEnumerable<LinkShapeType> GetEffectiveAttachedLinkShapesTo<LinkShapeType>(ShapeElement shape, bool checkDeleting, bool snapshot) where LinkShapeType : BinaryLinkShape
 		{
-			IEnumerable<LinkShapeType> retVal = GetEffectiveAttachedLinkShapesTo<LinkShapeType>(shape);
+			IEnumerable<LinkShapeType> retVal = GetEffectiveAttachedLinkShapesTo<LinkShapeType>(shape, checkDeleting);
 			return snapshot ? new List<LinkShapeType>(retVal) : retVal;
 		}
 		#endregion // GetEffectiveAttachedLinkShapes variants
@@ -1254,7 +1303,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 
 			foreach (BinaryLinkShape linkShape in
 				(getToLinks && getFromLinks) ?
-					MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(shape, snapshot) :
+					MultiShapeUtility.GetEffectiveAttachedLinkShapes<BinaryLinkShape>(shape, false, snapshot) :
 					(getToLinks ?
 					MultiShapeUtility.GetEffectiveAttachedLinkShapesTo<BinaryLinkShape>(shape, snapshot) :
 					MultiShapeUtility.GetEffectiveAttachedLinkShapesFrom<BinaryLinkShape>(shape, snapshot)))

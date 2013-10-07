@@ -65,7 +65,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	{
 	}
 	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "Diagram.MenuDisplayName", "Diagram.TabImage", "Diagram.BrowserImage", NestedDiagramInitializerTypeName="DiagramInitializer")]
-	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements
+	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements, IStickyObjectDiagram
 	{
 		#region DiagramInitializer class
 		/// <summary>
@@ -845,8 +845,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					DomainRoleInfo.GetElementLinks<ElementLink>(
 						constraintElement,
 						constraint is SetComparisonConstraint ?
-						FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId :
-						FactSetConstraint.SetConstraintDomainRoleId),
+							FactSetComparisonConstraint.SetComparisonConstraintDomainRoleId :
+							(0 != (constraint.RoleSequenceStyles & RoleSequenceStyles.ConnectIndividualRoles)) ?
+								ConstraintRoleSequenceHasRole.ConstraintRoleSequenceDomainRoleId :
+								FactSetConstraint.SetConstraintDomainRoleId),
 					delegate(ModelElement link, ShapeElement newShape)
 					{
 						ExternalConstraintLink linkShape = newShape as ExternalConstraintLink;
@@ -1019,16 +1021,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		public const string ORMDiagramConnectModelNoteFilterString = ORMShapeToolboxHelper.ModelNoteConnectorFilterString;
 		#endregion // Toolbox filter strings
-		#region StickyEditObject
+		#region IStickyObjectDiagram Implementation
 		/// <summary>
 		/// The StickyObject associated with this diagram.  
 		/// </summary>
 		[NonSerialized]
 		private IStickyObject mySticky;
 		/// <summary>
-		/// Get access to the diagram's StickyObject
+		/// The StickyObject associated with this diagram.  
+		/// Implements <see cref="IStickyObjectDiagram.StickyObject"/>
 		/// </summary>
-		/// <value>StickyObject</value>
 		public IStickyObject StickyObject
 		{
 			get
@@ -1037,29 +1039,38 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			set
 			{
-				// If the previous StickyObject was a ShapeElement, invalidate it so that it can redraw.
-				// This is because a sticky ShapeElement should give a visual indicator that it's active.
-
 				// Need to account for: going from null to ShapeElement, ShapeElement to null, ShapeElement to ShapeElement
 				IStickyObject currentStickyShape;
 				IStickyObject incomingStickyShape;
 
 				currentStickyShape = mySticky;
 				incomingStickyShape = value;
-				if (currentStickyShape != null)
+				if (incomingStickyShape == currentStickyShape)
 				{
-					mySticky = null;
-					currentStickyShape.StickyRedraw();
+					if (currentStickyShape != null)
+					{
+						currentStickyShape.StickyRedraw();
+					}
 				}
-
-				if (incomingStickyShape != null)
+				else
 				{
-					mySticky = value;
-					mySticky.StickyInitialize();
+					if (currentStickyShape != null)
+					{
+						mySticky = null;
+						// If the previous StickyObject was a ShapeElement, invalidate it so that it can redraw.
+						// This is because a sticky ShapeElement should give a visual indicator that it's active.
+						currentStickyShape.StickyRedraw();
+					}
+
+					if (incomingStickyShape != null)
+					{
+						mySticky = value;
+						mySticky.StickyInitialize();
+					}
 				}
 			}
 		}
-		#endregion //StickyEditObject
+		#endregion // IStickyObjectDiagram Implementation
 		#region View Fixup Methods
 		/// <summary>
 		/// Used by <see cref="ShouldAddShapeForElement"/> to map an
@@ -1205,6 +1216,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			SetConstraint setConstraint;
 			ExclusionConstraint exclusionConstraint;
 			MandatoryConstraint mandatoryConstraint;
+			ConstraintRoleSequenceHasRole constraintRole;
 			ModelNoteReferencesModelElement noteReference;
 			if (null != (factType = element as FactType))
 			{
@@ -1257,6 +1269,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				// Note that note references to internal constraint cannot be added with the current UI, but
 				// are valid in the object model. Don't try to link them.
 				return referencedSetConstraint == null || !referencedSetConstraint.Constraint.ConstraintIsInternal;
+			}
+			else if (null != (constraintRole = element as ConstraintRoleSequenceHasRole))
+			{
+				return null != (setConstraint = constraintRole.ConstraintRoleSequence as SetConstraint) &&
+					0 != (((IConstraint)setConstraint).RoleSequenceStyles & RoleSequenceStyles.ConnectIndividualRoles);
 			}
 			else if (element is SetComparisonConstraint ||
 					 element is RoleHasValueConstraint ||
@@ -3525,32 +3542,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#endregion // IRegisterSignalChanges Implementation
 	}
 	#endregion // IRegisterSignalChanges interface
-	#region IStickyObject interface
-	/// <summary>
-	/// Interface for implementing "Sticky" selections.  Presentation elements that are sticky
-	/// will maintain their selected status when compatible objects are clicked.
-	/// </summary>
-	public interface IStickyObject
-	{
-		/// <summary>
-		/// Call this on an object when you're setting it as a StickyObject.  This method
-		/// will go through the object's associated elements to perform any actions needed
-		/// such as calling Invalidate().
-		/// </summary>
-		void StickyInitialize();
-		/// <summary>
-		/// Returns whether the Presentation Element that was passed in is selectable in the
-		/// context of this StickyObject.  For example, when an external constraint is the
-		/// active StickyObject, roles are selectable and objects are not.
-		/// </summary>
-		/// <returns>Whether the PresentationElement passed in is selectable in this StickyObject's context</returns>
-		bool StickySelectable(ModelElement mel);
-		/// <summary>
-		/// Needed to allow outside entities to tell the StickyObject to redraw itself and its children.
-		/// </summary>
-		void StickyRedraw();
-	}
-	#endregion // IStickyObject interface
 	#region ORMPlacementOption enum
 	/// <summary>
 	/// Controls the actions taken when placing a <see cref="ModelElement"/> on a <see cref="Diagram"/>.

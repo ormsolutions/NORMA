@@ -306,7 +306,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			switch (targetType)
 			{
 				case PortableDataType.Unspecified:
-					// Let use fix
+					// Let user fix
 					return true;
 				case PortableDataType.TextFixedLength:
 				case PortableDataType.TextVariableLength:
@@ -572,6 +572,131 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							return true;
 					}
 					break;
+			}
+			return false;
+		}
+		/// <summary>
+		/// Check if two data types can be compared. This is a weaker check
+		/// than <see cref="IsAssignableValueType"/> in that it does not
+		/// do any facet checking to see if one value can store the only,
+		/// but only checks if the two can be compared.
+		/// </summary>
+		/// <param name="valueType1">The first value type to compare.</param>
+		/// <param name="valueType2">The second value type to compare.</param>
+		/// <param name="equalityOnly">Set to true if the equality or inequality
+		/// of the two values is required, but an ordered check is not.</param>
+		/// <returns><see langword="true"/> if the two types can be compared.</returns>
+		public static bool IsComparableValueType(ObjectType valueType1, ObjectType valueType2, bool equalityOnly)
+		{
+			DataType dataType1 = valueType1.DataType;
+			DataType dataType2 = valueType2.DataType;
+			if (dataType1 == dataType2)
+			{
+				switch (dataType1.PortableDataType)
+				{
+					case PortableDataType.Unspecified:
+						// Give the user the benefit of the doubt that fixing the
+						// unspecified data type will result in comparable values.
+						return true;
+					case PortableDataType.NumericAutoCounter:
+						// Only support this if the value types are the same. Otherwise, we're mapping different
+						// counters to each other, which is meaningless.
+						return valueType1 == valueType2;
+					default:
+						return dataType1.CanCompare && (equalityOnly || (dataType1.RangeSupport != DataTypeRangeSupport.None));
+				}
+			}
+			else if (dataType1.CanCompare &&
+				dataType2.CanCompare &&
+				(equalityOnly || (dataType1.RangeSupport != DataTypeRangeSupport.None && dataType2.RangeSupport != DataTypeRangeSupport.None)))
+			{
+				// Look at specific types. 
+				PortableDataType targetType = dataType1.PortableDataType;
+				PortableDataType sourceType = dataType2.PortableDataType;
+				if (sourceType == PortableDataType.Unspecified)
+				{
+					// Give user the benefit of the doubt that the types will be made comparable
+					// if this choice is made.
+					return true;
+				}
+				switch (targetType)
+				{
+					case PortableDataType.Unspecified:
+						// Let user fix
+						return true;
+					case PortableDataType.TextFixedLength:
+					case PortableDataType.TextVariableLength:
+					case PortableDataType.TextLargeLength:
+						switch (sourceType)
+						{
+							case PortableDataType.TextFixedLength:
+							case PortableDataType.TextVariableLength:
+							case PortableDataType.TextLargeLength:
+								return true;
+						}
+						break;
+					case PortableDataType.NumericSignedInteger:
+					case PortableDataType.NumericSignedSmallInteger:
+					case PortableDataType.NumericSignedLargeInteger:
+					case PortableDataType.NumericUnsignedInteger:
+					case PortableDataType.NumericUnsignedTinyInteger:
+					case PortableDataType.NumericUnsignedSmallInteger:
+					case PortableDataType.NumericUnsignedLargeInteger:
+					case PortableDataType.NumericFloatingPoint:
+					case PortableDataType.NumericSinglePrecisionFloatingPoint:
+					case PortableDataType.NumericDoublePrecisionFloatingPoint:
+					case PortableDataType.NumericDecimal:
+					case PortableDataType.NumericMoney:
+						switch (sourceType)
+						{
+							case PortableDataType.NumericSignedInteger:
+							case PortableDataType.NumericSignedSmallInteger:
+							case PortableDataType.NumericSignedLargeInteger:
+							case PortableDataType.NumericUnsignedInteger:
+							case PortableDataType.NumericUnsignedTinyInteger:
+							case PortableDataType.NumericUnsignedSmallInteger:
+							case PortableDataType.NumericUnsignedLargeInteger:
+							case PortableDataType.NumericFloatingPoint:
+							case PortableDataType.NumericSinglePrecisionFloatingPoint:
+							case PortableDataType.NumericDoublePrecisionFloatingPoint:
+							case PortableDataType.NumericDecimal:
+							case PortableDataType.NumericMoney:
+								return true;
+						}
+						break;
+					//case PortableDataType.RawDataFixedLength:
+					//case PortableDataType.RawDataVariableLength:
+					//case PortableDataType.RawDataLargeLength:
+					//case PortableDataType.RawDataPicture:
+					//case PortableDataType.RawDataOleObject:
+					// Raw data types are not comparable, these cases would form a dead code path.
+
+					//case PortableDataType.NumericAutoCounter:
+					//case PortableDataType.TemporalTime:
+					//case PortableDataType.TemporalDate:
+					//case PortableDataType.OtherRowId:
+					//case PortableDataType.OtherObjectId:
+					// These compare only to themselves, will be caught in first if block
+
+					case PortableDataType.TemporalAutoTimestamp:
+					case PortableDataType.TemporalDateAndTime:
+						switch (sourceType)
+						{
+							case PortableDataType.TemporalAutoTimestamp:
+							case PortableDataType.TemporalDateAndTime:
+								return true;
+						}
+						break;
+					case PortableDataType.LogicalTrueOrFalse:
+					case PortableDataType.LogicalYesOrNo:
+						switch (sourceType)
+						{
+							case PortableDataType.LogicalTrueOrFalse:
+							case PortableDataType.LogicalYesOrNo:
+								return true;
+						}
+						break;
+				}
 			}
 			return false;
 		}

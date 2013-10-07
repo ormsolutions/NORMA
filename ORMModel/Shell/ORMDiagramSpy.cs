@@ -31,9 +31,11 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using ORMSolutions.ORMArchitect.Framework.Shell;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework.Diagrams;
+using ORMSolutions.ORMArchitect.Framework.Shell;
 using OLE = Microsoft.VisualStudio.OLE.Interop;
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
@@ -476,6 +478,33 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		protected override void OnSelectionChanged(EventArgs e)
 		{
 			base.OnSelectionChanged(e);
+			IStickyObjectDiagram stickyDiagram;
+			if (null != (stickyDiagram = CurrentDiagram as IStickyObjectDiagram))
+			{
+				if (SelectionCount == 1)
+				{
+					ModelElement selectedElement = (ModelElement)SelectedElements[0];
+					ContextElementParts elementParts = ContextElementParts.ResolveContextInstance(selectedElement);
+
+					// Support sticky objects
+					IStickyObject stickyObject;
+					if (null != (stickyObject = elementParts.PresentationElement as IStickyObject))
+					{
+						stickyDiagram.StickyObject = stickyObject;
+					}
+					// The currently selected item is not selection-compatible with the StickyObject.
+					else if (null != (stickyObject = stickyDiagram.StickyObject)
+						&& !stickyObject.StickySelectable(selectedElement))
+					{
+						stickyDiagram.StickyObject = null;
+					}
+				}
+				else
+				{
+					// Sticky objects require a single item to be selected
+					stickyDiagram.StickyObject = null;
+				}
+			}
 			CommandManager.UpdateCommandStatus();
 			UpdateToolbox();
 		}

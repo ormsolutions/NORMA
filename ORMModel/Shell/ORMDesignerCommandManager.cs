@@ -454,14 +454,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				if (count > 1)
 				{
-					// StickyObjects cannot be multi-selected (shift-click).  In other words, if there is an active StickyObject,
-					// it will be deactivated if multiple objects are selected.
-					ORMDiagram ormDiagram;
-					if (null != (ormDiagram = view.CurrentDiagram as ORMDiagram))
-					{
-						ormDiagram.StickyObject = null;
-					}
-
 					// Running filters to ensure that tolerated commands don't indicate
 					// a multi-select state when none is there.
 					ORMDesignerCommands seenVisible = 0;
@@ -556,26 +548,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					foreach (ModelElement melIter in view.SelectedElements)
 					{
 						ContextElementParts elementParts = ContextElementParts.ResolveContextInstance(melIter);
-
-						// Checking for StickyObjects.  This needs to be done out here because when a role box is selected
-						// the pel will be null.
-						ORMDiagram ormDiagram;
-						// There is a sticky object on this diagram
-						if (null != (ormDiagram = view.CurrentDiagram as ORMDiagram))
-						{
-							IStickyObject stickyObject;
-							if (null != (stickyObject = elementParts.PresentationElement as IStickyObject))
-							{
-								ormDiagram.StickyObject = stickyObject;
-							}
-							// The currently selected item is not selection-compatible with the StickyObject.
-							else if (null != (stickyObject = ormDiagram.StickyObject)
-								&& !stickyObject.StickySelectable(melIter))
-							{
-								ormDiagram.StickyObject = null;
-							}
-						}
-
 						ModelElement mel = elementParts.PrimaryElement as ModelElement;
 						if (mel != null)
 						{
@@ -1334,7 +1306,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								Dictionary<ModelError, object> seenErrors = null;
 								foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 								{
-									if (displayFilter == null || displayFilter.ShouldDisplay(error))
+									if (ModelError.IsDisplayed(error, displayFilter))
 									{
 										if (seenErrors == null)
 										{
@@ -1887,7 +1859,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					bool deleteReferenceModeValueTypeInContext = false;
 					if (deleteAllowDuplicateNames)
 					{
-						contextInfo[duplicateNamesKey] = true;
+						contextInfo[duplicateNamesKey] = null;
 					}
 					try
 					{
@@ -2635,21 +2607,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			object selectedElement;
 			if (null != (ormDiagram = view.CurrentDiagram as ORMDiagram))
 			{
-				ExternalConstraintShape ecs;
+				ExternalConstraintShape constraintShape;
 				DiagramView diagramView;
 				DiagramItem selectedDiagramItem;
 				FactTypeShape factTypeShape;
 				UniquenessConstraint iuc;
-				if (null != (ecs = (selectedElement = view.SelectedElements[0]) as ExternalConstraintShape))
+				if (null != (constraintShape = (selectedElement = view.SelectedElements[0]) as ExternalConstraintShape))
 				{
 					IStickyObject sticky = ormDiagram.StickyObject;
 					if (sticky == null)
 					{
-						ormDiagram.StickyObject = ecs;
+						ormDiagram.StickyObject = constraintShape;
 					}
 					else
 					{
-						IConstraint constraint = ecs.AssociatedConstraint;
+						IConstraint constraint = constraintShape.AssociatedConstraint;
 						ExternalConstraintConnectAction connectAction = ormDiagram.ExternalConstraintConnectAction;
 						SetConstraint setConstraint;
 						if (null != (setConstraint = constraint as SetConstraint))
@@ -2658,7 +2630,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						if (!connectAction.IsActive)
 						{
-							connectAction.ChainMouseAction(ecs, (DiagramClientView)ormDiagram.ClientViews[0]);
+							connectAction.ChainMouseAction(constraintShape, (DiagramClientView)ormDiagram.ClientViews[0]);
 						}
 					}
 				}
@@ -2716,7 +2688,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					Dictionary<ModelError, object> seenErrors = null;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 					{
-						if (displayFilter == null || displayFilter.ShouldDisplay(error))
+						if (ModelError.IsDisplayed(error, displayFilter))
 						{
 							if (seenErrors == null)
 							{
@@ -3423,12 +3395,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				Role role;
 				ORMDiagram ormDiagram;
-				ExternalConstraintShape ecs;
-				SetComparisonConstraint mcec;
+				ExternalConstraintShape constraintShape;
+				SetComparisonConstraint setComparisonConstraint;
 				if (null != (role = selectedElements[0] as Role)
 					&& null != (ormDiagram = view.CurrentDiagram as ORMDiagram)
-					&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
-					&& null != (mcec = ecs.AssociatedConstraint as SetComparisonConstraint))
+					&& null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape)
+					&& null != (setComparisonConstraint = constraintShape.AssociatedConstraint as SetComparisonConstraint))
 				{
 					// TODO:  It is theoretically possible to have one role playing a part in multiple
 					// RoleSequences for a constraint.  At some point it would probably be nice to
@@ -3444,7 +3416,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						for (int i = constraintCount - 1; i >= 0; --i)
 						{
 							// The current ConstraintRoleSequence is the one associated with the current StickyObject.
-							if ((roleConstraints[i]).Constraint == mcec)
+							if ((roleConstraints[i]).Constraint == setComparisonConstraint)
 							{
 								// TODO: Remove the ConstraintRoleSequence from this role.
 								roleConstraints[i].Delete();
@@ -3454,11 +3426,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							t.Commit();
 							ormDiagram.StickyObject.StickyRedraw();
-							// TODO:  Re-initializing the StickyObject is probably inefficient.  Implementing a rule on
-							// MCECs whenever their constraint collection is changed would probably be more effective.
-							// This is especially true when role sequences are just being moved up and down.  No insertions
-							// or deletions, it's just touched.
-							//ormDiagram.StickyObject.StickyInitialize();
 						}
 					}
 				}
@@ -3481,15 +3448,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			Role role;
 			ORMDiagram ormDiagram;
-			ExternalConstraintShape ecs;
-			SetComparisonConstraint mcec;
+			ExternalConstraintShape constraintShape;
+			SetComparisonConstraint setComparisonConstraint;
 			IORMDesignerView view = myDesignerView;
 			if (null != (role = view.SelectedElements[0] as Role)
 				&& null != (ormDiagram = view.CurrentDiagram as ORMDiagram)
-				&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
-				&& null != (mcec = ecs.AssociatedConstraint as SetComparisonConstraint))
+				&& null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape)
+				&& null != (setComparisonConstraint = constraintShape.AssociatedConstraint as SetComparisonConstraint))
 			{
-				LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = mcec.RoleSequenceCollection;
+				LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = setComparisonConstraint.RoleSequenceCollection;
 				SetComparisonConstraintRoleSequence sequenceToMove = null;
 				int sequenceOriginalPosition = 0;
 				int sequenceNewPosition = -1;
@@ -3528,16 +3495,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			Role role;
 			ORMDiagram ormDiagram;
-			ExternalConstraintShape ecs;
-			SetComparisonConstraint mcec;
+			ExternalConstraintShape constraintShape;
+			SetComparisonConstraint setComparisonConstraint;
 			IORMDesignerView view = myDesignerView;
 			if (null != (role = view.SelectedElements[0] as Role)
 				&& null != (ormDiagram = view.CurrentDiagram as ORMDiagram)
-				&& null != (ecs = ormDiagram.StickyObject as ExternalConstraintShape)
-				&& null != (mcec = ecs.AssociatedConstraint as SetComparisonConstraint))
+				&& null != (constraintShape = ormDiagram.StickyObject as ExternalConstraintShape)
+				&& null != (setComparisonConstraint = constraintShape.AssociatedConstraint as SetComparisonConstraint))
 			{
 
-				LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = mcec.RoleSequenceCollection;
+				LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = setComparisonConstraint.RoleSequenceCollection;
 				SetComparisonConstraintRoleSequence sequenceToMove = null;
 				int sequenceOriginalPosition = 0;
 				int sequenceNewPosition = -1;

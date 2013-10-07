@@ -395,6 +395,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			set { myTaskData = value; }
 		}
 		/// <summary>
+		/// Test if an error should be displayed to the use based on
+		/// current type-based filter state and the <see cref="ErrorState"/>
+		/// of the error itself.
+		/// </summary>
+		/// <param name="error">The error to test.</param>
+		/// <param name="filter">The filter to apply. Can be <see langword="null"/>.</param>
+		/// <returns><see langword="true"/> if the error exists in a non-ignored state
+		/// and the error type is allowed by the current filter.</returns>
+		public static bool IsDisplayed(ModelError error, ModelErrorDisplayFilter filter)
+		{
+			return error != null &&
+				error.ErrorState != ModelErrorState.Ignored &&
+				(filter == null || !filter.IsErrorExcluded(error.GetType()));
+		}
+		/// <summary>
 		/// Helper function to add an error to the task provider
 		/// when the error is attached to the model.
 		/// </summary>
@@ -415,9 +430,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 			IORMToolTaskProvider taskProvider;
-			ModelErrorDisplayFilter filter;
 			if (null != (taskProvider = ((IORMToolServices)error.Store).TaskProvider) &&
-				(null == (filter = error.Model.ModelErrorDisplayFilter) || filter.ShouldDisplay(error)))
+				ModelError.IsDisplayed(error, error.Model.ModelErrorDisplayFilter))
 			{
 				taskProvider = (error.Store as IORMToolServices).TaskProvider;
 				IORMToolTaskItem newTask = taskProvider.CreateTask();
@@ -437,6 +451,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// automatically regenerate the error text.
 		/// </summary>
 		public abstract RegenerateErrorTextEvents RegenerateEvents { get;}
+		/// <summary>
+		/// Called at the end of deserialization fixup to enable an error
+		/// to validate its <see cref="ErrorState"/> settings before an
+		/// attempt is made to display the error.
+		/// </summary>
+		protected virtual void FixupErrorState()
+		{
+			// Intentionally empty
+		}
 		#endregion // ModelError specific
 		#region Deserialization Fixup
 		/// <summary>
@@ -503,6 +526,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						!error.IsDeleted &&
 						(modelFilter == null || error.GetDomainClass().DomainModel == modelFilter))
 					{
+						// Make sure the error state is correct based on the full error state
+						error.FixupErrorState();
 						// Make sure the text is up to date
 						error.GenerateErrorText();
 						ModelError.AddToTaskProvider(errorLink);
@@ -684,22 +709,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IModelErrorOwner errorOwner = modelElement as IModelErrorOwner;
 			if (errorOwner != null)
 			{
-				if (displayFilter == null)
+				foreach (ModelErrorUsage usage in errorOwner.GetErrorCollection(useFilter))
 				{
-					using (IEnumerator<ModelErrorUsage> enumerator = errorOwner.GetErrorCollection(useFilter).GetEnumerator())
+					if (ModelError.IsDisplayed(usage.Error, displayFilter))
 					{
-						hasError = enumerator.MoveNext();
-					}
-				}
-				else
-				{
-					foreach (ModelErrorUsage usage in errorOwner.GetErrorCollection(useFilter))
-					{
-						if (displayFilter.ShouldDisplay(usage.Error))
-						{
-							hasError = true;
-							break;
-						}
+						hasError = true;
+						break;
 					}
 				}
 			}

@@ -22950,6 +22950,311 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ValueComparisonConstraintHasRolesNotComparableError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("ac162b03-18db-4bdf-a20d-986ac12e3f15")]
+	public partial class ValueComparisonConstraintHasRolesNotComparableError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ValueComparisonConstraintHasRolesNotComparableError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xac162b03, 0x18db, 0x4bdf, 0xa2, 0x0d, 0x98, 0x6a, 0xc1, 0x2e, 0x3f, 0x15);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ValueComparisonConstraintHasRolesNotComparableError link in the same Partition as the given ValueComparisonConstraint
+		/// </summary>
+		/// <param name="source">ValueComparisonConstraint to use as the source of the relationship.</param>
+		/// <param name="target">ValueComparisonRolesNotComparableError to use as the target of the relationship.</param>
+		public ValueComparisonConstraintHasRolesNotComparableError(ValueComparisonConstraint source, ValueComparisonRolesNotComparableError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraintDomainRoleId, source), new DslModeling::RoleAssignment(ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueComparisonConstraintHasRolesNotComparableError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueComparisonConstraintHasRolesNotComparableError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ValueComparisonConstraintHasRolesNotComparableError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ValueComparisonConstraintHasRolesNotComparableError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ValueComparisonConstraint domain role code
+		
+		/// <summary>
+		/// ValueComparisonConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ValueComparisonConstraintDomainRoleId = new global::System.Guid(0x71756360, 0x7b6c, 0x45b6, 0x90, 0xc8, 0x81, 0x9b, 0x5c, 0xcd, 0xa6, 0xaf);
+		
+		/// <summary>
+		/// DomainRole ValueComparisonConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/ValueComparisonConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/ValueComparisonConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RolesNotComparableError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/ValueComparisonConstraint.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("71756360-7b6c-45b6-90c8-819b5ccda6af")]
+		public virtual ValueComparisonConstraint ValueComparisonConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ValueComparisonConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ValueComparisonConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ValueComparisonConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ValueComparisonConstraint of a ValueComparisonRolesNotComparableError
+		/// <summary>
+		/// Gets ValueComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ValueComparisonConstraint GetValueComparisonConstraint(ValueComparisonRolesNotComparableError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RolesNotComparableErrorDomainRoleId) as ValueComparisonConstraint;
+		}
+		
+		/// <summary>
+		/// Sets ValueComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetValueComparisonConstraint(ValueComparisonRolesNotComparableError element, ValueComparisonConstraint newValueComparisonConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RolesNotComparableErrorDomainRoleId, newValueComparisonConstraint);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing ValueComparisonConstraint domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.ValueComparisonConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.ValueComparisonConstraint = (ValueComparisonConstraint)value;
+			}
+		}
+		
+		#endregion
+		#region RolesNotComparableError domain role code
+		
+		/// <summary>
+		/// RolesNotComparableError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RolesNotComparableErrorDomainRoleId = new global::System.Guid(0xb171c1b7, 0x73a9, 0x49a8, 0x86, 0x25, 0x3d, 0x20, 0x36, 0x48, 0x3f, 0x85);
+		
+		/// <summary>
+		/// DomainRole RolesNotComparableError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/RolesNotComparableError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/RolesNotComparableError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ValueComparisonConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError/RolesNotComparableError.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("b171c1b7-73a9-49a8-8625-3d2036483f85")]
+		public virtual ValueComparisonRolesNotComparableError RolesNotComparableError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ValueComparisonRolesNotComparableError)DslModeling::DomainRoleInfo.GetRolePlayer(this, RolesNotComparableErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RolesNotComparableErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RolesNotComparableError of a ValueComparisonConstraint
+		/// <summary>
+		/// Gets RolesNotComparableError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ValueComparisonRolesNotComparableError GetRolesNotComparableError(ValueComparisonConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ValueComparisonConstraintDomainRoleId) as ValueComparisonRolesNotComparableError;
+		}
+		
+		/// <summary>
+		/// Sets RolesNotComparableError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetRolesNotComparableError(ValueComparisonConstraint element, ValueComparisonRolesNotComparableError newRolesNotComparableError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ValueComparisonConstraintDomainRoleId, newRolesNotComparableError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing RolesNotComparableError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.RolesNotComparableError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.RolesNotComparableError = (ValueComparisonRolesNotComparableError)value;
+			}
+		}
+		
+		#endregion
+		#region ValueComparisonConstraint link accessor
+		/// <summary>
+		/// Get the ValueComparisonConstraintHasRolesNotComparableError link to a ValueComparisonConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError GetLinkToRolesNotComparableError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint valueComparisonConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError>(valueComparisonConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ValueComparisonConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region RolesNotComparableError link accessor
+		/// <summary>
+		/// Get the ValueComparisonConstraintHasRolesNotComparableError link to a ValueComparisonRolesNotComparableError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError GetLinkToValueComparisonConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonRolesNotComparableError rolesNotComparableErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError>(rolesNotComparableErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.RolesNotComparableErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of RolesNotComparableError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ValueComparisonConstraintHasRolesNotComparableError instance accessors
+		
+		/// <summary>
+		/// Get any ValueComparisonConstraintHasRolesNotComparableError links between a given ValueComparisonConstraint and a ValueComparisonRolesNotComparableError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonRolesNotComparableError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError link in links )
+			{
+				if ( target.Equals(link.RolesNotComparableError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ValueComparisonConstraintHasRolesNotComparableError link between a given ValueComparisonConstraintand a ValueComparisonRolesNotComparableError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonRolesNotComparableError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError.ValueComparisonConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraintHasRolesNotComparableError link in links )
+			{
+				if ( target.Equals(link.RolesNotComparableError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ValueConstraintHasDuplicateNameError
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasDuplicateNameError

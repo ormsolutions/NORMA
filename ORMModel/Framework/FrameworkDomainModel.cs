@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -139,6 +140,72 @@ namespace ORMSolutions.ORMArchitect.Framework
 		}
 	}
 	#endregion // DelayValidatePriorityAttribute class
+	#region DelayValidateReplacesAttribute class
+	/// <summary>
+	/// Place on a static delay validate method to mark the method as a replacement for
+	/// another delay validate method. A replacement validator is generally a method that
+	/// does more detailed validation than the replaced method(s). Replacement methods chain
+	/// naturally, so duplicate information should not be specified.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
+	public sealed class DelayValidateReplacesAttribute : Attribute
+	{
+		private string myReplacesValidatorName;
+		private Type myReplacesValidatorType;
+		/// <summary>
+		/// The method name that this validator replaces. At runtime, if
+		/// one of the replaced validators is already registered with
+		/// an element delayed validation, then specifying this validator
+		/// will unregister the element from another validator. Similarly,
+		/// a future registration with the replaced validator and element
+		/// will not readd the replaced validation.
+		/// </summary>
+		/// <param name="replacesValidator">The method name to replace, defined
+		/// on the same type as this method.</param>
+		public DelayValidateReplacesAttribute(string replacesValidator)
+		{
+			myReplacesValidatorName = replacesValidator;
+		}
+		/// <summary>
+		/// The method name that this validator replaces. At runtime, if
+		/// one of the replaced validators is already registered with
+		/// an element delayed validation, then specifying this validator
+		/// will unregister the element from another validator. Similarly,
+		/// a future registration with the replaced validator and element
+		/// will not readd the replaced validation.
+		/// </summary>
+		/// <param name="replacesValidator">The method name to replace</param>
+		/// <param name="replacesValidatorType">The type to find the replacement
+		/// method on. Needed only if the replacement method is on a different type.</param>
+		public DelayValidateReplacesAttribute(string replacesValidator, Type replacesValidatorType)
+		{
+			myReplacesValidatorName = replacesValidator;
+			myReplacesValidatorType = replacesValidatorType;
+		}
+		/// <summary>
+		/// The method name that this validator replaces.
+		/// </summary>
+		public string ReplacesValidator
+		{
+			[DebuggerStepThrough]
+			get
+			{
+				return myReplacesValidatorName;
+			}
+		}
+		/// <summary>
+		/// The type used to find the <see cref="ReplacesValidator"/> method.
+		/// </summary>
+		public Type ReplacesValidatorType
+		{
+			[DebuggerStepThrough]
+			get
+			{
+				return myReplacesValidatorType;
+			}
+		}
+	}
+	#endregion // DelayValidateReplacesAttribute class
 	partial class FrameworkDomainModel : IPersistentSessionKeys
 	{
 		#region InitializingToolboxItems property
@@ -245,6 +312,71 @@ namespace ORMSolutions.ORMArchitect.Framework
 							{
 								if (!validators.ContainsKey(newValidator))
 								{
+									// Handle replacements when moving in new validators. The side effect
+									// validators are internally consistent because the strongest validator
+									// is checked before the key is added, but all bets are off when it comes
+									// to merging these elements into the existing validators.
+									IEnumerable<ElementValidation> relatedValidators;
+									ModelElement validatedElement = newValidator.Element;
+									if (null != (relatedValidators = newValidator.ReplacedByValidators))
+									{
+										foreach (ElementValidation strongerValidator in relatedValidators)
+										{
+											if (validators.ContainsKey(new ElementValidator(validatedElement, strongerValidator)))
+											{
+												// The existing validator is stronger, use it instead of this one.
+												continue;
+											}
+										}
+									}
+									if (null != (relatedValidators = newValidator.ReplacedValidators))
+									{
+										ElementValidator weakerKey;
+										foreach (ElementValidation weakerValidator in relatedValidators)
+										{
+											if (validators.ContainsKey(weakerKey = new ElementValidator(validatedElement, weakerValidator)))
+											{
+												validators.Remove(weakerKey);
+												int removeIndex = sortedValidators.BinarySearch(weakerKey, comparer);
+												// The removeIndex here will have the same order, but it is not guaranteed
+												// to be the same item. We only know that we're in the block of items with
+												// the same order, so we need to search forwards and backwards from this
+												// point to find the item.
+												if (!weakerKey.Equals(sortedValidators[removeIndex]))
+												{
+													bool haveMatch = false;
+													keyCount = sortedValidators.Count;
+													for (int i = removeIndex + 1; i < keyCount; ++i)
+													{
+														ElementValidator currentValidator;
+														if (weakerKey.Equals(currentValidator = sortedValidators[i]))
+														{
+															haveMatch = true;
+															removeIndex = i;
+															break;
+														}
+														else if (0 != comparer.Compare(currentValidator, weakerKey))
+														{
+															break;
+														}
+													}
+													if (!haveMatch)
+													{
+														for (int i = removeIndex -1; i >= 0; --i)
+														{
+															// We must find it somewhere
+															if (weakerKey.Equals(sortedValidators[i]))
+															{
+																removeIndex = i;
+																break;
+															}
+														}
+													}
+												}
+												sortedValidators.RemoveAt(removeIndex);
+											}
+										}
+									}
 									validators[newValidator] = null;
 									int insertIndex = sortedValidators.BinarySearch(newValidator, comparer);
 									sortedValidators.Insert((insertIndex < 0) ? ~insertIndex : insertIndex, newValidator);
@@ -421,31 +553,37 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 		}
 		[DebuggerStepThrough]
-		private struct ElementValidatorOrderCache : IEquatable<ElementValidatorOrderCache>
+		private struct ElementValidatorInfoCache : IEquatable<ElementValidatorInfoCache>
 		{
 			private Guid myDomainModelId;
 			private DelayValidatePriorityOrder myOrder;
 			private int myPriority;
+			private List<RuntimeMethodHandle> myReplacesMethodHandles;
+			private List<RuntimeMethodHandle> myReplacedByMethodHandles;
 			/// <summary>
 			/// Create a new ElementValidatorOrder structure with a default priority
 			/// </summary>
 			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
-			public ElementValidatorOrderCache(Guid domainModelId)
+			public ElementValidatorInfoCache(Guid domainModelId)
 			{
 				myDomainModelId = domainModelId;
 				myOrder = DelayValidatePriorityOrder.WithDomainModel;
 				myPriority = 0;
+				myReplacesMethodHandles = null;
+				myReplacedByMethodHandles = null;
 			}
 			/// <summary>
 			/// Create a new ElementValidatorOrder structure with a default priority and explicit order
 			/// </summary>
 			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
 			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="domainModelId"/>.</param>
-			public ElementValidatorOrderCache(Guid domainModelId, DelayValidatePriorityOrder order)
+			public ElementValidatorInfoCache(Guid domainModelId, DelayValidatePriorityOrder order)
 			{
 				myDomainModelId = domainModelId;
 				myOrder = order;
 				myPriority = 0;
+				myReplacesMethodHandles = null;
+				myReplacedByMethodHandles = null;
 			}
 			/// <summary>
 			/// Create a new ElementValidatorOrder structure with explicit order and priority
@@ -453,22 +591,26 @@ namespace ORMSolutions.ORMArchitect.Framework
 			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
 			/// <param name="order">The <see cref="DelayValidatePriorityOrder"/> the validator runs in relative to the <paramref name="domainModelId"/>.</param>
 			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
-			public ElementValidatorOrderCache(Guid domainModelId, DelayValidatePriorityOrder order, int priority)
+			public ElementValidatorInfoCache(Guid domainModelId, DelayValidatePriorityOrder order, int priority)
 			{
 				myDomainModelId = domainModelId;
 				myOrder = order;
 				myPriority = priority;
+				myReplacesMethodHandles = null;
+				myReplacedByMethodHandles = null;
 			}
 			/// <summary>
 			/// Create a new ElementValidatorOrder structure with an explicit priority
 			/// </summary>
 			/// <param name="domainModelId">The id for the <see cref="DomainModel"/> the validator runs with.</param>
 			/// <param name="priority">A custom priority. The default priority is 0. Anything less runs before, anything higher afterwards</param>
-			public ElementValidatorOrderCache(Guid domainModelId, int priority)
+			public ElementValidatorInfoCache(Guid domainModelId, int priority)
 			{
 				myDomainModelId = domainModelId;
 				myPriority = priority;
 				myOrder = DelayValidatePriorityOrder.WithDomainModel;
+				myReplacesMethodHandles = null;
+				myReplacedByMethodHandles = null;
 			}
 			/// <summary>
 			/// The id for the <see cref="DomainModel"/> that this element runs with
@@ -500,6 +642,207 @@ namespace ORMSolutions.ORMArchitect.Framework
 					return myPriority;
 				}
 			}
+
+
+			/// <summary>
+			/// Populate the info cache for the specified method. This should be called only
+			/// if the cache information for this method is not already cached.
+			/// </summary>
+			/// <param name="method">The method to create a cache for.</param>
+			/// <param name="store">The requesting <see cref="Store"/>, used to find domain model identifiers.</param>
+			/// <param name="cacheMap">The caching dictionary that owns these elements</param>
+			public static ElementValidatorInfoCache PopulateValidatorInfoCache(MethodInfo method, Store store, Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> cacheMap)
+			{
+				ElementValidatorInfoCache infoCache = default(ElementValidatorInfoCache);
+				bool haveInfoCache = false;
+				object[] attributes = method.GetCustomAttributes(typeof(DelayValidatePriorityAttribute), false);
+				DelayValidatePriorityOrder order = DelayValidatePriorityOrder.WithDomainModel;
+				int priority = 0;
+				Type explicitDomainModelType = null;
+				Type declaringType;
+				if (attributes.Length != 0)
+				{
+					DelayValidatePriorityAttribute priorityAttr = (DelayValidatePriorityAttribute)attributes[0];
+					priority = priorityAttr.Priority;
+					order = priorityAttr.Order;
+					explicitDomainModelType = priorityAttr.DomainModelType;
+				}
+				if (explicitDomainModelType != null)
+				{
+					infoCache = new ElementValidatorInfoCache(store.DomainDataDirectory.GetDomainModel(explicitDomainModelType).Id, order, priority);
+					haveInfoCache = true;
+				}
+				else
+				{
+					declaringType = method.DeclaringType;
+					while (declaringType != null)
+					{
+						object[] idAttributes = declaringType.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+						if (idAttributes.Length != 0)
+						{
+							DomainClassInfo classInfo = store.DomainDataDirectory.FindDomainClass(((DomainObjectIdAttribute)idAttributes[0]).Id);
+							if (classInfo != null)
+							{
+								infoCache = new ElementValidatorInfoCache(classInfo.DomainModel.Id, order, priority);
+								haveInfoCache = true;
+								break;
+							}
+						}
+						declaringType = declaringType.DeclaringType;
+					}
+					Debug.Assert(!haveInfoCache || store.FindDomainModel(infoCache.DomainModelId) != null, "Cannot find DomainModel for delay validation function: " + method.DeclaringType.FullName + "." + method.Name);
+				}
+				if (haveInfoCache)
+				{
+					RuntimeMethodHandle methodHandle = method.MethodHandle;
+
+					// We have the basic cached information, continue with replacement methods
+					attributes = method.GetCustomAttributes(typeof(DelayValidateReplacesAttribute), false);
+					int attributeLength = attributes.Length;
+					if (attributeLength != 0)
+					{
+						declaringType = method.DeclaringType;
+						Type[] parameterTypes = new Type[] { typeof(ModelElement) };
+						for (int i = 0; i < attributeLength; ++i)
+						{
+							DelayValidateReplacesAttribute replacesAttribute = (DelayValidateReplacesAttribute)attributes[i];
+							Type methodType = replacesAttribute.ReplacesValidatorType ?? declaringType;
+							MethodInfo replacesMethod = methodType.GetMethod(replacesAttribute.ReplacesValidator, BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, parameterTypes, null);
+							if (replacesMethod != null)
+							{
+								RuntimeMethodHandle replacesMethodHandle = replacesMethod.MethodHandle;
+								ElementValidatorInfoCache replacesInfoCache;
+								if (!cacheMap.TryGetValue(replacesMethodHandle, out replacesInfoCache))
+								{
+									replacesInfoCache = PopulateValidatorInfoCache(replacesMethod, store, cacheMap);
+								}
+
+								// Mark the replaced method as being replaced by this method. This
+								// also recursively marks methods already replaced by the replaced
+								// method as being replaced by this one.
+								replacesInfoCache.AddReplacedByMethodHandle(methodHandle, replacesMethodHandle, cacheMap);
+
+								// Mark this method as replacing the replaced method.
+								infoCache.AddReplacesMethodHandle(replacesMethodHandle, methodHandle, cacheMap);
+							}
+							else
+							{
+								Debug.Fail("Delay validator replacement method " + replacesAttribute.ReplacesValidator + " on " + methodType.FullName + " not found");
+							}
+						}
+					}
+					cacheMap[methodHandle] = infoCache;
+				}
+				return infoCache;
+			}
+			/// <summary>
+			/// Add a method handle that this one replaces.
+			/// </summary>
+			/// <param name="replacesMethodHandle">The method handle that this method replaces.</param>
+			/// <param name="thisMethodHandle">The method handle for the method corresponding to this information.</param>
+			/// <param name="cacheMap">The cache that stores these elements.</param>
+			private void AddReplacesMethodHandle(RuntimeMethodHandle replacesMethodHandle, RuntimeMethodHandle thisMethodHandle, Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> cacheMap)
+			{
+				// Add the 'replaces' handle to ourselves
+				List<RuntimeMethodHandle> handles;
+				if (null == (handles = myReplacesMethodHandles))
+				{
+					myReplacesMethodHandles = handles = new List<RuntimeMethodHandle>();
+					cacheMap[thisMethodHandle] = this;
+				}
+				handles.Add(replacesMethodHandle);
+
+				// Recurse to add the same information to other methods that replace us.
+				if (null != (handles = myReplacedByMethodHandles))
+				{
+					int handleCount = handles.Count;
+					for (int i = 0; i < handleCount; ++i)
+					{
+						RuntimeMethodHandle parentHandle = handles[i];
+						cacheMap[parentHandle].AddReplacesMethodHandle(replacesMethodHandle, parentHandle, cacheMap);
+					}
+				}
+			}
+			/// <summary>
+			/// See if this validator can replace a different validator.
+			/// </summary>
+			public bool CanReplaceValidators
+			{
+				get
+				{
+					return myReplacesMethodHandles != null;
+				}
+			}
+			/// <summary>
+			/// Enumerate callback functions that can be replace this method.
+			/// </summary>
+			public IEnumerable<ElementValidation> GetReplacedValidators()
+			{
+				return EnumerateDelegates(myReplacesMethodHandles);
+			}
+			/// <summary>
+			/// Add a method handle that this one is replaced by.
+			/// </summary>
+			/// <param name="replacedByMethodHandle">The method handle that replaces this method.</param>
+			/// <param name="thisMethodHandle">The method handle for the method corresponding to this information.</param>
+			/// <param name="cacheMap">The cache that stores these elements.</param>
+			private void AddReplacedByMethodHandle(RuntimeMethodHandle replacedByMethodHandle, RuntimeMethodHandle thisMethodHandle, Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> cacheMap)
+			{
+				// Add the 'replaced by' handle to ourselves.
+				List<RuntimeMethodHandle> handles;
+				if (null == (handles = myReplacedByMethodHandles))
+				{
+					myReplacedByMethodHandles = handles = new List<RuntimeMethodHandle>();
+					cacheMap[thisMethodHandle] = this;
+				}
+				handles.Add(replacedByMethodHandle);
+
+				// Recurse to add the same information to other methods that we already replace.
+				if (null != (handles = myReplacesMethodHandles))
+				{
+					int handleCount = handles.Count;
+					for (int i = 0; i < handleCount; ++i)
+					{
+						RuntimeMethodHandle childHandle = handles[i];
+						cacheMap[childHandle].AddReplacedByMethodHandle(replacedByMethodHandle, childHandle, cacheMap);
+					}
+				}
+			}
+			/// <summary>
+			/// See if this validator can be replaced by a different validator.
+			/// </summary>
+			public bool CanBeReplacedByValidators
+			{
+				get
+				{
+					return myReplacedByMethodHandles != null;
+				}
+			}
+			/// <summary>
+			/// Enumerate callback functions that can be replaced
+			/// by this method.
+			/// </summary>
+			public IEnumerable<ElementValidation> GetReplacedByValidators()
+			{
+				return EnumerateDelegates(myReplacedByMethodHandles);
+			}
+			/// <summary>
+			/// Shared code for enumerating runtime handles and turning them
+			/// into delegates.
+			/// </summary>
+			private IEnumerable<ElementValidation> EnumerateDelegates(List<RuntimeMethodHandle> handles)
+			{
+				int methodCount;
+				if (null != handles &&
+					0 != (methodCount = handles.Count))
+				{
+					Type validatorType = typeof(ElementValidation);
+					for (int i = 0; i < methodCount; ++i)
+					{
+						yield return (ElementValidation)Delegate.CreateDelegate(validatorType, (MethodInfo)MethodBase.GetMethodFromHandle(handles[i]));
+					}
+				}
+			}
 			/// <summary>See <see cref="Object.GetHashCode()"/>.</summary>
 			public override int GetHashCode()
 			{
@@ -507,14 +850,15 @@ namespace ORMSolutions.ORMArchitect.Framework
 					myDomainModelId.GetHashCode(),
 					myOrder.GetHashCode(),
 					myPriority.GetHashCode());
+				// Ignore method handle information for hash code and equality computation.
 			}
 			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
 			public override bool Equals(object obj)
 			{
-				return obj is ElementValidatorOrderCache && this.Equals((ElementValidatorOrderCache)obj);
+				return obj is ElementValidatorInfoCache && this.Equals((ElementValidatorInfoCache)obj);
 			}
 			/// <summary>See <see cref="IEquatable{ElementValidatorOrder}.Equals"/>.</summary>
-			public bool Equals(ElementValidatorOrderCache other)
+			public bool Equals(ElementValidatorInfoCache other)
 			{
 				return myDomainModelId == other.myDomainModelId && myOrder == other.myOrder && myPriority == other.myPriority;
 			}
@@ -543,8 +887,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 				Validation(Element);
 				TraceUtility.TraceDelegateEnd(Element.Store, Validation);
 			}
-			private static Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache> myMethodToElementValidatorOrderCacheMap =
-				new Dictionary<RuntimeMethodHandle, ElementValidatorOrderCache>(RuntimeMethodHandleComparer.Instance);
+			private static Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> myMethodToElementValidatorInfoCacheMap =
+				new Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache>(RuntimeMethodHandleComparer.Instance);
 			/// <summary>
 			/// Get the order information associated with this validator
 			/// </summary>
@@ -552,67 +896,60 @@ namespace ORMSolutions.ORMArchitect.Framework
 			{
 				get
 				{
-					ElementValidatorOrder retVal = new ElementValidatorOrder();
-					MethodInfo method = Validation.Method;
-					RuntimeMethodHandle methodHandle = method.MethodHandle;
-					ElementValidatorOrderCache orderCache;
+					ElementValidatorInfoCache infoCache;
+					MethodInfo methodInfo = Validation.Method;
 					Store store = Element.Store;
-					if (myMethodToElementValidatorOrderCacheMap.TryGetValue(methodHandle, out orderCache))
+					Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> cacheMap = myMethodToElementValidatorInfoCacheMap;
+					if (!cacheMap.TryGetValue(methodInfo.MethodHandle, out infoCache))
 					{
-						retVal = new ElementValidatorOrder(store.GetDomainModel(orderCache.DomainModelId), orderCache.Order, orderCache.Priority);
+						infoCache = ElementValidatorInfoCache.PopulateValidatorInfoCache(methodInfo, store, cacheMap);
 					}
-					else
-					{
-						object[] explicitPriorityAttributes = method.GetCustomAttributes(typeof(DelayValidatePriorityAttribute), false);
-						DelayValidatePriorityOrder order = DelayValidatePriorityOrder.WithDomainModel;
-						int priority = 0;
-						Type explicitDomainModelType = null;
-						if (explicitPriorityAttributes.Length != 0)
-						{
-							DelayValidatePriorityAttribute priorityAttr = (DelayValidatePriorityAttribute)explicitPriorityAttributes[0];
-							priority = priorityAttr.Priority;
-							order = priorityAttr.Order;
-							explicitDomainModelType = priorityAttr.DomainModelType;
-						}
-						if (explicitDomainModelType != null)
-						{
-							DomainModelInfo explicitModelInfo = store.DomainDataDirectory.GetDomainModel(explicitDomainModelType);
-							retVal = new ElementValidatorOrder(store.GetDomainModel(explicitModelInfo.Id), order, priority);
-							myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(explicitModelInfo.Id, order, priority);
-						}
-						else
-						{
-							Type declaringType = method.DeclaringType;
-							while (declaringType != null)
-							{
-								object[] idAttributes = declaringType.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
-								if (idAttributes.Length != 0)
-								{
-									DomainClassInfo classInfo = store.DomainDataDirectory.FindDomainClass(((DomainObjectIdAttribute)idAttributes[0]).Id);
-									if (classInfo != null)
-									{
-										Guid domainModelId = classInfo.DomainModel.Id;
-										retVal = new ElementValidatorOrder(store.GetDomainModel(domainModelId), order, priority);
-										myMethodToElementValidatorOrderCacheMap[methodHandle] = new ElementValidatorOrderCache(domainModelId, order, priority);
-										break;
-									}
-								}
-								declaringType = declaringType.DeclaringType;
-							}
-						}
-						Debug.Assert(retVal.DomainModel != null, "Cannot find DomainModel for delay validation function: " + method.DeclaringType.FullName + "." + method.Name);
-					}
-					return retVal;
+					return new ElementValidatorOrder(store.GetDomainModel(infoCache.DomainModelId), infoCache.Order, infoCache.Priority);
 				}
+			}
+			/// <summary>
+			/// Get element validators that this validator replaces. Can return null.
+			/// </summary>
+			public IEnumerable<ElementValidation> ReplacedValidators
+			{
+				get
+				{
+					ElementValidatorInfoCache infoCache;
+					MethodInfo methodInfo = Validation.Method;
+					Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> cacheMap = myMethodToElementValidatorInfoCacheMap;
+					if (!cacheMap.TryGetValue(methodInfo.MethodHandle, out infoCache))
+					{
+						infoCache = ElementValidatorInfoCache.PopulateValidatorInfoCache(methodInfo, Element.Store, cacheMap);
+					}
+					return infoCache.CanReplaceValidators ? infoCache.GetReplacedValidators() : null;
+				}
+			}
+			/// <summary>
+			/// Get element validators that can be replaced by this one. Can return null.
+			/// </summary>
+			public IEnumerable<ElementValidation> ReplacedByValidators
+			{
+				get
+				{
+					ElementValidatorInfoCache infoCache;
+					MethodInfo methodInfo = Validation.Method;
+					Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> cacheMap = myMethodToElementValidatorInfoCacheMap;
+					if (!cacheMap.TryGetValue(methodInfo.MethodHandle, out infoCache))
+					{
+						infoCache = ElementValidatorInfoCache.PopulateValidatorInfoCache(methodInfo, Element.Store, cacheMap);
+					}
+					return infoCache.CanBeReplacedByValidators ? infoCache.GetReplacedByValidators() : null;
+				}
+
 			}
 			/// <summary>
 			/// The <see cref="ModelElement"/> to validate.
 			/// </summary>
-			private readonly ModelElement Element;
+			public readonly ModelElement Element;
 			/// <summary>
 			/// The callback valdiation function.
 			/// </summary>
-			private readonly ElementValidation Validation;
+			public readonly ElementValidation Validation;
 			/// <summary>See <see cref="Object.GetHashCode()"/>.</summary>
 			public override int GetHashCode()
 			{
@@ -662,6 +999,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			object dictionaryObject;
 			Dictionary<ElementValidator, object> dictionary;
 			ElementValidator key = new ElementValidator(element, validation);
+			bool existingDictionary = true;
 			if (contextDictionary.TryGetValue(DelayedValidationContextKey, out dictionaryObject))
 			{
 				dictionary = (Dictionary<ElementValidator, object>)dictionaryObject;
@@ -673,6 +1011,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			else
 			{
 				contextDictionary[DelayedValidationContextKey] = dictionary = new Dictionary<ElementValidator, object>();
+				existingDictionary = false;
 				// Create the validation signals in an alternate partition. This
 				// enables elements in other alternate partitions to use delayed
 				// validation without marking the primary partition as dirty.
@@ -684,6 +1023,32 @@ namespace ORMSolutions.ORMArchitect.Framework
 					partition.AlternateId = typeof(DelayValidateSignal);
 				}
 				new DelayValidateSignal(partition);
+			}
+			if (existingDictionary)
+			{
+				IEnumerable<ElementValidation> relatedValidators;
+				if (null != (relatedValidators = key.ReplacedByValidators))
+				{
+					foreach (ElementValidation strongerValidator in relatedValidators)
+					{
+						if (dictionary.ContainsKey(new ElementValidator(element, strongerValidator)))
+						{
+							// The validation for this element is already handled by a stronger validator
+							return false;
+						}
+					}
+				}
+				if (null != (relatedValidators = key.ReplacedValidators))
+				{
+					ElementValidator weakerKey;
+					foreach (ElementValidation weakerValidator in relatedValidators)
+					{
+						if (dictionary.ContainsKey(weakerKey = new ElementValidator(element, weakerValidator)))
+						{
+							dictionary.Remove(weakerKey);
+						}
+					}
+				}
 			}
 			dictionary[key] = null;
 			return true;
