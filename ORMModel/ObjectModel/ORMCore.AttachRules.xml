@@ -37,6 +37,26 @@
 				<arg:RuleOn targetType="CalculatedPathValueInputBindsToRolePathRoot"/>
 			</arg:AddRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="CardinalityConstraint">
+			<arg:ChangeRule methodName="CardinalityChangedRule">
+				<arg:RuleOn targetType="CardinalityConstraint"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="CardinalityRangeAddedRule">
+				<arg:RuleOn targetType="CardinalityConstraintHasRange"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="CardinalityRangeChangedRule">
+				<arg:RuleOn targetType="CardinalityRange"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="CardinalityRangeDeletedRule">
+				<arg:RuleOn targetType="CardinalityConstraintHasRange"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ObjectTypeCardinalityAddedRule">
+				<arg:RuleOn targetType="ObjectTypeHasCardinalityConstraint"/>
+			</arg:AddRule>
+			<arg:AddRule methodName="UnaryRoleCardinalityAddedRule">
+				<arg:RuleOn targetType="UnaryRoleHasCardinalityConstraint"/>
+			</arg:AddRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="ConstraintRoleSequence">
 			<arg:ChangeRule methodName="AutomaticJoinPathChangeRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceJoinPath"/>
@@ -900,6 +920,7 @@
 				<arg:RuleOn targetType="SetComparisonConstraintHasDuplicateNameError"/>
 				<arg:RuleOn targetType="SetConstraintHasDuplicateNameError"/>
 				<arg:RuleOn targetType="ValueConstraintHasDuplicateNameError"/>
+				<arg:RuleOn targetType="CardinalityConstraintHasDuplicateNameError"/>
 			</arg:DeleteRule>
 			<arg:DeleteRule methodName="DuplicateObjectTypeNameObjectTypeDeletedRule">
 				<arg:RuleOn targetType="ObjectTypeHasDuplicateNameError"/>

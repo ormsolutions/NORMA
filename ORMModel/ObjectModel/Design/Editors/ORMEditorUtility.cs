@@ -134,6 +134,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, Role.ValueRangeTextDomainPropertyId),
 								false);
 						}
+						else if (error is CardinalityRangeOverlapError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								RoleTypeDescriptor.CardinalityDisplayPropertyDescriptor,
+								false);
+						}
 						else
 						{
 							retVal = false;
@@ -166,6 +173,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						return retVal;
 					});
 				#endregion // ValueConstraint error activation
+				#region CardinalityConstraint error activation
+				activationService.RegisterErrorActivator(
+					typeof(CardinalityConstraint),
+					true,
+					delegate(IORMToolServices services, ModelElement selectedElement, ModelError error)
+					{
+						bool retVal = true;
+						if (error is CardinalityRangeOverlapError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, CardinalityConstraint.TextDomainPropertyId),
+								false);
+						}
+						else if (error is ConstraintDuplicateNameError)
+						{
+							ActivateNameProperty(selectedElement);
+						}
+						else
+						{
+							retVal = false;
+						}
+						return retVal;
+					});
+				#endregion // CardinalityConstraint error activation
 				#region SetConstraint error activation
 				activationService.RegisterErrorActivator(
 					typeof(SetConstraint),
@@ -299,6 +331,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 								DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ValueRangeTextDomainPropertyId),
 								false);
 						}
+						else if (error is CardinalityRangeOverlapError)
+						{
+							EditorUtility.ActivatePropertyEditor(
+								services.ServiceProvider,
+								ObjectTypeTypeDescriptor.CardinalityDisplayPropertyDescriptor,
+								false);
+						}
 						else if (error is ObjectTypeDuplicateNameError)
 						{
 							ActivateNameProperty(selectedElement);
@@ -331,6 +370,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						DuplicateReadingSignatureError duplicateSignature;
 						FactTypeRequiresReadingError noReading;
 						ValueConstraintError valueError;
+						CardinalityRangeOverlapError cardinalityRangeError;
 						FactType factType;
 						ImpliedInternalUniquenessConstraintError implConstraint;
 						Reading reading = null;
@@ -418,6 +458,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 								EditorUtility.ActivatePropertyEditor(
 									services.ServiceProvider,
 									DomainTypeDescriptor.CreatePropertyDescriptor(selectedElement, ObjectType.ValueRangeTextDomainPropertyId),
+									false);
+							}
+							else
+							{
+								retVal = false;
+							}
+						}
+						else if (null != (cardinalityRangeError = error as CardinalityRangeOverlapError))
+						{
+							if (cardinalityRangeError.CardinalityConstraint is ObjectTypeCardinalityConstraint)
+							{
+								EditorUtility.ActivatePropertyEditor(
+									services.ServiceProvider,
+									ObjectTypeTypeDescriptor.CardinalityDisplayPropertyDescriptor,
 									false);
 							}
 							else

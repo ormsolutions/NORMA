@@ -34,6 +34,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// This would have a slightly negative impact on performance, but the result would still be correct.
 					// Given the low likelihood of this ever happening, the extra overhead of synchronization would outweigh any possible gain from it.
 					retVal = new Type[]{
+						typeof(CardinalityConstraintShape).GetNestedType("CardinalityConstraintTextChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintLink).GetNestedType("DeleteDanglingConstraintShapeAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintLink).GetNestedType("VerifyedConnectedShapeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExternalConstraintLink).GetNestedType("VerifyConnectedShapeShapeDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -53,6 +54,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(FactTypeShape).GetNestedType("RoleDisplayOrderChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("SwitchFromNestedFactTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("SwitchToNestedFactTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FrequencyConstraintShape).GetNestedType("ConstrainedFactTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FrequencyConstraintShape).GetNestedType("ConstrainedFactTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintConversionDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModelNoteShape).GetNestedType("NoteChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -95,6 +98,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(ModelNoteAddedRuleClass),
 						typeof(ModelNoteReferenceAddedRuleClass),
 						typeof(ObjectTypedAddedRuleClass),
+						typeof(ObjectTypeCardinalityAddedRuleClass),
 						typeof(ObjectTypePlaysRoleAddedRuleClass),
 						typeof(ObjectTypePlaysRoleRolePlayerChangeRuleClass),
 						typeof(ObjectTypeShapeChangeRuleClass),
@@ -105,6 +109,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(RoleValueConstraintAddedRuleClass),
 						typeof(SetComparisonConstraintAddedRuleClass),
 						typeof(SetConstraintAddedRuleClass),
+						typeof(UnaryRoleCardinalityAddedRuleClass),
 						typeof(ValueTypeValueConstraintAddedRuleClass),
 						typeof(ReadingShape).GetNestedType("DerivationRuleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ReadingShape).GetNestedType("DerivationRuleChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -158,7 +163,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 91; ++i)
+			for (int i = 0; i < 96; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -170,6 +175,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	}
 	#endregion // Attach rules to ORMShapeDomainModel model
 	#region Auto-rule classes
+	#region Rule classes for CardinalityConstraintShape
+	partial class CardinalityConstraintShape
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.ResizeParentRulePriority)]
+		private sealed class CardinalityConstraintTextChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public CardinalityConstraintTextChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.ResizeParentRulePriority;
+			/// /// </summary>
+			/// private static void CardinalityConstraintTextChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape.CardinalityConstraintTextChangedRule");
+				CardinalityConstraintShape.CardinalityConstraintTextChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape.CardinalityConstraintTextChangedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for CardinalityConstraintShape
 	#region Rule classes for ExternalConstraintLink
 	partial class ExternalConstraintLink
 	{
@@ -682,7 +718,59 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	#region Rule classes for FrequencyConstraintShape
 	partial class FrequencyConstraintShape
 	{
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ConstrainedFactTypeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ConstrainedFactTypeAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape
+			/// /// <summary>
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void ConstrainedFactTypeAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.ConstrainedFactTypeAddedRule");
+				FrequencyConstraintShape.ConstrainedFactTypeAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.ConstrainedFactTypeAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		private sealed class ConstrainedFactTypeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ConstrainedFactTypeDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// </summary>
+			/// private static void ConstrainedFactTypeDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.ConstrainedFactTypeDeletedRule");
+				FrequencyConstraintShape.ConstrainedFactTypeDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape.ConstrainedFactTypeDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
 		private sealed class FrequencyConstraintPropertyChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -694,7 +782,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Provide the following method in class: 
 			/// ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape
 			/// /// <summary>
-			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
 			/// /// </summary>
 			/// private static void FrequencyConstraintPropertyChangeRule(ElementPropertyChangedEventArgs e)
 			/// {
@@ -1802,6 +1890,32 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.ObjectTypedAddedRule");
 			}
 		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ObjectTypeCardinalityAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ObjectTypeCardinalityAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ObjectTypeCardinalityAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.ObjectTypeCardinalityAddedRule");
+				ORMShapeDomainModel.ObjectTypeCardinalityAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.ObjectTypeCardinalityAddedRule");
+			}
+		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
 		private sealed class ObjectTypePlaysRoleAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
@@ -2066,7 +2180,33 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.SetConstraintAddedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddConnectionRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class UnaryRoleCardinalityAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public UnaryRoleCardinalityAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel
+			/// /// <summary>
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void UnaryRoleCardinalityAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.UnaryRoleCardinalityAddedRule");
+				ORMShapeDomainModel.UnaryRoleCardinalityAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.UnaryRoleCardinalityAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueConstraint), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
 		private sealed class ValueTypeValueConstraintAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -2078,7 +2218,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Provide the following method in class: 
 			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel
 			/// /// <summary>
-			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+			/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 			/// /// </summary>
 			/// private static void ValueTypeValueConstraintAddedRule(ElementAddedEventArgs e)
 			/// {

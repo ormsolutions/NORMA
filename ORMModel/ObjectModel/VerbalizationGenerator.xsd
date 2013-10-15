@@ -87,6 +87,16 @@
 					<xs:documentation>Helper class for verbalizing implied simple mandatory constraints. The childHelperFor attribute should be set to FactType.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="ObjectTypeCardinalityConstraint">
+				<xs:annotation>
+					<xs:documentation>Verbalizes object type cardinality constraints.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UnaryRoleCardinalityConstraint">
+				<xs:annotation>
+					<xs:documentation>Verbalizes unary role cardinality constraints.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 			<xs:enumeration value="AcyclicRingVerbalizer">
 				<xs:annotation>
 					<xs:documentation>Individual ring verbalization. The childHelperFor attribute should be set to RingConstraint.</xs:documentation>
@@ -194,6 +204,16 @@
 			<xs:enumeration value="NearestValueConstraint">
 				<xs:annotation>
 					<xs:documentation>Verbalizes entity type value constraints.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ObjectTypeCardinalityConstraint">
+				<xs:annotation>
+					<xs:documentation>Verbalizes object type cardinality constraints.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UnaryRoleCardinalityConstraint">
+				<xs:annotation>
+					<xs:documentation>Verbalizes unary role cardinality constraints.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -418,6 +438,7 @@
 	<xs:simpleType name="ListStyleEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="CompactSimpleList"/>
+			<xs:enumeration value="CompactSimpleOrList"/>
 			<xs:enumeration value="CompoundList"/>
 			<xs:enumeration value="FactTypeList"/>
 			<xs:enumeration value="EqualsList"/>
@@ -582,6 +603,11 @@
 			<xs:enumeration value="PreferredFor">
 				<xs:annotation>
 					<xs:documentation>Declare a preferredFor variable for a UniquenessConstraint context.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SingleRangeBounds">
+				<xs:annotation>
+					<xs:documentation>Populate the range, rangeLowerBound, and rangeUpperBound variables for a single cardinality range.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
@@ -798,6 +824,31 @@
 							<xs:documentation>Matches a frequency range where the minimum is one.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
+					<xs:enumeration value="SingleRange">
+						<xs:annotation>
+							<xs:documentation>A single cardinality range is defined.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="RangeExactlyOne">
+						<xs:annotation>
+							<xs:documentation>The upper and lower bounds of a cardinality range are exactly one.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="RangeExact">
+						<xs:annotation>
+							<xs:documentation>The upper and lower bounds of a cardinality range are the same.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="RangeLowerUnbounded">
+						<xs:annotation>
+							<xs:documentation>The lower bound of a cardinality range is set at zero.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="RangeUpperUnbounded">
+						<xs:annotation>
+							<xs:documentation>The upper bound of a cardinality range is unbounded.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 					<xs:enumeration value="SingleRoleRoleSequence">
 						<xs:annotation>
 							<xs:documentation>Matches a role sequence with exactly one role.</xs:documentation>
@@ -905,6 +956,9 @@
 			<xs:element name="MaxValue" type="MaxValueType"/>
 			<xs:element name="MinFrequencyValue" type="MinFrequencyValueType"/>
 			<xs:element name="MaxFrequencyValue" type="MaxFrequencyValueType"/>
+			<xs:element name="IterateRanges" type="IterateRangesType"/>
+			<xs:element name="RangeLowerBound" type="RangeLowerBoundType"/>
+			<xs:element name="RangeUpperBound" type="RangeUpperBoundType"/>
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
 			<xs:element name="PreferredIdentifierFor" type="PreferredIdentifierForType"/>
 			<xs:element name="PreferredIdentifierForId" type="ElementIdType"/>
@@ -918,8 +972,6 @@
 			<xs:element name="SubtypeId" type="ElementIdType"/>
 			<xs:element name="SupertypeName" type="SupertypeNameType"/>
 			<xs:element name="SupertypeId" type="ElementIdType"/>
-			<xs:element name="ValueRangeValueTypeName" type="ValueRangeValueTypeNameType"/>
-			<xs:element name="ValueRangeValueTypeId" type="ElementIdType"/>
 		</xs:choice>
 	</xs:group>
 	<xs:group name="ReplacementElementsWithConditionalMatchGroup">
@@ -1027,6 +1079,15 @@
 					</xs:complexContent>
 				</xs:complexType>
 			</xs:element>
+			<xs:element name="IterateRanges">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="IterateRangesType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
 			<xs:element name="MinValue">
 				<xs:complexType>
 					<xs:complexContent>
@@ -1058,6 +1119,24 @@
 				<xs:complexType>
 					<xs:complexContent>
 						<xs:extension base="MaxFrequencyValueType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RangeLowerBound">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="RangeLowerBoundType">
+							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
+						</xs:extension>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RangeUpperBound">
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="RangeUpperBoundType">
 							<xs:attribute name="conditionalMatch" use="optional" type="ConditionalMatchPatternType"/>
 						</xs:extension>
 					</xs:complexContent>
@@ -1184,12 +1263,16 @@
 		</xs:choice>
 		<xs:attribute name="listStyle" type="ListStyleEnum"/>
 	</xs:complexType>
-	<xs:complexType name="ValueRangeValueTypeNameType">
+	<xs:complexType name="IterateRangesType">
 		<xs:annotation>
 			<xs:documentation>
-				Returns the name of the value type.
+				Iterates a cardinality range collection.
 			</xs:documentation>
 		</xs:annotation>
+		<xs:choice minOccurs="1" maxOccurs="unbounded">
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
+		</xs:choice>
+		<xs:attribute name="listStyle" type="ListStyleEnum"/>
 	</xs:complexType>
 	<xs:complexType name="PortableDataTypeType">
 		<xs:annotation>
@@ -1214,11 +1297,6 @@
 		<xs:attribute name="isObjectType" use="optional" type="xs:boolean">
 			<xs:annotation>
 				<xs:documentation>Specify if object type name normalization should be applied.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="objectTypeAccessor" use="optional" type="xs:string">
-			<xs:annotation>
-				<xs:documentation>The name of a property (from the 'this' context) that can be used to retrieve the object type.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
@@ -1314,7 +1392,21 @@
 	<xs:complexType name="MaxFrequencyValueType">
 		<xs:annotation>
 			<xs:documentation>
-				Returns the maximumu value of a frequency constraint.
+				Returns the maximum value of a frequency constraint.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="RangeLowerBoundType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the lower bound of a cardinality constraint.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="RangeUpperBoundType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the upper bound of a cardinality constraint.
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
@@ -1970,6 +2062,7 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetType"/>
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch"/>
 		</xs:choice>
 		<xs:attribute name="type" type="ConstraintTypeEnum" use="required"/>
 		<xs:attribute name="patternGroup" type="ConstraintPatternGroupEnum" use="required"/>

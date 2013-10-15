@@ -39,12 +39,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				yield return new DisplayRoleNameFixupListener();
 				yield return new DisplayModelNoteLinksFixupListener();
                 yield return new DisplayAutoPopulatedShapesFixupListener();
+				yield return new DisplayObjectTypeCardinalityConstraintFixupListener();
+				yield return new DisplayUnaryRoleCardinalityConstraintFixupListener();
                 yield return FactTypeShape.FixupListener;
 				yield return ReadingShape.FixupListener;
 				yield return ObjectTypeShape.FixupListener;
 				yield return ObjectifiedFactTypeNameShape.FixupListener;
 				yield return ModelNoteShape.FixupListener;
 				yield return ValueConstraintShape.FixupListener;
+				yield return CardinalityConstraintShape.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection

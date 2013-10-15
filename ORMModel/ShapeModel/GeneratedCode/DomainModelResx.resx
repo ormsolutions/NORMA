@@ -469,6 +469,14 @@
     <value>Model Note Shape</value>
     <comment>DisplayName for DomainClass &apos;ModelNoteShape&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape</value>
+    <comment>Description for DomainClass &apos;CardinalityConstraintShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape.DisplayName" xml:space="preserve">
+    <value>Cardinality Constraint Shape</value>
+    <comment>DisplayName for DomainClass &apos;CardinalityConstraintShape&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.LinkConnectorShape.Description" xml:space="preserve">
     <value>Zero-size relative shape used as a proxy connection point for other shapes and links.</value>
     <comment>Description for DomainClass &apos;LinkConnectorShape&apos;</comment>

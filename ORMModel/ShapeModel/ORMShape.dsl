@@ -319,6 +319,11 @@
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseGeometryShape>
 		</GeometryShape>
+		<GeometryShape Name="CardinalityConstraintShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="457A9D1C-583E-49BD-9A0C-3C7A5ECD391D" FillGradientMode="None">
+			<BaseGeometryShape>
+				<GeometryShapeMoniker Name="FloatingTextShape"/>
+			</BaseGeometryShape>
+		</GeometryShape>
 		<GeometryShape Name="LinkConnectorShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="51770447-28E0-4BFF-977F-2D2625F7978D" FillGradientMode="None" InitialHeight="0" InitialWidth="0" Description="Zero-size relative shape used as a proxy connection point for other shapes and links."/>
 		<GeometryShape Name="FactTypeLinkConnectorShape" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="6A50CBAF-5EA0-4963-9FE6-A288B180A5B8" FillGradientMode="None" InitialWidth="0" InitialHeight="0" Description="Zero-size relative shape used to disambiguate multiple duplicate links between FactTypeShape and other shape types.">
 			<BaseGeometryShape>
@@ -479,6 +484,20 @@
 					<DomainPath>ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueConstraint.ValueType/!ValueType/ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType.Model/!Model</DomainPath>
 				</ParentElementPath>
 				<GeometryShapeMoniker Name="ValueConstraintShape"/>
+			</ShapeMap>
+			<ShapeMap>
+				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ObjectTypeCardinalityConstraint"/>
+				<ParentElementPath>
+					<DomainPath>ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectType/!ObjectType/ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasObjectType.Model/!Model</DomainPath>
+				</ParentElementPath>
+				<GeometryShapeMoniker Name="CardinalityConstraintShape"/>
+			</ShapeMap>
+			<ShapeMap>
+				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/UnaryRoleCardinalityConstraint"/>
+				<ParentElementPath>
+					<DomainPath>ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRole/!UnaryRole/ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasRole.FactType/!FactType/ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasFactType.Model/!Model</DomainPath>
+				</ParentElementPath>
+				<GeometryShapeMoniker Name="CardinalityConstraintShape"/>
 			</ShapeMap>
 			<ShapeMap>
 				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ReadingOrder"/>

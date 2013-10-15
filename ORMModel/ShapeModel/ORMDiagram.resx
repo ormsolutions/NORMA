@@ -139,6 +139,42 @@
     <value xml:space="preserve">Layout Diagram Shapes</value>
     <comment xml:space="preserve">The transaction name used by AutoLayout command. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
+  <data name="CardinalityConstraintShape.RangeFullyBounded">
+    <value xml:space="preserve">{0}..{1}</value>
+    <comment xml:space="preserve">The format string used to display a cardinality constraint range with an upper and a lower bound.</comment>
+  </data>
+  <data name="CardinalityConstraintShape.RangeSingleValuedForMultiRange">
+    <value xml:space="preserve">{0}</value>
+    <comment xml:space="preserve">The format string used to display a single-valued cardinality constraint range in a multi-range constraint.</comment>
+  </data>
+  <data name="CardinalityConstraintShape.RangeSingleValuedForSingleRange">
+    <value xml:space="preserve">={0}</value>
+    <comment xml:space="preserve">The format string used to display a single-valued cardinality constraint range in a single-range constraint.</comment>
+  </data>
+  <data name="CardinalityConstraintShape.RangeUnboundedAbove">
+    <value xml:space="preserve">&#x2265;{0}</value>
+    <comment xml:space="preserve">The format string used to display a cardinality constraint range with no upper bound.</comment>
+  </data>
+  <data name="CardinalityConstraintShape.RangeUnboundedBelow">
+    <value xml:space="preserve">&#x2264;{0}</value>
+    <comment xml:space="preserve">The format string used to display a cardinality constraint range with a zero lower bound.</comment>
+  </data>
+  <data name="CardinalityConstraintShape.TextWrapperMultiRangeAlethic">
+    <value xml:space="preserve">#{{{0}}}</value>
+    <comment xml:space="preserve">The format string used to display a multi-range alethic cardinality constraint.</comment>
+  </data>
+  <data name="CardinalityConstraintShape.TextWrapperMultiRangeDeontic">
+    <value xml:space="preserve">&#x00b0;#{{{0}}}</value>
+    <comment xml:space="preserve">The format string used to display a multi-range deontic cardinality constraint.</comment>
+  </data>
+  <data name="CardinalityConstraintShape.TextWrapperSingleRangeAlethic">
+    <value xml:space="preserve">#{0}</value>
+    <comment xml:space="preserve">The format string used to display a single-range alethic cardinality constraint.</comment>
+  </data>
+  <data name="CardinalityConstraintShape.TextWrapperSingleRangeDeontic">
+    <value xml:space="preserve">&#x00b0;#{0}</value>
+    <comment xml:space="preserve">The format string used to display a single-range deontic cardinality constraint.</comment>
+  </data>
   <data name="Command.DeleteConstraint.Text">
     <value xml:space="preserve">&amp;Delete Constraint</value>
     <comment xml:space="preserve">This text appears in the edit menu when constraint types are selected in the diagram.</comment>

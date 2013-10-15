@@ -214,6 +214,7 @@
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
 			<xs:element name="Abbreviations" type="AliasesType" minOccurs="0"/>
+			<xs:element name="CardinalityRestriction" type="ObjectTypeCardinalityRestrictionType" minOccurs="0"/>
 			<xs:element name="PlayedRoles" type="PlayedRolesType" minOccurs="0"/>
 			<xs:element name="SubtypeDerivationRule" type="SubtypeDerivationRuleType" minOccurs="0"/>
 		</xs:sequence>
@@ -2221,6 +2222,12 @@
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
+	<xs:complexType name="CardinalityConstraintRef">
+		<xs:annotation>
+			<xs:documentation>A reference to an object type or unary role cardinality constraint.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
 	<!-- end SetComparison constraints-->
 	<!--Set constraints-->
 	<xs:complexType name="SetConstraintType" abstract="true">
@@ -2664,6 +2671,7 @@
 			<xs:element name="FrequencyConstraintViolatedByUniquenessConstraintError" type="FrequencyConstraintViolatedByUniquenessConstraintErrorType"/>
 			<xs:element name="MinValueMismatchError" type="MinValueMismatchErrorType"/>
 			<xs:element name="MaxValueMismatchError" type="MaxValueMismatchErrorType"/>
+			<xs:element name="CardinalityRangeOverlapError" type="CardinalityRangeOverlapErrorType"/>
 			<xs:element name="ValueRangeOverlapError" type="ValueRangeOverlapErrorType"/>
 			<xs:element name="ValueTypeDetachedError" type="ValueTypeDetachedErrorType"/>
 			<xs:element name="RingConstraintTypeNotSpecifiedError" type="RingConstraintTypeNotSpecifiedErrorType"/>
@@ -2739,6 +2747,7 @@
 								<xs:element name="SetComparisonConstraint" type="SetComparisonConstraintRef"/>
 								<xs:element name="SetConstraint" type="SetConstraintRef"/>
 								<xs:element name="ValueConstraint" type="ValueConstraintRef"/>
+								<xs:element name="CardinalityConstraint" type="CardinalityConstraintRef"/>
 							</xs:choice>
 						</xs:complexType>
 					</xs:element>
@@ -3061,6 +3070,18 @@
 			<xs:extension base="ModelError">
 				<xs:sequence>
 					<xs:element name="ValueConstraint" type="ValueConstraintRef"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CardinalityRangeOverlapErrorType">
+		<xs:annotation>
+			<xs:documentation>Two or more cardinality constraint ranges are either overlapping or not increasing.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ModelError">
+				<xs:sequence>
+					<xs:element name="CardinalityConstraint" type="CardinalityConstraintRef"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -3923,6 +3944,59 @@
 		<xs:attribute name="InvariantMaxValue" type="xs:string" use="optional">
 			<xs:annotation>
 				<xs:documentation>A culture-invariant form of the maxValue attribute. This value will not be set for a data type where any value is allowed (such as a string) or if the minValue could not be interpreted by the current data type.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="ObjectTypeCardinalityRestrictionType">
+		<xs:annotation>
+			<xs:documentation>Restrict the size of a population of this object type.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="CardinalityConstraint" type="CardinalityConstraintType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="UnaryRoleCardinalityRestrictionType">
+		<xs:annotation>
+			<xs:documentation>Restrict the number of different instances allowed to play this role in a population.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="UnaryRoleCardinalityConstraint" type="CardinalityConstraintType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CardinalityConstraintType">
+		<xs:annotation>
+			<xs:documentation>A constraint limiting the number of instances in a population.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="ConstraintType">
+				<xs:sequence>
+					<xs:element name="Ranges" type="CardinalityRangesType"/>
+					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CardinalityRangesType">
+		<xs:annotation>
+			<xs:documentation>Container for cardinality ranges.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="CardinalityRange" type="CardinalityRangeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="CardinalityRangeType">
+		<xs:annotation>
+			<xs:documentation>A single cardinality range.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="From" type="xs:nonNegativeInteger" use="required">
+			<xs:annotation>
+				<xs:documentation>The lower bound of the cardinality range. A value of zero indicates than an empty population is allowed.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="To" type="xs:nonNegativeInteger" use="optional">
+			<xs:annotation>
+				<xs:documentation>The upper bound of the cardinality range. Set to the same value as the 'From' attribute for a single-valued range. If this is omitted, then an unbounded range is assumed.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

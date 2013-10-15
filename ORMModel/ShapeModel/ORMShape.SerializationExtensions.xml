@@ -150,6 +150,7 @@
 			</se:Condition>
 		</se:Attribute>
 	</se:Element>
+	<se:Element Class="CardinalityConstraintShape" Override="true"/>
 	<se:Element Class="RoleNameShape" Override="true"/>
 	<se:Element Class="FactTypeShape" Override="true" SortChildElements="true">
 		<se:Attribute ID="DisplayRoleNames" WriteStyle="Attribute" WriteCustomStorage="true">

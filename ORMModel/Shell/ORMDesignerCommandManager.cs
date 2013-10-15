@@ -744,7 +744,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					otherShape = true;
 				}
 			}
-			else if (element is ValueConstraint)
+			else if (element is ValueConstraint || element is CardinalityConstraint)
 			{
 				visibleCommands = enabledCommands = ORMDesignerCommands.DeleteConstraint | ORMDesignerCommands.DeleteAny;
 				if (presentationElement != null)
@@ -2026,7 +2026,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							ObjectifiedFactTypeNameShape objectifiedObjectShape;
 							ReadingShape readingShape;
-							if (pel is ValueConstraintShape)
+							if (pel is ValueConstraintShape || pel is CardinalityConstraintShape)
 							{
 								// ValueConstraintShape tolerates deletion, but the
 								// shapes cannot be deleted individually

@@ -312,6 +312,54 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INoteOwner<Definition> Implementation
 	}
+	partial class CardinalityConstraint : INoteOwner<Note>, INoteOwner<Definition>
+	{
+		#region INoteOwner<Note> Implementation
+		/// <summary>
+		/// Implements <see cref="INoteOwner{Note}.NoteTextPropertyDescriptor"/>
+		/// </summary>
+		protected PropertyDescriptor NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
+			}
+		}
+		PropertyDescriptor INoteOwner<Note>.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return NoteTextPropertyDescriptor;
+			}
+		}
+		#endregion // INoteOwner<Note> Implementation
+		#region INoteOwner<Definition> Implementation
+		/// <summary>
+		/// Implements <see cref="INoteOwner{Definition}.NoteTextPropertyDescriptor"/>
+		/// </summary>
+		protected PropertyDescriptor DefinitionTextPropertyDescriptor
+		{
+			get
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, DefinitionTextDomainPropertyId);
+			}
+		}
+		PropertyDescriptor INoteOwner<Definition>.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return DefinitionTextPropertyDescriptor;
+			}
+		}
+		string INoteOwner<Definition>.NoteText
+		{
+			get
+			{
+				return DefinitionText;
+			}
+		}
+		#endregion // INoteOwner<Definition> Implementation
+	}
 	partial class ElementGrouping : INoteOwner<Note>, INoteOwner<Definition>
 	{
 		#region INoteOwner<Note> Implementation

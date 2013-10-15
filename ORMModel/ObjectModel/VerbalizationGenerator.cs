@@ -103,6 +103,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used for a single-role frequency constraint with min=max=1.
 		/// Format: at most one {0}</remark>
 		AtMostOneTypedOccurrence,
+		/// <summary>The 'CardinalityMultipleInstances' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Replaces the last phrase in cardinality statements if multiple instances are specified:
+		/// Format: {0} instances</remark>
+		CardinalityMultipleInstances,
+		/// <summary>The 'CardinalitySingleInstance' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Replaces the last phrase in cardinality statements if a single instance is specified:
+		/// Format: {0} instance</remark>
+		CardinalitySingleInstance,
 		/// <summary>The 'ChainedListClose' simple snippet value.</summary>
 		/// <remark/>
 		ChainedListClose,
@@ -184,6 +192,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'CompactSimpleListSeparator' simple snippet value.</summary>
 		/// <remark>Description: Used to separate items in a compact simple list.  Format: ,</remark>
 		CompactSimpleListSeparator,
+		/// <summary>The 'CompactSimpleOrListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used at the end of a compact simple or list.</remark>
+		CompactSimpleOrListClose,
+		/// <summary>The 'CompactSimpleOrListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate the last two items in a compact simple or list.  Format: , or </remark>
+		CompactSimpleOrListFinalSeparator,
+		/// <summary>The 'CompactSimpleOrListOpen' simple snippet value.</summary>
+		/// <remark>Description: Text used at the beginning of a compact simple or list.</remark>
+		CompactSimpleOrListOpen,
+		/// <summary>The 'CompactSimpleOrListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a compact simple or list.  Format: or </remark>
+		CompactSimpleOrListPairSeparator,
+		/// <summary>The 'CompactSimpleOrListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Used to separate items in a compact simple or list.  Format: ,</remark>
+		CompactSimpleOrListSeparator,
 		/// <summary>The 'CompatibleTypesIdentityInequalityOperator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to specify that two instances of compatible types are not the same instance.
 		/// Format: that {0} is not that {1}</remark>
@@ -226,6 +249,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'ContextCombinationOccurrence' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes a range of combination occurrences where the combination has been previous specified.  Format: that combination occurs {1} in this context</remark>
 		ContextCombinationOccurrence,
+		/// <summary>The 'CountRangeExact' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for frequency and cardinality ranges where both the min and max values the same
+		/// Format: exactly {0}</remark>
+		CountRangeExact,
+		/// <summary>The 'CountRangeMaxUnbounded' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for frequency and cardinality ranges where the max value is unbounded.
+		/// Format: at least {0}</remark>
+		CountRangeMaxUnbounded,
+		/// <summary>The 'CountRangeMinAndMax' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used for frequency and cardinality ranges where both the min and max values are specified and different.
+		/// Format: at least {0} and at most {1}</remark>
+		CountRangeMinAndMax,
+		/// <summary>The 'CountRangeMinUnbounded' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Used for a frequency range where the min value is less than 2, or a cardinality range with a 0 lower bound.
+		/// Format: at most {1}</remark>
+		CountRangeMinUnbounded,
 		/// <summary>The 'DefiniteArticle' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used for 'that' before an object name to signify a back reference to a uniquely qualified object type.</remark>
 		DefiniteArticle,
@@ -257,9 +296,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used to separate items in an equals list.  Format: =</remark>
 		EqualsListSeparator,
 		/// <summary>The 'EqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
-		/// <remark>
-		/// 							Description: Used to compare the two values in a value comparison constraint with a 'equal' operator.
-		/// 							Format: {0} is equal to {1}
+		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'equal' operator.
+		/// Format: {0} is equal to {1}
 		/// 						</remark>
 		EqualValueComparator,
 		/// <summary>The 'ErrorClosePrimaryReport' simple snippet value.</summary>
@@ -354,22 +392,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used as for the main body text of a frequency constraint on one FactType.
 		/// Format: each {0} in the population of {1} occurs there {2} times</remark>
 		FrequencyPopulation,
-		/// <summary>The 'FrequencyRangeExact' format string snippet. Contains 1 replacement field.</summary>
-		/// <remark>Description: Used for a frequency range where both the min and max values the same
-		/// Format: exactly {0}</remark>
-		FrequencyRangeExact,
-		/// <summary>The 'FrequencyRangeMaxUnbounded' format string snippet. Contains 1 replacement field.</summary>
-		/// <remark>Description: Used for a frequency range where both the max value is unbounded.
-		/// Format: at least {0}</remark>
-		FrequencyRangeMaxUnbounded,
-		/// <summary>The 'FrequencyRangeMinAndMax' format string snippet. Contains 2 replacement fields.</summary>
-		/// <remark>Description: Used for a frequency range where both the min and max values are specified and different.
-		/// Format: at least {0} and at most {1}</remark>
-		FrequencyRangeMinAndMax,
-		/// <summary>The 'FrequencyRangeMinUnbounded' format string snippet. Contains 1 replacement field.</summary>
-		/// <remark>Description: Used for a frequency range where the min value is less than 2.
-		/// Format: at most {1}</remark>
-		FrequencyRangeMinUnbounded,
 		/// <summary>The 'FrequencyTypedCombinationOccurrences' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to specify an instance count or range for a combination of object types.
 		/// Format: {1} combinations of {0}</remark>
@@ -407,15 +429,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Format: **each {0} is {1}</remark>
 		FullSubtypeStoredDerivation,
 		/// <summary>The 'GreaterThanOrEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
-		/// <remark>
-		/// 							Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
-		/// 							Format: {0} is greater than or equal to {1}
+		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
+		/// Format: {0} is greater than or equal to {1}
 		/// 						</remark>
 		GreaterThanOrEqualValueComparator,
 		/// <summary>The 'GreaterThanValueComparator' format string snippet. Contains 2 replacement fields.</summary>
-		/// <remark>
-		/// 							Description: Used to compare the two values in a value comparison constraint with a 'greater than' operator.
-		/// 							Format: {0} is greater than {1}
+		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'greater than' operator.
+		/// Format: {0} is greater than {1}
 		/// 						</remark>
 		GreaterThanValueComparator,
 		/// <summary>The 'GroupEquality' format string snippet. Contains 1 replacement field.</summary>
@@ -541,15 +561,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Format: {0} is identified by {1}</remark>
 		IsIdentifiedBy,
 		/// <summary>The 'LessThanOrEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
-		/// <remark>
-		/// 							Description: Used to compare the two values in a value comparison constraint with a 'less than or equal' operator.
-		/// 							Format: {0} is less than or equal to {1}
+		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'less than or equal' operator.
+		/// Format: {0} is less than or equal to {1}
 		/// 						</remark>
 		LessThanOrEqualValueComparator,
 		/// <summary>The 'LessThanValueComparator' format string snippet. Contains 2 replacement fields.</summary>
-		/// <remark>
-		/// 							Description: Used to compare the two values in a value comparison constraint with a 'less than' operator.
-		/// 							Format: {0} is less than {1}
+		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'less than' operator.
+		/// Format: {0} is less than {1}
 		/// 						</remark>
 		LessThanValueComparator,
 		/// <summary>The 'LogicalAndOperator' format string snippet. Contains 2 replacement fields.</summary>
@@ -738,9 +756,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used to output a non-text instance value. Format: {0}</remark>
 		NonTextInstanceValue,
 		/// <summary>The 'NotEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
-		/// <remark>
-		/// 							Description: Used to compare the two values in a value comparison constraint with a 'not equal' operator.
-		/// 							Format: {0} is not equal to {1}
+		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'not equal' operator.
+		/// Format: {0} is not equal to {1}
 		/// 						</remark>
 		NotEqualValueComparator,
 		/// <summary>The 'NotesVerbalization' format string snippet. Contains 1 replacement field.</summary>
@@ -752,6 +769,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'ObjectType' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Verbalizes an object. {0} is the name, {1} is the guid id for the element</remark>
 		ObjectType,
+		/// <summary>The 'ObjectTypeCardinality' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Used as the boiler plate for object type cardinality.
+		/// Format: each population of {0} contains {1}</remark>
+		ObjectTypeCardinality,
 		/// <summary>The 'ObjectTypeInstanceListClose' simple snippet value.</summary>
 		/// <remark>Description: Text used to close the sample population verbalization list. Format: .</remark>
 		ObjectTypeInstanceListClose,
@@ -1037,6 +1058,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'TopLevelIndentedLogicalOrListSeparator' simple snippet value.</summary>
 		/// <remark>Description: Used to separate items in a top level indented logical or list.  Format: \n or</remark>
 		TopLevelIndentedLogicalOrListSeparator,
+		/// <summary>The 'UnaryRoleCardinality' format string snippet. Contains 3 replacement fields.</summary>
+		/// <remark>Description: Used as the boiler plate for unary role cardinality.
+		/// Format: for each population of '{0}', the number of {1} instances is {2}</remark>
+		UnaryRoleCardinality,
 		/// <summary>The 'UniversalQuantifier' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Used for 'each' before an object name to signify the quantity associated with the object.  Format: each {0}</remark>
 		UniversalQuantifier,
@@ -1169,6 +1194,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				@"{0} <span class=""quantifier"">instances</span>",
+				@"{0} <span class=""quantifier"">instance</span>",
 				"</span>",
 				" ",
 				@"<br/></span><span class=""smallIndent"">",
@@ -1190,6 +1217,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				"",
+				@"<span class=""listSeparator"">, </span><span class=""logicalOperator"">or</span> ",
+				"",
+				@" <span class=""logicalOperator"">or</span> ",
+				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""logicalOperator"">that </span>{0}<span class=""logicalOperator""> is not that </span>{1}",
 				"",
 				"; ",
@@ -1202,6 +1234,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}</span>",
 				@"<span class=""quantifier"">that combination is associated with</span> {0} <span class=""quantifier"">in this context</span>",
 				@"<span class=""quantifier"">that combination occurs</span> {0} <span class=""quantifier"">in this context</span>",
+				@"<span class=""quantifier"">exactly</span> <span class=""instance"">{0}</span>",
+				@"<span class=""quantifier"">at least</span> <span class=""instance"">{0}</span>",
+				@"<span class=""quantifier"">at least</span> <span class=""instance"">{0}</span> <span class=""quantifier"">and at most</span> <span class=""instance"">{1}</span>",
+				@"<span class=""quantifier"">at most</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">Derivation Note:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
@@ -1237,15 +1273,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""quantifier""> or </span> {0}",
-				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
-				@"exactly <span class=""instance"">{0}</span>",
-				@"at least <span class=""instance"">{0}</span>",
-				@"at least <span class=""instance"">{0}</span> and at most <span class=""instance"">{1}</span>",
-				@"at most <span class=""instance"">{1}</span>",
-				@"<span class=""quantifier"">{1} combinations of</span> {0}",
-				@"<span class=""quantifier"">{1} instances of</span> {0}",
-				@"<span class=""quantifier"">{0} times</span>",
+				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator""> or </span> {0}",
+				@"<span class=""quantifier"">each</span> {0} <span class=""quantifier"">in the population of</span> <span class=""listSeparator"">“</span>{1}<span class=""listSeparator"">”</span> <span class=""quantifier"">occurs there</span> {2}",
+				@"{1} <span class=""quantifier"">combinations of</span> {0}",
+				@"{1} <span class=""quantifier"">instances of</span> {0}",
+				@"{0} <span class=""quantifier"">times</span>",
 				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
@@ -1355,6 +1387,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
+				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
@@ -1435,6 +1468,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""quantifier"">for each population of </span><span class=""listSeparator"">“</span>{0}<span class=""listSeparator"">”,</span><span class=""smallIndent""><br/><span class=""quantifier"">the number of</span> {1} <span class=""quantifier"">instances is </span>{2}</span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
 				@"{0} <span class=""quantifier"">exists</span>",
@@ -1514,6 +1548,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				@"{0} <span class=""quantifier"">instances</span>",
+				@"{0} <span class=""quantifier"">instance</span>",
 				"</span>",
 				" ",
 				@"<br/></span><span class=""smallIndent"">",
@@ -1535,6 +1571,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				"",
+				@"<span class=""listSeparator"">, </span><span class=""logicalOperator"">or</span> ",
+				"",
+				@" <span class=""logicalOperator"">or</span> ",
+				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""logicalOperator"">that </span>{0}<span class=""logicalOperator""> is not that </span>{1}",
 				"",
 				"; ",
@@ -1547,6 +1588,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}</span>",
 				@"<span class=""quantifier"">that combination is associated with</span> {0} <span class=""quantifier"">in this context</span>",
 				@"<span class=""quantifier"">that combination occurs</span> {0} <span class=""quantifier"">in this context</span>",
+				@"<span class=""quantifier"">exactly</span> <span class=""instance"">{0}</span>",
+				@"<span class=""quantifier"">at least</span> <span class=""instance"">{0}</span>",
+				@"<span class=""quantifier"">at least</span> <span class=""instance"">{0}</span> <span class=""quantifier"">and at most</span> <span class=""instance"">{1}</span>",
+				@"<span class=""quantifier"">at most</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">Derivation Note:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
@@ -1582,15 +1627,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">for each</span> {0}, {1}",
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""quantifier""> or </span> {0}",
-				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
-				@"exactly <span class=""instance"">{0}</span>",
-				@"at least <span class=""instance"">{0}</span>",
-				@"at least <span class=""instance"">{0}</span> and at most <span class=""instance"">{1}</span>",
-				@"at most <span class=""instance"">{1}</span>",
-				@"<span class=""quantifier"">{1} combinations of</span> {0}",
-				@"<span class=""quantifier"">{1} instances of</span> {0}",
-				@"<span class=""quantifier"">{0} times</span>",
+				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator""> or </span> {0}",
+				@"<span class=""quantifier"">each</span> {0} <span class=""quantifier"">in the population of</span> <span class=""listSeparator"">“</span>{1}<span class=""listSeparator"">”</span> <span class=""quantifier"">occurs there</span> {2}",
+				@"{1} <span class=""quantifier"">combinations of</span> {0}",
+				@"{1} <span class=""quantifier"">instances of</span> {0}",
+				@"{0} <span class=""quantifier"">times</span>",
 				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
@@ -1700,6 +1741,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
+				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
@@ -1780,6 +1822,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""quantifier"">for each population of </span><span class=""listSeparator"">“</span>{0}<span class=""listSeparator"">”,</span><span class=""smallIndent""><br/><span class=""quantifier"">the number of</span> {1} <span class=""quantifier"">instances is </span>{2}</span>",
 				@"<span class=""quantifier"">each</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
 				@"{0} <span class=""quantifier"">exists</span>",
@@ -1859,6 +1902,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				@"{0} <span class=""quantifier"">instances</span>",
+				@"{0} <span class=""quantifier"">instance</span>",
 				"</span>",
 				" ",
 				@"<br/></span><span class=""smallIndent"">",
@@ -1880,6 +1925,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				"",
+				@"<span class=""listSeparator"">, </span><span class=""logicalOperator"">or</span> ",
+				"",
+				@" <span class=""logicalOperator"">or</span> ",
+				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""logicalOperator"">that </span>{0}<span class=""logicalOperator""> is not that </span>{1}",
 				"",
 				"; ",
@@ -1892,6 +1942,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}</span>",
 				@"<span class=""quantifier"">that combination is associated with</span> {0} <span class=""quantifier"">in this context</span>",
 				@"<span class=""quantifier"">that combination occurs</span> {0} <span class=""quantifier"">in this context</span>",
+				@"<span class=""quantifier"">exactly</span> <span class=""instance"">{0}</span>",
+				@"<span class=""quantifier"">at least</span> <span class=""instance"">{0}</span>",
+				@"<span class=""quantifier"">at least</span> <span class=""instance"">{0}</span> <span class=""quantifier"">and at most</span> <span class=""instance"">{1}</span>",
+				@"<span class=""quantifier"">at most</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">Derivation Note:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
@@ -1927,15 +1981,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">for some</span> {0}, {1}",
 				@"<span class=""quantifier"">for some</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""quantifier""> or </span> {0}",
-				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
-				@"exactly <span class=""instance"">{0}</span>",
-				@"at least <span class=""instance"">{0}</span>",
-				@"at least <span class=""instance"">{0}</span> and at most <span class=""instance"">{1}</span>",
-				@"at most <span class=""instance"">{1}</span>",
-				@"<span class=""quantifier"">{1} combinations of</span> {0}",
-				@"<span class=""quantifier"">{1} instances of</span> {0}",
-				@"<span class=""quantifier"">{0} times</span>",
+				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator""> or </span> {0}",
+				@"<span class=""quantifier"">each</span> {0} <span class=""quantifier"">in the population of</span> <span class=""listSeparator"">“</span>{1}<span class=""listSeparator"">”</span> <span class=""quantifier"">occurs there</span> {2}",
+				@"{1} <span class=""quantifier"">combinations of</span> {0}",
+				@"{1} <span class=""quantifier"">instances of</span> {0}",
+				@"{0} <span class=""quantifier"">times</span>",
 				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
@@ -2045,6 +2095,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
+				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
@@ -2125,6 +2176,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""quantifier"">for each population of </span><span class=""listSeparator"">“</span>{0}<span class=""listSeparator"">”,</span><span class=""smallIndent""><br/><span class=""quantifier"">the number of</span> {1} <span class=""quantifier"">instances is </span>{2}</span>",
 				@"<span class=""quantifier"">some</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
 				@"{0} <span class=""quantifier"">exists</span>",
@@ -2204,6 +2256,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""quantifier"">and</span> ",
 				@"<span class=""quantifier"">at most one</span> {0}",
 				@"<span class=""quantifier"">at most one</span> {0}",
+				@"{0} <span class=""quantifier"">instances</span>",
+				@"{0} <span class=""quantifier"">instance</span>",
 				"</span>",
 				" ",
 				@"<br/></span><span class=""smallIndent"">",
@@ -2225,6 +2279,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""listSeparator"">, </span>",
+				"",
+				@"<span class=""listSeparator"">, </span><span class=""logicalOperator"">or</span> ",
+				"",
+				@" <span class=""logicalOperator"">or</span> ",
+				@"<span class=""listSeparator"">, </span>",
 				@"<span class=""logicalOperator"">that </span>{0}<span class=""logicalOperator""> is not that </span>{1}",
 				"",
 				"; ",
@@ -2237,6 +2296,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">this association with</span> {0} <span class=""quantifier"">provides the preferred identification scheme for</span> {1}</span>",
 				@"<span class=""quantifier"">that combination is associated with</span> {0} <span class=""quantifier"">in this context</span>",
 				@"<span class=""quantifier"">that combination occurs</span> {0} <span class=""quantifier"">in this context</span>",
+				@"<span class=""quantifier"">exactly</span> <span class=""instance"">{0}</span>",
+				@"<span class=""quantifier"">at least</span> <span class=""instance"">{0}</span>",
+				@"<span class=""quantifier"">at least</span> <span class=""instance"">{0}</span> <span class=""quantifier"">and at most</span> <span class=""instance"">{1}</span>",
+				@"<span class=""quantifier"">at most</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">Derivation Note:</span> <span class=""definition"">{0}</span>",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
@@ -2272,15 +2335,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">for each</span> {0},<br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">for some</span> {0}, {1}",
 				@"<span class=""quantifier"">for some</span> {0},<br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""quantifier""> or </span> {0}",
-				@"<span class=""quantifier"">each {0} in the population of “{1}” occurs there {2}</span>",
-				@"exactly <span class=""instance"">{0}</span>",
-				@"at least <span class=""instance"">{0}</span>",
-				@"at least <span class=""instance"">{0}</span> and at most <span class=""instance"">{1}</span>",
-				@"at most <span class=""instance"">{1}</span>",
-				@"<span class=""quantifier"">{1} combinations of</span> {0}",
-				@"<span class=""quantifier"">{1} instances of</span> {0}",
-				@"<span class=""quantifier"">{0} times</span>",
+				@"<span class=""quantifier"">either</span> <span class=""instance"">0</span><span class=""listSeparator"">, </span><span class=""logicalOperator""> or </span> {0}",
+				@"<span class=""quantifier"">each</span> {0} <span class=""quantifier"">in the population of</span> <span class=""listSeparator"">“</span>{1}<span class=""listSeparator"">”</span> <span class=""quantifier"">occurs there</span> {2}",
+				@"{1} <span class=""quantifier"">combinations of</span> {0}",
+				@"{1} <span class=""quantifier"">instances of</span> {0}",
+				@"{0} <span class=""quantifier"">times</span>",
 				@"<span class=""quantifier"">*</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
@@ -2390,6 +2449,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
+				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
 				@"<span class=""listSeparator"">, </span>",
 				@"<br/><span class=""quantifier"">Examples:</span> ",
@@ -2470,6 +2530,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"<span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
 				@"</span><span class=""smallIndent""><br/><span class=""logicalOperator"">or </span>",
+				@"<span class=""quantifier"">for each population of </span><span class=""listSeparator"">“</span>{0}<span class=""listSeparator"">”,</span><span class=""smallIndent""><br/><span class=""quantifier"">the number of</span> {1} <span class=""quantifier"">instances is </span>{2}</span>",
 				@"<span class=""quantifier"">some</span> {0}",
 				@"{0} <span class=""quantifier"">is a value type</span>",
 				@"{0} <span class=""quantifier"">exists</span>",
@@ -10198,7 +10259,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								string snippet1Replace1PredicateFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.FrequencyTypedOccurrences, isDeontic, isNegative);
 								string snippet1Replace1Predicate1Replace1 = null;
-								string snippet1Replace1Predicate1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.FrequencyRangeMinUnbounded, isDeontic, isNegative);
+								string snippet1Replace1Predicate1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.CountRangeMinUnbounded, isDeontic, isNegative);
 								string snippet1Replace1Predicate1Replace1Replace1 = null;
 								snippet1Replace1Predicate1Replace1Replace1 = this.MinFrequency.ToString(CultureInfo.CurrentCulture);
 								string snippet1Replace1Predicate1Replace1Replace2 = null;
@@ -10262,19 +10323,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							CoreVerbalizationSnippetType snippet1Replace1Replace3ReplaceSnippetType1 = 0;
 							if (this.MinFrequency == this.MaxFrequency)
 							{
-								snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeExact;
+								snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeExact;
 							}
 							else if (this.MaxFrequency == 0)
 							{
-								snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMaxUnbounded;
+								snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMaxUnbounded;
 							}
 							else if (this.MinFrequency == 1)
 							{
-								snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinUnbounded;
+								snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinUnbounded;
 							}
 							else
 							{
-								snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinAndMax;
+								snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinAndMax;
 							}
 							string snippet1Replace1Replace3ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace3ReplaceSnippetType1, isDeontic, isNegative);
 							string snippet1Replace1Replace3Replace1Replace1 = null;
@@ -10384,19 +10445,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					CoreVerbalizationSnippetType snippet1Replace1Replace3ReplaceSnippetType1 = 0;
 					if (this.MinFrequency == this.MaxFrequency)
 					{
-						snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeExact;
+						snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeExact;
 					}
 					else if (this.MaxFrequency == 0)
 					{
-						snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMaxUnbounded;
+						snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMaxUnbounded;
 					}
 					else if (this.MinFrequency == 1)
 					{
-						snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinUnbounded;
+						snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinUnbounded;
 					}
 					else
 					{
-						snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinAndMax;
+						snippet1Replace1Replace3ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinAndMax;
 					}
 					string snippet1Replace1Replace3ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace3ReplaceSnippetType1, isDeontic, isNegative);
 					string snippet1Replace1Replace3Replace1Replace1 = null;
@@ -10541,19 +10602,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						CoreVerbalizationSnippetType snippet1Replace1Replace1Replace2ReplaceSnippetType1 = 0;
 						if (this.MinFrequency == this.MaxFrequency)
 						{
-							snippet1Replace1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeExact;
+							snippet1Replace1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeExact;
 						}
 						else if (this.MaxFrequency == 0)
 						{
-							snippet1Replace1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMaxUnbounded;
+							snippet1Replace1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMaxUnbounded;
 						}
 						else if (this.MinFrequency == 1)
 						{
-							snippet1Replace1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinUnbounded;
+							snippet1Replace1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinUnbounded;
 						}
 						else
 						{
-							snippet1Replace1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinAndMax;
+							snippet1Replace1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinAndMax;
 						}
 						string snippet1Replace1Replace1Replace2ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace1Replace2ReplaceSnippetType1, isDeontic, isNegative);
 						string snippet1Replace1Replace1Replace2Replace1Replace1 = null;
@@ -10863,19 +10924,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						CoreVerbalizationSnippetType snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1 = 0;
 						if (this.MinFrequency == this.MaxFrequency)
 						{
-							snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeExact;
+							snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeExact;
 						}
 						else if (this.MaxFrequency == 0)
 						{
-							snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMaxUnbounded;
+							snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMaxUnbounded;
 						}
 						else if (this.MinFrequency == 1)
 						{
-							snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinUnbounded;
+							snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinUnbounded;
 						}
 						else
 						{
-							snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinAndMax;
+							snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinAndMax;
 						}
 						string snippet1Replace1Replace2Replace1Replace2ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace2Replace1Replace2ReplaceSnippetType1, isDeontic, isNegative);
 						string snippet1Replace1Replace2Replace1Replace2Replace1Replace1 = null;
@@ -11094,19 +11155,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						CoreVerbalizationSnippetType snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1 = 0;
 						if (this.MinFrequency == this.MaxFrequency)
 						{
-							snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeExact;
+							snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeExact;
 						}
 						else if (this.MaxFrequency == 0)
 						{
-							snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMaxUnbounded;
+							snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMaxUnbounded;
 						}
 						else if (this.MinFrequency == 1)
 						{
-							snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinUnbounded;
+							snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinUnbounded;
 						}
 						else
 						{
-							snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.FrequencyRangeMinAndMax;
+							snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinAndMax;
 						}
 						string snippet1Replace1Replace2Replace2Replace1ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace2Replace2Replace1ReplaceSnippetType1, isDeontic, isNegative);
 						string snippet1Replace1Replace2Replace2Replace1Replace1Replace1 = null;
@@ -11793,13 +11854,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			#endregion // Prerequisite error check
 			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
-			Role valueRole = this.Role;
+			Role constrainedRole = this.Role;
 			bool isDeontic = false;
 			StringBuilder sbTemp = null;
-			FactType parentFact = valueRole.FactType;
+			FactType parentFact = constrainedRole.FactType;
 			string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
 			IList<Role> includedRoles = new Role[]{
-				valueRole};
+				constrainedRole};
 			LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
 			IList<RoleBase> factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
 			Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
@@ -11875,7 +11936,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
 			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
 			string variableSnippet1Replace1 = null;
-			if (factArity == 2 && valueRole.Name.Length != 0)
+			if (factArity == 2 && constrainedRole.Name.Length != 0)
 			{
 				if (sbTemp == null)
 				{
@@ -12523,6 +12584,508 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // ObjectType.NearestValueConstraintVerbalizer verbalization
+	#region ObjectTypeCardinalityConstraint verbalization
+	public partial class ObjectTypeCardinalityConstraint : IVerbalize
+	{
+		/// <summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			#region Preliminary
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			#region Prerequisite error check
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			bool blockingErrors = false;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			#endregion // Prerequisite error check
+			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
+			bool isDeontic = this.Modality == ConstraintModality.Deontic;
+			StringBuilder sbTemp = null;
+			LinkedElementCollection<CardinalityRange> ranges = this.RangeCollection;
+			int rangeCount = ranges.Count;
+			CardinalityRange range;
+			int rangeLowerBound;
+			int rangeUpperBound;
+			#endregion // Preliminary
+			#region Pattern Matches
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, false);
+			string snippet1Replace1 = null;
+			string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeCardinality, isDeontic, isNegative);
+			string snippet1Replace1Replace1 = null;
+			string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+			string snippet1Replace1Replace1Replace1 = null;
+			snippet1Replace1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.ObjectType, verbalizationContext.VerbalizationOptions);
+			string snippet1Replace1Replace1Replace2 = null;
+			snippet1Replace1Replace1Replace2 = this.ObjectType.Id.ToString("D");
+			snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1, snippet1Replace1Replace1Replace2);
+			string snippet1Replace1Replace2 = null;
+			if (rangeCount == 1)
+			{
+				range = ranges[0];
+				rangeLowerBound = range.LowerBound;
+				rangeUpperBound = range.UpperBound;
+				CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType2 = 0;
+				if (rangeLowerBound == 1 && rangeUpperBound == 1)
+				{
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.CardinalitySingleInstance;
+				}
+				else
+				{
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.CardinalityMultipleInstances;
+				}
+				string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(snippet1Replace1ReplaceSnippetType2, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace1 = null;
+				CoreVerbalizationSnippetType snippet1Replace1Replace2ReplaceSnippetType1 = 0;
+				if (rangeLowerBound == rangeUpperBound)
+				{
+					snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeExact;
+				}
+				else if (rangeUpperBound == -1)
+				{
+					snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMaxUnbounded;
+				}
+				else if (rangeLowerBound == 0)
+				{
+					snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinUnbounded;
+				}
+				else
+				{
+					snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinAndMax;
+				}
+				string snippet1Replace1Replace2ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace2ReplaceSnippetType1, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace1Replace1 = null;
+				snippet1Replace1Replace2Replace1Replace1 = rangeLowerBound.ToString(CultureInfo.CurrentCulture);
+				string snippet1Replace1Replace2Replace1Replace2 = null;
+				snippet1Replace1Replace2Replace1Replace2 = rangeUpperBound.ToString(CultureInfo.CurrentCulture);
+				snippet1Replace1Replace2Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace2ReplaceFormat1, snippet1Replace1Replace2Replace1Replace1, snippet1Replace1Replace2Replace1Replace2);
+				snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1);
+			}
+			else
+			{
+				string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.CardinalityMultipleInstances, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace1 = null;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				for (int i = 0; i < rangeCount; ++i)
+				{
+					range = ranges[i];
+					rangeLowerBound = range.LowerBound;
+					rangeUpperBound = range.UpperBound;
+					CoreVerbalizationSnippetType listSnippet;
+					if (i == 0)
+					{
+						listSnippet = CoreVerbalizationSnippetType.CompactSimpleOrListOpen;
+					}
+					else if (i == rangeCount - 1)
+					{
+						if (i == 1)
+						{
+							listSnippet = CoreVerbalizationSnippetType.CompactSimpleOrListPairSeparator;
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.CompactSimpleOrListFinalSeparator;
+						}
+					}
+					else
+					{
+						listSnippet = CoreVerbalizationSnippetType.CompactSimpleOrListSeparator;
+					}
+					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+					CoreVerbalizationSnippetType snippet1Replace1Replace2ReplaceSnippetType1 = 0;
+					if (rangeLowerBound == rangeUpperBound)
+					{
+						snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeExact;
+					}
+					else if (rangeUpperBound == -1)
+					{
+						snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMaxUnbounded;
+					}
+					else if (rangeLowerBound == 0)
+					{
+						snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinUnbounded;
+					}
+					else
+					{
+						snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.CountRangeMinAndMax;
+					}
+					string snippet1Replace1Replace2ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace2ReplaceSnippetType1, isDeontic, isNegative);
+					string snippet1Replace1Replace2Replace1Replace1 = null;
+					snippet1Replace1Replace2Replace1Replace1 = rangeLowerBound.ToString(CultureInfo.CurrentCulture);
+					string snippet1Replace1Replace2Replace1Replace2 = null;
+					snippet1Replace1Replace2Replace1Replace2 = rangeUpperBound.ToString(CultureInfo.CurrentCulture);
+					snippet1Replace1Replace2Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace2ReplaceFormat1, snippet1Replace1Replace2Replace1Replace1, snippet1Replace1Replace2Replace1Replace2);
+					sbTemp.Append(snippet1Replace1Replace2Replace1);
+					if (i == rangeCount - 1)
+					{
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleOrListClose, isDeontic, isNegative));
+					}
+				}
+				snippet1Replace1Replace2Replace1 = sbTemp.ToString();
+				snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1);
+			}
+			snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, false));
+			#endregion // Pattern Matches
+			#region Error report
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			#endregion // Error report
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+		}
+	}
+	#endregion // ObjectTypeCardinalityConstraint verbalization
+	#region UnaryRoleCardinalityConstraint verbalization
+	public partial class UnaryRoleCardinalityConstraint : IVerbalize
+	{
+		/// <summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+		protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			#region Preliminary
+			IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+			#region Prerequisite error check
+			IModelErrorOwner errorOwner = this as IModelErrorOwner;
+			bool firstErrorPending;
+			bool blockingErrors = false;
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.BlockVerbalization))
+				{
+					blockingErrors = true;
+					if (verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenPrimaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorPrimary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorClosePrimaryReport, false, false));
+				}
+				if (blockingErrors)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							writer.WriteLine();
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+					return true;
+				}
+			}
+			#endregion // Prerequisite error check
+			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
+			Role constrainedRole = this.UnaryRole;
+			bool isDeontic = this.Modality == ConstraintModality.Deontic;
+			StringBuilder sbTemp = null;
+			FactType parentFact = constrainedRole.FactType;
+			string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
+			IList<Role> includedRoles = new Role[]{
+				constrainedRole};
+			LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
+			IList<RoleBase> factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
+			Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
+			int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+			int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
+			int includedArity = includedRoles.Count;
+			if (allReadingOrders.Count == 0 || includedArity == 0)
+			{
+				#region Error report
+				if (errorOwner != null)
+				{
+					firstErrorPending = true;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+					{
+						ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+						if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
+						{
+							continue;
+						}
+						if (firstErrorPending)
+						{
+							firstErrorPending = false;
+							verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+							writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+						}
+						else
+						{
+							writer.WriteLine();
+						}
+						writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+					}
+					if (!firstErrorPending)
+					{
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+					}
+				}
+				#endregion // Error report
+				return false;
+			}
+			string[] basicRoleReplacements = new string[factArity];
+			for (int i = 0; i < factArity; ++i)
+			{
+				Role factRole = factRoles[i + unaryRoleOffset].Role;
+				ObjectType rolePlayer = factRole.RolePlayer;
+				string basicReplacement;
+				if (rolePlayer != null)
+				{
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
+				}
+				else
+				{
+					basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeMissing, isDeontic, isNegative), i + 1);
+				}
+				basicRoleReplacements[i] = basicReplacement;
+			}
+			string[] roleReplacements = new string[factArity];
+			IReading reading;
+			VerbalizationHyphenBinder hyphenBinder;
+			LinkedElementCollection<CardinalityRange> ranges = this.RangeCollection;
+			int rangeCount = ranges.Count;
+			CardinalityRange range;
+			int rangeLowerBound;
+			int rangeUpperBound;
+			#endregion // Preliminary
+			#region Pattern Matches
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, false);
+			string snippet1Replace1 = null;
+			string snippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.UnaryRoleCardinality, isDeontic, isNegative);
+			string snippet1Replace1Replace1 = null;
+			reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
+			hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+			snippet1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
+			string snippet1Replace1Replace2 = null;
+			string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+			string snippet1Replace1Replace2Replace1 = null;
+			snippet1Replace1Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(constrainedRole.RolePlayer, verbalizationContext.VerbalizationOptions);
+			string snippet1Replace1Replace2Replace2 = null;
+			snippet1Replace1Replace2Replace2 = constrainedRole.RolePlayer.Id.ToString("D");
+			snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1, snippet1Replace1Replace2Replace2);
+			string snippet1Replace1Replace3 = null;
+			if (sbTemp == null)
+			{
+				sbTemp = new StringBuilder();
+			}
+			else
+			{
+				sbTemp.Length = 0;
+			}
+			for (int i = 0; i < rangeCount; ++i)
+			{
+				range = ranges[i];
+				rangeLowerBound = range.LowerBound;
+				rangeUpperBound = range.UpperBound;
+				CoreVerbalizationSnippetType listSnippet;
+				if (i == 0)
+				{
+					listSnippet = CoreVerbalizationSnippetType.CompactSimpleOrListOpen;
+				}
+				else if (i == rangeCount - 1)
+				{
+					if (i == 1)
+					{
+						listSnippet = CoreVerbalizationSnippetType.CompactSimpleOrListPairSeparator;
+					}
+					else
+					{
+						listSnippet = CoreVerbalizationSnippetType.CompactSimpleOrListFinalSeparator;
+					}
+				}
+				else
+				{
+					listSnippet = CoreVerbalizationSnippetType.CompactSimpleOrListSeparator;
+				}
+				sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+				CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType3 = 0;
+				if (rangeLowerBound == rangeUpperBound)
+				{
+					snippet1Replace1ReplaceSnippetType3 = CoreVerbalizationSnippetType.CountRangeExact;
+				}
+				else if (rangeUpperBound == -1)
+				{
+					snippet1Replace1ReplaceSnippetType3 = CoreVerbalizationSnippetType.CountRangeMaxUnbounded;
+				}
+				else if (rangeLowerBound == 0)
+				{
+					snippet1Replace1ReplaceSnippetType3 = CoreVerbalizationSnippetType.CountRangeMinUnbounded;
+				}
+				else
+				{
+					snippet1Replace1ReplaceSnippetType3 = CoreVerbalizationSnippetType.CountRangeMinAndMax;
+				}
+				string snippet1Replace1ReplaceFormat3 = snippets.GetSnippet(snippet1Replace1ReplaceSnippetType3, isDeontic, isNegative);
+				string snippet1Replace1Replace3Replace1 = null;
+				snippet1Replace1Replace3Replace1 = rangeLowerBound.ToString(CultureInfo.CurrentCulture);
+				string snippet1Replace1Replace3Replace2 = null;
+				snippet1Replace1Replace3Replace2 = rangeUpperBound.ToString(CultureInfo.CurrentCulture);
+				snippet1Replace1Replace3 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat3, snippet1Replace1Replace3Replace1, snippet1Replace1Replace3Replace2);
+				sbTemp.Append(snippet1Replace1Replace3);
+				if (i == rangeCount - 1)
+				{
+					sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleOrListClose, isDeontic, isNegative));
+				}
+			}
+			snippet1Replace1Replace3 = sbTemp.ToString();
+			snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2, snippet1Replace1Replace3);
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, false));
+			#endregion // Pattern Matches
+			#region Error report
+			if (errorOwner != null)
+			{
+				firstErrorPending = true;
+				foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.Verbalize))
+				{
+					ModelErrorDisplayFilter errorDisplayFilter = error.Model.ModelErrorDisplayFilter;
+					if (!ModelError.IsDisplayed(error, errorDisplayFilter) || verbalizationContext.TestVerbalizedLocally(error))
+					{
+						continue;
+					}
+					if (firstErrorPending)
+					{
+						firstErrorPending = false;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.ErrorReport);
+						writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorOpenSecondaryReport, false, false));
+					}
+					else
+					{
+						writer.WriteLine();
+					}
+					writer.Write(string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorSecondary, false, false), error.ErrorText, error.Id.ToString("D")));
+				}
+				if (!firstErrorPending)
+				{
+					writer.Write(snippets.GetSnippet(CoreVerbalizationSnippetType.ErrorCloseSecondaryReport, false, false));
+				}
+			}
+			#endregion // Error report
+			return true;
+		}
+		bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+		{
+			return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+		}
+	}
+	#endregion // UnaryRoleCardinalityConstraint verbalization
 	#region RingConstraint verbalization
 	public partial class RingConstraint : IVerbalize
 	{

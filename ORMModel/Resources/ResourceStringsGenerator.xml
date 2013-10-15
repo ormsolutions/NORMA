@@ -65,11 +65,15 @@
 	<ResourceString name="ModelModelErrorDisplayFilterDisplayDescription" model="Model" resourceName="ObjectModel.Model.ModelErrorDisplayFilterDisplay.Description"/>
 	<ResourceString name="ModelModelErrorDisplayFilterDisplayDisplayName" model="Model" resourceName="ObjectModel.Model.ModelErrorDisplayFilterDisplay.DisplayName"/>
 	<ResourceString name="ModelNameDescription" model="Model" resourceName="ObjectModel.Model.Name.Description"/>
+	<ResourceString name="ObjectTypeCardinalityDisplayDescription" model="Model" resourceName="ObjectModel.ObjectType.CardinalityDisplay.Description"/>
+	<ResourceString name="ObjectTypeCardinalityDisplayDisplayName" model="Model" resourceName="ObjectModel.ObjectType.CardinalityDisplay.DisplayName"/>
 	<ResourceString name="ObjectTypeDataTypeDisplayDescription" model="Model" resourceName="ObjectModel.ObjectType.DataTypeDisplay.Description"/>
 	<ResourceString name="ObjectTypeDataTypeDisplayDisplayName" model="Model" resourceName="ObjectModel.ObjectType.DataTypeDisplay.DisplayName"/>
 	<ResourceString name="ObjectTypeNameDescription" model="Model" resourceName="ObjectModel.ObjectType.Name.Description"/>
 	<ResourceString name="ReferenceModeKindDisplayDescription" model="Model" resourceName="ObjectModel.ReferenceMode.KindDisplay.Description"/>
 	<ResourceString name="ReferenceModeKindDisplayDisplayName" model="Model" resourceName="ObjectModel.ReferenceMode.KindDisplay.DisplayName"/>
+	<ResourceString name="RoleCardinalityDisplayDescription" model="Model" resourceName="ObjectModel.Role.CardinalityDisplay.Description"/>
+	<ResourceString name="RoleCardinalityDisplayDisplayName" model="Model" resourceName="ObjectModel.Role.CardinalityDisplay.DisplayName"/>
 	<ResourceString name="RoleRolePlayerDisplayDescription" model="Model" resourceName="ObjectModel.Role.RolePlayerDisplay.Description"/>
 	<ResourceString name="RoleRolePlayerDisplayDisplayName" model="Model" resourceName="ObjectModel.Role.RolePlayerDisplay.DisplayName"/>
 	<ResourceString name="SubtypeFactNameDescription" model="Model" resourceName="ObjectModel.SubtypeFact.Name.Description"/>
@@ -164,6 +168,8 @@
 	<ResourceString name="InterpretFactEditorLineTransactionName" model="Diagram" resourceName="InterpretFactEditorLine.TransactionName"/>
 	<ResourceString name="ModelBrowserWindowTitle" model="Diagram" resourceName="ORMModelBrowser.WindowTitle"/>
 	<ResourceString name="LoadExceptionIncompatibleAssembly" model="Model" resourceName="LoadException.IncompatibleAssembly"/>
+	<ResourceString name="ModelExceptionCardinalityConstraintInvalidRangeText" model="Model" resourceName="ModelException.CardinalityConstraint.InvalidRangeText"/>
+	<ResourceString name="ModelExceptionUnaryRoleCardinalityConstraintUnaryOnly" model="Model" resourceName="ModelException.UnaryRoleCardinalityConstraint.UnaryOnly"/>
 	<ResourceString name="ModelExceptionModelErrorCategoryInvalid" model="Model" resourceName="ModelException.ModelErrorCategory.TypeNotDerivedFromModelErrorCategory"/>
 	<ResourceString name="ModelExceptionObjectificationImpliedElementModified" model="Model" resourceName="ModelException.Objectification.DirectModificationOfImpliedElement"/>
 	<ResourceString name="ModelExceptionObjectificationImpliedFactObjectified" model="Model" resourceName="ModelException.Objectification.ImpliedFactTypesCannotBeObjectified"/>
@@ -178,6 +184,7 @@
 	<ResourceString name="ModelErrorCalculatedPathValueRequiresFunction" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.Text"/>
 	<ResourceString name="ModelErrorCalculatedPathValueParameterBinding" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.Text"/>
 	<ResourceString name="ModelErrorCalculatedPathValueMustBeConsumed" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text"/>
+	<ResourceString name="ModelErrorCardinalityConstraintCardinalityRangeOverlapError" model="Model" resourceName="ModelError.CardinalityConstraint.CardinalityRangeOverlapError.Message"/>
 	<ResourceString name="ModelErrorConstraintImplicationBySubset" model="Model" resourceName="ModelError.Constraint.ImplicationError.ImpliedBySubsetText"/>
 	<ResourceString name="ModelErrorConstraintImplicationBySuperset" model="Model" resourceName="ModelError.Constraint.ImplicationError.ImpliedBySupersetText"/>
 	<ResourceString name="ModelErrorConstraintImplicationEqualityMandatory" model="Model" resourceName="ModelError.Constraint.EqualityImpliedByMandatoryError.Text"/>
@@ -409,6 +416,15 @@
 	<ResourceString name="ValueConstraintValueDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.ValueDelimiter"/>
 	<ResourceString name="ValueConstraintValueRangeRegexPattern" model="Model" resourceName="ObjectModel.ValueConstraint.ValueRangeRegexPattern"/>
 	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhrases" model="Model" resourceName="ModelError.RecognizedPhrase.DuplicateNameError.Message"/>
+	<ResourceString name="CardinalityConstraintShapeRangeFullyBounded" model="Diagram" resourceName="CardinalityConstraintShape.RangeFullyBounded"/>
+	<ResourceString name="CardinalityConstraintShapeRangeSingleValuedForMultiRange" model="Diagram" resourceName="CardinalityConstraintShape.RangeSingleValuedForMultiRange"/>
+	<ResourceString name="CardinalityConstraintShapeRangeSingleValuedForSingleRange" model="Diagram" resourceName="CardinalityConstraintShape.RangeSingleValuedForSingleRange"/>
+	<ResourceString name="CardinalityConstraintShapeRangeUnboundedAbove" model="Diagram" resourceName="CardinalityConstraintShape.RangeUnboundedAbove"/>
+	<ResourceString name="CardinalityConstraintShapeRangeUnboundedBelow" model="Diagram" resourceName="CardinalityConstraintShape.RangeUnboundedBelow"/>
+	<ResourceString name="CardinalityConstraintShapeTextWrapperMultiRangeAlethic" model="Diagram" resourceName="CardinalityConstraintShape.TextWrapperMultiRangeAlethic"/>
+	<ResourceString name="CardinalityConstraintShapeTextWrapperMultiRangeDeontic" model="Diagram" resourceName="CardinalityConstraintShape.TextWrapperMultiRangeDeontic"/>
+	<ResourceString name="CardinalityConstraintShapeTextWrapperSingleRangeAlethic" model="Diagram" resourceName="CardinalityConstraintShape.TextWrapperSingleRangeAlethic"/>
+	<ResourceString name="CardinalityConstraintShapeTextWrapperSingleRangeDeontic" model="Diagram" resourceName="CardinalityConstraintShape.TextWrapperSingleRangeDeontic"/>
 	<ResourceString name="ObjectTypeShapeDerivationDecoratorFullyDerived" model="Diagram" resourceName="ObjectTypeShape.DerivationDecoratorFullyDerived"/>
 	<ResourceString name="ObjectTypeShapeDerivationDecoratorFullyDerivedAndStored" model="Diagram" resourceName="ObjectTypeShape.DerivationDecoratorFullyDerivedAndStored"/>
 	<ResourceString name="ObjectTypeShapeDerivationDecoratorPartiallyDerived" model="Diagram" resourceName="ObjectTypeShape.DerivationDecoratorPartiallyDerived"/>

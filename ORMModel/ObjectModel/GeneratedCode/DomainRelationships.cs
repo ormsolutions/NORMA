@@ -15844,6 +15844,526 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship ObjectTypeHasCardinalityConstraint
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("565d3053-d67b-4f23-a81a-c9fcd1bd50c5")]
+	public partial class ObjectTypeHasCardinalityConstraint : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ObjectTypeHasCardinalityConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x565d3053, 0xd67b, 0x4f23, 0xa8, 0x1a, 0xc9, 0xfc, 0xd1, 0xbd, 0x50, 0xc5);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ObjectTypeHasCardinalityConstraint link in the same Partition as the given ObjectType
+		/// </summary>
+		/// <param name="source">ObjectType to use as the source of the relationship.</param>
+		/// <param name="target">ObjectTypeCardinalityConstraint to use as the target of the relationship.</param>
+		public ObjectTypeHasCardinalityConstraint(ObjectType source, ObjectTypeCardinalityConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(ObjectTypeHasCardinalityConstraint.CardinalityConstraintDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeHasCardinalityConstraint(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeHasCardinalityConstraint(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ObjectTypeHasCardinalityConstraint(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ObjectTypeHasCardinalityConstraint(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectType domain role code
+		
+		/// <summary>
+		/// ObjectType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectTypeDomainRoleId = new global::System.Guid(0xe5cf4336, 0x394b, 0x41fd, 0xbb, 0x9d, 0xe8, 0xeb, 0x2f, 0x93, 0xed, 0x08);
+		
+		/// <summary>
+		/// DomainRole ObjectType
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectType
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/ObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/ObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Cardinality", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("e5cf4336-394b-41fd-bb9d-e8eb2f93ed08")]
+		public virtual ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ObjectType of a ObjectTypeCardinalityConstraint
+		/// <summary>
+		/// Gets ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectType GetObjectType(ObjectTypeCardinalityConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CardinalityConstraintDomainRoleId) as ObjectType;
+		}
+		
+		/// <summary>
+		/// Sets ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetObjectType(ObjectTypeCardinalityConstraint element, ObjectType newObjectType)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CardinalityConstraintDomainRoleId, newObjectType);
+		}
+		#endregion
+		#region CardinalityConstraint domain role code
+		
+		/// <summary>
+		/// CardinalityConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CardinalityConstraintDomainRoleId = new global::System.Guid(0x0f7b4c5c, 0x9c52, 0x4342, 0xa9, 0xfa, 0xde, 0x19, 0x41, 0xf4, 0x16, 0x55);
+		
+		/// <summary>
+		/// DomainRole CardinalityConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.CardinalityConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/CardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/CardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ObjectType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/CardinalityConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("0f7b4c5c-9c52-4342-a9fa-de1941f41655")]
+		public virtual ObjectTypeCardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectTypeCardinalityConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, CardinalityConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CardinalityConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Cardinality of a ObjectType
+		/// <summary>
+		/// Gets Cardinality.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectTypeCardinalityConstraint GetCardinality(ObjectType element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as ObjectTypeCardinalityConstraint;
+		}
+		
+		/// <summary>
+		/// Sets Cardinality.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetCardinality(ObjectType element, ObjectTypeCardinalityConstraint newCardinalityConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newCardinalityConstraint);
+		}
+		#endregion
+		#region ObjectType link accessor
+		/// <summary>
+		/// Get the ObjectTypeHasCardinalityConstraint link to a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint GetLinkToCardinality (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType objectTypeInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint>(objectTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectType not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region CardinalityConstraint link accessor
+		/// <summary>
+		/// Get the ObjectTypeHasCardinalityConstraint link to a ObjectTypeCardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint GetLinkToObjectType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint cardinalityConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint>(cardinalityConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.CardinalityConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CardinalityConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ObjectTypeHasCardinalityConstraint instance accessors
+		
+		/// <summary>
+		/// Get any ObjectTypeHasCardinalityConstraint links between a given ObjectType and a ObjectTypeCardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint link in links )
+			{
+				if ( target.Equals(link.CardinalityConstraint) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ObjectTypeHasCardinalityConstraint link between a given ObjectTypeand a ObjectTypeCardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint link in links )
+			{
+				if ( target.Equals(link.CardinalityConstraint) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship UnaryRoleHasCardinalityConstraint
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("323361eb-37a7-49d2-85fc-e1d35f734d6e")]
+	public partial class UnaryRoleHasCardinalityConstraint : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// UnaryRoleHasCardinalityConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x323361eb, 0x37a7, 0x49d2, 0x85, 0xfc, 0xe1, 0xd3, 0x5f, 0x73, 0x4d, 0x6e);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a UnaryRoleHasCardinalityConstraint link in the same Partition as the given Role
+		/// </summary>
+		/// <param name="source">Role to use as the source of the relationship.</param>
+		/// <param name="target">UnaryRoleCardinalityConstraint to use as the target of the relationship.</param>
+		public UnaryRoleHasCardinalityConstraint(Role source, UnaryRoleCardinalityConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId, source), new DslModeling::RoleAssignment(UnaryRoleHasCardinalityConstraint.CardinalityConstraintDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public UnaryRoleHasCardinalityConstraint(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public UnaryRoleHasCardinalityConstraint(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public UnaryRoleHasCardinalityConstraint(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public UnaryRoleHasCardinalityConstraint(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region UnaryRole domain role code
+		
+		/// <summary>
+		/// UnaryRole domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid UnaryRoleDomainRoleId = new global::System.Guid(0x28f9c99d, 0xea10, 0x4bbd, 0xb7, 0x64, 0x09, 0x70, 0x20, 0x7b, 0x4d, 0x11);
+		
+		/// <summary>
+		/// DomainRole UnaryRole
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRole
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/UnaryRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/UnaryRole.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Cardinality", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/UnaryRole.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("28f9c99d-ea10-4bbd-b764-0970207b4d11")]
+		public virtual Role UnaryRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Role)DslModeling::DomainRoleInfo.GetRolePlayer(this, UnaryRoleDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, UnaryRoleDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access UnaryRole of a UnaryRoleCardinalityConstraint
+		/// <summary>
+		/// Gets UnaryRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Role GetUnaryRole(UnaryRoleCardinalityConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CardinalityConstraintDomainRoleId) as Role;
+		}
+		
+		/// <summary>
+		/// Sets UnaryRole.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetUnaryRole(UnaryRoleCardinalityConstraint element, Role newUnaryRole)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CardinalityConstraintDomainRoleId, newUnaryRole);
+		}
+		#endregion
+		#region CardinalityConstraint domain role code
+		
+		/// <summary>
+		/// CardinalityConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CardinalityConstraintDomainRoleId = new global::System.Guid(0xd1180954, 0xdcf6, 0x4251, 0xa9, 0x4f, 0xf4, 0x53, 0xd9, 0x5f, 0x1c, 0xa1);
+		
+		/// <summary>
+		/// DomainRole CardinalityConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.CardinalityConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/CardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/CardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "UnaryRole", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/CardinalityConstraint.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("d1180954-dcf6-4251-a94f-f453d95f1ca1")]
+		public virtual UnaryRoleCardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (UnaryRoleCardinalityConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, CardinalityConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CardinalityConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Cardinality of a Role
+		/// <summary>
+		/// Gets Cardinality.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static UnaryRoleCardinalityConstraint GetCardinality(Role element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, UnaryRoleDomainRoleId) as UnaryRoleCardinalityConstraint;
+		}
+		
+		/// <summary>
+		/// Sets Cardinality.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetCardinality(Role element, UnaryRoleCardinalityConstraint newCardinalityConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, UnaryRoleDomainRoleId, newCardinalityConstraint);
+		}
+		#endregion
+		#region UnaryRole link accessor
+		/// <summary>
+		/// Get the UnaryRoleHasCardinalityConstraint link to a Role.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint GetLinkToCardinality (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role unaryRoleInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint>(unaryRoleInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of UnaryRole not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region CardinalityConstraint link accessor
+		/// <summary>
+		/// Get the UnaryRoleHasCardinalityConstraint link to a UnaryRoleCardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint GetLinkToUnaryRole (global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint cardinalityConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint>(cardinalityConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.CardinalityConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CardinalityConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region UnaryRoleHasCardinalityConstraint instance accessors
+		
+		/// <summary>
+		/// Get any UnaryRoleHasCardinalityConstraint links between a given Role and a UnaryRoleCardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint link in links )
+			{
+				if ( target.Equals(link.CardinalityConstraint) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one UnaryRoleHasCardinalityConstraint link between a given Roleand a UnaryRoleCardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint link in links )
+			{
+				if ( target.Equals(link.CardinalityConstraint) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship RoleHasValueConstraint
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint
@@ -16852,6 +17372,551 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRange link in links )
 			{
 				if ( target.Equals(link.ValueRange) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship CardinalityConstraintHasRange
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("cdcb9830-0f09-4524-b615-06d21aa02532")]
+	public partial class CardinalityConstraintHasRange : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// CardinalityConstraintHasRange domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcdcb9830, 0x0f09, 0x4524, 0xb6, 0x15, 0x06, 0xd2, 0x1a, 0xa0, 0x25, 0x32);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a CardinalityConstraintHasRange link in the same Partition as the given CardinalityConstraint
+		/// </summary>
+		/// <param name="source">CardinalityConstraint to use as the source of the relationship.</param>
+		/// <param name="target">CardinalityRange to use as the target of the relationship.</param>
+		public CardinalityConstraintHasRange(CardinalityConstraint source, CardinalityRange target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CardinalityConstraintHasRange.ConstraintDomainRoleId, source), new DslModeling::RoleAssignment(CardinalityConstraintHasRange.RangeDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasRange(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasRange(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasRange(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasRange(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Constraint domain role code
+		
+		/// <summary>
+		/// Constraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ConstraintDomainRoleId = new global::System.Guid(0x871da0c3, 0x5c2e, 0x41ab, 0xb5, 0x47, 0x8d, 0xc9, 0xd0, 0xde, 0x99, 0x0d);
+		
+		/// <summary>
+		/// DomainRole Constraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.Constraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Constraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Constraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RangeCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Constraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("871da0c3-5c2e-41ab-b547-8dc9d0de990d")]
+		public virtual CardinalityConstraint Constraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CardinalityConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, ConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access CardinalityConstraint of a CardinalityRange
+		/// <summary>
+		/// Gets CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static CardinalityConstraint GetCardinalityConstraint(CardinalityRange element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, RangeDomainRoleId) as CardinalityConstraint;
+		}
+		
+		/// <summary>
+		/// Sets CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetCardinalityConstraint(CardinalityRange element, CardinalityConstraint newConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, RangeDomainRoleId, newConstraint);
+		}
+		#endregion
+		#region Range domain role code
+		
+		/// <summary>
+		/// Range domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RangeDomainRoleId = new global::System.Guid(0x2529bb18, 0xa837, 0x41db, 0xa7, 0xf8, 0x07, 0x24, 0xb5, 0xfb, 0x42, 0x64);
+		
+		/// <summary>
+		/// DomainRole Range
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.Range
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Range.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Range.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CardinalityConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Range.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("2529bb18-a837-41db-a7f8-0724b5fb4264")]
+		public virtual CardinalityRange Range
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CardinalityRange)DslModeling::DomainRoleInfo.GetRolePlayer(this, RangeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RangeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RangeCollection of a CardinalityConstraint
+		/// <summary>
+		/// Gets a list of RangeCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<CardinalityRange> GetRangeCollection(CardinalityConstraint element)
+		{
+			return new DslModeling::LinkedElementCollection<CardinalityRange>(element, ConstraintDomainRoleId);
+		}
+		#endregion
+		#region Constraint link accessor
+		/// <summary>
+		/// Get the list of CardinalityConstraintHasRange links to a CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange> GetLinksToRangeCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint constraintInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange>(constraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.ConstraintDomainRoleId);
+		}
+		#endregion
+		#region Range link accessor
+		/// <summary>
+		/// Get the CardinalityConstraintHasRange link to a CardinalityRange.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange GetLinkToCardinalityConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange rangeInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange>(rangeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.RangeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Range not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region CardinalityConstraintHasRange instance accessors
+		
+		/// <summary>
+		/// Get any CardinalityConstraintHasRange links between a given CardinalityConstraint and a CardinalityRange.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.ConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange link in links )
+			{
+				if ( target.Equals(link.Range) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one CardinalityConstraintHasRange link between a given CardinalityConstraintand a CardinalityRange.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.ConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange link in links )
+			{
+				if ( target.Equals(link.Range) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship CardinalityConstraintHasRangeOverlapError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("b0f6669b-c275-46a5-86d9-899abfdf4b24")]
+	public partial class CardinalityConstraintHasRangeOverlapError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// CardinalityConstraintHasRangeOverlapError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb0f6669b, 0xc275, 0x46a5, 0x86, 0xd9, 0x89, 0x9a, 0xbf, 0xdf, 0x4b, 0x24);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a CardinalityConstraintHasRangeOverlapError link in the same Partition as the given CardinalityConstraint
+		/// </summary>
+		/// <param name="source">CardinalityConstraint to use as the source of the relationship.</param>
+		/// <param name="target">CardinalityRangeOverlapError to use as the target of the relationship.</param>
+		public CardinalityConstraintHasRangeOverlapError(CardinalityConstraint source, CardinalityRangeOverlapError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CardinalityConstraintHasRangeOverlapError.CardinalityConstraintDomainRoleId, source), new DslModeling::RoleAssignment(CardinalityConstraintHasRangeOverlapError.CardinalityRangeOverlapErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasRangeOverlapError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasRangeOverlapError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasRangeOverlapError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasRangeOverlapError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CardinalityConstraint domain role code
+		
+		/// <summary>
+		/// CardinalityConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CardinalityConstraintDomainRoleId = new global::System.Guid(0x77000081, 0x0a50, 0x4573, 0x81, 0xda, 0x1f, 0x93, 0x75, 0xab, 0xb3, 0x53);
+		
+		/// <summary>
+		/// DomainRole CardinalityConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "CardinalityRangeOverlapError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("77000081-0a50-4573-81da-1f9375abb353")]
+		public virtual CardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CardinalityConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, CardinalityConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CardinalityConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access CardinalityConstraint of a CardinalityRangeOverlapError
+		/// <summary>
+		/// Gets CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static CardinalityConstraint GetCardinalityConstraint(CardinalityRangeOverlapError element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CardinalityRangeOverlapErrorDomainRoleId) as CardinalityConstraint;
+		}
+		
+		/// <summary>
+		/// Sets CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetCardinalityConstraint(CardinalityRangeOverlapError element, CardinalityConstraint newCardinalityConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CardinalityRangeOverlapErrorDomainRoleId, newCardinalityConstraint);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing CardinalityConstraint domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.CardinalityConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.CardinalityConstraint = (CardinalityConstraint)value;
+			}
+		}
+		
+		#endregion
+		#region CardinalityRangeOverlapError domain role code
+		
+		/// <summary>
+		/// CardinalityRangeOverlapError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CardinalityRangeOverlapErrorDomainRoleId = new global::System.Guid(0xa4dc71c4, 0x3677, 0x4f38, 0xae, 0x2e, 0x19, 0xb4, 0xe9, 0xc4, 0xe0, 0x2a);
+		
+		/// <summary>
+		/// DomainRole CardinalityRangeOverlapError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityRangeOverlapError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityRangeOverlapError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityRangeOverlapError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CardinalityConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityRangeOverlapError.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainObjectId("a4dc71c4-3677-4f38-ae2e-19b4e9c4e02a")]
+		public virtual CardinalityRangeOverlapError CardinalityRangeOverlapError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CardinalityRangeOverlapError)DslModeling::DomainRoleInfo.GetRolePlayer(this, CardinalityRangeOverlapErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CardinalityRangeOverlapErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access CardinalityRangeOverlapError of a CardinalityConstraint
+		/// <summary>
+		/// Gets CardinalityRangeOverlapError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static CardinalityRangeOverlapError GetCardinalityRangeOverlapError(CardinalityConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CardinalityConstraintDomainRoleId) as CardinalityRangeOverlapError;
+		}
+		
+		/// <summary>
+		/// Sets CardinalityRangeOverlapError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetCardinalityRangeOverlapError(CardinalityConstraint element, CardinalityRangeOverlapError newCardinalityRangeOverlapError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CardinalityConstraintDomainRoleId, newCardinalityRangeOverlapError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing CardinalityRangeOverlapError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.CardinalityRangeOverlapError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.CardinalityRangeOverlapError = (CardinalityRangeOverlapError)value;
+			}
+		}
+		
+		#endregion
+		#region CardinalityConstraint link accessor
+		/// <summary>
+		/// Get the CardinalityConstraintHasRangeOverlapError link to a CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError GetLinkToCardinalityRangeOverlapError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint cardinalityConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError>(cardinalityConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CardinalityConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region CardinalityRangeOverlapError link accessor
+		/// <summary>
+		/// Get the CardinalityConstraintHasRangeOverlapError link to a CardinalityRangeOverlapError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError GetLinkToCardinalityConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRangeOverlapError cardinalityRangeOverlapErrorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError>(cardinalityRangeOverlapErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityRangeOverlapErrorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CardinalityRangeOverlapError not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region CardinalityConstraintHasRangeOverlapError instance accessors
+		
+		/// <summary>
+		/// Get any CardinalityConstraintHasRangeOverlapError links between a given CardinalityConstraint and a CardinalityRangeOverlapError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRangeOverlapError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError link in links )
+			{
+				if ( target.Equals(link.CardinalityRangeOverlapError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one CardinalityConstraintHasRangeOverlapError link between a given CardinalityConstraintand a CardinalityRangeOverlapError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRangeOverlapError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError link in links )
+			{
+				if ( target.Equals(link.CardinalityRangeOverlapError) )
 				{
 					return link;
 				}
@@ -23452,6 +24517,291 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship CardinalityConstraintHasDuplicateNameError
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("89a95d59-4196-43e6-90f6-9061158685d6")]
+	public partial class CardinalityConstraintHasDuplicateNameError : ElementAssociatedWithModelError
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// CardinalityConstraintHasDuplicateNameError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x89a95d59, 0x4196, 0x43e6, 0x90, 0xf6, 0x90, 0x61, 0x15, 0x86, 0x85, 0xd6);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a CardinalityConstraintHasDuplicateNameError link in the same Partition as the given CardinalityConstraint
+		/// </summary>
+		/// <param name="source">CardinalityConstraint to use as the source of the relationship.</param>
+		/// <param name="target">ConstraintDuplicateNameError to use as the target of the relationship.</param>
+		public CardinalityConstraintHasDuplicateNameError(CardinalityConstraint source, ConstraintDuplicateNameError target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CardinalityConstraintHasDuplicateNameError.CardinalityConstraintDomainRoleId, source), new DslModeling::RoleAssignment(CardinalityConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasDuplicateNameError(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasDuplicateNameError(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasDuplicateNameError(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasDuplicateNameError(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CardinalityConstraint domain role code
+		
+		/// <summary>
+		/// CardinalityConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CardinalityConstraintDomainRoleId = new global::System.Guid(0xf973d2e2, 0x9625, 0x4601, 0x83, 0x95, 0xf7, 0xd3, 0xb4, 0xf0, 0x40, 0x0a);
+		
+		/// <summary>
+		/// DomainRole CardinalityConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.CardinalityConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/CardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/CardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DuplicateNameError", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/CardinalityConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("f973d2e2-9625-4601-8395-f7d3b4f0400a")]
+		public virtual CardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CardinalityConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, CardinalityConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CardinalityConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access CardinalityConstraintCollection of a ConstraintDuplicateNameError
+		/// <summary>
+		/// Gets a list of CardinalityConstraintCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<CardinalityConstraint> GetCardinalityConstraintCollection(ConstraintDuplicateNameError element)
+		{
+			return new DslModeling::LinkedElementCollection<CardinalityConstraint>(element, DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region AssociatedElement domain role override
+		
+		/// <summary>
+		/// Gets the element playing CardinalityConstraint domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.AssociatedElement
+		/// </summary>
+		public override global::Microsoft.VisualStudio.Modeling.ModelElement AssociatedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.CardinalityConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.CardinalityConstraint = (CardinalityConstraint)value;
+			}
+		}
+		
+		#endregion
+		#region DuplicateNameError domain role code
+		
+		/// <summary>
+		/// DuplicateNameError domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DuplicateNameErrorDomainRoleId = new global::System.Guid(0xa8e71e45, 0x08c0, 0x424f, 0xaf, 0xb4, 0xad, 0xbd, 0xf6, 0xc7, 0x83, 0x8b);
+		
+		/// <summary>
+		/// DomainRole DuplicateNameError
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.DuplicateNameError
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/DuplicateNameError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/DuplicateNameError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CardinalityConstraintCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/DuplicateNameError.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.OneMany)]
+		[DslModeling::DomainObjectId("a8e71e45-08c0-424f-afb4-adbdf6c7838b")]
+		public virtual ConstraintDuplicateNameError DuplicateNameError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ConstraintDuplicateNameError)DslModeling::DomainRoleInfo.GetRolePlayer(this, DuplicateNameErrorDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DuplicateNameErrorDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DuplicateNameError of a CardinalityConstraint
+		/// <summary>
+		/// Gets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ConstraintDuplicateNameError GetDuplicateNameError(CardinalityConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CardinalityConstraintDomainRoleId) as ConstraintDuplicateNameError;
+		}
+		
+		/// <summary>
+		/// Sets DuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDuplicateNameError(CardinalityConstraint element, ConstraintDuplicateNameError newDuplicateNameError)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CardinalityConstraintDomainRoleId, newDuplicateNameError);
+		}
+		#endregion
+		#region ModelError domain role override
+		
+		/// <summary>
+		/// Gets the element playing DuplicateNameError domain role.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementAssociatedWithModelError.ModelError
+		/// </summary>
+		public override ModelError ModelError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return this.DuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				this.DuplicateNameError = (ConstraintDuplicateNameError)value;
+			}
+		}
+		
+		#endregion
+		#region CardinalityConstraint link accessor
+		/// <summary>
+		/// Get the CardinalityConstraintHasDuplicateNameError link to a CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError GetLinkToDuplicateNameError (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint cardinalityConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError>(cardinalityConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.CardinalityConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CardinalityConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DuplicateNameError link accessor
+		/// <summary>
+		/// Get the list of CardinalityConstraintHasDuplicateNameError links to a ConstraintDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError> GetLinksToCardinalityConstraintCollection ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintDuplicateNameError duplicateNameErrorInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError>(duplicateNameErrorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+		}
+		#endregion
+		#region CardinalityConstraintHasDuplicateNameError instance accessors
+		
+		/// <summary>
+		/// Get any CardinalityConstraintHasDuplicateNameError links between a given CardinalityConstraint and a ConstraintDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintDuplicateNameError target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.CardinalityConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one CardinalityConstraintHasDuplicateNameError link between a given CardinalityConstraintand a ConstraintDuplicateNameError.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintDuplicateNameError target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.CardinalityConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError link in links )
+			{
+				if ( target.Equals(link.DuplicateNameError) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ModelHasDefinition
 	/// Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasDefinition
 	/// </summary>
@@ -25010,6 +26360,266 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship CardinalityConstraintHasDefinition
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("ce175f97-f842-4212-ab44-ab37187921c8")]
+	public partial class CardinalityConstraintHasDefinition : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// CardinalityConstraintHasDefinition domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xce175f97, 0xf842, 0x4212, 0xab, 0x44, 0xab, 0x37, 0x18, 0x79, 0x21, 0xc8);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a CardinalityConstraintHasDefinition link in the same Partition as the given CardinalityConstraint
+		/// </summary>
+		/// <param name="source">CardinalityConstraint to use as the source of the relationship.</param>
+		/// <param name="target">Definition to use as the target of the relationship.</param>
+		public CardinalityConstraintHasDefinition(CardinalityConstraint source, Definition target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CardinalityConstraintHasDefinition.CardinalityConstraintDomainRoleId, source), new DslModeling::RoleAssignment(CardinalityConstraintHasDefinition.DefinitionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasDefinition(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasDefinition(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasDefinition(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasDefinition(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CardinalityConstraint domain role code
+		
+		/// <summary>
+		/// CardinalityConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CardinalityConstraintDomainRoleId = new global::System.Guid(0xad4c5971, 0x6e3f, 0x444d, 0xa9, 0xd9, 0xaa, 0x9b, 0xa1, 0xe6, 0x50, 0xc7);
+		
+		/// <summary>
+		/// DomainRole CardinalityConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/CardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/CardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Definition", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/CardinalityConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("ad4c5971-6e3f-444d-a9d9-aa9ba1e650c7")]
+		public virtual CardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CardinalityConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, CardinalityConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CardinalityConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access CardinalityConstraint of a Definition
+		/// <summary>
+		/// Gets CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static CardinalityConstraint GetCardinalityConstraint(Definition element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefinitionDomainRoleId) as CardinalityConstraint;
+		}
+		
+		/// <summary>
+		/// Sets CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetCardinalityConstraint(Definition element, CardinalityConstraint newCardinalityConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefinitionDomainRoleId, newCardinalityConstraint);
+		}
+		#endregion
+		#region Definition domain role code
+		
+		/// <summary>
+		/// Definition domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionDomainRoleId = new global::System.Guid(0x807ab7c5, 0x903e, 0x4adf, 0x99, 0xca, 0x6f, 0xde, 0x21, 0x7b, 0xaa, 0xf3);
+		
+		/// <summary>
+		/// DomainRole Definition
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.Definition
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/Definition.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/Definition.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CardinalityConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/Definition.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("807ab7c5-903e-4adf-99ca-6fde217baaf3")]
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Definition)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefinitionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefinitionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Definition of a CardinalityConstraint
+		/// <summary>
+		/// Gets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Definition GetDefinition(CardinalityConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CardinalityConstraintDomainRoleId) as Definition;
+		}
+		
+		/// <summary>
+		/// Sets Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDefinition(CardinalityConstraint element, Definition newDefinition)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CardinalityConstraintDomainRoleId, newDefinition);
+		}
+		#endregion
+		#region CardinalityConstraint link accessor
+		/// <summary>
+		/// Get the CardinalityConstraintHasDefinition link to a CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition GetLinkToDefinition (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint cardinalityConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition>(cardinalityConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CardinalityConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Definition link accessor
+		/// <summary>
+		/// Get the CardinalityConstraintHasDefinition link to a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition GetLinkToCardinalityConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition definitionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition>(definitionInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.DefinitionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Definition not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region CardinalityConstraintHasDefinition instance accessors
+		
+		/// <summary>
+		/// Get any CardinalityConstraintHasDefinition links between a given CardinalityConstraint and a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one CardinalityConstraintHasDefinition link between a given CardinalityConstraintand a Definition.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition link in links )
+			{
+				if ( target.Equals(link.Definition) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ElementGroupingHasDefinition
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition
@@ -26551,6 +28161,266 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.ValueConstraintDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship CardinalityConstraintHasNote
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("efdfbd16-f086-4ff3-8862-a0a6472dc1bb")]
+	public partial class CardinalityConstraintHasNote : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// CardinalityConstraintHasNote domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xefdfbd16, 0xf086, 0x4ff3, 0x88, 0x62, 0xa0, 0xa6, 0x47, 0x2d, 0xc1, 0xbb);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a CardinalityConstraintHasNote link in the same Partition as the given CardinalityConstraint
+		/// </summary>
+		/// <param name="source">CardinalityConstraint to use as the source of the relationship.</param>
+		/// <param name="target">Note to use as the target of the relationship.</param>
+		public CardinalityConstraintHasNote(CardinalityConstraint source, Note target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(CardinalityConstraintHasNote.CardinalityConstraintDomainRoleId, source), new DslModeling::RoleAssignment(CardinalityConstraintHasNote.NoteDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasNote(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasNote(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public CardinalityConstraintHasNote(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public CardinalityConstraintHasNote(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CardinalityConstraint domain role code
+		
+		/// <summary>
+		/// CardinalityConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid CardinalityConstraintDomainRoleId = new global::System.Guid(0x25c8bc40, 0x6529, 0x4d91, 0x9f, 0x37, 0x6f, 0x91, 0x80, 0xe4, 0x62, 0xad);
+		
+		/// <summary>
+		/// DomainRole CardinalityConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/CardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/CardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Note", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/CardinalityConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("25c8bc40-6529-4d91-9f37-6f9180e462ad")]
+		public virtual CardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (CardinalityConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, CardinalityConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, CardinalityConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access CardinalityConstraint of a Note
+		/// <summary>
+		/// Gets CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static CardinalityConstraint GetCardinalityConstraint(Note element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NoteDomainRoleId) as CardinalityConstraint;
+		}
+		
+		/// <summary>
+		/// Sets CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetCardinalityConstraint(Note element, CardinalityConstraint newCardinalityConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NoteDomainRoleId, newCardinalityConstraint);
+		}
+		#endregion
+		#region Note domain role code
+		
+		/// <summary>
+		/// Note domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteDomainRoleId = new global::System.Guid(0xf7ef20ea, 0xc089, 0x4966, 0x98, 0x25, 0x47, 0x3c, 0x85, 0xa6, 0x47, 0x86);
+		
+		/// <summary>
+		/// DomainRole Note
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.Note
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/Note.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/Note.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "CardinalityConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/Note.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("f7ef20ea-c089-4966-9825-473c85a64786")]
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (Note)DslModeling::DomainRoleInfo.GetRolePlayer(this, NoteDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, NoteDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Note of a CardinalityConstraint
+		/// <summary>
+		/// Gets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static Note GetNote(CardinalityConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, CardinalityConstraintDomainRoleId) as Note;
+		}
+		
+		/// <summary>
+		/// Sets Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetNote(CardinalityConstraint element, Note newNote)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, CardinalityConstraintDomainRoleId, newNote);
+		}
+		#endregion
+		#region CardinalityConstraint link accessor
+		/// <summary>
+		/// Get the CardinalityConstraintHasNote link to a CardinalityConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote GetLinkToNote (global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint cardinalityConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote>(cardinalityConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of CardinalityConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Note link accessor
+		/// <summary>
+		/// Get the CardinalityConstraintHasNote link to a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote GetLinkToCardinalityConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note noteInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote>(noteInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.NoteDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Note not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region CardinalityConstraintHasNote instance accessors
+		
+		/// <summary>
+		/// Get any CardinalityConstraintHasNote links between a given CardinalityConstraint and a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote link in links )
+			{
+				if ( target.Equals(link.Note) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one CardinalityConstraintHasNote link between a given CardinalityConstraintand a Note.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraintDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote link in links )
 			{
 				if ( target.Equals(link.Note) )
 				{
@@ -44979,7 +46849,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
 	/// DomainRelationship PathedRole
-	/// An occurrence of a <see cref="Role"/> in a <see cref="RolePath"/>. A single role
+	/// An occurrence of a &lt;see cref="Role"/&gt; in a &lt;see cref="RolePath"/&gt;. A single role
 	/// may occur multiple times in the same path.
 	/// </summary>
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.PathedRole.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]

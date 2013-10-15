@@ -168,7 +168,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					otherObjectType = otherSimpleIdentifier;
 				}
 			}
-			if (otherObjectType == null)
+			if (otherObjectType == null && objectifiedFactType == null)
 			{
 				foreach (ORMModel otherModel in foreignStore.ElementDirectory.FindElements<ORMModel>(false))
 				{

@@ -839,7 +839,7 @@
 				<DomainClassMoniker Name="ORMNamedElement"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="C0AEF802-D9E9-4938-B44B-DE9A6A530D9B" Description="The Modality of the simple mandatory constraint on this Role.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
+				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="C0AEF802-D9E9-4938-B44B-DE9A6A530D9B" Description="The constraint Modality.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
 					<Type>
 						<DomainEnumerationMoniker Name="ConstraintModality"/>
 					</Type>
@@ -1033,7 +1033,7 @@
 				<DomainClassMoniker Name="ConstraintRoleSequence"/>
 			</BaseClass>
 			<Properties>
-				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="B4F1902A-7EB9-464F-A0F8-F816658C1BD8" Description="The Modality of the simple mandatory constraint on this Role.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
+				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="B4F1902A-7EB9-464F-A0F8-F816658C1BD8" Description="The constraint Modality.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
 					<Type>
 						<DomainEnumerationMoniker Name="ConstraintModality"/>
 					</Type>
@@ -1977,6 +1977,102 @@
 			</Properties>
 		</DomainClass>
 
+		<DomainClass Name="CardinalityConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="D4AB0C22-784A-4A59-B2B9-0EA8A38DB563" DisplayName="CardinalityConstraint" Description="" InheritanceModifier="Abstract">
+			<!--<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;CardinalityConstraint, Design.CardinalityConstraintTypeDescriptor&lt;CardinalityConstraint&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>-->
+			<BaseClass>
+				<DomainClassMoniker Name="ORMNamedElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="24519D57-5891-4D87-9287-FB28FD1D57AF" Description="The constraint Modality.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
+					<Type>
+						<DomainEnumerationMoniker Name="ConstraintModality"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DefinitionText" DefaultValue="" DisplayName="InformalDescription" Description="An informal description of this constraint.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Informal Description Editor' tool window." Id="AFEE7AE8-88D7-4BD4-AFE8-EAD88F72F7C5" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="NoteText" DefaultValue="" DisplayName="Note" Description="A note to associate with this constraint.&#xd;&#xa;    To insert new lines, use Control-Enter in the dropdown editor, or open the 'ORM Notes Editor' tool window." Id="2842701E-6D94-4270-A06B-11F722511E09" Kind="CustomStorage">
+					<Attributes>
+						<ClrAttribute Name="global::System.ComponentModel.Editor">
+							<Parameters>
+								<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor&lt;global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note&gt;)"/>
+								<AttributeParameter Value="typeof(global::System.Drawing.Design.UITypeEditor)"/>
+							</Parameters>
+						</ClrAttribute>
+						<ClrAttribute Name="global::System.ComponentModel.MergableProperty">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="Text" DefaultValue="" DisplayName="Ranges" Id="6C4938A5-3226-4630-ACF5-6A07E2EAD6C9" Kind="CustomStorage" Description="Set the ranges for this cardinality constraint. The following patterns are recognized:&#xd;&#xa;&#xd;&#xa;Range with a zero lower bound: 0..n, ..n, &lt;n, &lt;=n&#xd;&#xa;Range with no upper bound: &gt;n, &gt;=n, n..&#xd;&#xa;Fixed range: n..m&#xd;&#xa;&#xd;&#xa;Cardinality supports multiple non-overlapping ranges and single values. A range of 0 indicates that an empty population is allowed. For example, 0,4.. will allow either an empty population or a population with four or more instances.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="TextChanged" DefaultValue="" DisplayName="TextChanged" Id="C7B8B9CA-5783-485F-9E47-44C3AFB95DE4" IsBrowsable="false" Kind="CustomStorage">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int64"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+
+		<DomainClass Name="ObjectTypeCardinalityConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="6C1367AF-7138-4FEF-B3FA-DB59C5EB3DCF" DisplayName="ObjectTypeCardinalityConstraint" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="CardinalityConstraint"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="UnaryRoleCardinalityConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="11946987-5A91-4927-96DC-348751F31D8A" DisplayName="RoleCardinalityConstraint" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="CardinalityConstraint"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="CardinalityRange" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="E17143E4-62F4-4FA6-AC21-ED84AF3BE74E" DisplayName="CardinalityRange" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ORMModelElement"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="LowerBound" DefaultValue="0" DisplayName="LowerBound" IsBrowsable="false" Id="4FE8FBF4-C653-4526-AE54-02E0225E14A9" Description="The lower bound for the cardinality range. An equivalent upper bound indicates a discrete value. This has a minimum number of 0.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="UpperBound" DefaultValue="-1" DisplayName="UpperBound" IsBrowsable="false" Id="4F68924A-3472-4916-82BE-E0EB46F76A08" Description="The upper bound of the range, or -1 if the range is unbounded.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int32"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+
 		<DomainClass Name="ValueRange" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8987ECEA-6C2A-4825-8C9F-465005272CE8" DisplayName="ValueRange" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ORMModelElement"/>
@@ -2251,6 +2347,12 @@
 		<DomainClass Name="ValueConstraintValueTypeDetachedError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="92C7060E-A912-4986-984E-E9915B1321AD" DisplayName="Path to Identifying ValueType Detached" Description="">
 			<BaseClass>
 				<DomainClassMoniker Name="ValueConstraintError"/>
+			</BaseClass>
+		</DomainClass>
+
+		<DomainClass Name="CardinalityRangeOverlapError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="7E66B362-342C-4D59-9EED-1226C0768ADD" DisplayName="Cardinality Ranges Overlap" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="ModelError"/>
 			</BaseClass>
 		</DomainClass>
 
@@ -3638,6 +3740,46 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="ObjectTypeHasCardinalityConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="565D3053-D67B-4F23-A81A-C9FCD1BD50C5">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="ObjectType" PropertyName="Cardinality" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ObjectType" Id="E5CF4336-394B-41FD-BB9D-E8EB2F93ED08">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="CardinalityConstraint" PropertyName="ObjectType" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CardinalityConstraint" Id="0F7B4C5C-9C52-4342-A9FA-DE1941F41655">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectTypeCardinalityConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="UnaryRoleHasCardinalityConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="323361EB-37A7-49D2-85FC-E1D35F734D6E">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="UnaryRole" PropertyName="Cardinality" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="UnaryRole" Id="28F9C99D-EA10-4BBD-B764-0970207B4D11">
+					<RolePlayer>
+						<DomainClassMoniker Name="Role"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="CardinalityConstraint" PropertyName="UnaryRole" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CardinalityConstraint" Id="D1180954-DCF6-4251-A94F-F453D95F1CA1">
+					<RolePlayer>
+						<DomainClassMoniker Name="UnaryRoleCardinalityConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="RoleHasValueConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="BFB9DA2A-0EA6-46AB-B608-41440BDD0D84">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -3707,6 +3849,46 @@
 				<DomainRole Name="ValueRange" PropertyName="ValueConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="ValueRange" Id="42AFA13D-E73D-47CA-8750-6605CB820138">
 					<RolePlayer>
 						<DomainClassMoniker Name="ValueRange"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="CardinalityConstraintHasRange" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="CDCB9830-0F09-4524-B615-06D21AA02532">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="Constraint" PropertyName="RangeCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="CardinalityConstraint" Id="871DA0C3-5C2E-41AB-B547-8DC9D0DE990D">
+					<RolePlayer>
+						<DomainClassMoniker Name="CardinalityConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Range" PropertyName="CardinalityConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CardinalityRange" Id="2529BB18-A837-41DB-A7F8-0724B5FB4264">
+					<RolePlayer>
+						<DomainClassMoniker Name="CardinalityRange"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="CardinalityConstraintHasRangeOverlapError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B0F6669B-C275-46A5-86D9-899ABFDF4B24">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="CardinalityConstraint" PropertyName="CardinalityRangeOverlapError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="CardinalityConstraint" Id="77000081-0A50-4573-81DA-1F9375ABB353">
+					<RolePlayer>
+						<DomainClassMoniker Name="CardinalityConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="CardinalityRangeOverlapError" PropertyName="CardinalityConstraint" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="CardinalityRangeOverlapError" Id="A4DC71C4-3677-4F38-AE2E-19B4E9C4E02A">
+					<RolePlayer>
+						<DomainClassMoniker Name="CardinalityRangeOverlapError"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -4152,6 +4334,26 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="CardinalityConstraintHasDuplicateNameError" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="89A95D59-4196-43E6-90F6-9061158685D6">
+			<BaseRelationship>
+				<DomainRelationshipMoniker Name="ElementAssociatedWithModelError"/>
+			</BaseRelationship>
+			<Source>
+				<DomainRole Name="CardinalityConstraint" PropertyName="DuplicateNameError" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="CardinalityConstraint" Id="F973D2E2-9625-4601-8395-F7D3B4F0400A">
+					<RolePlayer>
+						<DomainClassMoniker Name="CardinalityConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DuplicateNameError" PropertyName="CardinalityConstraintCollection" Multiplicity="OneMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DuplicateNameError" Id="A8E71E45-08C0-424F-AFB4-ADBDF6C7838B">
+					<RolePlayer>
+						<DomainClassMoniker Name="ConstraintDuplicateNameError"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ModelHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="BC513C18-D426-4E5E-907C-1CD0C87732F1">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -4272,6 +4474,26 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="CardinalityConstraintHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="CE175F97-F842-4212-AB44-AB37187921C8">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="CardinalityConstraint" PropertyName="Definition" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="CardinalityConstraint" Id="AD4C5971-6E3F-444D-A9D9-AA9BA1E650C7">
+					<RolePlayer>
+						<DomainClassMoniker Name="CardinalityConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Definition" PropertyName="CardinalityConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Definition" Id="807AB7C5-903E-4ADF-99CA-6FDE217BAAF3">
+					<RolePlayer>
+						<DomainClassMoniker Name="Definition"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ElementGroupingHasDefinition" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="772A73A6-4362-494A-9F40-36228F0802C9">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>
@@ -4385,6 +4607,26 @@
 			</Source>
 			<Target>
 				<DomainRole Name="Note" PropertyName="ValueConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="168403A0-3BA7-440E-9202-1A7CFAAF12E1">
+					<RolePlayer>
+						<DomainClassMoniker Name="Note"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="CardinalityConstraintHasNote" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="EFDFBD16-F086-4FF3-8862-A0A6472DC1BB">
+			<!--<BaseRelationship>
+				<DomainRelationshipMoniker Name="ORMElementLink"/>
+			</BaseRelationship>-->
+			<Source>
+				<DomainRole Name="CardinalityConstraint" PropertyName="Note" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="CardinalityConstraint" Id="25C8BC40-6529-4D91-9F37-6F9180E462AD">
+					<RolePlayer>
+						<DomainClassMoniker Name="CardinalityConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Note" PropertyName="CardinalityConstraint" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Note" Id="F7EF20EA-C089-4966-9825-473C85A64786">
 					<RolePlayer>
 						<DomainClassMoniker Name="Note"/>
 					</RolePlayer>

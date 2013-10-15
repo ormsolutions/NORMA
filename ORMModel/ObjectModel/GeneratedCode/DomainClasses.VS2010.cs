@@ -5427,6 +5427,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region Cardinality opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Cardinality.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectType
+		/// </summary>
+		public virtual ObjectTypeCardinalityConstraint Cardinality
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId) as ObjectTypeCardinalityConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.CardinalityConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.CardinalityConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region ReferenceSchemeError opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ReferenceSchemeError.
@@ -8006,6 +8038,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region Cardinality opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Cardinality.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRole
+		/// </summary>
+		public virtual UnaryRoleCardinalityConstraint Cardinality
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId) as UnaryRoleCardinalityConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.CardinalityConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.CardinalityConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region ValueConstraint opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ValueConstraint.
@@ -8771,7 +8835,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Modality domain property.
-		/// The Modality of the simple mandatory constraint on this Role.
+		/// The constraint Modality.
 		///     Alethic modality means the constraint is structurally enforced and data
 		/// violating the constraint cannot be entered in the system;
 		///     Deontic modality means that data violating the constraint can be recorded.
@@ -11076,7 +11140,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Modality domain property.
-		/// The Modality of the simple mandatory constraint on this Role.
+		/// The constraint Modality.
 		///     Alethic modality means the constraint is structurally enforced and data
 		/// violating the constraint cannot be entered in the system;
 		///     Deontic modality means that data violating the constraint can be recorded.
@@ -17876,6 +17940,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region CardinalityConstraintCollection opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of CardinalityConstraintCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.DuplicateNameError
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<CardinalityConstraint> CardinalityConstraintCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<CardinalityConstraint>, CardinalityConstraint>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.DuplicateNameErrorDomainRoleId);
+			}
+		}
+		#endregion
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
@@ -22174,6 +22254,1023 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass CardinalityConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("d4ab0c22-784a-4a59-b2b9-0ea8a38db563")]
+	public abstract partial class CardinalityConstraint : ORMNamedElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// CardinalityConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xd4ab0c22, 0x784a, 0x4a59, 0xb2, 0xb9, 0x0e, 0xa8, 0xa3, 0x8d, 0xb5, 0x63);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected CardinalityConstraint(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Modality domain property code
+		
+		/// <summary>
+		/// Modality domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ModalityDomainPropertyId = new global::System.Guid(0x24519d57, 0x5891, 0x4d87, 0x92, 0x87, 0xfb, 0x28, 0xfd, 0x1d, 0x57, 0xaf);
+		
+		/// <summary>
+		/// Storage for Modality
+		/// </summary>
+		private ConstraintModality modalityPropertyStorage = ConstraintModality.Alethic;
+		
+		/// <summary>
+		/// Gets or sets the value of Modality domain property.
+		/// The constraint Modality.
+		///     Alethic modality means the constraint is structurally enforced and data
+		/// violating the constraint cannot be entered in the system;
+		///     Deontic modality means that data violating the constraint can be recorded.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/Modality.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/Modality.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ConstraintModality.Alethic)]
+		[DslModeling::DomainObjectId("24519d57-5891-4d87-9287-fb28fd1d57af")]
+		public ConstraintModality Modality
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return modalityPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ModalityPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CardinalityConstraint.Modality domain property.
+		/// </summary>
+		internal sealed partial class ModalityPropertyHandler : DslModeling::DomainPropertyValueHandler<CardinalityConstraint, ConstraintModality>
+		{
+			private ModalityPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CardinalityConstraint.Modality domain property value handler.
+			/// </summary>
+			public static readonly ModalityPropertyHandler Instance = new ModalityPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CardinalityConstraint.Modality domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ModalityDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed ConstraintModality GetValue(CardinalityConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.modalityPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CardinalityConstraint element, ConstraintModality newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				ConstraintModality oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.modalityPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DefinitionText domain property code
+		
+		/// <summary>
+		/// DefinitionText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DefinitionTextDomainPropertyId = new global::System.Guid(0xafee7ae8, 0x88d7, 0x4bd4, 0xaf, 0xe8, 0xea, 0xd8, 0x8f, 0x72, 0xf7, 0xc5);
+		
+		/// <summary>
+		/// Gets or sets the value of DefinitionText domain property.
+		/// An informal description of this constraint.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Informal Description Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Definition>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/DefinitionText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/DefinitionText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("afee7ae8-88d7-4bd4-afe8-ead88f72f7c5")]
+		public global::System.String DefinitionText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DefinitionTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DefinitionTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CardinalityConstraint.DefinitionText domain property.
+		/// </summary>
+		internal sealed partial class DefinitionTextPropertyHandler : DslModeling::DomainPropertyValueHandler<CardinalityConstraint, global::System.String>
+		{
+			private DefinitionTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CardinalityConstraint.DefinitionText domain property value handler.
+			/// </summary>
+			public static readonly DefinitionTextPropertyHandler Instance = new DefinitionTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CardinalityConstraint.DefinitionText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DefinitionTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(CardinalityConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DefinitionText because its Kind is
+				// set to CustomStorage. Please provide the GetDefinitionTextValue()
+				// method on the domain class.
+				return element.GetDefinitionTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CardinalityConstraint element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DefinitionText because its Kind is
+					// set to CustomStorage. Please provide the SetDefinitionTextValue()
+					// method on the domain class.
+					element.SetDefinitionTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region NoteText domain property code
+		
+		/// <summary>
+		/// NoteText domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid NoteTextDomainPropertyId = new global::System.Guid(0x2842701e, 0x6d94, 0x4270, 0xa0, 0x6b, 0x11, 0xf7, 0x22, 0x51, 0x1e, 0x09);
+		
+		/// <summary>
+		/// Gets or sets the value of NoteText domain property.
+		/// A note to associate with this constraint.
+		///     To insert new lines, use Control-Enter in the dropdown editor, or open the
+		/// 'ORM Notes Editor' tool window.
+		/// </summary>
+		[global::System.ComponentModel.Editor(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.MultilineTextEditor<global::ORMSolutions.ORMArchitect.Core.ObjectModel.Note>), typeof(global::System.Drawing.Design.UITypeEditor))]
+		[global::System.ComponentModel.MergableProperty(false)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/NoteText.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/NoteText.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("2842701e-6d94-4270-a06b-11f722511e09")]
+		public global::System.String NoteText
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return NoteTextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				NoteTextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CardinalityConstraint.NoteText domain property.
+		/// </summary>
+		internal sealed partial class NoteTextPropertyHandler : DslModeling::DomainPropertyValueHandler<CardinalityConstraint, global::System.String>
+		{
+			private NoteTextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CardinalityConstraint.NoteText domain property value handler.
+			/// </summary>
+			public static readonly NoteTextPropertyHandler Instance = new NoteTextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CardinalityConstraint.NoteText domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return NoteTextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(CardinalityConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for NoteText because its Kind is
+				// set to CustomStorage. Please provide the GetNoteTextValue()
+				// method on the domain class.
+				return element.GetNoteTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CardinalityConstraint element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for NoteText because its Kind is
+					// set to CustomStorage. Please provide the SetNoteTextValue()
+					// method on the domain class.
+					element.SetNoteTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region Text domain property code
+		
+		/// <summary>
+		/// Text domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid TextDomainPropertyId = new global::System.Guid(0x6c4938a5, 0x3226, 0x4630, 0xac, 0xf5, 0x6a, 0x07, 0xe2, 0xea, 0xd6, 0xc9);
+		
+		/// <summary>
+		/// Gets or sets the value of Text domain property.
+		/// Set the ranges for this cardinality constraint. The following patterns are
+		/// recognized:
+		/// 
+		/// Range with a zero lower bound: 0..n, ..n, &lt;n, &lt;=n
+		/// Range with no upper bound: &gt;n, &gt;=n, n..
+		/// Fixed range: n..m
+		/// 
+		/// Cardinality supports multiple non-overlapping ranges and single values. A range
+		/// of 0 indicates that an empty population is allowed. For example, 0,4.. will
+		/// allow either an empty population or a population with four or more instances.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/Text.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/Text.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("6c4938a5-3226-4630-acf5-6a07e2ead6c9")]
+		public global::System.String Text
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return TextPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				TextPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CardinalityConstraint.Text domain property.
+		/// </summary>
+		internal sealed partial class TextPropertyHandler : DslModeling::DomainPropertyValueHandler<CardinalityConstraint, global::System.String>
+		{
+			private TextPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CardinalityConstraint.Text domain property value handler.
+			/// </summary>
+			public static readonly TextPropertyHandler Instance = new TextPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CardinalityConstraint.Text domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return TextDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(CardinalityConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for Text because its Kind is
+				// set to CustomStorage. Please provide the GetTextValue()
+				// method on the domain class.
+				return element.GetTextValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CardinalityConstraint element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for Text because its Kind is
+					// set to CustomStorage. Please provide the SetTextValue()
+					// method on the domain class.
+					element.SetTextValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region TextChanged domain property code
+		
+		/// <summary>
+		/// TextChanged domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid TextChangedDomainPropertyId = new global::System.Guid(0xc7b8b9ca, 0x5783, 0x485f, 0x9e, 0x47, 0x44, 0xc3, 0xaf, 0xb9, 0x5d, 0xe4);
+		
+		/// <summary>
+		/// Gets or sets the value of TextChanged domain property.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.TextChanged
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/TextChanged.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/TextChanged.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("c7b8b9ca-5783-485f-9e47-44c3afb95de4")]
+		public global::System.Int64 TextChanged
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return TextChangedPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				TextChangedPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CardinalityConstraint.TextChanged domain property.
+		/// </summary>
+		internal sealed partial class TextChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<CardinalityConstraint, global::System.Int64>
+		{
+			private TextChangedPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CardinalityConstraint.TextChanged domain property value handler.
+			/// </summary>
+			public static readonly TextChangedPropertyHandler Instance = new TextChangedPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CardinalityConstraint.TextChanged domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return TextChangedDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int64 GetValue(CardinalityConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for TextChanged because its Kind is
+				// set to CustomStorage. Please provide the GetTextChangedValue()
+				// method on the domain class.
+				return element.GetTextChangedValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CardinalityConstraint element, global::System.Int64 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int64 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for TextChanged because its Kind is
+					// set to CustomStorage. Please provide the SetTextChangedValue()
+					// method on the domain class.
+					element.SetTextChangedValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region RangeCollection opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of RangeCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.Constraint
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<CardinalityRange> RangeCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<CardinalityRange>, CardinalityRange>(global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.ConstraintDomainRoleId);
+			}
+		}
+		#endregion
+		#region CardinalityRangeOverlapError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets CardinalityRangeOverlapError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraint
+		/// </summary>
+		public virtual CardinalityRangeOverlapError CardinalityRangeOverlapError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraintDomainRoleId) as CardinalityRangeOverlapError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityRangeOverlapErrorDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityRangeOverlapErrorDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DuplicateNameError opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DuplicateNameError.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.CardinalityConstraint
+		/// </summary>
+		public virtual ConstraintDuplicateNameError DuplicateNameError
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.CardinalityConstraintDomainRoleId) as ConstraintDuplicateNameError;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.CardinalityConstraintDomainRoleId, value);
+			}
+		}
+		#endregion
+		#region Definition opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Definition.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraint
+		/// </summary>
+		public virtual Definition Definition
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraintDomainRoleId) as Definition;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.DefinitionDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.DefinitionDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region Note opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Note.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraint
+		/// </summary>
+		public virtual Note Note
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraintDomainRoleId) as Note;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.NoteDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.NoteDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass ObjectTypeCardinalityConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("6c1367af-7138-4fef-b3fa-db59c5eb3dcf")]
+	public partial class ObjectTypeCardinalityConstraint : CardinalityConstraint
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// ObjectTypeCardinalityConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x6c1367af, 0x7138, 0x4fef, 0xb3, 0xfa, 0xdb, 0x59, 0xc5, 0xeb, 0x3d, 0xcf);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ObjectTypeCardinalityConstraint(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public ObjectTypeCardinalityConstraint(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets ObjectType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.CardinalityConstraint
+		/// </summary>
+		public virtual ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.CardinalityConstraintDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.CardinalityConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass UnaryRoleCardinalityConstraint
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("11946987-5a91-4927-96dc-348751f31d8a")]
+	public partial class UnaryRoleCardinalityConstraint : CardinalityConstraint
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// UnaryRoleCardinalityConstraint domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x11946987, 0x5a91, 0x4927, 0x96, 0xdc, 0x34, 0x87, 0x51, 0xf3, 0x1d, 0x8a);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public UnaryRoleCardinalityConstraint(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public UnaryRoleCardinalityConstraint(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region UnaryRole opposite domain role accessor
+		/// <summary>
+		/// Gets or sets UnaryRole.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.CardinalityConstraint
+		/// </summary>
+		public virtual Role UnaryRole
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.CardinalityConstraintDomainRoleId) as Role;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.CardinalityConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass CardinalityRange
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("e17143e4-62f4-4fa6-ac21-ed84af3be74e")]
+	public partial class CardinalityRange : ORMModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// CardinalityRange domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xe17143e4, 0x62f4, 0x4fa6, 0xac, 0x21, 0xed, 0x84, 0xaf, 0x3b, 0xe7, 0x4e);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CardinalityRange(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CardinalityRange(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region LowerBound domain property code
+		
+		/// <summary>
+		/// LowerBound domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid LowerBoundDomainPropertyId = new global::System.Guid(0x4fe8fbf4, 0xc653, 0x4526, 0xae, 0x54, 0x02, 0xe0, 0x22, 0x5e, 0x14, 0xa9);
+		
+		/// <summary>
+		/// Storage for LowerBound
+		/// </summary>
+		private global::System.Int32 lowerBoundPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of LowerBound domain property.
+		/// The lower bound for the cardinality range. An equivalent upper bound indicates a
+		/// discrete value. This has a minimum number of 0.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange/LowerBound.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange/LowerBound.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("4fe8fbf4-c653-4526-ae54-02e0225e14a9")]
+		public global::System.Int32 LowerBound
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return lowerBoundPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				LowerBoundPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CardinalityRange.LowerBound domain property.
+		/// </summary>
+		internal sealed partial class LowerBoundPropertyHandler : DslModeling::DomainPropertyValueHandler<CardinalityRange, global::System.Int32>
+		{
+			private LowerBoundPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CardinalityRange.LowerBound domain property value handler.
+			/// </summary>
+			public static readonly LowerBoundPropertyHandler Instance = new LowerBoundPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CardinalityRange.LowerBound domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return LowerBoundDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(CardinalityRange element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.lowerBoundPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CardinalityRange element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.lowerBoundPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region UpperBound domain property code
+		
+		/// <summary>
+		/// UpperBound domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UpperBoundDomainPropertyId = new global::System.Guid(0x4f68924a, 0x3472, 0x4916, 0x82, 0xbe, 0xe0, 0xeb, 0x46, 0xf7, 0x6a, 0x08);
+		
+		/// <summary>
+		/// Storage for UpperBound
+		/// </summary>
+		private global::System.Int32 upperBoundPropertyStorage = -1;
+		
+		/// <summary>
+		/// Gets or sets the value of UpperBound domain property.
+		/// The upper bound of the range, or -1 if the range is unbounded.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange/UpperBound.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange/UpperBound.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(-1)]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainObjectId("4f68924a-3472-4916-82be-e0eb46f76a08")]
+		public global::System.Int32 UpperBound
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return upperBoundPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UpperBoundPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the CardinalityRange.UpperBound domain property.
+		/// </summary>
+		internal sealed partial class UpperBoundPropertyHandler : DslModeling::DomainPropertyValueHandler<CardinalityRange, global::System.Int32>
+		{
+			private UpperBoundPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the CardinalityRange.UpperBound domain property value handler.
+			/// </summary>
+			public static readonly UpperBoundPropertyHandler Instance = new UpperBoundPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the CardinalityRange.UpperBound domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UpperBoundDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int32 GetValue(CardinalityRange element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.upperBoundPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(CardinalityRange element, global::System.Int32 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int32 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.upperBoundPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region CardinalityConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets CardinalityConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.Range
+		/// </summary>
+		public virtual CardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.RangeDomainRoleId) as CardinalityConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.RangeDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass ValueRange
 	/// </summary>
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
@@ -24632,6 +25729,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region CardinalityConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets CardinalityConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.Definition
+		/// </summary>
+		public virtual CardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.DefinitionDomainRoleId) as CardinalityConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.DefinitionDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region Grouping opposite domain role accessor
 		/// <summary>
 		/// Gets or sets Grouping.
@@ -24951,6 +26080,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote.NoteDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region CardinalityConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets CardinalityConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.Note
+		/// </summary>
+		public virtual CardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.NoteDomainRoleId) as CardinalityConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.NoteDomainRoleId, value);
 				}
 			}
 		}
@@ -25660,6 +26821,78 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass CardinalityRangeOverlapError
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRangeOverlapError.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRangeOverlapError.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslModeling::DomainModelOwner(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel))]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("7e66b362-342c-4d59-9eed-1226c0768add")]
+	public partial class CardinalityRangeOverlapError : ModelError
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// CardinalityRangeOverlapError domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x7e66b362, 0x342c, 0x4d59, 0x9e, 0xed, 0x12, 0x26, 0xc0, 0x76, 0x8a, 0xdd);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CardinalityRangeOverlapError(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartitionForClass(DomainClassId) : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public CardinalityRangeOverlapError(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region CardinalityConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets CardinalityConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityRangeOverlapError
+		/// </summary>
+		public virtual CardinalityConstraint CardinalityConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityRangeOverlapErrorDomainRoleId) as CardinalityConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityRangeOverlapErrorDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass DerivationNote
 	/// An informal note describing the purpose of a derivation rule.
 	/// </summary>
@@ -26034,8 +27267,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		
 		/// <summary>
 		/// Gets or sets the value of Name domain property.
-		/// An ordered tuple of values for this instance. If the parent <see
-		/// cref="ObjectType"/> objectifies a <see cref="FactType"/>, then Name returns the
+		/// An ordered tuple of values for this instance. If the parent &lt;see
+		/// cref="ObjectType"/&gt; objectifies a &lt;see cref="FactType"/&gt;, then Name returns the
 		/// FactType population prepended by an external identifier reference.
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
@@ -26131,7 +27364,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Gets or sets the value of IdentifierName domain property.
 		/// An ordered tuple of values for this instance, ignores objectification of the
-		/// associated <see cref="ObjectType"/>.
+		/// associated &lt;see cref="ObjectType"/&gt;.
 		/// </summary>
 		[global::System.ComponentModel.MergableProperty(false)]
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance/IdentifierName.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]

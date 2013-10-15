@@ -41,6 +41,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(CalculatedPathValue).GetNestedType("InputBoundToConstantRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(CalculatedPathValue).GetNestedType("InputBoundToPathedRoleRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(CalculatedPathValue).GetNestedType("InputBoundToPathRootRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CardinalityConstraint).GetNestedType("CardinalityChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CardinalityConstraint).GetNestedType("CardinalityRangeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CardinalityConstraint).GetNestedType("CardinalityRangeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CardinalityConstraint).GetNestedType("CardinalityRangeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CardinalityConstraint).GetNestedType("ObjectTypeCardinalityAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(CardinalityConstraint).GetNestedType("UnaryRoleCardinalityAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("AutomaticJoinPathChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("BlockRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequence).GetNestedType("ConstraintRolePositionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -542,7 +548,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 474; ++i)
+			for (int i = 0; i < 480; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -716,6 +722,167 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for CalculatedPathValue
+	#region Rule classes for CardinalityConstraint
+	partial class CardinalityConstraint
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CardinalityConstraint), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class CardinalityChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public CardinalityChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint
+			/// /// <summary>
+			/// /// ChangeRule: typeof(CardinalityConstraint)
+			/// /// </summary>
+			/// private static void CardinalityChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityChangedRule");
+				CardinalityConstraint.CardinalityChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CardinalityConstraintHasRange), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class CardinalityRangeAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public CardinalityRangeAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint
+			/// /// <summary>
+			/// /// AddRule: typeof(CardinalityConstraintHasRange)
+			/// /// </summary>
+			/// private static void CardinalityRangeAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeAddedRule");
+				CardinalityConstraint.CardinalityRangeAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CardinalityRange), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class CardinalityRangeChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public CardinalityRangeChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint
+			/// /// <summary>
+			/// /// ChangeRule: typeof(CardinalityRange)
+			/// /// </summary>
+			/// private static void CardinalityRangeChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeChangedRule");
+				CardinalityConstraint.CardinalityRangeChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CardinalityConstraintHasRange), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class CardinalityRangeDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public CardinalityRangeDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint
+			/// /// <summary>
+			/// /// DeleteRule: typeof(CardinalityConstraintHasRange)
+			/// /// </summary>
+			/// private static void CardinalityRangeDeletedRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeDeletedRule");
+				CardinalityConstraint.CardinalityRangeDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ObjectTypeHasCardinalityConstraint), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class ObjectTypeCardinalityAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ObjectTypeCardinalityAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint
+			/// /// <summary>
+			/// /// AddRule: typeof(ObjectTypeHasCardinalityConstraint)
+			/// /// </summary>
+			/// private static void ObjectTypeCardinalityAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.ObjectTypeCardinalityAddedRule");
+				CardinalityConstraint.ObjectTypeCardinalityAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.ObjectTypeCardinalityAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(UnaryRoleHasCardinalityConstraint), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class UnaryRoleCardinalityAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public UnaryRoleCardinalityAddedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint
+			/// /// <summary>
+			/// /// AddRule: typeof(UnaryRoleHasCardinalityConstraint)
+			/// /// </summary>
+			/// private static void UnaryRoleCardinalityAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.UnaryRoleCardinalityAddedRule");
+				CardinalityConstraint.UnaryRoleCardinalityAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.UnaryRoleCardinalityAddedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for CardinalityConstraint
 	#region Rule classes for ConstraintRoleSequence
 	partial class ConstraintRoleSequence
 	{
@@ -7544,6 +7711,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetComparisonConstraintHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(SetConstraintHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueConstraintHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(CardinalityConstraintHasDuplicateNameError), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class DuplicateConstraintNameConstraintDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
@@ -7558,6 +7726,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// /// DeleteRule: typeof(SetComparisonConstraintHasDuplicateNameError)
 			/// /// DeleteRule: typeof(SetConstraintHasDuplicateNameError)
 			/// /// DeleteRule: typeof(ValueConstraintHasDuplicateNameError)
+			/// /// DeleteRule: typeof(CardinalityConstraintHasDuplicateNameError)
 			/// /// </summary>
 			/// private static void DuplicateConstraintNameConstraintDeletedRule(ElementDeletedEventArgs e)
 			/// {

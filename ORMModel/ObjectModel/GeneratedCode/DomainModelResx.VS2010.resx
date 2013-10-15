@@ -893,7 +893,7 @@
     <comment>DisplayName for DomainClass &apos;SetComparisonConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint/Modality.Description" xml:space="preserve">
-    <value>The Modality of the simple mandatory constraint on this Role.
+    <value>The constraint Modality.
     Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;
     Deontic modality means that data violating the constraint can be recorded.</value>
     <comment>Description for DomainProperty &apos;Modality&apos; on DomainClass &apos;SetComparisonConstraint&apos;</comment>
@@ -1066,7 +1066,7 @@
     <comment>DisplayName for DomainClass &apos;SetConstraint&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint/Modality.Description" xml:space="preserve">
-    <value>The Modality of the simple mandatory constraint on this Role.
+    <value>The constraint Modality.
     Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;
     Deontic modality means that data violating the constraint can be recorded.</value>
     <comment>Description for DomainProperty &apos;Modality&apos; on DomainClass &apos;SetConstraint&apos;</comment>
@@ -2238,6 +2238,104 @@
     <value>ReadingText</value>
     <comment>DisplayName for DomainProperty &apos;ReadingText&apos; on DomainClass &apos;ReadingOrder&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>CardinalityConstraint</value>
+    <comment>DisplayName for DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/Modality.Description" xml:space="preserve">
+    <value>The constraint Modality.
+    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;
+    Deontic modality means that data violating the constraint can be recorded.</value>
+    <comment>Description for DomainProperty &apos;Modality&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/Modality.DisplayName" xml:space="preserve">
+    <value>Modality</value>
+    <comment>DisplayName for DomainProperty &apos;Modality&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/DefinitionText.Description" xml:space="preserve">
+    <value>An informal description of this constraint.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Informal Description Editor&apos; tool window.</value>
+    <comment>Description for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/DefinitionText.DisplayName" xml:space="preserve">
+    <value>InformalDescription</value>
+    <comment>DisplayName for DomainProperty &apos;DefinitionText&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/NoteText.Description" xml:space="preserve">
+    <value>A note to associate with this constraint.
+    To insert new lines, use Control-Enter in the dropdown editor, or open the &apos;ORM Notes Editor&apos; tool window.</value>
+    <comment>Description for DomainProperty &apos;NoteText&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/NoteText.DisplayName" xml:space="preserve">
+    <value>Note</value>
+    <comment>DisplayName for DomainProperty &apos;NoteText&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/Text.Description" xml:space="preserve">
+    <value>Set the ranges for this cardinality constraint. The following patterns are recognized:
+
+Range with a zero lower bound: 0..n, ..n, &lt;n, &lt;=n
+Range with no upper bound: &gt;n, &gt;=n, n..
+Fixed range: n..m
+
+Cardinality supports multiple non-overlapping ranges and single values. A range of 0 indicates that an empty population is allowed. For example, 0,4.. will allow either an empty population or a population with four or more instances.</value>
+    <comment>Description for DomainProperty &apos;Text&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/Text.DisplayName" xml:space="preserve">
+    <value>Ranges</value>
+    <comment>DisplayName for DomainProperty &apos;Text&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/TextChanged.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.TextChanged</value>
+    <comment>Description for DomainProperty &apos;TextChanged&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint/TextChanged.DisplayName" xml:space="preserve">
+    <value>TextChanged</value>
+    <comment>DisplayName for DomainProperty &apos;TextChanged&apos; on DomainClass &apos;CardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ObjectTypeCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>ObjectTypeCardinalityConstraint</value>
+    <comment>DisplayName for DomainClass &apos;ObjectTypeCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;UnaryRoleCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>RoleCardinalityConstraint</value>
+    <comment>DisplayName for DomainClass &apos;UnaryRoleCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;CardinalityRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange.DisplayName" xml:space="preserve">
+    <value>CardinalityRange</value>
+    <comment>DisplayName for DomainClass &apos;CardinalityRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange/LowerBound.Description" xml:space="preserve">
+    <value>The lower bound for the cardinality range. An equivalent upper bound indicates a discrete value. This has a minimum number of 0.</value>
+    <comment>Description for DomainProperty &apos;LowerBound&apos; on DomainClass &apos;CardinalityRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange/LowerBound.DisplayName" xml:space="preserve">
+    <value>LowerBound</value>
+    <comment>DisplayName for DomainProperty &apos;LowerBound&apos; on DomainClass &apos;CardinalityRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange/UpperBound.Description" xml:space="preserve">
+    <value>The upper bound of the range, or -1 if the range is unbounded.</value>
+    <comment>Description for DomainProperty &apos;UpperBound&apos; on DomainClass &apos;CardinalityRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRange/UpperBound.DisplayName" xml:space="preserve">
+    <value>UpperBound</value>
+    <comment>DisplayName for DomainProperty &apos;UpperBound&apos; on DomainClass &apos;CardinalityRange&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueRange.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ValueRange&apos;</comment>
@@ -2539,6 +2637,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintValueTypeDetachedError.DisplayName" xml:space="preserve">
     <value>Path to Identifying ValueType Detached</value>
     <comment>DisplayName for DomainClass &apos;ValueConstraintValueTypeDetachedError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRangeOverlapError.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;CardinalityRangeOverlapError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityRangeOverlapError.DisplayName" xml:space="preserve">
+    <value>Cardinality Ranges Overlap</value>
+    <comment>DisplayName for DomainClass &apos;CardinalityRangeOverlapError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote.Description" xml:space="preserve">
     <value>An informal note describing the purpose of a derivation rule.</value>
@@ -4620,6 +4726,70 @@
     <value>Value Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;ValueConstraint&apos; on DomainRelationship &apos;ValueTypeHasValueConstraint&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint</value>
+    <comment>Description for DomainClass &apos;ObjectTypeHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>Object Type Has Cardinality Constraint</value>
+    <comment>DisplayName for DomainClass &apos;ObjectTypeHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/ObjectType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/ObjectType.DisplayName" xml:space="preserve">
+    <value>ObjectType</value>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Cardinality</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;ObjectTypeHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/CardinalityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint.CardinalityConstraint</value>
+    <comment>Description for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;ObjectTypeHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/CardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>CardinalityConstraint</value>
+    <comment>DisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;ObjectTypeHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint/CardinalityConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Object Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;ObjectTypeHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint</value>
+    <comment>Description for DomainClass &apos;UnaryRoleHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>Unary Role Has Cardinality Constraint</value>
+    <comment>DisplayName for DomainClass &apos;UnaryRoleHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/UnaryRole.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.UnaryRole</value>
+    <comment>Description for DomainRole &apos;UnaryRole&apos; on DomainRelationship &apos;UnaryRoleHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/UnaryRole.DisplayName" xml:space="preserve">
+    <value>UnaryRole</value>
+    <comment>DisplayName for DomainRole &apos;UnaryRole&apos; on DomainRelationship &apos;UnaryRoleHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/UnaryRole.PropertyDisplayName" xml:space="preserve">
+    <value>Cardinality</value>
+    <comment>PropertyDisplayName for DomainRole &apos;UnaryRole&apos; on DomainRelationship &apos;UnaryRoleHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/CardinalityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint.CardinalityConstraint</value>
+    <comment>Description for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;UnaryRoleHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/CardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>CardinalityConstraint</value>
+    <comment>DisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;UnaryRoleHasCardinalityConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint/CardinalityConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Unary Role</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;UnaryRoleHasCardinalityConstraint&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint</value>
     <comment>Description for DomainClass &apos;RoleHasValueConstraint&apos;</comment>
@@ -4747,6 +4917,70 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasValueRange/ValueRange.PropertyDisplayName" xml:space="preserve">
     <value>Value Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;ValueRange&apos; on DomainRelationship &apos;ValueConstraintHasValueRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange</value>
+    <comment>Description for DomainClass &apos;CardinalityConstraintHasRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.DisplayName" xml:space="preserve">
+    <value>Cardinality Constraint Has Range</value>
+    <comment>DisplayName for DomainClass &apos;CardinalityConstraintHasRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Constraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.Constraint</value>
+    <comment>Description for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;CardinalityConstraintHasRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Constraint.DisplayName" xml:space="preserve">
+    <value>CardinalityConstraint</value>
+    <comment>DisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;CardinalityConstraintHasRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Constraint.PropertyDisplayName" xml:space="preserve">
+    <value>Range Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Constraint&apos; on DomainRelationship &apos;CardinalityConstraintHasRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Range.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange.Range</value>
+    <comment>Description for DomainRole &apos;Range&apos; on DomainRelationship &apos;CardinalityConstraintHasRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Range.DisplayName" xml:space="preserve">
+    <value>CardinalityRange</value>
+    <comment>DisplayName for DomainRole &apos;Range&apos; on DomainRelationship &apos;CardinalityConstraintHasRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRange/Range.PropertyDisplayName" xml:space="preserve">
+    <value>Cardinality Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Range&apos; on DomainRelationship &apos;CardinalityConstraintHasRange&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError</value>
+    <comment>Description for DomainClass &apos;CardinalityConstraintHasRangeOverlapError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.DisplayName" xml:space="preserve">
+    <value>Cardinality Constraint Has Range Overlap Error</value>
+    <comment>DisplayName for DomainClass &apos;CardinalityConstraintHasRangeOverlapError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityConstraint</value>
+    <comment>Description for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasRangeOverlapError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>CardinalityConstraint</value>
+    <comment>DisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasRangeOverlapError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Cardinality Range Overlap Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasRangeOverlapError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityRangeOverlapError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError.CardinalityRangeOverlapError</value>
+    <comment>Description for DomainRole &apos;CardinalityRangeOverlapError&apos; on DomainRelationship &apos;CardinalityConstraintHasRangeOverlapError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityRangeOverlapError.DisplayName" xml:space="preserve">
+    <value>CardinalityRangeOverlapError</value>
+    <comment>DisplayName for DomainRole &apos;CardinalityRangeOverlapError&apos; on DomainRelationship &apos;CardinalityConstraintHasRangeOverlapError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasRangeOverlapError/CardinalityRangeOverlapError.PropertyDisplayName" xml:space="preserve">
+    <value>Cardinality Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CardinalityRangeOverlapError&apos; on DomainRelationship &apos;CardinalityConstraintHasRangeOverlapError&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasUnspecifiedDataTypeError.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasUnspecifiedDataTypeError</value>
@@ -5452,6 +5686,38 @@
     <value>Value Constraint Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;ValueConstraintHasDuplicateNameError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError</value>
+    <comment>Description for DomainClass &apos;CardinalityConstraintHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.DisplayName" xml:space="preserve">
+    <value>Cardinality Constraint Has Duplicate Name Error</value>
+    <comment>DisplayName for DomainClass &apos;CardinalityConstraintHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/CardinalityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.CardinalityConstraint</value>
+    <comment>Description for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/CardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>CardinalityConstraint</value>
+    <comment>DisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/CardinalityConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Duplicate Name Error</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/DuplicateNameError.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError.DuplicateNameError</value>
+    <comment>Description for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;CardinalityConstraintHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/DuplicateNameError.DisplayName" xml:space="preserve">
+    <value>DuplicateNameError</value>
+    <comment>DisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;CardinalityConstraintHasDuplicateNameError&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDuplicateNameError/DuplicateNameError.PropertyDisplayName" xml:space="preserve">
+    <value>Cardinality Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DuplicateNameError&apos; on DomainRelationship &apos;CardinalityConstraintHasDuplicateNameError&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasDefinition.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasDefinition</value>
     <comment>Description for DomainClass &apos;ModelHasDefinition&apos;</comment>
@@ -5644,6 +5910,38 @@
     <value>Value Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;Definition&apos; on DomainRelationship &apos;ValueConstraintHasDefinition&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition</value>
+    <comment>Description for DomainClass &apos;CardinalityConstraintHasDefinition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.DisplayName" xml:space="preserve">
+    <value>Cardinality Constraint Has Definition</value>
+    <comment>DisplayName for DomainClass &apos;CardinalityConstraintHasDefinition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/CardinalityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.CardinalityConstraint</value>
+    <comment>Description for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasDefinition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/CardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>CardinalityConstraint</value>
+    <comment>DisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasDefinition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/CardinalityConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Definition</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasDefinition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/Definition.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition.Definition</value>
+    <comment>Description for DomainRole &apos;Definition&apos; on DomainRelationship &apos;CardinalityConstraintHasDefinition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/Definition.DisplayName" xml:space="preserve">
+    <value>Definition</value>
+    <comment>DisplayName for DomainRole &apos;Definition&apos; on DomainRelationship &apos;CardinalityConstraintHasDefinition&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasDefinition/Definition.PropertyDisplayName" xml:space="preserve">
+    <value>Cardinality Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Definition&apos; on DomainRelationship &apos;CardinalityConstraintHasDefinition&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasDefinition</value>
     <comment>Description for DomainClass &apos;ElementGroupingHasDefinition&apos;</comment>
@@ -5835,6 +6133,38 @@
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintHasNote/Note.PropertyDisplayName" xml:space="preserve">
     <value>Value Constraint</value>
     <comment>PropertyDisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;ValueConstraintHasNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote</value>
+    <comment>Description for DomainClass &apos;CardinalityConstraintHasNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.DisplayName" xml:space="preserve">
+    <value>Cardinality Constraint Has Note</value>
+    <comment>DisplayName for DomainClass &apos;CardinalityConstraintHasNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/CardinalityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.CardinalityConstraint</value>
+    <comment>Description for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/CardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>CardinalityConstraint</value>
+    <comment>DisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/CardinalityConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Note</value>
+    <comment>PropertyDisplayName for DomainRole &apos;CardinalityConstraint&apos; on DomainRelationship &apos;CardinalityConstraintHasNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/Note.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote.Note</value>
+    <comment>Description for DomainRole &apos;Note&apos; on DomainRelationship &apos;CardinalityConstraintHasNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/Note.DisplayName" xml:space="preserve">
+    <value>Note</value>
+    <comment>DisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;CardinalityConstraintHasNote&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraintHasNote/Note.PropertyDisplayName" xml:space="preserve">
+    <value>Cardinality Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Note&apos; on DomainRelationship &apos;CardinalityConstraintHasNote&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingHasNote</value>

@@ -212,6 +212,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							{
 								FixupValueTypeValueConstraintLink(link, null);
 							}
+
+							foreach (ObjectTypeHasCardinalityConstraint link in DomainRoleInfo.GetElementLinks<ObjectTypeHasCardinalityConstraint>(valueType, ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId))
+							{
+								FixupObjectTypeCardinality(link, null);
+							}
 						}
 						else if (removedFactType)
 						{
@@ -749,17 +754,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (!element.IsDeleted &&
 				null != (factType = (link = (RoleHasValueConstraint)element).Role.FactType))
 			{
-				ReadOnlyCollection<PresentationViewsSubject> links = PresentationViewsSubject.GetLinksToPresentation(factType);
 				//If the factType has no presentation elements, it must be hidden. In which case,
 				//we need to fixup the ValueTypeValueConstraint with this link.
-				if (links.Count > 0)
+				if (PresentationViewsSubject.GetLinksToPresentation(factType).Count > 0)
 				{
 					FixupRoleValueConstraintLink(link, null);
 				}
-				else
-				{
-					FixupRoleValueConstraintLinkForIdentifiedEntityType(link, null);
-				}
+				FixupRoleValueConstraintLinkForIdentifiedEntityType(link, null);
 			}
 		}
 		#endregion // RoleValueConstraintAddedRule
@@ -836,7 +837,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#region ValueTypeHasValueConstraint fixup
 		#region ValueConstraintAdded class
 		/// <summary>
-		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasValueConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
 		private static void ValueTypeValueConstraintAddedRule(ElementAddedEventArgs e)
 		{
@@ -882,10 +883,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			// Make sure the object type, fact type, and link
 			// are displayed on the diagram
 			ValueTypeValueConstraint valueConstraint = link.ValueConstraint;
-			ObjectType objectType;
+			ObjectType objectType = link.ValueType;
 			ORMModel model;
-			if (null != (objectType = valueConstraint.ValueType) &&
-				null != (model = objectType.Model))
+			if (null != (model = objectType.Model))
 			{
 				object AllowMultipleShapes;
 				Dictionary<object, object> topLevelContextInfo;
@@ -930,6 +930,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 
 				Diagram.FixUpDiagram(objectType, roleValueConstraint);
+				FactType objectifiedFactType;
+				if (null != (objectifiedFactType = objectType.NestedFactType))
+				{
+					// We may have a 'display as object type' fact type that needs to display
+					// this value constraint.
+					Diagram.FixUpDiagram(objectifiedFactType, roleValueConstraint);
+				}
 				Diagram.FixUpDiagram(model, link);
 
 				if (!containedAllowMultipleShapes)
@@ -939,6 +946,135 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // ValueTypeHasValueConstraint fixup
+		#region CardinalityConstraint fixup
+		#region DisplayObjectTypeCardinalityConstraintFixupListener class
+		/// <summary>
+		/// A fixup class to display role player links
+		/// </summary>
+		private sealed class DisplayObjectTypeCardinalityConstraintFixupListener : DeserializationFixupListener<ObjectTypeHasCardinalityConstraint>
+		{
+			/// <summary>
+			/// Create a new DisplayValueConstraintFixupListener
+			/// </summary>
+			public DisplayObjectTypeCardinalityConstraintFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Add value range links when possible
+			/// </summary>
+			/// <param name="element">A RoleHasValueConstraint instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(ObjectTypeHasCardinalityConstraint element, Store store, INotifyElementAdded notifyAdded)
+			{
+				FixupObjectTypeCardinality(element, notifyAdded);
+			}
+		}
+		#endregion // DisplayObjectTypeCardinalityConstraintFixupListener class
+		/// <summary>
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeHasCardinalityConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void ObjectTypeCardinalityAddedRule(ElementAddedEventArgs e)
+		{
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted)
+			{
+				FixupObjectTypeCardinality((ObjectTypeHasCardinalityConstraint)element, null);
+			}
+		}
+		private static void FixupObjectTypeCardinality(ObjectTypeHasCardinalityConstraint link, INotifyElementAdded notifyAdded)
+		{
+			// Make sure the cardinality constraint is displayed with each shape representing
+			// the object type.
+			ObjectTypeCardinalityConstraint cardinalityConstraint = link.CardinalityConstraint;
+			ObjectType objectType = link.ObjectType;
+			ORMModel model;
+			if (null != (model = objectType.Model))
+			{
+				object AllowMultipleShapes;
+				Dictionary<object, object> topLevelContextInfo;
+				bool containedAllowMultipleShapes;
+				if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+				{
+					topLevelContextInfo.Add(AllowMultipleShapes, null);
+				}
+
+				Diagram.FixUpDiagram(objectType, cardinalityConstraint);
+				FactType objectifiedFactType;
+				if (null != (objectifiedFactType = objectType.NestedFactType))
+				{
+					Diagram.FixUpDiagram(objectifiedFactType, cardinalityConstraint);
+				}
+
+				if (!containedAllowMultipleShapes)
+				{
+					topLevelContextInfo.Remove(AllowMultipleShapes);
+				}
+			}
+		}
+		#region DisplayUnaryRoleCardinalityConstraintFixupListener class
+		/// <summary>
+		/// A fixup class to display role player links
+		/// </summary>
+		private sealed class DisplayUnaryRoleCardinalityConstraintFixupListener : DeserializationFixupListener<UnaryRoleHasCardinalityConstraint>
+		{
+			/// <summary>
+			/// Create a new DisplayUnaryRoleCardinalityConstraintFixupListener
+			/// </summary>
+			public DisplayUnaryRoleCardinalityConstraintFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
+			{
+			}
+			/// <summary>
+			/// Add value range links when possible
+			/// </summary>
+			/// <param name="element">A RoleHasValueConstraint instance</param>
+			/// <param name="store">The context store</param>
+			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
+			protected sealed override void ProcessElement(UnaryRoleHasCardinalityConstraint element, Store store, INotifyElementAdded notifyAdded)
+			{
+				FixupUnaryRoleCardinality(element, notifyAdded);
+			}
+		}
+		#endregion // DisplayUnaryRoleCardinalityConstraintFixupListener class
+		/// <summary>
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleHasCardinalityConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void UnaryRoleCardinalityAddedRule(ElementAddedEventArgs e)
+		{
+			ModelElement element = e.ModelElement;
+			if (!element.IsDeleted)
+			{
+				FixupUnaryRoleCardinality((UnaryRoleHasCardinalityConstraint)element, null);
+			}
+		}
+		private static void FixupUnaryRoleCardinality(UnaryRoleHasCardinalityConstraint link, INotifyElementAdded notifyAdded)
+		{
+			UnaryRoleCardinalityConstraint cardinalityConstraint = link.CardinalityConstraint;
+			Role role = link.UnaryRole;
+			FactType factType;
+			ORMModel model;
+			if (null != (factType = role.FactType) &&
+				null != (model = factType.Model))
+			{
+				object AllowMultipleShapes;
+				Dictionary<object, object> topLevelContextInfo;
+				bool containedAllowMultipleShapes;
+				if (!(containedAllowMultipleShapes = (topLevelContextInfo = link.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo).ContainsKey(AllowMultipleShapes = MultiShapeUtility.AllowMultipleShapes)))
+				{
+					topLevelContextInfo.Add(AllowMultipleShapes, null);
+				}
+
+				Diagram.FixUpDiagram(factType, cardinalityConstraint);
+
+				if (!containedAllowMultipleShapes)
+				{
+					topLevelContextInfo.Remove(AllowMultipleShapes);
+				}
+			}
+		}
+		#endregion // CardinalityConstraint fixup
 		#region FactConstraint fixup
 		#region FactConstraintAddedRule
 		/// <summary>
@@ -1298,7 +1434,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
         #region Auto populated diagram fixup
         #region DisplayAutoPopulatedShapesFixupListener class
         /// <summary>
-		/// A fixup class to create top-level shapes for auotmatically populated ORM diagrams.
+		/// A fixup class to create top-level shapes for automatically populated ORM diagrams.
 		/// </summary>
         /// <remarks>This used to happen automatically when fixup listeners for implicit
         /// links verified the existence of the shapes they were attaching too. However, this

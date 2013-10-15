@@ -65,6 +65,7 @@
 						<xs:complexType>
 							<xs:choice minOccurs="0" maxOccurs="unbounded">
 								<xs:element name="ValueConstraintShape" type="ValueConstraintShapeType"/>
+								<xs:element name="CardinalityConstraintShape" type="CardinalityConstraintShapeType"/>
 								<xs:element ref="ObjectTypeRelativeExtensionShape"/>
 							</xs:choice>
 						</xs:complexType>
@@ -87,6 +88,7 @@
 								<xs:element name="ReadingShape" type="ReadingShapeType"/>
 								<xs:element name="ValueConstraintShape" type="ValueConstraintShapeType"/>
 								<xs:element name="RoleNameShape" type="RoleNameShapeType"/>
+								<xs:element name="CardinalityConstraintShape" type="CardinalityConstraintShapeType"/>
 								<xs:element ref="FactTypeRelativeExtensionShape"/>
 							</xs:choice>
 						</xs:complexType>
@@ -229,6 +231,15 @@
 	<xs:complexType name="ValueComparisonConstraintShapeType">
 		<xs:complexContent>
 			<xs:extension base="ExternalConstraintShapeType"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="CardinalityConstraintShapeType">
+		<xs:complexContent>
+			<xs:extension base="ShapeType">
+				<xs:sequence>
+					<xs:element ref="Subject"/>
+				</xs:sequence>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:complexType name="ModelNoteShapeType">

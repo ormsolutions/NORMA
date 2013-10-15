@@ -521,9 +521,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		ValueTypeValueConstraint,
 		/// <summary>
+		/// An object type cardinality constraint
+		/// </summary>
+		ObjectTypeCardinalityConstraint,
+		/// <summary>
+		/// A unary role cardinality constraint
+		/// </summary>
+		UnaryRoleCardinalityConstraint,
+		/// <summary>
+		/// A deontic object type cardinality constraint
+		/// </summary>
+		ObjectTypeCardinalityConstraintDeontic,
+		/// <summary>
+		/// A deontic unary role cardinality constraint
+		/// </summary>
+		UnaryRoleCardinalityConstraintDeontic,
+		/// <summary>
 		/// The last glyph
 		/// </summary>
-		Last = ValueTypeValueConstraint,
+		Last = UnaryRoleCardinalityConstraintDeontic,
 	}
 	#endregion // Survey Glyph questions
 	#region NameGeneratorRefinement Question

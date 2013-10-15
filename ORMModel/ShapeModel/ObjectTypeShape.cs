@@ -388,6 +388,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				RoleValueConstraint roleValueConstraint;
 				ValueTypeValueConstraint valueTypeValueConstraint;
+				ObjectTypeCardinalityConstraint cardinalityConstraint;
 				if (null != (valueTypeValueConstraint = element as ValueTypeValueConstraint))
 				{
 					return valueTypeValueConstraint.ValueType == objectType;
@@ -398,6 +399,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					return !ExpandRefMode &&
 						null != (refModeFactType = objectType.ReferenceModeFactType) &&
 						refModeFactType == roleValueConstraint.Role.FactType;
+				}
+				else if (null != (cardinalityConstraint = element as ObjectTypeCardinalityConstraint))
+				{
+					return cardinalityConstraint.ObjectType == objectType;
 				}
 			}
 			IShapeExtender<ObjectTypeShape>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ObjectTypeShape>>();
@@ -471,7 +476,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <returns>RelationshipType.Relative</returns>
 		protected override RelationshipType ChooseRelationship(ShapeElement childShape)
 		{
-			Debug.Assert(childShape is ValueConstraintShape);
+			//Debug.Assert(childShape is ValueConstraintShape || childShape is CardinalityConstraintShape);
 			return RelationshipType.Relative;
 		}
 

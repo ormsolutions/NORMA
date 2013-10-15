@@ -284,6 +284,10 @@
 		<value>{0} must use a calculation result as a path condition, calculation input, or projection source.</value>
 		<comment>Model validation error text for a path calculation with a result that is not being used. {0}=error display context</comment>
 	</data>
+	<data name="ModelError.CardinalityConstraint.CardinalityRangeOverlapError.Message" xml:space="preserve">
+		<value>{0} has a cardinality constraint with overlapping or non-increasing values.</value>
+		<comment>CardinalityRangeOverlapError text with owner place holder. The resulting sentence will be capitablized automatically. {0}=owner information</comment>
+	</data>
 	<data name="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' has role players with incompatible types.</value>
 		<comment>The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>
@@ -624,6 +628,10 @@
 		<value>The relationship between a Function and a CalculatedPathValue cannot be detached from the initial calculated value.</value>
 		<comment>Exception message when an attempt is made to modify the CalculatedValue of a CalculatedPathValueIsCalculatedWithFunction relationship.</comment>
 	</data>
+	<data name="ModelException.CardinalityConstraint.InvalidRangeText" xml:space="preserve">
+		<value>The range(s) specified for a cardinality constraint must be non-negative, increasing, and non-overlapping.</value>
+		<comment>Exception message when an attempt is made to parse invalid range text for a cardinality constraint.</comment>
+	</data>
 	<data name="ModelException.Constraint.EnforceNoForeignFactTypes" xml:space="preserve">
 		<value>A constraint must be attached to a fact type in the same model as the constraint.</value>
 		<comment>Exception message when an attempt is made to attached facts from an external model to a constraint.</comment>
@@ -863,6 +871,10 @@
 	<data name="ModelException.SupertypeMetaRole.UnsupportedConstraintType" xml:space="preserve">
 		<value>A SupertypeMetaRole can only be constrained by an implicit single-role uniqueness constraint, a DisjunctiveMandatory constraint, a single-column Exclusion constraint, or the subset role of a single-column Subset constraint.</value>
 		<comment>Exception message when an attempt is made to constraint a SupertypeMetaRole with a constraint other than the implicit uniqueness constraint, disjunctive mandatory, single-column exclusion, or (subset role of) single-column subset constraints.</comment>
+	</data>
+	<data name="ModelException.UnaryRoleCardinalityConstraint.UnaryOnly" xml:space="preserve">
+		<value>Role cardinality constraints may be applied only to unary roles</value>
+		<comment>Exception message when an attempt is made to apply a role cardinality constraint to a non-unary role.</comment>
 	</data>
 	<data name="ModelException.UniquenessConstraint.InvalidPreferredIdentifierPreConditions" xml:space="preserve">
 		<value>The current state of the roles attached to the external uniqueness constraint do no permit its use as a preferred identifier. All roles must be on binary fact types, and all opposite roles must be attached to the same entity type.</value>
@@ -1475,6 +1487,14 @@
 		<value>The name of the ORM model.</value>
 		<comment>The description for the Name property of an ORMModel.</comment>
 	</data>
+	<data name="ObjectModel.ObjectType.CardinalityDisplay.Description" xml:space="preserve">
+		<value>Set the cardinality of a population for this object type. The following patterns are recognized:&#xd;&#xa;&#xd;&#xa;Range with a zero lower bound: 0..n, ..n, &lt;n, &lt;=n&#xd;&#xa;Range with no upper bound: &gt;n, &gt;=n, n..&#xd;&#xa;Fixed range: n..m&#xd;&#xa;&#xd;&#xa;Cardinality supports multiple non-overlapping ranges and single values. A range of 0 indicates that an empty population is allowed. For example, 0,4.. will allow either an empty population or a population with four or more instances.</value>
+		<comment>Description for the &lt;see cref=&quot;ObjectModel.ObjectType.CardinalityDisplay&quot;/&gt;</comment>
+	</data>
+	<data name="ObjectModel.ObjectType.CardinalityDisplay.DisplayName" xml:space="preserve">
+		<value>CardinalityConstraint</value>
+		<comment>Display name for the &lt;see cref=&quot;ObjectModel.ObjectType.CardinalityDisplay&quot;/&gt;</comment>
+	</data>
 	<data name="ObjectModel.ObjectType.DataTypeDisplay.Description" xml:space="preserve">
 		<value>The DataType for this ValueType, or the DataType for the identifying ValueType if this is an EntityType.
     This is a portable DataType. The final physical DataType is dependent on the generation target.</value>
@@ -1499,6 +1519,14 @@
 	<data name="ObjectModel.ReferenceMode.KindDisplay.DisplayName" xml:space="preserve">
 		<value>Kind</value>
 		<comment>Display name for &lt;see cref=&quot;ObjectModel.ReferenceMode.KindDisplay&quot;/&gt;</comment>
+	</data>
+	<data name="ObjectModel.Role.CardinalityDisplay.Description" xml:space="preserve">
+		<value>Restrict the cardinality of a population for this unary role. The following patterns are recognized:&#xd;&#xa;&#xd;&#xa;Range with a zero lower bound: 0..n, ..n, &lt;n, &lt;=n&#xd;&#xa;Range with no upper bound: &gt;n, &gt;=n, n..&#xd;&#xa;Fixed range: n..m&#xd;&#xa;&#xd;&#xa;Cardinality supports multiple non-overlapping ranges and single values. A range of 0 indicates that an empty population is allowed. For example, 0,4.. will allow either an empty population or a population with four or more instances.</value>
+		<comment>Description for the &lt;see cref=&quot;ObjectModel.ObjectType.CardinalityDisplay&quot;/&gt;</comment>
+	</data>
+	<data name="ObjectModel.Role.CardinalityDisplay.DisplayName" xml:space="preserve">
+		<value>CardinalityConstraint</value>
+		<comment>Display name for the &lt;see cref=&quot;ObjectModel.ObjectType.CardinalityDisplay&quot;/&gt;</comment>
 	</data>
 	<data name="ObjectModel.Role.RolePlayerDisplay.Description" xml:space="preserve">
     <value>The ObjectType that plays this Role.</value>

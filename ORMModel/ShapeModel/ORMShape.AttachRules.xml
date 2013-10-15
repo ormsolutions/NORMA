@@ -16,6 +16,11 @@
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
 	<arg:Model class="ORMShapeDomainModel">
+		<arg:RuleContainer class="CardinalityConstraintShape">
+			<arg:ChangeRule methodName="CardinalityConstraintTextChangedRule">
+				<arg:RuleOn targetType="CardinalityConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.ResizeParentRulePriority"/>
+			</arg:ChangeRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="ExternalConstraintLink">
 			<arg:AddRule methodName="DeleteDanglingConstraintShapeAddRule">
 				<arg:RuleOn targetType="ExternalConstraintShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority">
@@ -84,8 +89,14 @@
 			</arg:AddRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FrequencyConstraintShape">
+			<arg:AddRule methodName="ConstrainedFactTypeAddedRule">
+				<arg:RuleOn targetType="FactSetConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ConstrainedFactTypeDeletedRule">
+				<arg:RuleOn targetType="FactSetConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="FrequencyConstraintPropertyChangeRule">
-				<arg:RuleOn targetType="FrequencyConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+				<arg:RuleOn targetType="FrequencyConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:ChangeRule>
 			<arg:DeletingRule methodName="FrequencyConstraintConversionDeletingRule">
 				<arg:RuleOn targetType="FrequencyConstraintShape"/>
@@ -224,6 +235,9 @@
 			<arg:AddRule methodName="ObjectTypedAddedRule">
 				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
+			<arg:AddRule methodName="ObjectTypeCardinalityAddedRule">
+				<arg:RuleOn targetType="ObjectTypeHasCardinalityConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+			</arg:AddRule>
 			<arg:AddRule methodName="ObjectTypePlaysRoleAddedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
 			</arg:AddRule>
@@ -256,8 +270,11 @@
 			<arg:AddRule methodName="SetConstraintAddedRule">
 				<arg:RuleOn targetType="ModelHasSetConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
+			<arg:AddRule methodName="UnaryRoleCardinalityAddedRule">
+				<arg:RuleOn targetType="UnaryRoleHasCardinalityConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+			</arg:AddRule>
 			<arg:AddRule methodName="ValueTypeValueConstraintAddedRule">
-				<arg:RuleOn targetType="ValueTypeHasValueConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority"/>
+				<arg:RuleOn targetType="ValueTypeHasValueConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ReadingShape">

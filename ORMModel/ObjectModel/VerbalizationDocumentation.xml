@@ -182,6 +182,37 @@ Format: at most one {0}</statement>
       <constraint name="FrequencyConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="CardinalityMultipleInstances" replacementCount="1">
+    <statement>Description: Replaces the last phrase in cardinality statements if multiple instances are specified:
+Format: {0} instances</statement>
+    <unformattedSnippet>{0} instances</unformattedSnippet>
+    <contains>
+      <snippet name="CountRangeExact" />
+      <snippet name="CountRangeMaxUnbounded" />
+      <snippet name="CountRangeMinAndMax" />
+      <snippet name="CountRangeMinUnbounded" />
+    </contains>
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="ObjectTypeCardinality" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ObjectTypeCardinalityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CardinalitySingleInstance" replacementCount="1">
+    <statement>Description: Replaces the last phrase in cardinality statements if a single instance is specified:
+Format: {0} instance</statement>
+    <unformattedSnippet>{0} instance</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="ObjectTypeCardinality" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ObjectTypeCardinalityConstraint" />
+    </usedBy>
+  </snippet>
   <snippet name="ChainedListClose" replacementCount="0">
     <statement></statement>
     <unformattedSnippet></unformattedSnippet>
@@ -402,6 +433,56 @@ Format: \n where</statement>
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="CompactSimpleOrListClose" replacementCount="0">
+    <statement>Description: Text used at the end of a compact simple or list.</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CompactSimpleOrListFinalSeparator" replacementCount="0">
+    <statement>Description: Used to separate the last two items in a compact simple or list.  Format: , or </statement>
+    <unformattedSnippet>, or </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CompactSimpleOrListOpen" replacementCount="0">
+    <statement>Description: Text used at the beginning of a compact simple or list.</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CompactSimpleOrListPairSeparator" replacementCount="0">
+    <statement>Description: Used to separate items in a compact simple or list.  Format: or </statement>
+    <unformattedSnippet> or </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CompactSimpleOrListSeparator" replacementCount="0">
+    <statement>Description: Used to separate items in a compact simple or list.  Format: ,</statement>
+    <unformattedSnippet>, </unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy>
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
+    </usedBy>
+  </snippet>
   <snippet name="CompatibleTypesIdentityInequalityOperator" replacementCount="2">
     <statement>Description: Used to specify that two instances of compatible types are not the same instance.
 Format: that {0} is not that {1}</statement>
@@ -424,6 +505,7 @@ Format: that {0} is not that {1}</statement>
       <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="CompoundListFinalSeparator" replacementCount="0">
@@ -435,6 +517,7 @@ Format: that {0} is not that {1}</statement>
       <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="CompoundListOpen" replacementCount="0">
@@ -446,6 +529,7 @@ Format: that {0} is not that {1}</statement>
       <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="CompoundListPairSeparator" replacementCount="0">
@@ -457,6 +541,7 @@ Format: that {0} is not that {1}</statement>
       <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="CompoundListSeparator" replacementCount="0">
@@ -468,6 +553,7 @@ Format: that {0} is not that {1}</statement>
       <constraint name="FrequencyConstraint" />
       <constraint name="SubsetConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="Conditional" replacementCount="2">
@@ -489,12 +575,20 @@ Format: if {0}
     <unformattedSnippet>if {0}then {1}</unformattedSnippet>
     <contains>
       <snippet name="ContextCombinationOccurrence" />
+      <snippet name="CountRangeExact" />
+      <snippet name="CountRangeMaxUnbounded" />
+      <snippet name="CountRangeMinAndMax" />
+      <snippet name="CountRangeMinUnbounded" />
+      <snippet name="EqualValueComparator" />
       <snippet name="ExactlyOneUntypedOccurrence" />
-      <snippet name="FrequencyRangeExact" />
-      <snippet name="FrequencyRangeMaxUnbounded" />
-      <snippet name="FrequencyRangeMinAndMax" />
-      <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="ExistentialQuantifier" />
       <snippet name="FrequencyUntypedOccurrences" />
+      <snippet name="GreaterThanOrEqualValueComparator" />
+      <snippet name="GreaterThanValueComparator" />
+      <snippet name="LessThanOrEqualValueComparator" />
+      <snippet name="LessThanValueComparator" />
+      <snippet name="NotEqualValueComparator" />
+      <snippet name="SelfReference" />
     </contains>
     <containedIn>
       <snippet name="ForEachIndentedQuantifier" />
@@ -504,6 +598,7 @@ Format: if {0}
     <usedBy>
       <constraint name="FrequencyConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="ConditionalMultiLineIndented" replacementCount="2">
@@ -561,11 +656,11 @@ Format: this association with {0}provides the preferred identification scheme fo
     <statement>Description: Verbalizes a range of combination occurrences where the combination has been previous specified.  Format: that combination occurs {1} in this context</statement>
     <unformattedSnippet>that combination occurs {0} in this context</unformattedSnippet>
     <contains>
+      <snippet name="CountRangeExact" />
+      <snippet name="CountRangeMaxUnbounded" />
+      <snippet name="CountRangeMinAndMax" />
+      <snippet name="CountRangeMinUnbounded" />
       <snippet name="ExactlyOneUntypedOccurrence" />
-      <snippet name="FrequencyRangeExact" />
-      <snippet name="FrequencyRangeMaxUnbounded" />
-      <snippet name="FrequencyRangeMinAndMax" />
-      <snippet name="FrequencyRangeMinUnbounded" />
       <snippet name="FrequencyUntypedOccurrences" />
     </contains>
     <containedIn>
@@ -577,6 +672,95 @@ Format: this association with {0}provides the preferred identification scheme fo
     <usedBy>
       <constraint name="FrequencyConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="CountRangeExact" replacementCount="1">
+    <statement>Description: Used for frequency and cardinality ranges where both the min and max values the same
+Format: exactly {0}</statement>
+    <unformattedSnippet>exactly {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="CardinalityMultipleInstances" />
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ContextCombinationOccurrence" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="FrequencyPopulation" />
+      <snippet name="FrequencyUntypedOccurrences" />
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="ObjectTypeCardinality" />
+      <snippet name="UnaryRoleCardinality" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CountRangeMaxUnbounded" replacementCount="1">
+    <statement>Description: Used for frequency and cardinality ranges where the max value is unbounded.
+Format: at least {0}</statement>
+    <unformattedSnippet>at least {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="CardinalityMultipleInstances" />
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ContextCombinationOccurrence" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="FrequencyPopulation" />
+      <snippet name="FrequencyUntypedOccurrences" />
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="ObjectTypeCardinality" />
+      <snippet name="UnaryRoleCardinality" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CountRangeMinAndMax" replacementCount="2">
+    <statement>Description: Used for frequency and cardinality ranges where both the min and max values are specified and different.
+Format: at least {0} and at most {1}</statement>
+    <unformattedSnippet>at least {0} and at most {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="CardinalityMultipleInstances" />
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ContextCombinationOccurrence" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="FrequencyPopulation" />
+      <snippet name="FrequencyUntypedOccurrences" />
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="ObjectTypeCardinality" />
+      <snippet name="UnaryRoleCardinality" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="CountRangeMinUnbounded" replacementCount="1">
+    <statement>Description: Used for a frequency range where the min value is less than 2, or a cardinality range with a 0 lower bound.
+Format: at most {1}</statement>
+    <unformattedSnippet>at most {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="CardinalityMultipleInstances" />
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ContextCombinationOccurrence" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="FrequencyPopulation" />
+      <snippet name="FrequencyTypedOccurrences" />
+      <snippet name="FrequencyUntypedOccurrences" />
+      <snippet name="ImpliedModalNecessityOperator" />
+      <snippet name="ObjectTypeCardinality" />
+      <snippet name="UnaryRoleCardinality" />
+    </containedIn>
+    <usedBy>
+      <constraint name="FrequencyConstraint" />
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
     </usedBy>
   </snippet>
   <snippet name="DefiniteArticle" replacementCount="1">
@@ -686,6 +870,21 @@ Format: this association with {0}provides the preferred identification scheme fo
     <containedIn />
     <usedBy>
       <constraint name="PurelyReflexiveRingVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="EqualValueComparator" replacementCount="2">
+    <statement>Description: Used to compare the two values in a value comparison constraint with a 'equal' operator.
+Format: {0} is equal to {1}
+						</statement>
+    <unformattedSnippet>{0} is equal to {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="ErrorClosePrimaryReport" replacementCount="0">
@@ -801,6 +1000,7 @@ Format: No {0} the same {1}</statement>
     <unformattedSnippet>some {0}</unformattedSnippet>
     <contains />
     <containedIn>
+      <snippet name="ConditionalMultiLine" />
       <snippet name="ConditionalMultiLineIndented" />
       <snippet name="ForEachCompactQuantifier" />
       <snippet name="ForEachIndentedQuantifier" />
@@ -825,6 +1025,7 @@ Format: No {0} the same {1}</statement>
       <constraint name="SymmetricRingVerbalizer" />
       <constraint name="TransitiveRingVerbalizer" />
       <constraint name="UniquenessPossibilityVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="FactTypeInstanceBlockEnd" replacementCount="0">
@@ -920,18 +1121,24 @@ Format: No {0} the same {1}</statement>
       <snippet name="Conditional" />
       <snippet name="ConditionalMultiLine" />
       <snippet name="ContextCombinationOccurrence" />
+      <snippet name="CountRangeExact" />
+      <snippet name="CountRangeMaxUnbounded" />
+      <snippet name="CountRangeMinAndMax" />
+      <snippet name="CountRangeMinUnbounded" />
       <snippet name="DefiniteArticle" />
       <snippet name="Equality" />
+      <snippet name="EqualValueComparator" />
       <snippet name="ExactlyOneUntypedOccurrence" />
       <snippet name="ExistentialQuantifier" />
       <snippet name="FrequencyNotPopulatedOrRange" />
-      <snippet name="FrequencyRangeExact" />
-      <snippet name="FrequencyRangeMaxUnbounded" />
-      <snippet name="FrequencyRangeMinAndMax" />
-      <snippet name="FrequencyRangeMinUnbounded" />
       <snippet name="FrequencyTypedCombinationOccurrences" />
       <snippet name="FrequencyTypedOccurrences" />
       <snippet name="FrequencyUntypedOccurrences" />
+      <snippet name="GreaterThanOrEqualValueComparator" />
+      <snippet name="GreaterThanValueComparator" />
+      <snippet name="LessThanOrEqualValueComparator" />
+      <snippet name="LessThanValueComparator" />
+      <snippet name="NotEqualValueComparator" />
       <snippet name="PluralExistenceImplicationOperator" />
       <snippet name="SelfReference" />
       <snippet name="SingularExistenceImplicationOperator" />
@@ -944,6 +1151,7 @@ Format: No {0} the same {1}</statement>
       <constraint name="FrequencyConstraint" />
       <constraint name="SimpleMandatoryVerbalizer" />
       <constraint name="SubsetConstraint" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="ForEachNegatableCompactQuantifier" replacementCount="2">
@@ -1013,83 +1221,14 @@ Format: each {0} in the population of {1} occurs there {2} times</statement>
     <unformattedSnippet>each {0} in the population of “{1}” occurs there {2}</unformattedSnippet>
     <contains>
       <snippet name="CombinationIdentifier" />
+      <snippet name="CountRangeExact" />
+      <snippet name="CountRangeMaxUnbounded" />
+      <snippet name="CountRangeMinAndMax" />
+      <snippet name="CountRangeMinUnbounded" />
       <snippet name="ExactlyOneUntypedOccurrence" />
-      <snippet name="FrequencyRangeExact" />
-      <snippet name="FrequencyRangeMaxUnbounded" />
-      <snippet name="FrequencyRangeMinAndMax" />
-      <snippet name="FrequencyRangeMinUnbounded" />
       <snippet name="FrequencyUntypedOccurrences" />
     </contains>
     <containedIn>
-      <snippet name="ImpliedModalNecessityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="FrequencyConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="FrequencyRangeExact" replacementCount="1">
-    <statement>Description: Used for a frequency range where both the min and max values the same
-Format: exactly {0}</statement>
-    <unformattedSnippet>exactly {0}</unformattedSnippet>
-    <contains />
-    <containedIn>
-      <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationOccurrence" />
-      <snippet name="ForEachIndentedQuantifier" />
-      <snippet name="FrequencyPopulation" />
-      <snippet name="FrequencyUntypedOccurrences" />
-      <snippet name="ImpliedModalNecessityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="FrequencyConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="FrequencyRangeMaxUnbounded" replacementCount="1">
-    <statement>Description: Used for a frequency range where both the max value is unbounded.
-Format: at least {0}</statement>
-    <unformattedSnippet>at least {0}</unformattedSnippet>
-    <contains />
-    <containedIn>
-      <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationOccurrence" />
-      <snippet name="ForEachIndentedQuantifier" />
-      <snippet name="FrequencyPopulation" />
-      <snippet name="FrequencyUntypedOccurrences" />
-      <snippet name="ImpliedModalNecessityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="FrequencyConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="FrequencyRangeMinAndMax" replacementCount="2">
-    <statement>Description: Used for a frequency range where both the min and max values are specified and different.
-Format: at least {0} and at most {1}</statement>
-    <unformattedSnippet>at least {0} and at most {1}</unformattedSnippet>
-    <contains />
-    <containedIn>
-      <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationOccurrence" />
-      <snippet name="ForEachIndentedQuantifier" />
-      <snippet name="FrequencyPopulation" />
-      <snippet name="FrequencyUntypedOccurrences" />
-      <snippet name="ImpliedModalNecessityOperator" />
-    </containedIn>
-    <usedBy>
-      <constraint name="FrequencyConstraint" />
-    </usedBy>
-  </snippet>
-  <snippet name="FrequencyRangeMinUnbounded" replacementCount="1">
-    <statement>Description: Used for a frequency range where the min value is less than 2.
-Format: at most {1}</statement>
-    <unformattedSnippet>at most {1}</unformattedSnippet>
-    <contains />
-    <containedIn>
-      <snippet name="ConditionalMultiLine" />
-      <snippet name="ContextCombinationOccurrence" />
-      <snippet name="ForEachIndentedQuantifier" />
-      <snippet name="FrequencyPopulation" />
-      <snippet name="FrequencyTypedOccurrences" />
-      <snippet name="FrequencyUntypedOccurrences" />
       <snippet name="ImpliedModalNecessityOperator" />
     </containedIn>
     <usedBy>
@@ -1114,7 +1253,7 @@ Format: {1} combinations of {0}</statement>
 Format: {1} instances of {0}</statement>
     <unformattedSnippet>{1} instances of {0}</unformattedSnippet>
     <contains>
-      <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="CountRangeMinUnbounded" />
     </contains>
     <containedIn>
       <snippet name="ForEachIndentedQuantifier" />
@@ -1129,10 +1268,10 @@ Format: {1} instances of {0}</statement>
 Format: {0} times</statement>
     <unformattedSnippet>{0} times</unformattedSnippet>
     <contains>
-      <snippet name="FrequencyRangeExact" />
-      <snippet name="FrequencyRangeMaxUnbounded" />
-      <snippet name="FrequencyRangeMinAndMax" />
-      <snippet name="FrequencyRangeMinUnbounded" />
+      <snippet name="CountRangeExact" />
+      <snippet name="CountRangeMaxUnbounded" />
+      <snippet name="CountRangeMinAndMax" />
+      <snippet name="CountRangeMinUnbounded" />
     </contains>
     <containedIn>
       <snippet name="ConditionalMultiLine" />
@@ -1192,6 +1331,36 @@ Format: **each {0} is {1}</statement>
     <contains />
     <containedIn />
     <usedBy />
+  </snippet>
+  <snippet name="GreaterThanOrEqualValueComparator" replacementCount="2">
+    <statement>Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
+Format: {0} is greater than or equal to {1}
+						</statement>
+    <unformattedSnippet>{0} is greather than or equal to {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ValueComparisonConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="GreaterThanValueComparator" replacementCount="2">
+    <statement>Description: Used to compare the two values in a value comparison constraint with a 'greater than' operator.
+Format: {0} is greater than {1}
+						</statement>
+    <unformattedSnippet>{0} is greater than {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ValueComparisonConstraint" />
+    </usedBy>
   </snippet>
   <snippet name="GroupEquality" replacementCount="1">
     <statement>Description: Assert group equality. Format: all or none of the following hold: {0}</statement>
@@ -1328,13 +1497,20 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <snippet name="Acyclicity" />
       <snippet name="AcyclicityWithRoleNumbers" />
       <snippet name="AtMostOneTypedOccurrence" />
+      <snippet name="CardinalityMultipleInstances" />
+      <snippet name="CardinalitySingleInstance" />
       <snippet name="CombinationIdentifier" />
       <snippet name="Conditional" />
       <snippet name="ConditionalMultiLine" />
       <snippet name="ConditionalMultiLineIndented" />
       <snippet name="ContextCombinationOccurrence" />
+      <snippet name="CountRangeExact" />
+      <snippet name="CountRangeMaxUnbounded" />
+      <snippet name="CountRangeMinAndMax" />
+      <snippet name="CountRangeMinUnbounded" />
       <snippet name="DefiniteArticle" />
       <snippet name="Equality" />
+      <snippet name="EqualValueComparator" />
       <snippet name="ExactlyOneQuantifier" />
       <snippet name="ExactlyOneUntypedOccurrence" />
       <snippet name="ExclusionBinaryLeadReading" />
@@ -1346,19 +1522,21 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <snippet name="ForEachNegatableIndentedQuantifier" />
       <snippet name="FrequencyNotPopulatedOrRange" />
       <snippet name="FrequencyPopulation" />
-      <snippet name="FrequencyRangeExact" />
-      <snippet name="FrequencyRangeMaxUnbounded" />
-      <snippet name="FrequencyRangeMinAndMax" />
-      <snippet name="FrequencyRangeMinUnbounded" />
       <snippet name="FrequencyTypedCombinationOccurrences" />
       <snippet name="FrequencyTypedOccurrences" />
       <snippet name="FrequencyUntypedOccurrences" />
+      <snippet name="GreaterThanOrEqualValueComparator" />
+      <snippet name="GreaterThanValueComparator" />
       <snippet name="GroupEquality" />
       <snippet name="GroupExclusion" />
       <snippet name="GroupExclusiveOr" />
       <snippet name="IdentityReferenceQuantifier" />
+      <snippet name="LessThanOrEqualValueComparator" />
+      <snippet name="LessThanValueComparator" />
       <snippet name="LogicalAndOperator" />
+      <snippet name="NotEqualValueComparator" />
       <snippet name="ObjectType" />
+      <snippet name="ObjectTypeCardinality" />
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
       <snippet name="PluralExistenceImplicationOperator" />
@@ -1368,6 +1546,7 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <snippet name="SingularExistenceImplicationOperator" />
       <snippet name="StronglyIntransitiveConsequent" />
       <snippet name="SubtypeMetaReading" />
+      <snippet name="UnaryRoleCardinality" />
       <snippet name="UniversalQuantifier" />
     </contains>
     <containedIn>
@@ -1384,6 +1563,7 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <constraint name="ImpliedMandatoryVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="IrreflexiveRingVerbalizer" />
+      <constraint name="ObjectTypeCardinalityConstraint" />
       <constraint name="PurelyReflexiveRingVerbalizer" />
       <constraint name="ReflexiveRingVerbalizer" />
       <constraint name="SimpleMandatoryVerbalizer" />
@@ -1391,7 +1571,9 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <constraint name="SubsetConstraint" />
       <constraint name="SymmetricRingVerbalizer" />
       <constraint name="TransitiveRingVerbalizer" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="IndentedCompoundListClose" replacementCount="0">
@@ -1590,6 +1772,36 @@ Format: {0} is identified by {1}</statement>
     <contains />
     <containedIn />
     <usedBy />
+  </snippet>
+  <snippet name="LessThanOrEqualValueComparator" replacementCount="2">
+    <statement>Description: Used to compare the two values in a value comparison constraint with a 'less than or equal' operator.
+Format: {0} is less than or equal to {1}
+						</statement>
+    <unformattedSnippet>{0} is less than or equal to {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ValueComparisonConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="LessThanValueComparator" replacementCount="2">
+    <statement>Description: Used to compare the two values in a value comparison constraint with a 'less than' operator.
+Format: {0} is less than {1}
+						</statement>
+    <unformattedSnippet>{0} is less than {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ValueComparisonConstraint" />
+    </usedBy>
   </snippet>
   <snippet name="LogicalAndOperator" replacementCount="2">
     <statement>Description: Used to 'and' together exactly two other snippets.
@@ -2112,6 +2324,21 @@ Format: {0} does not exist</statement>
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
+  <snippet name="NotEqualValueComparator" replacementCount="2">
+    <statement>Description: Used to compare the two values in a value comparison constraint with a 'not equal' operator.
+Format: {0} is not equal to {1}
+						</statement>
+    <unformattedSnippet>{0} is not equal to {1}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="ConditionalMultiLine" />
+      <snippet name="ForEachIndentedQuantifier" />
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ValueComparisonConstraint" />
+    </usedBy>
+  </snippet>
   <snippet name="NotesVerbalization" replacementCount="1">
     <statement>Description: Verbalizes the text specified for a model note. Format: Notes: {0}</statement>
     <unformattedSnippet>Notes: {0}</unformattedSnippet>
@@ -2137,12 +2364,36 @@ Format: {0} does not exist</statement>
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="IndependentVerbalization" />
       <snippet name="ObjectifiesFactTypeVerbalization" />
+      <snippet name="ObjectTypeCardinality" />
       <snippet name="SubtypeMetaReading" />
+      <snippet name="UnaryRoleCardinality" />
     </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
+      <constraint name="ObjectTypeCardinalityConstraint" />
+      <constraint name="UnaryRoleCardinalityConstraint" />
       <constraint name="UniquenessPreferredVerbalizer" />
       <constraint name="ValueTypeValueConstraint" />
+    </usedBy>
+  </snippet>
+  <snippet name="ObjectTypeCardinality" replacementCount="2">
+    <statement>Description: Used as the boiler plate for object type cardinality.
+Format: each population of {0} contains {1}</statement>
+    <unformattedSnippet>each population of {0} contains {1}</unformattedSnippet>
+    <contains>
+      <snippet name="CardinalityMultipleInstances" />
+      <snippet name="CardinalitySingleInstance" />
+      <snippet name="CountRangeExact" />
+      <snippet name="CountRangeMaxUnbounded" />
+      <snippet name="CountRangeMinAndMax" />
+      <snippet name="CountRangeMinUnbounded" />
+      <snippet name="ObjectType" />
+    </contains>
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="ObjectTypeCardinalityConstraint" />
     </usedBy>
   </snippet>
   <snippet name="ObjectTypeInstanceListClose" replacementCount="0">
@@ -2597,6 +2848,7 @@ Format: {0} is not {1}</statement>
     <unformattedSnippet>{0}</unformattedSnippet>
     <contains />
     <containedIn>
+      <snippet name="ConditionalMultiLine" />
       <snippet name="ConditionalMultiLineIndented" />
       <snippet name="ForEachIndentedQuantifier" />
       <snippet name="ImpliedModalNecessityOperator" />
@@ -2613,6 +2865,7 @@ Format: {0} is not {1}</statement>
       <constraint name="StronglyIntransitiveRingVerbalizer" />
       <constraint name="SymmetricRingVerbalizer" />
       <constraint name="TransitiveRingVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
       <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
@@ -2629,6 +2882,7 @@ Format: {0} is not {1}</statement>
       <constraint name="SimpleMandatoryVerbalizer" />
       <constraint name="UniquenessConstraintVerbalizer" />
       <constraint name="UniquenessPossibilityVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="SimpleListFinalSeparator" replacementCount="0">
@@ -2644,6 +2898,7 @@ Format: {0} is not {1}</statement>
       <constraint name="SimpleMandatoryVerbalizer" />
       <constraint name="UniquenessConstraintVerbalizer" />
       <constraint name="UniquenessPossibilityVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="SimpleListOpen" replacementCount="0">
@@ -2659,6 +2914,7 @@ Format: {0} is not {1}</statement>
       <constraint name="SimpleMandatoryVerbalizer" />
       <constraint name="UniquenessConstraintVerbalizer" />
       <constraint name="UniquenessPossibilityVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="SimpleListPairSeparator" replacementCount="0">
@@ -2674,6 +2930,7 @@ Format: {0} is not {1}</statement>
       <constraint name="SimpleMandatoryVerbalizer" />
       <constraint name="UniquenessConstraintVerbalizer" />
       <constraint name="UniquenessPossibilityVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="SimpleListSeparator" replacementCount="0">
@@ -2689,6 +2946,7 @@ Format: {0} is not {1}</statement>
       <constraint name="SimpleMandatoryVerbalizer" />
       <constraint name="UniquenessConstraintVerbalizer" />
       <constraint name="UniquenessPossibilityVerbalizer" />
+      <constraint name="ValueComparisonConstraint" />
     </usedBy>
   </snippet>
   <snippet name="SimpleLogicalAndListClose" replacementCount="0">
@@ -2942,6 +3200,24 @@ Format: {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier</statement>
     <containedIn />
     <usedBy>
       <constraint name="DisjunctiveMandatoryVerbalizer" />
+    </usedBy>
+  </snippet>
+  <snippet name="UnaryRoleCardinality" replacementCount="3">
+    <statement>Description: Used as the boiler plate for unary role cardinality.
+Format: for each population of '{0}', the number of {1} instances is {2}</statement>
+    <unformattedSnippet>for each population of “{0}”,the number of {1} instances is {2}</unformattedSnippet>
+    <contains>
+      <snippet name="CountRangeExact" />
+      <snippet name="CountRangeMaxUnbounded" />
+      <snippet name="CountRangeMinAndMax" />
+      <snippet name="CountRangeMinUnbounded" />
+      <snippet name="ObjectType" />
+    </contains>
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
+    <usedBy>
+      <constraint name="UnaryRoleCardinalityConstraint" />
     </usedBy>
   </snippet>
   <snippet name="UniversalQuantifier" replacementCount="1">

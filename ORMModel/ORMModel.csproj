@@ -484,6 +484,7 @@
     <Compile Include="Load\ModelLoader.cs" />
     <Compile Include="Load\ORMSerializationEngine.cs" />
     <Compile Include="Load\VerbalizationManager.cs" />
+    <Compile Include="ObjectModel\CardinalityConstraint.cs" />
     <Compile Include="ObjectModel\Design\Editors\RingConstraintTypePicker.cs" />
     <Compile Include="ObjectModel\ORMCore.ElementEquivalence.cs" />
     <Compile Include="ObjectModel\Design\SubtypeDerivationRuleTypeDescriptor.cs" />
@@ -512,6 +513,7 @@
     <Compile Include="ObjectModel\Design\ExclusionConstraintTypeDescriptor.cs" />
     <Compile Include="ObjectModel\NameAlias.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ConstraintAnswers.cs" />
+    <Compile Include="ObjectModel\SurveyImplementations\CardinalityConstraintAnswers.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\ValueConstraintAnswers.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\NoteAnswers.cs" />
     <Compile Include="ObjectModel\SurveyImplementations\GroupingAnswers.cs" />
@@ -527,6 +529,7 @@
     <Compile Include="ObjectModel\Design\Editors\AliasManagerForm.Designer.cs">
       <DependentUpon>AliasManagerForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ShapeModel\CardinalityConstraintShape.cs" />
     <Compile Include="ShapeModel\Design\Editors\ValueConstraintShapeDisplayBoundPicker.cs" />
     <Compile Include="ShapeModel\Design\ORMDiagramTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ValueConstraintShapeDisplayBoundConverter.cs" />

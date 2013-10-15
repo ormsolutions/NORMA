@@ -125,6 +125,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Model.Name.Description");
 			}
 		}
+		/// <summary>Description for the <see cref="ObjectModel.ObjectType.CardinalityDisplay"/></summary>
+		public static string ObjectTypeCardinalityDisplayDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ObjectType.CardinalityDisplay.Description");
+			}
+		}
+		/// <summary>Display name for the <see cref="ObjectModel.ObjectType.CardinalityDisplay"/></summary>
+		public static string ObjectTypeCardinalityDisplayDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ObjectType.CardinalityDisplay.DisplayName");
+			}
+		}
 		/// <summary>Description for <see cref="ObjectModel.ObjectType.DataTypeDisplay"/></summary>
 		public static string ObjectTypeDataTypeDisplayDescription
 		{
@@ -163,6 +179,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ReferenceMode.KindDisplay.DisplayName");
+			}
+		}
+		/// <summary>Description for the <see cref="ObjectModel.ObjectType.CardinalityDisplay"/></summary>
+		public static string RoleCardinalityDisplayDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Role.CardinalityDisplay.Description");
+			}
+		}
+		/// <summary>Display name for the <see cref="ObjectModel.ObjectType.CardinalityDisplay"/></summary>
+		public static string RoleCardinalityDisplayDisplayName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.Role.CardinalityDisplay.DisplayName");
 			}
 		}
 		/// <summary>Description for <see cref="ObjectModel.Role.RolePlayerDisplay"/></summary>
@@ -916,6 +948,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "LoadException.IncompatibleAssembly");
 			}
 		}
+		/// <summary>Exception message when an attempt is made to parse invalid range text for a cardinality constraint.</summary>
+		public static string ModelExceptionCardinalityConstraintInvalidRangeText
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.CardinalityConstraint.InvalidRangeText");
+			}
+		}
+		/// <summary>Exception message when an attempt is made to apply a role cardinality constraint to a non-unary role.</summary>
+		public static string ModelExceptionUnaryRoleCardinalityConstraintUnaryOnly
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelException.UnaryRoleCardinalityConstraint.UnaryOnly");
+			}
+		}
 		/// <summary>Exception message when a ModelErrorDisplayFilterAttribute is initialized with a type that does not derive from ModelErrorCategory.</summary>
 		public static string ModelExceptionModelErrorCategoryInvalid
 		{
@@ -1026,6 +1074,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text");
+			}
+		}
+		/// <summary>CardinalityRangeOverlapError text with owner place holder. The resulting sentence will be capitablized automatically. {0}=owner information</summary>
+		public static string ModelErrorCardinalityConstraintCardinalityRangeOverlapError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CardinalityConstraint.CardinalityRangeOverlapError.Message");
 			}
 		}
 		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a subset of the constraint roles.</summary>
@@ -2873,6 +2929,78 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RecognizedPhrase.DuplicateNameError.Message");
+			}
+		}
+		/// <summary>The format string used to display a cardinality constraint range with an upper and a lower bound.</summary>
+		public static string CardinalityConstraintShapeRangeFullyBounded
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CardinalityConstraintShape.RangeFullyBounded");
+			}
+		}
+		/// <summary>The format string used to display a single-valued cardinality constraint range in a multi-range constraint.</summary>
+		public static string CardinalityConstraintShapeRangeSingleValuedForMultiRange
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CardinalityConstraintShape.RangeSingleValuedForMultiRange");
+			}
+		}
+		/// <summary>The format string used to display a single-valued cardinality constraint range in a single-range constraint.</summary>
+		public static string CardinalityConstraintShapeRangeSingleValuedForSingleRange
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CardinalityConstraintShape.RangeSingleValuedForSingleRange");
+			}
+		}
+		/// <summary>The format string used to display a cardinality constraint range with no upper bound.</summary>
+		public static string CardinalityConstraintShapeRangeUnboundedAbove
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CardinalityConstraintShape.RangeUnboundedAbove");
+			}
+		}
+		/// <summary>The format string used to display a cardinality constraint range with a zero lower bound.</summary>
+		public static string CardinalityConstraintShapeRangeUnboundedBelow
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CardinalityConstraintShape.RangeUnboundedBelow");
+			}
+		}
+		/// <summary>The format string used to display a multi-range alethic cardinality constraint.</summary>
+		public static string CardinalityConstraintShapeTextWrapperMultiRangeAlethic
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CardinalityConstraintShape.TextWrapperMultiRangeAlethic");
+			}
+		}
+		/// <summary>The format string used to display a multi-range deontic cardinality constraint.</summary>
+		public static string CardinalityConstraintShapeTextWrapperMultiRangeDeontic
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CardinalityConstraintShape.TextWrapperMultiRangeDeontic");
+			}
+		}
+		/// <summary>The format string used to display a single-range alethic cardinality constraint.</summary>
+		public static string CardinalityConstraintShapeTextWrapperSingleRangeAlethic
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CardinalityConstraintShape.TextWrapperSingleRangeAlethic");
+			}
+		}
+		/// <summary>The format string used to display a single-range deontic cardinality constraint.</summary>
+		public static string CardinalityConstraintShapeTextWrapperSingleRangeDeontic
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "CardinalityConstraintShape.TextWrapperSingleRangeDeontic");
 			}
 		}
 		/// <summary>The string used to display that a subtype object is fully derived.</summary>

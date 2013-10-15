@@ -197,7 +197,32 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		#endregion // Customize appearance
 		#region Shape display update rules
-		#region FrequencyConstraintPropertyChangeRule
+		/// <summary>
+		/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void ConstrainedFactTypeAddedRule(ElementAddedEventArgs e)
+		{
+			ModelElement element = e.ModelElement;
+			FrequencyConstraint constraint;
+			if (!element.IsDeleted &&
+				null != (constraint = ((FactSetConstraint)element).SetConstraint as FrequencyConstraint))
+			{
+				UpdateShapeSize(constraint);
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactSetConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+		/// </summary>
+		private static void ConstrainedFactTypeDeletedRule(ElementDeletedEventArgs e)
+		{
+			SetConstraint setConstraint;
+			FrequencyConstraint frequencyConstraint;
+			if (!(setConstraint = ((FactSetConstraint)e.ModelElement).SetConstraint).IsDeleted &&
+				null != (frequencyConstraint = setConstraint as FrequencyConstraint))
+			{
+				UpdateShapeSize(frequencyConstraint);
+			}
+		}
 		/// <summary>
 		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
 		/// </summary>
@@ -207,29 +232,33 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (attributeId == FrequencyConstraint.MinFrequencyDomainPropertyId ||
 				attributeId == FrequencyConstraint.MaxFrequencyDomainPropertyId)
 			{
-				FrequencyConstraint fc = e.ModelElement as FrequencyConstraint;
-				if (!fc.IsDeleted)
+				ModelElement element = e.ModelElement;
+				FrequencyConstraint constraint;
+				if (!element.IsDeleted &&
+					null != (constraint = element as FrequencyConstraint))
 				{
-					// Resize the frequency constraint wherever it is displayed, and make sure
-					// the object type is made visible in the same location.
-					foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(fc))
+					UpdateShapeSize(constraint);
+				}
+			}
+		}
+		private static void UpdateShapeSize(FrequencyConstraint constraint)
+		{
+			// Resize the frequency constraint wherever it is displayed, and make sure
+			// the object type is made visible in the same location.
+			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(constraint))
+			{
+				ExternalConstraintShape externalConstraintShape = pel as ExternalConstraintShape;
+				if (externalConstraintShape != null)
+				{
+					SizeD oldSize = externalConstraintShape.Size;
+					externalConstraintShape.AutoResize();
+					if (oldSize == externalConstraintShape.Size)
 					{
-						ExternalConstraintShape externalConstraintShape = pel as ExternalConstraintShape;
-						if (externalConstraintShape != null)
-						{
-							SizeD oldSize = externalConstraintShape.Size;
-							externalConstraintShape.AutoResize();
-							if (oldSize == externalConstraintShape.Size)
-							{
-								((IInvalidateDisplay)externalConstraintShape).InvalidateRequired(true);
-							}
-						}
+						((IInvalidateDisplay)externalConstraintShape).InvalidateRequired(true);
 					}
 				}
 			}
 		}
-		#endregion // FrequencyConstraintPropertyChangeRule
-		#region FrequencyConstraintConversionDeletingRule
 		/// <summary>
 		/// DeletingRule: typeof(FrequencyConstraintShape)
 		/// If the FrequencyConstraintShape is being deleted as a result of conversion to a uniqueness constraint
@@ -247,7 +276,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				((ORMDiagram)shape.Diagram).PlaceORMElementOnDiagram(null, convertingTo, shape.Location, ORMPlacementOption.AllowMultipleShapes, null, null);
 			}
 		}
-		#endregion // FrequencyConstraintConversionDeletingRule
 		#endregion // Shape display update rules
 		#region IModelErrorActivation Implementation
 		/// <summary>

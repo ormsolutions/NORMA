@@ -590,6 +590,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ObjectType nestingType = (objectification != null) ? objectification.NestingType : null;
 			bool lookForNonDisplayedRelatedTypes = false;
 			bool haveNonDisplayedRelatedTypes = false;
+			if (childShapesMerged && factTypeShape != null && IsMergingExternalStore)
+			{
+				// Override this setting if we're merging from an external store, which
+				// can produce a merge of a shape that does not have all of the elements
+				// from the current store.
+				childShapesMerged = false;
+			}
 			foreach (FactTypeShape testShape in MultiShapeUtility.FindAllShapesForElement<FactTypeShape>(factTypeShape.Diagram, factType))
 			{
 				if (testShape != factTypeShape)
@@ -626,6 +633,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
 			int roleCount = roleCollection.Count;
+			int? unaryRoleIndex = FactType.GetUnaryRoleIndex(roleCollection);
+			Role unaryRole = unaryRoleIndex.HasValue ? roleCollection[unaryRoleIndex.Value].Role : null;
 			bool impliedFactType = factType.ImpliedByObjectification != null;
 			for (int i = 0; i < roleCount; ++i)
 			{
@@ -661,7 +670,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 				// Get the role value constraint and the link to it.
 				RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
-				if (!childShapesMerged) {
+				UnaryRoleCardinalityConstraint unaryRoleCardinality = (unaryRole == role) ? unaryRole.Cardinality : null;
+				if (!childShapesMerged)
+				{
 					// Pick up the role shape
 					//check if we have a specific shape or need to use the model element
 					if (factTypeShape == null)
@@ -682,6 +693,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						else
 						{
 							FixUpLocalDiagram(factTypeShape as ShapeElement, valueConstraintLink.ValueConstraint);
+						}
+					}
+
+					if (unaryRoleCardinality != null)
+					{
+						if (factTypeShape == null)
+						{
+							FixUpLocalDiagram(factType, unaryRoleCardinality);
+						}
+						else
+						{
+							FixUpLocalDiagram(factTypeShape as ShapeElement, unaryRoleCardinality);
 						}
 					}
 				}
@@ -715,13 +738,47 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				if (!childShapesMerged)
 				{
+					ObjectifiedFactTypeNameShape nameShape;
+					ValueConstraint valueConstraint = nestingType.FindValueConstraint(false);
+					ObjectTypeCardinalityConstraint cardinalityConstraint = nestingType.Cardinality;
 					if (factTypeShape == null)
 					{
-						FixUpLocalDiagram(factType, nestingType);
+						foreach (ShapeElement newShape in FixUpLocalDiagram(factType, nestingType))
+						{
+							if (null != (nameShape = newShape as ObjectifiedFactTypeNameShape))
+							{
+								if (valueConstraint != null)
+								{
+									FixUpLocalDiagram(nameShape, valueConstraint);
+								}
+								if (cardinalityConstraint != null)
+								{
+									FixUpLocalDiagram(nameShape, cardinalityConstraint);
+								}
+							}
+						}
 					}
-					else
+					else if (factTypeShape.DisplayAsObjectType)
 					{
-						FixUpLocalDiagram(factTypeShape as ShapeElement, nestingType);
+						if (valueConstraint != null)
+						{
+							FixUpLocalDiagram(factTypeShape, valueConstraint);
+						}
+						if (cardinalityConstraint != null)
+						{
+							FixUpLocalDiagram(factTypeShape, cardinalityConstraint);
+						}
+					}
+					else if (null != (nameShape = FixUpLocalDiagram(factTypeShape as ShapeElement, nestingType) as ObjectifiedFactTypeNameShape))
+					{
+						if (valueConstraint != null)
+						{
+							FixUpLocalDiagram(nameShape, valueConstraint);
+						}
+						if (cardinalityConstraint != null)
+						{
+							FixUpLocalDiagram(nameShape, cardinalityConstraint);
+						}
 					}
 				}
 				if (!duplicateShape || haveNonDisplayedRelatedTypes)
@@ -766,10 +823,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				FixupObjectTypeLinks(objectType, haveNonDisplayedRelatedTypes);
 			}
-			if (!childShapesMerged)
+			if (!childShapesMerged || (objectTypeShape != null && IsMergingExternalStore))
 			{
-				ValueConstraint valueConstraint = objectType.FindValueConstraint(false);
-				if (valueConstraint != null)
+				// If the shape comes from the local store the source shape should always be
+				// in sync. However, if the shape comes from an external store, then it may not
+				// have child elements displayed on shapes in this store, so we need to check.
+				ValueConstraint valueConstraint;
+				ObjectTypeCardinalityConstraint cardinalityConstraint;
+				if (null != (valueConstraint = objectType.FindValueConstraint(false)))
 				{
 					//check if we have a specific shape or need to use the model element
 					if (objectTypeShape == null)
@@ -779,6 +840,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					else
 					{
 						FixUpLocalDiagram(objectTypeShape as ShapeElement, valueConstraint);
+					}
+				}
+				if (null != (cardinalityConstraint = objectType.Cardinality))
+				{
+					if (objectTypeShape == null)
+					{
+						FixUpLocalDiagram(objectType, cardinalityConstraint);
+					}
+					else
+					{
+						FixUpLocalDiagram(objectTypeShape as ShapeElement, cardinalityConstraint);
 					}
 				}
 			}
@@ -2296,7 +2368,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		public override IList FixUpDiagramSelection(ShapeElement newChildShape)
 		{
-			if (DropTargetContext.HasDropTargetContext(Store.TransactionManager.CurrentTransaction.TopLevelTransaction))
+			ISelectionContainerFilter selectionFilter;
+			if (DropTargetContext.HasDropTargetContext(Store.TransactionManager.CurrentTransaction.TopLevelTransaction) &&
+				(null == (selectionFilter = newChildShape as ISelectionContainerFilter) ||
+				selectionFilter.IncludeInSelectionContainer))
 			{
 				return base.FixUpDiagramSelection(newChildShape);
 			}
@@ -2935,6 +3010,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			return retVal;
 		}
+		/// <summary>
+		/// Helper function to verify merge requirements.
+		/// </summary>
+		private bool IsMergingExternalStore
+		{
+			get
+			{
+				Store store;
+				object storeIdObject;
+				Transaction t;
+				return (null != (store = Store) &&
+					null != (t = store.TransactionManager.CurrentTransaction) &&
+					t.TopLevelTransaction.Context.ContextInfo.TryGetValue("SourceStore", out storeIdObject) &&
+					storeIdObject != null &&
+					storeIdObject is Guid) ?
+						(((Guid)storeIdObject) != store.Id) :
+						false;
+			}
+		}
 		[NonSerialized]
 		private ORMDesignerElementOperations myElementOperations;
 		/// <summary>
@@ -2985,6 +3079,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						displayRoles.Add(identityMap == null ? protoDisplayRoles[j] : (RoleBase)identityMap[protoDisplayRoles[j].Id]);
 					}
 				}
+			}
+
+			// Merged shapes do not go through any other code paths that
+			// would automatically add them to the current selection, so
+			// we do it here. This means that dropped elements will be
+			// selected after the drop. Note that there is no guarantee of
+			// ordering or of which element will be primary when the merge
+			// is complete.
+			ShapeElement shape;
+			if (null != (shape = mergedShape as ShapeElement))
+			{
+				FixUpDiagramSelection(shape);
 			}
 		}
 		#region ORMDesignerElementOperations class

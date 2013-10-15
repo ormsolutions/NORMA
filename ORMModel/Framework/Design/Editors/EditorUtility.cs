@@ -1046,7 +1046,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			{
 				return;
 			}
-			using (Transaction t = store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(myInner.DisplayName)))
+			using (Transaction t = store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(DisplayName)))
 			{
 				myInner.ResetValue(element);
 				if (t.HasPendingChanges)
@@ -1073,7 +1073,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			{
 				return;
 			}
-			using (Transaction t = store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(myInner.DisplayName)))
+			using (Transaction t = store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(DisplayName)))
 			{
 				myInner.SetValue(element, value);
 				if (t.HasPendingChanges)

@@ -513,6 +513,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				RolePlayer = value;
 			}
 		}
+		/// <summary>
+		/// The user-editable display form of a cardinality constraint.
+		/// </summary>
+		[DefaultValue(CardinalityConstraint.DefaultCardinalityDisplay)]
+		public string CardinalityDisplay
+		{
+			get
+			{
+				return CardinalityConstraint.GetEditableRangeDisplay(this.Cardinality);
+			}
+			set
+			{
+				CardinalityConstraint.UpdateCardinality(this, value);
+			}
+		}
 		#endregion // Non-DSL Custom Properties
 		#region ValueRole methods
 		/// <summary>
@@ -1557,7 +1572,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			INamedElementDictionary dictionary = null;
-			if (parentDomainRoleId == RoleHasValueConstraint.RoleDomainRoleId)
+			bool forValueConstraint;
+			if ((forValueConstraint = (parentDomainRoleId == RoleHasValueConstraint.RoleDomainRoleId)) ||
+				parentDomainRoleId == UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId)
 			{
 				FactType factType;
 				if (null != (factType = FactType))
@@ -1578,7 +1595,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (dictionary == null)
 				{
-					dictionary = NamedElementDictionary.GetRemoteDictionaryToken(typeof(ValueConstraint));
+					dictionary = NamedElementDictionary.GetRemoteDictionaryToken(forValueConstraint? typeof(ValueConstraint) : typeof(CardinalityConstraint));
 				}
 			}
 			return dictionary;

@@ -814,7 +814,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	}
 	#endregion // ORMShapeDeleteClosure for multiple shapes
 	#region ORMShapeCopyClosure for parented shapes
-#if VISUALSTUDIO_10_0
+	/// <summary>
+	/// Override the core design surface containment relationships.
+	/// In VS2010 this is not implemented at all, and the ShouldVisitRolePlayer
+	/// is not implemented correctly in the other platforms, so grandchild shapes
+	/// are not included in a copy closure.
+	/// </summary>
 	partial class ORMShapeCopyClosure
 	{
 		/// <summary>
@@ -846,6 +851,5 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return base.ShouldVisitRolePlayer(walker, sourceElement, elementLink, targetDomainRole, targetRolePlayer);
 		}
 	}
-#endif // VISUALSTUDIO_10_0
 	#endregion // ORMShapeCopyClosure for parented shapes
 }

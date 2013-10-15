@@ -567,6 +567,31 @@ Format: this association with {0}provides the preferred identification scheme fo
 						<xs:documentation>Description: Text used at the end of a compact simple list.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleOrListOpen">
+					<xs:annotation>
+						<xs:documentation>Description: Text used at the beginning of a compact simple or list.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleOrListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>Description: Used to separate items in a compact simple or list.  Format: or </xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleOrListSeparator">
+					<xs:annotation>
+						<xs:documentation>Description: Used to separate items in a compact simple or list.  Format: ,</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleOrListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>Description: Used to separate the last two items in a compact simple or list.  Format: , or </xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CompactSimpleOrListClose">
+					<xs:annotation>
+						<xs:documentation>Description: Text used at the end of a compact simple or list.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="GroupEquality">
 					<xs:annotation>
 						<xs:documentation>Description: Assert group equality. Format: all or none of the following hold: {0}</xs:documentation>
@@ -987,28 +1012,52 @@ Format: {0} times</xs:documentation>
 Format: either no, or {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="FrequencyRangeExact">
+				<xs:enumeration value="CountRangeExact">
 					<xs:annotation>
-						<xs:documentation>Description: Used for a frequency range where both the min and max values the same
+						<xs:documentation>Description: Used for frequency and cardinality ranges where both the min and max values the same
 Format: exactly {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="FrequencyRangeMinAndMax">
+				<xs:enumeration value="CountRangeMinAndMax">
 					<xs:annotation>
-						<xs:documentation>Description: Used for a frequency range where both the min and max values are specified and different.
+						<xs:documentation>Description: Used for frequency and cardinality ranges where both the min and max values are specified and different.
 Format: at least {0} and at most {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="FrequencyRangeMaxUnbounded">
+				<xs:enumeration value="CountRangeMaxUnbounded">
 					<xs:annotation>
-						<xs:documentation>Description: Used for a frequency range where both the max value is unbounded.
+						<xs:documentation>Description: Used for frequency and cardinality ranges where the max value is unbounded.
 Format: at least {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
-				<xs:enumeration value="FrequencyRangeMinUnbounded">
+				<xs:enumeration value="CountRangeMinUnbounded">
 					<xs:annotation>
-						<xs:documentation>Description: Used for a frequency range where the min value is less than 2.
+						<xs:documentation>Description: Used for a frequency range where the min value is less than 2, or a cardinality range with a 0 lower bound.
 Format: at most {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeCardinality">
+					<xs:annotation>
+						<xs:documentation>Description: Used as the boiler plate for object type cardinality.
+Format: each population of {0} contains {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="UnaryRoleCardinality">
+					<xs:annotation>
+						<xs:documentation>Description: Used as the boiler plate for unary role cardinality.
+Format: for each population of '{0}', the number of {1} instances is {2}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CardinalitySingleInstance">
+					<xs:annotation>
+						<xs:documentation>Description: Replaces the last phrase in cardinality statements if a single instance is specified:
+Format: {0} instance</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="CardinalityMultipleInstances">
+					<xs:annotation>
+						<xs:documentation>Description: Replaces the last phrase in cardinality statements if multiple instances are specified:
+Format: {0} instances</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ExactlyOneUntypedOccurrence">
@@ -1073,49 +1122,43 @@ Format: it is not true that {0} is indirectly related to {1} by repeatedly apply
 				</xs:enumeration>
 				<xs:enumeration value="LessThanValueComparator">
 					<xs:annotation>
-						<xs:documentation>
-							Description: Used to compare the two values in a value comparison constraint with a 'less than' operator.
-							Format: {0} is less than {1}
+						<xs:documentation>Description: Used to compare the two values in a value comparison constraint with a 'less than' operator.
+Format: {0} is less than {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="LessThanOrEqualValueComparator">
 					<xs:annotation>
-						<xs:documentation>
-							Description: Used to compare the two values in a value comparison constraint with a 'less than or equal' operator.
-							Format: {0} is less than or equal to {1}
+						<xs:documentation>Description: Used to compare the two values in a value comparison constraint with a 'less than or equal' operator.
+Format: {0} is less than or equal to {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="GreaterThanValueComparator">
 					<xs:annotation>
-						<xs:documentation>
-							Description: Used to compare the two values in a value comparison constraint with a 'greater than' operator.
-							Format: {0} is greater than {1}
+						<xs:documentation>Description: Used to compare the two values in a value comparison constraint with a 'greater than' operator.
+Format: {0} is greater than {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="GreaterThanOrEqualValueComparator">
 					<xs:annotation>
-						<xs:documentation>
-							Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
-							Format: {0} is greater than or equal to {1}
+						<xs:documentation>Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
+Format: {0} is greater than or equal to {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="EqualValueComparator">
 					<xs:annotation>
-						<xs:documentation>
-							Description: Used to compare the two values in a value comparison constraint with a 'equal' operator.
-							Format: {0} is equal to {1}
+						<xs:documentation>Description: Used to compare the two values in a value comparison constraint with a 'equal' operator.
+Format: {0} is equal to {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="NotEqualValueComparator">
 					<xs:annotation>
-						<xs:documentation>
-							Description: Used to compare the two values in a value comparison constraint with a 'not equal' operator.
-							Format: {0} is not equal to {1}
+						<xs:documentation>Description: Used to compare the two values in a value comparison constraint with a 'not equal' operator.
+Format: {0} is not equal to {1}
 						</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>

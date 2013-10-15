@@ -107,6 +107,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				typeof(ValueConstraintShape),
 				typeof(RoleNameShape),
 				typeof(ModelNoteShape),
+				typeof(CardinalityConstraintShape),
 				typeof(LinkConnectorShape),
 				typeof(FactTypeLinkConnectorShape),
 				typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.FixUpDiagram),
@@ -170,7 +171,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(24);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(25);
 				createElementMap.Add(typeof(ORMDiagram), 0);
 				createElementMap.Add(typeof(RolePlayerLink), 1);
 				createElementMap.Add(typeof(RolePlayerProxyLink), 2);
@@ -189,8 +190,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				createElementMap.Add(typeof(ValueConstraintShape), 15);
 				createElementMap.Add(typeof(RoleNameShape), 16);
 				createElementMap.Add(typeof(ModelNoteShape), 17);
-				createElementMap.Add(typeof(LinkConnectorShape), 18);
-				createElementMap.Add(typeof(FactTypeLinkConnectorShape), 19);
+				createElementMap.Add(typeof(CardinalityConstraintShape), 18);
+				createElementMap.Add(typeof(LinkConnectorShape), 19);
+				createElementMap.Add(typeof(FactTypeLinkConnectorShape), 20);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -224,8 +226,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				case 15: return new ValueConstraintShape(partition, propertyAssignments);
 				case 16: return new RoleNameShape(partition, propertyAssignments);
 				case 17: return new ModelNoteShape(partition, propertyAssignments);
-				case 18: return new LinkConnectorShape(partition, propertyAssignments);
-				case 19: return new FactTypeLinkConnectorShape(partition, propertyAssignments);
+				case 18: return new CardinalityConstraintShape(partition, propertyAssignments);
+				case 19: return new LinkConnectorShape(partition, propertyAssignments);
+				case 20: return new FactTypeLinkConnectorShape(partition, propertyAssignments);
 				default: return null;
 			}
 		}

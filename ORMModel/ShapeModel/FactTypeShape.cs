@@ -1791,8 +1791,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						return true;
 					});
 				return isVertical ?
-					new SizeD(wasVisited ? maxY - minY : 0, RolesShape.GetMinimumSize(parentShape).Height) :
-					new SizeD(RolesShape.GetMinimumSize(parentShape).Width, wasVisited ? maxY - minY : 0);
+					new SizeD(wasVisited ? maxY - minY : 0, RolesField.GetMinimumSize(parentShape).Height) :
+					new SizeD(RolesField.GetMinimumSize(parentShape).Width, wasVisited ? maxY - minY : 0);
 			}
 			/// <summary>
 			/// Return true if the constraint box is displayed vertically
@@ -3794,7 +3794,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// The shape field used to display roles
 		/// </summary>
-		protected static ShapeField RolesShape
+		public static ShapeField RolesField
 		{
 			get
 			{
@@ -3836,7 +3836,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				else
 				{
-					ShapeField rolesShape = RolesShape;
+					ShapeField rolesShape = RolesField;
 					if (rolesShape != null)
 					{
 						double width, height;
@@ -4230,6 +4230,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ReadingOrder readingOrder;
 			ObjectType objectType;
 			RoleValueConstraint roleValueConstraint;
+			ObjectTypeCardinalityConstraint objectTypeCardinalityConstraint;
+			UnaryRoleCardinalityConstraint roleCardinalityConstraint;
 			FactType factType;
 			if (DisplayAsObjectType)
 			{
@@ -4249,7 +4251,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						// Support ValueType objectification
 						return valueTypeValueConstraint.ValueType == objectType;
 					}
-					else if (element is ObjectType || element is ReadingOrder)
+					else if (null != (objectTypeCardinalityConstraint = element as ObjectTypeCardinalityConstraint))
+					{
+						// Support object type cardinality when objectified
+						return objectTypeCardinalityConstraint.ObjectType == objectType;
+					}
+					else if (element is ObjectType || element is ReadingOrder || element is UnaryRoleCardinalityConstraint)
 					{
 						return false;
 					}
@@ -4291,6 +4298,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				return roleValueConstraint.Role.FactType == AssociatedFactType;
 			}
+			else if (null != (roleCardinalityConstraint = element as UnaryRoleCardinalityConstraint))
+			{
+				return roleCardinalityConstraint.UnaryRole.FactType == AssociatedFactType;
+			}
 			IShapeExtender<FactTypeShape>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<FactTypeShape>>();
 			if (extenders != null)
 			{
@@ -4312,7 +4323,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <returns>RelationshipType.Relative</returns>
 		protected override RelationshipType ChooseRelationship(ShapeElement childShape)
 		{
-			Debug.Assert(childShape is ObjectifiedFactTypeNameShape || childShape is ReadingShape || childShape is ValueConstraintShape || childShape is RoleNameShape);
+			//Debug.Assert(childShape is ObjectifiedFactTypeNameShape || childShape is ReadingShape || childShape is ValueConstraintShape || childShape is RoleNameShape || childShape is ValueConstraintShape);
 			return RelationshipType.Relative;
 		}
 		/// <summary>
@@ -6763,10 +6774,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								}
 							}
 							childShapes.Clear();
-							ValueConstraint valueConstraint = objectification.NestingType.FindValueConstraint(false);
-							if (valueConstraint != null)
+							ObjectType objectType = objectification.NestingType;
+							ValueConstraint valueConstraint;
+							if (null != (valueConstraint = objectType.FindValueConstraint(false)))
 							{
 								diagram.FixUpLocalDiagram(factTypeShape, valueConstraint);
+							}
+							ObjectTypeCardinalityConstraint cardinalityConstraint;
+							if (null != (cardinalityConstraint = objectType.Cardinality))
+							{
+								diagram.FixUpLocalDiagram(factTypeShape, cardinalityConstraint);
 							}
 						}
 						else
@@ -6786,10 +6803,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							object allowMultipleShapesKey = null;
 							Dictionary<object, object> topLevelContextInfo = null;
 							bool containedAllowMultipleShapes = false;
-							foreach (RoleBase roleBase in factTypeShape.DisplayedRoleOrder) // We keep displayed role order when collapsed
+							LinkedElementCollection<RoleBase> displayedRoles = factTypeShape.DisplayedRoleOrder;
+							bool checkCardinality = displayedRoles.Count == 1;
+							foreach (RoleBase roleBase in displayedRoles) // We keep displayed role order when collapsed
 							{
 								Role role = roleBase.Role;
 								RoleHasValueConstraint valueConstraintLink;
+								UnaryRoleCardinalityConstraint roleCardinality;
 								string roleName;
 								if (null != (valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role)))
 								{
@@ -6810,6 +6830,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								if (testRoleNames && !string.IsNullOrEmpty(roleName = role.Name))
 								{
 									diagram.FixUpLocalDiagram(factTypeShape, role);
+								}
+								if (checkCardinality &&
+									null != (roleCardinality = role.Cardinality))
+								{
+									diagram.FixUpLocalDiagram(factTypeShape, roleCardinality);
 								}
 							}
 							if (topLevelContextInfo != null && !containedAllowMultipleShapes)
@@ -7179,7 +7204,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			protected sealed override void ProcessElement(FactTypeShape element, Store store, INotifyElementAdded notifyAdded)
 			{
 				element.EnsureUnaryRoleDisplayOrder();
-				PointD centerPoint = RolesShape.GetBounds(element).Center;
+				PointD centerPoint = RolesField.GetBounds(element).Center;
 				element.RolesPosition = (element.DisplayOrientation != DisplayOrientation.Horizontal) ? centerPoint.X : centerPoint.Y;
 			}
 		}
@@ -7241,6 +7266,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				RoleValueConstraint roleValueConstraint;
 				ValueTypeValueConstraint valueTypeValueConstraint;
+				ObjectTypeCardinalityConstraint objectTypeCardinalityConstraint;
 				if (null != (roleValueConstraint = element as RoleValueConstraint))
 				{
 					FactType refModeFactType;
@@ -7252,6 +7278,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					// Support ValueType objectification
 					return valueTypeValueConstraint.ValueType == objectType;
+				}
+				else if (null != (objectTypeCardinalityConstraint = element as ObjectTypeCardinalityConstraint))
+				{
+					return objectTypeCardinalityConstraint.ObjectType == objectType;
 				}
 			}
 			IShapeExtender<ObjectifiedFactTypeNameShape>[] extenders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeExtender<ObjectifiedFactTypeNameShape>>();
@@ -7274,7 +7304,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <returns>RelationshipType.Relative</returns>
 		protected override RelationshipType ChooseRelationship(ShapeElement childShape)
 		{
-			Debug.Assert(childShape is ValueConstraintShape);
+			//Debug.Assert(childShape is ValueConstraintShape || childShape is CardinalityConstraintShape);
 			return RelationshipType.Relative;
 		}
 		#endregion // Shape initialize overrides
@@ -7285,14 +7315,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		protected void ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)
 		{
 			ObjectType objectType;
-			ValueConstraint valueConstraint;
 			ORMDiagram diagram;
 			if (createdDuringViewFixup &&
 				null != (objectType = AssociatedObjectType) &&
-				null != (valueConstraint = objectType.FindValueConstraint(false)) &&
 				null != (diagram = parentShape.Diagram as ORMDiagram))
 			{
-				diagram.FixUpLocalDiagram(this, valueConstraint);
+				ValueConstraint valueConstraint;
+				ObjectTypeCardinalityConstraint cardinalityConstraint;
+				if (null != (valueConstraint = objectType.FindValueConstraint(false)))
+				{
+					diagram.FixUpLocalDiagram(this, valueConstraint);
+				}
+				if (null != (cardinalityConstraint = objectType.Cardinality))
+				{
+					diagram.FixUpLocalDiagram(this, cardinalityConstraint);
+				}
 			}
 		}
 		void IConfigureAsChildShape.ConfiguringAsChildOf(NodeShape parentShape, bool createdDuringViewFixup)

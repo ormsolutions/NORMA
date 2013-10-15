@@ -316,6 +316,9 @@
 		<se:Container Name="Abbreviations">
 			<se:Embed RelationshipName="ObjectTypeHasAbbreviation" RoleName="Abbreviation"/>
 		</se:Container>
+		<se:Container Name="CardinalityRestriction">
+			<se:Embed RelationshipName="ObjectTypeHasCardinalityConstraint" RoleName="CardinalityConstraint"/>
+		</se:Container>
 		<se:Container Name="PlayedRoles">
 			<se:Link RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole"/>
 		</se:Container>
@@ -545,6 +548,48 @@
 		</se:Attribute>
 		<se:Link RelationshipName="ValueRangeHasMinValueMismatchError" RoleName="MinValueMismatchError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ValueRangeHasMaxValueMismatchError" RoleName="MaxValueMismatchError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Name="BaseCardinalityConstraint" Class="CardinalityConstraint" SortChildElements="true" Override="true">
+		<se:Attribute ID="Modality">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="Alethic" type="field" dataTypeName="ConstraintModality"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="Modality" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Container Name="Definitions">
+			<se:Embed RelationshipName="CardinalityConstraintHasDefinition" RoleName="Definition"/>
+		</se:Container>
+		<se:Container Name="Notes">
+			<se:Embed RelationshipName="CardinalityConstraintHasNote" RoleName="Note"/>
+		</se:Container>
+		<se:Container Name="Ranges">
+			<se:Embed RelationshipName="CardinalityConstraintHasRange" RoleName="Range"/>
+		</se:Container>
+		<se:Link RelationshipName="CardinalityConstraintHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="CardinalityConstraintHasRangeOverlapError" RoleName="CardinalityRangeOverlapError" WriteStyle="NotWritten"/>
+	</se:Element>
+	<se:Element Class="ObjectTypeCardinalityConstraint" Name="CardinalityConstraint" Override="true"/>
+	<se:Element Class="UnaryRoleCardinalityConstraint" Name="UnaryRoleCardinalityConstraint" Override="true"/>
+	<se:Element Class="CardinalityRange" Override="true">
+		<se:Attribute ID="LowerBound" Name="From"/>
+		<se:Attribute ID="UpperBound" Name="To">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="UpperBound" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:value data="-1" type="i4"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 	</se:Element>
 	<!--Facts-->
 	<se:Element Class="FactType" Name="Fact" SortChildElements="true" Override="true">
@@ -949,6 +994,9 @@
 		<se:Link Name="RolePlayer" RelationshipName="ObjectTypePlaysRole" RoleName="RolePlayer"/>
 		<se:Container Name="ValueRestriction">
 			<se:Embed RelationshipName="RoleHasValueConstraint" RoleName="ValueConstraint"/>
+		</se:Container>
+		<se:Container Name="CardinalityRestriction">
+			<se:Embed RelationshipName="UnaryRoleHasCardinalityConstraint" RoleName="CardinalityConstraint"/>
 		</se:Container>
 		<!-- UNDONE: File format change, remove old role path constructs -->
 		<se:Container Name="DerivationSource">
@@ -1550,10 +1598,12 @@
 			<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraint"/>
 			<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraint"/>
 			<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraint"/>
+			<se:Link RelationshipName="CardinalityConstraintHasDuplicateNameError" RoleName="CardinalityConstraint"/>
 		</se:Container>
 		<se:Link RelationshipName="SetComparisonConstraintHasDuplicateNameError" RoleName="SetComparisonConstraint" Name="SetComparisonConstraint"/>
 		<se:Link RelationshipName="SetConstraintHasDuplicateNameError" RoleName="SetConstraint" Name="SetConstraint"/>
 		<se:Link RelationshipName="ValueConstraintHasDuplicateNameError" RoleName="ValueConstraint" Name="ValueConstraint"/>
+		<se:Link RelationshipName="CardinalityConstraintHasDuplicateNameError" RoleName="CardinalityConstraint" Name="CardinalityConstraint"/>
 	</se:Element>
 	<se:Element Class="ObjectTypeDuplicateNameError" Override="true">
 		<se:Container Name="Objects">
@@ -1623,6 +1673,9 @@
 	</se:Element>
 	<se:Element Class="ValueComparisonRolesNotComparableError" Override="true">
 		<se:Link RelationshipName="ValueComparisonConstraintHasRolesNotComparableError" RoleName="ValueComparisonConstraint" Name="ValueComparisonConstraint"/>
+	</se:Element>
+	<se:Element Class="CardinalityRangeOverlapError" Override="true">
+		<se:Link RelationshipName="CardinalityConstraintHasRangeOverlapError" RoleName="CardinalityConstraint" Name="CardinalityConstraint"/>
 	</se:Element>
 	<se:Element Class="CompatibleValueTypeInstanceValueError" Override="true">
 		<se:ConditionalSerialization>

@@ -50,11 +50,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
-			PropertyDescriptorCollection properties = base.GetProperties(attributes);
+			PropertyDescriptorCollection properties = EditorUtility.GetEditablePropertyDescriptors(base.GetProperties(attributes));
+			properties.Add(CardinalityDisplayPropertyDescriptor);
 			ObjectType objectType = ModelElement;
 			if (objectType.IsValueType || objectType.HasReferenceMode)
 			{
-				properties = EditorUtility.GetEditablePropertyDescriptors(properties);
 				properties.Add(DataTypeDisplayPropertyDescriptor);
 			}
 			return properties;
@@ -341,6 +341,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				if (retVal == null)
 				{
 					myDataTypeDisplayPropertyDescriptor = retVal = EditorUtility.ReflectStoreEnabledPropertyDescriptor(typeof(ObjectType), "DataTypeDisplay", typeof(DataType), null, ResourceStrings.ObjectTypeDataTypeDisplayDisplayName, ResourceStrings.ObjectTypeDataTypeDisplayDescription, null);
+				}
+				return retVal;
+			}
+		}
+		private static PropertyDescriptor myCardinalityDisplayPropertyDescriptor;
+		/// <summary>
+		/// Get a <see cref="PropertyDescriptor"/> for the <see cref="ObjectType.CardinalityDisplay"/> property
+		/// </summary>
+		public static PropertyDescriptor CardinalityDisplayPropertyDescriptor
+		{
+			get
+			{
+				PropertyDescriptor retVal = myCardinalityDisplayPropertyDescriptor;
+				if (retVal == null)
+				{
+					myCardinalityDisplayPropertyDescriptor = retVal = EditorUtility.ReflectStoreEnabledPropertyDescriptor(typeof(ObjectType), "CardinalityDisplay", typeof(string), null, ResourceStrings.ObjectTypeCardinalityDisplayDisplayName, ResourceStrings.ObjectTypeCardinalityDisplayDescription, null);
 				}
 				return retVal;
 			}

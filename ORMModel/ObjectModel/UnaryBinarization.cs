@@ -302,6 +302,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								if (role != implicitBooleanRole)
 								{
 									role.Name = "";
+									// Role cardinality is for unary fact types only, eliminate
+									// it if we switch away.
+									role.Cardinality = null;
 								}
 
 								UniquenessConstraint singleRoleAlethicUniquenessConstraint = role.SingleRoleAlethicUniquenessConstraint;

@@ -224,15 +224,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "Generated code.")]
 		protected override DslDiagrams::ShapeElement CreateChildShape(DslModeling::ModelElement element)
 		{
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.FrequencyConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
@@ -242,21 +242,39 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
@@ -281,12 +299,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape(this.Partition);
@@ -304,24 +316,24 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink(this.Partition);
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesObjectType)
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesFactType)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink(this.Partition);
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesFactType)
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesObjectType)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink(this.Partition);
 				return newShape;
@@ -336,16 +348,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink(this.Partition);
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
-				return newShape;
-			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
-				return newShape;
-			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
 			{
 				// Multiple mappings have been defined for the class ObjectTypePlaysRole.
@@ -358,6 +360,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				// must be implemented in a partial class of ORMDiagramBase.  Given an instance of ObjectTypePlaysRole,
 				// the method should return a new shape or connector instance that should be associated with this element.  If no shape or connector should be created, the method should return null.
 				DslDiagrams::LinkShape newShape = CreateConnectorForObjectTypePlaysRole((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)element);
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
 				return newShape;
 			}
 			return base.CreateChildShape(element);
@@ -532,26 +544,28 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// Rule that initiates view fixup when an element that has an associated shape is added to the model. 
 		/// </summary>
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		internal sealed partial class FixUpDiagram : FixUpDiagramBase
 		{
 			[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
@@ -571,13 +585,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					parentElement = GetParentForRingConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraint)childElement);
 				} else
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint)
+				{
+					parentElement = GetParentForValueComparisonConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint)childElement);
+				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint)
 				{
 					parentElement = GetParentForFrequencyConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint)childElement);
 				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint)
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)
 				{
-					parentElement = GetParentForValueComparisonConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint)childElement);
+					parentElement = GetParentForValueTypeValueConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)childElement);
+				} else
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint)
+				{
+					parentElement = GetParentForObjectTypeCardinalityConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint)childElement);
 				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint)
 				{
@@ -587,9 +609,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					parentElement = GetParentForSetConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint)childElement);
 				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint)
 				{
-					parentElement = GetParentForValueTypeValueConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)childElement);
+					parentElement = GetParentForUnaryRoleCardinalityConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint)childElement);
 				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote)
 				{
@@ -599,6 +621,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					parentElement = GetParentForRole((global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role)childElement);
 				} else
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)
+				{
+					parentElement = GetParentForObjectType((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)childElement);
+				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact)
 				{
 					parentElement = GetParentForSubtypeFact((global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact)childElement);
@@ -607,17 +633,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					parentElement = GetParentForSetComparisonConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint)childElement);
 				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
 				{
-					parentElement = GetParentForObjectType((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)childElement);
+					parentElement = GetParentForFactType((global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)childElement);
 				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder)
 				{
 					parentElement = GetParentForReadingOrder((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder)childElement);
-				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
-				{
-					parentElement = GetParentForFactType((global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)childElement);
 				} else
 				{
 					parentElement = null;
@@ -704,6 +726,29 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if ( root2 == null ) return null;
 				// Segments 2 and 3
 				global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel result = root2.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel GetParentForObjectTypeCardinalityConstraint( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint root )
+			{
+				// Segments 0 and 1
+				global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType root2 = root.ObjectType;
+				if ( root2 == null ) return null;
+				// Segments 2 and 3
+				global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel result = root2.Model;
+				if ( result == null ) return null;
+				return result;
+			}
+			public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel GetParentForUnaryRoleCardinalityConstraint( global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint root )
+			{
+				// Segments 0 and 1
+				global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase root2 = root.UnaryRole as global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase;
+				if ( root2 == null ) return null;
+				// Segments 2 and 3
+				global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType root4 = root2.FactType;
+				if ( root4 == null ) return null;
+				// Segments 4 and 5
+				global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel result = root4.Model;
 				if ( result == null ) return null;
 				return result;
 			}

@@ -682,9 +682,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ObjectTypesDictionary;
 			}
 			else if (parentDomainRoleId == ModelHasSetComparisonConstraint.ModelDomainRoleId ||
-					 parentDomainRoleId == ModelHasSetConstraint.ModelDomainRoleId ||
-					 parentDomainRoleId == ValueTypeHasValueConstraint.ValueTypeDomainRoleId ||
-					 parentDomainRoleId == RoleHasValueConstraint.RoleDomainRoleId)
+				parentDomainRoleId == ModelHasSetConstraint.ModelDomainRoleId ||
+				parentDomainRoleId == ValueTypeHasValueConstraint.ValueTypeDomainRoleId ||
+				parentDomainRoleId == RoleHasValueConstraint.RoleDomainRoleId ||
+				parentDomainRoleId == ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId ||
+				parentDomainRoleId == UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId)
 			{
 				return ConstraintsDictionary;
 			}
@@ -742,29 +744,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// DeleteRule: typeof(SetComparisonConstraintHasDuplicateNameError)
 		/// DeleteRule: typeof(SetConstraintHasDuplicateNameError)
 		/// DeleteRule: typeof(ValueConstraintHasDuplicateNameError)
+		/// DeleteRule: typeof(CardinalityConstraintHasDuplicateNameError)
 		/// </summary>
 		private static void DuplicateConstraintNameConstraintDeletedRule(ElementDeletedEventArgs e)
 		{
 			ModelElement link = e.ModelElement;
-			SetComparisonConstraintHasDuplicateNameError mcLink;
-			SetConstraintHasDuplicateNameError scLink;
-			ValueConstraintHasDuplicateNameError vLink;
+			SetComparisonConstraintHasDuplicateNameError setComparisonConstraintLink;
+			SetConstraintHasDuplicateNameError setConstraintLink;
+			ValueConstraintHasDuplicateNameError valueConstraintLink;
+			CardinalityConstraintHasDuplicateNameError cardinalityConstraintLink;
 			ConstraintDuplicateNameError error = null;
-			if (null != (mcLink = link as SetComparisonConstraintHasDuplicateNameError))
+			if (null != (setComparisonConstraintLink = link as SetComparisonConstraintHasDuplicateNameError))
 			{
-				error = mcLink.DuplicateNameError;
+				error = setComparisonConstraintLink.DuplicateNameError;
 			}
-			else if (null != (scLink = link as SetConstraintHasDuplicateNameError))
+			else if (null != (setConstraintLink = link as SetConstraintHasDuplicateNameError))
 			{
-				error = scLink.DuplicateNameError;
+				error = setConstraintLink.DuplicateNameError;
 			}
-			else if (null != (vLink = link as ValueConstraintHasDuplicateNameError))
+			else if (null != (valueConstraintLink = link as ValueConstraintHasDuplicateNameError))
 			{
-				error = vLink.DuplicateNameError;
+				error = valueConstraintLink.DuplicateNameError;
+			}
+			else if (null != (cardinalityConstraintLink = link as CardinalityConstraintHasDuplicateNameError))
+			{
+				error = cardinalityConstraintLink.DuplicateNameError;
 			}
 			if (error != null && !error.IsDeleted)
 			{
-				if ((error.SetComparisonConstraintCollection.Count + error.SetConstraintCollection.Count + error.ValueConstraintCollection.Count) < 2)
+				if ((error.SetComparisonConstraintCollection.Count + error.SetConstraintCollection.Count + error.ValueConstraintCollection.Count + error.CardinalityConstraintCollection.Count) < 2)
 				{
 					error.Delete();
 				}
@@ -997,11 +1005,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					private readonly LinkedElementCollection<SetComparisonConstraint> myNativeSetComparisonConstraintCollection;
 					private readonly LinkedElementCollection<SetConstraint> myNativeSetConstraintCollection;
 					private readonly LinkedElementCollection<ValueConstraint> myNativeValueConstraintCollection;
+					private readonly LinkedElementCollection<CardinalityConstraint> myNativeCardinalityConstraintCollection;
 					public TrackingList(ConstraintDuplicateNameError error)
 					{
 						myNativeSetComparisonConstraintCollection = error.SetComparisonConstraintCollection;
 						myNativeSetConstraintCollection = error.SetConstraintCollection;
 						myNativeValueConstraintCollection = error.ValueConstraintCollection;
+						myNativeCardinalityConstraintCollection = error.CardinalityConstraintCollection;
 					}
 					public LinkedElementCollection<SetComparisonConstraint> NativeSetComparisonConstraintCollection
 					{
@@ -1024,6 +1034,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							return myNativeValueConstraintCollection;
 						}
 					}
+					public LinkedElementCollection<CardinalityConstraint> NativeCardinalityConstraintCollection
+					{
+						get
+						{
+							return myNativeCardinalityConstraintCollection;
+						}
+					}
 				}
 				#endregion // TrackingList class
 				#region IDuplicateNameCollectionManager Implementation
@@ -1033,6 +1050,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					SetConstraint setConstraint = null;
 					SetComparisonConstraint setComparisonConstraint = null;
 					ValueConstraint valueConstraint = null;
+					CardinalityConstraint cardinalityConstraint = null;
 					ConstraintDuplicateNameError existingError = null;
 					if (null != (setConstraint = element as SetConstraint))
 					{
@@ -1046,7 +1064,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						existingError = valueConstraint.DuplicateNameError;
 					}
-					Debug.Assert(setConstraint != null || setComparisonConstraint != null || valueConstraint != null);
+					else if (null != (cardinalityConstraint = element as CardinalityConstraint))
+					{
+						existingError = cardinalityConstraint.DuplicateNameError;
+					}
+					Debug.Assert(setConstraint != null || setComparisonConstraint != null || valueConstraint != null || cardinalityConstraint != null);
 					if (afterTransaction)
 					{
 						if (elementCollection == null)
@@ -1101,15 +1123,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								else if (valueConstraint != null)
 								{
 									valueConstraint.DuplicateNameError = error;
-									ValueTypeValueConstraint vTypeValue;
-									RoleValueConstraint roleValue;
-									if (null != (vTypeValue = valueConstraint as ValueTypeValueConstraint))
+									ValueTypeValueConstraint valueTypeValueConstraint;
+									RoleValueConstraint roleValueConstraint;
+									if (null != (valueTypeValueConstraint = valueConstraint as ValueTypeValueConstraint))
 									{
-										error.Model = vTypeValue.ValueType.ResolvedModel;
+										error.Model = valueTypeValueConstraint.ValueType.ResolvedModel;
 									}
-									else if (null != (roleValue = valueConstraint as RoleValueConstraint))
+									else if (null != (roleValueConstraint = valueConstraint as RoleValueConstraint))
 									{
-										error.Model = roleValue.Role.FactType.ResolvedModel;
+										error.Model = roleValueConstraint.Role.FactType.ResolvedModel;
+									}
+								}
+								else if (cardinalityConstraint != null)
+								{
+									cardinalityConstraint.DuplicateNameError = error;
+									ObjectTypeCardinalityConstraint objectTypeCardinalityConstraint;
+									UnaryRoleCardinalityConstraint unaryRoleCardinalityConstraint;
+									if (null != (objectTypeCardinalityConstraint = cardinalityConstraint as ObjectTypeCardinalityConstraint))
+									{
+										error.Model = objectTypeCardinalityConstraint.ObjectType.ResolvedModel;
+									}
+									else if (null != (unaryRoleCardinalityConstraint = cardinalityConstraint as UnaryRoleCardinalityConstraint))
+									{
+										error.Model = unaryRoleCardinalityConstraint.UnaryRole.FactType.ResolvedModel;
 									}
 								}
 								error.GenerateErrorText();
@@ -1152,6 +1188,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									typedCollection.Add(valueConstraint);
 								}
 							}
+							else if (null != cardinalityConstraint)
+							{
+								LinkedElementCollection<CardinalityConstraint> typedCollection = trackingList.NativeCardinalityConstraintCollection;
+								if (notifyAdded == null || !typedCollection.Contains(cardinalityConstraint))
+								{
+									typedCollection.Add(cardinalityConstraint);
+								}
+							}
 						}
 						return elementCollection;
 					}
@@ -1167,6 +1211,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						SetComparisonConstraint setComparisonConstraint;
 						SetConstraint setConstraint;
 						ValueConstraint valueConstraint;
+						CardinalityConstraint cardinalityConstraint;
 						if (null != (setConstraint = element as SetConstraint))
 						{
 							setConstraint.DuplicateNameError = null;
@@ -1178,6 +1223,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						else if (null != (valueConstraint = element as ValueConstraint))
 						{
 							valueConstraint.DuplicateNameError = null;
+						}
+						else if (null != (cardinalityConstraint = element as CardinalityConstraint))
+						{
+							cardinalityConstraint.DuplicateNameError = null;
 						}
 					}
 					return elementCollection;
@@ -1199,6 +1248,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						foreach (ValueConstraint valueConstraint in trackingList.NativeValueConstraintCollection)
 						{
 							trackingList.Add(valueConstraint);
+						}
+						foreach (CardinalityConstraint cardinalityConstraint in trackingList.NativeCardinalityConstraintCollection)
+						{
+							trackingList.Add(cardinalityConstraint);
 						}
 					}
 				}
@@ -1883,7 +1936,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (typeof(SetConstraint).IsAssignableFrom(childType) ||
 				typeof(SetComparisonConstraint).IsAssignableFrom(childType) ||
-				typeof(ValueConstraint).IsAssignableFrom(childType))
+				typeof(ValueConstraint).IsAssignableFrom(childType) ||
+				typeof(CardinalityConstraint).IsAssignableFrom(childType))
 			{
 				return ConstraintsDictionary;
 			}
@@ -2163,6 +2217,56 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // INamedElementDictionaryLink implementation
 	}
+	partial class ObjectTypeHasCardinalityConstraint : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:ObjectType"/>.
+		/// </summary>
+		protected INamedElementDictionaryParentNode ParentRolePlayer
+		{
+			get { return ObjectType; }
+		}
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:ValueConstraint"/>.
+		/// </summary>
+		protected INamedElementDictionaryChildNode ChildRolePlayer
+		{
+			get { return CardinalityConstraint; }
+		}
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
+		{
+			get
+			{
+				return DictionaryLinkUse;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This is the direct parent link for the dictionary used to record value
+		/// type value constraint names. The returned parent indicates that the
+		/// dictionary itself is remotely managed by implementing the
+		/// <see cref="INamedElementDictionaryRemoteChild"/> interface.
+		/// </summary>
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
+		{
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
 	partial class RoleHasValueConstraint : INamedElementDictionaryLink
 	{
 		#region INamedElementDictionaryLink implementation
@@ -2189,6 +2293,56 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected INamedElementDictionaryChildNode ChildRolePlayer
 		{
 			get { return ValueConstraint; }
+		}
+		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
+		{
+			get
+			{
+				return DictionaryLinkUse;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryLink.DictionaryLinkUse"/>.
+		/// This is the direct parent link for the dictionary used to record role
+		/// type value constraint names. The returned parent indicates that the
+		/// dictionary itself is remotely managed by implementing the
+		/// <see cref="INamedElementDictionaryRemoteChild"/> interface.
+		/// </summary>
+		protected static NamedElementDictionaryLinkUse DictionaryLinkUse
+		{
+			get
+			{
+				return NamedElementDictionaryLinkUse.DirectDictionary;
+			}
+		}
+		#endregion // INamedElementDictionaryLink implementation
+	}
+	partial class UnaryRoleHasCardinalityConstraint : INamedElementDictionaryLink
+	{
+		#region INamedElementDictionaryLink implementation
+		INamedElementDictionaryParentNode INamedElementDictionaryLink.ParentRolePlayer
+		{
+			get { return ParentRolePlayer; }
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryLink.ParentRolePlayer"/>
+		/// Returns the associated <see cref="p:Role"/>.
+		/// </summary>
+		protected INamedElementDictionaryParentNode ParentRolePlayer
+		{
+			get { return UnaryRole; }
+		}
+		INamedElementDictionaryChildNode INamedElementDictionaryLink.ChildRolePlayer
+		{
+			get { return ChildRolePlayer; }
+		}
+		/// <summary>
+		/// Implements <see cref="INamedElementDictionaryLink.ChildRolePlayer"/>
+		/// Returns the associated <see cref="p:ValueConstraint"/>.
+		/// </summary>
+		protected INamedElementDictionaryChildNode ChildRolePlayer
+		{
+			get { return CardinalityConstraint; }
 		}
 		NamedElementDictionaryLinkUse INamedElementDictionaryLink.DictionaryLinkUse
 		{
@@ -2526,6 +2680,46 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			parentDomainRoleId = RoleHasValueConstraint.RoleDomainRoleId;
 			childDomainRoleId = RoleHasValueConstraint.ValueConstraintDomainRoleId;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
+	partial class ObjectTypeCardinalityConstraint : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
+		}
+		/// <summary>
+		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
+		/// this child as participating in the 'ModelHasConstraint' naming set.
+		/// </summary>
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			parentDomainRoleId = ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId;
+			childDomainRoleId = ObjectTypeHasCardinalityConstraint.CardinalityConstraintDomainRoleId;
+		}
+		#endregion // INamedElementDictionaryChild implementation
+	}
+	partial class UnaryRoleCardinalityConstraint : INamedElementDictionaryChild
+	{
+		#region INamedElementDictionaryChild implementation
+		void INamedElementDictionaryChild.GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			GetRoleGuids(out parentDomainRoleId, out childDomainRoleId);
+		}
+		/// <summary>
+		/// Implementation of INamedElementDictionaryChild.GetRoleGuids. Identifies
+		/// this child as participating in the 'ModelHasConstraint' naming set.
+		/// </summary>
+		/// <param name="parentDomainRoleId">Guid</param>
+		/// <param name="childDomainRoleId">Guid</param>
+		protected static void GetRoleGuids(out Guid parentDomainRoleId, out Guid childDomainRoleId)
+		{
+			parentDomainRoleId = UnaryRoleHasCardinalityConstraint.UnaryRoleDomainRoleId;
+			childDomainRoleId = UnaryRoleHasCardinalityConstraint.CardinalityConstraintDomainRoleId;
 		}
 		#endregion // INamedElementDictionaryChild implementation
 	}

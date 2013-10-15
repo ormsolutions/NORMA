@@ -99,6 +99,30 @@
 					</plx:callThis>
 				</cmc:AfterAutomaticEquivalence>
 			</cmc:EmbeddingDirective>
+			<cmc:EmbeddingDirective relationship="ObjectTypeHasCardinalityConstraint">
+				<cmc:AfterAutomaticEquivalence>
+					<plx:callThis name="MatchRanges">
+						<plx:passParam>
+							<plx:nameRef name="OTHER"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="elementTracker" type="parameter"/>
+						</plx:passParam>
+					</plx:callThis>
+				</cmc:AfterAutomaticEquivalence>
+			</cmc:EmbeddingDirective>
+			<cmc:EmbeddingDirective relationship="UnaryRoleHasCardinalityConstraint">
+				<cmc:AfterAutomaticEquivalence>
+					<plx:callThis name="MatchRanges">
+						<plx:passParam>
+							<plx:nameRef name="OTHER"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:nameRef name="elementTracker" type="parameter"/>
+						</plx:passParam>
+					</plx:callThis>
+				</cmc:AfterAutomaticEquivalence>
+			</cmc:EmbeddingDirective>
 
 			<!-- Handle ObjectTypeHasObjectTypeInstance through the derived relationships -->
 			<cmc:EmbeddingDirective relationship="ObjectTypeHasObjectTypeInstance" ignore="true"/>
@@ -336,6 +360,10 @@
 			</cmc:ImpliedReference>
 		</cmc:ImpliedReferences>
 		<cmc:IgnoredProperties>
+			<cmc:IgnoredProperty class="CardinalityConstraint" property="DefinitionText"/>
+			<cmc:IgnoredProperty class="CardinalityConstraint" property="NoteText"/>
+			<cmc:IgnoredProperty class="CardinalityConstraint" property="Text"/>
+			<cmc:IgnoredProperty class="CardinalityConstraint" property="TextChanged"/>
 			<cmc:IgnoredProperty class="ElementGrouping" property="DefinitionText"/>
 			<cmc:IgnoredProperty class="ElementGrouping" property="NoteText"/>
 			<cmc:IgnoredProperty class="ORMModel" property="DefinitionText"/>

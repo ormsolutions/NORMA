@@ -506,6 +506,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// The user-editable display form of a cardinality constraint.
+		/// </summary>
+		[DefaultValue(CardinalityConstraint.DefaultCardinalityDisplay)]
+		public string CardinalityDisplay
+		{
+			get
+			{
+				return CardinalityConstraint.GetEditableRangeDisplay(this.Cardinality);
+			}
+			set
+			{
+				CardinalityConstraint.UpdateCardinality(this, value);
+			}
+		}
+		/// <summary>
 		/// Control the <see cref="ReferenceMode"/> associated with this <see cref="ObjectType"/>
 		/// </summary>
 		public ReferenceMode ReferenceMode
@@ -2271,7 +2286,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected INamedElementDictionary GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
 			INamedElementDictionary dictionary = null;
-			if (parentDomainRoleId == ValueTypeHasValueConstraint.ValueTypeDomainRoleId)
+			bool forValueConstraint;
+			if ((forValueConstraint = (parentDomainRoleId == ValueTypeHasValueConstraint.ValueTypeDomainRoleId)) ||
+				parentDomainRoleId == ObjectTypeHasCardinalityConstraint.ObjectTypeDomainRoleId)
 			{
 				// If the object type has an alternate owner with a dictionary, then see if that
 				// owner has a dictionary that supports this relationship. Otherwise just use
@@ -2288,7 +2305,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				if (dictionary == null)
 				{
-					dictionary = NamedElementDictionary.GetRemoteDictionaryToken(typeof(ValueConstraint));
+					dictionary = NamedElementDictionary.GetRemoteDictionaryToken(forValueConstraint ? typeof(ValueConstraint) : typeof(CardinalityConstraint));
 				}
 			}
 			return dictionary;

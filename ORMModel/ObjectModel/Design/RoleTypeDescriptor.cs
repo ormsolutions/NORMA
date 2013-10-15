@@ -50,7 +50,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
 			PropertyDescriptorCollection properties = EditorUtility.GetEditablePropertyDescriptors(base.GetProperties(attributes));
-			properties.Add(GetRolePlayerDisplayPropertyDescriptor(ModelElement));
+			Role role = ModelElement;
+			FactType factType;
+			properties.Add(GetRolePlayerDisplayPropertyDescriptor(role));
+			if (null != (factType = role.FactType) &&
+				factType.UnaryRole == role)
+			{
+				properties.Add(CardinalityDisplayPropertyDescriptor);
+			}
 			return properties;
 		}
 		/// <summary>See <see cref="ElementTypeDescriptor.ShouldCreatePropertyDescriptor"/>.</summary>
@@ -169,6 +176,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				retVal = isReadOnly ? myRolePlayerDisplayReadOnlyPropertyDescriptor : myRolePlayerDisplayPropertyDescriptor;
 			}
 			return retVal;
+		}
+		private static PropertyDescriptor myCardinalityDisplayPropertyDescriptor;
+		/// <summary>
+		/// Get a <see cref="PropertyDescriptor"/> for the <see cref="ObjectType.CardinalityDisplay"/> property
+		/// </summary>
+		public static PropertyDescriptor CardinalityDisplayPropertyDescriptor
+		{
+			get
+			{
+				PropertyDescriptor retVal = myCardinalityDisplayPropertyDescriptor;
+				if (retVal == null)
+				{
+					myCardinalityDisplayPropertyDescriptor = retVal = EditorUtility.ReflectStoreEnabledPropertyDescriptor(typeof(Role), "CardinalityDisplay", typeof(string), null, ResourceStrings.RoleCardinalityDisplayDisplayName, ResourceStrings.RoleCardinalityDisplayDescription, null);
+				}
+				return retVal;
+			}
 		}
 		#endregion // Non-DSL Custom Property Descriptors
 	}

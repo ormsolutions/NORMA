@@ -1045,7 +1045,7 @@
 										<ConditionalReplacement>
 											<Snippet ref="AtMostOneTypedOccurrence" conditionalMatch="FrequencyRangeExactlyOne"/>
 											<Snippet ref="FrequencyTypedOccurrences">
-												<Snippet ref="FrequencyRangeMinUnbounded">
+												<Snippet ref="CountRangeMinUnbounded">
 													<MinFrequencyValue/>
 													<MaxFrequencyValue/>
 												</Snippet>
@@ -1064,10 +1064,10 @@
 										<Snippet ref="ExactlyOneUntypedOccurrence" conditionalMatch="FrequencyRangeExactlyOne"/>
 										<Snippet ref="FrequencyUntypedOccurrences">
 											<ConditionalSnippet>
-												<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
-												<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
-												<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
-												<Snippet ref="FrequencyRangeMinAndMax"/>
+												<Snippet ref="CountRangeExact" conditionalMatch="FrequencyRangeExact"/>
+												<Snippet ref="CountRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+												<Snippet ref="CountRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+												<Snippet ref="CountRangeMinAndMax"/>
 												<SnippetReplacements>
 													<MinFrequencyValue/>
 													<MaxFrequencyValue/>
@@ -1094,10 +1094,10 @@
 								<Snippet ref="ExactlyOneUntypedOccurrence" conditionalMatch="FrequencyRangeExactlyOne"/>
 								<Snippet ref="FrequencyUntypedOccurrences">
 									<ConditionalSnippet>
-										<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
-										<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
-										<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
-										<Snippet ref="FrequencyRangeMinAndMax"/>
+										<Snippet ref="CountRangeExact" conditionalMatch="FrequencyRangeExact"/>
+										<Snippet ref="CountRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+										<Snippet ref="CountRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+										<Snippet ref="CountRangeMinAndMax"/>
 										<SnippetReplacements>
 											<MinFrequencyValue/>
 											<MaxFrequencyValue/>
@@ -1128,10 +1128,10 @@
 												<Snippet ref="FrequencyNotPopulatedOrRange"/>
 												<SnippetReplacements>
 													<ConditionalSnippet>
-														<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
-														<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
-														<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
-														<Snippet ref="FrequencyRangeMinAndMax"/>
+														<Snippet ref="CountRangeExact" conditionalMatch="FrequencyRangeExact"/>
+														<Snippet ref="CountRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+														<Snippet ref="CountRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+														<Snippet ref="CountRangeMinAndMax"/>
 														<SnippetReplacements>
 															<MinFrequencyValue/>
 															<MaxFrequencyValue/>
@@ -1183,10 +1183,10 @@
 														<Snippet ref="FrequencyNotPopulatedOrRange"/>
 														<SnippetReplacements>
 															<ConditionalSnippet>
-																<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
-																<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
-																<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
-																<Snippet ref="FrequencyRangeMinAndMax"/>
+																<Snippet ref="CountRangeExact" conditionalMatch="FrequencyRangeExact"/>
+																<Snippet ref="CountRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+																<Snippet ref="CountRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+																<Snippet ref="CountRangeMinAndMax"/>
 																<SnippetReplacements>
 																	<MinFrequencyValue/>
 																	<MaxFrequencyValue/>
@@ -1223,10 +1223,10 @@
 											<Snippet ref="ExactlyOneUntypedOccurrence" conditionalMatch="FrequencyRangeExactlyOne"/>
 											<Snippet ref="FrequencyUntypedOccurrences">
 												<ConditionalSnippet>
-													<Snippet ref="FrequencyRangeExact" conditionalMatch="FrequencyRangeExact"/>
-													<Snippet ref="FrequencyRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
-													<Snippet ref="FrequencyRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
-													<Snippet ref="FrequencyRangeMinAndMax"/>
+													<Snippet ref="CountRangeExact" conditionalMatch="FrequencyRangeExact"/>
+													<Snippet ref="CountRangeMaxUnbounded" conditionalMatch="FrequencyRangeMaxUnbounded"/>
+													<Snippet ref="CountRangeMinUnbounded" conditionalMatch="FrequencyRangeMinUnbounded"/>
+													<Snippet ref="CountRangeMinAndMax"/>
 													<SnippetReplacements>
 														<MinFrequencyValue/>
 														<MaxFrequencyValue/>
@@ -1375,8 +1375,8 @@
 					<Snippet ref="MultiValueValueConstraint"/>
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
-							<ValueRangeValueTypeName/>
-							<ValueRangeValueTypeId/>
+							<ContextName isObjectType="true"/>
+							<ContextId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">
 							<ConditionalSnippet>
@@ -1420,7 +1420,7 @@
 					<Snippet ref="MultiValueValueConstraint"/>
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
-							<ContextName isObjectType="true" objectTypeAccessor="ParentObjectType"/>
+							<ContextName isObjectType="true"/>
 							<ContextId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">
@@ -1457,6 +1457,73 @@
 				</ConditionalSnippet>
 			</Constraint>
 			<!-- End nearest EntityType ValueConstraint -->
+			<!-- Begin ObjectType Cardinality Constraint-->
+			<Constraint patternGroup="ObjectTypeCardinalityConstraint" type="ObjectTypeCardinalityConstraint">
+				<Snippet ref="ImpliedModalNecessityOperator" alternateSign="positive">
+					<Snippet ref="ObjectTypeCardinality">
+						<Snippet ref="ObjectType">
+							<ContextName isObjectType="true"/>
+							<ContextId/>
+						</Snippet>
+						<ConditionalReplacement>
+							<ConditionalSnippet conditionalMatch="SingleRange" conditionalBlockContext="SingleRangeBounds">
+								<Snippet ref="CardinalitySingleInstance" conditionalMatch="RangeExactlyOne"/>
+								<Snippet ref="CardinalityMultipleInstances"/>
+								<SnippetReplacements>
+									<ConditionalSnippet>
+										<Snippet ref="CountRangeExact" conditionalMatch="RangeExact"/>
+										<Snippet ref="CountRangeMaxUnbounded" conditionalMatch="RangeUpperUnbounded"/>
+										<Snippet ref="CountRangeMinUnbounded" conditionalMatch="RangeLowerUnbounded"/>
+										<Snippet ref="CountRangeMinAndMax"/>
+										<SnippetReplacements>
+											<RangeLowerBound/>
+											<RangeUpperBound/>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+								</SnippetReplacements>
+							</ConditionalSnippet>
+							<Snippet ref="CardinalityMultipleInstances">
+								<IterateRanges listStyle="CompactSimpleOrList">
+									<ConditionalSnippet>
+										<Snippet ref="CountRangeExact" conditionalMatch="RangeExact"/>
+										<Snippet ref="CountRangeMaxUnbounded" conditionalMatch="RangeUpperUnbounded"/>
+										<Snippet ref="CountRangeMinUnbounded" conditionalMatch="RangeLowerUnbounded"/>
+										<Snippet ref="CountRangeMinAndMax"/>
+										<SnippetReplacements>
+											<RangeLowerBound/>
+											<RangeUpperBound/>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+								</IterateRanges>
+							</Snippet>
+						</ConditionalReplacement>
+					</Snippet>
+				</Snippet>
+			</Constraint>
+			<Constraint patternGroup="UnaryRoleCardinalityConstraint" type="UnaryRoleCardinalityConstraint">
+				<Snippet ref="ImpliedModalNecessityOperator" alternateSign="positive">
+					<Snippet ref="UnaryRoleCardinality">
+						<Fact/>
+						<Snippet ref="ObjectType">
+							<ContextName isObjectType="true"/>
+							<ContextId/>
+						</Snippet>
+						<IterateRanges listStyle="CompactSimpleOrList">
+							<ConditionalSnippet>
+								<Snippet ref="CountRangeExact" conditionalMatch="RangeExact"/>
+								<Snippet ref="CountRangeMaxUnbounded" conditionalMatch="RangeUpperUnbounded"/>
+								<Snippet ref="CountRangeMinUnbounded" conditionalMatch="RangeLowerUnbounded"/>
+								<Snippet ref="CountRangeMinAndMax"/>
+								<SnippetReplacements>
+									<RangeLowerBound/>
+									<RangeUpperBound/>
+								</SnippetReplacements>
+							</ConditionalSnippet>
+						</IterateRanges>
+					</Snippet>
+				</Snippet>
+			</Constraint>
+			<!-- End ObjectType Cardinality Constraint-->
 			<Constraint type="RingConstraint" patternGroup="SetConstraint" deferMatchesTo="VerbalizeByRingType"/>
 			<!-- Implementation note on ring constraints:
 			The following child helper classes (with adjustments for custom subscript settings) can be combined into

@@ -243,6 +243,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);
 				propertyInfo = directory.FindDomainProperty(SetComparisonConstraint.ModalityDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);
+				propertyInfo = directory.FindDomainProperty(CardinalityConstraint.ModalityDomainPropertyId);
+				eventManager.AddOrRemoveHandler(propertyInfo, standardGlyphChangeHandler, action);
 
 				//RingType changed
 				propertyInfo = directory.FindDomainProperty(RingConstraint.RingTypeDomainPropertyId);

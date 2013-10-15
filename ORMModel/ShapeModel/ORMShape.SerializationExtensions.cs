@@ -151,6 +151,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				classNameMap.Add("ObjectifiedFactTypeNameShape", ObjectifiedFactTypeNameShape.DomainClassId);
 				classNameMap.Add("ReadingShape", ReadingShape.DomainClassId);
 				classNameMap.Add("ValueConstraintShape", ValueConstraintShape.DomainClassId);
+				classNameMap.Add("CardinalityConstraintShape", CardinalityConstraintShape.DomainClassId);
 				classNameMap.Add("RoleNameShape", RoleNameShape.DomainClassId);
 				classNameMap.Add("FactTypeShape", FactTypeShape.DomainClassId);
 				classNameMap.Add("FactTypeShapeHasRoleDisplayOrder", FactTypeShapeHasRoleDisplayOrder.DomainClassId);
@@ -801,6 +802,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 	}
 	#endregion // ValueConstraintShape serialization
+	#region CardinalityConstraintShape serialization
+	partial class CardinalityConstraintShape : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected new CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.None;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+	}
+	#endregion // CardinalityConstraintShape serialization
 	#region RoleNameShape serialization
 	partial class RoleNameShape : ICustomSerializedElement
 	{
