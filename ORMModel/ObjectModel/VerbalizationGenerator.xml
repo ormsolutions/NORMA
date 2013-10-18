@@ -1019,7 +1019,8 @@
 				</ConstrainedRoles>
 			</Constraint>
 			<Constraint type="UniquenessPreferredVerbalizer" childHelperFor="UniquenessConstraint" patternGroup="SetConstraint">
-				<ConstrainedRoles>
+				<!-- UNDONE: Preferred uniqueness over a unary doesn't say anything useful. -->
+				<ConstrainedRoles minFactArity="2">
 					<Snippet ref="ConstraintProvidesPreferredIdentifier" conditionalMatch="IsPreferredIdentifier" conditionalBlockContext="PreferredFor">
 						<IterateRoles listStyle="CompactSimpleList" match="constraintRoles"/>
 						<Snippet ref="ObjectType">

@@ -2348,7 +2348,7 @@ Format: {0} is not equal to {1}
   </snippet>
   <snippet name="ObjectifiesFactTypeVerbalization" replacementCount="2">
     <statement>Description: Verbalizes the objectification made for a FactType. Format: {0} objectifies "{1}"</statement>
-    <unformattedSnippet>{0} objectifies "{1}"</unformattedSnippet>
+    <unformattedSnippet>{0} objectifies “{1}”</unformattedSnippet>
     <contains>
       <snippet name="ObjectType" />
     </contains>

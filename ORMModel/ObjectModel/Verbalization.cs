@@ -4126,6 +4126,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				/// with external variables or with embedded subqueries.
 				/// </summary>
 				IsCustomCorrelated = 8,
+				/// <summary>
+				/// Used during path creation to indicate that a variable has
+				/// been descoped.
+				/// </summary>
+				IsDescopedDuringPathCreation = 0x10,
 			}
 			private StateFlags myFlags;
 			private ObjectType myRolePlayer;
@@ -4289,6 +4294,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					else
 					{
 						myFlags &= ~StateFlags.IsHeadVariable;
+					}
+				}
+			}
+			/// <summary>
+			/// Mark a variable as being descoped during path creation.
+			/// </summary>
+			public bool IsDescopedDuringPathCreation
+			{
+				get
+				{
+					return 0 != (myFlags & StateFlags.IsDescopedDuringPathCreation);
+				}
+				set
+				{
+					if (value)
+					{
+						myFlags |= StateFlags.IsDescopedDuringPathCreation;
+					}
+					else
+					{
+						myFlags &= ~StateFlags.IsDescopedDuringPathCreation;
 					}
 				}
 			}
@@ -5823,6 +5849,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			/// <summary>
+			/// The first newly scoped variable, appropriate for a branch node
+			/// </summary>
+			public virtual LinkedNode<RolePlayerVariable> FirstNewlyScopeVariableNode
+			{
+				get
+				{
+					return null;
+				}
+				set
+				{
+				}
+			}
+			/// <summary>
 			/// The branch type of a branch node
 			/// </summary>
 			public virtual VerbalizationPlanBranchType BranchType
@@ -5990,6 +6029,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				Debug.Fail("RequireContextVariables not implemented for this node type");
 			}
 			/// <summary>
+			/// Detach required context variables from this node, returning the head
+			/// node of the starting state.
+			/// </summary>
+			/// <returns>The list of existing variables, if any.</returns>
+			public virtual LinkedNode<object> DetachRequiredContextVariables()
+			{
+				return null;
+			}
+			/// <summary>
 			/// Set to true by the rendering engine if a required context variable was
 			/// rendered.
 			/// </summary>
@@ -6082,6 +6130,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						return myRequiredContextVariableUseKeys;
 					}
+				}
+				public override LinkedNode<object> DetachRequiredContextVariables()
+				{
+					LinkedNode<object> retVal = myRequiredContextVariableUseKeys;
+					myRequiredContextVariableUseKeys = null;
+					return retVal;
 				}
 				public abstract override bool RenderedRequiredContextVariable
 				{
@@ -6191,6 +6245,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				private const int RenderedRequiredContextVariablesBit = 0x40000;
 				private int mySettings;
 				private LinkedNode<VerbalizationPlanNode> myChildNodes;
+				private LinkedNode<RolePlayerVariable> myNewlyScopedVariables;
 				public BranchNode(object pathContext, VerbalizationPlanNode parentNode, VerbalizationPlanBranchType branchType, VerbalizationPlanBranchRenderingStyle renderingStyle)
 					: base(pathContext, parentNode)
 				{
@@ -6221,6 +6276,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						myChildNodes = value;
 					}
 				}
+				public override LinkedNode<RolePlayerVariable> FirstNewlyScopeVariableNode
+				{
+					get
+					{
+						return myNewlyScopedVariables;
+					}
+					set
+					{
+						myNewlyScopedVariables = value;
+					}
+				}
 				public override void CollapseChildNode(VerbalizationPlanNode childNode)
 				{
 					LinkedNode<VerbalizationPlanNode> currentLinkNode = FirstChildNode;
@@ -6243,6 +6309,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					LinkedNode<VerbalizationPlanNode> headChildNode = myChildNodes;
 					LinkedNode<VerbalizationPlanNode> previousLinkNode = childNodeLink.Previous;
 					LinkedNode<VerbalizationPlanNode> replacementNodes = childNodeLink.Value.FirstChildNode;
+					LinkedNode<object> transferRequiredContextKeys = childNodeLink.Value.DetachRequiredContextVariables();
 					childNodeLink.Detach(ref headChildNode);
 					if (replacementNodes != null)
 					{
@@ -6269,6 +6336,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 					myChildNodes = headChildNode;
+					if (transferRequiredContextKeys != null)
+					{
+						RequireContextVariables(transferRequiredContextKeys);
+					}
 				}
 				public override VerbalizationPlanBranchType BranchType
 				{
@@ -7012,14 +7083,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								roleUseBaseIndex = PopFactType(factTypeRolesStack, !isSubqueryRole, ref roleUseTracker);
 								if (currentPathedRole.IsNegated)
 								{
-									PopNegatedChainNode();
+									PopNegatedChainNode(pathConditions, ref processedPathConditions);
 								}
 							}
 							if (currentPathedRoleIndex == 0)
 							{
 								// Remove and collapse the chain node added to support multiple elements
 								// created by a path section.
-								PopConditionalChainNode();
+								PopConditionalChainNode(pathConditions, ref processedPathConditions);
 							}
 						}
 						else
@@ -7090,68 +7161,67 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											if (!processedPathConditions[i])
 											{
 												CalculatedPathValue calculation = pathConditions[i];
-												bool? isLocal = IsLocalCalculatedValue(
-													pathContext,
-													calculation,
-													delegate(RolePathNode testPathNode)
-													{
-														PathedRole testPathedRole;
-														RolePathObjectTypeRoot testPathRoot;
-														if (null != (testPathedRole = testPathNode))
+												if (IsLocalCalculatedValue(
+														pathContext,
+														calculation,
+														delegate(RolePathNode testPathNode)
 														{
-															// Look in this section
-															for (int j = 0; j < currentRoleCount; ++j)
+															PathedRole testPathedRole;
+															RolePathObjectTypeRoot testPathRoot;
+															if (null != (testPathedRole = testPathNode))
 															{
-																if (currentPathedRoles[j] == testPathedRole)
+																// Look in this section
+																for (int j = 0; j < currentRoleCount; ++j)
 																{
-																	return true;
-																}
-															}
-															// Look in context sections
-															for (int j = contextSectionsCount - 1; j >= 0; --j)
-															{
-																ReadOnlyCollection<PathedRole> contextRoles = contextPathedRoles[j];
-																int k = contextRoles.Count - 1;
-																for (; k >= 0; --k)
-																{
-																	PathedRole checkPathedRole = contextRoles[k];
-																	if (checkPathedRole == testPathedRole)
+																	if (currentPathedRoles[j] == testPathedRole)
 																	{
-																		// Note that we include entry roles in the check,
-																		// we just don't go any further.
 																		return true;
 																	}
-																	if (checkPathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+																}
+																// Look in context sections
+																for (int j = contextSectionsCount - 1; j >= 0; --j)
+																{
+																	ReadOnlyCollection<PathedRole> contextRoles = contextPathedRoles[j];
+																	int k = contextRoles.Count - 1;
+																	for (; k >= 0; --k)
 																	{
+																		PathedRole checkPathedRole = contextRoles[k];
+																		if (checkPathedRole == testPathedRole)
+																		{
+																			// Note that we include entry roles in the check,
+																			// we just don't go any further.
+																			return true;
+																		}
+																		if (checkPathedRole.PathedRolePurpose != PathedRolePurpose.SameFactType)
+																		{
+																			break;
+																		}
+																	}
+																	if (k >= 0)
+																	{
+																		// We broke before the beginning of the context section, stop looking
 																		break;
 																	}
 																}
-																if (k >= 0)
-																{
-																	// We broke before the beginning of the context section, stop looking
-																	break;
-																}
 															}
-														}
-														else if (null != (testPathRoot = testPathNode))
-														{
-															// Check the current node
-															if (testPathRoot == currentPathRoot)
+															else if (null != (testPathRoot = testPathNode))
 															{
-																return true;
-															}
-															// Look at the context roots
-															for (int j = contextRootsCount - 1; j >= 0; --j)
-															{
-																if (testPathRoot == contextPathRoots[j])
+																// Check the current node
+																if (testPathRoot == currentPathRoot)
 																{
 																	return true;
 																}
+																// Look at the context roots
+																for (int j = contextRootsCount - 1; j >= 0; --j)
+																{
+																	if (testPathRoot == contextPathRoots[j])
+																	{
+																		return true;
+																	}
+																}
 															}
-														}
-														return false;
-													});
-												if (isLocal.GetValueOrDefault(false))
+															return false;
+														}).GetValueOrDefault(false))
 												{
 													// Although this is a single fact type, it occurs as part of a split
 													// after the fact type has been defined, so the fact type is not immediately
@@ -7217,6 +7287,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								RegisterFactTypeEntryRolePlayerUse(pathContext, currentPathedRole, contextPathNode);
 								if (currentPathedRole.IsNegated)
 								{
+									ChainNewlyCalculatableConditions(pathConditions, ref processedPathConditions);
 									PushNegatedChainNode(pathContext, currentPathedRole, ref pendingRequiredVariableKeys);
 								}
 								FactType factType = ResolvePathedEntryRoleFactType(currentPathedRole, currentPath, currentPathedRoles, currentPathedRoleIndex);
@@ -7248,7 +7319,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							if (currentPathRoot.IsNegated)
 							{
-								PopNegatedChainNode();
+								PopConditionalChainNode(pathConditions, ref processedPathConditions);
 							}
 						}
 						else
@@ -7291,12 +7362,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								// We need existence nodes for previous nodes instead of required context variables,
 								// which will end up collapsing if the variables are in the head, resulting in an
 								// incomplete rule body with no existence assertion.
+								ChainNewlyCalculatableConditions(pathConditions, ref processedPathConditions);
 								while (pendingRequiredVariableKeys != null)
 								{
 									myCurrentBranchNode = VerbalizationPlanNode.AddVariableExistenceNode(pendingRequiredVariableKeys.Value, pathContext, myCurrentBranchNode, ref myRootPlanNode).ParentNode;
 									pendingRequiredVariableKeys = pendingRequiredVariableKeys.Next;
 								}
-								PushNegatedChainNode(pathContext, null, ref pendingRequiredVariableKeys);
+								PushConditionalChainNode(pathContext);
+								VerbalizationPlanNode.AddVariableExistenceNode(currentPathRoot, pathContext, myCurrentBranchNode, ref myRootPlanNode).NegateExistence = true;
 							}
 							ValueConstraint valueConstraint;
 							if (null != (valueConstraint = currentPathRoot.ValueConstraint))
@@ -7330,6 +7403,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						else
 						{
 							(contextPathedRoles ?? (contextPathedRoles = new List<ReadOnlyCollection<PathedRole>>())).Add(currentPathedRoles);
+							ChainNewlyCalculatableConditions(pathConditions, ref processedPathConditions);
 							PushSplit(pathContext, GetBranchType(currentPath), ref pendingRequiredVariableKeys);
 						}
 					}
@@ -7358,7 +7432,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			AddCalculatedAndConstantProjections(initialPathContext, pathOwner, leadRolePath, keyDecorator);
-			PopConditionalChainNode();
+			PopConditionalChainNode(pathConditions, ref processedPathConditions);
 			if (rootObjectTypeVariable != null &&
 				!rootObjectTypeVariable.HasBeenUsed(myLatestUsePhase, false) &&
 				myCurrentBranchNode != null)
@@ -8282,31 +8356,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (!processedConditions[i])
 					{
 						CalculatedPathValue calculation = pathConditions[i];
-						bool? isLocal = IsLocalCalculatedValue(
-							pathContext,
-							calculation,
-							delegate(RolePathNode testPathNode)
-							{
-								if (pathedRoleCorrelationRoots == null)
+						if (IsLocalCalculatedValue(
+								pathContext,
+								calculation,
+								delegate(RolePathNode testPathNode)
 								{
-									rolePathCache = EnsureRolePathCache();
-									pathedRoleCorrelationRoots = new object[roleCount - factTypeEntryIndex];
+									if (pathedRoleCorrelationRoots == null)
+									{
+										rolePathCache = EnsureRolePathCache();
+										pathedRoleCorrelationRoots = new object[roleCount - factTypeEntryIndex];
+										for (int j = factTypeEntryIndex; j < roleCount; ++j)
+										{
+											pathedRoleCorrelationRoots[j - factTypeEntryIndex] = rolePathCache.GetCorrelationRoot(new RolePathNode(pathedRoles[j], pathContext));	
+										}
+									}
+									object testCorrelationRoot = rolePathCache.GetCorrelationRoot(testPathNode);
 									for (int j = factTypeEntryIndex; j < roleCount; ++j)
 									{
-										pathedRoleCorrelationRoots[j - factTypeEntryIndex] = rolePathCache.GetCorrelationRoot(new RolePathNode(pathedRoles[j], pathContext));	
+										if (pathedRoleCorrelationRoots[j - factTypeEntryIndex] == testCorrelationRoot)
+										{
+											return true;
+										}
 									}
-								}
-								object testCorrelationRoot = rolePathCache.GetCorrelationRoot(testPathNode);
-								for (int j = factTypeEntryIndex; j < roleCount; ++j)
-								{
-									if (pathedRoleCorrelationRoots[j - factTypeEntryIndex] == testCorrelationRoot)
-									{
-										return true;
-									}
-								}
-								return false;
-							});
-						if (isLocal.GetValueOrDefault(false))
+									return false;
+								}).GetValueOrDefault(false))
 						{
 							if (!addedFactTypeEntry)
 							{
@@ -8558,6 +8631,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (contextConditionNode == null)
 					{
+						ChainNewlyCalculatableConditions(pathConditions, ref processedConditions);
 						PushSplit(pathContext, VerbalizationPlanBranchType.AndSplit, ref pendingRequiredVariableKeys);
 						contextConditionNode = myCurrentBranchNode;
 					}
@@ -8604,6 +8678,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							if (contextConditionNode == null)
 							{
+								ChainNewlyCalculatableConditions(pathConditions, ref processedConditions);
 								PushSplit(pathContext, VerbalizationPlanBranchType.AndSplit, ref pendingRequiredVariableKeys);
 								contextConditionNode = myCurrentBranchNode;
 							}
@@ -8629,6 +8704,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							if (contextConditionNode == null)
 							{
+								ChainNewlyCalculatableConditions(pathConditions, ref processedConditions);
 								PushSplit(pathContext, VerbalizationPlanBranchType.AndSplit, ref pendingRequiredVariableKeys);
 								contextConditionNode = myCurrentBranchNode;
 							}
@@ -8638,6 +8714,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							if (contextConditionNode == null)
 							{
+								ChainNewlyCalculatableConditions(pathConditions, ref processedConditions);
 								PushSplit(pathContext, VerbalizationPlanBranchType.AndSplit, ref pendingRequiredVariableKeys);
 								contextConditionNode = myCurrentBranchNode;
 							}
@@ -8817,6 +8894,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (branchType != VerbalizationPlanBranchType.None)
 			{
 				VerbalizationPlanNode branchNode = myCurrentBranchNode;
+
+				// Push any scoping variables on this branch up the stack, or descope them.
+				PropagateNewVariableScopingUp(branchNode);
+
+				// Make the parent the current branch
 				VerbalizationPlanNode newParentNode = branchNode.ParentNode;
 				myCurrentBranchNode = newParentNode;
 
@@ -8884,8 +8966,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Remove a node added with the <see cref="PushConditionalChainNode"/> and
 		/// collapse the node if it is not needed.
 		/// </summary>
-		private void PopConditionalChainNode()
+		/// <param name="pathConditions">Conditions for the path currently being processed. If there
+		/// are newly scoped variables and all variables required for a condition are satisfied, then
+		/// chain the calculations before testing to see if the current node can collapse.</param>
+		/// <param name="processedConditions">A <see cref="BitTracker"/> with one bit for each of the <paramref name="pathConditions"/>.
+		/// Used to track which conditions have been processed.</param>
+		private void PopConditionalChainNode(LinkedElementCollection<CalculatedPathValue> pathConditions, ref BitTracker processedConditions)
 		{
+			ChainNewlyCalculatableConditions(pathConditions, ref processedConditions);
 			VerbalizationPlanNode chainNode = myCurrentBranchNode;
 			object pathContext = chainNode.PathContext;
 			Debug.Assert(chainNode.BranchType == VerbalizationPlanBranchType.Chain);
@@ -8952,6 +9040,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				chainNode.FirstChildNode = headChildNode;
 			}
 
+			// Push any scoping variables on this branch up the stack, or descope them.
+			PropagateNewVariableScopingUp(chainNode);
+
 			// If the node has no children or one child or the parent is a chain node,
 			// then flatten the hierarchy.
 			if (headChildNode == null ||
@@ -8959,6 +9050,74 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				parentNode.BranchType == VerbalizationPlanBranchType.Chain)
 			{
 				parentNode.CollapseChildNode(chainNode);
+			}
+		}
+		/// <summary>
+		/// Add conditions that can now be calculated for newly scoped variables.
+		/// </summary>
+		/// <param name="pathConditions">Conditions for the path currently being processed. If there
+		/// are newly scoped variables and all variables required for a condition are satisfied, then
+		/// chain the calculations onto the current node.</param>
+		/// <param name="processedConditions">A <see cref="BitTracker"/> with one bit for each of the <paramref name="pathConditions"/>.
+		/// Used to track which conditions have been processed.</param>
+		private void ChainNewlyCalculatableConditions(LinkedElementCollection<CalculatedPathValue> pathConditions, ref BitTracker processedConditions)
+		{
+			// If we introduced any scoped variables that are used in a function that is not
+			// already used as a path condition and the parent node does not consider variables
+			// scoped here to also be scoped outside this context, then we need to either state
+			// the functions or push the scope up.
+			VerbalizationPlanNode chainNode = myCurrentBranchNode;
+			if (chainNode == null)
+			{
+				return;
+			}
+			switch (chainNode.BranchType)
+			{
+				case VerbalizationPlanBranchType.Chain:
+				case VerbalizationPlanBranchType.NegatedChain:
+				case VerbalizationPlanBranchType.AndSplit:
+					break;
+				default:
+					return;
+			}
+			object pathContext = chainNode.PathContext;
+			if (null != chainNode.FirstNewlyScopeVariableNode)
+			{
+				int conditionCount = pathConditions.Count;
+				if (conditionCount != 0)
+				{
+					RolePathCache rolePathCache = default(RolePathCache);
+					Dictionary<object, RolePlayerVariableUse> useMap = null;
+					for (int i = 0; i < conditionCount; ++i)
+					{
+						if (!processedConditions[i])
+						{
+							CalculatedPathValue calculation = pathConditions[i];
+							if (IsLocalCalculatedValue(
+									pathContext,
+									calculation,
+									delegate(RolePathNode testPathNode)
+									{
+										if (useMap == null)
+										{
+											useMap = myUseToVariableMap;
+											rolePathCache = EnsureRolePathCache();
+										}
+										RolePlayerVariableUse variableUse;
+										if (useMap.TryGetValue(rolePathCache.GetCorrelationRoot(testPathNode), out variableUse) &&
+											!variableUse.PrimaryRolePlayerVariable.IsDescopedDuringPathCreation)
+										{
+											return true;
+										}
+										return false;
+									}).GetValueOrDefault(false))
+							{
+								processedConditions[i] = true;
+								VerbalizationPlanNode.AddCalculatedConditionNode(calculation, false, pathContext, chainNode, ref myRootPlanNode);
+							}
+						}
+					}
+				}
 			}
 		}
 		/// <summary>
@@ -8983,9 +9142,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Pop a negated chain node pushed with <see cref="PushNegatedChainNode"/>
 		/// </summary>
-		private void PopNegatedChainNode()
+		/// <param name="pathConditions">Conditions for the path currently being processed. If there
+		/// are newly scoped variables and all variables required for a condition are satisfied, then
+		/// chain the calculations before popping this node.</param>
+		/// <param name="processedConditions">A <see cref="BitTracker"/> with one bit for each of the <paramref name="pathConditions"/>.
+		/// Used to track which conditions have been processed.</param>
+		private void PopNegatedChainNode(LinkedElementCollection<CalculatedPathValue> pathConditions, ref BitTracker processedConditions)
 		{
+			// Add any functions that can no be fully defined in this negated scope
+			ChainNewlyCalculatableConditions(pathConditions, ref processedConditions);
+
+			// Push any scoping variables on this branch up the stack, or descope them.
 			VerbalizationPlanNode negatedChainNode = myCurrentBranchNode;
+			PropagateNewVariableScopingUp(negatedChainNode);
 			LinkedNode<VerbalizationPlanNode> childNodeLink;
 			VerbalizationPlanNode parentNode = negatedChainNode.ParentNode;
 			if (null != (childNodeLink = negatedChainNode.FirstChildNode) &&
@@ -8993,7 +9162,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				VerbalizationPlanNode childNode = childNodeLink.Value;
 				VerbalizationPlanNodeType nodeType = childNode.NodeType;
-				LinkedNode<object> transferRequiredContextKeys;
 				switch (nodeType)
 				{
 					case VerbalizationPlanNodeType.VariableExistence:
@@ -9001,7 +9169,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							// Remove the wrapped existential negation in favor of a single negated statement
 							childNode.NegateExistence = !childNode.NegateExistence;
-							if (null != (transferRequiredContextKeys = negatedChainNode.RequiredContextVariableUseKeys))
+							LinkedNode<object> transferRequiredContextKeys;
+							if (null != (transferRequiredContextKeys = negatedChainNode.DetachRequiredContextVariables()))
 							{
 								childNode.RequireContextVariables(transferRequiredContextKeys);
 							}
@@ -9011,11 +9180,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					case VerbalizationPlanNodeType.Branch:
 						if (childNode.BranchType == VerbalizationPlanBranchType.Chain)
 						{
-							// Collapse a chain node directly into a parent negated chain
-							if (null != (transferRequiredContextKeys = childNode.RequiredContextVariableUseKeys))
-							{
-								negatedChainNode.RequireContextVariables(transferRequiredContextKeys);
-							}
 							negatedChainNode.CollapseChildNode(childNode);
 						}
 						break;
@@ -9350,6 +9514,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// Track use phase during registration to see if the root variable is
 					// referenced by the path.
 					UseVariable(existingVariable, myLatestUsePhase, false);
+					// Determine if this variable is reentering scope
+					ScopeVariable(existingVariable, false);
 					return existingVariable;
 				}
 				else
@@ -9423,6 +9589,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					existingVariable = new RolePlayerVariable(rolePlayer);
+					ScopeVariable(existingVariable, true);
 					existingVariableUse = new RolePlayerVariableUse(existingVariable, joinToVariable, usedFor.Equals(correlateWith) ? null : correlateWith);
 					useMap[usedFor] = existingVariableUse;
 					if (rolePlayer == null)
@@ -9472,6 +9639,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				UseVariable(existingVariable, myLatestUsePhase, false);
 				return existingVariable;
+			}
+		}
+		/// <summary>
+		/// Mark a variable as being in scope if it was previously descoped
+		/// or is newly created.
+		/// </summary>
+		/// <param name="variable">The variable to put into scope</param>
+		/// <param name="newVariable">True if the variable is newly created.</param>
+		private void ScopeVariable(RolePlayerVariable variable, bool newVariable)
+		{
+			VerbalizationPlanNode currentBranchNode;
+			if ((newVariable || variable.IsDescopedDuringPathCreation) &&
+				null != (currentBranchNode = myCurrentBranchNode))
+			{
+				variable.IsDescopedDuringPathCreation = false;
+				LinkedNode<RolePlayerVariable> newlyScoped = new LinkedNode<RolePlayerVariable>(variable);
+				LinkedNode<RolePlayerVariable> existingNewlyScoped;
+				if (null != (existingNewlyScoped = currentBranchNode.FirstNewlyScopeVariableNode))
+				{
+					newlyScoped.SetNext(existingNewlyScoped, ref newlyScoped);
+				}
+				currentBranchNode.FirstNewlyScopeVariableNode = newlyScoped;
+			}
+		}
+		private void PropagateNewVariableScopingUp(VerbalizationPlanNode branchNode)
+		{
+			LinkedNode<RolePlayerVariable> newInChild;
+			VerbalizationPlanNode parentNode;
+			if (null != (newInChild = branchNode.FirstNewlyScopeVariableNode) &&
+				null != (parentNode = branchNode.ParentNode))
+			{
+				branchNode.FirstNewlyScopeVariableNode = null;
+
+				// Propagate variables up the chain as 'new' without descoping
+				// if the parent is a 'chain' or an 'and'. Otherwise, the new
+				// variables cannot automatically leave this scope.
+				bool descope = true;
+				switch (branchNode.BranchType)
+				{
+					case VerbalizationPlanBranchType.Chain:
+						LinkedNode<VerbalizationPlanNode> childNodeLink;
+						VerbalizationPlanNode childNode;
+						if (null != (childNodeLink = branchNode.FirstChildNode) &&
+							(childNode = childNodeLink.Value).NodeType == VerbalizationPlanNodeType.VariableExistence &&
+							childNode.NegateExistence)
+						{
+							// Treat a chain with a leading negated existential the same as a negated chain.
+							break;
+						}
+						goto case VerbalizationPlanBranchType.AndSplit;
+					case VerbalizationPlanBranchType.AndSplit:
+						descope = parentNode.BranchRenderingStyle == VerbalizationPlanBranchRenderingStyle.HeaderList;
+						break;
+				}
+
+				if (descope)
+				{
+					// UNDONE: VariableScoping It is possible with function patterns
+					// to use multiple variables in the function that can end up
+					// out of scope during the manipulation. However, this is generally
+					// caused by an unsafe condition where the variable is not existentially
+					// defined outside a disjunction or negation. If this occurs, then we can
+					// still get weird variable naming in the functions. The nature of this
+					// problem changes when functions are deprecated and replaced with scalar
+					// fact types, which can be placed directly in the tree as with other fact
+					// types. With scalar functions, we will be able to do full existential
+					// variable analysis based on the locations in the tree. This should
+					// be good enough in the meantime as the vast majority of well-formed paths
+					// are already handled, and the rest should be handled easly with subqueries.
+					LinkedNode<RolePlayerVariable> nextNode = newInChild;
+					while (nextNode != null)
+					{
+						nextNode.Value.IsDescopedDuringPathCreation = true;
+						nextNode = nextNode.Next;
+					}
+				}
+				else
+				{
+					LinkedNode<RolePlayerVariable> newInParent = parentNode.FirstNewlyScopeVariableNode;
+					if (newInParent != null)
+					{
+						newInParent.GetTail().SetNext(newInChild, ref newInParent);
+					}
+					else
+					{
+						parentNode.FirstNewlyScopeVariableNode = newInChild;
+					}
+				}
 			}
 		}
 		/// <summary>

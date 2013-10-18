@@ -945,6 +945,7 @@
 				</xs:annotation>
 			</xs:element>
 			<xs:element name="ValueRestriction" type="RoleValueRestrictionType" minOccurs="0"/>
+			<xs:element name="CardinalityRestriction" type="UnaryRoleCardinalityRestrictionType" minOccurs="0"/>
 			<!-- UNDONE: Remove direct DerivationSource support when the format is upgraded -->
 			<xs:element name="DerivationSource" minOccurs="0">
 				<xs:annotation>

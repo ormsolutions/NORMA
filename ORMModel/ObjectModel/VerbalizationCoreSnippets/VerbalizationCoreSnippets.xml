@@ -20,7 +20,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="PortableDataTypeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Portable data type:</span> {0}</span>]]></Snippet>
 			<Snippet type="ReferenceModeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Reference Mode:</span> <span class="referenceMode">{0}</span></span>]]></Snippet>
 			<Snippet type="ReferenceSchemeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Reference Scheme:</span> {0}</span>]]></Snippet>
-			<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[<span class="smallIndent">{0} <span class="quantifier">objectifies</span> "{1}"</span>]]></Snippet>
+			<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[<span class="smallIndent">{0} <span class="quantifier">objectifies</span> <span class="listSeparator">“</span>{1}<span class="listSeparator">”</span></span>]]></Snippet>
 			<Snippet type="EntityTypeVerbalization"><![CDATA[{0} <span class="quantifier">is an entity type</span>]]></Snippet>
 			<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
 			<Snippet type="ModelVerbalization"><![CDATA[<span class="quantifier">Object-Role Model:</span> {0}]]></Snippet>

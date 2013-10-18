@@ -1385,7 +1385,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""instance"">{0}</span>",
 				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
-				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> <span class=""listSeparator"">“</span>{1}<span class=""listSeparator"">”</span></span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
@@ -1739,7 +1739,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""instance"">{0}</span>",
 				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
-				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> <span class=""listSeparator"">“</span>{1}<span class=""listSeparator"">”</span></span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
@@ -2093,7 +2093,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""instance"">{0}</span>",
 				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
-				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> <span class=""listSeparator"">“</span>{1}<span class=""listSeparator"">”</span></span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
@@ -2447,7 +2447,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""instance"">{0}</span>",
 				@"{0}<span class=""quantifier""> is not equal to </span>{1}",
 				@"<span class=""quantifier"">Notes:</span> <span class=""note"">{0}</span>",
-				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> ""{1}""</span>",
+				@"<span class=""smallIndent"">{0} <span class=""quantifier"">objectifies</span> <span class=""listSeparator"">“</span>{1}<span class=""listSeparator"">”</span></span>",
 				@"<a class=""objectType"" href=""elementid:{1}"">{0}</a>",
 				@"<span class=""quantifier"">each population of </span>{0}<span class=""quantifier""> contains </span>{1}",
 				"",
@@ -9914,64 +9914,67 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				string[] roleReplacements = new string[maxFactArity];
 				#endregion // Preliminary
 				#region Pattern Matches
-				if (this.IsPreferred)
+				if (minFactArity >= 2)
 				{
-					ObjectType preferredFor = this.PreferredIdentifierFor;
-					verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-					string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ConstraintProvidesPreferredIdentifier, isDeontic, isNegative);
-					string snippet1Replace1 = null;
-					if (sbTemp == null)
+					if (this.IsPreferred)
 					{
-						sbTemp = new StringBuilder();
-					}
-					else
-					{
-						sbTemp.Length = 0;
-					}
-					for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
-					{
-						RoleBase primaryRole = allConstraintRoles[RoleIter1];
-						parentFact = primaryRole.FactType;
-						allReadingOrders = parentFact.ReadingOrderCollection;
-						factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
-						contextBasicReplacementIndex = allFacts.IndexOf(parentFact);
-						string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex];
-						CoreVerbalizationSnippetType listSnippet;
-						if (RoleIter1 == 0)
+						ObjectType preferredFor = this.PreferredIdentifierFor;
+						verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+						string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ConstraintProvidesPreferredIdentifier, isDeontic, isNegative);
+						string snippet1Replace1 = null;
+						if (sbTemp == null)
 						{
-							listSnippet = CoreVerbalizationSnippetType.CompactSimpleListOpen;
-						}
-						else if (RoleIter1 == constraintRoleArity - 1)
-						{
-							if (RoleIter1 == 1)
-							{
-								listSnippet = CoreVerbalizationSnippetType.CompactSimpleListPairSeparator;
-							}
-							else
-							{
-								listSnippet = CoreVerbalizationSnippetType.CompactSimpleListFinalSeparator;
-							}
+							sbTemp = new StringBuilder();
 						}
 						else
 						{
-							listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
+							sbTemp.Length = 0;
 						}
-						sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-						sbTemp.Append(basicRoleReplacements[unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, primaryRole)]);
-						if (RoleIter1 == constraintRoleArity - 1)
+						for (int RoleIter1 = 0; RoleIter1 < constraintRoleArity; ++RoleIter1)
 						{
-							sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+							RoleBase primaryRole = allConstraintRoles[RoleIter1];
+							parentFact = primaryRole.FactType;
+							allReadingOrders = parentFact.ReadingOrderCollection;
+							factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
+							contextBasicReplacementIndex = allFacts.IndexOf(parentFact);
+							string[] basicRoleReplacements = allBasicRoleReplacements[contextBasicReplacementIndex];
+							CoreVerbalizationSnippetType listSnippet;
+							if (RoleIter1 == 0)
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompactSimpleListOpen;
+							}
+							else if (RoleIter1 == constraintRoleArity - 1)
+							{
+								if (RoleIter1 == 1)
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompactSimpleListPairSeparator;
+								}
+								else
+								{
+									listSnippet = CoreVerbalizationSnippetType.CompactSimpleListFinalSeparator;
+								}
+							}
+							else
+							{
+								listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
+							}
+							sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+							sbTemp.Append(basicRoleReplacements[unaryReplacements[contextBasicReplacementIndex] ? 0 : FactType.IndexOfRole(factRoles, primaryRole)]);
+							if (RoleIter1 == constraintRoleArity - 1)
+							{
+								sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
+							}
 						}
+						snippet1Replace1 = sbTemp.ToString();
+						string snippet1Replace2 = null;
+						string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+						string snippet1Replace2Replace1 = null;
+						snippet1Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
+						string snippet1Replace2Replace2 = null;
+						snippet1Replace2Replace2 = preferredFor.Id.ToString("D");
+						snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1, snippet1Replace2Replace2);
+						FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 					}
-					snippet1Replace1 = sbTemp.ToString();
-					string snippet1Replace2 = null;
-					string snippet1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
-					string snippet1Replace2Replace1 = null;
-					snippet1Replace2Replace1 = VerbalizationHelper.NormalizeObjectTypeName(preferredFor.Name, verbalizationContext.VerbalizationOptions);
-					string snippet1Replace2Replace2 = null;
-					snippet1Replace2Replace2 = preferredFor.Id.ToString("D");
-					snippet1Replace2 = string.Format(writer.FormatProvider, snippet1ReplaceFormat2, snippet1Replace2Replace1, snippet1Replace2Replace2);
-					FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1, snippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 				}
 				#endregion // Pattern Matches
 				return true;
