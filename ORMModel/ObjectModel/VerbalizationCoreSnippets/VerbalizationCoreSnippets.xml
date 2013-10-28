@@ -96,11 +96,11 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="PartialFactTypeDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">+</sup></span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
 			<Snippet type="PartialFactTypeStoredDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">++</sup></span>{0} <span class="quantifier">if</span><br/>{1}<br/>]]></Snippet>
 			<Snippet type="PartialStoredFactTypeDescription"><![CDATA[<span class="indent"><span class="quantifier">derived instances of this fact type are also stored immediately after they are derived</span></span>]]></Snippet>
-			<Snippet type="FullSubtypeDerivation"><![CDATA[<span class="quantifier">*Each</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
-			<Snippet type="FullSubtypeStoredDerivation"><![CDATA[<span class="quantifier">**Each</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
+			<Snippet type="FullSubtypeDerivation"><![CDATA[<span class="quantifier">*Each</span> {0} <span class="quantifier">is by definition</span> {1}]]></Snippet>
+			<Snippet type="FullSubtypeStoredDerivation"><![CDATA[<span class="quantifier">**Each</span> {0} <span class="quantifier">is by definition</span> {1}]]></Snippet>
 			<Snippet type="FullStoredSubtypeDescription"><![CDATA[<span class="smallIndent"><span class="quantifier">instances of this subtype are stored immediately after they are derived</span></span>]]></Snippet>
-			<Snippet type="PartialSubtypeDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">+</sup>each derived</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
-			<Snippet type="PartialSubtypeStoredDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">++</sup>each derived</span> {0} <span class="quantifier">is</span> {1}]]></Snippet>
+			<Snippet type="PartialSubtypeDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">+</sup>each derived</span> {0} <span class="quantifier">is by definition</span> {1}]]></Snippet>
+			<Snippet type="PartialSubtypeStoredDerivation"><![CDATA[<span class="quantifier"><sup style="font-size:smaller;">++</sup>each derived</span> {0} <span class="quantifier">is by definition</span> {1}]]></Snippet>
 			<Snippet type="PartialStoredSubtypeDescription"><![CDATA[<span class="smallIndent"><span class="quantifier">derived instances of this subtype are also stored immediately after they are derived</span></span>]]></Snippet>
 			<Snippet type="QueryParameterContainer"><![CDATA[<span class="quantifier">given</span> {0} ]]></Snippet>
 			<Snippet type="QueryNamedParameter"><![CDATA[{1}<span class="logicalOperator">=</span>{0}]]></Snippet>
@@ -312,7 +312,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="RolePathHeaderListDirective"><![CDATA[!And !Or Xor !Xor]]></Snippet>
 			<Snippet type="RolePathCollapsibleLeadDirective"><![CDATA[And Or Chain]]></Snippet>
 			<Snippet type="RolePathCollapsibleListOpenForBackReferenceDirective"><![CDATA[And Or Chain]]></Snippet>
-			<Snippet type="RolePathBlockLeadCollapseForSnippetDirective"><![CDATA[AndTailListOpen OrTailListOpen]]></Snippet>
+			<Snippet type="RolePathBlockLeadCollapseForSnippetDirective"><![CDATA[AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator]]></Snippet>
 			<Snippet type="ImpersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier">that is</span> {1}]]></Snippet>
 			<Snippet type="ImpersonalLeadIdentityCorrelation"><![CDATA[{1} <span class="quantifier">is</span> {0} <span class="quantifier">that</span>]]></Snippet>
 			<Snippet type="PersonalIdentityCorrelation"><![CDATA[{0} <span class="quantifier">who is</span> {1}]]></Snippet>

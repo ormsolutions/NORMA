@@ -1201,13 +1201,13 @@ derived instances of this fact type are also stored immediately after they are d
 				<xs:enumeration value="FullSubtypeDerivation">
 					<xs:annotation>
 						<xs:documentation>Description: Used to specify a fully derived subtype derivation rule.
-Format: *each {0} is {1}</xs:documentation>
+Format: *each {0} is by definition {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FullSubtypeStoredDerivation">
 					<xs:annotation>
 						<xs:documentation>Description: Used to specify a fully derived (and stored) subtype derivation rule.
-Format: **each {0} is {1}</xs:documentation>
+Format: **each {0} is by definition {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FullStoredSubtypeDescription">
@@ -1219,13 +1219,13 @@ instances of this subtype are stored immediately after they are derived</xs:docu
 				<xs:enumeration value="PartialSubtypeDerivation">
 					<xs:annotation>
 						<xs:documentation>Description: Used to specify a partially derived subtype derivation rule.
-Format: +each derived {0} is {1}</xs:documentation>
+Format: +each derived {0} is by definition {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="PartialSubtypeStoredDerivation">
 					<xs:annotation>
 						<xs:documentation>Description: Used to specify a partially derived (and stored) subtype derivation rule.
-Format: ++each derived {0} is {1}</xs:documentation>
+Format: ++each derived {0} is by definition {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="PartialStoredSubtypeDescription">
@@ -1267,7 +1267,7 @@ Format: And Or Chain</xs:documentation>
 						<xs:documentation>Description: Specify a space-separated list of snippet names to specify list snippets that
 would allow lead role collapsing based on the RolePathCollapsibleLeadDirective, but do not actually support this construct.
 This allows a final override to block the collapsing behavior for specific snippets. This is checked for the
-(Negated)[And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] snippets.
+(Negated)[Chained|And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] and the ChainedList*Restrction* snippets.
 Format: AndTailListOpen OrTailListOpen</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>

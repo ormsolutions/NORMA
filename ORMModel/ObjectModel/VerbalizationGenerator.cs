@@ -422,11 +422,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		FullStoredSubtypeDescription,
 		/// <summary>The 'FullSubtypeDerivation' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to specify a fully derived subtype derivation rule.
-		/// Format: *each {0} is {1}</remark>
+		/// Format: *each {0} is by definition {1}</remark>
 		FullSubtypeDerivation,
 		/// <summary>The 'FullSubtypeStoredDerivation' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to specify a fully derived (and stored) subtype derivation rule.
-		/// Format: **each {0} is {1}</remark>
+		/// Format: **each {0} is by definition {1}</remark>
 		FullSubtypeStoredDerivation,
 		/// <summary>The 'GreaterThanOrEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
@@ -855,11 +855,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		PartialStoredSubtypeDescription,
 		/// <summary>The 'PartialSubtypeDerivation' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to specify a partially derived subtype derivation rule.
-		/// Format: +each derived {0} is {1}</remark>
+		/// Format: +each derived {0} is by definition {1}</remark>
 		PartialSubtypeDerivation,
 		/// <summary>The 'PartialSubtypeStoredDerivation' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to specify a partially derived (and stored) subtype derivation rule.
-		/// Format: ++each derived {0} is {1}</remark>
+		/// Format: ++each derived {0} is by definition {1}</remark>
 		PartialSubtypeStoredDerivation,
 		/// <summary>The 'PeriodSeparator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to delimit two snippet replacements by a snippet.
@@ -922,7 +922,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Specify a space-separated list of snippet names to specify list snippets that
 		/// would allow lead role collapsing based on the RolePathCollapsibleLeadDirective, but do not actually support this construct.
 		/// This allows a final override to block the collapsing behavior for specific snippets. This is checked for the
-		/// (Negated)[And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] snippets.
+		/// (Negated)[Chained|And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] and the ChainedList*Restrction* snippets.
 		/// Format: AndTailListOpen OrTailListOpen</remark>
 		RolePathBlockLeadCollapseForSnippetDirective,
 		/// <summary>The 'RolePathCollapsibleLeadDirective' simple snippet value.</summary>
@@ -1282,8 +1282,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
-				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
+				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
@@ -1412,8 +1412,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">derived instances of this fact type are also stored immediately after they are derived</span></span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">derived instances of this subtype are also stored immediately after they are derived</span></span>",
-				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is by definition</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"{0} <span class=""quantifier"">who is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
@@ -1430,7 +1430,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
-				"AndTailListOpen OrTailListOpen",
+				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -1636,8 +1636,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
-				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
+				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
@@ -1766,8 +1766,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">derived instances of this fact type are also stored immediately after they are derived</span></span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">derived instances of this subtype are also stored immediately after they are derived</span></span>",
-				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is by definition</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"{0} <span class=""quantifier"">who is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
@@ -1784,7 +1784,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
-				"AndTailListOpen OrTailListOpen",
+				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -1990,8 +1990,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
-				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
+				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
@@ -2120,8 +2120,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">derived instances of this fact type are also stored immediately after they are derived</span></span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">derived instances of this subtype are also stored immediately after they are derived</span></span>",
-				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is by definition</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"{0} <span class=""quantifier"">who is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
@@ -2138,7 +2138,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
-				"AndTailListOpen OrTailListOpen",
+				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",
@@ -2344,8 +2344,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">**</span>{0} <span class=""quantifier"">if and only if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">instances of this fact type are stored immediately after they are derived</span></span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
-				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
+				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
@@ -2474,8 +2474,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup></span>{0} <span class=""quantifier"">if</span><br/>{1}<br/>",
 				@"<span class=""indent""><span class=""quantifier"">derived instances of this fact type are also stored immediately after they are derived</span></span>",
 				@"<span class=""smallIndent""><span class=""quantifier"">derived instances of this subtype are also stored immediately after they are derived</span></span>",
-				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
-				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">+</sup>each derived</span> {0} <span class=""quantifier"">is by definition</span> {1}",
+				@"<span class=""quantifier""><sup style=""font-size:smaller;"">++</sup>each derived</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"{0}<span class=""listSeparator"">.</span>{1}",
 				@"{0} <span class=""quantifier"">who is</span> {1}",
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
@@ -2492,7 +2492,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">Reference Scheme:</span> {0}</span>",
 				@"<span class=""quantifier"">itself</span>",
 				@"{0} <span class=""quantifier"">itself</span>",
-				"AndTailListOpen OrTailListOpen",
+				"AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator",
 				"And Or Chain",
 				"And Or Chain",
 				"!And !Or Xor !Xor",

@@ -4135,6 +4135,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			private StateFlags myFlags;
 			private ObjectType myRolePlayer;
 			private int mySubscript;
+			private int mySubscriptOffset;
 			private int myUsePhase;
 			private int myDescopedUseCount;
 			/// <summary>
@@ -4145,6 +4146,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				myRolePlayer = rolePlayer;
 				mySubscript = -1;
+				mySubscriptOffset = 0;
 			}
 			/// <summary>
 			/// Get the associated role player
@@ -4163,7 +4165,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// consistent across use phases, so once a subscript
 			/// for a variable has been set it does not change.
 			/// </summary>
-			public int Subscript
+			public int BaseSubscript
 			{
 				get
 				{
@@ -4172,6 +4174,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				set
 				{
 					mySubscript = value;
+				}
+			}
+			/// <summary>
+			/// Get or set the subscript offset, which is calculated
+			/// from the descoped counts on variables of this type
+			/// when this is set.
+			/// </summary>
+			public int SubscriptOffset
+			{
+				get
+				{
+					return mySubscriptOffset;
+				}
+				set
+				{
+					mySubscriptOffset = value;
+				}
+			}
+			/// <summary>
+			/// Get the current displayed subscript for this variable.
+			/// </summary>
+			public int Subscript
+			{
+				get
+				{
+					int retVal = mySubscript;
+					if (retVal > 0)
+					{
+						retVal += mySubscriptOffset;
+					}
+					return retVal;
 				}
 			}
 			/// <summary>
@@ -4221,6 +4254,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				myUsePhase = 0;
 				mySubscript = -1;
+				mySubscriptOffset = 0;
 				++myDescopedUseCount;
 			}
 			/// <summary>
@@ -4434,12 +4468,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					else
 					{
 						RolePlayerVariable currentVariable = node.Value;
-						retVal = Math.Max(currentVariable.Subscript, retVal);
+						retVal = Math.Max(currentVariable.BaseSubscript, retVal);
 						descopedCount += currentVariable.DescopedCount;
 						while (nextNode != null)
 						{
 							currentVariable = nextNode.Value;
-							retVal = Math.Max(currentVariable.Subscript, retVal);
+							retVal = Math.Max(currentVariable.BaseSubscript, retVal);
 							descopedCount += currentVariable.DescopedCount;
 							nextNode = nextNode.Next;
 						}
@@ -4449,11 +4483,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						++retVal;
 					}
+					variable.BaseSubscript = retVal;
+					variable.SubscriptOffset = descopedCount;
 					if (retVal != 0)
 					{
 						retVal += descopedCount;
 					}
-					variable.Subscript = retVal;
 				}
 				return retVal;
 			}
@@ -7570,6 +7605,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					collapseBlockingSnippets = new CoreVerbalizationSnippetType[] { };
 				}
+				myCollapseBlockingSnippets = collapseBlockingSnippets;
 			}
 			switch (collapseBlockingSnippets.Length)
 			{
@@ -10665,21 +10701,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					VerbalizationPlanBranchType childBranchType;
 					VerbalizationPlanNodeType previousChildNodeType = (VerbalizationPlanNodeType)(-1);
 					VerbalizationPlanNode previousChildNode = null;
+					bool pushPopPairing = true;
+					bool popPairingAfterOnly = false;
+					if (childNodeLink != null)
+					{
+						switch (renderingStyle)
+						{
+							case VerbalizationPlanBranchRenderingStyle.IsolatedList:
+								pushPopPairing = false;
+								break;
+							case VerbalizationPlanBranchRenderingStyle.OperatorSeparated:
+								switch (branchType)
+								{
+									case VerbalizationPlanBranchType.None:
+									case VerbalizationPlanBranchType.AndSplit:
+										pushPopPairing = false;
+										break;
+									case VerbalizationPlanBranchType.Chain:
+										VerbalizationPlanNode testLeadNegation = childNodeLink.Value;
+										if (testLeadNegation.NodeType == VerbalizationPlanNodeType.VariableExistence &&
+											testLeadNegation.NegateExistence)
+										{
+											popPairingAfterOnly = true;
+										}
+										else
+										{
+											pushPopPairing = false;
+										}
+										break;
+									case VerbalizationPlanBranchType.NegatedAndSplit:
+									case VerbalizationPlanBranchType.NegatedChain:
+										popPairingAfterOnly = true;
+										break;
+								}
+								break;
+						}
+					}
 					while (childNodeLink != null)
 					{
 						snippet = (CoreVerbalizationSnippetType)(-1);
 						childNode = childNodeLink.Value;
 						switch (renderingStyle)
 						{
-							case VerbalizationPlanBranchRenderingStyle.HeaderList:
-								if (!first)
-								{
-									PopPairingUsePhase();
-								}
-								PushPairingUsePhase();
-								break;
 							case VerbalizationPlanBranchRenderingStyle.IsolatedList:
 								BeginQuantificationUsePhase();
+								break;
+							default:
+								if (pushPopPairing)
+								{
+									if (popPairingAfterOnly)
+									{
+										if (first)
+										{
+											PushPairingUsePhase();
+										}
+									}
+									else
+									{
+										if (!first)
+										{
+											PopPairingUsePhase();
+										}
+										PushPairingUsePhase();
+									}
+								}
 								break;
 						}
 						string requiredVariableContextPhrase = null;
@@ -10994,7 +11079,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								outdentPosition = nestedOutdent;
 							}
 						}
-						if (renderingStyle == VerbalizationPlanBranchRenderingStyle.HeaderList)
+						if (pushPopPairing)
 						{
 							PopPairingUsePhase();
 						}
@@ -11452,14 +11537,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				// Skip partnering if possible. Pretend that the variables are the same variable by giving them
 				// the same subscript.
-				int partnerSubscript = partnerWithVariable.Subscript;
-				int primarySubscript = primaryVariable.Subscript;
+				int partnerSubscript = partnerWithVariable.BaseSubscript;
+				int primarySubscript = primaryVariable.BaseSubscript;
+				int partnerSubscriptOffset = partnerWithVariable.SubscriptOffset;
+				int primarySubscriptOffset = primaryVariable.SubscriptOffset;
 				if (primarySubscript == -1)
 				{
 					if (partnerSubscript != -1)
 					{
 						// Use the existing subscript
-						primaryVariable.Subscript = primarySubscript = partnerSubscript;
+						primaryVariable.BaseSubscript = primarySubscript = partnerSubscript;
+						primaryVariable.SubscriptOffset = primarySubscriptOffset = partnerSubscriptOffset;
 						if (IsPairingUsePhaseInScope(partnerWithVariable.UsePhase))
 						{
 							UseVariable(primaryVariable, CurrentQuantificationUsePhase, false);
@@ -11475,7 +11563,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (partnerSubscript == -1)
 					{
-						partnerWithVariable.Subscript = primarySubscript = partnerSubscript = primaryVariable.Subscript; // Primary subscript now reserved and set by GetSubscriptedRolePlayerName, read off new value
+						partnerWithVariable.BaseSubscript = primarySubscript = partnerSubscript = primaryVariable.BaseSubscript; // Primary subscript now reserved and set by GetSubscriptedRolePlayerName, read off new value
+						partnerWithVariable.SubscriptOffset = primarySubscriptOffset = partnerSubscriptOffset = primaryVariable.SubscriptOffset;
 					}
 				}
 				else
@@ -11486,7 +11575,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (partnerSubscript == -1)
 					{
-						partnerWithVariable.Subscript = partnerSubscript = primarySubscript;
+						partnerWithVariable.BaseSubscript = partnerSubscript = primarySubscript;
+						partnerWithVariable.SubscriptOffset = partnerSubscriptOffset = primarySubscriptOffset;
 						if (IsPairingUsePhaseInScope(primaryVariable.UsePhase))
 						{
 							UseVariable(partnerWithVariable, CurrentQuantificationUsePhase, false);
