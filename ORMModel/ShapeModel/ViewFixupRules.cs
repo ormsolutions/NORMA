@@ -114,8 +114,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					null != (rolePlayer = constraintRoles[0].RolePlayer) &&
 					rolePlayer.IsValueType)
 				{
-
 					bool expandingRefMode = (bool)e.NewValue;
+					bool resetAttachmentsForPreexistingFactTypeShape = false;
 					if (preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier)
 					{
 						// Back up the property descriptor, which sets the ExpandRefMode property
@@ -180,7 +180,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								Diagram.FixUpDiagram(factType, readingOrder);
 							}
 						}
-						else if (null != objectifiedShape)
+						else
+						{
+							// Although we block directly adding a reference mode fact type
+							// if all corresponding object type shapes on the diagram have
+							// ExpandRefMode=false, it is possible to add these identifying
+							// fact types to the diagram first. If they already exist, we need
+							// to make sure that they attach. We delay calls to do this until
+							// after the value type shape is created.
+							resetAttachmentsForPreexistingFactTypeShape = true;
+						}
+						if (null != objectifiedShape)
 						{
 							// For the other shapes, a shape resize rebinds links automatically,
 							// but not for an objectifiedShape because the resize is on a child shape,
@@ -225,6 +235,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							{
 								RemoveShapesFromDiagram(valueType, parentDiagram);
 							}
+						}
+					}
+
+					// Reattach preexisting fact type shapes after the value type is added
+					if (resetAttachmentsForPreexistingFactTypeShape)
+					{
+						foreach (ShapeElement shapeOnDiagram in MultiShapeUtility.FindAllShapesForElement<ShapeElement>(parentDiagram, factType))
+						{
+							MultiShapeUtility.AttachLinkConfigurationChanged(shapeOnDiagram);
 						}
 					}
 

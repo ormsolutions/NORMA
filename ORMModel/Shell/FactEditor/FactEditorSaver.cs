@@ -183,6 +183,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							Dictionary<object, object> topLevelTransactionContextInfo = t.TopLevelTransaction.Context.ContextInfo;
 							topLevelTransactionContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
+							topLevelTransactionContextInfo[ORMModel.BlockDuplicateReadingSignaturesKey] = null;
 							Dictionary<string, ObjectType> newlyCreatedObjectTypes = null;
 
 							#region Determine all object types

@@ -5091,6 +5091,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// Verify projections when a role player changes
+		/// </summary>
+		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
+		{
+			ValidateAttachedProjections(((ObjectTypePlaysRole)e.ModelElement).PlayedRole);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// Verify projections when a role player changes
+		/// </summary>
+		private static void RolePlayerDeletedRule(ElementDeletedEventArgs e)
+		{
+			ValidateAttachedProjections(((ObjectTypePlaysRole)e.ModelElement).PlayedRole);
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+		/// Verify projections when a role player changes
+		/// </summary>
+		private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ElementLink;
+			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+			{
+				ValidateAttachedProjections(link.PlayedRole);
+			}
+			else
+			{
+				ValidateAttachedProjections((Role)e.OldRolePlayer);
+				ValidateAttachedProjections((Role)e.NewRolePlayer);
+			}
+		}
+		private static void ValidateAttachedProjections(Role role)
+		{
+			if (role != null &&
+				!role.IsDeleted &&
+				!role.IsDeleting)
+			{
+				foreach (DerivedRoleProjection roleProjection in DerivedRoleProjection.GetLinksToDerivationProjectionCollection(role))
+				{
+					RoleProjectedDerivationRule derivationRule;
+					if (null != (derivationRule = roleProjection.DerivationProjection.DerivationRule))
+					{
+						FrameworkDomainModel.DelayValidateElement(derivationRule, DelayValidateDerivedRolePathOwner);
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// DeletingRule: typeof(PathObjectUnifierUnifiesPathedRole)
 		/// Preserve projection with other previously unified elements if
 		/// a unified pathed role is deleted.
@@ -7142,6 +7191,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else
 			{
 				DeleteProjectionForDetachedPath(((RolePathOwnerHasLeadRolePath)e.ElementLink).PathOwner, (LeadRolePath)e.OldRolePlayer);
+			}
+		}
+		/// <summary>
+		/// AddRule: typeof(ObjectTypePlaysRole)
+		/// Verify projections when a role player changes
+		/// </summary>
+		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
+		{
+			ValidateAttachedJoinPathProjections(((ObjectTypePlaysRole)e.ModelElement).PlayedRole);
+		}
+		/// <summary>
+		/// DeleteRule: typeof(ObjectTypePlaysRole)
+		/// Verify projections when a role player changes
+		/// </summary>
+		private static void RolePlayerDeletedRule(ElementDeletedEventArgs e)
+		{
+			ValidateAttachedJoinPathProjections(((ObjectTypePlaysRole)e.ModelElement).PlayedRole);
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(ObjectTypePlaysRole)
+		/// Verify projections when a role player changes
+		/// </summary>
+		private static void RolePlayerRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			ObjectTypePlaysRole link = (ObjectTypePlaysRole)e.ElementLink;
+			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId)
+			{
+				ValidateAttachedJoinPathProjections(link.PlayedRole);
+			}
+			else
+			{
+				ValidateAttachedJoinPathProjections((Role)e.OldRolePlayer);
+				ValidateAttachedJoinPathProjections((Role)e.NewRolePlayer);
+			}
+		}
+		private static void ValidateAttachedJoinPathProjections(Role role)
+		{
+			if (role != null &&
+				!role.IsDeleted &&
+				!role.IsDeleting)
+			{
+				foreach (ConstraintRoleSequence constrainedSequence in role.ConstraintRoleSequenceCollection)
+				{
+					ConstraintRoleSequenceJoinPath joinPath;
+					if (null != (joinPath = constrainedSequence.JoinPath))
+					{
+						FrameworkDomainModel.DelayValidateElement(joinPath, DelayValidateDerivedRolePathOwner);
+					}
+				}
 			}
 		}
 		#endregion // Validation Rule Methods

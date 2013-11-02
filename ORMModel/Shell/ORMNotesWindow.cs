@@ -18,6 +18,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -207,14 +208,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		#endregion // Constructor
 		#region Base overrides
-		private static readonly Guid[] myNoteRoleIdentifiers = { ObjectTypeHasNote.NoteDomainRoleId, FactTypeHasNote.NoteDomainRoleId, ModelHasModelNote.NoteDomainRoleId, ModelHasPrimaryNote.NoteDomainRoleId };
-		/// <summary>
-		/// Return role identifiers for <see cref="ObjectType"/>, <see cref="FactType"/> and <see cref="ModelNote"/> <see cref="Note"/>s
-		/// </summary>
-		protected override Guid[] GetNoteRoleIdentifiers()
-		{
-			return myNoteRoleIdentifiers;
-		}
 		/// <summary>
 		/// Returns the title of the window.
 		/// </summary>
@@ -277,14 +270,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		#endregion // Constructor
 		#region Base overrides
-		private static readonly Guid[] myNoteRoleIdentifiers = { ObjectTypeHasDefinition.DefinitionDomainRoleId, FactTypeHasDefinition.DefinitionDomainRoleId, ModelHasDefinition.DefinitionDomainRoleId };
-		/// <summary>
-		/// Return role identifiers for <see cref="ObjectType"/> and <see cref="FactType"/> <see cref="Definition"/>s
-		/// </summary>
-		protected override Guid[] GetNoteRoleIdentifiers()
-		{
-			return myNoteRoleIdentifiers;
-		}
 		/// <summary>
 		/// Returns the title of the window.
 		/// </summary>
@@ -390,18 +375,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				// First, see if the note element implements INoteOwner directly
 				INoteOwner<NoteType> noteOwner = element as INoteOwner<NoteType>;
+				NoteRoleAndHandler[] ownerLinks;
 				if (noteOwner != null)
 				{
 					NoteAlteredEventHandler(noteOwner);
 				}
-				else
+				else if (null != (ownerLinks = GetOwningRelationshipHandlers(store, false)))
 				{
 					// If note, find the owning element
-					Guid[] ownerRoles = GetNoteRoleIdentifiers();
-					for (int i = 0; i < ownerRoles.Length; ++i)
+					for (int i = 0; i < ownerLinks.Length; ++i)
 					{
-						noteOwner = DomainRoleInfo.GetLinkedElement(element, ownerRoles[i]) as INoteOwner<NoteType>;
-						if (noteOwner != null)
+						if (null != (noteOwner = ownerLinks[i].DomainRole.GetLinkedElement(element) as INoteOwner<NoteType>))
 						{
 							NoteAlteredEventHandler(noteOwner);
 							break;
@@ -416,12 +400,42 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private void NoteAlteredEventHandler(INoteOwner<NoteType> noteOwner)
 		{
 			List<INoteOwner<NoteType>> currentOwners;
+			int ownerCount;
 			if (null != noteOwner &&
 				null != (currentOwners = mySelectedNoteOwners) &&
-				currentOwners.Count != 0 &&
-				currentOwners.Contains(noteOwner))
+				0 != (ownerCount = currentOwners.Count))
 			{
-				DisplayNotes();
+				bool matchedOwner = false;
+				for (int i = 0; i < ownerCount; ++i)
+				{
+					INoteOwner<NoteType> currentOwner = currentOwners[i];
+					if (currentOwner == noteOwner)
+					{
+						matchedOwner = true;
+						break;
+					}
+					IRedirectedNoteOwner<NoteType> redirect = currentOwner as IRedirectedNoteOwner<NoteType>;
+					while (redirect != null)
+					{
+						INoteOwner<NoteType> directOwner;
+						if (null == (directOwner = redirect.DirectNoteOwner) ||
+							directOwner == currentOwner)
+						{
+							break;
+						}
+						else if (directOwner == noteOwner)
+						{
+							matchedOwner = true;
+							break;
+						}
+						currentOwner = directOwner;
+						redirect = currentOwner as IRedirectedNoteOwner<NoteType>;
+					}
+				}
+				if (matchedOwner)
+				{
+					DisplayNotes();
+				}
 			}
 		}
 		/// <summary>
@@ -696,39 +710,77 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
-		/// Return the role ids of the note end of all relationship that
-		/// own this kind of note. This must return the same set of identifiers
-		/// regardless of store instance.
+		/// A small helper structure to track event handlers using in a given store.
+		/// A list of these elements is cached with each store that has added events
+		/// for this toolwindow so that the same event can be removed when the window
+		/// is closed.
 		/// </summary>
-		protected abstract Guid[] GetNoteRoleIdentifiers();
-		private static EventHandler<ElementEventArgs>[] myOwningRelationshipHandlers = null;
+		private struct NoteRoleAndHandler
+		{
+			public readonly DomainRoleInfo DomainRole;
+			public readonly EventHandler<ElementEventArgs> AddDeleteHandler;
+			/// <summary>
+			/// Create a handler for the given role and window.
+			/// </summary>
+			/// <param name="window"></param>
+			/// <param name="domainRole"></param>
+			public NoteRoleAndHandler(ORMBaseNoteToolWindow<NoteType> window, DomainRoleInfo domainRole)
+			{
+				DomainRole = domainRole;
+				DomainRoleInfo oppositeRole = domainRole.OppositeDomainRole;
+				AddDeleteHandler = delegate(object sender, ElementEventArgs e)
+				{
+					window.NoteAlteredEventHandler(oppositeRole.GetRolePlayer((ElementLink)e.ModelElement) as INoteOwner<NoteType>);
+				};
+			}
+		}
 		/// <summary>
 		/// We cannot use anonymous delegates in ManageEventHandlers to respond to add/remove
 		/// of relationships because the instance would change each time, making it impossible
-		/// to remove the event handler from the watch list on a store. So, we build these
-		/// once here. Note that this assumes that GetNoteRoleIdentifiers() returns a fixed
-		/// set of identifiers and cannot change from store to store.
+		/// to remove the event handler from the watch list on a store. These are built once
+		/// for each store, which can theoretically have different sets of note owners from
+		/// other stores, depending on the loaded extensions. This finds all embedding relationships
+		/// that contain an element of the <typeparamref name="NoteType"/> or any descendants of
+		/// this type.
 		/// </summary>
-		private EventHandler<ElementEventArgs>[] GetOwningRelationshipHandlers(Store store)
+		private NoteRoleAndHandler[] GetOwningRelationshipHandlers(Store store, bool forceCreate)
 		{
-			EventHandler<ElementEventArgs>[] handlers = myOwningRelationshipHandlers;
-			if (handlers == null)
+			Dictionary<object, object> storeBag = store.PropertyBag;
+			object key = typeof(NoteType);
+			object handlersAsObject;
+			NoteRoleAndHandler[] handlers;
+			if (storeBag.TryGetValue(key, out handlersAsObject) &&
+				null != (handlers = handlersAsObject as NoteRoleAndHandler[]))
 			{
-				Guid[] noteRoleIdentifiers = GetNoteRoleIdentifiers();
-				handlers = new EventHandler<ElementEventArgs>[noteRoleIdentifiers.Length];
-				for (int i = 0; i < noteRoleIdentifiers.Length; ++i)
-				{
-					DomainDataDirectory dataDirectory = store.DomainDataDirectory;
-					DomainRoleInfo role = dataDirectory.FindDomainRole(noteRoleIdentifiers[i]);
-					Guid oppositeRoleId = role.OppositeDomainRole.Id;
-					handlers[i] = delegate(object sender, ElementEventArgs e)
-					{
-						NoteAlteredEventHandler(DomainRoleInfo.GetRolePlayer((ElementLink)e.ModelElement, oppositeRoleId) as INoteOwner<NoteType>);
-					};
-				}
-				System.Threading.Interlocked.CompareExchange<EventHandler<ElementEventArgs>[]>(ref myOwningRelationshipHandlers, handlers, null);
-				handlers = myOwningRelationshipHandlers;
+				return handlers;
 			}
+			else if (!forceCreate)
+			{
+				return null;
+			}
+			List<NoteRoleAndHandler> handlersList = new List<NoteRoleAndHandler>();
+			DomainDataDirectory dataDir = store.DomainDataDirectory;
+			DomainClassInfo classInfo = dataDir.FindDomainClass(typeof(NoteType));
+			ReadOnlyCollection<DomainClassInfo> descendants = classInfo.AllDescendants;
+			int descendantCount = descendants.Count;
+			for (int descendantIndex = -1; descendantIndex < descendantCount; )
+			{
+				foreach (DomainRoleInfo noteRole in classInfo.LocalDomainRolesPlayed)
+				{
+					if (noteRole.DomainRelationship.IsEmbedding)
+					{
+						handlersList.Add(new NoteRoleAndHandler(this, noteRole));
+					}
+				}
+				++descendantIndex;
+				if (descendantIndex == descendantCount)
+				{
+					break;
+				}
+				classInfo = descendants[descendantIndex];
+			}
+			handlers = handlersList.ToArray();
+			storeBag[key] = handlers;
 			return handlers;
 		}
 		private static Guid[] myNoteTextPropertyId; // Defined as an array so we can statically initialize without locking
@@ -760,18 +812,21 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
 
 			// Track Note additions and deletions changes
-			Guid[] noteRoleIdentifiers = GetNoteRoleIdentifiers();
-			EventHandler<ElementEventArgs>[] handlers = GetOwningRelationshipHandlers(store);
-			for (int i = 0; i < noteRoleIdentifiers.Length; ++i)
+			NoteRoleAndHandler[] owningRelationshipHandlers;
+			if (null != (owningRelationshipHandlers = GetOwningRelationshipHandlers(store, action == EventHandlerAction.Add)))
 			{
-				EventHandler<ElementEventArgs> handler = handlers[i];
-				DomainClassInfo classInfo = dataDirectory.FindDomainRole(noteRoleIdentifiers[i]).DomainRelationship;
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(handler), action);
-				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(handler), action);
-			}
+				for (int i = 0; i < owningRelationshipHandlers.Length; ++i)
+				{
+					NoteRoleAndHandler handlerInfo = owningRelationshipHandlers[i];
+					EventHandler<ElementEventArgs> handler = handlerInfo.AddDeleteHandler;
+					DomainClassInfo classInfo = handlerInfo.DomainRole.DomainRelationship;
+					eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(handler), action);
+					eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(handler), action);
+				}
 
-			// Track Note.Text changes
-			eventManager.AddOrRemoveHandler(dataDirectory.FindDomainProperty(GetNoteTextPropertyId(store)), new EventHandler<ElementPropertyChangedEventArgs>(NoteAlteredEventHandler), action);
+				// Track Note.Text changes
+				eventManager.AddOrRemoveHandler(dataDirectory.FindDomainProperty(GetNoteTextPropertyId(store)), new EventHandler<ElementPropertyChangedEventArgs>(NoteAlteredEventHandler), action);
+			}
 		}
 		#endregion // ORMToolWindow Implementation
 	}

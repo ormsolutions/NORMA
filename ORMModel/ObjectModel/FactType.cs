@@ -1448,32 +1448,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FrameworkDomainModel.DelayValidateElement(
 				this,
-				Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMModel.AllowDuplicateNamesKey) ?
-					(ElementValidation)DelayValidateFactTypeNamePartChangedAllowDuplicateNames :
+				Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMModel.BlockDuplicateReadingSignaturesKey) ?
+					(ElementValidation)DelayValidateFactTypeNamePartChangedBlockDuplicateNames :
 					DelayValidateFactTypeNamePartChanged);
 		}
 		[DelayValidateReplaces("DelayValidateFactTypeNamePartChanged")]
-		private static void DelayValidateFactTypeNamePartChangedAllowDuplicateNames(ModelElement element)
+		private static void DelayValidateFactTypeNamePartChangedBlockDuplicateNames(ModelElement element)
 		{
 			if (!element.IsDeleted)
 			{
 				Dictionary<object, object> contextInfo = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-				object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
-				bool removeDuplicateNamesKey = false;
+				object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
+				bool removeDuplicateSignaturesKey = false;
 				try
 				{
-					if (!contextInfo.ContainsKey(duplicateNamesKey))
+					if (!contextInfo.ContainsKey(duplicateSignaturesKey))
 					{
-						contextInfo[duplicateNamesKey] = null;
-						removeDuplicateNamesKey = true;
+						contextInfo[duplicateSignaturesKey] = null;
+						removeDuplicateSignaturesKey = true;
 					}
 					((FactType)element).ValidateFactTypeNamePartChanged();
 				}
 				finally
 				{
-					if (removeDuplicateNamesKey)
+					if (removeDuplicateSignaturesKey)
 					{
-						contextInfo.Remove(duplicateNamesKey);
+						contextInfo.Remove(duplicateSignaturesKey);
 					}
 				}
 			}
@@ -1482,7 +1482,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (!element.IsDeleted)
 			{
-				((FactType)element).ValidateFactTypeNamePartChanged();
+				Dictionary<object, object> contextInfo = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
+				bool addDuplicateSignaturesKey = false;
+				try
+				{
+					if (contextInfo.ContainsKey(duplicateSignaturesKey))
+					{
+						contextInfo.Remove(duplicateSignaturesKey);
+						addDuplicateSignaturesKey = true;
+					}
+					((FactType)element).ValidateFactTypeNamePartChanged();
+				}
+				finally
+				{
+					if (addDuplicateSignaturesKey)
+					{
+						contextInfo[duplicateSignaturesKey] = null;
+					}
+				}
 			}
 		}
 		private void ValidateFactTypeNamePartChanged()
@@ -1512,6 +1530,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						Dictionary<object, object> contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 						object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
 						bool removeDuplicateNamesKey = false;
+						// Blocking reading signature overlap should not block indirect signature
+						// changes such as those triggered by changing the name of an objectified type.
+						object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
+						bool addDuplicateSignaturesKey = false;
 						try
 						{
 							// Force a change in the transaction log so that we can
@@ -1521,6 +1543,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								contextInfo[duplicateNamesKey] = null;
 								removeDuplicateNamesKey = true;
+							}
+							if (contextInfo.ContainsKey(duplicateSignaturesKey))
+							{
+								contextInfo.Remove(duplicateSignaturesKey);
+								addDuplicateSignaturesKey = true;
 							}
 							if (objectifyingType != null)
 							{
@@ -1536,6 +1563,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							if (removeDuplicateNamesKey)
 							{
 								contextInfo.Remove(duplicateNamesKey);
+							}
+							if (addDuplicateSignaturesKey)
+							{
+								contextInfo[duplicateSignaturesKey] = null;
 							}
 						}
 					}

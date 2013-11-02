@@ -177,6 +177,15 @@
 			<arg:RolePlayerChangeRule methodName="ProjectionRolePlayerChangedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceJoinPathProjection"/>
 			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="RolePlayerAddedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="RolePlayerDeletedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="RoleProjectionAddedRule">
 				<arg:RuleOn targetType="ConstraintRoleProjection"/>
 			</arg:AddRule>
@@ -1272,6 +1281,15 @@
 			</arg:DeleteRule>
 			<arg:RolePlayerChangeRule methodName="LeadRolePathRolePlayerChangedRule">
 				<arg:RuleOn targetType="RolePathOwnerHasLeadRolePath" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
+			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="RolePlayerAddedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="RolePlayerDeletedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
+				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="RoleProjectionAddedRule">
 				<arg:RuleOn targetType="DerivedRoleProjection"/>

@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
+using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
@@ -45,6 +46,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		PropertyDescriptor NoteTextPropertyDescriptor { get;}
 	}
 	#endregion // INoteOwner interface
+	#region IRedirectedNoteOwner interface
+	/// <summary>
+	/// Specify that a INoteOwner is displaying a note owned
+	/// by another element. This enables the note eventing mechanism
+	/// that triggers against the natural owner to recognize associations
+	/// with selected elements that display notes they do not directly own.
+	/// </summary>
+	public interface IRedirectedNoteOwner<NoteType> : INoteOwner<NoteType> where NoteType : ModelElement
+	{
+		/// <summary>
+		/// Find the item that directly owns the note.
+		/// </summary>
+		INoteOwner<NoteType> DirectNoteOwner { get;}
+	}
+	#endregion // IRedirectedNoteOwner interface
 	partial class Note
 	{
 		#region NoteChangeRule
@@ -359,6 +375,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // INoteOwner<Definition> Implementation
+	}
+	partial class LeadRolePath : INoteOwner<Note>
+	{
+		#region INoteOwner<Note> Implementation
+		/// <summary>
+		/// Implements <see cref="INoteOwner{Note}.NoteTextPropertyDescriptor"/>
+		/// </summary>
+		protected PropertyDescriptor NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return DomainTypeDescriptor.CreatePropertyDescriptor(this, NoteTextDomainPropertyId);
+			}
+		}
+		PropertyDescriptor INoteOwner<Note>.NoteTextPropertyDescriptor
+		{
+			get
+			{
+				return NoteTextPropertyDescriptor;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="INoteOwner{Note}.NoteTextPropertyDescriptor"/>
+		/// </summary>
+		protected string NoteOwnerName
+		{
+			get
+			{
+				return Utility.UpperCaseFirstLetter(ErrorDisplayContext);
+			}
+		}
+		string INoteOwner<Note>.Name
+		{
+			get
+			{
+				return NoteOwnerName;
+			}
+		}
+		#endregion // INoteOwner<Note> Implementation
 	}
 	partial class ElementGrouping : INoteOwner<Note>, INoteOwner<Definition>
 	{

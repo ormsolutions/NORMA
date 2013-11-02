@@ -1854,12 +1854,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					Dictionary<object, object> contextInfo = t.TopLevelTransaction.Context.ContextInfo;
 					object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+					object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
 					object deleteReferenceModeValueTypeKey = null;
 					bool deleteAllowDuplicateNames = !contextInfo.ContainsKey(duplicateNamesKey);
+					bool addBlockDuplicateSignatures = contextInfo.ContainsKey(duplicateSignaturesKey);
 					bool deleteReferenceModeValueTypeInContext = false;
 					if (deleteAllowDuplicateNames)
 					{
 						contextInfo[duplicateNamesKey] = null;
+					}
+					if (addBlockDuplicateSignatures)
+					{
+						contextInfo.Remove(duplicateSignaturesKey);
 					}
 					try
 					{
@@ -1977,6 +1983,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						if (deleteAllowDuplicateNames)
 						{
 							contextInfo.Remove(duplicateNamesKey);
+						}
+						if (addBlockDuplicateSignatures)
+						{
+							contextInfo[duplicateSignaturesKey] = null;
 						}
 					}
 				}

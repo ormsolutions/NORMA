@@ -490,8 +490,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// that we don't get unwanted errors being thrown.
 				FrameworkDomainModel.DelayValidateElement(
 					element,
-					element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMModel.AllowDuplicateNamesKey) ?
-						(ElementValidation)DelayUpdateReadingSignaturesAllowDuplicates :
+					element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(ORMModel.BlockDuplicateReadingSignaturesKey) ?
+						(ElementValidation)DelayUpdateReadingSignaturesBlockDuplicates :
 						DelayUpdateReadingSignatures);
 			}
 		}
@@ -499,16 +499,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (!element.IsDeleted)
 			{
-				UpdateReadingSignatures((FactType)element);
+				Dictionary<object, object> contextInfo = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+				object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
+				bool addDuplicateSignaturesKey = false;
+				try
+				{
+					if (contextInfo.ContainsKey(duplicateSignaturesKey))
+					{
+						contextInfo.Remove(duplicateSignaturesKey);
+						addDuplicateSignaturesKey = true;
+					}
+					UpdateReadingSignatures((FactType)element);
+				}
+				finally
+				{
+					if (addDuplicateSignaturesKey)
+					{
+						contextInfo[duplicateSignaturesKey] = null;
+					}
+				}
 			}
 		}
 		[DelayValidateReplaces("DelayUpdateReadingSignatures")]
-		private static void DelayUpdateReadingSignaturesAllowDuplicates(ModelElement element)
+		private static void DelayUpdateReadingSignaturesBlockDuplicates(ModelElement element)
 		{
 			if (!element.IsDeleted)
 			{
 				Dictionary<object, object> contextInfo = element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-				object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
+				object duplicateNamesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
 				bool removeDuplicateNamesKey = false;
 				try
 				{

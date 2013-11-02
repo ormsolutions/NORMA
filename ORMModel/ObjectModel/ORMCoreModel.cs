@@ -110,7 +110,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					ORMModel.ManageModelStateEventHandlers(store, eventManager, action);
 				}
 				if (action == EventHandlerAction.Add &&
-					0 == (reasons & EventSubscriberReasons.DocumentReloading) &&
 					0 != (reasons & EventSubscriberReasons.UserInterfaceEvents))
 				{
 					Design.ORMEditorUtility.RegisterModelErrorActivators(store);

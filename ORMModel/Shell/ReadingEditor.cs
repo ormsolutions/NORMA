@@ -1293,8 +1293,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="commandFlag">The command to check for enabled</param>
 		public static void OnStatusCommand(object sender, ReadingEditorCommands commandFlag)
 		{
-			MenuCommand command = sender as MenuCommand;
-			Debug.Assert(command != null);
+			MenuCommand command = (MenuCommand)sender;
 			command.Enabled = command.Visible = 0 != (commandFlag & ReadingEditor.myInstance.myVisibleCommands);
 		}
 		/// <summary>
@@ -1423,16 +1422,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingLinkRemovedEvent), action);
 
 			classInfo = dataDirectory.FindDomainClass(Reading.DomainClassId);
-			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent), action);
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(Reading.TextDomainPropertyId);
+			eventManager.AddOrRemoveHandler(classInfo, propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(ReadingAttributeChangedEvent), action);
 
 			// Track ReadingOrder changes
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasReadingOrder.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReadingOrderLinkRemovedEvent), action);
 
-			//Track FactType RoleOrder changes
+			// Track FactType Role changes
 			classInfo = dataDirectory.FindDomainRelationship(FactTypeHasRole.DomainClassId);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(FactTypeHasRoleAddedOrDeletedEvent), action);
+
+			// Track role player changes
+			classInfo = dataDirectory.FindDomainRelationship(ObjectTypePlaysRole.DomainClassId);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(RolePlayerAddedOrDeletedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(RolePlayerAddedOrDeletedEvent), action);
+			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(RolePlayerChangedEvent), action);
+			classInfo = dataDirectory.FindDomainClass(ObjectType.DomainClassId);
+			propertyInfo = dataDirectory.FindDomainProperty(ObjectType.NameDomainPropertyId);
+			eventManager.AddOrRemoveHandler(classInfo, propertyInfo, new  EventHandler<ElementPropertyChangedEventArgs>(RolePlayerNameChangedEvent), action);
 
 			// Track fact type removal
 			classInfo = dataDirectory.FindDomainRelationship(ModelHasFactType.DomainClassId);
@@ -1481,7 +1490,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		//connections so the reading editor can accurately reflect the model
 		private void ReadingLinkAddedEvent(object sender, ElementAddedEventArgs e)
 		{
-			if (myFactType == null)
+			FactType selectedFactType;
+			if (null == (selectedFactType = myFactType))
 			{
 				return;
 			}
@@ -1490,7 +1500,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				ReadingOrder readingOrder = link.ReadingOrder;
 				FactType factType = readingOrder.FactType;
-				if (factType == myFactType || factType == mySecondaryFactType)
+				if (factType == selectedFactType || factType == mySecondaryFactType)
 				{
 					myMainBranch.OnReadingAdded(link.Reading);
 				}
@@ -1499,34 +1509,37 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		private void ReadingLinkRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
-			if (myFactType == null)
+			FactType selectedFactType;
+			if (null == (selectedFactType = myFactType))
 			{
 				return;
 			}
-			ReadingOrderHasReading link = e.ModelElement as ReadingOrderHasReading;
-			ReadingOrder order = link.ReadingOrder;
+			ReadingOrderHasReading link = (ReadingOrderHasReading)e.ModelElement;
+			ReadingOrder readingOrder = link.ReadingOrder;
 			// Handled all at once by ReadingOrderLinkRemovedEvent if all are gone.
-			if (!order.IsDeleted)
+			if (!readingOrder.IsDeleted)
 			{
-				if (order.FactType == myFactType || order.FactType == mySecondaryFactType)
+				FactType factType = readingOrder.FactType;
+				if (factType == selectedFactType || factType == mySecondaryFactType)
 				{
-					myMainBranch.OnReadingRemoved(link.Reading, order); //UNDONE: use interface and locate object
+					myMainBranch.OnReadingRemoved(link.Reading, readingOrder); //UNDONE: use interface and locate object
 				}
 			}
 		}
 		private void ReadingAttributeChangedEvent(object sender, ElementPropertyChangedEventArgs e)
 		{
-			if (myFactType == null)
+			FactType selectedFactType;
+			if (null == (selectedFactType = myFactType))
 			{
 				return;
 			}
-			Reading reading = e.ModelElement as Reading;
-			ReadingOrder order = reading.ReadingOrder;
-			Guid attributeId = e.DomainProperty.Id;
-			if (attributeId == Reading.TextDomainPropertyId
-				&& !reading.IsDeleted
-				&& null != (order = reading.ReadingOrder)
-				&& (order.FactType == myFactType || order.FactType == mySecondaryFactType))
+			Reading reading = (Reading)e.ModelElement;
+			ReadingOrder readingOrder;
+			FactType factType;
+			if (!(reading = (Reading)e.ModelElement).IsDeleted &&
+				!reading.IsDeleting &&
+				null != (readingOrder = reading.ReadingOrder) &&
+				((factType = readingOrder.FactType) == selectedFactType || factType == mySecondaryFactType))
 			{
 				myMainBranch.OnReadingUpdated(reading);
 			}
@@ -1537,7 +1550,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				return;
 			}
-			myMainBranch.OnReadingLocationUpdated(e.CounterpartRolePlayer as Reading);
+			myMainBranch.OnReadingLocationUpdated((Reading)e.CounterpartRolePlayer);
 			this.UpdateMenuItems();
 		}
 		#endregion // Reading Event Handlers
@@ -1546,10 +1559,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		//keep the editor window in sync with what is in the model.
 		private void ReadingOrderLinkRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
-			FactTypeHasReadingOrder link = e.ModelElement as FactTypeHasReadingOrder;
-			FactType factType = link.FactType;
-
-			if ((factType == myFactType || factType == mySecondaryFactType) && !factType.IsDeleting && !factType.IsDeleted)
+			FactTypeHasReadingOrder link = (FactTypeHasReadingOrder)e.ModelElement;
+			FactType selectedFactType;
+			FactType factType;
+			if (null != (selectedFactType = myFactType) &&
+				((factType = link.FactType) == selectedFactType || factType == mySecondaryFactType) &&
+				!factType.IsDeleting &&
+				!factType.IsDeleted)
 			{
 				myMainBranch.OnReadingOrderRemoved(link.ReadingOrder, factType);
 			}
@@ -1560,36 +1576,106 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				return;
 			}
-			myMainBranch.OnReadingOrderLocationUpdated(e.CounterpartRolePlayer as ReadingOrder);
+			myMainBranch.OnReadingOrderLocationUpdated((ReadingOrder)e.CounterpartRolePlayer);
 			this.UpdateMenuItems();
 		}
 		#endregion // ReadingOrder Event Handlers
 		#region FactType Event Handlers
 		private void FactTypeHasRoleAddedOrDeletedEvent(object sender, ElementEventArgs e)
 		{
-			if (myFactType != null && myFactType == ((FactTypeHasRole)e.ModelElement).FactType && !myFactType.IsDeleted && !myFactType.IsDeleting)
+			FactType selectedFactType;
+			if (null != (selectedFactType = myFactType) &&
+				selectedFactType == ((FactTypeHasRole)e.ModelElement).FactType &&
+				!selectedFactType.IsDeleted &&
+				!selectedFactType.IsDeleting)
 			{
 				this.PopulateControl(false);
 			}
 		}
 		private void FactTypeRemovedEvent(object sender, ElementDeletedEventArgs e)
 		{
-			ModelHasFactType link = e.ModelElement as ModelHasFactType;
-			if (link.FactType == myFactType)
+			ModelHasFactType link = (ModelHasFactType)e.ModelElement;
+			FactType selectedFactType;
+			if (null != (selectedFactType = myFactType))
 			{
-				ORMDesignerPackage.ReadingEditorWindow.EditingFactType = ActiveFactType.Empty;
+				FactType deletedFactType = link.FactType;
+				if (deletedFactType == selectedFactType)
+				{
+					ORMDesignerPackage.ReadingEditorWindow.EditingFactType = ActiveFactType.Empty;
+					if (!selectedFactType.IsDeleted && !selectedFactType.IsDeleting)
+					{
+						this.PopulateControl(false);
+					}
+					else
+					{
+						ITree currentTree = this.vtrReadings.Tree;
+						if (currentTree != null)
+						{
+							currentTree.Root = null;
+						}
+					}
+				}
 			}
-
-			if (myFactType != null && myFactType == link.FactType && !myFactType.IsDeleted && !myFactType.IsDeleting)
+		}
+		private void RolePlayerAddedOrDeletedEvent(object sender, ElementEventArgs e)
+		{
+			Role role;
+			FactType selectedFactType;
+			if (null != (selectedFactType = myFactType) &&
+				!selectedFactType.IsDeleted &&
+				!selectedFactType.IsDeleting &&
+				!(role = ((ObjectTypePlaysRole)e.ModelElement).PlayedRole).IsDeleted &&
+				!role.IsDeleting &&
+				role.FactType == selectedFactType)
 			{
 				this.PopulateControl(false);
 			}
-			else if (myFactType != null && myFactType == link.FactType)
+		}
+		private void RolePlayerChangedEvent(object sender, RolePlayerChangedEventArgs e)
+		{
+			Role role;
+			FactType selectedFactType;
+			if (e.DomainRole.Id == ObjectTypePlaysRole.RolePlayerDomainRoleId &&
+				null != (selectedFactType = myFactType) &&
+				!selectedFactType.IsDeleted &&
+				!selectedFactType.IsDeleting &&
+				!(role = ((ObjectTypePlaysRole)e.ElementLink).PlayedRole).IsDeleted &&
+				!role.IsDeleting &&
+				role.FactType == selectedFactType)
 			{
-				ITree currentTree = this.vtrReadings.Tree;
-				if (currentTree != null)
+				this.PopulateControl(false);
+			}
+		}
+		private void RolePlayerNameChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		{
+			// Update the control if a displayed role player changed or if the name of the current
+			// objectification changed.
+			ObjectType rolePlayer;
+			FactType selectedFactType;
+			if (null != (selectedFactType = myFactType) &&
+				!(rolePlayer = (ObjectType)e.ModelElement).IsDeleted &&
+				!rolePlayer.IsDeleting)
+			{
+				bool updateRequired = false;
+				if (mySecondaryFactType != null &&
+					rolePlayer == selectedFactType.NestingType)
 				{
-					currentTree.Root = null;
+					updateRequired = true;
+				}
+				else
+				{
+					foreach (RoleBase roleBase in selectedFactType.RoleCollection)
+					{
+						if (roleBase.Role.RolePlayer == rolePlayer)
+						{
+							updateRequired = true;
+							break;
+						}
+					}
+				}
+				if (updateRequired)
+				{
+					this.PopulateControl(false);
 				}
 			}
 		}
@@ -1984,10 +2070,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
 								{
-									ReadingOrder readingOrder = myFactType.EnsureReadingOrder(myReadingOrderKeyedCollection[row].RoleOrder);
-									Debug.Assert(readingOrder != null, "A ReadingOrder should have been found or created.");
+									t.TopLevelTransaction.Context.ContextInfo[ORMModel.BlockDuplicateReadingSignaturesKey] = null;
 									Reading newReading = new Reading(store);
-									newReading.ReadingOrder = readingOrder;
+									newReading.ReadingOrder = myFactType.EnsureReadingOrder(myReadingOrderKeyedCollection[row].RoleOrder);
 									newReading.Text = newReadingText;
 									t.Commit();
 								}
@@ -2227,10 +2312,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					orderCollection.Add(info);
 				}
-				int row = orderCollection.IndexOf(orderCollection[info.RoleOrder]);
-				Debug.Assert(row >= 0, "Reading Must exist before it can be updated");
-				ReadingBranch branch = orderCollection[row].Branch;
-				if (branch != null)
+				int row;
+				ReadingBranch branch;
+				if (0 <= (row = orderCollection.IndexOf(orderCollection[info.RoleOrder])) &&
+					null != (branch = orderCollection[row].Branch))
 				{
 					branch.OnReadingUpdated(reading);
 				}
@@ -2239,7 +2324,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				ReadingOrder order = reading.ReadingOrder;
 				int currentLocation = this.LocateCollectionItem(order);
-				Debug.Assert(currentLocation >= 0, "Cannot Locate Reading");
 				if (currentLocation >= 0)
 				{
 					ReadingBranch branch = myReadingOrderKeyedCollection[currentLocation].Branch;
@@ -2547,13 +2631,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <param name="orderRow">Row to be moved</param>
 			private void MoveItem(bool promote, int orderRow)
 			{
-				int currentLocation = -1, newLocation = 0;
-				Debug.Assert(orderRow >= 0, "Attempt to move item which does not exist in the collection");
-				currentLocation = orderRow; // orderItemInfo.Row;
-				newLocation = currentLocation + (promote ? -1 : 1);
 				using (Transaction t = myFactType.Store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorMoveReadingOrder))
 				{
-					myFactType.ReadingOrderCollection.Move(currentLocation, newLocation);
+					myFactType.ReadingOrderCollection.Move(orderRow, orderRow + (promote ? -1 : 1));
 					t.Commit();
 				}
 			}
@@ -2760,7 +2840,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							string[] roleNames = myParentBranch.GetRoleNames();
 							IList<RoleBase> displayOrder = myParentBranch.DisplayOrder;
 							int arity = roleNames.Length;
-							Debug.Assert(roleNames.Length == displayOrder.Count);
 							IList<RoleBase> roles = myRoleOrder;
 							switch (arity)
 							{
@@ -2915,7 +2994,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					protected sealed override object TranslateToDisplayObject(object initialObject, IList contentList)
 					{
-						Debug.Assert(contentList is ReadingOrderInformationCollection);
 						return contentList.ToString();
 					}
 					protected sealed override System.Collections.IList GetContentList(ITypeDescriptorContext context, object value)
@@ -2935,8 +3013,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				public sealed override object GetEditor(Type editorBaseType)
 				{
-					Debug.Assert(editorBaseType == typeof(UITypeEditor));
-					return new ReadingOrderEditor();
+					return editorBaseType == typeof(UITypeEditor) ? new ReadingOrderEditor() : base.GetEditor(editorBaseType);
 				}
 				public sealed override bool CanResetValue(object component)
 				{
@@ -3068,8 +3145,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									Reading newReading = null;
 									using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorNewReadingTransactionText))
 									{
-										Debug.Assert(myReadingOrder != null, "A ReadingOrder should have been found or created.");
 										this.ShowNewRow(false);
+										t.TopLevelTransaction.Context.ContextInfo[ORMModel.BlockDuplicateReadingSignaturesKey] = null;
 										newReading = new Reading(store);
 										newReading.ReadingOrder = myReadingOrder;
 										newReading.Text = newReadingText;
@@ -3119,6 +3196,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.ModelReadingEditorChangePrimaryReadingText))
 									{
+										t.TopLevelTransaction.Context.ContextInfo[ORMModel.BlockDuplicateReadingSignaturesKey] = null;
 										currentReading.Text = newReadingText;
 										t.Commit();
 									}
@@ -3659,7 +3737,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			public ReadingVirtualTree(IBranch root, int extensionPropertyCount)
 				: base(BASE_COLUMN_COUNT + extensionPropertyCount)
 			{
-				Debug.Assert(root != null);
 				this.Root = root;
 			}
 		}

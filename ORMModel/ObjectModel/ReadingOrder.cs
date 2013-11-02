@@ -459,15 +459,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected object GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{
-			object retVal = null;
-			Dictionary<object, object> contextInfo = Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
-			if (!contextInfo.ContainsKey(NamedElementDictionary.DefaultAllowDuplicateNamesKey) &&
-				contextInfo.ContainsKey(ORMModel.AllowDuplicateNamesKey))
-			{
-				// Use their value so they don't have to look up ours again
-				retVal = NamedElementDictionary.AllowDuplicateNamesKey;
-			}
-			return retVal;
+			// Return a key that allows duplicates if it is not set.
+			return Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(NamedElementDictionary.DefaultAllowDuplicateNamesKey) ?
+				null :
+				ORMModel.BlockDuplicateReadingSignaturesKey;
 		}
 		object INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{

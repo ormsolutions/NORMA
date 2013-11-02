@@ -184,12 +184,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				Dictionary<object, object> contextInfo = store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 				object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
 				bool removeDuplicateNamesKey = false;
+				object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
+				bool addDuplicateSignaturesKey = false;
 				try
 				{
 					if (!contextInfo.ContainsKey(duplicateNamesKey))
 					{
 						contextInfo[duplicateNamesKey] = null;
 						removeDuplicateNamesKey = true;
+					}
+					if (contextInfo.ContainsKey(duplicateSignaturesKey))
+					{
+						contextInfo[duplicateSignaturesKey] = null;
+						addDuplicateSignaturesKey = true;
 					}
 					implicitBooleanValueType.Name = implicitBooleanValueTypeName;
 					if (alternateCtor != null)
@@ -210,6 +217,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (removeDuplicateNamesKey)
 					{
 						contextInfo.Remove(duplicateNamesKey);
+					}
+					if (addDuplicateSignaturesKey)
+					{
+						contextInfo[duplicateSignaturesKey] = null;
 					}
 				}
 				implicitBooleanValueType.DataType = store.ElementDirectory.FindElements<TrueOrFalseLogicalDataType>(false)[0];
@@ -355,12 +366,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							Dictionary<object, object> contextInfo = factType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 							object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
 							bool removeDuplicateNamesKey = false;
+							object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
+							bool addDuplicateSignaturesKey = false;
 							try
 							{
 								if (!contextInfo.ContainsKey(duplicateNamesKey))
 								{
 									contextInfo[duplicateNamesKey] = null;
 									removeDuplicateNamesKey = true;
+								}
+								if (contextInfo.ContainsKey(duplicateSignaturesKey))
+								{
+									contextInfo.Remove(duplicateSignaturesKey);
+									addDuplicateSignaturesKey = true;
 								}
 								implicitBooleanRole.RolePlayer.Name = implicitBooleanValueTypeName;
 							}
@@ -369,6 +387,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								if (removeDuplicateNamesKey)
 								{
 									contextInfo.Remove(duplicateNamesKey);
+								}
+								if (addDuplicateSignaturesKey)
+								{
+									contextInfo[duplicateSignaturesKey] = null;
 								}
 							}
 						}

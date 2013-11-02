@@ -1400,12 +1400,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				Dictionary<object, object> contextInfo = factType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 				object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
 				bool removeDuplicateNamesKey = false;
+				object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
+				bool addDuplicateSignaturesKey = false;
 				try
 				{
 					if (!contextInfo.ContainsKey(duplicateNamesKey))
 					{
 						contextInfo[duplicateNamesKey] = null;
 						removeDuplicateNamesKey = true;
+					}
+					if (contextInfo.ContainsKey(duplicateSignaturesKey))
+					{
+						contextInfo.Remove(duplicateSignaturesKey);
+						addDuplicateSignaturesKey = true;
 					}
 					if (null != alternateObjectTypeOwner)
 					{
@@ -1421,6 +1428,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (removeDuplicateNamesKey)
 					{
 						contextInfo.Remove(duplicateNamesKey);
+					}
+					if (addDuplicateSignaturesKey)
+					{
+						contextInfo[duplicateSignaturesKey] = null;
 					}
 				}
 				if (preferredConstraint != null)
@@ -1550,13 +1561,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// Attach the fact to the model or owner.
 			Dictionary<object, object> contextInfo = partition.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 			object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
-			bool flagDuplicateNames = !contextInfo.ContainsKey(duplicateNamesKey);
+			bool removeDuplicateNamesKey = false;
+			object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
+			bool addDuplicateSignaturesKey = false;
 			
 			try
 			{
-				if (flagDuplicateNames)
+				if (!contextInfo.ContainsKey(duplicateNamesKey))
 				{
 					contextInfo[duplicateNamesKey] = null;
+					removeDuplicateNamesKey = true;
+				}
+				if (contextInfo.ContainsKey(duplicateSignaturesKey))
+				{
+					contextInfo.Remove(duplicateSignaturesKey);
+					addDuplicateSignaturesKey = true;
 				}
 				if (alternateFactTypeOwner != null)
 				{
@@ -1574,9 +1593,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			finally
 			{
-				if (flagDuplicateNames)
+				if (removeDuplicateNamesKey)
 				{
 					contextInfo.Remove(duplicateNamesKey);
+				}
+				if (addDuplicateSignaturesKey)
+				{
+					contextInfo[duplicateSignaturesKey] = null;
 				}
 			}
 			return impliedFactType;
@@ -1842,12 +1865,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					Dictionary<object, object> contextInfo = explicitObjectification.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 					object duplicateNamesKey = ORMModel.AllowDuplicateNamesKey;
 					bool removeDuplicateNamesKey = false;
+					object duplicateSignaturesKey = ORMModel.BlockDuplicateReadingSignaturesKey;
+					bool addDuplicateSignaturesKey = false;
 					try
 					{
 						if (!contextInfo.ContainsKey(duplicateNamesKey))
 						{
 							contextInfo[duplicateNamesKey] = null;
 							removeDuplicateNamesKey = true;
+						}
+						if (contextInfo.ContainsKey(duplicateSignaturesKey))
+						{
+							contextInfo.Remove(duplicateSignaturesKey);
+							addDuplicateSignaturesKey = true;
 						}
 						if (alternateObjectTypeOwner != null)
 						{
@@ -1863,6 +1893,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (removeDuplicateNamesKey)
 						{
 							contextInfo.Remove(duplicateNamesKey);
+						}
+						if (addDuplicateSignaturesKey)
+						{
+							contextInfo[duplicateSignaturesKey] = null;
 						}
 					}
 				}

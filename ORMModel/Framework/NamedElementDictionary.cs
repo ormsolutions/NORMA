@@ -360,6 +360,10 @@ namespace ORMSolutions.ORMArchitect.Framework
 		///    checking the ContextInfo of the current transaction.
 		/// null is interpreted as ModelingDocData.Loading. A null return enables
 		///    duplicates during document load, but disallows duplicates in subsequent editing
+		///
+		/// If the returned key implements <see cref="INamedElementDictionaryContextKeyBlocksDuplicates"/>,
+		/// then the key is looked for in the context information, but the meaning of the key reverses,
+		/// so no key in the dictionary means to allow, and a key in the dictionary means to block.
 		/// </summary>
 		/// <param name="parentDomainRoleId"></param>
 		/// <param name="childDomainRoleId"></param>
@@ -517,6 +521,21 @@ namespace ORMSolutions.ORMArchitect.Framework
 		bool DefaultNameResettable { get;}
 	}
 	#endregion // IDefaultNamePattern interface
+	#region INamedElementDictionaryContextKeyBlocksDuplicates interface
+	/// <summary>
+	/// An interface to implement on a context key returned from
+	/// <see cref="INamedElementDictionaryParent.GetAllowDuplicateNamesContextKey"/>.
+	/// If the returned key implements this interface then it reverses the
+	/// meaning of placing this key is present in the context dictionary.
+	/// With this interface set on a key, a duplicate name exception is thrown only
+	/// if the key is present in the dictionary, opposite to the default behavior
+	/// which throws only when the key is not present.
+	/// </summary>
+	public interface INamedElementDictionaryContextKeyBlocksDuplicates
+	{
+		// Intentionally empty
+	}
+	#endregion // INamedElementDictionaryContextKeyBlocksDuplicates interface
 	#region NamedElementDictionary class
 	/// <summary>
 	/// A class used to enforce naming across a relationship
@@ -1170,6 +1189,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 		private static DuplicateNameAction GetDuplicateNameActionForRule(ModelElement element, object contextKey)
 		{
 			DuplicateNameAction duplicateAction = DuplicateNameAction.ThrowOnDuplicateName;
+			bool reverseKeyDefault = false;
 			Store store = element.Store;
 			if (contextKey == null)
 			{
@@ -1184,12 +1204,17 @@ namespace ORMSolutions.ORMArchitect.Framework
 			{
 				contextKey = null;
 			}
+			else if (contextKey is INamedElementDictionaryContextKeyBlocksDuplicates)
+			{
+				reverseKeyDefault = true;
+				duplicateAction = DuplicateNameAction.ModifyDuplicateCollection;
+			}
 
 			if (contextKey != null)
 			{
 				if (element.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(contextKey))
 				{
-					duplicateAction = DuplicateNameAction.ModifyDuplicateCollection;
+					duplicateAction = reverseKeyDefault ? DuplicateNameAction.ThrowOnDuplicateName : DuplicateNameAction.ModifyDuplicateCollection;
 				}
 			}
 			return duplicateAction;

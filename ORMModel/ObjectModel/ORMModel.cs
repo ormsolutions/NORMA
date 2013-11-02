@@ -511,6 +511,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// instead of throwing an exception.
 		/// </summary>
 		public static readonly object AllowDuplicateNamesKey = new object();
+		private sealed class BlockDuplicateReadingSignaturesKeyImpl : INamedElementDictionaryContextKeyBlocksDuplicates
+		{
+		}
+		/// <summary>
+		/// A key to set in the top-level transaction context to indicate that
+		/// duplicate reading signatures should be blocked from being added
+		/// to the model.
+		/// </summary>
+		public static readonly object BlockDuplicateReadingSignaturesKey = new BlockDuplicateReadingSignaturesKeyImpl();
 		#endregion // Public token values
 		#region INamedElementDictionaryParent implementation
 		[NonSerialized]
