@@ -2911,13 +2911,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 											{
 												return 0;
 											}
-											int retVal = string.Compare(nameDomainProperty.GetValue(x) as string, nameDomainProperty.GetValue(y) as string, StringComparison.Ordinal);
-											// At this point we could do a guid comparison, but this
-											// ends up with different element orders when attempting
-											// to write baselined unit tests, so we just make an arbitrary
-											// decision here to give the same order for the same set of
-											// data, regardless of guid.
-											return (retVal == 0) ? -1 : retVal;
+											// If the string comparison is equal then we could do a guid
+											// comparison, but this ends up with different element orders
+											// when attempting to write baselined unit tests. Always choosing
+											// the current order (return -1) works until VS2012, which appears
+											// to have modified the sort algorithm and makes this call with the same
+											// two elements in different orders, resulting in a failed sort. So, we
+											// just let the zero return and leave it to the sort algorithm to produce
+											// a consistent order instead of doing a secondary sort.
+											return string.Compare(nameDomainProperty.GetValue(x) as string, nameDomainProperty.GetValue(y) as string, StringComparison.Ordinal);
 										});
 									sourceValues = sortedSources;
 								}
