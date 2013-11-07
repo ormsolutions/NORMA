@@ -702,7 +702,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							IHasAlternateOwner<ObjectType> toAlternateOwner;
 							IAlternateElementOwner<FactType> alternateFactTypeOwner = (null != (toAlternateOwner = nestingType as IHasAlternateOwner<ObjectType>)) ? toAlternateOwner.AlternateOwner as IAlternateElementOwner<FactType> : null;
-							CreateImpliedFactTypeForRole(alternateFactTypeOwner == null ? null : nestingType.Model, alternateFactTypeOwner, nestingType, nestedRole, objectificationLink, unaryRole != null);
+							CreateImpliedFactTypeForRole(alternateFactTypeOwner == null ? nestingType.Model : null, alternateFactTypeOwner, nestingType, nestedRole, objectificationLink, unaryRole != null);
 						}
 					}
 				}
