@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!-- Load multi-targeting support directly to bootstrap the build process. -->
 	<Import Project="Neumont.Build.VisualStudio.Multitargeting.targets" />
 	<PropertyGroup>

@@ -1,5 +1,6 @@
 Neumont Object-Role Modeling Architect
 Copyright © Neumont University. All rights reserved.
+Copyright © ORM Solutions, LLC. All rights reserved.
 Homepage: http://orm.sourceforge.net
 
 For licensing terms, see the adjacent LICENSE.txt file.
@@ -15,12 +16,22 @@ PLiX - Programming Language in XML
 Microsoft Visual Studio SDK
 	Homepage: http://www.microsoft.com/extendvs
 	Download (Visual Studio 2005): http://go.microsoft.com/fwlink/?LinkId=73702
-	Download (Visual Studio 2008): http://www.microsoft.com/downloads/details.aspx?familyid=30402623-93ca-479a-867c-04dc45164f5b&displaylang=en
+	Download (Visual Studio 2008): http://www.microsoft.com/en-us/download/details.aspx?id=508
+	Download (Visual Studio 2010): http://www.microsoft.com/en-us/download/details.aspx?id=2680
+	Download (Visual Studio 2012): http://www.microsoft.com/en-us/download/details.aspx?id=30668
+	Download (Visual Studio 2013): http://www.microsoft.com/en-us/download/details.aspx?id=40758
+IMPORTANT: You will need to establish the Visual Studio experimental hive before building NORMA by running Visual Studio once in this environment. Use the link provided by the VS SDK, or run 'devenv.exe /RootSuffix Exp' from a Visual Studio command prompt.
+
+
+Microsoft Visual Studio Modeling and Visualization Tools (DSL Tools SDK), installs after the primary SDK
+	Download (Visual Studio 2010): http://www.microsoft.com/en-us/download/details.aspx?id=23025
+	Download (Visual Studio 2012): Modeling http://www.microsoft.com/en-us/download/details.aspx?id=30680
+	Download (Visual Studio 2013): http://www.microsoft.com/en-us/download/details.aspx?id=40754
 
 
 Additional components used by other portions of this software include:
 
-Windows Installer XML (WiX) toolset (v3.6, tested successfully through 3303.1)
+Windows Installer XML (WiX) toolset (v3.8, tested successfully through 1114.0)
 	Homepage: http://wix.sourceforge.net
 
 NUnit (v2.4.7 or later)
@@ -52,16 +63,21 @@ Several build scripts are available for building common combinations of the NORM
 	BuildAll.bat - Main, Help, Setup, Tests
 	FirstTimeBuildAll.bat - DevTools, Main, Help, Setup, Tests
 
-To set the version of Visual Studio that NORMA is being built for, use the TargetVisualStudioVersion environment variable. The two supported values are:
+To set the version of Visual Studio that NORMA is being built for, use the TargetVisualStudioVersion environment variable. The supported values are:
 SET TargetVisualStudioVersion=v8.0
 SET TargetVisualStudioVersion=v9.0
+SET TargetVisualStudioVersion=v10.0
+SET TargetVisualStudioVersion=v11.0
+SET TargetVisualStudioVersion=v12.0
+
+These values correspond to Visual Studio 20xx where v8.0=2005, v9.0=2008, v10.0=2010, v11.0=2012, v12.0=2013.
 
 See the comments in SetupEnvironment.bat for additional details on how the options are used.
 
-Notes on building and debugging with VS2008:
-The project files (.csproj, etc) are multitargeted to work correctly in either Visual Studio 2005 or 2008. However, the solution files (.sln) have slightly different formats in VS2005 and VS2008. If you open a VS2005 solution file in VS2008 then you will be prompted to upgrade. *.VS2008.sln files are provided as companions to all *.sln files for use in VS2008. However, the *.VS2008.sln files are not sufficient for successfully building in VS2008.
+Notes on building and debugging with VS2008 through VS2013:
+The project files (.csproj, etc) are multitargeted to work correctly in Visual Studio 2005 and higher. However, the solution files (.sln) have slightly different formats in each VS version. If you open a VS2005 solution file in VS2008 then you will be prompted to upgrade. *.VS2008.sln files are provided as companions to all *.sln files for use in VS2008, and you will find corresponding .sln files for each successive version of VisualStudio. However, the *.VS2008.sln files are not sufficient for successfully building in VS2008.
 
-You must set the TargetVisualStudioVersion to v9.0 to successfully target VS2008 from the VS2008 IDE. The easiest way to do this is to (after the initial batch files mentioned above have completed successfully) is with the following steps. You may want to put these steps into an easily accessible batch file.
+You must set the TargetVisualStudioVersion to the correct version (listed above) before opening a NORMA project file from any of the Visual Studio IDE environments. The easiest way to do this is to (after the initial batch files mentioned above have completed successfully) is with the following steps. You may want to put these steps into an easily accessible batch file. The example given is for Visual Studio 2008, but 2010, 2012, and 2013 work similarly.
 1) Open a Visual Studio 2008 Command Prompt
 2) SET TargetVisualStudioVersion=v9.0
 3) Navigate to your NORMA root code directory
@@ -83,4 +99,9 @@ Notes on building and debugging with VS2012:
 The general directions are the same as for the VS2008 approach (open a Visual Studio 2012 Command Prompt, navigate to the NORMA directory, set TargetVisualStudioVersion=v11.0, and use the *VS2012* solutions and batch files).
 
 The installation process on VS2012 is not as easy as on VS2010, which simply required extension files to be copied into place. You will likely to need run devenv /setup for VS2012 regardless of what you do with the Visual Studio installations. See additional readme information in the VSIXInstall/VS2012 directory.
+
+Notes on building and debugging with VS2013:
+The general directions are the same as for the VS2008 approach (open a Visual Studio 2013 Command Prompt, navigate to the NORMA directory, set TargetVisualStudioVersion=v12.0, and use the *VS2013* solutions and batch files).
+
+The installation process on VS2013 is not as easy as on VS2010, which simply required extension files to be copied into place. You will likely to need run devenv /setup for VS2013 regardless of what you do with the Visual Studio installations. See additional readme information in the VSIXInstall/VS2013 directory.
 
