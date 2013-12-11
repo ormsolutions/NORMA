@@ -586,35 +586,48 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Site,
 				delegate(ORMDesignerDocData docData)
 			{
-				ReadOnlyCollection<ORMDiagram> diagrams = docData.Store.ElementDirectory.FindElements<ORMDiagram>();
+				Store store = docData.Store;
+				ReadOnlyCollection<ORMDiagram> diagrams = store.ElementDirectory.FindElements<ORMDiagram>();
 				int diagramCount = diagrams.Count;
-				for (int i = 0; i < diagramCount; ++i)
+				if (diagramCount != 0)
 				{
-					ORMDiagram diagram = diagrams[i];
-					using (Transaction t = diagram.Store.TransactionManager.BeginTransaction(ResourceStrings.OptionsPageChangeTransactionName))
+					using (Transaction t = store.TransactionManager.BeginTransaction(ResourceStrings.OptionsPageChangeTransactionName))
 					{
-						Store store = diagram.Store;
-						foreach (BinaryLinkShape link in store.ElementDirectory.FindElements<BinaryLinkShape>(true))
+						IElementDirectory elementDirectory = store.ElementDirectory;
+						foreach (BinaryLinkShape link in elementDirectory.FindElements<BinaryLinkShape>(true))
 						{
 							link.RecalculateRoute();
 						}
 						if (resizeFactShapes)
 						{
-							foreach (FactTypeShape factShape in store.ElementDirectory.FindElements<FactTypeShape>(true))
+							foreach (FactTypeShape factShape in elementDirectory.FindElements<FactTypeShape>(true))
 							{
 								factShape.AutoResize();
 							}
 						}
 						if (updateRoleNames)
 						{
-							foreach (Role role in store.ElementDirectory.FindElements<Role>(true))
+							Dictionary<FactType, object> processedFactTypes = null;
+							foreach (Role role in elementDirectory.FindElements<Role>(true))
 							{
-								RoleNameShape.SetRoleNameDisplay(role.FactType);
+								if (!string.IsNullOrEmpty(role.Name))
+								{
+									FactType factType = role.FactType;
+									if (processedFactTypes == null)
+									{
+										processedFactTypes = new Dictionary<FactType, object>();
+									}
+									else if (processedFactTypes.ContainsKey(factType))
+									{
+										continue;
+									}
+									FactTypeShape.UpdateRoleNameDisplay(factType);
+								}
 							}
 						}
 						if (resizeReadingShapes)
 						{
-							foreach (ReadingShape readingShape in store.ElementDirectory.FindElements<ReadingShape>(true))
+							foreach (ReadingShape readingShape in elementDirectory.FindElements<ReadingShape>(true))
 							{
 								readingShape.InvalidateDisplayText();
 							}
@@ -624,7 +637,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							t.Commit();
 						}
 					}
-					diagram.Invalidate(true);
+				}
+				for (int i = 0; i < diagramCount; ++i)
+				{
+					diagrams[i].Invalidate(true);
 				}
 			});
 			if (updateVerbalizer)

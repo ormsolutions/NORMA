@@ -2,10 +2,10 @@
 CREATE TABLE Person
 (
 	personId INT AUTO_INCREMENT NOT NULL,
-	lastName VARCHAR(30) NOT NULL,
 	firstName VARCHAR(30) NOT NULL,
-	title VARCHAR(4),
+	lastName VARCHAR(30) NOT NULL,
 	countryName VARCHAR(20),
+	title VARCHAR(4),
 	CONSTRAINT Person_PK PRIMARY KEY(personId)
 );
 

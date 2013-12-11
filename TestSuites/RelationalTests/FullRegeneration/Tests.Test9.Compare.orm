@@ -50,7 +50,7 @@
 			</orm:ValueType>
 		</orm:Objects>
 		<orm:Facts>
-			<orm:Fact id="_BBEADF8C-4D2C-4F18-A07E-759E9FDF654B" _Name="AHasA_id">
+			<orm:Fact id="_BBEADF8C-4D2C-4F18-A07E-759E9FDF654B" _Name="AHasAId">
 				<orm:FactRoles>
 					<orm:Role id="_63BB7FE2-DF76-4B51-B209-3D4B1C792C9E" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_D9FCA31C-2693-4CA3-9334-A406C577D09D" />
@@ -95,7 +95,7 @@
 					<orm:MandatoryConstraint ref="_5F2E18FB-E0BB-4AD7-B0C4-8E3DC80330A6" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_6FD5DEFA-D0C2-4A54-B861-F804762E2B66" _Name="CHasC_nr">
+			<orm:Fact id="_6FD5DEFA-D0C2-4A54-B861-F804762E2B66" _Name="CHasCNr">
 				<orm:FactRoles>
 					<orm:Role id="_363F89D4-548C-4753-866C-94C52EACAF89" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_65DA2E36-6589-4B3B-A201-0216E797DCE0" />
@@ -170,7 +170,7 @@
 					<orm:UniquenessConstraint ref="_8D239510-E2C7-4A70-B807-253E38A4B694" />
 				</orm:InternalConstraints>
 			</orm:SubtypeFact>
-			<orm:Fact id="_4AE25796-923C-46DA-816E-C35BF4FEDACE" _Name="ZHasZ_id">
+			<orm:Fact id="_4AE25796-923C-46DA-816E-C35BF4FEDACE" _Name="ZHasZId">
 				<orm:FactRoles>
 					<orm:Role id="_66E0A19B-76BB-4475-97B9-3B84D3480F92" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_173A0B02-BB45-4CC6-BF60-19E5A59B8C7C" />
@@ -382,7 +382,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_60A97CA1-7A34-40BD-A48A-DE043570D047">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_FA93223F-D82D-479F-A103-D8886756E8E2" AlgorithmVersion="1.008">
+			<ormtooial:AbstractionModelGenerationSetting id="_FA93223F-D82D-479F-A103-D8886756E8E2" AlgorithmVersion="1.009">
 				<ormtooial:AbstractionModel ref="_2F7377B5-BC91-4951-B9DC-8D6389C48738" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_833EE616-E4B4-4F9E-9DBC-522A018D54FC" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.014">

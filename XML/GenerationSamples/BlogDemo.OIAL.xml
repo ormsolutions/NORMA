@@ -30,6 +30,10 @@
 		<!--WARNING: There once was an external constraint here. There isn't any more. It was of type "MandatoryConstraint", and named "ImpliedMandatoryConstraint9".-->
 	</oil:conceptType>
 	<oil:conceptType name="BlogEntry" sourceRef="_2B3E3B2A-5AF7-48C7-A075-8E2F12D2C216">
+		<oil:conceptType name="BlogComment" sourceRef="_FC4B6034-FD2F-48BB-89C1-5E60BCF9E82F" mandatory="false" sourceRoleRef="_BF787BAC-4058-462F-9B63-BB5B79049B43">
+			<oil:conceptTypeRef name="parentEntryId" target="NonCommentEntry" oppositeName="BlogComment" mandatory="alethic" sourceRoleRef="_2ADCCAF9-7967-4708-B08B-41752E602893" />
+		</oil:conceptType>
+		<oil:conceptType name="NonCommentEntry" sourceRef="_DC84D934-1982-4B2B-B9E0-9989407A6135" mandatory="false" sourceRoleRef="_28E6E94A-7CBC-46DD-83E2-8D066C1945AA" />
 		<oil:conceptTypeRef name="userId" target="User" oppositeName="BlogEntry" mandatory="alethic" sourceRoleRef="_5A1C68A8-DF82-476A-A612-B37429ACD3B8" />
 		<oil:informationType name="BlogEntry_Id" formatRef="BlogEntry_Id" mandatory="alethic" sourceRef="_DC45E85B-959A-4E8C-8344-268B0B372C82" sourceRoleRef="_1184CDF1-60FB-4085-B30E-38F6D35E54BD">
 			<oil:singleRoleUniquenessConstraint name="InternalUniquenessConstraint1" sourceRef="_1308359E-A13C-4FE9-B4CC-D11FCE34CB42" modality="alethic" isPreferred="true" />

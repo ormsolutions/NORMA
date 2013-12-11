@@ -208,7 +208,7 @@
 					<orm:UniquenessConstraint ref="_C7184B1D-421B-4C16-AA89-AAF578048027" />
 				</orm:InternalConstraints>
 			</orm:SubtypeFact>
-			<orm:Fact _Name="EntityType1HasEntityType1_id" id="_BF35DC75-9D5F-44E3-A0C1-1E8458EC8DC1">
+			<orm:Fact id="_BF35DC75-9D5F-44E3-A0C1-1E8458EC8DC1" _Name="EntityType1HasEntityType1Id">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_C58CE817-4E9D-4606-BA8F-18474AA6642D">
 						<orm:RolePlayer ref="_876C4E7E-64D1-4E8C-BB77-39875B9BEA72" />
@@ -289,7 +289,7 @@
 					<orm:UniquenessConstraint ref="_AB15B8DC-7621-4A5B-B72E-EBA2E8B61445" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="EntityType3HasEntityType3_id" id="_BA0F391F-A64E-4C09-983A-A99DAC214445">
+			<orm:Fact id="_BA0F391F-A64E-4C09-983A-A99DAC214445" _Name="EntityType3HasEntityType3Id">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_A43A31AF-FBFA-49E1-8FFF-7B30C8DD8897">
 						<orm:RolePlayer ref="_94E65D73-5CA8-411F-87C0-48723BA98F0D" />

@@ -47,7 +47,7 @@
 							<plx:passTypeParam dataTypeName=".object" />
 							<plx:assign>
 								<plx:left>
-									<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" />
+									<plx:callThis type="field" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" />
 								</plx:left>
 								<plx:right>
 									<plx:callNew dataTypeName="Dictionary">
@@ -65,9 +65,9 @@
 						</plx:inlineStatement>
 					</plx:initialize>
 				</plx:local>
-				<plx:callInstance type="methodCall" name="Add">
+				<plx:callInstance name="Add">
 					<plx:callObject>
-						<plx:nameRef type="local" name="constraintEnforcementCollectionCallbacksByTypeDictionary" />
+						<plx:nameRef name="constraintEnforcementCollectionCallbacksByTypeDictionary" />
 					</plx:callObject>
 					<plx:passParam>
 						<plx:callInstance type="property" name="TypeHandle">
@@ -88,7 +88,7 @@
 									<plx:passTypeParam dataTypeName="Country" />
 									<plx:passTypeParam dataTypeName="Person" />
 									<plx:passParam>
-										<plx:callThis accessor="this" type="methodReference" name="OnCountryPersonViaCountryCollectionAdding" />
+										<plx:callThis type="methodReference" name="OnCountryPersonViaCountryCollectionAdding" />
 									</plx:passParam>
 								</plx:callNew>
 							</plx:passParam>
@@ -97,7 +97,7 @@
 									<plx:passTypeParam dataTypeName="Country" />
 									<plx:passTypeParam dataTypeName="Person" />
 									<plx:passParam>
-										<plx:callThis accessor="this" type="methodReference" name="OnCountryPersonViaCountryCollectionAdded" />
+										<plx:callThis type="methodReference" name="OnCountryPersonViaCountryCollectionAdded" />
 									</plx:passParam>
 								</plx:callNew>
 							</plx:passParam>
@@ -109,7 +109,7 @@
 									<plx:passTypeParam dataTypeName="Country" />
 									<plx:passTypeParam dataTypeName="Person" />
 									<plx:passParam>
-										<plx:callThis accessor="this" type="methodReference" name="OnCountryPersonViaCountryCollectionRemoved" />
+										<plx:callThis type="methodReference" name="OnCountryPersonViaCountryCollectionRemoved" />
 									</plx:passParam>
 								</plx:callNew>
 							</plx:passParam>
@@ -118,7 +118,7 @@
 				</plx:callInstance>
 				<plx:assign>
 					<plx:left>
-						<plx:callThis accessor="this" type="field" name="_PersonReadOnlyCollection" />
+						<plx:callThis type="field" name="_PersonReadOnlyCollection" />
 					</plx:left>
 					<plx:right>
 						<plx:callNew dataTypeName="ReadOnlyCollection">
@@ -128,7 +128,7 @@
 									<plx:passTypeParam dataTypeName="Person" />
 									<plx:assign>
 										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_PersonList" />
+											<plx:callThis type="field" name="_PersonList" />
 										</plx:left>
 										<plx:right>
 											<plx:callNew dataTypeName="List">
@@ -143,7 +143,7 @@
 				</plx:assign>
 				<plx:assign>
 					<plx:left>
-						<plx:callThis accessor="this" type="field" name="_CountryReadOnlyCollection" />
+						<plx:callThis type="field" name="_CountryReadOnlyCollection" />
 					</plx:left>
 					<plx:right>
 						<plx:callNew dataTypeName="ReadOnlyCollection">
@@ -153,7 +153,7 @@
 									<plx:passTypeParam dataTypeName="Country" />
 									<plx:assign>
 										<plx:left>
-											<plx:callThis accessor="this" type="field" name="_CountryList" />
+											<plx:callThis type="field" name="_CountryList" />
 										</plx:left>
 										<plx:right>
 											<plx:callNew dataTypeName="List">
@@ -171,7 +171,7 @@
 			<plx:function visibility="private" modifier="static" overload="true" name="GetDifferentContextsException">
 				<plx:returns dataTypeName="ArgumentException" />
 				<plx:return>
-					<plx:callStatic type="methodCall" name="GetDifferentContextsException" dataTypeName="PersonCountryDemoContext">
+					<plx:callStatic name="GetDifferentContextsException" dataTypeName="PersonCountryDemoContext">
 						<plx:passParam>
 							<plx:valueKeyword stringize="true" />
 						</plx:passParam>
@@ -216,7 +216,51 @@
 			</plx:function>
 			<plx:pragma type="closeRegion" data="Exception Helpers" />
 			<plx:pragma type="region" data="Lookup and External Constraint Enforcement" />
-			<plx:field visibility="private" readOnly="true" name="_CountryCountry_nameDictionary" dataTypeName="Dictionary">
+			<plx:field visibility="private" readOnly="true" name="_PersonPersonIdDictionary" dataTypeName="Dictionary">
+				<plx:passTypeParam dataTypeName=".i4" />
+				<plx:passTypeParam dataTypeName="Person" />
+				<plx:initialize>
+					<plx:callNew dataTypeName="Dictionary">
+						<plx:passTypeParam dataTypeName=".i4" />
+						<plx:passTypeParam dataTypeName="Person" />
+					</plx:callNew>
+				</plx:initialize>
+			</plx:field>
+			<plx:function visibility="public" name="GetPersonByPersonId">
+				<plx:interfaceMember memberName="GetPersonByPersonId" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="personId" dataTypeName=".i4" />
+				<plx:returns dataTypeName="Person" />
+				<plx:return>
+					<plx:callInstance type="indexerCall" name=".implied">
+						<plx:callObject>
+							<plx:callThis type="field" name="_PersonPersonIdDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="personId" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:function visibility="public" name="TryGetPersonByPersonId">
+				<plx:interfaceMember memberName="TryGetPersonByPersonId" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="personId" dataTypeName=".i4" />
+				<plx:param type="out" name="person" dataTypeName="Person" />
+				<plx:returns dataTypeName=".boolean" />
+				<plx:return>
+					<plx:callInstance name="TryGetValue">
+						<plx:callObject>
+							<plx:callThis type="field" name="_PersonPersonIdDictionary" />
+						</plx:callObject>
+						<plx:passParam>
+							<plx:nameRef type="parameter" name="personId" />
+						</plx:passParam>
+						<plx:passParam type="out">
+							<plx:nameRef type="parameter" name="person" />
+						</plx:passParam>
+					</plx:callInstance>
+				</plx:return>
+			</plx:function>
+			<plx:field visibility="private" readOnly="true" name="_CountryCountryNameDictionary" dataTypeName="Dictionary">
 				<plx:passTypeParam dataTypeName=".string" />
 				<plx:passTypeParam dataTypeName="Country" />
 				<plx:initialize>
@@ -226,36 +270,36 @@
 					</plx:callNew>
 				</plx:initialize>
 			</plx:field>
-			<plx:function visibility="public" name="GetCountryByCountry_name">
-				<plx:interfaceMember memberName="GetCountryByCountry_name" dataTypeName="IPersonCountryDemoContext" />
-				<plx:param name="Country_name" dataTypeName=".string" />
+			<plx:function visibility="public" name="GetCountryByCountryName">
+				<plx:interfaceMember memberName="GetCountryByCountryName" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="countryName" dataTypeName=".string" />
 				<plx:returns dataTypeName="Country" />
 				<plx:return>
 					<plx:callInstance type="indexerCall" name=".implied">
 						<plx:callObject>
-							<plx:callThis type="field" name="_CountryCountry_nameDictionary" />
+							<plx:callThis type="field" name="_CountryCountryNameDictionary" />
 						</plx:callObject>
 						<plx:passParam>
-							<plx:nameRef type="parameter" name="Country_name" />
+							<plx:nameRef type="parameter" name="countryName" />
 						</plx:passParam>
 					</plx:callInstance>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="public" name="TryGetCountryByCountry_name">
-				<plx:interfaceMember memberName="TryGetCountryByCountry_name" dataTypeName="IPersonCountryDemoContext" />
-				<plx:param name="Country_name" dataTypeName=".string" />
-				<plx:param type="out" name="Country" dataTypeName="Country" />
+			<plx:function visibility="public" name="TryGetCountryByCountryName">
+				<plx:interfaceMember memberName="TryGetCountryByCountryName" dataTypeName="IPersonCountryDemoContext" />
+				<plx:param name="countryName" dataTypeName=".string" />
+				<plx:param type="out" name="country" dataTypeName="Country" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:return>
-					<plx:callInstance type="methodCall" name="TryGetValue">
+					<plx:callInstance name="TryGetValue">
 						<plx:callObject>
-							<plx:callThis type="field" name="_CountryCountry_nameDictionary" />
+							<plx:callThis type="field" name="_CountryCountryNameDictionary" />
 						</plx:callObject>
 						<plx:passParam>
-							<plx:nameRef type="parameter" name="Country_name" />
+							<plx:nameRef type="parameter" name="countryName" />
 						</plx:passParam>
 						<plx:passParam type="out">
-							<plx:nameRef type="parameter" name="Country" />
+							<plx:nameRef type="parameter" name="country" />
 						</plx:passParam>
 					</plx:callInstance>
 				</plx:return>
@@ -318,7 +362,7 @@
 					</plx:param>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="Adding" />
+							<plx:callThis type="field" name="Adding" />
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="adding" />
@@ -326,7 +370,7 @@
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="Added" />
+							<plx:callThis type="field" name="Added" />
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="added" />
@@ -334,7 +378,7 @@
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="Removing" />
+							<plx:callThis type="field" name="Removing" />
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="removing" />
@@ -342,7 +386,7 @@
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="Removed" />
+							<plx:callThis type="field" name="Removed" />
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="removed" />
@@ -381,7 +425,7 @@
 						<plx:passTypeParam dataTypeName="TProperty" />
 						<plx:callInstance type="indexerCall" name=".implied">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" />
+								<plx:callThis type="field" name="_ContraintEnforcementCollectionCallbacksByTypeDictionary" />
 							</plx:callObject>
 							<plx:passParam>
 								<plx:callInstance type="property" name="TypeHandle">
@@ -430,7 +474,7 @@
 					<plx:param name="y" dataTypeName="RuntimeTypeHandle" />
 					<plx:returns dataTypeName=".boolean" />
 					<plx:return>
-						<plx:callInstance type="methodCall" name="Equals">
+						<plx:callInstance name="Equals">
 							<plx:callObject>
 								<plx:nameRef type="parameter" name="x" />
 							</plx:callObject>
@@ -447,7 +491,7 @@
 					<plx:param name="obj" dataTypeName="RuntimeTypeHandle" />
 					<plx:returns dataTypeName=".i4" />
 					<plx:return>
-						<plx:callInstance type="methodCall" name="GetHashCode">
+						<plx:callInstance name="GetHashCode">
 							<plx:callObject>
 								<plx:nameRef type="parameter" name="obj" />
 							</plx:callObject>
@@ -482,8 +526,8 @@
 				<plx:implementsInterface dataTypeName="ICollection">
 					<plx:passTypeParam dataTypeName="TProperty" />
 				</plx:implementsInterface>
-				<plx:field visibility="private" readOnly="true" name="_instance" dataTypeName="TClass" />
-				<plx:field visibility="private" readOnly="true" name="_list" dataTypeName="List">
+				<plx:field visibility="private" readOnly="true" name="_Instance" dataTypeName="TClass" />
+				<plx:field visibility="private" readOnly="true" name="_List" dataTypeName="List">
 					<plx:passTypeParam dataTypeName="TProperty" />
 					<plx:initialize>
 						<plx:callNew dataTypeName="List">
@@ -495,7 +539,7 @@
 					<plx:param name="instance" dataTypeName="TClass" />
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_instance" />
+							<plx:callThis type="field" name="_Instance" />
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="instance" />
@@ -506,7 +550,7 @@
 					<plx:interfaceMember memberName="GetEnumerator" dataTypeName="IEnumerable" dataTypeQualifier="System.Collections" />
 					<plx:returns dataTypeName="IEnumerator" dataTypeQualifier="System.Collections" />
 					<plx:return>
-						<plx:callThis accessor="this" type="methodCall" name="GetEnumerator" />
+						<plx:callThis name="GetEnumerator" />
 					</plx:return>
 				</plx:function>
 				<plx:function visibility="public" name="GetEnumerator">
@@ -517,9 +561,9 @@
 						<plx:passTypeParam dataTypeName="TProperty" />
 					</plx:returns>
 					<plx:return>
-						<plx:callInstance type="methodCall" name="GetEnumerator">
+						<plx:callInstance name="GetEnumerator">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="_list" />
+								<plx:callThis type="field" name="_List" />
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:return>
@@ -550,20 +594,20 @@
 					</plx:branch>
 					<plx:local name="instance" dataTypeName="TClass">
 						<plx:initialize>
-							<plx:callThis accessor="this" type="field" name="_instance" />
+							<plx:callThis type="field" name="_Instance" />
 						</plx:initialize>
 					</plx:local>
 					<plx:local name="callbacks" dataTypeName="ConstraintEnforcementCollectionCallbacks">
 						<plx:passTypeParam dataTypeName="TClass" />
 						<plx:passTypeParam dataTypeName="TProperty" />
 						<plx:initialize>
-							<plx:callInstance type="methodCall" name="GetConstraintEnforcementCollectionCallbacks">
+							<plx:callInstance name="GetConstraintEnforcementCollectionCallbacks">
 								<plx:passMemberTypeParam dataTypeName="TClass" />
 								<plx:passMemberTypeParam dataTypeName="TProperty" />
 								<plx:callObject>
 									<plx:callInstance type="property" name="Context">
 										<plx:callObject>
-											<plx:nameRef type="local" name="instance" />
+											<plx:nameRef name="instance" />
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:callObject>
@@ -576,7 +620,7 @@
 						<plx:initialize>
 							<plx:callInstance type="field" name="Adding">
 								<plx:callObject>
-									<plx:nameRef type="local" name="callbacks" />
+									<plx:nameRef name="callbacks" />
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:initialize>
@@ -588,7 +632,7 @@
 									<plx:binaryOperator type="identityEquality">
 										<plx:left>
 											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:nameRef type="local" name="adding" />
+												<plx:nameRef name="adding" />
 											</plx:cast>
 										</plx:left>
 										<plx:right>
@@ -599,10 +643,10 @@
 								<plx:right>
 									<plx:callInstance type="delegateCall" name=".implied">
 										<plx:callObject>
-											<plx:nameRef type="local" name="adding" />
+											<plx:nameRef name="adding" />
 										</plx:callObject>
 										<plx:passParam>
-											<plx:nameRef type="local" name="instance" />
+											<plx:nameRef name="instance" />
 										</plx:passParam>
 										<plx:passParam>
 											<plx:nameRef type="parameter" name="item" />
@@ -611,9 +655,9 @@
 								</plx:right>
 							</plx:binaryOperator>
 						</plx:condition>
-						<plx:callInstance type="methodCall" name="Add">
+						<plx:callInstance name="Add">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="_list" />
+								<plx:callThis type="field" name="_List" />
 							</plx:callObject>
 							<plx:passParam>
 								<plx:nameRef type="parameter" name="item" />
@@ -625,7 +669,7 @@
 							<plx:initialize>
 								<plx:callInstance type="field" name="Added">
 									<plx:callObject>
-										<plx:nameRef type="local" name="callbacks" />
+										<plx:nameRef name="callbacks" />
 									</plx:callObject>
 								</plx:callInstance>
 							</plx:initialize>
@@ -635,7 +679,7 @@
 								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="local" name="added" />
+											<plx:nameRef name="added" />
 										</plx:cast>
 									</plx:left>
 									<plx:right>
@@ -645,10 +689,10 @@
 							</plx:condition>
 							<plx:callInstance type="delegateCall" name=".implied">
 								<plx:callObject>
-									<plx:nameRef type="local" name="added" />
+									<plx:nameRef name="added" />
 								</plx:callObject>
 								<plx:passParam>
-									<plx:nameRef type="local" name="instance" />
+									<plx:nameRef name="instance" />
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef type="parameter" name="item" />
@@ -684,20 +728,20 @@
 					</plx:branch>
 					<plx:local name="instance" dataTypeName="TClass">
 						<plx:initialize>
-							<plx:callThis accessor="this" type="field" name="_instance" />
+							<plx:callThis type="field" name="_Instance" />
 						</plx:initialize>
 					</plx:local>
 					<plx:local name="callbacks" dataTypeName="ConstraintEnforcementCollectionCallbacks">
 						<plx:passTypeParam dataTypeName="TClass" />
 						<plx:passTypeParam dataTypeName="TProperty" />
 						<plx:initialize>
-							<plx:callInstance type="methodCall" name="GetConstraintEnforcementCollectionCallbacks">
+							<plx:callInstance name="GetConstraintEnforcementCollectionCallbacks">
 								<plx:passMemberTypeParam dataTypeName="TClass" />
 								<plx:passMemberTypeParam dataTypeName="TProperty" />
 								<plx:callObject>
 									<plx:callInstance type="property" name="Context">
 										<plx:callObject>
-											<plx:nameRef type="local" name="instance" />
+											<plx:nameRef name="instance" />
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:callObject>
@@ -710,7 +754,7 @@
 						<plx:initialize>
 							<plx:callInstance type="field" name="Removing">
 								<plx:callObject>
-									<plx:nameRef type="local" name="callbacks" />
+									<plx:nameRef name="callbacks" />
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:initialize>
@@ -722,7 +766,7 @@
 									<plx:binaryOperator type="identityEquality">
 										<plx:left>
 											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:nameRef type="local" name="removing" />
+												<plx:nameRef name="removing" />
 											</plx:cast>
 										</plx:left>
 										<plx:right>
@@ -733,10 +777,10 @@
 								<plx:right>
 									<plx:callInstance type="delegateCall" name=".implied">
 										<plx:callObject>
-											<plx:nameRef type="local" name="removing" />
+											<plx:nameRef name="removing" />
 										</plx:callObject>
 										<plx:passParam>
-											<plx:nameRef type="local" name="instance" />
+											<plx:nameRef name="instance" />
 										</plx:passParam>
 										<plx:passParam>
 											<plx:nameRef type="parameter" name="item" />
@@ -747,9 +791,9 @@
 						</plx:condition>
 						<plx:branch>
 							<plx:condition>
-								<plx:callInstance type="methodCall" name="Remove">
+								<plx:callInstance name="Remove">
 									<plx:callObject>
-										<plx:callThis accessor="this" type="field" name="_list" />
+										<plx:callThis type="field" name="_List" />
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef type="parameter" name="item" />
@@ -762,7 +806,7 @@
 								<plx:initialize>
 									<plx:callInstance type="field" name="Removed">
 										<plx:callObject>
-											<plx:nameRef type="local" name="callbacks" />
+											<plx:nameRef name="callbacks" />
 										</plx:callObject>
 									</plx:callInstance>
 								</plx:initialize>
@@ -772,7 +816,7 @@
 									<plx:binaryOperator type="identityInequality">
 										<plx:left>
 											<plx:cast type="exceptionCast" dataTypeName=".object">
-												<plx:nameRef type="local" name="removed" />
+												<plx:nameRef name="removed" />
 											</plx:cast>
 										</plx:left>
 										<plx:right>
@@ -782,10 +826,10 @@
 								</plx:condition>
 								<plx:callInstance type="delegateCall" name=".implied">
 									<plx:callObject>
-										<plx:nameRef type="local" name="removed" />
+										<plx:nameRef name="removed" />
 									</plx:callObject>
 									<plx:passParam>
-										<plx:nameRef type="local" name="instance" />
+										<plx:nameRef name="instance" />
 									</plx:passParam>
 									<plx:passParam>
 										<plx:nameRef type="parameter" name="item" />
@@ -808,7 +852,7 @@
 					<plx:local name="list" dataTypeName="List">
 						<plx:passTypeParam dataTypeName="TProperty" />
 						<plx:initialize>
-							<plx:callThis accessor="this" type="field" name="_list" />
+							<plx:callThis type="field" name="_List" />
 						</plx:initialize>
 					</plx:local>
 					<plx:loop>
@@ -819,7 +863,7 @@
 										<plx:left>
 											<plx:callInstance type="property" name="Count">
 												<plx:callObject>
-													<plx:nameRef type="local" name="list" />
+													<plx:nameRef name="list" />
 												</plx:callObject>
 											</plx:callInstance>
 										</plx:left>
@@ -833,7 +877,7 @@
 						<plx:condition>
 							<plx:binaryOperator type="greaterThan">
 								<plx:left>
-									<plx:nameRef type="local" name="i" />
+									<plx:nameRef name="i" />
 								</plx:left>
 								<plx:right>
 									<plx:value type="i4" data="0" />
@@ -845,11 +889,11 @@
 								<plx:nameRef name="i" />
 							</plx:decrement>
 						</plx:beforeLoop>
-						<plx:callThis accessor="this" type="methodCall" name="Remove">
+						<plx:callThis name="Remove">
 							<plx:passParam>
 								<plx:callInstance type="indexerCall" name=".implied">
 									<plx:callObject>
-										<plx:nameRef type="local" name="list" />
+										<plx:nameRef name="list" />
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef name="i" />
@@ -880,7 +924,7 @@
 							<plx:right>
 								<plx:callInstance name="Contains">
 									<plx:callObject>
-										<plx:callThis accessor="this" type="field" name="_list" />
+										<plx:callThis type="field" name="_List" />
 									</plx:callObject>
 									<plx:passParam>
 										<plx:nameRef type="parameter" name="item" />
@@ -898,7 +942,7 @@
 					<plx:param name="arrayIndex" dataTypeName=".i4" />
 					<plx:callInstance name="CopyTo">
 						<plx:callObject>
-							<plx:callThis accessor="this" type="field" name="_list" />
+							<plx:callThis type="field" name="_List" />
 						</plx:callObject>
 						<plx:passParam>
 							<plx:nameRef type="parameter" name="array" />
@@ -917,7 +961,7 @@
 						<plx:return>
 							<plx:callInstance type="property" name="Count">
 								<plx:callObject>
-									<plx:callThis accessor="this" type="field" name="_list" />
+									<plx:callThis type="field" name="_List" />
 								</plx:callObject>
 							</plx:callInstance>
 						</plx:return>
@@ -939,15 +983,15 @@
 			<plx:pragma type="region" data="Person" />
 			<plx:function visibility="public" name="CreatePerson">
 				<plx:interfaceMember memberName="CreatePerson" dataTypeName="IPersonCountryDemoContext" />
-				<plx:param name="LastName" dataTypeName=".string" />
-				<plx:param name="FirstName" dataTypeName=".string" />
+				<plx:param name="lastName" dataTypeName=".string" />
+				<plx:param name="firstName" dataTypeName=".string" />
 				<plx:returns dataTypeName="Person" />
 				<plx:branch>
 					<plx:condition>
 						<plx:binaryOperator type="identityEquality">
 							<plx:left>
 								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="LastName" />
+									<plx:nameRef type="parameter" name="lastName" />
 								</plx:cast>
 							</plx:left>
 							<plx:right>
@@ -958,7 +1002,7 @@
 					<plx:throw>
 						<plx:callNew dataTypeName="ArgumentNullException">
 							<plx:passParam>
-								<plx:string>LastName</plx:string>
+								<plx:string>lastName</plx:string>
 							</plx:passParam>
 						</plx:callNew>
 					</plx:throw>
@@ -968,7 +1012,7 @@
 						<plx:binaryOperator type="identityEquality">
 							<plx:left>
 								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="FirstName" />
+									<plx:nameRef type="parameter" name="firstName" />
 								</plx:cast>
 							</plx:left>
 							<plx:right>
@@ -979,7 +1023,7 @@
 					<plx:throw>
 						<plx:callNew dataTypeName="ArgumentNullException">
 							<plx:passParam>
-								<plx:string>FirstName</plx:string>
+								<plx:string>firstName</plx:string>
 							</plx:passParam>
 						</plx:callNew>
 					</plx:throw>
@@ -987,20 +1031,20 @@
 				<plx:branch>
 					<plx:condition>
 						<plx:unaryOperator type="booleanNot">
-							<plx:callThis accessor="this" type="methodCall" name="OnPersonLastNameChanging">
+							<plx:callThis name="OnPersonLastNameChanging">
 								<plx:passParam>
 									<plx:nullKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="LastName" />
+									<plx:nameRef type="parameter" name="lastName" />
 								</plx:passParam>
 							</plx:callThis>
 						</plx:unaryOperator>
 					</plx:condition>
 					<plx:throw>
-						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
+						<plx:callStatic name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
-								<plx:string>LastName</plx:string>
+								<plx:string>lastName</plx:string>
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:throw>
@@ -1008,34 +1052,34 @@
 				<plx:branch>
 					<plx:condition>
 						<plx:unaryOperator type="booleanNot">
-							<plx:callThis accessor="this" type="methodCall" name="OnPersonFirstNameChanging">
+							<plx:callThis name="OnPersonFirstNameChanging">
 								<plx:passParam>
 									<plx:nullKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="FirstName" />
+									<plx:nameRef type="parameter" name="firstName" />
 								</plx:passParam>
 							</plx:callThis>
 						</plx:unaryOperator>
 					</plx:condition>
 					<plx:throw>
-						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
+						<plx:callStatic name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
-								<plx:string>FirstName</plx:string>
+								<plx:string>firstName</plx:string>
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:throw>
 				</plx:branch>
 				<plx:return>
-					<plx:callNew dataTypeName="PersonCore">
+					<plx:callNew dataTypeName="PersonImpl">
 						<plx:passParam>
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:nameRef type="parameter" name="LastName" />
+							<plx:nameRef type="parameter" name="lastName" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:nameRef type="parameter" name="FirstName" />
+							<plx:nameRef type="parameter" name="firstName" />
 						</plx:passParam>
 					</plx:callNew>
 				</plx:return>
@@ -1101,7 +1145,7 @@
 							</plx:binaryOperator>
 						</plx:condition>
 						<plx:throw>
-							<plx:callStatic type="methodCall" name="GetDifferentContextsException" dataTypeName="PersonCountryDemoContext" />
+							<plx:callStatic name="GetDifferentContextsException" dataTypeName="PersonCountryDemoContext" />
 						</plx:throw>
 					</plx:branch>
 				</plx:branch>
@@ -1129,7 +1173,7 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
-					<plx:callInstance type="methodCall" name="Add">
+					<plx:callInstance name="Add">
 						<plx:callObject>
 							<plx:cast type="exceptionCast" dataTypeName="ICollection">
 								<plx:passTypeParam dataTypeName="Person" />
@@ -1162,7 +1206,7 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
-					<plx:callInstance type="methodCall" name="Remove">
+					<plx:callInstance name="Remove">
 						<plx:callObject>
 							<plx:cast type="exceptionCast" dataTypeName="ICollection">
 								<plx:passTypeParam dataTypeName="Person" />
@@ -1192,16 +1236,16 @@
 				</plx:returns>
 				<plx:get>
 					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_PersonReadOnlyCollection" />
+						<plx:callThis type="field" name="_PersonReadOnlyCollection" />
 					</plx:return>
 				</plx:get>
 			</plx:property>
-			<plx:class visibility="private" modifier="sealed" name="PersonCore">
+			<plx:class visibility="private" modifier="sealed" name="PersonImpl">
 				<plx:leadingInfo>
-					<plx:pragma type="region" data="PersonCore" />
+					<plx:pragma type="region" data="PersonImpl" />
 				</plx:leadingInfo>
 				<plx:trailingInfo>
-					<plx:pragma type="closeRegion" data="PersonCore" />
+					<plx:pragma type="closeRegion" data="PersonImpl" />
 				</plx:trailingInfo>
 				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 					<plx:passParam>
@@ -1221,11 +1265,11 @@
 				<plx:derivesFromClass dataTypeName="Person" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="PersonCountryDemoContext" />
-					<plx:param name="LastName" dataTypeName=".string" />
-					<plx:param name="FirstName" dataTypeName=".string" />
+					<plx:param name="lastName" dataTypeName=".string" />
+					<plx:param name="firstName" dataTypeName=".string" />
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_Context" />
+							<plx:callThis type="field" name="_Context" />
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="context" />
@@ -1233,21 +1277,21 @@
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_LastName" />
+							<plx:callThis type="field" name="_LastName" />
 						</plx:left>
 						<plx:right>
-							<plx:nameRef type="parameter" name="LastName" />
+							<plx:nameRef type="parameter" name="lastName" />
 						</plx:right>
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_FirstName" />
+							<plx:callThis type="field" name="_FirstName" />
 						</plx:left>
 						<plx:right>
-							<plx:nameRef type="parameter" name="FirstName" />
+							<plx:nameRef type="parameter" name="firstName" />
 						</plx:right>
 					</plx:assign>
-					<plx:callInstance type="methodCall" name="Add">
+					<plx:callInstance name="Add">
 						<plx:callObject>
 							<plx:callInstance type="field" name="_PersonList">
 								<plx:callObject>
@@ -1265,7 +1309,7 @@
 					<plx:returns dataTypeName="PersonCountryDemoContext" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Context" />
+							<plx:callThis type="field" name="_Context" />
 						</plx:return>
 					</plx:get>
 				</plx:property>
@@ -1274,7 +1318,7 @@
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_LastName" />
+							<plx:callThis type="field" name="_LastName" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
@@ -1301,7 +1345,7 @@
 						</plx:branch>
 						<plx:local name="oldValue" dataTypeName=".string">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_LastName" />
+								<plx:callThis type="field" name="_LastName" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
@@ -1311,7 +1355,7 @@
 										<plx:binaryOperator type="identityInequality">
 											<plx:left>
 												<plx:cast type="exceptionCast" dataTypeName=".object">
-													<plx:nameRef type="local" name="oldValue" />
+													<plx:nameRef name="oldValue" />
 												</plx:cast>
 											</plx:left>
 											<plx:right>
@@ -1323,12 +1367,12 @@
 									</plx:left>
 									<plx:right>
 										<plx:unaryOperator type="booleanNot">
-											<plx:callInstance type="methodCall" name="Equals">
+											<plx:callInstance name="Equals">
 												<plx:callObject>
 													<plx:valueKeyword />
 												</plx:callObject>
 												<plx:passParam>
-													<plx:nameRef type="local" name="oldValue" />
+													<plx:nameRef name="oldValue" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:unaryOperator>
@@ -1339,9 +1383,9 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnPersonLastNameChanging">
+											<plx:callInstance name="OnPersonLastNameChanging">
 												<plx:callObject>
-													<plx:callThis accessor="this" type="field" name="_Context" />
+													<plx:callThis type="field" name="_Context" />
 												</plx:callObject>
 												<plx:passParam>
 													<plx:thisKeyword />
@@ -1352,7 +1396,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="OnLastNameChanging">
+											<plx:callThis accessor="base" name="OnLastNameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -1362,15 +1406,15 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_LastName" />
+										<plx:callThis type="field" name="_LastName" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="OnLastNameChanged">
+								<plx:callThis accessor="base" name="OnLastNameChanged">
 									<plx:passParam>
-										<plx:nameRef type="local" name="oldValue" />
+										<plx:nameRef name="oldValue" />
 									</plx:passParam>
 								</plx:callThis>
 							</plx:branch>
@@ -1382,7 +1426,7 @@
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_FirstName" />
+							<plx:callThis type="field" name="_FirstName" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
@@ -1409,7 +1453,7 @@
 						</plx:branch>
 						<plx:local name="oldValue" dataTypeName=".string">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_FirstName" />
+								<plx:callThis type="field" name="_FirstName" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
@@ -1419,7 +1463,7 @@
 										<plx:binaryOperator type="identityInequality">
 											<plx:left>
 												<plx:cast type="exceptionCast" dataTypeName=".object">
-													<plx:nameRef type="local" name="oldValue" />
+													<plx:nameRef name="oldValue" />
 												</plx:cast>
 											</plx:left>
 											<plx:right>
@@ -1431,12 +1475,12 @@
 									</plx:left>
 									<plx:right>
 										<plx:unaryOperator type="booleanNot">
-											<plx:callInstance type="methodCall" name="Equals">
+											<plx:callInstance name="Equals">
 												<plx:callObject>
 													<plx:valueKeyword />
 												</plx:callObject>
 												<plx:passParam>
-													<plx:nameRef type="local" name="oldValue" />
+													<plx:nameRef name="oldValue" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:unaryOperator>
@@ -1447,9 +1491,9 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnPersonFirstNameChanging">
+											<plx:callInstance name="OnPersonFirstNameChanging">
 												<plx:callObject>
-													<plx:callThis accessor="this" type="field" name="_Context" />
+													<plx:callThis type="field" name="_Context" />
 												</plx:callObject>
 												<plx:passParam>
 													<plx:thisKeyword />
@@ -1460,7 +1504,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="OnFirstNameChanging">
+											<plx:callThis accessor="base" name="OnFirstNameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -1470,15 +1514,15 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_FirstName" />
+										<plx:callThis type="field" name="_FirstName" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="OnFirstNameChanged">
+								<plx:callThis accessor="base" name="OnFirstNameChanged">
 									<plx:passParam>
-										<plx:nameRef type="local" name="oldValue" />
+										<plx:nameRef name="oldValue" />
 									</plx:passParam>
 								</plx:callThis>
 							</plx:branch>
@@ -1490,21 +1534,21 @@
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Title" />
+							<plx:callThis type="field" name="_Title" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName=".string">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_Title" />
+								<plx:callThis type="field" name="_Title" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
 							<plx:condition>
 								<plx:unaryOperator type="booleanNot">
-									<plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
+									<plx:callStatic name="Equals" dataTypeName=".object">
 										<plx:passParam>
-											<plx:nameRef type="local" name="oldValue" />
+											<plx:nameRef name="oldValue" />
 										</plx:passParam>
 										<plx:passParam>
 											<plx:valueKeyword />
@@ -1516,9 +1560,9 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnPersonTitleChanging">
+											<plx:callInstance name="OnPersonTitleChanging">
 												<plx:callObject>
-													<plx:callThis accessor="this" type="field" name="_Context" />
+													<plx:callThis type="field" name="_Context" />
 												</plx:callObject>
 												<plx:passParam>
 													<plx:thisKeyword />
@@ -1529,7 +1573,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="OnTitleChanging">
+											<plx:callThis accessor="base" name="OnTitleChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -1539,15 +1583,15 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_Title" />
+										<plx:callThis type="field" name="_Title" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="OnTitleChanged">
+								<plx:callThis accessor="base" name="OnTitleChanged">
 									<plx:passParam>
-										<plx:nameRef type="local" name="oldValue" />
+										<plx:nameRef name="oldValue" />
 									</plx:passParam>
 								</plx:callThis>
 							</plx:branch>
@@ -1559,13 +1603,13 @@
 					<plx:returns dataTypeName="Country" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Country" />
+							<plx:callThis type="field" name="_Country" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName="Country">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_Country" />
+								<plx:callThis type="field" name="_Country" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
@@ -1573,7 +1617,7 @@
 								<plx:binaryOperator type="identityInequality">
 									<plx:left>
 										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="local" name="oldValue" />
+											<plx:nameRef name="oldValue" />
 										</plx:cast>
 									</plx:left>
 									<plx:right>
@@ -1587,9 +1631,9 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnPersonCountryChanging">
+											<plx:callInstance name="OnPersonCountryChanging">
 												<plx:callObject>
-													<plx:callThis accessor="this" type="field" name="_Context" />
+													<plx:callThis type="field" name="_Context" />
 												</plx:callObject>
 												<plx:passParam>
 													<plx:thisKeyword />
@@ -1600,7 +1644,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="OnCountryChanging">
+											<plx:callThis accessor="base" name="OnCountryChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -1610,7 +1654,7 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_Country" />
+										<plx:callThis type="field" name="_Country" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
@@ -1618,18 +1662,18 @@
 								</plx:assign>
 								<plx:callInstance name="OnPersonCountryChanged">
 									<plx:callObject>
-										<plx:callThis accessor="this" type="field" name="_Context" />
+										<plx:callThis type="field" name="_Context" />
 									</plx:callObject>
 									<plx:passParam>
 										<plx:thisKeyword />
 									</plx:passParam>
 									<plx:passParam>
-										<plx:nameRef type="local" name="oldValue" />
+										<plx:nameRef name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="OnCountryChanged">
+								<plx:callThis accessor="base" name="OnCountryChanged">
 									<plx:passParam>
-										<plx:nameRef type="local" name="oldValue" />
+										<plx:nameRef name="oldValue" />
 									</plx:passParam>
 								</plx:callThis>
 							</plx:branch>
@@ -1641,14 +1685,14 @@
 			<plx:pragma type="region" data="Country" />
 			<plx:function visibility="public" name="CreateCountry">
 				<plx:interfaceMember memberName="CreateCountry" dataTypeName="IPersonCountryDemoContext" />
-				<plx:param name="Country_name" dataTypeName=".string" />
+				<plx:param name="countryName" dataTypeName=".string" />
 				<plx:returns dataTypeName="Country" />
 				<plx:branch>
 					<plx:condition>
 						<plx:binaryOperator type="identityEquality">
 							<plx:left>
 								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<plx:nameRef type="parameter" name="Country_name" />
+									<plx:nameRef type="parameter" name="countryName" />
 								</plx:cast>
 							</plx:left>
 							<plx:right>
@@ -1659,7 +1703,7 @@
 					<plx:throw>
 						<plx:callNew dataTypeName="ArgumentNullException">
 							<plx:passParam>
-								<plx:string>Country_name</plx:string>
+								<plx:string>countryName</plx:string>
 							</plx:passParam>
 						</plx:callNew>
 					</plx:throw>
@@ -1667,36 +1711,36 @@
 				<plx:branch>
 					<plx:condition>
 						<plx:unaryOperator type="booleanNot">
-							<plx:callThis accessor="this" type="methodCall" name="OnCountryCountry_nameChanging">
+							<plx:callThis name="OnCountryCountryNameChanging">
 								<plx:passParam>
 									<plx:nullKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:nameRef type="parameter" name="Country_name" />
+									<plx:nameRef type="parameter" name="countryName" />
 								</plx:passParam>
 							</plx:callThis>
 						</plx:unaryOperator>
 					</plx:condition>
 					<plx:throw>
-						<plx:callStatic type="methodCall" name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
+						<plx:callStatic name="GetConstraintEnforcementFailedException" dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
-								<plx:string>Country_name</plx:string>
+								<plx:string>countryName</plx:string>
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:throw>
 				</plx:branch>
 				<plx:return>
-					<plx:callNew dataTypeName="CountryCore">
+					<plx:callNew dataTypeName="CountryImpl">
 						<plx:passParam>
 							<plx:thisKeyword />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:nameRef type="parameter" name="Country_name" />
+							<plx:nameRef type="parameter" name="countryName" />
 						</plx:passParam>
 					</plx:callNew>
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="private" name="OnCountryCountry_nameChanging">
+			<plx:function visibility="private" name="OnCountryCountryNameChanging">
 				<plx:param name="instance" dataTypeName="Country" />
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
@@ -1705,13 +1749,13 @@
 					<plx:condition>
 						<plx:callInstance name="TryGetValue">
 							<plx:callObject>
-								<plx:callThis accessor="this" type="field" name="_CountryCountry_nameDictionary" />
+								<plx:callThis type="field" name="_CountryCountryNameDictionary" />
 							</plx:callObject>
 							<plx:passParam>
 								<plx:nameRef type="parameter" name="newValue" />
 							</plx:passParam>
 							<plx:passParam type="out">
-								<plx:nameRef type="local" name="currentInstance" />
+								<plx:nameRef name="currentInstance" />
 							</plx:passParam>
 						</plx:callInstance>
 					</plx:condition>
@@ -1720,7 +1764,7 @@
 							<plx:binaryOperator type="identityInequality">
 								<plx:left>
 									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<plx:nameRef type="local" name="currentInstance" />
+										<plx:nameRef name="currentInstance" />
 									</plx:cast>
 								</plx:left>
 								<plx:right>
@@ -1739,15 +1783,15 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:function visibility="private" overload="true" name="OnCountryCountry_nameChanged">
+			<plx:function visibility="private" overload="true" name="OnCountryCountryNameChanged">
 				<plx:param name="instance" dataTypeName="Country" />
 				<plx:param name="oldValue" dataTypeName=".string" />
-				<plx:callInstance type="methodCall" name="Add">
+				<plx:callInstance name="Add">
 					<plx:callObject>
-						<plx:callThis accessor="this" type="field" name="_CountryCountry_nameDictionary" />
+						<plx:callThis type="field" name="_CountryCountryNameDictionary" />
 					</plx:callObject>
 					<plx:passParam>
-						<plx:callInstance type="property" name="Country_name">
+						<plx:callInstance type="property" name="CountryName">
 							<plx:callObject>
 								<plx:nameRef type="parameter" name="instance" />
 							</plx:callObject>
@@ -1770,9 +1814,9 @@
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:condition>
-					<plx:callInstance type="methodCall" name="Remove">
+					<plx:callInstance name="Remove">
 						<plx:callObject>
-							<plx:callThis accessor="this" type="field" name="_CountryCountry_nameDictionary" />
+							<plx:callThis type="field" name="_CountryCountryNameDictionary" />
 						</plx:callObject>
 						<plx:passParam>
 							<plx:nameRef type="parameter" name="oldValue" />
@@ -1780,7 +1824,7 @@
 					</plx:callInstance>
 				</plx:branch>
 			</plx:function>
-			<plx:function visibility="private" name="OnCountryRegion_Region_codeChanging">
+			<plx:function visibility="private" name="OnCountryRegionCodeChanging">
 				<plx:param name="instance" dataTypeName="Country" />
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
@@ -1812,7 +1856,7 @@
 						</plx:binaryOperator>
 					</plx:condition>
 					<plx:throw>
-						<plx:callStatic type="methodCall" name="GetDifferentContextsException" dataTypeName="PersonCountryDemoContext">
+						<plx:callStatic name="GetDifferentContextsException" dataTypeName="PersonCountryDemoContext">
 							<plx:passParam>
 								<plx:string data="item" />
 							</plx:passParam>
@@ -1888,16 +1932,16 @@
 				</plx:returns>
 				<plx:get>
 					<plx:return>
-						<plx:callThis accessor="this" type="field" name="_CountryReadOnlyCollection" />
+						<plx:callThis type="field" name="_CountryReadOnlyCollection" />
 					</plx:return>
 				</plx:get>
 			</plx:property>
-			<plx:class visibility="private" modifier="sealed" name="CountryCore">
+			<plx:class visibility="private" modifier="sealed" name="CountryImpl">
 				<plx:leadingInfo>
-					<plx:pragma type="region" data="CountryCore" />
+					<plx:pragma type="region" data="CountryImpl" />
 				</plx:leadingInfo>
 				<plx:trailingInfo>
-					<plx:pragma type="closeRegion" data="CountryCore" />
+					<plx:pragma type="closeRegion" data="CountryImpl" />
 				</plx:trailingInfo>
 				<plx:attribute dataTypeName="StructLayoutAttribute" dataTypeQualifier="System.Runtime.InteropServices">
 					<plx:passParam>
@@ -1917,10 +1961,10 @@
 				<plx:derivesFromClass dataTypeName="Country" />
 				<plx:function visibility="public" name=".construct">
 					<plx:param name="context" dataTypeName="PersonCountryDemoContext" />
-					<plx:param name="Country_name" dataTypeName=".string" />
+					<plx:param name="countryName" dataTypeName=".string" />
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_Context" />
+							<plx:callThis type="field" name="_Context" />
 						</plx:left>
 						<plx:right>
 							<plx:nameRef type="parameter" name="context" />
@@ -1928,7 +1972,7 @@
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_PersonViaCountryCollection" />
+							<plx:callThis type="field" name="_PersonViaCountryCollection" />
 						</plx:left>
 						<plx:right>
 							<plx:callNew dataTypeName="ConstraintEnforcementCollection">
@@ -1942,13 +1986,13 @@
 					</plx:assign>
 					<plx:assign>
 						<plx:left>
-							<plx:callThis accessor="this" type="field" name="_Country_name" />
+							<plx:callThis type="field" name="_CountryName" />
 						</plx:left>
 						<plx:right>
-							<plx:nameRef type="parameter" name="Country_name" />
+							<plx:nameRef type="parameter" name="countryName" />
 						</plx:right>
 					</plx:assign>
-					<plx:callInstance type="methodCall" name="OnCountryCountry_nameChanged">
+					<plx:callInstance name="OnCountryCountryNameChanged">
 						<plx:callObject>
 							<plx:nameRef type="parameter" name="context" />
 						</plx:callObject>
@@ -1959,7 +2003,7 @@
 							<plx:nullKeyword />
 						</plx:passParam>
 					</plx:callInstance>
-					<plx:callInstance type="methodCall" name="Add">
+					<plx:callInstance name="Add">
 						<plx:callObject>
 							<plx:callInstance type="field" name="_CountryList">
 								<plx:callObject>
@@ -1977,16 +2021,16 @@
 					<plx:returns dataTypeName="PersonCountryDemoContext" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Context" />
+							<plx:callThis type="field" name="_Context" />
 						</plx:return>
 					</plx:get>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_Country_name" dataTypeName=".string" />
-				<plx:property visibility="public" modifier="sealedOverride" name="Country_name">
+				<plx:field visibility="private" readOnly="false" name="_CountryName" dataTypeName=".string" />
+				<plx:property visibility="public" modifier="sealedOverride" name="CountryName">
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Country_name" />
+							<plx:callThis type="field" name="_CountryName" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
@@ -2013,7 +2057,7 @@
 						</plx:branch>
 						<plx:local name="oldValue" dataTypeName=".string">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_Country_name" />
+								<plx:callThis type="field" name="_CountryName" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
@@ -2023,7 +2067,7 @@
 										<plx:binaryOperator type="identityInequality">
 											<plx:left>
 												<plx:cast type="exceptionCast" dataTypeName=".object">
-													<plx:nameRef type="local" name="oldValue" />
+													<plx:nameRef name="oldValue" />
 												</plx:cast>
 											</plx:left>
 											<plx:right>
@@ -2035,12 +2079,12 @@
 									</plx:left>
 									<plx:right>
 										<plx:unaryOperator type="booleanNot">
-											<plx:callInstance type="methodCall" name="Equals">
+											<plx:callInstance name="Equals">
 												<plx:callObject>
 													<plx:valueKeyword />
 												</plx:callObject>
 												<plx:passParam>
-													<plx:nameRef type="local" name="oldValue" />
+													<plx:nameRef name="oldValue" />
 												</plx:passParam>
 											</plx:callInstance>
 										</plx:unaryOperator>
@@ -2051,9 +2095,9 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnCountryCountry_nameChanging">
+											<plx:callInstance name="OnCountryCountryNameChanging">
 												<plx:callObject>
-													<plx:callThis accessor="this" type="field" name="_Context" />
+													<plx:callThis type="field" name="_Context" />
 												</plx:callObject>
 												<plx:passParam>
 													<plx:thisKeyword />
@@ -2064,7 +2108,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="OnCountry_nameChanging">
+											<plx:callThis accessor="base" name="OnCountryNameChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -2074,52 +2118,52 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_Country_name" />
+										<plx:callThis type="field" name="_CountryName" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callInstance name="OnCountryCountry_nameChanged">
+								<plx:callInstance name="OnCountryCountryNameChanged">
 									<plx:callObject>
-										<plx:callThis accessor="this" type="field" name="_Context" />
+										<plx:callThis type="field" name="_Context" />
 									</plx:callObject>
 									<plx:passParam>
 										<plx:thisKeyword />
 									</plx:passParam>
 									<plx:passParam>
-										<plx:nameRef type="local" name="oldValue" />
+										<plx:nameRef name="oldValue" />
 									</plx:passParam>
 								</plx:callInstance>
-								<plx:callThis accessor="base" type="methodCall" name="OnCountry_nameChanged">
+								<plx:callThis accessor="base" name="OnCountryNameChanged">
 									<plx:passParam>
-										<plx:nameRef type="local" name="oldValue" />
+										<plx:nameRef name="oldValue" />
 									</plx:passParam>
 								</plx:callThis>
 							</plx:branch>
 						</plx:branch>
 					</plx:set>
 				</plx:property>
-				<plx:field visibility="private" readOnly="false" name="_Region_Region_code" dataTypeName=".string" />
-				<plx:property visibility="public" modifier="sealedOverride" name="Region_Region_code">
+				<plx:field visibility="private" readOnly="false" name="_RegionCode" dataTypeName=".string" />
+				<plx:property visibility="public" modifier="sealedOverride" name="RegionCode">
 					<plx:returns dataTypeName=".string" />
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_Region_Region_code" />
+							<plx:callThis type="field" name="_RegionCode" />
 						</plx:return>
 					</plx:get>
 					<plx:set>
 						<plx:local name="oldValue" dataTypeName=".string">
 							<plx:initialize>
-								<plx:callThis accessor="this" type="field" name="_Region_Region_code" />
+								<plx:callThis type="field" name="_RegionCode" />
 							</plx:initialize>
 						</plx:local>
 						<plx:branch>
 							<plx:condition>
 								<plx:unaryOperator type="booleanNot">
-									<plx:callStatic type="methodCall" name="Equals" dataTypeName=".object">
+									<plx:callStatic name="Equals" dataTypeName=".object">
 										<plx:passParam>
-											<plx:nameRef type="local" name="oldValue" />
+											<plx:nameRef name="oldValue" />
 										</plx:passParam>
 										<plx:passParam>
 											<plx:valueKeyword />
@@ -2131,9 +2175,9 @@
 								<plx:condition>
 									<plx:binaryOperator type="booleanAnd">
 										<plx:left>
-											<plx:callInstance type="methodCall" name="OnCountryRegion_Region_codeChanging">
+											<plx:callInstance name="OnCountryRegionCodeChanging">
 												<plx:callObject>
-													<plx:callThis accessor="this" type="field" name="_Context" />
+													<plx:callThis type="field" name="_Context" />
 												</plx:callObject>
 												<plx:passParam>
 													<plx:thisKeyword />
@@ -2144,7 +2188,7 @@
 											</plx:callInstance>
 										</plx:left>
 										<plx:right>
-											<plx:callThis accessor="base" type="methodCall" name="OnRegion_Region_codeChanging">
+											<plx:callThis accessor="base" name="OnRegionCodeChanging">
 												<plx:passParam>
 													<plx:valueKeyword />
 												</plx:passParam>
@@ -2154,15 +2198,15 @@
 								</plx:condition>
 								<plx:assign>
 									<plx:left>
-										<plx:callThis accessor="this" type="field" name="_Region_Region_code" />
+										<plx:callThis type="field" name="_RegionCode" />
 									</plx:left>
 									<plx:right>
 										<plx:valueKeyword />
 									</plx:right>
 								</plx:assign>
-								<plx:callThis accessor="base" type="methodCall" name="OnRegion_Region_codeChanged">
+								<plx:callThis accessor="base" name="OnRegionCodeChanged">
 									<plx:passParam>
-										<plx:nameRef type="local" name="oldValue" />
+										<plx:nameRef name="oldValue" />
 									</plx:passParam>
 								</plx:callThis>
 							</plx:branch>
@@ -2178,7 +2222,7 @@
 					</plx:returns>
 					<plx:get>
 						<plx:return>
-							<plx:callThis accessor="this" type="field" name="_PersonViaCountryCollection" />
+							<plx:callThis type="field" name="_PersonViaCountryCollection" />
 						</plx:return>
 					</plx:get>
 				</plx:property>

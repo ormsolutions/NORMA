@@ -18,17 +18,17 @@
 		<dcl:column name="personId" isNullable="false" isIdentity="true">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="lastName" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
-		</dcl:column>
 		<dcl:column name="firstName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="title" isNullable="true" isIdentity="false">
-			<dcl:domainRef name="Title" />
+		<dcl:column name="lastName" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
 		<dcl:column name="countryName" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="20" />
+		</dcl:column>
+		<dcl:column name="title" isNullable="true" isIdentity="false">
+			<dcl:domainRef name="Title" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="Person_PK" isPrimary="true">
 			<dcl:columnRef name="personId" />

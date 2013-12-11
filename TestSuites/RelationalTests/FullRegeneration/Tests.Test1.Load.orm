@@ -502,7 +502,7 @@
 					<orm:Role ref="_0F0231D4-88F1-4BE7-BEA9-4C984A76B87B" />
 				</orm:PlayedRoles>
 			</orm:EntityType>
-			<orm:EntityType id="_C7B2C1D0-3678-4859-8C74-5788545AF4CA" Name="NewsStatus" _ReferenceMode=".name">
+			<orm:EntityType id="_C7B2C1D0-3678-4859-8C74-5788545AF4CA" Name="NewsStatus" _ReferenceMode="name">
 				<orm:PlayedRoles>
 					<orm:Role ref="_C7C28ED6-8937-464E-AD80-731C218E876D" />
 					<orm:Role ref="_ED6B2381-715F-40F9-9D13-7305B4292C7F" />
@@ -766,7 +766,7 @@
 				</orm:PlayedRoles>
 				<orm:ConceptualDataType id="_C9EC2C69-3E4D-4076-B884-FE1847F0E1D8" ref="_CA61A98B-3B2E-4F74-82A7-90523CEF0D01" Scale="0" Length="0" />
 			</orm:ValueType>
-			<orm:EntityType id="_B2666D23-6FD1-4335-85EB-07D77DD92182" Name="SharedDataItem" _ReferenceMode=".id">
+			<orm:EntityType id="_B2666D23-6FD1-4335-85EB-07D77DD92182" Name="SharedDataItem" _ReferenceMode="id">
 				<orm:PlayedRoles>
 					<orm:Role ref="_60BFC279-BB50-4635-8DAD-8EADB51B3E29" />
 					<orm:Role ref="_37AE5121-42E3-4718-96DD-E99671F3D513" />
@@ -1018,7 +1018,7 @@
 				</orm:PlayedRoles>
 				<orm:ConceptualDataType id="_CE39CC47-AAF4-4ADD-8BA9-AC706E7FC7EC" ref="_FE59FF32-B62C-46F3-B843-81982469510D" Scale="0" Length="0" />
 			</orm:ValueType>
-			<orm:ValueType id="_3F562116-9D4F-43D2-BCD3-A2BD0732730A" Name="SharedDataItem.id">
+			<orm:ValueType id="_3F562116-9D4F-43D2-BCD3-A2BD0732730A" Name="SharedDataItem_id">
 				<orm:PlayedRoles>
 					<orm:Role ref="_591EAD78-EA77-4E16-A9A0-178D5FC05025" />
 				</orm:PlayedRoles>
@@ -1048,7 +1048,7 @@
 				</orm:PlayedRoles>
 				<orm:ConceptualDataType id="_66A150CE-559C-4D10-93DF-E17B7B6779C2" ref="_CA61A98B-3B2E-4F74-82A7-90523CEF0D01" Scale="0" Length="0" />
 			</orm:ValueType>
-			<orm:ValueType id="_E0FFC8AB-9D33-42CC-BF6A-EB26D32A8FF5" Name="NewsStatus.name">
+			<orm:ValueType id="_E0FFC8AB-9D33-42CC-BF6A-EB26D32A8FF5" Name="NewsStatus_name">
 				<orm:PlayedRoles>
 					<orm:Role ref="_855B378B-9159-42D6-9B9B-8E43EE07825D" />
 				</orm:PlayedRoles>
@@ -1160,14 +1160,14 @@
 				</orm:PlayedRoles>
 				<orm:ConceptualDataType id="_F631B43A-64B4-4779-8E1B-430C7DF85EC4" ref="_CA61A98B-3B2E-4F74-82A7-90523CEF0D01" Scale="0" Length="0" />
 			</orm:ValueType>
-			<orm:EntityType id="_83C2CE64-99B5-447B-88D8-D6A254F97856" Name="ItineraryType" _ReferenceMode=".name">
+			<orm:EntityType id="_83C2CE64-99B5-447B-88D8-D6A254F97856" Name="ItineraryType" _ReferenceMode="name">
 				<orm:PlayedRoles>
 					<orm:Role ref="_C32F89B8-A0B6-4CDD-B7F6-D4CFD9C31888" />
 					<orm:Role ref="_9FF3D98C-8244-4C23-9E15-14B73E5105D6" />
 				</orm:PlayedRoles>
 				<orm:PreferredIdentifier ref="_08A27B0D-3D2F-4149-BA6D-22F0FDA22789" />
 			</orm:EntityType>
-			<orm:ValueType id="_225025C6-D884-4AEC-B07B-0BE17E285AAD" Name="ItineraryType.name">
+			<orm:ValueType id="_225025C6-D884-4AEC-B07B-0BE17E285AAD" Name="ItineraryType_name">
 				<orm:PlayedRoles>
 					<orm:Role ref="_6AF809AD-9E6A-48EE-8EAE-77249AE2CD25" />
 				</orm:PlayedRoles>
@@ -3945,7 +3945,7 @@
 					<orm:MandatoryConstraint ref="_23E13D68-F6AC-4091-81F7-2B49628FEB27" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_0CB95AD3-F59E-4AC3-B56A-9DF5B88F9B96" _Name="NewsStatusHasNewsStatus.name">
+			<orm:Fact id="_0CB95AD3-F59E-4AC3-B56A-9DF5B88F9B96" _Name="NewsStatusHasNewsStatusName">
 				<orm:FactRoles>
 					<orm:Role id="_ED6B2381-715F-40F9-9D13-7305B4292C7F" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_C7B2C1D0-3678-4859-8C74-5788545AF4CA" />
@@ -5814,7 +5814,7 @@
 					<orm:UniquenessConstraint ref="_2CA45582-C9D8-4D13-8BCD-E1D4A3BB5B8E" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_2CF5E77D-4B71-4D4C-9527-92377FE5F785" _Name="SharedDataItemHasSharedDataItem.id">
+			<orm:Fact id="_2CF5E77D-4B71-4D4C-9527-92377FE5F785" _Name="SharedDataItemHasSharedDataItemId">
 				<orm:FactRoles>
 					<orm:Role id="_60BFC279-BB50-4635-8DAD-8EADB51B3E29" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_B2666D23-6FD1-4335-85EB-07D77DD92182" />
@@ -7364,7 +7364,7 @@
 					<orm:MandatoryConstraint ref="_2D00EA35-24CA-4832-8CF9-6A23A03281F6" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_85119955-9DB4-4F59-98AC-87A1C4F23940" _Name="ItineraryTypeHasItineraryType.name">
+			<orm:Fact id="_85119955-9DB4-4F59-98AC-87A1C4F23940" _Name="ItineraryTypeHasItineraryTypeName">
 				<orm:FactRoles>
 					<orm:Role id="_9FF3D98C-8244-4C23-9E15-14B73E5105D6" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_83C2CE64-99B5-447B-88D8-D6A254F97856" />
@@ -10390,16 +10390,6 @@
 			<orm:VariableLengthRawDataDataType id="_0C47B5AE-FE89-4CB8-AD30-340C54406E7F" />
 			<orm:AutoCounterNumericDataType id="_EA560F8E-B4DB-4F2B-862D-0C536519F0E2" />
 		</orm:DataTypes>
-		<orm:CustomReferenceModes>
-			<orm:CustomReferenceMode id="_C844D459-C871-4B11-A9B8-2C684DAEDC26" Name=".id">
-				<orm:CustomFormatString>{0}{1}</orm:CustomFormatString>
-				<orm:Kind ref="_0E6A16A4-B780-46E0-903E-6D500A938BCE" />
-			</orm:CustomReferenceMode>
-			<orm:CustomReferenceMode id="_142794FC-AC90-4F1C-8B82-FB64DC72A0CC" Name=".name">
-				<orm:CustomFormatString>{0}{1}</orm:CustomFormatString>
-				<orm:Kind ref="_24513440-DAD0-4C1D-8232-9B37377096DD" />
-			</orm:CustomReferenceMode>
-		</orm:CustomReferenceModes>
 		<orm:ModelNotes>
 			<orm:ModelNote id="_9BE3AF7A-49CA-4B12-AC79-BD63944F74BB">
 				<orm:Text>Subtype Definitions:

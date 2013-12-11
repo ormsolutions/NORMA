@@ -216,7 +216,7 @@
 					<orm:UniquenessConstraint ref="_C7184B1D-421B-4C16-AA89-AAF578048027" />
 				</orm:InternalConstraints>
 			</orm:SubtypeFact>
-			<orm:Fact _Name="EntityType1HasEntityType1_id" id="_BF35DC75-9D5F-44E3-A0C1-1E8458EC8DC1">
+			<orm:Fact id="_BF35DC75-9D5F-44E3-A0C1-1E8458EC8DC1" _Name="EntityType1HasEntityType1Id">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_C58CE817-4E9D-4606-BA8F-18474AA6642D">
 						<orm:RolePlayer ref="_876C4E7E-64D1-4E8C-BB77-39875B9BEA72" />
@@ -297,7 +297,7 @@
 					<orm:UniquenessConstraint ref="_AB15B8DC-7621-4A5B-B72E-EBA2E8B61445" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="EntityType3HasEntityType3_id" id="_BA0F391F-A64E-4C09-983A-A99DAC214445">
+			<orm:Fact id="_BA0F391F-A64E-4C09-983A-A99DAC214445" _Name="EntityType3HasEntityType3Id">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_A43A31AF-FBFA-49E1-8FFF-7B30C8DD8897">
 						<orm:RolePlayer ref="_94E65D73-5CA8-411F-87C0-48723BA98F0D" />
@@ -342,7 +342,7 @@
 					<orm:MandatoryConstraint ref="_D5666455-3F09-46AF-A6D1-91B6B6657B9D" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_5E89D052-AD1A-44FD-BDFB-D91F9C505306" _Name="EntityType4HasEntityType4_id">
+			<orm:Fact id="_5E89D052-AD1A-44FD-BDFB-D91F9C505306" _Name="EntityType4HasEntityType4Id">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_850028A1-FB01-4343-B1A1-07E8D72C22B1">
 						<orm:RolePlayer ref="_CD46FA7D-B17F-49C7-8F52-A213ABD14701" />
@@ -615,11 +615,11 @@
 			<orm:VariableLengthTextDataType id="_537BD9E9-D398-4FAB-9754-8393F5ABB753" />
 		</orm:DataTypes>
 		<orm:ModelErrors>
+			<orm:EntityTypeRequiresReferenceSchemeError Name="Entity type 'EntityType5' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification." id="_DFE59593-03BF-4715-B4BB-51EA700FC7F2">
+				<orm:EntityType ref="_A751F3F9-4EDF-4A6A-A88F-ECFE670255A0" />
+			</orm:EntityTypeRequiresReferenceSchemeError>
 			<orm:EntityTypeRequiresReferenceSchemeError Name="Entity type 'EntityType6' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification." id="_4054DE61-228C-4732-B096-3AC161BD64AE">
 				<orm:EntityType ref="_D2163940-1793-440B-8695-D61A34B98478" />
-			</orm:EntityTypeRequiresReferenceSchemeError>
-			<orm:EntityTypeRequiresReferenceSchemeError Name="Entity type 'EntityType5' in model 'ORMModel1' requires a local preferred reference scheme or supertype(s) that provide preferred identification." id="_EEE9F739-1011-440C-89DF-83F55496D16A">
-				<orm:EntityType ref="_A751F3F9-4EDF-4A6A-A88F-ECFE670255A0" />
 			</orm:EntityTypeRequiresReferenceSchemeError>
 			<orm:ValueTypeDetachedError id="_51DDD281-54DA-4AAE-91E6-2B814401E1DD" Name="Role '1' of fact type 'EntityType6TestValueType1' in model 'ORMModel1' has a value constraint with no associated value type.">
 				<orm:ValueConstraint ref="_610C5A2B-DB1B-40CF-9E76-EF6E8BB11428" />

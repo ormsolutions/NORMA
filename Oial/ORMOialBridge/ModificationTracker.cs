@@ -83,6 +83,48 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 			}
 			/// <summary>
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
+			/// </summary>
+			private static void DataTypeAddedRule(ElementAddedEventArgs e)
+			{
+				ValueTypeHasDataType link = (ValueTypeHasDataType)e.ModelElement;
+				if (link.DataType is AutoCounterNumericDataType)
+				{
+					SignificantObjectTypeChange(link.ValueType);
+				}
+			}
+			/// <summary>
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
+			/// </summary>
+			private static void DataTypeDeletedRule(ElementDeletedEventArgs e)
+			{
+				ValueTypeHasDataType link = (ValueTypeHasDataType)e.ModelElement;
+				ObjectType objectType;
+				if (link.DataType is AutoCounterNumericDataType &&
+					!(objectType = link.ValueType).IsDeleted)
+				{
+					SignificantObjectTypeChange(objectType);
+				}
+			}
+			/// <summary>
+			/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
+			/// </summary>
+			private static void DataTypeChangedRule(RolePlayerChangedEventArgs e)
+			{
+				if (e.DomainRole.Id == ValueTypeHasDataType.DataTypeDomainRoleId)
+				{
+					if (e.OldRolePlayer is AutoCounterNumericDataType || e.NewRolePlayer is AutoCounterNumericDataType)
+					{
+						SignificantObjectTypeChange(((ValueTypeHasDataType)e.ElementLink).ValueType);
+					}
+				}
+				else if (((ValueTypeHasDataType)e.ElementLink).DataType is AutoCounterNumericDataType)
+				{
+					SignificantObjectTypeChange((ObjectType)e.OldRolePlayer);
+					SignificantObjectTypeChange((ObjectType)e.NewRolePlayer);
+				}
+			}
+			/// <summary>
 			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)
 			/// </summary>
 			private static void ObjectTypeChangedRule(ElementPropertyChangedEventArgs e)
@@ -94,18 +136,97 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 				else if (propertyId == ObjectType.NameDomainPropertyId)
 				{
-					string newName = (string)e.NewValue;
-					ObjectType objectType = (ObjectType)e.ModelElement;
-					ConceptType conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType);
-					if (null != conceptType)
-					{
-						conceptType.Name = newName;
-					}
-					InformationTypeFormat informationTypeFormat = InformationTypeFormatIsForValueType.GetInformationTypeFormat(objectType);
-					if (null != informationTypeFormat)
-					{
-						informationTypeFormat.Name = newName;
-					}
+					FrameworkDomainModel.DelayValidateElement(e.ModelElement, UpdateNamesForObjectTypeDelayed);
+				}
+			}
+			 /// <summary>
+			 /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder)
+			 /// </summary>
+			 private static void ReadingOrderAddedRule(ElementAddedEventArgs e)
+			 {
+				 FrameworkDomainModel.DelayValidateElement(((FactTypeHasReadingOrder)e.ModelElement).FactType, UpdateChildNamesForFactTypeDelayed);
+			 }
+			 /// <summary>
+			 /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder)
+			 /// </summary>
+			 private static void ReadingOrderDeletedRule(ElementDeletedEventArgs e)
+			 {
+				 FactType factType;
+				 if (!(factType = ((FactTypeHasReadingOrder)e.ModelElement).FactType).IsDeleted)
+				 {
+					FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
+				 }
+			 }
+			 /// <summary>
+			 /// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeHasReadingOrder)
+			 /// </summary>
+			 private static void ReadingOrderReorderedRule(RolePlayerOrderChangedEventArgs e)
+			 {
+				 if (e.SourceDomainRole.Id == FactTypeHasReadingOrder.FactTypeDomainRoleId)
+				 {
+					 FrameworkDomainModel.DelayValidateElement(e.SourceElement, UpdateChildNamesForFactTypeDelayed);
+				 }
+			 }
+			 /// <summary>
+			 /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading)
+			 /// </summary>
+			 private static void ReadingAddedRule(ElementAddedEventArgs e)
+			 {
+				 FactType factType;
+				 if (null != (factType = ((ReadingOrderHasReading)e.ModelElement).ReadingOrder.FactType))
+				 {
+					 FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
+				 }
+			 }
+			 /// <summary>
+			 /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Reading)
+			 /// </summary>
+			 private static void ReadingChangedRule(ElementPropertyChangedEventArgs e)
+			 {
+				 ReadingOrder order;
+				 FactType factType;
+				 if (e.DomainProperty.Id == Reading.TextDomainPropertyId &&
+					 null != (order = ((Reading)e.ModelElement).ReadingOrder) &&
+					 null != (factType = order.FactType))
+				 {
+					 FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
+				 }
+			 }
+			 /// <summary>
+			 /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading)
+			 /// </summary>
+			 private static void ReadingDeletedRule(ElementDeletedEventArgs e)
+			 {
+				 ReadingOrder order;
+				 FactType factType;
+				 if (!(order = ((ReadingOrderHasReading)e.ModelElement).ReadingOrder).IsDeleted &&
+					 null != (factType = order.FactType))
+				 {
+					 FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
+				 }
+			 }
+			 /// <summary>
+			 /// RolePlayerPositionChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrderHasReading)
+			 /// </summary>
+			 private static void ReadingReorderedRule(RolePlayerOrderChangedEventArgs e)
+			 {
+				 FactType factType;
+				 if (e.SourceDomainRole.Id == ReadingOrderHasReading.ReadingOrderDomainRoleId &&
+					 null != (factType = ((ReadingOrder)e.SourceElement).FactType))
+				 {
+					 FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
+				 }
+			 }
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Role)
+			/// </summary>
+			private static void RoleChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				FactType factType;
+				if (e.DomainProperty.Id == Role.NameDomainPropertyId &&
+					null != (factType = ((Role)e.ModelElement).FactType))
+				{
+					FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayed);
 				}
 			}
 			/// <summary>
@@ -485,6 +606,8 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 			}
 			[DelayValidatePriority(DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			[DelayValidateReplaces("UpdateChildNamesForFactTypeDelayed")]
+			[DelayValidateReplaces("UpdateChildNamesForFactTypeDelayedWorker")]
 			private static void SignificantFactTypeChangeDelayed(ModelElement element)
 			{
 				FactType factType;
@@ -525,6 +648,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 			}
 			[DelayValidatePriority(DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			[DelayValidateReplaces("UpdateNamesForObjectTypeDelayed")]
 			private static void SignificantObjectTypeChangeDelayed(ModelElement element)
 			{
 				ObjectType objectType;
@@ -535,6 +659,123 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				{
 					AddTransactedModelElement(objectType, ModelElementModification.ORMElementChanged);
 					FrameworkDomainModel.DelayValidateElement(model, DelayValidateModel);
+				}
+			}
+			[DelayValidatePriority(DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void UpdateNamesForObjectTypeDelayed(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					ObjectType objectType = (ObjectType)element;
+					string objectTypeName = objectType.Name;
+					ConceptType conceptType = ConceptTypeIsForObjectType.GetConceptType(objectType);
+					LinkedElementCollection<FactType> pathFactTypes;
+					int factTypeCount;
+					RoleBase towardsRole;
+					RoleBase oppositeRole;
+					if (null != conceptType)
+					{
+						// Precheck name to minimize downstream calls, the property change
+						// will check itself.
+						if (conceptType.Name != objectTypeName)
+						{
+							conceptType.Name = objectTypeName;
+							foreach (ConceptTypeReferencesConceptType reference in ConceptTypeReferencesConceptType.GetLinksToReferencingConceptTypeCollection(conceptType))
+							{
+								pathFactTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(reference);
+								if (0 != (factTypeCount = pathFactTypes.Count) &&
+									null != (towardsRole = FactTypeMapsTowardsRole.GetTowardsRole(pathFactTypes[factTypeCount - 1])) &&
+									null != (oppositeRole = towardsRole.OppositeRole))
+								{
+									reference.OppositeName = ResolveRoleName(oppositeRole);
+								}
+							}
+							foreach (ConceptTypeReferencesConceptType reference in ConceptTypeReferencesConceptType.GetLinksToReferencedConceptTypeCollection(conceptType))
+							{
+								pathFactTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(reference);
+								if (0 != (factTypeCount = pathFactTypes.Count) &&
+									null != (towardsRole = FactTypeMapsTowardsRole.GetTowardsRole(pathFactTypes[factTypeCount - 1])))
+								{
+									reference.Name = ResolveRoleName(towardsRole);
+								}
+							}
+						}
+					}
+					InformationTypeFormat informationTypeFormat = InformationTypeFormatIsForValueType.GetInformationTypeFormat(objectType);
+					if (null != informationTypeFormat)
+					{
+						if (informationTypeFormat.Name != objectTypeName)
+						{
+							informationTypeFormat.Name = objectTypeName;
+							foreach (InformationType informationType in InformationType.GetLinksToConceptTypeCollection(informationTypeFormat))
+							{
+								pathFactTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(informationType);
+								if (0 != (factTypeCount = pathFactTypes.Count) &&
+									null != (towardsRole = FactTypeMapsTowardsRole.GetTowardsRole(pathFactTypes[factTypeCount - 1])) &&
+									null != (oppositeRole = towardsRole.OppositeRole))
+								{
+									informationType.Name = ResolveRoleName(oppositeRole);
+								}
+							}
+						}
+					}
+				}
+			}
+			[DelayValidatePriority(DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void UpdateChildNamesForFactTypeDelayed(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					// The naming algorithm uses readings for both link fact types and objectified fact types.
+					// Objectified fact types will not have attached concept type children, so we just validate
+					// the link fact types on a change. Defer one level in case both the link and objectified
+					// fact types are changed in the same transaction.
+					FactType factType = (FactType)element;
+					Objectification objectification;
+					if (null != (objectification = factType.Objectification))
+					{
+						foreach (FactType impliedFactType in objectification.ImpliedFactTypeCollection)
+						{
+							FrameworkDomainModel.DelayValidateElement(impliedFactType, UpdateChildNamesForFactTypeDelayedWorker);
+						}
+					}
+					else
+					{
+						FrameworkDomainModel.DelayValidateElement(factType, UpdateChildNamesForFactTypeDelayedWorker);
+					}
+				}
+			}
+			[DelayValidatePriority(1, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			private static void UpdateChildNamesForFactTypeDelayedWorker(ModelElement element)
+			{
+				if (!element.IsDeleted)
+				{
+					FactType factType = (FactType)element;
+					foreach (ConceptTypeChild child in ConceptTypeChildHasPathFactType.GetConceptTypeChild(factType))
+					{
+						LinkedElementCollection<FactType> factTypePath = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(child);
+						int pathCount;
+						RoleBase towardsRole;
+						RoleBase fromRole;
+						if (0 != (pathCount = factTypePath.Count) &&
+							factType == factTypePath[pathCount - 1] &&
+							null != (towardsRole = FactTypeMapsTowardsRole.GetTowardsRole(factType)) &&
+							null != (fromRole = towardsRole.OppositeRole))
+						{
+							string resolvedName = ResolveRoleName(fromRole);
+							ConceptTypeReferencesConceptType reference;
+							if (null != (reference = child as ConceptTypeReferencesConceptType))
+							{
+								// Match original backwards pattern
+								reference.OppositeName = resolvedName;
+								child.Name = ResolveRoleName(towardsRole);
+							}
+							else
+							{
+								child.Name = resolvedName;
+							}
+						}
+					}
 				}
 			}
 			#endregion // General validation helper methods

@@ -4,20 +4,20 @@
 		<dcl:column name="blogEntryId" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
 		</dcl:column>
-		<dcl:column name="entryTitle" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
-		</dcl:column>
 		<dcl:column name="entryBody" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER LARGE OBJECT" />
 		</dcl:column>
-		<dcl:column name="postedDate" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="TIMESTAMP" />
+		<dcl:column name="entryTitle" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
 		<dcl:column name="firstName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
 		<dcl:column name="lastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
+		</dcl:column>
+		<dcl:column name="postedDate" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="TIMESTAMP" />
 		</dcl:column>
 		<dcl:column name="blogCommentParentEntryId" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />
@@ -40,11 +40,11 @@
 		<dcl:column name="lastName" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
-		<dcl:column name="username" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
-		</dcl:column>
 		<dcl:column name="password" isNullable="false" isIdentity="false">
 			<dcl:predefinedDataType name="CHARACTER" length="32" />
+		</dcl:column>
+		<dcl:column name="username" isNullable="false" isIdentity="false">
+			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
 		<dcl:uniquenessConstraint name="User_PK" isPrimary="true">
 			<dcl:columnRef name="firstName" />

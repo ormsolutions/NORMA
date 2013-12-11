@@ -1171,7 +1171,7 @@
 		<value>Asymmetric:&#xd;&#xa;If A1 relates to A2&#xd;&#xa;   then it is impossible that A2 relates to A1.</value>
 	</data>
 	<data name="RingConstraintType.Description.Intransitive" xml:space="preserve">
-		<value>Intransitive:&#xd;&#xa;If A1 relates to A2 and A2 relates to A3&#xd;&#xa;   then it is impossible that A2 relates to A3.</value>
+		<value>Intransitive:&#xd;&#xa;If A1 relates to A2 and A2 relates to A3&#xd;&#xa;   then it is impossible that A1 relates to A3.</value>
 	</data>
 	<data name="RingConstraintType.Description.Irreflexive" xml:space="preserve">
 		<value>Irreflexive:&#xd;&#xa;No A relates to itself.</value>

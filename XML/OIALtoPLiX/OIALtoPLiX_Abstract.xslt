@@ -3,6 +3,7 @@
 	Neumont Object-Role Modeling Architect for Visual Studio
 
 	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
 
 	The use and distribution terms for this software are covered by the
 	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
@@ -15,21 +16,18 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"
-	xmlns:oil="http://schemas.orm.net/OIAL"
-	xmlns:ormdt="http://schemas.orm.net/ORMDataTypes"
+	xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
-	exclude-result-prefixes="oil ormdt"
+	exclude-result-prefixes="oial"
 	extension-element-prefixes="exsl">
 	
 	<xsl:import href="OIALtoPLiX_GlobalSupportFunctions.xslt"/>
-	<xsl:param name="OIAL"/>
+	<xsl:param name="ORM"/>
 	<xsl:output method="xml" encoding="utf-8" media-type="text/xml" indent="yes"/>
 
-	<xsl:variable name="ModelName" select="$OIAL/@name"/>
-	<xsl:variable name="ConceptTypes" select="$OIAL//oil:conceptType"/>
-	<xsl:variable name="AllProperties" select="prop:AllProperties/prop:Properties"/>
-	<xsl:variable name="AllRoleSequenceUniquenessConstraints" select="$OIAL//oil:roleSequenceUniquenessConstraint"/>
+	<xsl:variable name="OialModel" select="$ORM/oial:model"/>
+	<xsl:variable name="PropertiesRoot" select="prop:AllProperties"/>
 
 	<xsl:template match="/">
 		<plx:root>
@@ -38,105 +36,127 @@
 			<plx:namespaceImport name="System.Collections.ObjectModel"/>
 			<plx:namespaceImport name="System.ComponentModel"/>
 			<plx:namespaceImport name="System.Xml"/>
+			<xsl:variable name="modelName" select="string($PropertiesRoot/@modelName)"/>
+			<xsl:variable name="allProperties" select="$PropertiesRoot/prop:Properties"/>
 			<xsl:choose>
 				<xsl:when test="$DefaultNamespace">
 					<plx:namespace name="{$DefaultNamespace}">
-						<xsl:apply-templates select="$OIAL" mode="OIALtoPLiX_Abstract">
-							<xsl:with-param name="ModelContextName" select="concat($ModelName, 'Context')"/>
+						<xsl:apply-templates select="$OialModel" mode="OIALtoPLiX_Abstract">
+							<xsl:with-param name="ModelName" select="$modelName"/>
+							<xsl:with-param name="AllProperties" select="$allProperties"/>
 						</xsl:apply-templates>
 					</plx:namespace>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:apply-templates select="$OIAL" mode="OIALtoPLiX_Abstract">
-						<xsl:with-param name="ModelContextName" select="concat($ModelName, 'Context')"/>
+					<xsl:apply-templates select="$OialModel" mode="OIALtoPLiX_Abstract">
+						<xsl:with-param name="ModelName" select="$modelName"/>
+						<xsl:with-param name="AllProperties" select="$allProperties"/>
 					</xsl:apply-templates>
 				</xsl:otherwise>
 			</xsl:choose>
 		</plx:root>
 	</xsl:template>
 	<xsl:template name="GenerateCLSCompliantAttributeIfNecessary">
-		<xsl:variable name="dataTypeFragment">
+		<xsl:if test="$GenerateCLSCompliantAttribute">
+			<xsl:variable name="dataTypeFragment">
+				<xsl:choose>
+					<xsl:when test="string-length(@dataTypeName)">
+						<xsl:copy-of select="."/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:copy-of select="prop:DataType"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="dataType" select="exsl:node-set($dataTypeFragment)/child::*"/>
 			<xsl:choose>
-				<xsl:when test="string-length(@dataTypeName)">
-					<xsl:copy-of select="."/>
+				<xsl:when test="starts-with($dataType/@dataTypeName,'.u')">
+					<plx:attribute dataTypeName="CLSCompliantAttribute">
+						<plx:passParam>
+							<plx:falseKeyword/>
+						</plx:passParam>
+					</plx:attribute>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:copy-of select="prop:DataType"/>
+					<xsl:for-each select="$dataType/child::*">
+						<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
+					</xsl:for-each>
 				</xsl:otherwise>
 			</xsl:choose>
-		</xsl:variable>
-		<xsl:variable name="dataType" select="exsl:node-set($dataTypeFragment)/child::*"/>
-		<xsl:choose>
-			<xsl:when test="starts-with($dataType/@dataTypeName,'.u')">
-				<plx:attribute dataTypeName="CLSCompliantAttribute">
-					<plx:passParam>
-						<plx:falseKeyword/>
-					</plx:passParam>
-				</plx:attribute>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:for-each select="$dataType/child::*">
-					<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
-				</xsl:for-each>
-			</xsl:otherwise>
-		</xsl:choose>
+		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="oil:model" mode="OIALtoPLiX_Abstract">
-		<xsl:param name="ModelContextName"/>
-		<xsl:variable name="Model" select="."/>
+	<xsl:template match="oial:model" mode="OIALtoPLiX_Abstract">
+		<xsl:param name="ModelName"/>
+		<xsl:param name="AllProperties"/>
+		<xsl:variable name="modelContextName" select="concat($ModelName, 'Context')"/>
+		<xsl:variable name="model" select="."/>
+		<xsl:variable name="conceptTypes" select="oial:conceptTypes/oial:conceptType"/>
+		<xsl:variable name="assimilations" select="$conceptTypes/oial:children/oial:assimilatedConceptType"/>
 		<plx:namespace name="{$ModelName}">
 
-			<xsl:for-each select="$ConceptTypes">
+			<xsl:for-each select="$conceptTypes">
+				<xsl:variable name="currentProperties" select="$AllProperties[@conceptTypeId=current()/@id]"/>
 				<xsl:apply-templates select="." mode="GenerateAbstractClass">
-					<xsl:with-param name="Model" select="$Model"/>
-					<xsl:with-param name="Properties" select="$AllProperties[@conceptTypeName=current()/@name]/prop:Property"/>
-					<xsl:with-param name="ModelContextName" select="$ModelContextName"/>
+					<xsl:with-param name="Model" select="$model"/>
+					<xsl:with-param name="ConceptTypes" select="$conceptTypes"/>
+					<xsl:with-param name="Assimilations" select="$assimilations"/>
+					<xsl:with-param name="Properties" select="$currentProperties/prop:Property"/>
+					<xsl:with-param name="AllProperties" select="$AllProperties"/>
+					<xsl:with-param name="ClassNameAttribute" select="$currentProperties/@conceptTypeName"/>
+					<xsl:with-param name="ModelContextName" select="$modelContextName"/>
 				</xsl:apply-templates>
 			</xsl:for-each>
 
-			<plx:interface visibility="public" name="IHas{$ModelContextName}">
+			<plx:interface visibility="public" name="IHas{$modelContextName}">
 				<plx:leadingInfo>
-					<plx:pragma type="region" data="IHas{$ModelContextName}"/>
+					<plx:pragma type="region" data="IHas{$modelContextName}"/>
 				</plx:leadingInfo>
 				<plx:trailingInfo>
-					<plx:pragma type="closeRegion" data="IHas{$ModelContextName}"/>
+					<plx:pragma type="closeRegion" data="IHas{$modelContextName}"/>
 				</plx:trailingInfo>
 				<xsl:copy-of select="$GeneratedCodeAttribute"/>
 				<plx:property visibility="public" modifier="abstract" name="Context">
-					<plx:returns dataTypeName="{$ModelContextName}"/>
+					<plx:returns dataTypeName="{$modelContextName}"/>
 					<plx:get/>
 				</plx:property>
 			</plx:interface>
-			<plx:interface visibility="public" name="I{$ModelContextName}">
+			<plx:interface visibility="public" name="I{$modelContextName}">
 				<plx:leadingInfo>
-					<plx:pragma type="region" data="I{$ModelContextName}"/>
+					<plx:pragma type="region" data="I{$modelContextName}"/>
 				</plx:leadingInfo>
 				<plx:trailingInfo>
-					<plx:pragma type="closeRegion" data="I{$ModelContextName}"/>
+					<plx:pragma type="closeRegion" data="I{$modelContextName}"/>
 				</plx:trailingInfo>
 				<xsl:copy-of select="$GeneratedCodeAttribute"/>
 				<xsl:call-template name="GenerateModelContextInterfaceLookupAndExternalConstraintEnforcementMembers">
-					<xsl:with-param name="Model" select="$Model"/>
+					<xsl:with-param name="ConceptTypes" select="$conceptTypes"/>
 					<xsl:with-param name="AllProperties" select="$AllProperties"/>
-					<xsl:with-param name="AllRoleSequenceUniquenessConstraints" select="$AllRoleSequenceUniquenessConstraints"/>
 				</xsl:call-template>
-				<xsl:for-each select="$ConceptTypes">
+				<xsl:for-each select="$conceptTypes">
+					<xsl:variable name="currentProperties" select="$AllProperties[@conceptTypeId=current()/@id]"/>
 					<xsl:apply-templates select="." mode="GenerateModelContextInterfaceObjectMethods">
-						<xsl:with-param name="Model" select="$Model"/>
-						<xsl:with-param name="Properties" select="$AllProperties[@conceptTypeName=current()/@name]/prop:Property"/>
+						<xsl:with-param name="Model" select="$model"/>
+						<xsl:with-param name="ClassName" select="string($currentProperties/@conceptTypeName)"/>
+						<!-- This intentionally ignores identity fields. -->
+						<xsl:with-param name="Properties" select="$currentProperties/prop:Property"/>
 					</xsl:apply-templates>
 				</xsl:for-each>
 			</plx:interface>
 		</plx:namespace>
 	</xsl:template>
 
-	<xsl:template match="oil:conceptType" mode="GenerateAbstractClass">
+	<xsl:template match="oial:conceptType" mode="GenerateAbstractClass">
 		<xsl:param name="Model"/>
+		<xsl:param name="ConceptTypes"/>
+		<xsl:param name="Assimilations"/>
 		<xsl:param name="Properties"/>
+		<xsl:param name="AllProperties"/>
+		<xsl:param name="ClassNameAttribute"/>
 		<xsl:param name="ModelContextName"/>
-		<xsl:variable name="className" select="@name"/>
-		<xsl:variable name="eventProperties" select="$Properties[not(@isCollection='true') and not(@isIdentity='true')]"/>
+		<xsl:variable name="className" select="string($ClassNameAttribute)"/>
+		<xsl:variable name="classParamName" select="string($ClassNameAttribute/../@conceptTypeParamName)"/>
+		<xsl:variable name="eventProperties" select="$Properties[not(@isCollection[.='true' or .=1])]"/>
 		<plx:class visibility="public" modifier="abstract" partial="true" name="{$className}">
 			<plx:leadingInfo>
 				<plx:pragma type="region" data="{$className}"/>
@@ -159,22 +179,17 @@
 
 			<xsl:if test="$eventProperties">
 				<plx:pragma type="region" data="{$className} Property Change Events"/>
-				<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 				<plx:field visibility="private" name="{$PrivateMemberPrefix}events" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
 				<plx:property visibility="private" name="Events">
-					<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 					<plx:returns dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
 					<plx:get>
 						<xsl:choose>
 							<xsl:when test="$SynchronizeEventAddRemove">
-								<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 								<plx:local name="localEvents" dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
 								<plx:return>
-									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 										<plx:nullFallbackOperator>
 											<plx:left>
-												<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 												<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 													<plx:assign>
 														<plx:left>
@@ -187,25 +202,21 @@
 												</plx:inlineStatement>
 											</plx:left>
 											<plx:right>
-												<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 												<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 													<plx:nullFallbackOperator>
 														<plx:left>
 															<plx:callStatic type="methodCall" name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
-																<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 																<plx:passMemberTypeParam dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System"/>
 																<plx:passParam type="inOut">
 																	<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
 																</plx:passParam>
 																<plx:passParam>
-																	<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 																	<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 																		<plx:assign>
 																			<plx:left>
 																				<plx:nameRef type="local" name="localEvents"/>
 																			</plx:left>
 																			<plx:right>
-																				<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 																				<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 																					<plx:passParam>
 																						<plx:value type="i4" data="{count($eventProperties) * 2}"/>
@@ -232,21 +243,18 @@
 							</xsl:when>
 							<xsl:otherwise>
 								<plx:return>
-									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 									<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 										<plx:nullFallbackOperator>
 											<plx:left>
 												<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
 											</plx:left>
 											<plx:right>
-												<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 												<plx:inlineStatement dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 													<plx:assign>
 														<plx:left>
 															<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}events"/>
 														</plx:left>
 														<plx:right>
-															<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 															<plx:callNew dataTypeIsSimpleArray="true" dataTypeName="Delegate" dataTypeQualifier="System">
 																<plx:passParam>
 																	<plx:value type="i4" data="{count($eventProperties) * 2}"/>
@@ -293,26 +301,40 @@
 			</xsl:call-template>
 			<plx:pragma type="closeRegion" data="{$className} ToString Methods"/>
 
-			<xsl:variable name="parentConceptType" select="parent::oil:conceptType"/>
-			<xsl:if test="$parentConceptType">
-				<xsl:variable name="parentConceptTypeName" select="$parentConceptType/@name"/>
-				<plx:pragma type="region" data="{$className} Parent Support ({$parentConceptTypeName})"/>
-				<xsl:for-each select="$parentConceptType">
+			<xsl:variable name="referencedByAssimilations" select="$Assimilations[@ref=current()/@id]"/>
+			<xsl:if test="$referencedByAssimilations">
+				<xsl:variable name="ancestorAssimilationsFragment">
+					<xsl:call-template name="GetAncestorAssimilations">
+						<xsl:with-param name="Assimilations" select="$Assimilations"/>
+						<xsl:with-param name="AssimilatedConceptTypeId" select="string(@id)"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="ancestorAssimilations" select="exsl:node-set($ancestorAssimilationsFragment)/child::*"/>
+				<xsl:for-each select="$referencedByAssimilations/../..">
+					<xsl:variable name="parentConceptTypeName" select="string($AllProperties[@conceptTypeId=current()/@id]/@conceptTypeName)"/>
+					<plx:pragma type="region" data="{$className} Parent Support ({$parentConceptTypeName})"/>
 					<xsl:variable name="conversionCallObjectFragment">
-						<plx:nameRef type="parameter" name="{$className}"/>
+						<plx:nameRef type="parameter" name="{$classParamName}"/>
 					</xsl:variable>
-					<!-- Generate an implicit cast operator for the oil:conceptType elements that contain this oil:conceptType -->
+					<!-- Generate an implicit cast operator for the oial:conceptType elements that assimilate this oial:conceptType -->
 					<xsl:call-template name="GenerateImplicitConversionOperators">
+						<xsl:with-param name="Assimilations" select="$Assimilations"/>
+						<xsl:with-param name="AncestorAssimilations" select="$ancestorAssimilations"/>
+						<xsl:with-param name="AllProperties" select="$AllProperties"/>
 						<xsl:with-param name="SourceClassName" select="$className"/>
+						<xsl:with-param name="SourceClassParamName" select="$classParamName"/>
+						<xsl:with-param name="DestinationClassName" select="$parentConceptTypeName"/>
 						<xsl:with-param name="ConversionCallObject" select="exsl:node-set($conversionCallObjectFragment)/child::*"/>
 					</xsl:call-template>
 					<!-- Generate a virtual property for each of the parent's properties (except for the one for this class, because that would be awkward). -->
 					<!-- Also exclude any properties that have the same name as a property in this class. -->
-					<xsl:variable name="excludeNames" select="$className | $Properties/@name"/>
+					<xsl:variable name="excludeNames" select="$ClassNameAttribute | $Properties/@conceptTypeName"/>
 					<xsl:call-template name="GenerateVirtualPropertiesFromParents">
 						<xsl:with-param name="ExcludeNames" select="$excludeNames"/>
 						<xsl:with-param name="AllProperties" select="$AllProperties"/>
-						<xsl:with-param name="ParentProperties" select="$AllProperties[@conceptTypeName=$parentConceptTypeName]/prop:Property[not(@name=$excludeNames)]"/>
+						<xsl:with-param name="Assimilations" select="$Assimilations"/>
+						<xsl:with-param name="AncestorAssimilations" select="$ancestorAssimilations"/>
+						<xsl:with-param name="ParentProperties" select="$AllProperties[@conceptTypeId=current()/@id]/prop:Property[not(@name=$excludeNames)]"/>
 						<xsl:with-param name="PropertyCallObject">
 							<plx:callInstance type="property" name="{$parentConceptTypeName}">
 								<plx:callObject>
@@ -321,29 +343,31 @@
 							</plx:callInstance>
 						</xsl:with-param>
 					</xsl:call-template>
+					<plx:pragma type="closeRegion" data="{$className} Parent Support ({$parentConceptTypeName})"/>
 				</xsl:for-each>
-				<plx:pragma type="closeRegion" data="{$className} Parent Support ({$parentConceptTypeName})"/>
 			</xsl:if>
 
-			<xsl:variable name="childConceptTypes" select="child::oil:conceptType"/>
+			<xsl:variable name="childConceptTypes" select="$ConceptTypes[@id=current()/oial:children/oial:assimilatedConceptType/@ref]"/>
 			<xsl:if test="$childConceptTypes">
-				<xsl:variable name="countChildConceptTypes" select="count($childConceptTypes)"/>
-				<xsl:if test="$countChildConceptTypes > 1">
+				<xsl:variable name="multipleChildren" select="count($childConceptTypes) > 1"/>
+				<xsl:if test="$multipleChildren">
 					<plx:pragma type="region" data="{$className} Children Support"/>
 				</xsl:if>
-				<xsl:for-each select="child::oil:conceptType">
-					<!-- Generate an explicit cast operator for all oil:conceptType elements nested within this oil:conceptType -->
-					<xsl:variable name="childConceptTypeName" select="@name"/>
+				<xsl:for-each select="$childConceptTypes">
+					<!-- Generate an explicit cast operator for all oial:conceptType elements assimilated by this oial:conceptType -->
+					<xsl:variable name="childConceptTypeNameElement" select="$AllProperties[@conceptTypeId=current()/@id]"/>
+					<xsl:variable name="childConceptTypeName" select="string($childConceptTypeNameElement/@conceptTypeName)"/>
+					<xsl:variable name="childConceptTypeParamName" select="string($childConceptTypeNameElement/@conceptTypeParamName)"/>
 					<plx:pragma type="region" data="{$className} Child Support ({$childConceptTypeName})"/>
 					<plx:operatorFunction type="castNarrow">
-						<plx:param dataTypeName="{$className}" name="{$className}"/>
+						<plx:param dataTypeName="{$className}" name="{$classParamName}"/>
 						<plx:returns dataTypeName="{$childConceptTypeName}"/>
 						<plx:branch>
 							<plx:condition>
 								<plx:binaryOperator type="identityEquality">
 									<plx:left>
 										<plx:cast type="exceptionCast" dataTypeName=".object">
-											<plx:nameRef type="parameter" name="{$className}"/>
+											<plx:nameRef type="parameter" name="{$classParamName}"/>
 										</plx:cast>
 									</plx:left>
 									<plx:right>
@@ -355,7 +379,7 @@
 								<plx:nullKeyword/>
 							</plx:return>
 						</plx:branch>
-						<plx:local name="{$childConceptTypeName}" dataTypeName="{$childConceptTypeName}"/>
+						<plx:local name="{$childConceptTypeParamName}" dataTypeName="{$childConceptTypeName}"/>
 						<plx:branch>
 							<plx:condition>
 								<plx:binaryOperator type="identityEquality">
@@ -364,12 +388,12 @@
 											<plx:inlineStatement dataTypeName="{$childConceptTypeName}">
 												<plx:assign>
 													<plx:left>
-														<plx:nameRef type="local" name="{$childConceptTypeName}"/>
+														<plx:nameRef type="local" name="{$childConceptTypeParamName}"/>
 													</plx:left>
 													<plx:right>
 														<plx:callInstance type="property" name="{$childConceptTypeName}">
 															<plx:callObject>
-																<plx:nameRef type="parameter" name="{$className}"/>
+																<plx:nameRef type="parameter" name="{$classParamName}"/>
 															</plx:callObject>
 														</plx:callInstance>
 													</plx:right>
@@ -387,24 +411,27 @@
 							</plx:throw>
 						</plx:branch>
 						<plx:return>
-							<plx:nameRef type="local" name="{$childConceptTypeName}"/>
+							<plx:nameRef type="local" name="{$childConceptTypeParamName}"/>
 						</plx:return>
 					</plx:operatorFunction>
 					<!-- Generate an explicit cast operator for for each of the child's children -->
 					<xsl:variable name="conversionCallObjectFragment">
 						<plx:cast type="exceptionCast" dataTypeName="{$childConceptTypeName}">
-							<plx:nameRef type="parameter" name="{$className}"/>
+							<plx:nameRef type="parameter" name="{$classParamName}"/>
 						</plx:cast>
 					</xsl:variable>
-					<xsl:for-each select="child::oil:conceptType">
+					<xsl:for-each select="$ConceptTypes[@id=oial:children/oial:assimiliatedConceptType/@ref]">
 						<xsl:call-template name="GenerateExplicitConversionOperators">
+							<xsl:with-param name="ConceptTypes" select="$ConceptTypes"/>
+							<xsl:with-param name="AllProperties" select="$AllProperties"/>
 							<xsl:with-param name="SourceClassName" select="$className"/>
+							<xsl:with-param name="SourceClassParamName" select="$classParamName"/>
 							<xsl:with-param name="ConversionCallObject" select="exsl:node-set($conversionCallObjectFragment)/child::*"/>
 						</xsl:call-template>
 					</xsl:for-each>
 					<plx:pragma type="closeRegion" data="{$className} Child Support ({$childConceptTypeName})"/>
 				</xsl:for-each>
-				<xsl:if test="$countChildConceptTypes > 1">
+				<xsl:if test="$multipleChildren">
 					<plx:pragma type="closeRegion" data="{$className} Children Support"/>
 				</xsl:if>
 			</xsl:if>
@@ -412,11 +439,15 @@
 	</xsl:template>
 
 	<xsl:template name="GenerateImplicitConversionOperators">
+		<xsl:param name="Assimilations"/>
+		<xsl:param name="AncestorAssimilations"/>
+		<xsl:param name="AllProperties"/>
 		<xsl:param name="SourceClassName"/>
+		<xsl:param name="SourceClassParamName"/>
+		<xsl:param name="DestinationClassName"/>
 		<xsl:param name="ConversionCallObject"/>
-		<xsl:variable name="destinationClassName" select="@name"/>
 		<xsl:variable name="conversionCodeFragment">
-			<plx:callInstance type="property" name="{$destinationClassName}">
+			<plx:callInstance type="property" name="{$DestinationClassName}">
 				<plx:callObject>
 					<xsl:copy-of select="$ConversionCallObject"/>
 				</plx:callObject>
@@ -424,14 +455,14 @@
 		</xsl:variable>
 		<xsl:variable name="conversionCode" select="exsl:node-set($conversionCodeFragment)/child::*"/>
 		<plx:operatorFunction type="castWiden">
-			<plx:param dataTypeName="{$SourceClassName}" name="{$SourceClassName}"/>
-			<plx:returns dataTypeName="{$destinationClassName}"/>
+			<plx:param dataTypeName="{$SourceClassName}" name="{$SourceClassParamName}"/>
+			<plx:returns dataTypeName="{$DestinationClassName}"/>
 			<plx:branch>
 				<plx:condition>
 					<plx:binaryOperator type="identityEquality">
 						<plx:left>
 							<plx:cast type="exceptionCast" dataTypeName=".object">
-								<plx:nameRef type="parameter" name="{$SourceClassName}"/>
+								<plx:nameRef type="parameter" name="{$SourceClassParamName}"/>
 							</plx:cast>
 						</plx:left>
 						<plx:right>
@@ -447,18 +478,26 @@
 				<xsl:copy-of select="$conversionCode"/>
 			</plx:return>
 		</plx:operatorFunction>
-		<xsl:for-each select="parent::oil:conceptType">
+		<xsl:for-each select="$Assimilations[@ref=current()/@id][not(@id=$AncestorAssimilations[@alternateParentPath]/@id)]/../..">
 			<xsl:call-template name="GenerateImplicitConversionOperators">
+				<xsl:with-param name="Assimilations" select="$Assimilations"/>
+				<xsl:with-param name="AncestorAssimilations" select="$AncestorAssimilations"/>
+				<xsl:with-param name="AllProperties" select="$AllProperties"/>
 				<xsl:with-param name="SourceClassName" select="$SourceClassName"/>
+				<xsl:with-param name="SourceClassParamName" select="$SourceClassParamName"/>
+				<xsl:with-param name="DestinationClassName" select="string($AllProperties[@conceptTypeId=current()/@id]/@conceptTypeName)"/>
 				<xsl:with-param name="ConversionCallObject" select="$conversionCode"/>
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template name="GenerateExplicitConversionOperators">
+		<xsl:param name="ConceptTypes"/>
+		<xsl:param name="AllProperties"/>
 		<xsl:param name="SourceClassName"/>
+		<xsl:param name="SourceClassParamName"/>
 		<xsl:param name="ConversionCallObject"/>
-		<xsl:variable name="destinationClassName" select="@name"/>
+		<xsl:variable name="destinationClassName" select="$AllProperties[@conceptTypeId=current()/@id]/@conceptTypeName"/>
 		<xsl:variable name="conversionCodeFragment">
 			<plx:cast type="exceptionCast" dataTypeName="{$destinationClassName}">
 				<xsl:copy-of select="$ConversionCallObject"/>
@@ -466,14 +505,14 @@
 		</xsl:variable>
 		<xsl:variable name="conversionCode" select="exsl:node-set($conversionCodeFragment)/child::*"/>
 		<plx:operatorFunction type="castNarrow">
-			<plx:param dataTypeName="{$SourceClassName}" name="{$SourceClassName}"/>
+			<plx:param dataTypeName="{$SourceClassName}" name="{$SourceClassParamName}"/>
 			<plx:returns dataTypeName="{$destinationClassName}"/>
 			<plx:branch>
 				<plx:condition>
 					<plx:binaryOperator type="identityEquality">
 						<plx:left>
 							<plx:cast type="exceptionCast" dataTypeName=".object">
-								<plx:nameRef type="parameter" name="{$SourceClassName}"/>
+								<plx:nameRef type="parameter" name="{$SourceClassParamName}"/>
 							</plx:cast>
 						</plx:left>
 						<plx:right>
@@ -489,9 +528,12 @@
 				<xsl:copy-of select="$conversionCode"/>
 			</plx:return>
 		</plx:operatorFunction>
-		<xsl:for-each select="child::oil:conceptType">
+		<xsl:for-each select="$ConceptTypes[@id=current()/oial:children/oial:assimilatedConceptType/@ref]">
 			<xsl:call-template name="GenerateExplicitConversionOperators">
+				<xsl:with-param name="ConceptTypes" select="$ConceptTypes"/>
+				<xsl:with-param name="AllProperties" select="$AllProperties"/>
 				<xsl:with-param name="SourceClassName" select="$SourceClassName"/>
+				<xsl:with-param name="SourceClassParamName" select="$SourceClassParamName"/>
 				<xsl:with-param name="ConversionCallObject" select="$conversionCode"/>
 			</xsl:call-template>
 		</xsl:for-each>
@@ -500,11 +542,14 @@
 	<xsl:template name="GenerateVirtualPropertiesFromParents">
 		<xsl:param name="ExcludeNames"/>
 		<xsl:param name="AllProperties"/>
+		<xsl:param name="Assimilations"/>
+		<xsl:param name="AncestorAssimilations"/>
 		<xsl:param name="ParentProperties"/>
 		<xsl:param name="PropertyCallObject"/>
-		<xsl:variable name="thisParentConceptTypeName" select="@name"/>
-		<xsl:for-each select="$ParentProperties">
-			<plx:property visibility="public" modifier="virtual" name="{@name}">
+		<xsl:variable name="thisParentConceptTypeName" select="$AllProperties[@conceptTypeId=current()/@id]/@conceptTypeName"/>
+		<xsl:for-each select="$ParentProperties[not((@childId | @reverseChildId)=$AncestorAssimilations/@id)]">
+			<xsl:variable name="propertyName" select="@name"/>
+			<plx:property visibility="public" modifier="virtual" name="{$propertyName}">
 				<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
 				<plx:returns>
 					<xsl:copy-of select="prop:DataType/@*"/>
@@ -512,18 +557,18 @@
 				</plx:returns>
 				<plx:get>
 					<plx:return>
-						<plx:callInstance type="property" name="{@name}">
+						<plx:callInstance type="property" name="{$propertyName}">
 							<plx:callObject>
 								<xsl:copy-of select="$PropertyCallObject"/>
 							</plx:callObject>
 						</plx:callInstance>
 					</plx:return>
 				</plx:get>
-				<xsl:if test="not(@isCollection='true') and not(@isIdentity='true')">
+				<xsl:if test="not(@isCollection[.='true' or .=1])">
 					<plx:set>
 						<plx:assign>
 							<plx:left>
-								<plx:callInstance type="property" name="{@name}">
+								<plx:callInstance type="property" name="{$propertyName}">
 									<plx:callObject>
 										<xsl:copy-of select="$PropertyCallObject"/>
 									</plx:callObject>
@@ -536,8 +581,8 @@
 					</plx:set>
 				</xsl:if>
 			</plx:property>
-			<xsl:if test="not(@isCollection='true') and not(@isIdentity='true')">
-				<plx:event visibility="public" name="{@name}Changing">
+			<xsl:if test="not(@isCollection[.='true' or .=1])">
+				<plx:event visibility="public" name="{$propertyName}Changing">
 					<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
 					<plx:param name="sender" dataTypeName=".object"/>
 					<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
@@ -558,7 +603,7 @@
 					<plx:onAdd>
 						<plx:attachEvent>
 							<plx:left>
-								<plx:callInstance type="event" name="{@name}Changing">
+								<plx:callInstance type="event" name="{$propertyName}Changing">
 									<plx:callObject>
 										<xsl:copy-of select="$PropertyCallObject"/>
 									</plx:callObject>
@@ -572,7 +617,7 @@
 					<plx:onRemove>
 						<plx:detachEvent>
 							<plx:left>
-								<plx:callInstance type="event" name="{@name}Changing">
+								<plx:callInstance type="event" name="{$propertyName}Changing">
 									<plx:callObject>
 										<xsl:copy-of select="$PropertyCallObject"/>
 									</plx:callObject>
@@ -584,7 +629,7 @@
 						</plx:detachEvent>
 					</plx:onRemove>
 				</plx:event>
-				<plx:event visibility="public" name="{@name}Changed">
+				<plx:event visibility="public" name="{$propertyName}Changed">
 					<xsl:call-template name="GenerateCLSCompliantAttributeIfNecessary"/>
 					<plx:param name="sender" dataTypeName=".object"/>
 					<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
@@ -605,7 +650,7 @@
 					<plx:onAdd>
 						<plx:attachEvent>
 							<plx:left>
-								<plx:callInstance type="event" name="{@name}Changed">
+								<plx:callInstance type="event" name="{$propertyName}Changed">
 									<plx:callObject>
 										<xsl:copy-of select="$PropertyCallObject"/>
 									</plx:callObject>
@@ -619,7 +664,7 @@
 					<plx:onRemove>
 						<plx:detachEvent>
 							<plx:left>
-								<plx:callInstance type="event" name="{@name}Changed">
+								<plx:callInstance type="event" name="{$propertyName}Changed">
 									<plx:callObject>
 										<xsl:copy-of select="$PropertyCallObject"/>
 									</plx:callObject>
@@ -633,20 +678,53 @@
 				</plx:event>
 			</xsl:if>
 		</xsl:for-each>
-		<xsl:for-each select="parent::oil:conceptType">
-			<xsl:variable name="parentParentConceptTypeName" select="@name"/>
-			<xsl:variable name="excludeNames" select="$ExcludeNames | $parentParentConceptTypeName | $ParentProperties/@name"/>
+		<xsl:for-each select="$Assimilations[@ref=current()/@id][not(@id=$AncestorAssimilations[@alternateParentPath]/@id)]/../..">
+			<xsl:variable name="parentParentConceptTypeNameAttribute" select="$AllProperties[@conceptTypeId=current()/@id]/@conceptTypeName"/>
+			<xsl:variable name="excludeNames" select="$ExcludeNames | $parentParentConceptTypeNameAttribute | $ParentProperties/@conceptTypeName"/>
 			<xsl:call-template name="GenerateVirtualPropertiesFromParents">
 				<xsl:with-param name="ExcludeNames" select="$excludeNames"/>
 				<xsl:with-param name="AllProperties" select="$AllProperties"/>
-				<xsl:with-param name="ParentProperties" select="$AllProperties[@conceptTypeName=$parentParentConceptTypeName]/prop:Property[not(@name=$excludeNames)]"/>
+				<xsl:with-param name="Assimilations" select="$Assimilations"/>
+				<xsl:with-param name="AncestorAssimilations" select="$AncestorAssimilations"/>
+				<xsl:with-param name="ParentProperties" select="$AllProperties[@conceptTypeId=current()/@id]/prop:Property[not(@name=$excludeNames)]"/>
 				<xsl:with-param name="PropertyCallObject">
-					<plx:callInstance type="property" name="{$parentParentConceptTypeName}">
+					<plx:callInstance type="property" name="{$parentParentConceptTypeNameAttribute}">
 						<plx:callObject>
 							<xsl:copy-of select="$PropertyCallObject"/>
 						</plx:callObject>
 					</plx:callInstance>
 				</xsl:with-param>
+			</xsl:call-template>
+		</xsl:for-each>
+	</xsl:template>
+	<xsl:template name="GetAncestorAssimilations">
+		<xsl:param name="Assimilations"/>
+		<xsl:param name="AssimilatedConceptTypeId"/>
+		<xsl:variable name="ancestorAssimilationsFragment">
+			<xsl:call-template name="GetAncestorAssimilationsWorker">
+				<xsl:with-param name="Assimilations" select="$Assimilations"/>
+				<xsl:with-param name="AssimilatedConceptTypeId" select="$AssimilatedConceptTypeId"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:for-each select="exsl:node-set($ancestorAssimilationsFragment)/child::*">
+			<xsl:copy>
+				<xsl:copy-of select="@*"/>
+				<xsl:if test="preceding-sibling::*/@parentConceptTypeId=@parentConceptTypeId">
+					<xsl:attribute name="alternateParentPath">
+						<xsl:text>true</xsl:text>
+					</xsl:attribute>
+				</xsl:if>
+			</xsl:copy>
+		</xsl:for-each>
+	</xsl:template>
+	<xsl:template name="GetAncestorAssimilationsWorker">
+		<xsl:param name="Assimilations"/>
+		<xsl:param name="AssimilatedConceptTypeId"/>
+		<xsl:for-each select="$Assimilations[@ref=$AssimilatedConceptTypeId]">
+			<oial:parentAssimilation id="{@id}" childConceptTypeId="{@ref}" parentConceptTypeId="{../../@id}"/>
+			<xsl:call-template name="GetAncestorAssimilationsWorker">
+				<xsl:with-param name="Assimilations" select="$Assimilations"/>
+				<xsl:with-param name="AssimilatedConceptTypeId" select="string(../../@id)"/>
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
@@ -683,7 +761,7 @@
 				<xsl:copy-of select="prop:DataType/child::*"/>
 			</plx:returns>
 			<plx:get/>
-			<xsl:if test="not(@isCollection='true') and not(@isIdentity='true')">
+			<xsl:if test="not(@isCollection[.='true' or .=1])">
 				<plx:set/>
 			</xsl:if>
 		</plx:property>
@@ -692,7 +770,6 @@
 	<xsl:template name="GenerateInterlockedDelegateMethod">
 		<xsl:param name="MethodName"/>
 		<plx:function visibility="private" modifier="static" name="InterlockedDelegate{$MethodName}">
-			<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next three lines. -->
 			<plx:param type="inOut" name="location" dataTypeName="Delegate" dataTypeQualifier="System"/>
 			<plx:param name="value" dataTypeName="Delegate" dataTypeQualifier="System"/>
 			<plx:local name="currentHandler" dataTypeName="Delegate" dataTypeQualifier="System"/>
@@ -702,16 +779,13 @@
 						<plx:left>
 							<plx:cast type="exceptionCast" dataTypeName=".object">
 								<plx:callStatic type="methodCall" name="CompareExchange" dataTypeName="Interlocked" dataTypeQualifier="System.Threading">
-									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 									<plx:passMemberTypeParam dataTypeName="Delegate" dataTypeQualifier="System"/>
 									<plx:passParam type="inOut">
 										<plx:nameRef type="parameter" name="location"/>
 									</plx:passParam>
 									<plx:passParam>
-										<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 										<plx:callStatic type="methodCall" name="{$MethodName}" dataTypeName="Delegate" dataTypeQualifier="System">
 											<plx:passParam>
-												<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 												<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System">
 													<plx:assign>
 														<plx:left>
@@ -842,13 +916,11 @@
 					</plx:callStatic>
 				</xsl:when>
 				<xsl:otherwise>
-					<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 					<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true"/>
 					<plx:assign>
 						<plx:left>
 							<plx:callInstance type="arrayIndexer" name=".implied">
 								<plx:callObject>
-									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 									<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
 										<plx:assign>
 											<plx:left>
@@ -866,7 +938,6 @@
 							</plx:callInstance>
 						</plx:left>
 						<plx:right>
-							<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 							<plx:callStatic type="methodCall" name="Combine" dataTypeName="Delegate" dataTypeQualifier="System">
 								<plx:passParam>
 									<plx:callInstance type="arrayIndexer" name=".implied">
@@ -892,7 +963,6 @@
 	<xsl:template name="GetPropertyChangeEventOnRemoveCode">
 		<xsl:param name="ClassName"/>
 		<xsl:param name="EventIndex"/>
-		<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 		<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true"/>
 		<plx:branch>
 			<plx:condition>
@@ -913,7 +983,6 @@
 						<plx:binaryOperator type="identityInequality">
 							<plx:left>
 								<plx:cast type="exceptionCast" dataTypeName=".object">
-									<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 									<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
 										<plx:assign>
 											<plx:left>
@@ -964,7 +1033,6 @@
 							</plx:callInstance>
 						</plx:left>
 						<plx:right>
-							<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 							<plx:callStatic type="methodCall" name="Remove" dataTypeName="Delegate" dataTypeQualifier="System">
 								<plx:passParam>
 									<plx:callInstance type="arrayIndexer" name=".implied">
@@ -1010,7 +1078,6 @@
 					</plx:param>
 				</xsl:when>
 			</xsl:choose>
-			<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 			<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true"/>
 			<plx:local name="eventHandler" dataTypeName="EventHandler">
 				<plx:passTypeParam dataTypeName="Property{$ChangeType}EventArgs">
@@ -1028,7 +1095,6 @@
 							<plx:binaryOperator type="identityInequality">
 								<plx:left>
 									<plx:cast type="exceptionCast" dataTypeName=".object">
-										<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 										<plx:inlineStatement dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true">
 											<plx:assign>
 												<plx:left>
@@ -1382,7 +1448,6 @@
 											</plx:passParam>
 											<plx:passParam>
 												<plx:cast type="exceptionCast" dataTypeName="PropertyChangedEventHandler">
-													<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 													<plx:callStatic type="methodCall" name="{$MethodName}" dataTypeName="Delegate" dataTypeQualifier="System">
 														<plx:passParam>
 															<plx:inlineStatement dataTypeName="PropertyChangedEventHandler">
@@ -1424,7 +1489,6 @@
 						</plx:left>
 						<plx:right>
 							<plx:cast type="exceptionCast" dataTypeName="PropertyChangedEventHandler">
-								<!-- PLIX_TODO: Once the PLiX formatters support keyword filtering, remove the dataTypeQualifier attribute from the next line. -->
 								<plx:callStatic type="methodCall" name="Combine" dataTypeName="Delegate" dataTypeQualifier="System">
 									<plx:passParam>
 										<plx:callThis accessor="this" type="field" name="{$PrivateMemberPrefix}propertyChangedEventHandler"/>
@@ -1444,7 +1508,7 @@
 	<xsl:template name="GenerateToString">
 		<xsl:param name="ClassName"/>
 		<xsl:param name="Properties"/>
-		<xsl:variable name="nonCollectionProperties" select="$Properties[not(@isCollection='true')]"/>
+		<xsl:variable name="nonCollectionProperties" select="$Properties[not(@isCollection[.='true' or .=1])]"/>
 		<plx:function visibility="public" modifier="override" overload="true" name="ToString">
 			<plx:returns dataTypeName=".string"/>
 			<plx:return>
@@ -1468,11 +1532,11 @@
 							<xsl:value-of select="concat($ClassName,'{0}{{{0}{1}')"/>
 							<xsl:for-each select="$nonCollectionProperties">
 								<xsl:value-of select="concat(@name,' = ')"/>
-								<xsl:if test="not(@isCustomType='true')">
+								<xsl:if test="not(@isCustomType[.='true' or .=1])">
 									<xsl:value-of select="'&quot;'"/>
 								</xsl:if>
 								<xsl:value-of select="concat('{',position()+1,'}')"/>
-								<xsl:if test="not(@isCustomType='true')">
+								<xsl:if test="not(@isCustomType[.='true' or .=1])">
 									<xsl:value-of select="'&quot;'"/>
 								</xsl:if>
 								<xsl:if test="not(position()=last())">
@@ -1493,7 +1557,7 @@
 					<xsl:for-each select="$nonCollectionProperties">
 						<plx:passParam>
 							<xsl:choose>
-								<xsl:when test="@isCustomType='true'">
+								<xsl:when test="@isCustomType[.='true' or .=1]">
 									<plx:string>TODO: Recursively call ToString for customTypes...</plx:string>
 								</xsl:when>
 								<xsl:otherwise>
@@ -1508,18 +1572,26 @@
 	</xsl:template>
 
 	<xsl:template name="GenerateModelContextInterfaceLookupAndExternalConstraintEnforcementMembers">
-		<xsl:param name="Model"/>
+		<xsl:param name="ConceptTypes"/>
 		<xsl:param name="AllProperties"/>
-		<xsl:param name="AllRoleSequenceUniquenessConstraints"/>
-		<!-- TODO: This will break for oil:roleSequenceUniquenessConstraint elements that contain oil:typeRef elements with more than one oil:conceptType reference by @targetConceptType. -->
-		<xsl:for-each select="$AllRoleSequenceUniquenessConstraints">
-			<xsl:variable name="uniqueConceptTypeName" select="parent::oil:conceptType/@name"/>
+		<!-- TODO: This will break for uniquenessConstraint elements that reference conceptType. -->
+		<xsl:variable name="uniquenessConstraints" select="$ConceptTypes/oial:uniquenessConstraints/oial:uniquenessConstraint"/>
+		<xsl:for-each select="$uniquenessConstraints">
+			<xsl:variable name="uniqueConceptTypePropertiesContainer" select="$AllProperties[@conceptTypeId=current()/../../@id]"/>
+			<xsl:variable name="uniqueConceptTypeName" select="string($uniqueConceptTypePropertiesContainer/@conceptTypeName)"/>
+			<xsl:variable name="uniqueConceptTypeParamName" select="string($uniqueConceptTypePropertiesContainer/@conceptTypeParamName)"/>
+			<xsl:variable name="uniqueConceptTypeProperties" select="$uniqueConceptTypePropertiesContainer/prop:*"/>
 			<xsl:variable name="paramsFragment">
-				<xsl:for-each select="oil:roleSequence/oil:typeRef">
-					<plx:param name="{@targetChild}">
-						<xsl:variable name="targetProperty" select="$AllProperties[@conceptTypeName=$uniqueConceptTypeName]/prop:Property[@name=current()/@targetChild]"/>
+				<xsl:for-each select="oial:uniquenessChild">
+					<xsl:variable name="targetProperty" select="$uniqueConceptTypeProperties[@childId=current()/@ref]"/>
+					<plx:param name="{$targetProperty/@paramName}">
 						<xsl:choose>
-							<xsl:when test="$targetProperty/@isCustomType='false' and $targetProperty/@canBeNull='true' and $targetProperty/prop:DataType/@dataTypeName='Nullable'">
+							<xsl:when test="$targetProperty[self::prop:IdentityField]">
+								<xsl:attribute name="dataTypeName">
+									<xsl:text>.i4</xsl:text>
+								</xsl:attribute>
+							</xsl:when>
+							<xsl:when test="$targetProperty[not(@isCustomType[.='true' or .=1])] and $targetProperty/@canBeNull[.='true' or .=1] and $targetProperty/prop:DataType/@dataTypeName='Nullable'">
 								<xsl:copy-of select="$targetProperty/prop:DataType/plx:passTypeParam/@*"/>
 								<xsl:copy-of select="$targetProperty/prop:DataType/plx:passTypeParam/child::*"/>
 							</xsl:when>
@@ -1531,63 +1603,45 @@
 					</plx:param>
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="params" select="exsl:node-set($paramsFragment)/child::*"/>
-			<plx:function visibility="public" modifier="abstract" name="Get{$uniqueConceptTypeName}By{@name}">
-				<xsl:copy-of select="$params"/>
-				<plx:returns dataTypeName="{$uniqueConceptTypeName}"/>
-			</plx:function>
-			<plx:function visibility="public" modifier="abstract" name="TryGet{$uniqueConceptTypeName}By{@name}">
-				<xsl:copy-of select="$params"/>
-				<plx:param type="out" name="{$uniqueConceptTypeName}" dataTypeName="{$uniqueConceptTypeName}"/>
-				<plx:returns dataTypeName=".boolean"/>
-			</plx:function>
-		</xsl:for-each>
-		<xsl:for-each select="$AllProperties/prop:Property[@isUnique='true' and not(@isCustomType='true')]">
-			<xsl:variable name="uniqueConceptTypeName" select="parent::prop:Properties/@conceptTypeName"/>
-			<xsl:variable name="paramFragment">
-				<plx:param name="{@name}">
-					<xsl:choose>
-						<xsl:when test="@isCustomType='false' and @canBeNull='true' and prop:DataType/@dataTypeName='Nullable'">
-							<xsl:copy-of select="prop:DataType/plx:passTypeParam/@*"/>
-							<xsl:copy-of select="prop:DataType/plx:passTypeParam/child::*"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:copy-of select="prop:DataType/@*"/>
-							<xsl:copy-of select="prop:DataType/child::*"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</plx:param>
+			<!-- We ignore the uniqueness name here, which is rarely informative, in favor of a list of the property
+			names used by the uniqueness constraint. -->
+			<xsl:variable name="uniquenessSignatureFragment">
+				<xsl:for-each select="oial:uniquenessChild">
+					<xsl:if test="position()!=1">
+						<xsl:text>And</xsl:text>
+					</xsl:if>
+					<xsl:value-of select="$uniqueConceptTypeProperties[@childId=current()/@ref]/@name"/>
+				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="param" select="exsl:node-set($paramFragment)/child::*"/>
-			<!-- TODO: In Get{Thing}By{Name}, {Name} should be oil:singleRoleUniquenessConstraint/@name rather than prop:Property/@name. -->
-			<plx:function visibility="public" modifier="abstract" name="Get{$uniqueConceptTypeName}By{@name}">
-				<xsl:copy-of select="$param"/>
+			<xsl:variable name="uniquenessSignature" select="string($uniquenessSignatureFragment)"/>
+			<plx:function visibility="public" modifier="abstract" name="Get{$uniqueConceptTypeName}By{$uniquenessSignature}">
+				<xsl:copy-of select="$paramsFragment"/>
 				<plx:returns dataTypeName="{$uniqueConceptTypeName}"/>
 			</plx:function>
-			<!-- TODO: In TryGet{Thing}By{Name}, {Name} should be oil:singleRoleUniquenessConstraint/@name rather than prop:Property/@name. -->
-			<plx:function visibility="public" modifier="abstract" name="TryGet{$uniqueConceptTypeName}By{@name}">
-				<xsl:copy-of select="$param"/>
-				<plx:param type="out" name="{$uniqueConceptTypeName}" dataTypeName="{$uniqueConceptTypeName}"/>
+			<plx:function visibility="public" modifier="abstract" name="TryGet{$uniqueConceptTypeName}By{$uniquenessSignature}">
+				<xsl:copy-of select="$paramsFragment"/>
+				<plx:param type="out" name="{$uniqueConceptTypeParamName}" dataTypeName="{$uniqueConceptTypeName}"/>
 				<plx:returns dataTypeName=".boolean"/>
 			</plx:function>
 		</xsl:for-each>
 	</xsl:template>
 
-	<xsl:template match="oil:conceptType" mode="GenerateModelContextInterfaceObjectMethods">
+	<xsl:template match="oial:conceptType" mode="GenerateModelContextInterfaceObjectMethods">
 		<xsl:param name="Model"/>
+		<xsl:param name="ClassName"/>
 		<xsl:param name="Properties"/>
-		<plx:function visibility="public" modifier="abstract" name="Create{@name}">
-			<xsl:for-each select="$Properties[@mandatory='alethic' and not(@isIdentity='true')]">
-				<plx:param name="{@name}">
+		<plx:function visibility="public" modifier="abstract" name="Create{$ClassName}">
+			<xsl:for-each select="$Properties[@mandatory='alethic']">
+				<plx:param name="{@paramName}">
 					<xsl:copy-of select="prop:DataType/@*"/>
 					<xsl:copy-of select="prop:DataType/child::*"/>
 				</plx:param>
 			</xsl:for-each>
-			<plx:returns dataTypeName="{@name}"/>
+			<plx:returns dataTypeName="{$ClassName}"/>
 		</plx:function>
-		<plx:property visibility="public" modifier="abstract" name="{@name}Collection">
+		<plx:property visibility="public" modifier="abstract" name="{$ClassName}Collection">
 			<plx:returns dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="{@name}"/>
+				<plx:passTypeParam dataTypeName="{$ClassName}"/>
 			</plx:returns>
 			<plx:get/>
 		</plx:property>

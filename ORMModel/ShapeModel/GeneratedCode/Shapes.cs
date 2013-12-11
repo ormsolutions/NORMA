@@ -815,6 +815,99 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		
 		#endregion
+		#region RoleNameVisibilityChanged domain property code
+		
+		/// <summary>
+		/// RoleNameVisibilityChanged domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid RoleNameVisibilityChangedDomainPropertyId = new global::System.Guid(0x54c92810, 0x43cf, 0x4aed, 0xaf, 0xab, 0x06, 0xcf, 0x32, 0x9e, 0xac, 0x77);
+		
+		/// <summary>
+		/// Gets or sets the value of RoleNameVisibilityChanged domain property.
+		/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Role
+		/// Name Visibility Changed
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RoleNameVisibilityChanged.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RoleNameVisibilityChanged.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[global::System.ComponentModel.ReadOnly(true)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("54c92810-43cf-4aed-afab-06cf329eac77")]
+		private global::System.Int64 RoleNameVisibilityChanged
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return RoleNameVisibilityChangedPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				RoleNameVisibilityChangedPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeShape.RoleNameVisibilityChanged domain property.
+		/// </summary>
+		internal sealed partial class RoleNameVisibilityChangedPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, global::System.Int64>
+		{
+			private RoleNameVisibilityChangedPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeShape.RoleNameVisibilityChanged domain property value handler.
+			/// </summary>
+			public static readonly RoleNameVisibilityChangedPropertyHandler Instance = new RoleNameVisibilityChangedPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeShape.RoleNameVisibilityChanged domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return RoleNameVisibilityChangedDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int64 GetValue(FactTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for RoleNameVisibilityChanged because its Kind is
+				// set to CustomStorage. Please provide the GetRoleNameVisibilityChangedValue()
+				// method on the domain class.
+				return element.GetRoleNameVisibilityChangedValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeShape element, global::System.Int64 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int64 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for RoleNameVisibilityChanged because its Kind is
+					// set to CustomStorage. Please provide the SetRoleNameVisibilityChangedValue()
+					// method on the domain class.
+					element.SetRoleNameVisibilityChangedValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region DisplayOrientation domain property code
 		
 		/// <summary>

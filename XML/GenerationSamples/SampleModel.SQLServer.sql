@@ -6,36 +6,36 @@ GO
 
 CREATE TABLE SampleModel.Person
 (
-	personId INTEGER IDENTITY (1, 1) NOT NULL,
-	firstName NATIONAL CHARACTER VARYING(64) NOT NULL,
-	lastName NATIONAL CHARACTER VARYING(64) NOT NULL,
-	"date" DATETIME NOT NULL,
-	mandatoryUniqueDecimal DECIMAL(9,0) CHECK (mandatoryUniqueDecimal BETWEEN 4000 AND 20000) NOT NULL,
-	mandatoryUniqueString NATIONAL CHARACTER(11) NOT NULL,
-	mandatoryUniqueTinyInt TINYINT NOT NULL,
-	genderCode NATIONAL CHARACTER(1) CHECK (genderCode IN (N'M', N'F')) NOT NULL,
-	mandatoryNonUniqueTinyInt TINYINT NOT NULL,
-	mandatoryNonUniqueUnconstrainedDecimal DECIMAL(38,38) NOT NULL,
-	mandatoryNonUniqueUnconstrainedFloat FLOAT NOT NULL,
-	optionalUniqueString NATIONAL CHARACTER(11),
-	ownsCar INTEGER CHECK (ownsCar >= 0),
-	optionalUniqueDecimal DECIMAL(9,0),
-	optionalUniqueTinyInt TINYINT,
-	wife INTEGER,
-	childPersonBirthOrderNr INTEGER CHECK (childPersonBirthOrderNr >= 0 AND childPersonBirthOrderNr >= 1),
-	childPersonFather INTEGER,
-	childPersonMother INTEGER,
-	ColorARGB INTEGER,
-	hatTypeStyle NATIONAL CHARACTER VARYING(256),
-	isDead BIT,
-	hasParents BIT,
-	optionalNonUniqueTinyInt TINYINT,
-	valueType1DoesSomethingElseWith INTEGER,
-	deathDate DATETIME,
-	deathCause NATIONAL CHARACTER VARYING(14) CHECK (deathCause IN (N'natural', N'not so natural')),
-	deathNaturalDeathIsFromProstateCancer BIT,
-	deathUnnaturalDeathIsViolent BIT,
-	deathUnnaturalDeathIsBloody BIT,
+	personId int IDENTITY (1, 1) NOT NULL,
+	"date" datetime NOT NULL,
+	firstName nvarchar(64) NOT NULL,
+	genderCode nchar(1) CHECK (genderCode IN (N'M', N'F')) NOT NULL,
+	lastName nvarchar(64) NOT NULL,
+	mandatoryNonUniqueTinyInt tinyint NOT NULL,
+	mandatoryNonUniqueUnconstrainedDecimal decimal(38,38) NOT NULL,
+	mandatoryNonUniqueUnconstrainedFloat float NOT NULL,
+	mandatoryUniqueDecimal decimal(9,0) CHECK (mandatoryUniqueDecimal BETWEEN 4000 AND 20000) NOT NULL,
+	mandatoryUniqueString nchar(11) NOT NULL,
+	mandatoryUniqueTinyInt tinyint NOT NULL,
+	childPersonBirthOrderNr int CHECK (childPersonBirthOrderNr >= 0 AND childPersonBirthOrderNr >= 1),
+	childPersonFather int,
+	childPersonMother int,
+	optionalUniqueDecimal decimal(9,0),
+	optionalUniqueString nchar(11),
+	optionalUniqueTinyInt tinyint,
+	ownsCar int CHECK (ownsCar >= 0),
+	wife int,
+	colorARGB int,
+	deathCause nvarchar(14) CHECK (deathCause IN (N'natural', N'not so natural')),
+	deathDate datetime,
+	deathNaturalDeathIsFromProstateCancer bit,
+	deathUnnaturalDeathIsBloody bit,
+	deathUnnaturalDeathIsViolent bit,
+	hasParents bit,
+	hatTypeStyle nvarchar(256),
+	isDead bit,
+	optionalNonUniqueTinyInt tinyint,
+	valueType1DoesSomethingElseWith int,
 	CONSTRAINT Person_PK PRIMARY KEY(personId),
 	CONSTRAINT Person_UC1 UNIQUE(firstName, "date"),
 	CONSTRAINT Person_UC2 UNIQUE(lastName, "date"),
@@ -44,8 +44,8 @@ CREATE TABLE SampleModel.Person
 	CONSTRAINT Person_UC10 UNIQUE(mandatoryUniqueTinyInt),
 	CONSTRAINT Person_mandatoryUniqueDecimal_RoleValueConstraint2 CHECK (mandatoryUniqueDecimal BETWEEN 9000 AND 10000),
 	CONSTRAINT Person_optionalUniqueDecimal_RoleValueConstraint1 CHECK (optionalUniqueDecimal BETWEEN 100 AND 4000),
-	CONSTRAINT Person_Death_MandatoryGroup CHECK (deathCause IS NOT NULL OR deathCause IS NULL AND deathDate IS NULL AND deathNaturalDeathIsFromProstateCancer IS NULL AND deathUnnaturalDeathIsViolent IS NULL AND deathUnnaturalDeathIsBloody IS NULL),
-	CONSTRAINT Person_ChildPerson_MandatoryGroup CHECK (childPersonBirthOrderNr IS NOT NULL AND childPersonMother IS NOT NULL AND childPersonFather IS NOT NULL OR childPersonBirthOrderNr IS NULL AND childPersonMother IS NULL AND childPersonFather IS NULL)
+	CONSTRAINT Person_Death_MandatoryGroup CHECK (deathCause IS NOT NULL OR deathDate IS NULL AND deathNaturalDeathIsFromProstateCancer IS NULL AND deathCause IS NULL AND deathUnnaturalDeathIsViolent IS NULL AND deathUnnaturalDeathIsBloody IS NULL),
+	CONSTRAINT Person_ChildPerson_MandatoryGroup CHECK (childPersonMother IS NOT NULL AND childPersonBirthOrderNr IS NOT NULL AND childPersonFather IS NOT NULL OR childPersonMother IS NULL AND childPersonBirthOrderNr IS NULL AND childPersonFather IS NULL)
 )
 GO
 
@@ -136,8 +136,8 @@ GO
 
 CREATE TABLE SampleModel.Task
 (
-	taskId INTEGER IDENTITY (1, 1) NOT NULL,
-	personId INTEGER NOT NULL,
+	taskId int IDENTITY (1, 1) NOT NULL,
+	personId int NOT NULL,
 	CONSTRAINT Task_PK PRIMARY KEY(taskId)
 )
 GO
@@ -145,8 +145,8 @@ GO
 
 CREATE TABLE SampleModel.ValueType1
 (
-	"value" INTEGER NOT NULL,
-	doesSomethingWithPerson INTEGER,
+	"value" int NOT NULL,
+	doesSomethingWithPerson int,
 	CONSTRAINT ValueType1_PK PRIMARY KEY("value")
 )
 GO
@@ -154,31 +154,31 @@ GO
 
 CREATE TABLE SampleModel.PersonDrivesCar
 (
-	drivesCar INTEGER CHECK (drivesCar >= 0) NOT NULL,
-	drivenByPerson INTEGER NOT NULL,
+	drivenByPerson int NOT NULL,
+	drivesCar int CHECK (drivesCar >= 0) NOT NULL,
 	CONSTRAINT PersonDrivesCar_PK PRIMARY KEY(drivesCar, drivenByPerson)
 )
 GO
 
 
-CREATE TABLE SampleModel.PersonBoughtCarFromPersonDate
+CREATE TABLE SampleModel.PersonBoughtCarFromPersonOnDate
 (
-	carSold INTEGER CHECK (carSold >= 0) NOT NULL,
-	buyer INTEGER NOT NULL,
-	seller INTEGER NOT NULL,
-	saleDate DATETIME NOT NULL,
-	CONSTRAINT PersonBoughtCarFromPersonDate_PK PRIMARY KEY(buyer, carSold, seller),
-	CONSTRAINT PersonBoughtCarFromPersonDate_UC1 UNIQUE(carSold, saleDate, buyer),
-	CONSTRAINT PersonBoughtCarFromPersonDate_UC2 UNIQUE(saleDate, seller, carSold)
+	buyer int NOT NULL,
+	carSold int CHECK (carSold >= 0) NOT NULL,
+	seller int NOT NULL,
+	saleDate datetime NOT NULL,
+	CONSTRAINT PersonBoughtCarFromPersonOnDate_PK PRIMARY KEY(buyer, carSold, seller),
+	CONSTRAINT PersonBoughtCarFromPersonOnDate_UC1 UNIQUE(carSold, saleDate, buyer),
+	CONSTRAINT PersonBoughtCarFromPersonOnDate_UC2 UNIQUE(saleDate, seller, carSold)
 )
 GO
 
 
 CREATE TABLE SampleModel.Review
 (
-	car INTEGER CHECK (car >= 0) NOT NULL,
-	criterion NATIONAL CHARACTER VARYING(64) NOT NULL,
-	nr INTEGER CHECK (nr >= 0 AND nr IN (9, 10, 12) OR nr BETWEEN 1 AND 7 OR nr BETWEEN 14 AND 16 OR nr >= 18) NOT NULL,
+	car int CHECK (car >= 0) NOT NULL,
+	criterion nvarchar(64) NOT NULL,
+	nr int CHECK (nr >= 0 AND nr IN (9, 10, 12) OR nr BETWEEN 1 AND 7 OR nr BETWEEN 14 AND 16 OR nr >= 18) NOT NULL,
 	CONSTRAINT Review_PK PRIMARY KEY(car, criterion)
 )
 GO
@@ -186,8 +186,8 @@ GO
 
 CREATE TABLE SampleModel.PersonHasNickName
 (
-	nickName NATIONAL CHARACTER VARYING(64) NOT NULL,
-	personId INTEGER NOT NULL,
+	nickName nvarchar(64) NOT NULL,
+	personId int NOT NULL,
 	CONSTRAINT PersonHasNickName_PK PRIMARY KEY(nickName, personId)
 )
 GO
@@ -221,11 +221,11 @@ ALTER TABLE SampleModel.PersonDrivesCar ADD CONSTRAINT PersonDrivesCar_FK FOREIG
 GO
 
 
-ALTER TABLE SampleModel.PersonBoughtCarFromPersonDate ADD CONSTRAINT PersonBoughtCarFromPersonDate_FK1 FOREIGN KEY (buyer) REFERENCES SampleModel.Person (personId) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE SampleModel.PersonBoughtCarFromPersonOnDate ADD CONSTRAINT PersonBoughtCarFromPersonOnDate_FK1 FOREIGN KEY (buyer) REFERENCES SampleModel.Person (personId) ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
 
 
-ALTER TABLE SampleModel.PersonBoughtCarFromPersonDate ADD CONSTRAINT PersonBoughtCarFromPersonDate_FK2 FOREIGN KEY (seller) REFERENCES SampleModel.Person (personId) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE SampleModel.PersonBoughtCarFromPersonOnDate ADD CONSTRAINT PersonBoughtCarFromPersonOnDate_FK2 FOREIGN KEY (seller) REFERENCES SampleModel.Person (personId) ON DELETE NO ACTION ON UPDATE NO ACTION
 GO
 
 

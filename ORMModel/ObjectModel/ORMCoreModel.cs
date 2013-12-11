@@ -62,7 +62,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	[VerbalizationOptionProvider("VerbalizationOptions")]
-	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener, IPermanentAutomatedElementFilterProvider, IDynamicColorSetConsumer
+	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener, IPermanentAutomatedElementFilterProvider, IDynamicColorSetConsumer, IRegisterSignalChanges
 	{
 		#region Static Survey Data
 		private static readonly Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
@@ -1424,6 +1424,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetDynamicColorSet(renderingType);
 		}
 		#endregion // IDynamicColorSetConsumer implementation
+		#region IRegisterSignalChanges Implementation
+		/// <summary>
+		/// Implements <see cref="IRegisterSignalChanges.GetSignalPropertyChanges"/>
+		/// </summary>
+		protected IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> GetSignalPropertyChanges()
+		{
+			// These properties are used as signals only and should not affect the visibility of a transaction
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(FactType.NameChangedDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(FactTypeInstance.NameChangedDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(ObjectTypeInstance.NameChangedDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(ValueConstraint.TextChangedDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(CardinalityConstraint.TextChangedDomainPropertyId, null);
+		}
+		IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> IRegisterSignalChanges.GetSignalPropertyChanges()
+		{
+			return GetSignalPropertyChanges();
+		}
+		#endregion // IRegisterSignalChanges Implementation
 	}
 	#region IModelErrorOwner Implementations
 	partial class FactTypeHasFactTypeInstance : IModelErrorOwnerPath

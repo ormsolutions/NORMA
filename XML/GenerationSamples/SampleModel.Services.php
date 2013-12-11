@@ -146,6 +146,84 @@ if (!class_exists('PersonService')) {
 		}
 	}
 }
+class MalePersonServiceBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!isset()) {
+			instance = new MalePersonService();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		return MalePersonDAO::getInstance()->getAll();
+	}
+	
+	public function getSingle( $Person_id) {
+		return MalePersonDAO::getInstance()->getSingle($Person_id);
+	}
+	
+	public function insert(MalePerson $MalePerson) {
+		return MalePersonDAO::getInstance()->insert($MalePerson);
+	}
+	
+	public function update(MalePerson $MalePerson) {
+		return MalePersonDAO::getInstance()->update($MalePerson);
+	}
+	
+	public function delete(MalePerson $MalePerson) {
+		return MalePersonDAO::getInstance()->delete($MalePerson);
+	}
+}
+if (!class_exists('MalePersonService')) {
+	class MalePersonService extends MalePersonServiceBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
+class FemalePersonServiceBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!isset()) {
+			instance = new FemalePersonService();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		return FemalePersonDAO::getInstance()->getAll();
+	}
+	
+	public function getSingle( $Person_id) {
+		return FemalePersonDAO::getInstance()->getSingle($Person_id);
+	}
+	
+	public function insert(FemalePerson $FemalePerson) {
+		return FemalePersonDAO::getInstance()->insert($FemalePerson);
+	}
+	
+	public function update(FemalePerson $FemalePerson) {
+		return FemalePersonDAO::getInstance()->update($FemalePerson);
+	}
+	
+	public function delete(FemalePerson $FemalePerson) {
+		return FemalePersonDAO::getInstance()->delete($FemalePerson);
+	}
+}
+if (!class_exists('FemalePersonService')) {
+	class FemalePersonService extends FemalePersonServiceBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
 class TaskServiceBase {
 	private static $instance;
 	
@@ -262,6 +340,84 @@ class DeathServiceBase {
 }
 if (!class_exists('DeathService')) {
 	class DeathService extends DeathServiceBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
+class NaturalDeathServiceBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!isset()) {
+			instance = new NaturalDeathService();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		return NaturalDeathDAO::getInstance()->getAll();
+	}
+	
+	public function getSingle() {
+		return NaturalDeathDAO::getInstance()->getSingle();
+	}
+	
+	public function insert(NaturalDeath $NaturalDeath) {
+		return NaturalDeathDAO::getInstance()->insert($NaturalDeath);
+	}
+	
+	public function update(NaturalDeath $NaturalDeath) {
+		return NaturalDeathDAO::getInstance()->update($NaturalDeath);
+	}
+	
+	public function delete(NaturalDeath $NaturalDeath) {
+		return NaturalDeathDAO::getInstance()->delete($NaturalDeath);
+	}
+}
+if (!class_exists('NaturalDeathService')) {
+	class NaturalDeathService extends NaturalDeathServiceBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
+class UnnaturalDeathServiceBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!isset()) {
+			instance = new UnnaturalDeathService();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		return UnnaturalDeathDAO::getInstance()->getAll();
+	}
+	
+	public function getSingle() {
+		return UnnaturalDeathDAO::getInstance()->getSingle();
+	}
+	
+	public function insert(UnnaturalDeath $UnnaturalDeath) {
+		return UnnaturalDeathDAO::getInstance()->insert($UnnaturalDeath);
+	}
+	
+	public function update(UnnaturalDeath $UnnaturalDeath) {
+		return UnnaturalDeathDAO::getInstance()->update($UnnaturalDeath);
+	}
+	
+	public function delete(UnnaturalDeath $UnnaturalDeath) {
+		return UnnaturalDeathDAO::getInstance()->delete($UnnaturalDeath);
+	}
+}
+if (!class_exists('UnnaturalDeathService')) {
+	class UnnaturalDeathService extends UnnaturalDeathServiceBase {
 		public function __construct() {
 			parent::__construct();
 		}

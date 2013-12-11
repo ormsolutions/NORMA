@@ -107,152 +107,144 @@
       <DependentUpon>SampleModel.orm</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup Condition="Exists('SampleModel.orm')">
-    <None Include="SampleModel.Abstract.PLiX.xml">
+  <ItemGroup Condition="Exists('BlogDemo.orm')">
+    <None Include="BlogDemo.Abstract.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>CLIPropertiesToPLiXAbstract</ORMGenerator>
-      <LastGenOutput>SampleModel.Abstract.PLiX.cs</LastGenOutput>
     </None>
-    <None Include="SampleModel.CLIProperties.xml">
+    <None Include="BlogDemo.CLIProperties.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoCLIProperties</ORMGenerator>
     </None>
-    <None Include="SampleModel.CoRef.orm">
+    <None Include="BlogDemo.CoRef.orm">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>CoRefORM</ORMGenerator>
+      <SubType>Designer</SubType>
     </None>
-    <None Include="SampleModel.DataLayer.php">
+    <None Include="BlogDemo.DataLayer.php">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>PHPDataLayerPLiXtoPHP</ORMGenerator>
     </None>
-    <None Include="SampleModel.DataLayer.php.xml">
+    <None Include="BlogDemo.DataLayer.php.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoPHPDataLayerPLiX</ORMGenerator>
     </None>
-    <None Include="SampleModel.DataLayerTestForm.PLiX.xml">
+    <None Include="BlogDemo.DataLayerTestForm.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DataLayerTestForm</ORMGenerator>
-      <LastGenOutput>SampleModel.DataLayerTestForm.PLiX.cs</LastGenOutput>
+      <LastGenOutput>BlogDemo.DataLayerTestForm.PLiX.cs</LastGenOutput>
     </None>
-    <None Include="SampleModel.DataLayerTestFormInputControl.Designer.PLiX.xml">
+    <None Include="BlogDemo.DataLayerTestFormInputControl.Designer.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DataLayerTestFormInputControlDesigner</ORMGenerator>
-      <LastGenOutput>SampleModel.DataLayerTestFormInputControl.Designer.PLiX.cs</LastGenOutput>
+      <LastGenOutput>BlogDemo.DataLayerTestFormInputControl.Designer.PLiX.cs</LastGenOutput>
     </None>
-    <None Include="SampleModel.DataLayerTestFormInputControl.PLiX.xml">
+    <None Include="BlogDemo.DataLayerTestFormInputControl.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DataLayerTestFormInputControl</ORMGenerator>
-      <LastGenOutput>SampleModel.DataLayerTestFormInputControl.PLiX.cs</LastGenOutput>
+      <LastGenOutput>BlogDemo.DataLayerTestFormInputControl.PLiX.cs</LastGenOutput>
     </None>
-    <None Include="SampleModel.DB2.sql">
+    <None Include="BlogDemo.DB2.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DDILtoDB2</ORMGenerator>
     </None>
-    <None Include="SampleModel.DCIL.xml">
+    <None Include="BlogDemo.DCIL.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>ConceptualDBtoDCL</ORMGenerator>
     </None>
-    <None Include="SampleModel.DDIL.xml">
+    <None Include="BlogDemo.DDIL.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DCILtoDDIL</ORMGenerator>
     </None>
-    <None Include="SampleModel.Entities.php">
+    <None Include="BlogDemo.Entities.php">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>PHPEntitiesPLiXtoPHP</ORMGenerator>
     </None>
-    <None Include="SampleModel.Entities.php.xml">
+    <None Include="BlogDemo.Entities.php.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoPHPEntitiesPLiX</ORMGenerator>
     </None>
-    <None Include="SampleModel.Implementation.PLiX.xml">
+    <None Include="BlogDemo.Implementation.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>SampleModel.orm</DependentUpon>
-      <ORMGenerator>CLIPropertiesToPliXDataLayerSprocFree</ORMGenerator>
-      <LastGenOutput>SampleModel.Implementation.PLiX.cs</LastGenOutput>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
     </None>
-    <None Include="SampleModel.MySQL.sql">
+    <None Include="BlogDemo.MySQL.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DDILtoMySQL</ORMGenerator>
     </None>
-    <None Include="SampleModel.OIAL.xml">
+    <None Include="BlogDemo.OIAL.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>ORMtoOIAL</ORMGenerator>
     </None>
-    <None Include="SampleModel.Oracle.sql">
+    <None Include="BlogDemo.Oracle.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DDILtoOracle</ORMGenerator>
     </None>
-    <None Include="SampleModel.owl">
+    <None Include="BlogDemo.owl">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoOWL</ORMGenerator>
     </None>
-    <None Include="SampleModel.PostgreSQL.sql">
+    <None Include="BlogDemo.PostgreSQL.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
     </None>
-    <None Include="SampleModel.Proxies.php">
+    <None Include="BlogDemo.Proxies.php">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>PHPProxiesPLiXtoPHP</ORMGenerator>
     </None>
-    <None Include="SampleModel.Proxies.php.xml">
+    <None Include="BlogDemo.Proxies.php.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoPHPProxiesPLiX</ORMGenerator>
     </None>
-    <None Include="SampleModel.Services.php">
+    <None Include="BlogDemo.Services.php">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>PHPServicesPLiXtoPHP</ORMGenerator>
     </None>
-    <None Include="SampleModel.Services.php.xml">
+    <None Include="BlogDemo.Services.php.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoPHPServicesPLiX</ORMGenerator>
     </None>
-    <None Include="SampleModel.SQLServer.sql">
+    <None Include="BlogDemo.SQLServer.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DDILtoSQLServer</ORMGenerator>
     </None>
-    <None Include="SampleModel.SQLStandard.sql">
+    <None Include="BlogDemo.SQLStandard.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
     </None>
-    <None Include="SampleModel.Support.PLiX.xml">
+    <None Include="BlogDemo.xsd">
       <AutoGen>True</AutoGen>
-      <Generator>NUPlixLoader</Generator>
-      <DependentUpon>SampleModel.orm</DependentUpon>
-      <ORMGenerator>PLiXSupport</ORMGenerator>
-      <LastGenOutput>SampleModel.Support.PLiX.cs</LastGenOutput>
-    </None>
-    <None Include="SampleModel.xsd">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SampleModel.orm</DependentUpon>
+      <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>OIALtoXSD</ORMGenerator>
       <SubType>Designer</SubType>
     </None>
@@ -401,146 +393,150 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup Condition="Exists('BlogDemo.orm')">
-    <None Include="BlogDemo.Abstract.PLiX.xml">
+  <ItemGroup Condition="Exists('SampleModel.orm')">
+    <None Include="SampleModel.Abstract.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>CLIPropertiesToPLiXAbstract</ORMGenerator>
-      <LastGenOutput>BlogDemo.Abstract.PLiX.cs</LastGenOutput>
     </None>
-    <None Include="BlogDemo.CLIProperties.xml">
+    <None Include="SampleModel.CLIProperties.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoCLIProperties</ORMGenerator>
     </None>
-    <None Include="BlogDemo.CoRef.orm">
+    <None Include="SampleModel.CoRef.orm">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>CoRefORM</ORMGenerator>
-      <SubType>Designer</SubType>
     </None>
-    <None Include="BlogDemo.DataLayer.php">
+    <None Include="SampleModel.DataLayer.php">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>PHPDataLayerPLiXtoPHP</ORMGenerator>
     </None>
-    <None Include="BlogDemo.DataLayer.php.xml">
+    <None Include="SampleModel.DataLayer.php.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoPHPDataLayerPLiX</ORMGenerator>
     </None>
-    <None Include="BlogDemo.DataLayerTestForm.PLiX.xml">
+    <None Include="SampleModel.DataLayerTestForm.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DataLayerTestForm</ORMGenerator>
-      <LastGenOutput>BlogDemo.DataLayerTestForm.PLiX.cs</LastGenOutput>
+      <LastGenOutput>SampleModel.DataLayerTestForm.PLiX.cs</LastGenOutput>
     </None>
-    <None Include="BlogDemo.DataLayerTestFormInputControl.Designer.PLiX.xml">
+    <None Include="SampleModel.DataLayerTestFormInputControl.Designer.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DataLayerTestFormInputControlDesigner</ORMGenerator>
-      <LastGenOutput>BlogDemo.DataLayerTestFormInputControl.Designer.PLiX.cs</LastGenOutput>
+      <LastGenOutput>SampleModel.DataLayerTestFormInputControl.Designer.PLiX.cs</LastGenOutput>
     </None>
-    <None Include="BlogDemo.DataLayerTestFormInputControl.PLiX.xml">
+    <None Include="SampleModel.DataLayerTestFormInputControl.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DataLayerTestFormInputControl</ORMGenerator>
-      <LastGenOutput>BlogDemo.DataLayerTestFormInputControl.PLiX.cs</LastGenOutput>
+      <LastGenOutput>SampleModel.DataLayerTestFormInputControl.PLiX.cs</LastGenOutput>
     </None>
-    <None Include="BlogDemo.DB2.sql">
+    <None Include="SampleModel.DB2.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoDB2</ORMGenerator>
     </None>
-    <None Include="BlogDemo.DCIL.xml">
+    <None Include="SampleModel.DCIL.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>ConceptualDBtoDCL</ORMGenerator>
     </None>
-    <None Include="BlogDemo.DDIL.xml">
+    <None Include="SampleModel.DDIL.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DCILtoDDIL</ORMGenerator>
     </None>
-    <None Include="BlogDemo.Entities.php">
+    <None Include="SampleModel.Entities.php">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>PHPEntitiesPLiXtoPHP</ORMGenerator>
     </None>
-    <None Include="BlogDemo.Entities.php.xml">
+    <None Include="SampleModel.Entities.php.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoPHPEntitiesPLiX</ORMGenerator>
     </None>
-    <None Include="BlogDemo.Implementation.PLiX.xml">
+    <None Include="SampleModel.Implementation.PLiX.xml">
       <AutoGen>True</AutoGen>
       <Generator>NUPlixLoader</Generator>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
-      <ORMGenerator>CLIPropertiesToPliXDataLayerSprocFree</ORMGenerator>
-      <LastGenOutput>BlogDemo.Implementation.PLiX.cs</LastGenOutput>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
     </None>
-    <None Include="BlogDemo.MySQL.sql">
+    <None Include="SampleModel.MySQL.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoMySQL</ORMGenerator>
     </None>
-    <None Include="BlogDemo.OIAL.xml">
+    <None Include="SampleModel.OIAL.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>ORMtoOIAL</ORMGenerator>
     </None>
-    <None Include="BlogDemo.Oracle.sql">
+    <None Include="SampleModel.Oracle.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoOracle</ORMGenerator>
     </None>
-    <None Include="BlogDemo.owl">
+    <None Include="SampleModel.owl">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoOWL</ORMGenerator>
     </None>
-    <None Include="BlogDemo.PostgreSQL.sql">
+    <None Include="SampleModel.PostgreSQL.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoPostgreSQL</ORMGenerator>
     </None>
-    <None Include="BlogDemo.Proxies.php">
+    <None Include="SampleModel.Proxies.php">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>PHPProxiesPLiXtoPHP</ORMGenerator>
     </None>
-    <None Include="BlogDemo.Proxies.php.xml">
+    <None Include="SampleModel.Proxies.php.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoPHPProxiesPLiX</ORMGenerator>
     </None>
-    <None Include="BlogDemo.Services.php">
+    <None Include="SampleModel.Services.php">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>PHPServicesPLiXtoPHP</ORMGenerator>
     </None>
-    <None Include="BlogDemo.Services.php.xml">
+    <None Include="SampleModel.Services.php.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoPHPServicesPLiX</ORMGenerator>
     </None>
-    <None Include="BlogDemo.SQLServer.sql">
+    <None Include="SampleModel.SQLServer.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoSQLServer</ORMGenerator>
     </None>
-    <None Include="BlogDemo.SQLStandard.sql">
+    <None Include="SampleModel.SQLStandard.sql">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>DDILtoSQLStandard</ORMGenerator>
     </None>
-    <None Include="BlogDemo.xsd">
+    <None Include="SampleModel.Support.PLiX.xml">
       <AutoGen>True</AutoGen>
-      <DependentUpon>BlogDemo.orm</DependentUpon>
+      <Generator>NUPlixLoader</Generator>
+      <DependentUpon>SampleModel.orm</DependentUpon>
+      <ORMGenerator>PLiXSupport</ORMGenerator>
+      <LastGenOutput>SampleModel.Support.PLiX.cs</LastGenOutput>
+    </None>
+    <None Include="SampleModel.xsd">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>OIALtoXSD</ORMGenerator>
       <SubType>Designer</SubType>
     </None>

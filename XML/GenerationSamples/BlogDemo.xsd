@@ -38,6 +38,8 @@
 	<xs:complexType name="BlogEntryIdentifier">
 		<xs:attribute name="BlogEntry_Id" use="required" type="oxs:BlogEntry_Id" />
 	</xs:complexType>
+	<xs:complexType name="BlogCommentIdentifier" />
+	<xs:complexType name="NonCommentEntryIdentifier" />
 	<xs:complexType name="UserIdentifier">
 		<xs:attribute name="firstName" use="required" type="oxs:Name" />
 		<xs:attribute name="lastName" use="required" type="oxs:Name" />
@@ -60,6 +62,8 @@
 		<xs:complexContent>
 			<xs:extension base="oxs:BlogEntryIdentifier">
 				<xs:sequence>
+					<xs:element name="BlogComment" type="oxs:BlogCommentIdentifier" />
+					<xs:element name="NonCommentEntry" type="oxs:NonCommentEntryIdentifier" />
 					<xs:element name="userId" type="oxs:UserIdentifier" />
 				</xs:sequence>
 				<xs:attribute name="EntryTitle" type="oxs:EntryTitle" use="required" />

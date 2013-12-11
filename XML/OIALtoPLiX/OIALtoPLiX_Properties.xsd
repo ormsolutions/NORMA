@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:odt="http://schemas.orm.net/ORMDataTypes" xmlns:oil="http://schemas.orm.net/OIAL" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" targetNamespace="urn:schemas-orm-net:PLiX:CLI:Properties" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.0">
+<xs:schema
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:oial="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core"
+	xmlns:odt="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core"
+	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
+	xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties"
+	targetNamespace="urn:schemas-orm-net:PLiX:CLI:Properties"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified"
+	version="1.0">
 	<xs:annotation>
 		<xs:appinfo source="zlib/libpng License Copyright Notice">
 			Copyright © Neumont University. All rights reserved.
+			Copyright © ORM Solutions, LLC. All rights reserved.
 
 			This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
 			Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
@@ -10,33 +20,47 @@
 			2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 			3. This notice may not be removed or altered from any source distribution.
 		</xs:appinfo>
-		<xs:appinfo source="Contributors">Kevin M. Owen, Jaron Briggs, Benjamin Kiefer, Roland Sanidad</xs:appinfo>
+		<xs:appinfo source="Contributors">Kevin M. Owen, Jaron Briggs, Benjamin Kiefer, Roland Sanidad, Matthew Curland</xs:appinfo>
 	</xs:annotation>
-	<xs:import namespace="http://schemas.orm.net/OIAL"/>
 	<xs:import namespace="http://schemas.neumont.edu/CodeGeneration/PLiX"/>
 
 	<xs:element name="AllProperties">
 		<xs:annotation>
-			<xs:documentation>A collection of Property elements for an oil:model</xs:documentation>
+			<xs:documentation>A collection of Property elements for an oial:model</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="prop:Properties" maxOccurs="unbounded" minOccurs="0"/>
 			</xs:sequence>
+			<xs:attribute name="modelName" type="plx:simpleNameType">
+				<xs:annotation>
+					<xs:documentation>A normalized model name based on the oial model name.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="Properties">
 		<xs:annotation>
-			<xs:documentation>A collection of Property elements for an oil:conceptType.</xs:documentation>
+			<xs:documentation>A collection of Property elements for an oial:conceptType.</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:choice minOccurs="0" maxOccurs="unbounded">
 				<xs:element ref="prop:IdentityField"/>
 				<xs:element ref="prop:Property"/>
 			</xs:choice>
-			<xs:attribute name="conceptTypeName" use="required" type="xs:string">
+			<xs:attribute name="conceptTypeName" use="required" type="plx:simpleNameType">
 				<xs:annotation>
-					<xs:documentation>The name of the oil:conceptType that this Properties element is for.</xs:documentation>
+					<xs:documentation>The name of the oial:conceptType that this Properties element is for, normalized so that it is a valid name in code.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="conceptTypeParamName" use="required" type="plx:simpleNameType">
+				<xs:annotation>
+					<xs:documentation>A version of the concept type name to use with parameters and fields.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="conceptTypeId" use="required" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The id of the oial:conceptType that this Properties element is for.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -49,6 +73,18 @@
 			<xs:field xpath="@name"/>
 		</xs:key>
 	</xs:element>
+	<xs:attributeGroup name="PropertyNameAttributes">
+		<xs:attribute name="name" use="required" type="plx:simpleNameType">
+			<xs:annotation>
+				<xs:documentation>The name of this property based on the associate oial:conceptTypeChild, normalized so that it is a valid code name.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="paramName" use="required" type="plx:simpleNameType">
+			<xs:annotation>
+				<xs:documentation>A version of the property name to use with parameters and fields.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
 	<xs:element name="IdentityField">
 		<xs:annotation>
 			<xs:documentation>Represents a CLI field for an identity property.</xs:documentation>
@@ -56,9 +92,10 @@
 			<xs:documentation>It can be ignored for other implementations where it is not relevant (e.g. in-memory).</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
-			<xs:attribute name="name" use="required" type="xs:token">
+			<xs:attributeGroup ref="prop:PropertyNameAttributes"/>
+			<xs:attribute name="childId" use="required" type="xs:string">
 				<xs:annotation>
-					<xs:documentation>The name of this IdentityField.</xs:documentation>
+					<xs:documentation>The identifier for the associated oial:conceptTypeChild for this child element.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -71,41 +108,59 @@
 			<xs:sequence>
 				<xs:element ref="prop:DataType"/>
 			</xs:sequence>
-			<xs:attribute name="name" use="required" type="xs:token">
+			<xs:attributeGroup ref="prop:PropertyNameAttributes"/>
+			<xs:attribute name="childId" use="optional" type="xs:string">
 				<xs:annotation>
-					<xs:documentation>The name of this Property.</xs:documentation>
+					<xs:documentation>The identifier for the associated oial:conceptTypeChild for this child element. Use either this or the reverseChildId attribute.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="mandatory" use="required" type="oil:mandatory">
+			<xs:attribute name="reverseChildId" use="optional" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The identifier for the associated oial:conceptTypeChild that references this element. Use either this or the childId attribute.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="mandatory" use="required">
 				<xs:annotation>
 					<xs:documentation>Whether this Property is alethicly mandatory, deonticly mandatory, or not mandatory.</xs:documentation>
 				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="alethic"/>
+						<xs:enumeration value="deontic"/>
+						<xs:enumeration value="false"/>
+					</xs:restriction>
+				</xs:simpleType>
 			</xs:attribute>
-			<xs:attribute name="isUnique" use="required" type="oil:canonicalBoolean">
+			<xs:attribute name="isUnique" use="required" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Whether this Property (on its own) uniquely identifies its parent.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="isCollection" use="required" type="oil:canonicalBoolean">
+			<xs:attribute name="isCollection" use="required" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Whether this Property is a collection.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="isCustomType" use="required" type="oil:canonicalBoolean">
+			<xs:attribute name="isCustomType" use="required" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>If true, the data type of this Property is a custom-generated type which should be notified when this property changes.</xs:documentation>
 					<xs:documentation>Note that a Property can have both @isCollection and @isCutomType be true, meaning that it is a collection of custom types.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="canBeNull" use="required" type="oil:canonicalBoolean">
+			<xs:attribute name="canBeNull" use="required" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Can the prop:DataType contained within this prop:Property be null?</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="oppositeName" use="optional" type="xs:token">
+			<xs:attribute name="oppositeName" use="optional" type="plx:simpleNameType">
 				<xs:annotation>
-					<xs:documentation>The name of the Property that represents the other end of this relationship.</xs:documentation>
+					<xs:documentation>The name of the Property that represents the other end of this relationship, normalized to be a valid code name.</xs:documentation>
 					<xs:documentation>Note that if @isCustomType is true, this attribute must be present. If @isCustomType is false, this attribute must not be present.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="oppositeParamName" use="optional" type="plx:simpleNameType">
+				<xs:annotation>
+					<xs:documentation>A version of the oppositeName attribute to use with parameters and local variables.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
 		</xs:complexType>
@@ -122,7 +177,7 @@
 	</xs:element>
 	<xs:element name="FormatMapping">
 		<xs:annotation>
-			<xs:documentation>A mapping from an oil:informationTypeFormat to a prop:DataType (i.e. a PLiX data type).</xs:documentation>
+			<xs:documentation>A mapping from an oial:informationTypeFormat to a prop:DataType (i.e. a PLiX data type).</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence minOccurs="0">
@@ -136,15 +191,15 @@
 			</xs:sequence>
 			<xs:attribute name="name" use="required" type="xs:token">
 				<xs:annotation>
-					<xs:documentation>The name of the oil:informationTypeFormat that this prop:FormatMapping is for.</xs:documentation>
+					<xs:documentation>The name of the oial:informationTypeFormat that this prop:FormatMapping is for.</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="canBeNull" use="required" type="oil:canonicalBoolean">
+			<xs:attribute name="canBeNull" use="required" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Can the prop:DataType contained within this prop:FormatMapping be null?</xs:documentation>
 				</xs:annotation>
 			</xs:attribute>
-			<xs:attribute name="isIdentity" use="optional" default="false" type="oil:canonicalBoolean">
+			<xs:attribute name="isIdentity" use="optional" default="false" type="xs:boolean">
 				<xs:annotation>
 					<xs:documentation>Is this prop:FormatMapping for an odt:identity?</xs:documentation>
 				</xs:annotation>

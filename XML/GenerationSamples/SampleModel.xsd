@@ -126,6 +126,8 @@
 	<xs:complexType name="PersonIdentifier">
 		<xs:attribute name="Person_id" use="required" type="xs:integer" />
 	</xs:complexType>
+	<xs:complexType name="MalePersonIdentifier" />
+	<xs:complexType name="FemalePersonIdentifier" />
 	<xs:complexType name="TaskIdentifier">
 		<xs:attribute name="Task_id" use="required" type="xs:integer" />
 	</xs:complexType>
@@ -133,6 +135,8 @@
 		<xs:attribute name="ValueType1Value" use="required" type="oxs:ValueType1" />
 	</xs:complexType>
 	<xs:complexType name="DeathIdentifier" />
+	<xs:complexType name="NaturalDeathIdentifier" />
+	<xs:complexType name="UnnaturalDeathIdentifier" />
 	<xs:complexType name="PersonBoughtCarFromPersonOnDateIdentifier">
 		<xs:attribute name="Person_id" use="required" type="xs:integer" />
 		<xs:attribute name="CarSold_vin" use="required" type="oxs:vin" />
@@ -167,6 +171,8 @@
 		<xs:complexContent>
 			<xs:extension base="oxs:PersonIdentifier">
 				<xs:sequence>
+					<xs:element name="MalePerson" type="oxs:MalePersonIdentifier" />
+					<xs:element name="FemalePerson" type="oxs:FemalePersonIdentifier" />
 					<xs:element name="Husband" type="oxs:PersonIdentifier" />
 					<xs:element name="ValueType1DoesSomethingElseWith" type="oxs:ValueType1Identifier" />
 					<xs:sequence minOccurs="0">
@@ -226,7 +232,10 @@
 	<xs:complexType name="DeathFacts">
 		<xs:complexContent>
 			<xs:extension base="oxs:DeathIdentifier">
-				<xs:sequence />
+				<xs:sequence>
+					<xs:element name="NaturalDeath" type="oxs:NaturalDeathIdentifier" />
+					<xs:element name="UnnaturalDeath" type="oxs:UnnaturalDeathIdentifier" />
+				</xs:sequence>
 				<xs:attribute name="YMD" type="xs:integer" use="optional" />
 				<xs:attribute name="DeathCause_Type" type="oxs:DeathCause_Type" use="required" />
 				<xs:attribute name="Death_isinvolvedin{1}" type="" use="required" />

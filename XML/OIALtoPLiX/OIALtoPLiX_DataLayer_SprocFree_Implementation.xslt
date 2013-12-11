@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -12,6 +12,8 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
+<!-- As of changeset 1536, this transform is not currently functional and is not included in setup.
+See additional comments in OIALtoPLiX_DataLayer_Implementation.xslt. -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:import href="OIALtoPLiX_DataLayer_Implementation.xslt"/>

@@ -346,11 +346,18 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				// throw away the original build item group
 				if (_originalItemGroup != null)
 				{
+					try
+					{
 #if VISUALSTUDIO_10_0
-					_project.RemoveChild(_originalItemGroup);
+						_project.RemoveChild(_originalItemGroup);
 #else
-					_project.RemoveItemGroup(_originalItemGroup);
+						_project.RemoveItemGroup(_originalItemGroup);
 #endif
+					}
+					catch (InvalidOperationException)
+					{
+						// Swallow
+					}
 				}
 
 #if VISUALSTUDIO_10_0

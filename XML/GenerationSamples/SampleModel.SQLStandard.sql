@@ -20,35 +20,35 @@ CREATE DOMAIN SampleModel.MandatoryUniqueDecimal AS DECIMAL(9,0) CONSTRAINT Valu
 CREATE TABLE SampleModel.Person
 (
 	personId INTEGER GENERATED ALWAYS AS IDENTITY(START WITH 1 INCREMENT BY 1) NOT NULL,
-	firstName CHARACTER VARYING(64) NOT NULL,
-	lastName CHARACTER VARYING(64) NOT NULL,
 	"date" DATE NOT NULL,
-	mandatoryUniqueDecimal SampleModel.MandatoryUniqueDecimal NOT NULL,
-	mandatoryUniqueString CHARACTER(11) NOT NULL,
-	mandatoryUniqueTinyInt TINYINT NOT NULL,
+	firstName CHARACTER VARYING(64) NOT NULL,
 	genderCode SampleModel.Gender_Code NOT NULL,
+	lastName CHARACTER VARYING(64) NOT NULL,
 	mandatoryNonUniqueTinyInt TINYINT NOT NULL,
 	mandatoryNonUniqueUnconstrainedDecimal DECIMAL NOT NULL,
 	mandatoryNonUniqueUnconstrainedFloat FLOAT NOT NULL,
-	optionalUniqueString CHARACTER(11),
-	ownsCar SampleModel.vin,
-	optionalUniqueDecimal DECIMAL(9,0),
-	optionalUniqueTinyInt TINYINT,
-	wife INTEGER,
+	mandatoryUniqueDecimal SampleModel.MandatoryUniqueDecimal NOT NULL,
+	mandatoryUniqueString CHARACTER(11) NOT NULL,
+	mandatoryUniqueTinyInt TINYINT NOT NULL,
 	childPersonBirthOrderNr SampleModel.BirthOrder_Nr,
 	childPersonFather INTEGER,
 	childPersonMother INTEGER,
-	ColorARGB INTEGER,
+	optionalUniqueDecimal DECIMAL(9,0),
+	optionalUniqueString CHARACTER(11),
+	optionalUniqueTinyInt TINYINT,
+	ownsCar SampleModel.vin,
+	wife INTEGER,
+	colorARGB INTEGER,
+	deathCause SampleModel.DeathCause_Type,
+	deathDate DATE,
+	deathNaturalDeathIsFromProstateCancer BOOLEAN,
+	deathUnnaturalDeathIsBloody BOOLEAN,
+	deathUnnaturalDeathIsViolent BOOLEAN,
+	hasParents BOOLEAN,
 	hatTypeStyle CHARACTER VARYING(256),
 	isDead BOOLEAN,
-	hasParents BOOLEAN,
 	optionalNonUniqueTinyInt TINYINT,
 	valueType1DoesSomethingElseWith INTEGER,
-	deathDate DATE,
-	deathCause SampleModel.DeathCause_Type,
-	deathNaturalDeathIsFromProstateCancer BOOLEAN,
-	deathUnnaturalDeathIsViolent BOOLEAN,
-	deathUnnaturalDeathIsBloody BOOLEAN,
 	CONSTRAINT Person_PK PRIMARY KEY(personId),
 	CONSTRAINT Person_UC1 UNIQUE(firstName, "date"),
 	CONSTRAINT Person_UC2 UNIQUE(lastName, "date"),
@@ -63,8 +63,8 @@ CREATE TABLE SampleModel.Person
 	CONSTRAINT Person_UC11 UNIQUE(childPersonFather, childPersonBirthOrderNr, childPersonMother),
 	CONSTRAINT Person_mandatoryUniqueDecimal_RoleValueConstraint2 CHECK (mandatoryUniqueDecimal BETWEEN 9000 AND 10000),
 	CONSTRAINT Person_optionalUniqueDecimal_RoleValueConstraint1 CHECK (optionalUniqueDecimal BETWEEN 100 AND 4000),
-	CONSTRAINT Person_Death_MandatoryGroup CHECK (deathCause IS NOT NULL OR deathCause IS NULL AND deathDate IS NULL AND deathNaturalDeathIsFromProstateCancer IS NULL AND deathUnnaturalDeathIsViolent IS NULL AND deathUnnaturalDeathIsBloody IS NULL),
-	CONSTRAINT Person_ChildPerson_MandatoryGroup CHECK (childPersonBirthOrderNr IS NOT NULL AND childPersonMother IS NOT NULL AND childPersonFather IS NOT NULL OR childPersonBirthOrderNr IS NULL AND childPersonMother IS NULL AND childPersonFather IS NULL)
+	CONSTRAINT Person_Death_MandatoryGroup CHECK (deathCause IS NOT NULL OR deathDate IS NULL AND deathNaturalDeathIsFromProstateCancer IS NULL AND deathCause IS NULL AND deathUnnaturalDeathIsViolent IS NULL AND deathUnnaturalDeathIsBloody IS NULL),
+	CONSTRAINT Person_ChildPerson_MandatoryGroup CHECK (childPersonMother IS NOT NULL AND childPersonBirthOrderNr IS NOT NULL AND childPersonFather IS NOT NULL OR childPersonMother IS NULL AND childPersonBirthOrderNr IS NULL AND childPersonFather IS NULL)
 );
 
 CREATE TABLE SampleModel.Task
@@ -83,20 +83,20 @@ CREATE TABLE SampleModel.ValueType1
 
 CREATE TABLE SampleModel.PersonDrivesCar
 (
-	drivesCar SampleModel.vin NOT NULL,
 	drivenByPerson INTEGER NOT NULL,
+	drivesCar SampleModel.vin NOT NULL,
 	CONSTRAINT PersonDrivesCar_PK PRIMARY KEY(drivesCar, drivenByPerson)
 );
 
-CREATE TABLE SampleModel.PersonBoughtCarFromPersonDate
+CREATE TABLE SampleModel.PersonBoughtCarFromPersonOnDate
 (
-	carSold SampleModel.vin NOT NULL,
 	buyer INTEGER NOT NULL,
+	carSold SampleModel.vin NOT NULL,
 	seller INTEGER NOT NULL,
 	saleDate DATE NOT NULL,
-	CONSTRAINT PersonBoughtCarFromPersonDate_PK PRIMARY KEY(buyer, carSold, seller),
-	CONSTRAINT PersonBoughtCarFromPersonDate_UC1 UNIQUE(carSold, saleDate, buyer),
-	CONSTRAINT PersonBoughtCarFromPersonDate_UC2 UNIQUE(saleDate, seller, carSold)
+	CONSTRAINT PersonBoughtCarFromPersonOnDate_PK PRIMARY KEY(buyer, carSold, seller),
+	CONSTRAINT PersonBoughtCarFromPersonOnDate_UC1 UNIQUE(carSold, saleDate, buyer),
+	CONSTRAINT PersonBoughtCarFromPersonOnDate_UC2 UNIQUE(saleDate, seller, carSold)
 );
 
 CREATE TABLE SampleModel.Review
@@ -128,9 +128,9 @@ ALTER TABLE SampleModel.ValueType1 ADD CONSTRAINT ValueType1_FK FOREIGN KEY (doe
 
 ALTER TABLE SampleModel.PersonDrivesCar ADD CONSTRAINT PersonDrivesCar_FK FOREIGN KEY (drivenByPerson) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.PersonBoughtCarFromPersonDate ADD CONSTRAINT PersonBoughtCarFromPersonDate_FK1 FOREIGN KEY (buyer) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.PersonBoughtCarFromPersonOnDate ADD CONSTRAINT PersonBoughtCarFromPersonOnDate_FK1 FOREIGN KEY (buyer) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE SampleModel.PersonBoughtCarFromPersonDate ADD CONSTRAINT PersonBoughtCarFromPersonDate_FK2 FOREIGN KEY (seller) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE SampleModel.PersonBoughtCarFromPersonOnDate ADD CONSTRAINT PersonBoughtCarFromPersonOnDate_FK2 FOREIGN KEY (seller) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 
 ALTER TABLE SampleModel.PersonHasNickName ADD CONSTRAINT PersonHasNickName_FK FOREIGN KEY (personId) REFERENCES SampleModel.Person (personId) ON DELETE RESTRICT ON UPDATE RESTRICT;
 

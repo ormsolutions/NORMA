@@ -31,6 +31,7 @@ using ORMSolutions.ORMArchitect.Core.Shell;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
+	#region RoleNameShape class
 	public partial class RoleNameShape : ISelectionContainerFilter, IProxyDisplayProvider, IDynamicColorGeometryHost, ICustomElementDeletion
 	{
 		#region Member Variables
@@ -218,68 +219,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 		}
-
-		/// <summary>
-		/// Sets the isVisible property for the given Role
-		/// </summary>
-		private static void SetRoleNameDisplay(Role role, FactTypeShape parentShape, bool shouldDisplay, bool shouldRemove)
-		{
-			if (!shouldRemove)
-			{
-				Diagram.FixUpDiagram(role.FactType, role);
-			}
-			LinkedElementCollection<PresentationElement> pels = PresentationViewsSubject.GetPresentation(role);
-			int pelCount = pels.Count;
-			for (int i = pelCount - 1; i >= 0; --i)
-			{
-				RoleNameShape rns = pels[i] as RoleNameShape;
-				if (rns != null &&
-					(parentShape == null || rns.ParentShape == parentShape))
-				{
-					if (shouldRemove)
-					{
-						rns.Delete();
-					}
-					else
-					{
-						if (shouldDisplay)
-						{
-							rns.Show();
-						}
-						else
-						{
-							rns.Hide();
-							rns.Size = SizeD.Empty;
-						}
-					}
-				}
-			}
-		}
-		/// <summary>
-		/// Sets the isVisible for each of the Roles in the given FactType
-		/// </summary>
-		public static void SetRoleNameDisplay(FactType fact)
-		{
-			foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(fact))
-			{
-				FactTypeShape fts = element as FactTypeShape;
-				if (fts != null)
-				{
-					DisplayRoleNames display = fts.DisplayRoleNames;
-					bool asObjectType = fts.DisplayAsObjectType;
-					bool shouldDisplay = !asObjectType && display == DisplayRoleNames.On || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On);
-					bool shouldRemove = asObjectType || display == DisplayRoleNames.Off;
-					foreach (RoleBase roleBase in fact.RoleCollection)
-					{
-						Role role = roleBase as Role;
-						if (role != null && !string.IsNullOrEmpty(role.Name))
-						{
-							SetRoleNameDisplay(role, fts, shouldDisplay, shouldRemove);
-						}
-					}
-				}
-			}
-		}
 		#endregion // RoleNameShape specific
 		#region ISelectionContainerFilter Implementation
 		/// <summary>
@@ -372,4 +311,169 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		#endregion // ICustomElementDeletion Implementation
 	}
+	#endregion // RoleNameShape class
+	#region FactTypeShape class
+	partial class FactTypeShape
+	{
+		#region Role name shape display helpers
+		private long GetRoleNameVisibilityChangedValue()
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				// Subtract 1 so that we get a difference in the transaction log
+				return unchecked(tmgr.CurrentTransaction.SequenceNumber - 1);
+			}
+			else
+			{
+				return 0L;
+			}
+		}
+		private void SetRoleNameVisibilityChangedValue(long newValue)
+		{
+			// Nothing to do, we're just trying to create a transaction log entry
+		}
+		private void OnRoleNameVisibilityChanged()
+		{
+			TransactionManager tmgr = Store.TransactionManager;
+			if (tmgr.InTransaction)
+			{
+				RoleNameVisibilityChanged = tmgr.CurrentTransaction.SequenceNumber;
+			}
+		}
+		private static void RoleNameVisibilityChangedEvent(object sender, ElementPropertyChangedEventArgs e)
+		{
+			FactTypeShape factTypeShape = (FactTypeShape)e.ModelElement;
+			if (!factTypeShape.IsDeleted)
+			{
+				DisplayRoleNames display = factTypeShape.DisplayRoleNames;
+				bool shouldBeVisible = display == DisplayRoleNames.On || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On);
+				foreach (ShapeElement childShape in factTypeShape.RelativeChildShapes)
+				{
+					RoleNameShape roleNameShape;
+					if (null != (roleNameShape = childShape as RoleNameShape) &&
+						(shouldBeVisible ^ roleNameShape.IsVisible))
+					{
+						if (shouldBeVisible)
+						{
+							roleNameShape.Show();
+						}
+						else
+						{
+							roleNameShape.Hide();
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Adjust the role name display for all shapes corresponding a given fact type
+		/// </summary>
+		public static void UpdateRoleNameDisplay(FactType factType)
+		{
+			foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(factType))
+			{
+				FactTypeShape factTypeShape;
+				ORMDiagram diagram;
+				if (null != (factTypeShape = element as FactTypeShape) &&
+					null != (diagram = factTypeShape.Diagram as ORMDiagram))
+				{
+					UpdateRoleNameDisplay(factType, factTypeShape, diagram, false);
+				}
+			}
+		}
+		/// <summary>
+		/// Adjust the role name display for this shape.
+		/// </summary>
+		public void UpdateRoleNameDisplay()
+		{
+			UpdateRoleNameDisplay(false);
+		}
+		private void UpdateRoleNameDisplay(bool immediateNotification)
+		{
+			FactType factType;
+			ORMDiagram diagram;
+			if (null != (diagram = Diagram as ORMDiagram) &&
+				null != (factType = AssociatedFactType))
+			{
+				UpdateRoleNameDisplay(factType, this, diagram, immediateNotification);
+			}
+		}
+		/// <summary>
+		/// Set shape visibility for the given fact type, fact type shape, and diagram
+		/// </summary>
+		private static void UpdateRoleNameDisplay(FactType factType, FactTypeShape factTypeShape, ORMDiagram diagram, bool immediateNotification)
+		{
+			DisplayRoleNames display = factTypeShape.DisplayRoleNames;
+			bool asObjectType = factTypeShape.DisplayAsObjectType;
+			bool shouldDisplay = !asObjectType && display == DisplayRoleNames.On || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On);
+			bool shouldRemove = asObjectType || display == DisplayRoleNames.Off;
+			foreach (RoleBase roleBase in factType.RoleCollection)
+			{
+				Role role = roleBase as Role;
+				if (role != null && !string.IsNullOrEmpty(role.Name))
+				{
+					UpdateRoleNameDisplay(role, factType, factTypeShape, diagram, shouldDisplay, shouldRemove, immediateNotification);
+				}
+			}
+		}
+		/// <summary>
+		/// Set shape visibility for a role in the given fact type, fact type shape, and diagram
+		/// </summary>
+		private static void UpdateRoleNameDisplay(Role role, FactType factType, FactTypeShape factTypeShape, ORMDiagram diagram, bool shouldDisplay, bool shouldRemove, bool immediateNotification)
+		{
+			if (!shouldRemove && diagram != null)
+			{
+				diagram.FixUpLocalDiagram(factType, role);
+			}
+			LinkedElementCollection<ShapeElement> childShapes = factTypeShape.RelativeChildShapes;
+			bool notifyUpdate = false;
+			for (int i = childShapes.Count - 1; i >= 0; --i)
+			{
+				RoleNameShape roleNameShape;
+				if (null != (roleNameShape = childShapes[i] as RoleNameShape))
+				{
+					if (shouldRemove)
+					{
+						roleNameShape.Delete();
+					}
+					else
+					{
+						if (shouldDisplay)
+						{
+							if (!roleNameShape.IsVisible)
+							{
+								if (immediateNotification)
+								{
+									roleNameShape.Show();
+								}
+								else
+								{
+									notifyUpdate = true;
+								}
+							}
+						}
+						else if (roleNameShape.IsVisible)
+						{
+							if (immediateNotification)
+							{
+								roleNameShape.Hide();
+							}
+							else
+							{
+								notifyUpdate = true;
+							}
+							roleNameShape.Size = SizeD.Empty;
+						}
+					}
+				}
+			}
+			if (notifyUpdate)
+			{
+				factTypeShape.OnRoleNameVisibilityChanged();
+			}
+		}
+		#endregion // Role name shape display helpers
+	}
+	#endregion // FactTypeShape class
 }

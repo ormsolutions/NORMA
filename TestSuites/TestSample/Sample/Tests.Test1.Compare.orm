@@ -53,7 +53,7 @@
 					<orm:UniquenessConstraint ref="_F1A0A007-624A-47E1-93C9-8331D7AFA054" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_A3114D4F-7A9C-47A2-8D32-C2F97EE6B7B4" _Name="EntityType1HasEntityType1_id">
+			<orm:Fact id="_A3114D4F-7A9C-47A2-8D32-C2F97EE6B7B4" _Name="EntityType1HasEntityType1Id">
 				<orm:FactRoles>
 					<orm:Role id="_793246E9-AF54-4ED9-A067-13177BCA7955" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_DCF04807-BCD8-4DFA-8E5D-F34F7D76C0F1" />

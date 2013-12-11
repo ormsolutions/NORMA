@@ -1176,7 +1176,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Process derivation elements
 			/// </summary>
-			/// <param name="element">A <see cref="FactTypeDerivationRule"/> element</param>
+			/// <param name="element">A <see cref="FactType"/> element</param>
 			/// <param name="store">The context store</param>
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(FactType element, Store store, INotifyElementAdded notifyAdded)

@@ -317,6 +317,14 @@
     <value>DisplayRoleNames</value>
     <comment>DisplayName for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RoleNameVisibilityChanged.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Role Name Visibility Changed</value>
+    <comment>Description for DomainProperty &apos;RoleNameVisibilityChanged&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RoleNameVisibilityChanged.DisplayName" xml:space="preserve">
+    <value>Role Name Visibility Changed</value>
+    <comment>DisplayName for DomainProperty &apos;RoleNameVisibilityChanged&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayOrientation.Description" xml:space="preserve">
     <value>Determines if the fact type is shown horizontally or vertically.</value>
     <comment>Description for DomainProperty &apos;DisplayOrientation&apos; on DomainClass &apos;FactTypeShape&apos;</comment>

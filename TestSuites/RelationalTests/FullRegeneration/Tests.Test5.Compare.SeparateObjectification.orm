@@ -105,7 +105,7 @@
 			</orm:ValueType>
 		</orm:Objects>
 		<orm:Facts>
-			<orm:Fact _Name="DateHasymd" id="_A9CAFF58-E876-4A28-AC63-70D9149517F2">
+			<orm:Fact id="_A9CAFF58-E876-4A28-AC63-70D9149517F2" _Name="DateHasYmd">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_1BFE9670-E474-4600-9597-8E2B0D40508D">
 						<orm:RolePlayer ref="_E4D30723-4837-4A5C-A4EF-EC430D40814B" />
@@ -450,7 +450,7 @@
 					<orm:UniquenessConstraint ref="_64B4048E-9668-4F14-9B50-C3D31E5D69D3" />
 				</orm:InternalConstraints>
 			</orm:SubtypeFact>
-			<orm:Fact _Name="PartyHasParty_id" id="_93FCB283-1D3F-4385-802B-537B2E0B8799">
+			<orm:Fact id="_93FCB283-1D3F-4385-802B-537B2E0B8799" _Name="PartyHasPartyId">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_5E550BD2-551E-4D0F-B9DE-C1555BD30B17">
 						<orm:RolePlayer ref="_2D4603A6-1D28-4BC7-8D1D-20EF460CD608" />
@@ -614,7 +614,7 @@
 				</orm:InternalConstraints>
 				<orm:ImpliedByObjectification ref="_4E8B2829-6CEB-45F4-95E9-2876123FF5F6" />
 			</orm:ImpliedFact>
-			<orm:Fact _Name="AccuracyHasAccuracy_level" id="_F6F3DE7B-6281-4AAC-A014-44A09FEDE54D">
+			<orm:Fact id="_F6F3DE7B-6281-4AAC-A014-44A09FEDE54D" _Name="AccuracyHasAccuracyLevel">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_AEC03ECD-5CA6-4FEB-8391-6D778A271B9E">
 						<orm:RolePlayer ref="_7F443D73-2FC8-4E60-B088-891F999F6B1D" />
@@ -955,7 +955,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_131855A5-E2F4-4B93-859A-3BF1DCE156A4">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_077B1376-3174-4CAC-9C4A-B8245485F67E" AlgorithmVersion="1.008">
+			<ormtooial:AbstractionModelGenerationSetting id="_077B1376-3174-4CAC-9C4A-B8245485F67E" AlgorithmVersion="1.009">
 				<ormtooial:AbstractionModel ref="_C50661E8-E857-43F3-A1D2-9EF787A84EFE" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_CC0244D5-F67A-4DE3-8E18-4B16640FB1F1" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.014">
@@ -1084,7 +1084,7 @@
 			<oial:conceptType id="_B5009A83-5EB6-48CF-AACA-3A3D26144D77" name="Birth">
 				<oial:children>
 					<oial:informationType id="_4088FF0E-07C3-4405-BC78-8BFC846A7072" isMandatory="true" name="ymd" ref="_A0BA2829-9F3B-4717-8AE6-EADD32220FFE" />
-					<oial:relatedConceptType id="_BCA6A3F7-515A-4D4F-8E39-0FEF743398C3" name="Birth" oppositeName="Doctor" ref="_0F656FF7-FBE5-400E-BC86-747EA166E7BA" />
+					<oial:relatedConceptType id="_BCA6A3F7-515A-4D4F-8E39-0FEF743398C3" name="Birth" ref="_0F656FF7-FBE5-400E-BC86-747EA166E7BA" oppositeName="attending Doctor" />
 				</oial:children>
 				<oial:association>
 					<oial:associationChild ref="_0D1B8E80-4B79-41B0-BBA6-0B8A9E14725A" />

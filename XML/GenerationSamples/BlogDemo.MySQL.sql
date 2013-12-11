@@ -2,11 +2,11 @@
 CREATE TABLE BlogEntry
 (
 	blogEntryId INT NOT NULL,
-	entryTitle VARCHAR(30) NOT NULL,
 	entryBody LONGTEXT(1073741823) NOT NULL,
-	postedDate DATETIME NOT NULL,
+	entryTitle VARCHAR(30) NOT NULL,
 	firstName VARCHAR(30) NOT NULL,
 	lastName VARCHAR(30) NOT NULL,
+	postedDate DATETIME NOT NULL,
 	blogCommentParentEntryId INT,
 	CONSTRAINT BlogEntry_PK PRIMARY KEY(blogEntryId)
 );
@@ -15,8 +15,8 @@ CREATE TABLE `User`
 (
 	firstName VARCHAR(30) NOT NULL,
 	lastName VARCHAR(30) NOT NULL,
-	username VARCHAR(30) NOT NULL,
 	password CHAR(32) NOT NULL,
+	username VARCHAR(30) NOT NULL,
 	CONSTRAINT User_PK PRIMARY KEY(firstName, lastName)
 );
 

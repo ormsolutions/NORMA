@@ -83,6 +83,88 @@ if (!class_exists('BlogEntryService')) {
 		}
 	}
 }
+class BlogCommentServiceBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!isset()) {
+			instance = new BlogCommentService();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		return BlogCommentDAO::getInstance()->getAll();
+	}
+	
+	public function getSingle( $BlogEntry_Id) {
+		return BlogCommentDAO::getInstance()->getSingle($BlogEntry_Id);
+	}
+	
+	public function insert(BlogComment $BlogComment) {
+		return BlogCommentDAO::getInstance()->insert($BlogComment);
+	}
+	
+	public function update(BlogComment $BlogComment) {
+		return BlogCommentDAO::getInstance()->update($BlogComment);
+	}
+	
+	public function delete(BlogComment $BlogComment) {
+		return BlogCommentDAO::getInstance()->delete($BlogComment);
+	}
+}
+if (!class_exists('BlogCommentService')) {
+	class BlogCommentService extends BlogCommentServiceBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
+class NonCommentEntryServiceBase {
+	private static $instance;
+	
+	public function __construct() {
+	}
+	public static function getInstance() {
+		if (!isset()) {
+			instance = new NonCommentEntryService();
+		}
+		return instance;
+	}
+	
+	public function getAll() {
+		return NonCommentEntryDAO::getInstance()->getAll();
+	}
+	
+	public function getSingle( $BlogEntry_Id) {
+		return NonCommentEntryDAO::getInstance()->getSingle($BlogEntry_Id);
+	}
+	
+	public function insert(NonCommentEntry $NonCommentEntry) {
+		return NonCommentEntryDAO::getInstance()->insert($NonCommentEntry);
+	}
+	
+	public function update(NonCommentEntry $NonCommentEntry) {
+		return NonCommentEntryDAO::getInstance()->update($NonCommentEntry);
+	}
+	
+	public function delete(NonCommentEntry $NonCommentEntry) {
+		return NonCommentEntryDAO::getInstance()->delete($NonCommentEntry);
+	}
+	// <summary>Retrieves a collection of BlogComment objects by the given NonCommentEntry object</summary>
+	public function get_BlogComment_Collection_By_parentEntryId(/*decimal*/ $BlogEntry_Id) {
+		return NonCommentEntryDAO::getInstance()->get_BlogComment_Collection_By_parentEntryId($BlogEntry_Id);
+	}
+}
+if (!class_exists('NonCommentEntryService')) {
+	class NonCommentEntryService extends NonCommentEntryServiceBase {
+		public function __construct() {
+			parent::__construct();
+		}
+	}
+}
 class UserServiceBase {
 	private static $instance;
 	

@@ -185,6 +185,11 @@
 						<DomainEnumerationMoniker Name="DisplayRoleNames"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="RoleNameVisibilityChanged" Id="54C92810-43CF-4AED-AFAB-06CF329EAC77" GetterAccessModifier="Private" SetterAccessModifier="Private" Kind="CustomStorage" IsBrowsable="false">
+					<Type>
+						<ExternalTypeMoniker Name="/System/Int64"/>
+					</Type>
+				</DomainProperty>
 				<DomainProperty Name="DisplayOrientation" DisplayName="DisplayOrientation" Id="31A8F13E-97C6-421F-820D-001CD8E774F3" DefaultValue="Horizontal" Kind="CustomStorage" Description="Determines if the fact type is shown horizontally or vertically.">
 					<Type>
 						<DomainEnumerationMoniker Name="DisplayOrientation"/>

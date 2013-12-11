@@ -34,7 +34,7 @@
 			</orm:ValueType>
 		</orm:Objects>
 		<orm:Facts>
-			<orm:Fact _Name="AHasA_id" id="_E766D822-A30D-478D-BC6A-DCCE510ECF14">
+			<orm:Fact id="_E766D822-A30D-478D-BC6A-DCCE510ECF14" _Name="AHasAId">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_EDF24DBF-902C-456B-806F-2E0A78A13F39">
 						<orm:RolePlayer ref="_85D26641-88A0-4111-8F2F-F757202AD839" />
@@ -79,7 +79,7 @@
 					<orm:MandatoryConstraint ref="_081AA0D5-9DED-4458-8DD6-E76A7B6182CB" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="BHasB_id" id="_DA0B3F23-3D79-4F6C-A333-65AA629F8A3F">
+			<orm:Fact id="_DA0B3F23-3D79-4F6C-A333-65AA629F8A3F" _Name="BHasBId">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_B49746F1-9F4C-440B-9C1F-455C31DAA795">
 						<orm:RolePlayer ref="_C33238B6-D224-4F71-BF90-5E4827744F29" />

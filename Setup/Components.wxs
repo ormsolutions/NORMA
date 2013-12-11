@@ -586,7 +586,7 @@
 									<RegistryValue Type="string" Name="DisplayName" Value="OIAL to CLI Properties"/>
 									<RegistryValue Type="string" Name="DisplayDescription" Value="Transforms an OIAL file to CLI (Common Language Infrastructure) Properties"/>
 									<RegistryValue Type="string" Name="FileExtension" Value=".CLIProperties.xml"/>
-									<RegistryValue Type="string" Name="SourceInputFormat" Value="OIAL"/>
+									<RegistryValue Type="string" Name="SourceInputFormat" Value="ORM http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"/>
 									<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="CLIProperties"/>
 									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoCLIProperties.xslt]"/>
 									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
@@ -627,7 +627,7 @@
 									<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
 									<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
 									<RegistryValue Type="multiString" Name="ReferenceInputFormats">
-										<MultiStringValue>OIAL</MultiStringValue>
+										<MultiStringValue>ORM</MultiStringValue>
 									</RegistryValue>
 								</RegistryKey>
 
@@ -684,7 +684,7 @@
 									<RegistryValue Type="string" Name="TransformUri" Value="[#OIALtoPLiX_InMemory_Implementation.xslt]"/>
 									<RegistryValue Type="string" Name="CustomTool" Value="NUPlixLoader"/>
 									<RegistryValue Type="multiString" Name="ReferenceInputFormats">
-										<MultiStringValue>OIAL</MultiStringValue>
+										<MultiStringValue>ORM</MultiStringValue>
 									</RegistryValue>
 									<RegistryValue Type="multiString" Name="CompanionOutputFormats">
 										<MultiStringValue>PLiX_Abstract</MultiStringValue>

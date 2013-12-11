@@ -44,7 +44,7 @@
 			</orm:ValueType>
 		</orm:Objects>
 		<orm:Facts>
-			<orm:Fact _Name="AHasA_id" id="_0BFA7D5F-29A9-48F8-BA24-FDB931C3B2F6">
+			<orm:Fact id="_0BFA7D5F-29A9-48F8-BA24-FDB931C3B2F6" _Name="AHasAId">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_35169648-78F1-4895-A3E4-FDD75DACF4AD">
 						<orm:RolePlayer ref="_E9EA3062-61D1-46A4-81CE-C8BB31B85792" />
@@ -119,7 +119,7 @@
 					<orm:MandatoryConstraint ref="_97765DC4-C855-411D-8BC2-23F49F3407D8" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="CHasC_id" id="_D821851A-9145-410E-9648-192821FC80FC">
+			<orm:Fact id="_D821851A-9145-410E-9648-192821FC80FC" _Name="CHasCId">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_B8143B5C-7BE8-4E07-ABF5-34129461BD31">
 						<orm:RolePlayer ref="_015A1174-00DA-4CC0-A28A-AE1D0606C5C0" />
@@ -194,7 +194,7 @@
 					<orm:MandatoryConstraint ref="_A9AE64B2-5AD2-48E7-99F2-3C43E9EBE58D" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="BHasB_id" id="_71FB284F-6A8C-4D50-A98F-ACF6DE33AB67">
+			<orm:Fact id="_71FB284F-6A8C-4D50-A98F-ACF6DE33AB67" _Name="BHasBId">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_7E9BCC24-DC98-4CB9-92AA-3DF921D012D7">
 						<orm:RolePlayer ref="_76B6D1DD-7EC6-4EDC-9886-835718E84CC7" />

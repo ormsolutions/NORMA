@@ -68,7 +68,7 @@
 					<orm:MandatoryConstraint ref="_0B33A362-59E1-4033-812B-C7473275B34F" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_D822C99C-35EB-4165-BEBC-818DD8CD1CB4" _Name="PaperHaspaperId">
+			<orm:Fact id="_D822C99C-35EB-4165-BEBC-818DD8CD1CB4" _Name="PaperHasPaperId">
 				<orm:FactRoles>
 					<orm:Role id="_D65234B9-252D-4F58-BC50-BB5C71A36000" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_B7F0A79A-511E-4050-90DC-9E40C7486D53" />
@@ -113,7 +113,7 @@
 					<orm:UniquenessConstraint ref="_6C11723D-90D6-4AB8-A710-D55B73968A0E" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact id="_523E75EA-9D93-43D9-8316-CA871D09D5F9" _Name="PersonHaspersonId">
+			<orm:Fact id="_523E75EA-9D93-43D9-8316-CA871D09D5F9" _Name="PersonHasPersonId">
 				<orm:FactRoles>
 					<orm:Role id="_25D6DD5D-505D-4D59-9FDA-B434A4422D86" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_2594A92F-7470-4627-BEA0-6D64F734987E" />

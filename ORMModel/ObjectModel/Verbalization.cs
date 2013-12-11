@@ -1819,6 +1819,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return null;
 		}
 		/// <summary>
+		/// Get a format string to hyphen bind a reading role
+		/// </summary>
+		/// <param name="readingText">The reading text to get a format string for.</param>
+		/// <param name="roleIndex">The role index of the role in the reading text.</param>
+		/// <returns>A format string with a single replacement field if the role is hyphen bound, or <see langword="null"/> otherwise.</returns>
+		public static string GetFormatStringForHyphenBoundRole(string readingText, int roleIndex)
+		{
+			IFormatProvider formatProvider = CultureInfo.CurrentCulture;
+			Match match = MainRegex.Match(readingText);
+			while (match.Success)
+			{
+				GroupCollection groups = match.Groups;
+				string leftWord = groups["LeftHyphenWord"].Value;
+				string rightWord = groups["RightHyphenWord"].Value;
+				if (leftWord.Length != 0 || rightWord.Length != 0)
+				{
+					string stringReplaceIndex = groups["ReplaceIndex"].Value;
+					if (int.Parse(stringReplaceIndex, formatProvider) == roleIndex)
+					{
+						return NormalizeLeftHyphen(leftWord, groups["AfterLeftHyphen"].Value) + "{0}" + NormalizeRightHyphen(groups["BeforeRightHyphen"].Value, rightWord);
+					}
+				}
+				match = match.NextMatch();
+			}
+			return null;
+		}
+		/// <summary>
 		/// Combine the left hyphen bound word and the following text, collapsing the first trailing
 		/// space if a hyphen remains at the end of the left word. This enables a hyphen to be specified
 		/// in the reading without a space after it. 'FORE-- WORD' will produce FORE-WORD.
@@ -2053,6 +2080,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// when the name display separates combined names.
 		/// </summary>
 		public const string RemoveObjectTypeNameCharactersOnSeparate = "RemoveObjectTypeNameCharactersOnSeparate";
+		/// <summary>
+		/// When a name is broken into pieces, this string is prefixed to any word that should remain
+		/// fixed case. When a multi part name is combined into a single word, this prefix identifies parts
+		/// that should not have their case modified and is stripped from the result. This should be set to
+		/// a non-printable character.
+		/// This option is not displayed to the user.
+		/// </summary>
+		public const string FixedCaseWordPrefix = "FixedCaseWordPrefix";
 	}
 	#endregion // CoreVerbalizationOption class
 	#region VerbalizationHelper class
@@ -2758,6 +2793,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			ObjectTypeNameVerbalizationStyle style = (ObjectTypeNameVerbalizationStyle)verbalizationOptions[CoreVerbalizationOption.ObjectTypeNameDisplay];
 			string removeSeparatedCharacters = style != ObjectTypeNameVerbalizationStyle.AsIs ? (string)verbalizationOptions[CoreVerbalizationOption.RemoveObjectTypeNameCharactersOnSeparate] : null;
+			string fixedCaseWordPrefix = null;
+			object fixedCaseWordPrefixObject;
+			if (verbalizationOptions.TryGetValue(CoreVerbalizationOption.FixedCaseWordPrefix, out fixedCaseWordPrefixObject))
+			{
+				if (null != (fixedCaseWordPrefix = fixedCaseWordPrefixObject as string) &&
+					fixedCaseWordPrefix.Length == 0)
+				{
+					fixedCaseWordPrefix = null;
+				}
+			}
 			bool spacePending = false;
 			bool makeLower = style == ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithLower;
 			return NormalizeObjectTypeName(
@@ -2765,10 +2810,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				originalName,
 				style,
 				(removeSeparatedCharacters != null && removeSeparatedCharacters.Length == 0) ? null : removeSeparatedCharacters,
+				fixedCaseWordPrefix,
 				null,
 				ref spacePending,
 				ref makeLower);
 		}
+		private static readonly char[] StandardSplitChars = { ' ' };
 		/// <summary>
 		/// Get an object type name based on the current user settings
 		/// </summary>
@@ -2777,12 +2824,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="originalName">The name as entered in the model.</param>
 		/// <param name="style">The verbalization style for this name.</param>
 		/// <param name="removeSeparatedCharacters">A list of characters to remove from the generated name and treat as spaces. Used when separating combined names.</param>
+		/// <param name="fixedCasePrefix">A string prepended to a word when separating names to indicate that the casing
+		/// for the name is fixed. When combining words, this prefix is stripped and indicates that the casing will not be changed.</param>
 		/// <param name="builder">A string builder to append new names to. Can be null on first call, in which case a string is returned.</param>
 		/// <param name="spacePending">A space should be added before the next text part. Used with recursive calls when the style has spaces between the names. Initially false.</param>
 		/// <param name="makeLower">The initial text should be lower cased. Used with combined names with a lead lower case letter. Initially false.</param>
 		/// <returns>The name adjusted according to the current user settings, or null if a StringBuilder was specified.</returns>
-		private static string NormalizeObjectTypeName(ObjectType objectType, string originalName, ObjectTypeNameVerbalizationStyle style, string removeSeparatedCharacters, StringBuilder builder, ref bool spacePending, ref bool makeLower)
+		private static string NormalizeObjectTypeName(ObjectType objectType, string originalName, ObjectTypeNameVerbalizationStyle style, string removeSeparatedCharacters, string fixedCasePrefix, StringBuilder builder, ref bool spacePending, ref bool makeLower)
 		{
+			bool returnText;
 			if (originalName == null)
 			{
 				originalName = objectType.Name;
@@ -2808,7 +2858,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								ReferenceModeType modeType = mode.Kind.ReferenceModeType;
 								if (modeType == ReferenceModeType.General)
 								{
-									return NormalizeObjectTypeName(null, originalName, style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+									return NormalizeObjectTypeName(null, originalName, style, removeSeparatedCharacters, fixedCasePrefix, builder, ref spacePending, ref makeLower);
 								}
 								else
 								{
@@ -2817,7 +2867,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									if (match.Success) // Sanity check, should always be true, don't bother about breaking loop if not
 									{
 										int trailingTextIndex = 0;
-										bool returnText;
 										if (returnText = (builder == null))
 										{
 											builder = new StringBuilder();
@@ -2828,29 +2877,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											string before = groups["Before"].Value;
 											if (before.Length != 0)
 											{
-												NormalizeObjectTypeName(null, before, style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+												NormalizeObjectTypeName(null, before, style, removeSeparatedCharacters, fixedCasePrefix, builder, ref spacePending, ref makeLower);
 											}
 											switch (int.Parse(groups["ReplaceIndex"].Value))
 											{
 												case 0:
-													NormalizeObjectTypeName(null, preferredFor.Name, style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+													NormalizeObjectTypeName(null, preferredFor.Name, style, removeSeparatedCharacters, fixedCasePrefix, builder, ref spacePending, ref makeLower);
 													break;
 												case 1:
 													string modeName = mode.Name;
 													if (modeType == ReferenceModeType.UnitBased)
 													{
-														if (style == ObjectTypeNameVerbalizationStyle.SeparateCombinedNames &&
-															spacePending)
+														if (style == ObjectTypeNameVerbalizationStyle.SeparateCombinedNames)
 														{
-															builder.Append(" ");
+															if (spacePending)
+															{
+																builder.Append(" ");
+															}
+															if (fixedCasePrefix != null)
+															{
+																builder.Append(fixedCasePrefix);
+															}
 														}
+														
 														builder.Append(modeName);
 														makeLower = false;
 														spacePending = true;
 													}
 													else
 													{
-														NormalizeObjectTypeName(null, modeName, style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+														NormalizeObjectTypeName(null, modeName, style, removeSeparatedCharacters, fixedCasePrefix, builder, ref spacePending, ref makeLower);
 													}
 													break;
 											}
@@ -2859,7 +2915,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										}
 										if (trailingTextIndex < modeFormatString.Length)
 										{
-											NormalizeObjectTypeName(null, modeFormatString.Substring(trailingTextIndex), style, removeSeparatedCharacters, builder, ref spacePending, ref makeLower);
+											NormalizeObjectTypeName(null, modeFormatString.Substring(trailingTextIndex), style, removeSeparatedCharacters, fixedCasePrefix, builder, ref spacePending, ref makeLower);
 										}
 										return returnText ? builder.ToString() : null;
 									}
@@ -2873,13 +2929,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				case ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithLower:
 				case ObjectTypeNameVerbalizationStyle.CombineNamesLeadWithUpper:
+					if (returnText = (builder == null))
+					{
+						builder = new StringBuilder();
+					}
+					if (originalName.IndexOf(' ') != -1)
+					{
+						string[] individualNames = originalName.Split(StandardSplitChars, StringSplitOptions.RemoveEmptyEntries);
+						for (int i = 0; i < individualNames.Length; ++i)
+						{
+							NormalizeObjectTypeName(null, individualNames[i], style, removeSeparatedCharacters, fixedCasePrefix, builder, ref spacePending, ref makeLower);
+						}
+					}
+					else if (fixedCasePrefix != null &&
+						originalName.StartsWith(fixedCasePrefix))
+					{
+						builder.Append(originalName.Substring(fixedCasePrefix.Length));
+						makeLower = false;
+					}
+					else
 					{
 						Match match = Utility.MatchNameParts(originalName);
-						bool returnText;
-						if (returnText = (builder == null))
-						{
-							builder = new StringBuilder();
-						}
 						while (match.Success)
 						{
 							string matchText = match.Value;
@@ -2908,12 +2978,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							match = match.NextMatch();
 						}
+					}
+					return returnText ? builder.ToString() : null;
+				case ObjectTypeNameVerbalizationStyle.SeparateCombinedNames:
+					if (originalName.IndexOf(' ') != -1)
+					{
+						if (returnText = (builder == null))
+						{
+							builder = new StringBuilder();
+						}
+						string[] individualNames = originalName.Split(StandardSplitChars, StringSplitOptions.RemoveEmptyEntries);
+						for (int i = 0; i < individualNames.Length; ++i)
+						{
+							NormalizeObjectTypeName(null, individualNames[i], style, removeSeparatedCharacters, fixedCasePrefix, builder, ref spacePending, ref makeLower);
+						}
 						return returnText ? builder.ToString() : null;
 					}
-				case ObjectTypeNameVerbalizationStyle.SeparateCombinedNames:
-					if (Utility.IsMultiPartName(originalName))
+					else if (Utility.IsMultiPartName(originalName))
 					{
-						bool returnText;
 						if (returnText = (builder == null))
 						{
 							builder = new StringBuilder();
@@ -4131,6 +4213,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				/// been descoped.
 				/// </summary>
 				IsDescopedDuringPathCreation = 0x10,
+				/// <summary>
+				/// If the subscript and subscript offset of a variable is copied
+				/// from another variable of the same type (a process known as partnering),
+				/// then descoping the variable should increase the descope count because
+				/// the descoping is already tracked with the partnered variable.
+				/// </summary>
+				IsPartneredUse = 0x20,
 			}
 			private StateFlags myFlags;
 			private ObjectType myRolePlayer;
@@ -4255,7 +4344,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				myUsePhase = 0;
 				mySubscript = -1;
 				mySubscriptOffset = 0;
-				++myDescopedUseCount;
+				if (0 == (myFlags & StateFlags.IsPartneredUse))
+				{
+					++myDescopedUseCount;
+				}
+				else
+				{
+					myFlags &= ~StateFlags.IsPartneredUse;
+				}
 			}
 			/// <summary>
 			/// Test if a variable has been used during a given use phase.
@@ -4351,6 +4447,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						myFlags &= ~StateFlags.IsDescopedDuringPathCreation;
 					}
 				}
+			}
+			/// <summary>
+			/// Mark a variable as being descoped during path creation.
+			/// </summary>
+			public void IsPartneredUse()
+			{
+				myFlags |= StateFlags.IsPartneredUse;
 			}
 			/// <summary>
 			/// Set if subscripting of a head variable should be optimized to
@@ -4603,10 +4706,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					yield return variable;
 				}
+				RolePlayerVariable joinedToVariable;
+				if (null != (joinedToVariable = myJoinedToVariable))
+				{
+					yield return joinedToVariable;
+				}
 				LinkedNode<RolePlayerVariable> correlatedVariableNode = myCorrelatedVariables;
 				while (correlatedVariableNode != null)
 				{
-					yield return correlatedVariableNode.Value;
+					variable = correlatedVariableNode.Value;
+					if (variable != joinedToVariable)
+					{
+						yield return variable;
+					}
 					correlatedVariableNode = correlatedVariableNode.Next;
 				}
 			}
@@ -8581,9 +8693,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				RegisterRolePlayerUse(queryRole.RolePlayer, null, queryRoleKey, RolePathNode.Empty);
 				if (queryRole == factTypeEntryRole)
 				{
-					CustomCorrelateVariables(
-						useMap[new RolePathNode(factTypeEntry, pathContext)].PrimaryRolePlayerVariable,
-						useMap[queryRoleKey].PrimaryRolePlayerVariable);
+					RolePlayerVariable newVariable = useMap[queryRoleKey].PrimaryRolePlayerVariable;
+					RolePlayerVariableUse correlatedUse = useMap[new RolePathNode(factTypeEntry, pathContext)];
+					object correlationRoot = correlatedUse.CorrelationRoot;
+					foreach (RolePlayerVariable variable in (correlationRoot != null ? useMap[correlationRoot] : correlatedUse).GetCorrelatedVariables(true))
+					{
+						CustomCorrelateVariables(variable, newVariable);
+					}
 				}
 			}
 
@@ -11548,6 +11664,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						// Use the existing subscript
 						primaryVariable.BaseSubscript = primarySubscript = partnerSubscript;
 						primaryVariable.SubscriptOffset = primarySubscriptOffset = partnerSubscriptOffset;
+						primaryVariable.IsPartneredUse();
 						if (IsPairingUsePhaseInScope(partnerWithVariable.UsePhase))
 						{
 							UseVariable(primaryVariable, CurrentQuantificationUsePhase, false);
@@ -11565,6 +11682,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						partnerWithVariable.BaseSubscript = primarySubscript = partnerSubscript = primaryVariable.BaseSubscript; // Primary subscript now reserved and set by GetSubscriptedRolePlayerName, read off new value
 						partnerWithVariable.SubscriptOffset = primarySubscriptOffset = partnerSubscriptOffset = primaryVariable.SubscriptOffset;
+						partnerWithVariable.IsPartneredUse();
 					}
 				}
 				else
@@ -11577,6 +11695,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						partnerWithVariable.BaseSubscript = partnerSubscript = primarySubscript;
 						partnerWithVariable.SubscriptOffset = partnerSubscriptOffset = primarySubscriptOffset;
+						partnerWithVariable.IsPartneredUse();
 						if (IsPairingUsePhaseInScope(primaryVariable.UsePhase))
 						{
 							UseVariable(partnerWithVariable, CurrentQuantificationUsePhase, false);

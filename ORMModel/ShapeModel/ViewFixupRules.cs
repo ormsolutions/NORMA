@@ -341,17 +341,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void FactTypeShapeChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			FactTypeShape fts = e.ModelElement as FactTypeShape;
-			if (fts != null)
+			if (e.DomainProperty.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
 			{
-				if (e.DomainProperty.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
-				{
-					FactType fact = fts.ModelElement as FactType;
-					if (fact != null)
-					{
-						RoleNameShape.SetRoleNameDisplay(fact);
-					}
-				}
+				((FactTypeShape)e.ModelElement).UpdateRoleNameDisplay();
 			}
 		}
 		#endregion // FactTypeChangedRule
@@ -1338,34 +1330,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		#endregion // DisplayReadingsFixupListener class
 		#endregion // ReadingOrder fixup
-		#region DisplayRolePlayersFixupListener class
-		/// <summary>
-		/// A fixup class to display role name
-		/// </summary>
-		private sealed class DisplayRoleNameFixupListener : DeserializationFixupListener<Role>
-		{
-			/// <summary>
-			/// Create a new DisplayRoleNameFixupListener
-			/// </summary>
-			public DisplayRoleNameFixupListener()
-				: base((int)ORMDeserializationFixupPhase.AddImplicitPresentationElements)
-			{
-			}
-			/// <summary>
-			/// Add role name when possible
-			/// </summary>
-			/// <param name="role">A Role instance</param>
-			/// <param name="store">The context store</param>
-			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
-			protected sealed override void ProcessElement(Role role, Store store, INotifyElementAdded notifyAdded)
-			{
-				if (!role.IsDeleted)
-				{
-					RoleNameShape.SetRoleNameDisplay(role.FactType);
-				}
-			}
-		}
-		#endregion // DisplayRolePlayersFixupListener class
 		#region ModelNote fixup
 		#region ModelNoteAddedRule
 		/// <summary>

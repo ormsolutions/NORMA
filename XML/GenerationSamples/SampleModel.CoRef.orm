@@ -155,12 +155,12 @@
 			<orm:ValueRestriction>
 				<orm:ValueConstraint id="_CB4E20A0-57BD-4A67-A7A5-4A30F981878D" Name="ValueTypeValueConstraint1">
 					<orm:ValueRanges>
-						<orm:ValueRange id="_AA90A90C-9654-4D21-AC5B-380315EC3203" MinValue="1" MaxValue="7" MinInclusion="NotSet" MaxInclusion="NotSet" />
-						<orm:ValueRange id="_77DE917F-3A11-43A7-80A3-DF8BF3EFBC75" MinValue="9" MaxValue="9" MinInclusion="NotSet" MaxInclusion="NotSet" />
-						<orm:ValueRange id="_B70A997A-F8D0-4375-8227-14DD026CA16E" MinValue="10" MaxValue="10" MinInclusion="NotSet" MaxInclusion="NotSet" />
-						<orm:ValueRange id="_7EDC9D1C-E4C4-45EB-894B-1F786AB52BD9" MinValue="12" MaxValue="12" MinInclusion="NotSet" MaxInclusion="NotSet" />
-						<orm:ValueRange id="_2D2C8494-46A1-45CF-B282-EEA6FEAEB73B" MinValue="14" MaxValue="16" MinInclusion="NotSet" MaxInclusion="NotSet" />
-						<orm:ValueRange id="_8AD5CF8D-FA58-4032-9C68-A09CDB8DE4FA" MinValue="18" MaxValue="" MinInclusion="NotSet" MaxInclusion="NotSet" />
+						<orm:ValueRange id="_AA90A90C-9654-4D21-AC5B-380315EC3203" MinValue="1" InvariantMinValue="1" MaxValue="7" InvariantMaxValue="7" MinInclusion="NotSet" MaxInclusion="NotSet" />
+						<orm:ValueRange id="_77DE917F-3A11-43A7-80A3-DF8BF3EFBC75" MinValue="9" InvariantMinValue="9" MaxValue="9" InvariantMaxValue="9" MinInclusion="NotSet" MaxInclusion="NotSet" />
+						<orm:ValueRange id="_B70A997A-F8D0-4375-8227-14DD026CA16E" MinValue="10" InvariantMinValue="10" MaxValue="10" InvariantMaxValue="10" MinInclusion="NotSet" MaxInclusion="NotSet" />
+						<orm:ValueRange id="_7EDC9D1C-E4C4-45EB-894B-1F786AB52BD9" MinValue="12" InvariantMinValue="12" MaxValue="12" InvariantMaxValue="12" MinInclusion="NotSet" MaxInclusion="NotSet" />
+						<orm:ValueRange id="_2D2C8494-46A1-45CF-B282-EEA6FEAEB73B" MinValue="14" InvariantMinValue="14" MaxValue="16" InvariantMaxValue="16" MinInclusion="NotSet" MaxInclusion="NotSet" />
+						<orm:ValueRange id="_8AD5CF8D-FA58-4032-9C68-A09CDB8DE4FA" MinValue="18" InvariantMinValue="18" MaxValue="" MinInclusion="NotSet" MaxInclusion="NotSet" />
 					</orm:ValueRanges>
 				</orm:ValueConstraint>
 			</orm:ValueRestriction>
@@ -262,7 +262,7 @@
 			<orm:ValueRestriction>
 				<orm:ValueConstraint id="_3447FC15-A40A-468D-A9AE-6DE01D4D25DF" Name="ValueTypeValueConstraint10">
 					<orm:ValueRanges>
-						<orm:ValueRange id="_52CDBFAB-089E-445D-8A08-74D61B289D1F" MinValue="1" MaxValue="" MinInclusion="NotSet" MaxInclusion="NotSet" />
+						<orm:ValueRange id="_52CDBFAB-089E-445D-8A08-74D61B289D1F" MinValue="1" InvariantMinValue="1" MaxValue="" MinInclusion="NotSet" MaxInclusion="NotSet" />
 					</orm:ValueRanges>
 				</orm:ValueConstraint>
 			</orm:ValueRestriction>
@@ -311,7 +311,7 @@
 			<orm:ValueRestriction>
 				<orm:ValueConstraint id="_972194B4-69CF-4560-A2A2-F92C3D65D93E" Name="ValueTypeValueConstraint9">
 					<orm:ValueRanges>
-						<orm:ValueRange id="_3708DDC5-E393-4231-AA35-3BD7FAD45CA7" MinValue="4000" MaxValue="20000" MinInclusion="NotSet" MaxInclusion="NotSet" />
+						<orm:ValueRange id="_3708DDC5-E393-4231-AA35-3BD7FAD45CA7" MinValue="4000" InvariantMinValue="4000" MaxValue="20000" InvariantMaxValue="20000" MinInclusion="NotSet" MaxInclusion="NotSet" />
 					</orm:ValueRanges>
 				</orm:ValueConstraint>
 			</orm:ValueRestriction>
@@ -470,6 +470,9 @@
 					<orm:Readings>
 						<orm:Reading id="_C5131137-0B72-439E-91CE-00680073440C">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -483,7 +486,7 @@
 				<orm:MandatoryConstraint ref="_B58DA218-2FBC-44F7-8524-802BCBC18FA1" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:Fact id="_B5B33D03-3336-4100-9339-9C96B7F8F156" _Name="PersonHasPerson_id">
+		<orm:Fact id="_B5B33D03-3336-4100-9339-9C96B7F8F156" _Name="PersonHasPersonId">
 			<orm:FactRoles>
 				<orm:Role id="_DC92FEF0-36B3-4145-BDEA-2362CCC79718" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" />
@@ -497,6 +500,9 @@
 					<orm:Readings>
 						<orm:Reading id="_7A178DC4-A348-452D-8803-130087680CCE">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -508,6 +514,9 @@
 					<orm:Readings>
 						<orm:Reading id="_227E8188-0E77-485B-9542-004F50683107">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -536,6 +545,9 @@
 					<orm:Readings>
 						<orm:Reading id="_35AA0942-B600-4AA2-85FC-273FBC57EC78">
 							<orm:Data>{0} is identified by {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is identified by " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -547,6 +559,9 @@
 					<orm:Readings>
 						<orm:Reading id="_13365119-E20E-4504-BAE8-BFC4AC4A45E1">
 							<orm:Data>{0} identifies {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" identifies " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -575,6 +590,9 @@
 					<orm:Readings>
 						<orm:Reading id="_9B09009C-A9EB-4051-82A9-CC6C96ECC0EF">
 							<orm:Data>{0} was born on {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" was born on " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -602,6 +620,9 @@
 					<orm:Readings>
 						<orm:Reading id="_AC35B2ED-9E0B-4733-ADB4-8CF87D95F6E1">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -629,6 +650,9 @@
 					<orm:Readings>
 						<orm:Reading id="_0A76879E-10BE-483E-8AD3-DF813529CCDC">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -656,6 +680,9 @@
 					<orm:Readings>
 						<orm:Reading id="_BBE32E40-2F67-4E9E-9454-C2A93C3952E0">
 							<orm:Data>{0} wears {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" wears " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -682,6 +709,9 @@
 					<orm:Readings>
 						<orm:Reading id="_D1FECCD3-1DAE-4312-B378-432CC5A9C49D">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -693,6 +723,9 @@
 					<orm:Readings>
 						<orm:Reading id="_9066EA8C-A027-47BF-90E2-589B5CB2ACD1">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -720,6 +753,9 @@
 					<orm:Readings>
 						<orm:Reading id="_ED972C17-36CC-4DEC-8046-44F67474F61D">
 							<orm:Data>{0} is wife of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is wife of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -731,6 +767,9 @@
 					<orm:Readings>
 						<orm:Reading id="_956355D4-3619-41DB-A497-9E47A4EC9DDB">
 							<orm:Data>{0} is husband of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is husband of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -758,6 +797,9 @@
 					<orm:Readings>
 						<orm:Reading id="_37E98458-5EC0-4361-B2CA-0F8FF6740999">
 							<orm:Data>{0} is assigned to {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is assigned to " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -770,7 +812,7 @@
 				<orm:UniquenessConstraint ref="_59B5B513-F4A1-4EA7-B567-34544D5E1694" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:Fact id="_14CF837F-8CA5-4317-A315-044BA559B422" _Name="TaskHasTask_id">
+		<orm:Fact id="_14CF837F-8CA5-4317-A315-044BA559B422" _Name="TaskHasTaskId">
 			<orm:FactRoles>
 				<orm:Role id="_D38BF87C-33BA-4BFC-9D23-32F52F333AB6" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_779E9788-0C2F-44B6-B958-AEEC22593966" />
@@ -784,6 +826,9 @@
 					<orm:Readings>
 						<orm:Reading id="_9BE66D4E-1021-4939-9C72-61A3EB38CA33">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -795,6 +840,9 @@
 					<orm:Readings>
 						<orm:Reading id="_0FD15DA4-BAEB-4205-8D4A-375183726B42">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -809,7 +857,7 @@
 				<orm:UniquenessConstraint ref="_100AE8B7-A064-4BD9-AEA0-E16B6FED7E73" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:Fact id="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" _Name="CarHasvin">
+		<orm:Fact id="_C36502F8-858D-4FB9-B9C2-445EE1EFBD92" _Name="CarHasVin">
 			<orm:FactRoles>
 				<orm:Role id="_24FBA18D-9625-4116-86FE-F397E04E9BD2" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_A6617DBB-19D8-4FCB-A14A-2F237E0D8904" />
@@ -823,6 +871,9 @@
 					<orm:Readings>
 						<orm:Reading id="_338CFF64-190F-4B6E-83C5-98FB1EB55ECF">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -834,6 +885,9 @@
 					<orm:Readings>
 						<orm:Reading id="_ABECF2EF-DA7C-48A4-A548-2AD94AF532EC">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -862,6 +916,9 @@
 					<orm:Readings>
 						<orm:Reading id="_5ED613B3-0EC2-4106-B16E-39B056B6395F">
 							<orm:Data>{0} owns {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" owns " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -889,6 +946,9 @@
 					<orm:Readings>
 						<orm:Reading id="_0EAD7008-3378-4C4D-B8E7-FC9474E5EE49">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -900,6 +960,9 @@
 					<orm:Readings>
 						<orm:Reading id="_96D2E565-F350-480A-8D08-0C17AABA246C">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -928,6 +991,9 @@
 					<orm:Readings>
 						<orm:Reading id="_994B6992-C8F8-4F80-9E58-2B99AF80F849">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -939,6 +1005,9 @@
 					<orm:Readings>
 						<orm:Reading id="_605E5500-35E7-4361-8BB5-2B901F2F2354">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -967,6 +1036,9 @@
 					<orm:Readings>
 						<orm:Reading id="_03461DE8-8F5F-4534-9E64-74E7B3935AF6">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -978,6 +1050,9 @@
 					<orm:Readings>
 						<orm:Reading id="_3FB0DBE7-33E4-4A86-9220-57E6E5EFDFA7">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1006,6 +1081,9 @@
 					<orm:Readings>
 						<orm:Reading id="_D43F2854-0729-494D-84E2-154F52D32F85">
 							<orm:Data>{0} does something with {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" does something with " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1032,6 +1110,9 @@
 					<orm:Readings>
 						<orm:Reading id="_C7498425-EC58-4A7A-A1B5-F7A8E30685C3">
 							<orm:Data>{0} occurred on {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" occurred on " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1044,7 +1125,7 @@
 				<orm:UniquenessConstraint ref="_BD746E44-93F1-4F03-B6B2-2907897F2DD2" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:Fact id="_C0DC452E-A5F4-440D-9474-84D3BD7CBFBF" _Name="DeathCauseHasDeathCause_Type">
+		<orm:Fact id="_C0DC452E-A5F4-440D-9474-84D3BD7CBFBF" _Name="DeathCauseHasDeathCauseType">
 			<orm:FactRoles>
 				<orm:Role id="_065B8F23-0359-4675-8D1B-9E03E97E2529" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_CA3BAF09-F895-4A2D-A840-E911D8FE157A" />
@@ -1058,6 +1139,9 @@
 					<orm:Readings>
 						<orm:Reading id="_D4F114EE-C248-4C46-A0B7-799BAA64F1AB">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1069,6 +1153,9 @@
 					<orm:Readings>
 						<orm:Reading id="_21A1C177-BCF8-413E-BEC0-CC67DB2FFD18">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1097,6 +1184,9 @@
 					<orm:Readings>
 						<orm:Reading id="_8F6D80DC-B3DD-4B8E-A8F3-57B162C67FF5">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1124,6 +1214,9 @@
 					<orm:Readings>
 						<orm:Reading id="_AABBC56A-9959-4299-AABB-7A829A9D5BC7">
 							<orm:Data>{0} is from prostate cancer</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is from prostate cancer" />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1149,6 +1242,9 @@
 					<orm:Readings>
 						<orm:Reading id="_89CC6113-7BA5-4A48-AD2E-7BD52FAD71DD">
 							<orm:Data>{0} is violent</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is violent" />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1174,6 +1270,9 @@
 					<orm:Readings>
 						<orm:Reading id="_54711BED-0797-483B-8A2C-4572D44F4DB6">
 							<orm:Data>{0} is bloody</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is bloody" />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1185,7 +1284,7 @@
 				<orm:UniquenessConstraint ref="_17F8D67C-2E3A-4D55-B971-2E79996E751E" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:Fact id="_FF723148-C1AB-4835-84CD-996B28BC4027" _Name="GenderHasGender_Code">
+		<orm:Fact id="_FF723148-C1AB-4835-84CD-996B28BC4027" _Name="GenderHasGenderCode">
 			<orm:FactRoles>
 				<orm:Role id="_64B9B775-0F9D-463A-AB84-20E751118B53" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_FA76F159-1799-4D93-BA27-0FB3A1853415" />
@@ -1199,6 +1298,9 @@
 					<orm:Readings>
 						<orm:Reading id="_8CA22920-3B7E-4223-93D4-92FC645D2DDA">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1210,6 +1312,9 @@
 					<orm:Readings>
 						<orm:Reading id="_8E157810-C2A6-45FD-89C8-A0DFBC0FAC05">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1238,6 +1343,9 @@
 					<orm:Readings>
 						<orm:Reading id="_C7881C55-0EDC-4BA2-93A0-C267881AA47E">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1295,6 +1403,9 @@
 					<orm:Readings>
 						<orm:Reading id="_5101BCE9-8E4F-4C40-83F4-70684393BE97">
 							<orm:Data>{0} has parents</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has parents" />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1306,7 +1417,7 @@
 				<orm:UniquenessConstraint ref="_94CD7F0D-B462-4E7F-BACE-FD9947F13C6F" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:Fact id="_71982F2A-0A4F-4313-AAE2-0374B10D4BD5" _Name="BirthOrderHasBirthOrder_Nr">
+		<orm:Fact id="_71982F2A-0A4F-4313-AAE2-0374B10D4BD5" _Name="BirthOrderHasBirthOrderNr">
 			<orm:FactRoles>
 				<orm:Role id="_1992B705-0659-4ED1-BB2D-491D502848C7" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_B920FB79-BCAF-472D-9D1D-5625E804AEAC" />
@@ -1320,6 +1431,9 @@
 					<orm:Readings>
 						<orm:Reading id="_EBAB3DFC-16EA-41F4-A775-4ED7F69B0753">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1331,6 +1445,9 @@
 					<orm:Readings>
 						<orm:Reading id="_335B9B45-868C-47BF-ADDC-E0DE99574E3B">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1359,6 +1476,9 @@
 					<orm:Readings>
 						<orm:Reading id="_84F40154-FDC3-40FB-B139-396A45873102">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1370,6 +1490,9 @@
 					<orm:Readings>
 						<orm:Reading id="_9AE445FA-A690-4375-AE31-BD8996B29E4B">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1397,6 +1520,9 @@
 					<orm:Readings>
 						<orm:Reading id="_F243DF99-0A80-4B18-BAC3-912FCC0CBFE8">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1408,6 +1534,9 @@
 					<orm:Readings>
 						<orm:Reading id="_96808649-5B44-4055-BF35-FECF8EAF5A39">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1435,6 +1564,9 @@
 					<orm:Readings>
 						<orm:Reading id="_82CD6C1A-90E8-4AF3-8532-9ACDEA757839">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1446,6 +1578,9 @@
 					<orm:Readings>
 						<orm:Reading id="_F03CF5B3-1B3B-490D-AEB1-7782A7F2F23E">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1518,6 +1653,9 @@
 					<orm:Readings>
 						<orm:Reading id="_CA01924D-0EB4-48B0-9BFF-7F53737505E5">
 							<orm:Data>{0} does something else with {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" does something else with " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1530,7 +1668,7 @@
 				<orm:UniquenessConstraint ref="_8ABB7031-E061-4B53-A964-2C5E79A83283" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:Fact id="_61218547-67E0-4452-A1C7-3635431011B4" _Name="HatTypeStyleHasHatTypeStyle_Description">
+		<orm:Fact id="_61218547-67E0-4452-A1C7-3635431011B4" _Name="HatTypeStyleHasHatTypeStyleDescription">
 			<orm:FactRoles>
 				<orm:Role id="_D9F45E74-98C4-4122-9313-118DD1FFDF83" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_43FB5FA3-F8F2-4600-9C71-00AD765B3BE5" />
@@ -1544,6 +1682,9 @@
 					<orm:Readings>
 						<orm:Reading id="_3E755F22-DAB6-47B0-A476-9201A1AFA35A">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1555,6 +1696,9 @@
 					<orm:Readings>
 						<orm:Reading id="_2361453C-15CC-4999-B654-40DF6D2B1C90">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1583,6 +1727,9 @@
 					<orm:Readings>
 						<orm:Reading id="_A30592DC-AF43-487C-8141-010B692DAFF9">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1594,6 +1741,9 @@
 					<orm:Readings>
 						<orm:Reading id="_F5283480-1014-42BD-9BAA-D063A9E638C8">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1617,7 +1767,7 @@
 					<orm:ValueRestriction>
 						<orm:RoleValueConstraint id="_6D5D13C0-37D6-4669-8CA3-AEFD2BC2A590" Name="RoleValueConstraint1">
 							<orm:ValueRanges>
-								<orm:ValueRange id="_DF71601E-245C-40A3-AA84-2864B5887016" MinValue="100" MaxValue="4000" MinInclusion="NotSet" MaxInclusion="NotSet" />
+								<orm:ValueRange id="_DF71601E-245C-40A3-AA84-2864B5887016" MinValue="100" InvariantMinValue="100" MaxValue="4000" InvariantMaxValue="4000" MinInclusion="NotSet" MaxInclusion="NotSet" />
 							</orm:ValueRanges>
 						</orm:RoleValueConstraint>
 					</orm:ValueRestriction>
@@ -1628,6 +1778,9 @@
 					<orm:Readings>
 						<orm:Reading id="_3771A42C-2B3D-4FBB-B566-BF0F40956F74">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1651,7 +1804,7 @@
 					<orm:ValueRestriction>
 						<orm:RoleValueConstraint id="_D78E38A7-474E-4E4B-AB4C-02B91C168D25" Name="RoleValueConstraint2">
 							<orm:ValueRanges>
-								<orm:ValueRange id="_9D6DA754-5235-4144-ADB0-E9F81B60C454" MinValue="9000" MaxValue="10000" MinInclusion="NotSet" MaxInclusion="NotSet" />
+								<orm:ValueRange id="_9D6DA754-5235-4144-ADB0-E9F81B60C454" MinValue="9000" InvariantMinValue="9000" MaxValue="10000" InvariantMaxValue="10000" MinInclusion="NotSet" MaxInclusion="NotSet" />
 							</orm:ValueRanges>
 						</orm:RoleValueConstraint>
 					</orm:ValueRestriction>
@@ -1662,6 +1815,9 @@
 					<orm:Readings>
 						<orm:Reading id="_B78FE8E3-2CB0-490B-A5F6-60A677B6E54C">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1690,6 +1846,9 @@
 					<orm:Readings>
 						<orm:Reading id="_DC009F25-ADE3-4C3E-B84F-9D100B3E5E64">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1718,6 +1877,9 @@
 					<orm:Readings>
 						<orm:Reading id="_009C7A56-98D4-49D8-AFAE-EDE7FB33B4AD">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1729,6 +1891,9 @@
 					<orm:Readings>
 						<orm:Reading id="_D876F52C-0A63-487A-9D05-6FC788618595">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1756,6 +1921,9 @@
 					<orm:Readings>
 						<orm:Reading id="_0677DCF3-5516-4ED2-94FC-B1CD8849BCC5">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1767,6 +1935,9 @@
 					<orm:Readings>
 						<orm:Reading id="_9808150A-2F0D-42F3-8A9F-525E8181D5C6">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1794,6 +1965,9 @@
 					<orm:Readings>
 						<orm:Reading id="_03690F3C-CE61-4CC9-A39B-8E594E57B4D4">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1805,6 +1979,9 @@
 					<orm:Readings>
 						<orm:Reading id="_A33260F5-8124-4855-AB0B-5EA6D1FC1719">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1832,6 +2009,9 @@
 					<orm:Readings>
 						<orm:Reading id="_14A5C6E6-0381-4CBB-875C-E2BFE299BAB8">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1843,6 +2023,9 @@
 					<orm:Readings>
 						<orm:Reading id="_1A74C15C-15B6-4C96-856A-5C9C454253F3">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1870,6 +2053,9 @@
 					<orm:Readings>
 						<orm:Reading id="_4CD3B9E8-B33B-48E3-8DA7-683101844FEF">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1881,6 +2067,9 @@
 					<orm:Readings>
 						<orm:Reading id="_4E3D64E7-607B-4955-96A4-9CC602307831">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1908,6 +2097,9 @@
 					<orm:Readings>
 						<orm:Reading id="_F2ED7D27-1034-448B-9B0F-CFD95BCD89CB">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1919,6 +2111,9 @@
 					<orm:Readings>
 						<orm:Reading id="_C9B90307-3226-4697-A3C1-3DE816D17F3F">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1946,6 +2141,9 @@
 					<orm:Readings>
 						<orm:Reading id="_CFEFD167-00A9-4CFE-B8AE-2BD8E9D76753">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1957,6 +2155,9 @@
 					<orm:Readings>
 						<orm:Reading id="_B1A2E204-3305-43BE-BBF1-0DBC1E8D3082">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1984,6 +2185,9 @@
 					<orm:Readings>
 						<orm:Reading id="_DCB874E6-5DCC-4F92-9B4B-9DB31DDF800B">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -1995,6 +2199,9 @@
 					<orm:Readings>
 						<orm:Reading id="_2E150AF2-8CEC-44AE-AAC9-6456BF2BCD2D">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2022,6 +2229,9 @@
 					<orm:Readings>
 						<orm:Reading id="_75835A48-3757-416B-B8B1-3418D831B9EA">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2033,6 +2243,9 @@
 					<orm:Readings>
 						<orm:Reading id="_87F2308C-175B-4CA8-B8E6-7B3C7013D18A">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2060,6 +2273,9 @@
 					<orm:Readings>
 						<orm:Reading id="_DC35869C-5017-4CCB-940E-F9DD9B5BAF2C">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2071,6 +2287,9 @@
 					<orm:Readings>
 						<orm:Reading id="_1937CA4D-E3E4-4AFB-8619-7E54624C271A">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2098,6 +2317,9 @@
 					<orm:Readings>
 						<orm:Reading id="_F45C3482-7079-4B6D-AE38-19E658B58CA7">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2109,6 +2331,9 @@
 					<orm:Readings>
 						<orm:Reading id="_0037C56F-EC05-4820-90DD-A9682233F77D">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2136,6 +2361,9 @@
 					<orm:Readings>
 						<orm:Reading id="_C09A6268-E2AD-4FDE-9CC4-19C3F2DDA105">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2163,6 +2391,9 @@
 					<orm:Readings>
 						<orm:Reading id="_9CB96B75-3C8F-436D-A29E-ED93C3D9C39C">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2191,6 +2422,9 @@
 					<orm:Readings>
 						<orm:Reading id="_965CD20A-0ADC-4847-BDB9-59B29C8DCD9E">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2217,6 +2451,9 @@
 					<orm:Readings>
 						<orm:Reading id="_90E1FD2D-8D2E-427F-ADF4-5CD3E1B5EF7F">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2244,6 +2481,9 @@
 					<orm:Readings>
 						<orm:Reading id="_989A3B96-824D-4894-AAD9-ACCD8A8FB64A">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2271,6 +2511,9 @@
 					<orm:Readings>
 						<orm:Reading id="_D1E2E794-DF23-4C83-9597-BAD666DC04A3">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2299,6 +2542,9 @@
 					<orm:Readings>
 						<orm:Reading id="_414FA623-3A8B-436F-9C37-07E9C28EE692">
 							<orm:Data>{0} is involved in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is involved in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2310,6 +2556,9 @@
 					<orm:Readings>
 						<orm:Reading id="_45CD5CC8-35F1-4CC4-BD6E-21C426EACE89">
 							<orm:Data>{0} involves {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" involves " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -2330,18 +2579,129 @@
 			<orm:RoleSequence>
 				<orm:Role id="_627DE234-1797-4500-B40B-754D5773B03C" ref="_0D9E47FC-891C-45C5-95E6-CEC245F61265" />
 				<orm:Role id="_A96EC4A2-444D-4E4E-8AF7-C09E9DF676B3" ref="_D5C1A5F1-D376-4606-A991-4A3F55206DB4" />
+				<orm:JoinRule>
+					<orm:JoinPath id="_7A1E0B62-6FA1-4B11-AF0C-E9F9970F2129" IsAutomatic="true">
+						<orm:PathComponents>
+							<orm:RolePath id="_E3A72FD7-F207-4863-8424-3CD3E3FEB054" SplitCombinationOperator="And">
+								<orm:RootObjectType id="_439E7F7F-4034-4E85-8BC8-C4A99A16D974" ref="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" />
+								<orm:SubPaths>
+									<orm:SubPath id="_41F0484D-FB31-4789-9767-5D3B7CAE9C39">
+										<orm:PathedRoles>
+											<orm:PathedRole id="_4DC73573-30BF-413A-ACC9-0B522BEB188D" ref="_70A330F0-1AC2-486B-8469-EC115A515AC1" Purpose="PostInnerJoin" />
+											<orm:PathedRole id="_40029A52-DC4A-4B2C-AEB6-0CF642DF4396" ref="_0D9E47FC-891C-45C5-95E6-CEC245F61265" Purpose="SameFactType" />
+										</orm:PathedRoles>
+									</orm:SubPath>
+									<orm:SubPath id="_E84CBE54-6532-4359-8748-B989E289802D">
+										<orm:PathedRoles>
+											<orm:PathedRole id="_45C0E6E9-228B-48CB-9561-34730656D7D2" ref="_310FF4C1-DA3B-4C8D-8892-C43F6452245C" Purpose="PostInnerJoin" />
+											<orm:PathedRole id="_42679D91-15A9-4D7B-B141-E3783CD73C2F" ref="_D5C1A5F1-D376-4606-A991-4A3F55206DB4" Purpose="SameFactType" />
+										</orm:PathedRoles>
+									</orm:SubPath>
+								</orm:SubPaths>
+							</orm:RolePath>
+						</orm:PathComponents>
+						<orm:JoinPathProjections>
+							<orm:JoinPathProjection id="_3D528DA0-46E8-40E6-82B6-67FEDEF769D7" ref="_E3A72FD7-F207-4863-8424-3CD3E3FEB054">
+								<orm:ConstraintRoleProjection id="_7010042F-EBC3-4150-B811-36ED76C854CB" ref="_627DE234-1797-4500-B40B-754D5773B03C">
+									<orm:ProjectedFrom>
+										<orm:PathedRole ref="_40029A52-DC4A-4B2C-AEB6-0CF642DF4396" />
+									</orm:ProjectedFrom>
+								</orm:ConstraintRoleProjection>
+								<orm:ConstraintRoleProjection id="_83FBC1E8-BBD9-482C-A9EE-1C483C83B126" ref="_A96EC4A2-444D-4E4E-8AF7-C09E9DF676B3">
+									<orm:ProjectedFrom>
+										<orm:PathedRole ref="_42679D91-15A9-4D7B-B141-E3783CD73C2F" />
+									</orm:ProjectedFrom>
+								</orm:ConstraintRoleProjection>
+							</orm:JoinPathProjection>
+						</orm:JoinPathProjections>
+					</orm:JoinPath>
+				</orm:JoinRule>
 			</orm:RoleSequence>
 		</orm:UniquenessConstraint>
 		<orm:UniquenessConstraint id="_F40FEEF1-947A-453D-8B63-C791930EB877" Name="ExternalUniquenessConstraint2">
 			<orm:RoleSequence>
 				<orm:Role id="_EF030F12-981D-44A1-B998-9C0845AB736F" ref="_089350B7-DAB7-4338-A554-275973B70EA6" />
 				<orm:Role id="_195B6DF8-8786-4E52-8C71-3B29DB69A031" ref="_D5C1A5F1-D376-4606-A991-4A3F55206DB4" />
+				<orm:JoinRule>
+					<orm:JoinPath id="_FE07B162-3113-45D2-8FC6-11B03CE4A357" IsAutomatic="true">
+						<orm:PathComponents>
+							<orm:RolePath id="_B030C97A-7C68-4F3C-B91C-B513553ED2F1" SplitCombinationOperator="And">
+								<orm:RootObjectType id="_28835EAF-9EA0-4523-AA0D-C7B5819E5F5F" ref="_97C09FEE-69B9-429A-9A7C-9C218CB295BB" />
+								<orm:SubPaths>
+									<orm:SubPath id="_1BAF2EE8-0DB8-4C38-84BE-BD33EAF1AA0D">
+										<orm:PathedRoles>
+											<orm:PathedRole id="_FA17CA10-E59F-4DD0-B694-C4AF1633506A" ref="_AFA5D9D8-8EC4-460E-A2E0-66E8F2FF598D" Purpose="PostInnerJoin" />
+											<orm:PathedRole id="_7D64D211-4967-4860-B3B2-C3600708D5C3" ref="_089350B7-DAB7-4338-A554-275973B70EA6" Purpose="SameFactType" />
+										</orm:PathedRoles>
+									</orm:SubPath>
+									<orm:SubPath id="_335E78F3-4089-4742-8420-8BD5924515C5">
+										<orm:PathedRoles>
+											<orm:PathedRole id="_25EC5CC9-586D-47C3-8BFA-B5673CFBE96C" ref="_310FF4C1-DA3B-4C8D-8892-C43F6452245C" Purpose="PostInnerJoin" />
+											<orm:PathedRole id="_202B3117-3AA9-41F9-8219-B56E40FBD179" ref="_D5C1A5F1-D376-4606-A991-4A3F55206DB4" Purpose="SameFactType" />
+										</orm:PathedRoles>
+									</orm:SubPath>
+								</orm:SubPaths>
+							</orm:RolePath>
+						</orm:PathComponents>
+						<orm:JoinPathProjections>
+							<orm:JoinPathProjection id="_BDC61388-A54E-4B9F-AACC-E594C5466432" ref="_B030C97A-7C68-4F3C-B91C-B513553ED2F1">
+								<orm:ConstraintRoleProjection id="_334A26A1-86D2-4ACC-BCFB-8467732FE96B" ref="_EF030F12-981D-44A1-B998-9C0845AB736F">
+									<orm:ProjectedFrom>
+										<orm:PathedRole ref="_7D64D211-4967-4860-B3B2-C3600708D5C3" />
+									</orm:ProjectedFrom>
+								</orm:ConstraintRoleProjection>
+								<orm:ConstraintRoleProjection id="_0F2CF2B7-9FEF-4D8A-9401-EB6A6627E1B3" ref="_195B6DF8-8786-4E52-8C71-3B29DB69A031">
+									<orm:ProjectedFrom>
+										<orm:PathedRole ref="_202B3117-3AA9-41F9-8219-B56E40FBD179" />
+									</orm:ProjectedFrom>
+								</orm:ConstraintRoleProjection>
+							</orm:JoinPathProjection>
+						</orm:JoinPathProjections>
+					</orm:JoinPath>
+				</orm:JoinRule>
 			</orm:RoleSequence>
 		</orm:UniquenessConstraint>
 		<orm:UniquenessConstraint id="_89ACD219-3337-437D-838E-5102EC15A467" Name="ExternalUniquenessConstraint4">
 			<orm:RoleSequence>
 				<orm:Role id="_BB07D29C-69F7-4912-80A2-C6D825DAAA0B" ref="_607260C5-A9AF-4D26-81BE-C06C241E2AA4" />
 				<orm:Role id="_F04ABEE0-C36B-4278-8AE9-FA0751BD0F6F" ref="_863655CF-5EF6-4E6A-9006-B5923E146D2F" />
+				<orm:JoinRule>
+					<orm:JoinPath id="_DF00A7F3-4002-471F-988C-4AC79D623BB9" IsAutomatic="true">
+						<orm:PathComponents>
+							<orm:RolePath id="_D7092B3C-C8F8-442C-B67E-894811D68999" SplitCombinationOperator="And">
+								<orm:RootObjectType id="_D512EDF1-5621-45DB-BAD8-58F188234899" ref="_CFFA4225-A7B4-457F-818B-4D899AA157AB" />
+								<orm:SubPaths>
+									<orm:SubPath id="_B1B1D157-0D79-4045-B0A0-9AA94E59512C">
+										<orm:PathedRoles>
+											<orm:PathedRole id="_025C4605-C189-4271-938B-F9C8FCD12821" ref="_B392D051-FF00-401F-BC87-BE9E59768999" Purpose="PostInnerJoin" />
+											<orm:PathedRole id="_366DDD7E-9249-4677-9D16-576C51FF894D" ref="_607260C5-A9AF-4D26-81BE-C06C241E2AA4" Purpose="SameFactType" />
+										</orm:PathedRoles>
+									</orm:SubPath>
+									<orm:SubPath id="_524EDEF1-D592-4844-9262-A8ABB820ED79">
+										<orm:PathedRoles>
+											<orm:PathedRole id="_784A3FD8-9012-411B-8CB8-EE0182581C8A" ref="_A61AEFEE-70CE-466F-A3F2-0FBD558D5F4E" Purpose="PostInnerJoin" />
+											<orm:PathedRole id="_0052ABF2-EFA5-4752-ABA0-17CE2C2A2E9A" ref="_863655CF-5EF6-4E6A-9006-B5923E146D2F" Purpose="SameFactType" />
+										</orm:PathedRoles>
+									</orm:SubPath>
+								</orm:SubPaths>
+							</orm:RolePath>
+						</orm:PathComponents>
+						<orm:JoinPathProjections>
+							<orm:JoinPathProjection id="_35B39DFD-3699-4BEF-94EA-4E0790ACF04B" ref="_D7092B3C-C8F8-442C-B67E-894811D68999">
+								<orm:ConstraintRoleProjection id="_E62227D7-D2DC-4D37-A830-CEDBA0654FEE" ref="_BB07D29C-69F7-4912-80A2-C6D825DAAA0B">
+									<orm:ProjectedFrom>
+										<orm:PathedRole ref="_366DDD7E-9249-4677-9D16-576C51FF894D" />
+									</orm:ProjectedFrom>
+								</orm:ConstraintRoleProjection>
+								<orm:ConstraintRoleProjection id="_8950BC70-A655-41C9-B3A8-5C8A15421A54" ref="_F04ABEE0-C36B-4278-8AE9-FA0751BD0F6F">
+									<orm:ProjectedFrom>
+										<orm:PathedRole ref="_0052ABF2-EFA5-4752-ABA0-17CE2C2A2E9A" />
+									</orm:ProjectedFrom>
+								</orm:ConstraintRoleProjection>
+							</orm:JoinPathProjection>
+						</orm:JoinPathProjections>
+					</orm:JoinPath>
+				</orm:JoinRule>
 			</orm:RoleSequence>
 			<orm:PreferredIdentifierFor ref="_CFFA4225-A7B4-457F-818B-4D899AA157AB" />
 		</orm:UniquenessConstraint>

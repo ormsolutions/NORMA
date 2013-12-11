@@ -2577,7 +2577,7 @@
 					</plx:condition>
 				</plx:loop>
 			</plx:function>
-			<plx:event visibility="public" name="Country_nameChanging">
+			<plx:event visibility="public" name="CountryNameChanging">
 				<plx:param name="sender" dataTypeName=".object" />
 				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Country" />
@@ -2677,7 +2677,7 @@
 					</plx:branch>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="OnCountry_nameChanging">
+			<plx:function visibility="protected" name="OnCountryNameChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
@@ -2771,10 +2771,10 @@
 										<plx:thisKeyword />
 									</plx:passParam>
 									<plx:passParam>
-										<plx:string data="Country_name" />
+										<plx:string data="CountryName" />
 									</plx:passParam>
 									<plx:passParam>
-										<plx:callThis accessor="this" type="property" name="Country_name" />
+										<plx:callThis accessor="this" type="property" name="CountryName" />
 									</plx:passParam>
 									<plx:passParam>
 										<plx:nameRef type="parameter" name="newValue" />
@@ -2788,7 +2788,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:event visibility="public" name="Country_nameChanged">
+			<plx:event visibility="public" name="CountryNameChanged">
 				<plx:param name="sender" dataTypeName=".object" />
 				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Country" />
@@ -2888,7 +2888,7 @@
 					</plx:branch>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="OnCountry_nameChanged">
+			<plx:function visibility="protected" name="OnCountryNameChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -2980,13 +2980,13 @@
 									<plx:thisKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:string data="Country_name" />
+									<plx:string data="CountryName" />
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef type="parameter" name="oldValue" />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="Country_name" />
+									<plx:callThis accessor="this" type="property" name="CountryName" />
 								</plx:passParam>
 							</plx:callNew>
 						</plx:passParam>
@@ -2998,12 +2998,12 @@
 				<plx:fallbackBranch>
 					<plx:callThis accessor="this" type="methodCall" name="OnPropertyChanged">
 						<plx:passParam>
-							<plx:string data="Country_name" />
+							<plx:string data="CountryName" />
 						</plx:passParam>
 					</plx:callThis>
 				</plx:fallbackBranch>
 			</plx:function>
-			<plx:event visibility="public" name="Region_Region_codeChanging">
+			<plx:event visibility="public" name="RegionCodeChanging">
 				<plx:param name="sender" dataTypeName=".object" />
 				<plx:param name="e" dataTypeName="PropertyChangingEventArgs">
 					<plx:passTypeParam dataTypeName="Country" />
@@ -3103,7 +3103,7 @@
 					</plx:branch>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="OnRegion_Region_codeChanging">
+			<plx:function visibility="protected" name="OnRegionCodeChanging">
 				<plx:param name="newValue" dataTypeName=".string" />
 				<plx:returns dataTypeName=".boolean" />
 				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
@@ -3197,10 +3197,10 @@
 										<plx:thisKeyword />
 									</plx:passParam>
 									<plx:passParam>
-										<plx:string data="Region_Region_code" />
+										<plx:string data="RegionCode" />
 									</plx:passParam>
 									<plx:passParam>
-										<plx:callThis accessor="this" type="property" name="Region_Region_code" />
+										<plx:callThis accessor="this" type="property" name="RegionCode" />
 									</plx:passParam>
 									<plx:passParam>
 										<plx:nameRef type="parameter" name="newValue" />
@@ -3214,7 +3214,7 @@
 					<plx:trueKeyword />
 				</plx:return>
 			</plx:function>
-			<plx:event visibility="public" name="Region_Region_codeChanged">
+			<plx:event visibility="public" name="RegionCodeChanged">
 				<plx:param name="sender" dataTypeName=".object" />
 				<plx:param name="e" dataTypeName="PropertyChangedEventArgs">
 					<plx:passTypeParam dataTypeName="Country" />
@@ -3314,7 +3314,7 @@
 					</plx:branch>
 				</plx:onRemove>
 			</plx:event>
-			<plx:function visibility="protected" name="OnRegion_Region_codeChanged">
+			<plx:function visibility="protected" name="OnRegionCodeChanged">
 				<plx:param name="oldValue" dataTypeName=".string" />
 				<plx:local name="events" dataTypeName="Delegate" dataTypeQualifier="System" dataTypeIsSimpleArray="true" />
 				<plx:local name="eventHandler" dataTypeName="EventHandler">
@@ -3406,13 +3406,13 @@
 									<plx:thisKeyword />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:string data="Region_Region_code" />
+									<plx:string data="RegionCode" />
 								</plx:passParam>
 								<plx:passParam>
 									<plx:nameRef type="parameter" name="oldValue" />
 								</plx:passParam>
 								<plx:passParam>
-									<plx:callThis accessor="this" type="property" name="Region_Region_code" />
+									<plx:callThis accessor="this" type="property" name="RegionCode" />
 								</plx:passParam>
 							</plx:callNew>
 						</plx:passParam>
@@ -3424,7 +3424,7 @@
 				<plx:fallbackBranch>
 					<plx:callThis accessor="this" type="methodCall" name="OnPropertyChanged">
 						<plx:passParam>
-							<plx:string data="Region_Region_code" />
+							<plx:string data="RegionCode" />
 						</plx:passParam>
 					</plx:callThis>
 				</plx:fallbackBranch>
@@ -3436,7 +3436,7 @@
 				<plx:returns dataTypeName="PersonCountryDemoContext" />
 				<plx:get />
 			</plx:property>
-			<plx:property visibility="public" modifier="abstract" name="Country_name">
+			<plx:property visibility="public" modifier="abstract" name="CountryName">
 				<plx:attribute dataTypeName="DataObjectFieldAttribute">
 					<plx:passParam>
 						<plx:falseKeyword />
@@ -3452,7 +3452,7 @@
 				<plx:get />
 				<plx:set />
 			</plx:property>
-			<plx:property visibility="public" modifier="abstract" name="Region_Region_code">
+			<plx:property visibility="public" modifier="abstract" name="RegionCode">
 				<plx:attribute dataTypeName="DataObjectFieldAttribute">
 					<plx:passParam>
 						<plx:falseKeyword />
@@ -3506,7 +3506,7 @@
 							<plx:nameRef type="parameter" name="provider" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:string>Country{0}{{{0}{1}Country_name = "{2}",{0}{1}Region_Region_code = "{3}"{0}}}</plx:string>
+							<plx:string>Country{0}{{{0}{1}CountryName = "{2}",{0}{1}RegionCode = "{3}"{0}}}</plx:string>
 						</plx:passParam>
 						<plx:passParam>
 							<plx:callStatic type="field" name="NewLine" dataTypeName="Environment" />
@@ -3515,10 +3515,10 @@
 							<plx:string>&#x09;</plx:string>
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callThis accessor="this" type="property" name="Country_name" />
+							<plx:callThis accessor="this" type="property" name="CountryName" />
 						</plx:passParam>
 						<plx:passParam>
-							<plx:callThis accessor="this" type="property" name="Region_Region_code" />
+							<plx:callThis accessor="this" type="property" name="RegionCode" />
 						</plx:passParam>
 					</plx:callStatic>
 				</plx:return>
@@ -3560,18 +3560,27 @@
 					<plx:string>1.0</plx:string>
 				</plx:passParam>
 			</plx:attribute>
-			<plx:function visibility="public" modifier="abstract" name="GetCountryByCountry_name">
-				<plx:param name="Country_name" dataTypeName=".string" />
+			<plx:function visibility="public" modifier="abstract" name="GetPersonByPersonId">
+				<plx:param name="personId" dataTypeName=".i4" />
+				<plx:returns dataTypeName="Person" />
+			</plx:function>
+			<plx:function visibility="public" modifier="abstract" name="TryGetPersonByPersonId">
+				<plx:param name="personId" dataTypeName=".i4" />
+				<plx:param type="out" name="person" dataTypeName="Person" />
+				<plx:returns dataTypeName=".boolean" />
+			</plx:function>
+			<plx:function visibility="public" modifier="abstract" name="GetCountryByCountryName">
+				<plx:param name="countryName" dataTypeName=".string" />
 				<plx:returns dataTypeName="Country" />
 			</plx:function>
-			<plx:function visibility="public" modifier="abstract" name="TryGetCountryByCountry_name">
-				<plx:param name="Country_name" dataTypeName=".string" />
-				<plx:param type="out" name="Country" dataTypeName="Country" />
+			<plx:function visibility="public" modifier="abstract" name="TryGetCountryByCountryName">
+				<plx:param name="countryName" dataTypeName=".string" />
+				<plx:param type="out" name="country" dataTypeName="Country" />
 				<plx:returns dataTypeName=".boolean" />
 			</plx:function>
 			<plx:function visibility="public" modifier="abstract" name="CreatePerson">
-				<plx:param name="LastName" dataTypeName=".string" />
-				<plx:param name="FirstName" dataTypeName=".string" />
+				<plx:param name="lastName" dataTypeName=".string" />
+				<plx:param name="firstName" dataTypeName=".string" />
 				<plx:returns dataTypeName="Person" />
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="PersonCollection">
@@ -3581,7 +3590,7 @@
 				<plx:get />
 			</plx:property>
 			<plx:function visibility="public" modifier="abstract" name="CreateCountry">
-				<plx:param name="Country_name" dataTypeName=".string" />
+				<plx:param name="countryName" dataTypeName=".string" />
 				<plx:returns dataTypeName="Country" />
 			</plx:function>
 			<plx:property visibility="public" modifier="abstract" name="CountryCollection">

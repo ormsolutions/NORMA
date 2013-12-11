@@ -668,6 +668,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
 				}
 
+				// Make sure the role name shape visibility is correct. Visibility
+				// settings do not survive a merge operation, so we need to check
+				// this explicitly regardless of merge state.
+				factTypeShape.UpdateRoleNameDisplay();
+
 				// Get the role value constraint and the link to it.
 				RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
 				UnaryRoleCardinalityConstraint unaryRoleCardinality = (unaryRole == role) ? unaryRole.Cardinality : null;
@@ -3640,6 +3645,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			// Our UpdateCounter properties are also signals that should not trigger a user-visible change.
 			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(ORMBaseShape.UpdateCounterDomainPropertyId, null);
 			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(ORMBaseBinaryLinkShape.UpdateCounterDomainPropertyId, null);
+			yield return new KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>(FactTypeShape.RoleNameVisibilityChangedDomainPropertyId, null);
 		}
 		IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> IRegisterSignalChanges.GetSignalPropertyChanges()
 		{

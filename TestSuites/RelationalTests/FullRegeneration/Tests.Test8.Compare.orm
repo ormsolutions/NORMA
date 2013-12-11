@@ -29,7 +29,7 @@
 			</orm:EntityType>
 		</orm:Objects>
 		<orm:Facts>
-			<orm:Fact id="_60FE3D5D-7AFA-4EDA-B338-23F1F355A9F2" _Name="BarHasBar_id">
+			<orm:Fact id="_60FE3D5D-7AFA-4EDA-B338-23F1F355A9F2" _Name="BarHasBarId">
 				<orm:FactRoles>
 					<orm:Role id="_FBE13C84-0F4A-48F6-B7B9-E1474E19A241" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 						<orm:RolePlayer ref="_F6FCFBBF-4BBA-4030-B728-CA6B7A2D2105" />
@@ -211,7 +211,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_3FB952A5-A1B8-4A7B-9C17-10B2D5D9B95D">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_CA317692-2D5E-4094-9CC9-F7B049F0A505" AlgorithmVersion="1.008">
+			<ormtooial:AbstractionModelGenerationSetting id="_CA317692-2D5E-4094-9CC9-F7B049F0A505" AlgorithmVersion="1.009">
 				<ormtooial:AbstractionModel ref="_9C9BECFF-37EA-4156-B4BF-55AD6ED21CD2" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_7A16F888-F499-4270-94C6-894CF461C356" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.014">

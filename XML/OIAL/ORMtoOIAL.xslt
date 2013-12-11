@@ -209,7 +209,29 @@
 
 		<xsl:variable name="ObjectTypeAbsorptionsFragment">
 			<xsl:for-each select="$NonIndependentSubtypeObjectTypes">
-				<xsl:variable name="absorbingSupertypeId" select="subtypeMetaFacts/child::*[@IsPrimary='true']/orm:FactRoles/orm:SupertypeMetaRole/orm:RolePlayer/@ref"/>
+<!--
+				There is more than one primary path. This is really where we want
+				to be, but OAIL supports a concept type contained in only one place,
+				so we won't do this now. This is in the process of being deprecated
+				anyway.
+-->
+<!--
+				<xsl:variable name="objectType" select="."/>
+				<xsl:for-each select="subtypeMetaFacts/child::*[@PreferredIdentificationPath='true']/orm:FactRoles/orm:SupertypeMetaRole/orm:RolePlayer/@ref">
+					<xsl:variable name="absorbingSupertypeId" select="string(.)"/>
+					<AbsorbObjectType ref="{$objectType/@id}" towards="{$absorbingSupertypeId}">
+						<xsl:if test="$OutputDebugInformation">
+							<xsl:attribute name="refName">
+								<xsl:value-of select="$objectType/@Name"/>
+							</xsl:attribute>
+							<xsl:attribute name="towardsName">
+								<xsl:value-of select="$ObjectTypeInformation[@id=$absorbingSupertypeId]/@Name"/>
+							</xsl:attribute>
+						</xsl:if>
+					</AbsorbObjectType>
+				</xsl:for-each>
+-->
+				<xsl:variable name="absorbingSupertypeId" select="subtypeMetaFacts/child::*[@PreferredIdentificationPath='true']/orm:FactRoles/orm:SupertypeMetaRole/orm:RolePlayer/@ref"/>
 				<AbsorbObjectType ref="{@id}" towards="{$absorbingSupertypeId}">
 					<xsl:if test="$OutputDebugInformation">
 						<xsl:attribute name="refName">

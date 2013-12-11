@@ -33,14 +33,23 @@ namespace PersonCountryDemo
 		}
 		#endregion // Exception Helpers
 		#region Lookup and External Constraint Enforcement
-		private readonly Dictionary<string, Country> _CountryCountry_nameDictionary = new Dictionary<string, Country>();
-		public Country GetCountryByCountry_name(string Country_name)
+		private readonly Dictionary<int, Person> _PersonPersonIdDictionary = new Dictionary<int, Person>();
+		public Person GetPersonByPersonId(int personId)
 		{
-			return this._CountryCountry_nameDictionary[Country_name];
+			return this._PersonPersonIdDictionary[personId];
 		}
-		public bool TryGetCountryByCountry_name(string Country_name, out Country Country)
+		public bool TryGetPersonByPersonId(int personId, out Person person)
 		{
-			return this._CountryCountry_nameDictionary.TryGetValue(Country_name, out Country);
+			return this._PersonPersonIdDictionary.TryGetValue(personId, out person);
+		}
+		private readonly Dictionary<string, Country> _CountryCountryNameDictionary = new Dictionary<string, Country>();
+		public Country GetCountryByCountryName(string countryName)
+		{
+			return this._CountryCountryNameDictionary[countryName];
+		}
+		public bool TryGetCountryByCountryName(string countryName, out Country country)
+		{
+			return this._CountryCountryNameDictionary.TryGetValue(countryName, out country);
 		}
 		#endregion // Lookup and External Constraint Enforcement
 		#region ConstraintEnforcementCollection
@@ -90,11 +99,11 @@ namespace PersonCountryDemo
 		private sealed class ConstraintEnforcementCollection<TClass, TProperty> : ICollection<TProperty>
 			where TClass : class, IHasPersonCountryDemoContext
 		{
-			private readonly TClass _instance;
-			private readonly List<TProperty> _list = new List<TProperty>();
+			private readonly TClass _Instance;
+			private readonly List<TProperty> _List = new List<TProperty>();
 			public ConstraintEnforcementCollection(TClass instance)
 			{
-				this._instance = instance;
+				this._Instance = instance;
 			}
 			private System.Collections.IEnumerator GetNonGenericEnumerator()
 			{
@@ -106,7 +115,7 @@ namespace PersonCountryDemo
 			}
 			public IEnumerator<TProperty> GetEnumerator()
 			{
-				return this._list.GetEnumerator();
+				return this._List.GetEnumerator();
 			}
 			public void Add(TProperty item)
 			{
@@ -114,12 +123,12 @@ namespace PersonCountryDemo
 				{
 					throw new ArgumentNullException("item");
 				}
-				TClass instance = this._instance;
+				TClass instance = this._Instance;
 				ConstraintEnforcementCollectionCallbacks<TClass, TProperty> callbacks = instance.Context.GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>();
 				PotentialCollectionModificationCallback<TClass, TProperty> adding = callbacks.Adding;
 				if ((object)adding == null || adding(instance, item))
 				{
-					this._list.Add(item);
+					this._List.Add(item);
 					CommittedCollectionModificationCallback<TClass, TProperty> added = callbacks.Added;
 					if ((object)added != null)
 					{
@@ -133,12 +142,12 @@ namespace PersonCountryDemo
 				{
 					throw new ArgumentNullException("item");
 				}
-				TClass instance = this._instance;
+				TClass instance = this._Instance;
 				ConstraintEnforcementCollectionCallbacks<TClass, TProperty> callbacks = instance.Context.GetConstraintEnforcementCollectionCallbacks<TClass, TProperty>();
 				PotentialCollectionModificationCallback<TClass, TProperty> removing = callbacks.Removing;
 				if ((object)removing == null || removing(instance, item))
 				{
-					if (this._list.Remove(item))
+					if (this._List.Remove(item))
 					{
 						CommittedCollectionModificationCallback<TClass, TProperty> removed = callbacks.Removed;
 						if ((object)removed != null)
@@ -152,7 +161,7 @@ namespace PersonCountryDemo
 			}
 			public void Clear()
 			{
-				List<TProperty> list = this._list;
+				List<TProperty> list = this._List;
 				for (int i = list.Count - 1; i > 0; --i)
 				{
 					this.Remove(list[i]);
@@ -160,17 +169,17 @@ namespace PersonCountryDemo
 			}
 			public bool Contains(TProperty item)
 			{
-				return item != null && this._list.Contains(item);
+				return item != null && this._List.Contains(item);
 			}
 			public void CopyTo(TProperty[] array, int arrayIndex)
 			{
-				this._list.CopyTo(array, arrayIndex);
+				this._List.CopyTo(array, arrayIndex);
 			}
 			public int Count
 			{
 				get
 				{
-					return this._list.Count;
+					return this._List.Count;
 				}
 			}
 			public bool IsReadOnly
@@ -183,25 +192,25 @@ namespace PersonCountryDemo
 		}
 		#endregion // ConstraintEnforcementCollection
 		#region Person
-		public Person CreatePerson(string LastName, string FirstName)
+		public Person CreatePerson(string lastName, string firstName)
 		{
-			if ((object)LastName == null)
+			if ((object)lastName == null)
 			{
-				throw new ArgumentNullException("LastName");
+				throw new ArgumentNullException("lastName");
 			}
-			if ((object)FirstName == null)
+			if ((object)firstName == null)
 			{
-				throw new ArgumentNullException("FirstName");
+				throw new ArgumentNullException("firstName");
 			}
-			if (!this.OnPersonLastNameChanging(null, LastName))
+			if (!this.OnPersonLastNameChanging(null, lastName))
 			{
-				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("LastName");
+				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("lastName");
 			}
-			if (!this.OnPersonFirstNameChanging(null, FirstName))
+			if (!this.OnPersonFirstNameChanging(null, firstName))
 			{
-				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("FirstName");
+				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("firstName");
 			}
-			return new PersonCore(this, LastName, FirstName);
+			return new PersonImpl(this, lastName, firstName);
 		}
 		private bool OnPersonLastNameChanging(Person instance, string newValue)
 		{
@@ -246,15 +255,15 @@ namespace PersonCountryDemo
 				return this._PersonReadOnlyCollection;
 			}
 		}
-		#region PersonCore
+		#region PersonImpl
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-		private sealed class PersonCore : Person
+		private sealed class PersonImpl : Person
 		{
-			public PersonCore(PersonCountryDemoContext context, string LastName, string FirstName)
+			public PersonImpl(PersonCountryDemoContext context, string lastName, string firstName)
 			{
 				this._Context = context;
-				this._LastName = LastName;
-				this._FirstName = FirstName;
+				this._LastName = lastName;
+				this._FirstName = firstName;
 				context._PersonList.Add(this);
 			}
 			private readonly PersonCountryDemoContext _Context;
@@ -355,25 +364,25 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		#endregion // PersonCore
+		#endregion // PersonImpl
 		#endregion // Person
 		#region Country
-		public Country CreateCountry(string Country_name)
+		public Country CreateCountry(string countryName)
 		{
-			if ((object)Country_name == null)
+			if ((object)countryName == null)
 			{
-				throw new ArgumentNullException("Country_name");
+				throw new ArgumentNullException("countryName");
 			}
-			if (!this.OnCountryCountry_nameChanging(null, Country_name))
+			if (!this.OnCountryCountryNameChanging(null, countryName))
 			{
-				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("Country_name");
+				throw PersonCountryDemoContext.GetConstraintEnforcementFailedException("countryName");
 			}
-			return new CountryCore(this, Country_name);
+			return new CountryImpl(this, countryName);
 		}
-		private bool OnCountryCountry_nameChanging(Country instance, string newValue)
+		private bool OnCountryCountryNameChanging(Country instance, string newValue)
 		{
 			Country currentInstance;
-			if (this._CountryCountry_nameDictionary.TryGetValue(newValue, out currentInstance))
+			if (this._CountryCountryNameDictionary.TryGetValue(newValue, out currentInstance))
 			{
 				if ((object)currentInstance != (object)instance)
 				{
@@ -382,15 +391,15 @@ namespace PersonCountryDemo
 			}
 			return true;
 		}
-		private void OnCountryCountry_nameChanged(Country instance, string oldValue)
+		private void OnCountryCountryNameChanged(Country instance, string oldValue)
 		{
-			this._CountryCountry_nameDictionary.Add(instance.Country_name, instance);
+			this._CountryCountryNameDictionary.Add(instance.CountryName, instance);
 			if ((object)oldValue != null)
 			{
-				this._CountryCountry_nameDictionary.Remove(oldValue);
+				this._CountryCountryNameDictionary.Remove(oldValue);
 			}
 		}
-		private bool OnCountryRegion_Region_codeChanging(Country instance, string newValue)
+		private bool OnCountryRegionCodeChanging(Country instance, string newValue)
 		{
 			return true;
 		}
@@ -422,16 +431,16 @@ namespace PersonCountryDemo
 				return this._CountryReadOnlyCollection;
 			}
 		}
-		#region CountryCore
+		#region CountryImpl
 		[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Auto, CharSet=System.Runtime.InteropServices.CharSet.Auto)]
-		private sealed class CountryCore : Country
+		private sealed class CountryImpl : Country
 		{
-			public CountryCore(PersonCountryDemoContext context, string Country_name)
+			public CountryImpl(PersonCountryDemoContext context, string countryName)
 			{
 				this._Context = context;
 				this._PersonViaCountryCollection = new ConstraintEnforcementCollection<Country, Person>(this);
-				this._Country_name = Country_name;
-				context.OnCountryCountry_nameChanged(this, null);
+				this._CountryName = countryName;
+				context.OnCountryCountryNameChanged(this, null);
 				context._CountryList.Add(this);
 			}
 			private readonly PersonCountryDemoContext _Context;
@@ -442,12 +451,12 @@ namespace PersonCountryDemo
 					return this._Context;
 				}
 			}
-			private string _Country_name;
-			public sealed override string Country_name
+			private string _CountryName;
+			public sealed override string CountryName
 			{
 				get
 				{
-					return this._Country_name;
+					return this._CountryName;
 				}
 				set
 				{
@@ -455,34 +464,34 @@ namespace PersonCountryDemo
 					{
 						throw new ArgumentNullException("value");
 					}
-					string oldValue = this._Country_name;
+					string oldValue = this._CountryName;
 					if ((object)oldValue != (object)value && !value.Equals(oldValue))
 					{
-						if (this._Context.OnCountryCountry_nameChanging(this, value) && base.OnCountry_nameChanging(value))
+						if (this._Context.OnCountryCountryNameChanging(this, value) && base.OnCountryNameChanging(value))
 						{
-							this._Country_name = value;
-							this._Context.OnCountryCountry_nameChanged(this, oldValue);
-							base.OnCountry_nameChanged(oldValue);
+							this._CountryName = value;
+							this._Context.OnCountryCountryNameChanged(this, oldValue);
+							base.OnCountryNameChanged(oldValue);
 						}
 					}
 				}
 			}
-			private string _Region_Region_code;
-			public sealed override string Region_Region_code
+			private string _RegionCode;
+			public sealed override string RegionCode
 			{
 				get
 				{
-					return this._Region_Region_code;
+					return this._RegionCode;
 				}
 				set
 				{
-					string oldValue = this._Region_Region_code;
+					string oldValue = this._RegionCode;
 					if (!object.Equals(oldValue, value))
 					{
-						if (this._Context.OnCountryRegion_Region_codeChanging(this, value) && base.OnRegion_Region_codeChanging(value))
+						if (this._Context.OnCountryRegionCodeChanging(this, value) && base.OnRegionCodeChanging(value))
 						{
-							this._Region_Region_code = value;
-							base.OnRegion_Region_codeChanged(oldValue);
+							this._RegionCode = value;
+							base.OnRegionCodeChanged(oldValue);
 						}
 					}
 				}
@@ -496,7 +505,7 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		#endregion // CountryCore
+		#endregion // CountryImpl
 		#endregion // Country
 	}
 	#endregion // PersonCountryDemoContext

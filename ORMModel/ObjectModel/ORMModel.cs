@@ -59,6 +59,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		AddImplicitElements = StandardFixupPhase.AddImplicitElements,
 		/// <summary>
+		/// Synchronize stored element names before generating names that
+		/// could rely on the stored name.
+		/// </summary>
+		SynchronizeStoredElementNames = StandardFixupPhase.LastModelElementPhase + 80,
+		/// <summary>
 		/// If an element name is both derived and validated, then it needs
 		/// to be in place before names are validated.
 		/// </summary>

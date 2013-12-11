@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Neumont Object-Role Modeling Architect for Visual Studio
 
@@ -12,6 +12,10 @@
 
 	You must not remove this notice, or any other, from this software.
 -->
+<!-- This version of the transform assumes the CLIProperties file as generated prior to
+changeset 1536, which is now based on the extension-based implementation of Oial instead
+of the XSLT-generated OIAL file format referenced below. This is not currently functional
+and is not included in setup. -->
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:exsl="http://exslt.org/common"

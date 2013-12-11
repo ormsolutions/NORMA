@@ -103,6 +103,15 @@
 			<arg:DeleteRule methodName="ConstraintRoleDeletedRule">
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeleteRule>
+			<arg:AddRule methodName="DataTypeAddedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="DataTypeDeletedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="DataTypeChangedRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:RolePlayerChangeRule>
 			<arg:ChangeRule methodName="ObjectTypeChangedRule">
 				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
@@ -115,6 +124,30 @@
 			<arg:RolePlayerChangeRule methodName="PreferredIdentifierRolePlayerChangedRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:RolePlayerChangeRule>
+			<arg:AddRule methodName="ReadingOrderAddedRule">
+				<arg:RuleOn targetType="FactTypeHasReadingOrder" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ReadingOrderDeletedRule">
+				<arg:RuleOn targetType="FactTypeHasReadingOrder" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerPositionChangeRule methodName="ReadingOrderReorderedRule">
+				<arg:RuleOn targetType="FactTypeHasReadingOrder" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:RolePlayerPositionChangeRule>
+			<arg:AddRule methodName="ReadingAddedRule">
+				<arg:RuleOn targetType="ReadingOrderHasReading" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:ChangeRule methodName="ReadingChangedRule">
+				<arg:RuleOn targetType="Reading" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:DeleteRule methodName="ReadingDeletedRule">
+				<arg:RuleOn targetType="ReadingOrderHasReading" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerPositionChangeRule methodName="ReadingReorderedRule">
+				<arg:RuleOn targetType="ReadingOrderHasReading" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:RolePlayerPositionChangeRule>
+			<arg:ChangeRule methodName="RoleChangedRule">
+				<arg:RuleOn targetType="Role" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
 			<arg:RolePlayerChangeRule methodName="RolePlayerRolePlayerChangedRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:RolePlayerChangeRule>

@@ -90,7 +90,7 @@
 					<orm:UniquenessConstraint ref="_ACC1187D-CF0E-4B75-8011-2101D7D5F49A" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="AHasA_id" id="_EFD5885A-2F36-4CA2-BCDB-61727404351D">
+			<orm:Fact id="_EFD5885A-2F36-4CA2-BCDB-61727404351D" _Name="AHasAId">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_4811F529-332E-464D-BD9C-7A0AA1A896CD">
 						<orm:RolePlayer ref="_F39B4363-0CDB-45F0-87F6-CE26A6CEFCDA" />
@@ -135,7 +135,7 @@
 					<orm:MandatoryConstraint ref="_6E3FA34E-9F3B-4C3F-AE14-D1C44153A921" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="BHasB_id" id="_2098D45E-DA28-429C-9615-61358485561D">
+			<orm:Fact id="_2098D45E-DA28-429C-9615-61358485561D" _Name="BHasBId">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_C23FFA13-1217-4B24-AD13-A571E4C49AE1">
 						<orm:RolePlayer ref="_D7250414-0B87-4949-B97A-D949B1A26A15" />

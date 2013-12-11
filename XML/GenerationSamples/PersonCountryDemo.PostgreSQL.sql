@@ -10,10 +10,10 @@ CREATE DOMAIN PersonCountryDemo.Title AS CHARACTER VARYING(4) CONSTRAINT ValueTy
 CREATE TABLE PersonCountryDemo.Person
 (
 	personId SERIAL NOT NULL,
-	lastName CHARACTER VARYING(30) NOT NULL,
 	firstName CHARACTER VARYING(30) NOT NULL,
-	title PersonCountryDemo.Title,
+	lastName CHARACTER VARYING(30) NOT NULL,
 	countryName CHARACTER VARYING(20),
+	title PersonCountryDemo.Title,
 	CONSTRAINT Person_PK PRIMARY KEY(personId)
 );
 

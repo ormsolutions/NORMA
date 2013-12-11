@@ -34,7 +34,7 @@
 				</orm:PlayedRoles>
 				<orm:ConceptualDataType Length="0" Scale="0" id="_B48FD3C8-9383-4CB3-A0C8-168C46DB4B78" ref="_3180D713-ACCC-443A-89A5-05C745877A14" />
 			</orm:ValueType>
-			<orm:ObjectifiedType Name="EntityType1IsRunningFromEntityType1ToEntityType2EntityType2" _ReferenceMode="" id="_7503C555-EDAE-4D1E-9300-009540EAE44D">
+			<orm:ObjectifiedType _ReferenceMode="" id="_7503C555-EDAE-4D1E-9300-009540EAE44D" Name="EntityType1IsRunningFromEntityType1ToEntityType2entityType2">
 				<orm:PlayedRoles>
 					<orm:Role ref="_1EB99EC9-ADF5-4513-BEE2-13A39CE0DCA1" />
 					<orm:Role ref="_517AA609-89CD-4B7E-8A2A-70CEDC985BCA" />
@@ -74,7 +74,7 @@
 					<orm:UniquenessConstraint ref="_196BC04D-BC4A-4412-9EC0-76911A4638E8" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="EntityType1HasEntityType1_id" id="_3CA4C3D0-A6A7-46D3-8DD0-44951B4B4E89">
+			<orm:Fact id="_3CA4C3D0-A6A7-46D3-8DD0-44951B4B4E89" _Name="EntityType1HasEntityType1Id">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_C2915D5E-689F-4571-BEDE-8E236D82DA05">
 						<orm:RolePlayer ref="_C68FFE5B-306C-4DB6-905A-72C7C43FFCA1" />
@@ -119,7 +119,7 @@
 					<orm:UniquenessConstraint ref="_29A56AB3-DCFC-46ED-8105-AED55F6BDA0E" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="EntityType2HasEntityType2_#" id="_B6C7D212-7A6D-4D1B-A8CD-03F8FE940049">
+			<orm:Fact id="_B6C7D212-7A6D-4D1B-A8CD-03F8FE940049" _Name="EntityType2HasEntityType2#">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_E9839284-995B-48EC-9BC8-F3F56F689342">
 						<orm:RolePlayer ref="_9501399B-71C1-41A5-BA64-E5BF8FCB8763" />
@@ -193,7 +193,7 @@
 					<orm:UniquenessConstraint ref="_AF4BB219-D566-4246-B529-288ADE044D1D" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:Fact _Name="EntityType1IsRunningFromEntityType1ToEntityType2EntityType2" id="_9DC88B4E-7264-49C7-BB47-5537F75D7940">
+			<orm:Fact id="_9DC88B4E-7264-49C7-BB47-5537F75D7940" _Name="EntityType1IsRunningFromEntityType1ToEntityType2entityType2">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="false" _Multiplicity="Unspecified" id="_24221AAE-A850-4364-A5AA-2E0683C51B9C">
 						<orm:RolePlayer ref="_C68FFE5B-306C-4DB6-905A-72C7C43FFCA1" />
@@ -233,7 +233,7 @@
 					<orm:UniquenessConstraint ref="_B7C023F2-E8AD-47AD-937B-DDF9FF0ED4E7" />
 				</orm:InternalConstraints>
 			</orm:Fact>
-			<orm:ImpliedFact _Name="EntityType1IsInvolvedInEntityType1IsRunningFromEntityType1ToEntityType2EntityType2" id="_F38D2F48-8A7E-459D-869D-6D10F38C517F">
+			<orm:ImpliedFact id="_F38D2F48-8A7E-459D-869D-6D10F38C517F" _Name="EntityType1IsInvolvedInEntityType1IsRunningFromEntityType1ToEntityType2entityType2">
 				<orm:FactRoles>
 					<orm:RoleProxy id="_C09E31EC-CEAD-4E52-83D0-9D2EDBB9C797">
 						<orm:Role ref="_24221AAE-A850-4364-A5AA-2E0683C51B9C" />
@@ -278,7 +278,7 @@
 				</orm:InternalConstraints>
 				<orm:ImpliedByObjectification ref="_5F8E0F81-8F98-4C39-A480-8CF0371FF520" />
 			</orm:ImpliedFact>
-			<orm:ImpliedFact _Name="EntityType1IsInvolvedInEntityType1IsRunningFromEntityType1ToEntityType2EntityType2" id="_531C599E-B86F-48EE-A28F-EEB44B22AFC9">
+			<orm:ImpliedFact id="_531C599E-B86F-48EE-A28F-EEB44B22AFC9" _Name="EntityType1IsInvolvedInEntityType1IsRunningFromEntityType1ToEntityType2entityType2">
 				<orm:FactRoles>
 					<orm:RoleProxy id="_51A0F042-A68F-4976-B102-E5386C39CFB2">
 						<orm:Role ref="_62E0B796-6184-4306-8F44-3199E7AE32AE" />
@@ -323,7 +323,7 @@
 				</orm:InternalConstraints>
 				<orm:ImpliedByObjectification ref="_5F8E0F81-8F98-4C39-A480-8CF0371FF520" />
 			</orm:ImpliedFact>
-			<orm:ImpliedFact _Name="EntityType2IsInvolvedInEntityType1IsRunningFromEntityType1ToEntityType2EntityType2" id="_5208611C-3DBB-4F88-AD0A-B9FA52480541">
+			<orm:ImpliedFact id="_5208611C-3DBB-4F88-AD0A-B9FA52480541" _Name="EntityType2IsInvolvedInEntityType1IsRunningFromEntityType1ToEntityType2entityType2">
 				<orm:FactRoles>
 					<orm:RoleProxy id="_54D95130-6158-4158-A0C2-9F0B2195899A">
 						<orm:Role ref="_A6CFBBC5-5E5D-4C84-B30F-66BC502137C9" />
@@ -368,7 +368,7 @@
 				</orm:InternalConstraints>
 				<orm:ImpliedByObjectification ref="_5F8E0F81-8F98-4C39-A480-8CF0371FF520" />
 			</orm:ImpliedFact>
-			<orm:ImpliedFact _Name="EntityType2IsInvolvedInEntityType1IsRunningFromEntityType1ToEntityType2EntityType2" id="_E1AC6D41-AC5E-4164-9C97-01D398ECB07A">
+			<orm:ImpliedFact id="_E1AC6D41-AC5E-4164-9C97-01D398ECB07A" _Name="EntityType2IsInvolvedInEntityType1IsRunningFromEntityType1ToEntityType2entityType2">
 				<orm:FactRoles>
 					<orm:RoleProxy id="_BE6EC37F-0D13-4B52-BC74-4017043DE046">
 						<orm:Role ref="_0B852243-9B60-4C09-B44D-34D4BFB29A84" />
@@ -552,10 +552,10 @@
 			<orm:AutoCounterNumericDataType id="_0CC2F59C-D286-4D9A-AFE3-72AA4D040989" />
 		</orm:DataTypes>
 		<orm:ModelErrors>
-			<orm:ImpliedInternalUniquenessConstraintError id="_0E7D03E5-9B8E-40CD-953C-05B0F971511A" Name="Fact type 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.">
+			<orm:ImpliedInternalUniquenessConstraintError id="_0E7D03E5-9B8E-40CD-953C-05B0F971511A" Name="Fact type 'EntityType1IsRunningFromEntityType1ToEntityType2entityType2' in model 'NewModel' contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.">
 				<orm:Fact ref="_9DC88B4E-7264-49C7-BB47-5537F75D7940" />
 			</orm:ImpliedInternalUniquenessConstraintError>
-			<orm:EntityTypeRequiresReferenceSchemeError id="_1618AFFA-76DB-4B05-AF1C-94313C912F95" Name="Entity type 'EntityType1IsRunningFromEntityType1ToEntityType2EntityType2' in model 'NewModel' requires a local preferred reference scheme or supertype(s) that provide preferred identification.">
+			<orm:EntityTypeRequiresReferenceSchemeError id="_1618AFFA-76DB-4B05-AF1C-94313C912F95" Name="Entity type 'EntityType1IsRunningFromEntityType1ToEntityType2entityType2' in model 'NewModel' requires a local preferred reference scheme or supertype(s) that provide preferred identification.">
 				<orm:EntityType ref="_7503C555-EDAE-4D1E-9300-009540EAE44D" />
 			</orm:EntityTypeRequiresReferenceSchemeError>
 			<orm:ImplicationError Name="Constraint 'InternalUniquenessConstraint10' in model 'NewModel' is implied by at least one constraint of the same type attached to a subset of the same roles." id="_32D7FF79-21CE-426E-87ED-EC981EFA7062">

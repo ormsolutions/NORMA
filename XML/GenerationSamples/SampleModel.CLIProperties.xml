@@ -1,170 +1,266 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<prop:AllProperties xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
-	<prop:Properties conceptTypeName="PersonDrivesCar">
-		<prop:Property name="DrivesCar_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
-		<prop:Property name="DrivenByPerson" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonDrivesCar">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="PersonHasNickName">
-		<prop:Property name="NickName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+<prop:AllProperties modelName="SampleModel" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<prop:Properties conceptTypeName="Person" conceptTypeParamName="person" conceptTypeId="_9AE0EFE5-A673-46D5-AD0D-1089D038B0DE">
+		<prop:IdentityField name="PersonId" paramName="personId" childId="_F196EDCF-FD89-40CC-A2BD-7693337DF95E" />
+		<prop:Property name="FirstName" paramName="firstName" childId="_E232288A-767C-4B8B-B055-96BBDA404140" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="Person" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonHasNickName">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="Person">
-		<prop:Property name="FirstName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="LastName" paramName="lastName" childId="_F905F39E-8FFB-46B8-988F-8253B3A3A5A5" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:IdentityField name="Person_id" />
-		<prop:Property name="Date_YMD" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
-		</prop:Property>
-		<prop:Property name="LastName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="OptionalUniqueString" paramName="optionalUniqueString" childId="_61F802C6-9F4D-4902-A273-11BFF6349919" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="OptionalUniqueString" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".string" />
-		</prop:Property>
-		<prop:Property name="HatType_ColorARGB" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="ColorARGB" paramName="colorARGB" childId="_0A7072D5-1134-4419-8C11-4561AFBC2D84" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName="Nullable">
 				<plx:passTypeParam dataTypeName=".i4" />
 			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="HatType_HatTypeStyle_HatTypeStyle_Description" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="HatTypeStyleDescription" paramName="hatTypeStyleDescription" childId="_FF8BD2EF-3122-46B0-A23C-D3DA21563BB1" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="OwnsCar_vin" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="Vin" paramName="vin" childId="_459EB6D9-4F6D-4D76-A084-B86429564919" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName="Nullable">
-				<plx:passTypeParam dataTypeName=".i4" />
+				<plx:passTypeParam dataTypeName=".u4" />
 			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="Gender_Gender_Code" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".string" />
+		<prop:Property name="YMD" paramName="YMD" childId="_9B37D91E-78F0-4BF9-AAFC-2DECFD616B9B" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".date" />
 		</prop:Property>
-		<prop:Property name="hasParents" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="IsDead" paramName="isDead" childId="_E49F95BD-FF38-4327-92DA-25CD86207C46" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName="Nullable">
 				<plx:passTypeParam dataTypeName=".boolean" />
 			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="OptionalUniqueDecimal" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName="Nullable">
-				<plx:passTypeParam dataTypeName=".decimal" />
-			</prop:DataType>
-		</prop:Property>
-		<prop:Property name="MandatoryUniqueDecimal" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".decimal" />
-		</prop:Property>
-		<prop:Property name="MandatoryUniqueString" mandatory="alethic" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="GenderCode" paramName="genderCode" childId="_6D33748E-A8A3-4210-9226-B280E96D72F3" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="OptionalUniqueTinyInt" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false" />
-		<prop:Property name="MandatoryUniqueTinyInt" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false" />
-		<prop:Property name="OptionalNonUniqueTinyInt" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" />
-		<prop:Property name="MandatoryNonUniqueTinyInt" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" />
-		<prop:Property name="MandatoryNonUniqueUnconstrainedDecimal" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".decimal" />
+		<prop:Property name="HasParents" paramName="hasParents" childId="_FE86CECC-AACF-4A8D-B0CD-467535430D83" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".boolean" />
+			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="MandatoryNonUniqueUnconstrainedFloat" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
+		<prop:Property name="OptionalUniqueDecimal" paramName="optionalUniqueDecimal" childId="_0A0D637E-95D8-4428-8333-82796166A720" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".i4" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="MandatoryUniqueDecimal" paramName="mandatoryUniqueDecimal" childId="_E2ED140D-A8E5-455C-B0F4-08AD083D5AA2" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".i4" />
+		</prop:Property>
+		<prop:Property name="MandatoryUniqueString" paramName="mandatoryUniqueString" childId="_CA96C424-4B64-44A1-A0BE-28922249A7B2" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+		<prop:Property name="OptionalUniqueTinyInt" paramName="optionalUniqueTinyInt" childId="_B2182617-8BF3-4E91-A18B-28E7B3CCB095" mandatory="false" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".u1" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="MandatoryUniqueTinyInt" paramName="mandatoryUniqueTinyInt" childId="_E0CE7043-7C80-4DFB-AD06-D35F81B0D254" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".u1" />
+		</prop:Property>
+		<prop:Property name="OptionalNonUniqueTinyInt" paramName="optionalNonUniqueTinyInt" childId="_46610628-DA2E-4CE9-A160-FD9743263630" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".u1" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="MandatoryNonUniqueTinyInt" paramName="mandatoryNonUniqueTinyInt" childId="_6F1CC43E-6111-4BC5-B6DD-B52604AF0DC6" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".u1" />
+		</prop:Property>
+		<prop:Property name="MandatoryNonUniqueUnconstrainedDecimal" paramName="mandatoryNonUniqueUnconstrainedDecimal" childId="_E042DE46-5665-427B-A8EE-8478703C91E7" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".i4" />
+		</prop:Property>
+		<prop:Property name="MandatoryNonUniqueUnconstrainedFloat" paramName="mandatoryNonUniqueUnconstrainedFloat" childId="_21327CF7-8157-4DFB-92E4-57A98E64DD85" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".r4" />
 		</prop:Property>
-		<prop:Property name="Husband" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Wife">
+		<prop:Property name="Wife" paramName="wife" childId="_D1E62112-6923-4DF4-8E9D-3CE1D7C8638E" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Husband" oppositeParamName="husband">
 			<prop:DataType dataTypeName="Person" />
 		</prop:Property>
-		<prop:Property name="ValueType1DoesSomethingElseWith" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="DoesSomethingElseWithPerson">
+		<prop:Property name="ValueType1DoesSomethingElseWith" paramName="valueType1DoesSomethingElseWith" childId="_95823993-834B-4013-B528-D9890BAC02B7" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="DoesSomethingElseWithPerson" oppositeParamName="doesSomethingElseWithPerson">
 			<prop:DataType dataTypeName="ValueType1" />
 		</prop:Property>
-		<prop:Property name="PersonDrivesCarViaDrivenByPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="DrivenByPerson">
-			<prop:DataType dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="PersonDrivesCar" />
-			</prop:DataType>
+		<prop:Property name="MalePerson" paramName="malePerson" childId="_762462FE-0A06-4658-B715-79A4E69705AD" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person" oppositeParamName="person">
+			<prop:DataType dataTypeName="MalePerson" />
 		</prop:Property>
-		<prop:Property name="PersonHasNickNameViaPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Person">
-			<prop:DataType dataTypeName="IEnumerable">
-				<plx:passTypeParam dataTypeName="PersonHasNickName" />
-			</prop:DataType>
+		<prop:Property name="FemalePerson" paramName="femalePerson" childId="_C5286741-1DF0-4D2D-8476-96F1C06BFD96" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person" oppositeParamName="person">
+			<prop:DataType dataTypeName="FemalePerson" />
 		</prop:Property>
-		<prop:Property name="Wife" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Husband">
+		<prop:Property name="ChildPerson" paramName="childPerson" childId="_F67CFDDE-9DEF-476B-A73A-5A19BF04372E" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person" oppositeParamName="person">
+			<prop:DataType dataTypeName="ChildPerson" />
+		</prop:Property>
+		<prop:Property name="Death" paramName="death" childId="_D6AE3393-C98E-4FEB-B46D-10BE4B307CFA" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person" oppositeParamName="person">
+			<prop:DataType dataTypeName="Death" />
+		</prop:Property>
+		<prop:Property name="HusbandViaWife" paramName="husbandViaWife" reverseChildId="_D1E62112-6923-4DF4-8E9D-3CE1D7C8638E" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Wife" oppositeParamName="wife">
 			<prop:DataType dataTypeName="Person" />
 		</prop:Property>
-		<prop:Property name="TaskViaPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Person">
+		<prop:Property name="TaskViaPersonCollection" paramName="taskViaPersonCollection" reverseChildId="_D2FA2D85-C063-444D-92D3-E3AD59FD5DFD" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Person" oppositeParamName="person">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="Task" />
 			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="DoesSomethingWithPerson">
+		<prop:Property name="ValueType1DoesSomethingWithViaDoesSomethingWithPersonCollection" paramName="valueType1DoesSomethingWithViaDoesSomethingWithPersonCollection" reverseChildId="_B432D3F3-92C4-4CB6-8BCB-8573171E9855" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="DoesSomethingWithPerson" oppositeParamName="doesSomethingWithPerson">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="ValueType1" />
 			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="PersonBoughtCarFromPersonOnDateViaBuyerCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Buyer">
+		<prop:Property name="PersonDrivesCarViaDrivenByPersonCollection" paramName="personDrivesCarViaDrivenByPersonCollection" reverseChildId="_70C07B4E-5D30-4E8B-9647-D6C74F979046" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="DrivenByPerson" oppositeParamName="drivenByPerson">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="PersonDrivesCar" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="PersonBoughtCarFromPersonOnDateViaBuyerCollection" paramName="personBoughtCarFromPersonOnDateViaBuyerCollection" reverseChildId="_FEA3870C-8B9E-43C9-BCB1-1E2FEBE62393" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Buyer" oppositeParamName="buyer">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
 			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="PersonBoughtCarFromPersonOnDateViaSellerCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Seller">
+		<prop:Property name="PersonBoughtCarFromPersonOnDateViaSellerCollection" paramName="personBoughtCarFromPersonOnDateViaSellerCollection" reverseChildId="_EC830F99-F85D-4E32-A6E9-5D54A4C09AF7" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Seller" oppositeParamName="seller">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="PersonBoughtCarFromPersonOnDate" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="PersonHasNickNameViaPersonCollection" paramName="personHasNickNameViaPersonCollection" reverseChildId="_F17E4DAA-7094-4CD6-8F67-53BF5EACF6E1" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Person" oppositeParamName="person">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="PersonHasNickName" />
 			</prop:DataType>
 		</prop:Property>
 	</prop:Properties>
-	<prop:Properties conceptTypeName="Task">
-		<prop:IdentityField name="Task_id" />
-		<prop:Property name="Person" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Task">
+	<prop:Properties conceptTypeName="Task" conceptTypeParamName="task" conceptTypeId="_5A8C9C0C-F121-42AB-B8BC-8A44DB11551A">
+		<prop:IdentityField name="TaskId" paramName="taskId" childId="_9528CB67-F2B1-4F6D-83BF-FA26138BF6DA" />
+		<prop:Property name="Person" paramName="person" childId="_D2FA2D85-C063-444D-92D3-E3AD59FD5DFD" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Task" oppositeParamName="task" mandatory="alethic">
 			<prop:DataType dataTypeName="Person" />
 		</prop:Property>
 	</prop:Properties>
-	<prop:Properties conceptTypeName="ValueType1">
-		<prop:Property name="ValueType1Value" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false">
+	<prop:Properties conceptTypeName="ValueType1" conceptTypeParamName="valueType1" conceptTypeId="_3AFED4DF-2593-4EFF-AFED-1D34C4D371DB">
+		<prop:Property name="ValueType1Value" paramName="valueType1Value" childId="_0F45429B-C8A3-4E81-B68C-F1C79E9FE145" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".i4" />
 		</prop:Property>
-		<prop:Property name="DoesSomethingWithPerson" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="ValueType1DoesSomethingWith">
+		<prop:Property name="DoesSomethingWithPerson" paramName="doesSomethingWithPerson" childId="_B432D3F3-92C4-4CB6-8BCB-8573171E9855" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="ValueType1DoesSomethingWith" oppositeParamName="valueType1DoesSomethingWith">
 			<prop:DataType dataTypeName="Person" />
 		</prop:Property>
-		<prop:Property name="DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="ValueType1DoesSomethingElseWith">
+		<prop:Property name="DoesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection" paramName="doesSomethingElseWithPersonViaValueType1DoesSomethingElseWithCollection" reverseChildId="_95823993-834B-4013-B528-D9890BAC02B7" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="ValueType1DoesSomethingElseWith" oppositeParamName="valueType1DoesSomethingElseWith">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="Person" />
 			</prop:DataType>
 		</prop:Property>
 	</prop:Properties>
-	<prop:Properties conceptTypeName="Death">
-		<prop:Property name="Date_YMD" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+	<prop:Properties conceptTypeName="Death" conceptTypeParamName="death" conceptTypeId="_6B5009E4-F252-45DD-B843-2A8C0DD900F4">
+		<prop:Property name="YMD" paramName="YMD" childId="_4E5ACC7A-9623-40CF-A644-C0A8DB561289" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName="Nullable">
-				<plx:passTypeParam dataTypeName=".i4" />
+				<plx:passTypeParam dataTypeName=".date" />
 			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="DeathCause_DeathCause_Type" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="DeathCauseType" paramName="deathCauseType" childId="_BF96B9A6-B703-4AE3-AB39-161F5955939A" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="isinvolvedin{1}" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" />
-	</prop:Properties>
-	<prop:Properties conceptTypeName="PersonBoughtCarFromPersonOnDate">
-		<prop:Property name="CarSold_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
+		<prop:Property name="NaturalDeath" paramName="naturalDeath" childId="_7A34716E-CFCD-472B-8F7E-DC8A1E28B31A" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Death" oppositeParamName="death">
+			<prop:DataType dataTypeName="NaturalDeath" />
 		</prop:Property>
-		<prop:Property name="SaleDate_YMD" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
+		<prop:Property name="UnnaturalDeath" paramName="unnaturalDeath" childId="_FC1BDF4D-9F48-4727-9F2E-133B17E43D63" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Death" oppositeParamName="death">
+			<prop:DataType dataTypeName="UnnaturalDeath" />
 		</prop:Property>
-		<prop:Property name="Buyer" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonBoughtCarFromPersonOnDate">
-			<prop:DataType dataTypeName="Person" />
-		</prop:Property>
-		<prop:Property name="Seller" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonBoughtCarFromPersonOnDate">
+		<prop:Property name="Person" paramName="person" reverseChildId="_D6AE3393-C98E-4FEB-B46D-10BE4B307CFA" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Death" oppositeParamName="death">
 			<prop:DataType dataTypeName="Person" />
 		</prop:Property>
 	</prop:Properties>
-	<prop:Properties conceptTypeName="Review">
-		<prop:Property name="Car_vin" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
+	<prop:Properties conceptTypeName="NaturalDeath" conceptTypeParamName="naturalDeath" conceptTypeId="_4C805574-32E4-4B57-BC7D-B15435ECE31F">
+		<prop:Property name="IsFromProstateCancer" paramName="isFromProstateCancer" childId="_58F0E445-BEE5-463B-A561-3F7BBB2D547C" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".boolean" />
+			</prop:DataType>
 		</prop:Property>
-		<prop:Property name="Rating_Nr_Integer" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
+		<prop:Property name="Death" paramName="death" reverseChildId="_7A34716E-CFCD-472B-8F7E-DC8A1E28B31A" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="NaturalDeath" oppositeParamName="naturalDeath">
+			<prop:DataType dataTypeName="Death" />
 		</prop:Property>
-		<prop:Property name="Criterion_Name" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+	</prop:Properties>
+	<prop:Properties conceptTypeName="UnnaturalDeath" conceptTypeParamName="unnaturalDeath" conceptTypeId="_2CC4C693-9323-4C93-98F2-AFC47D9E713B">
+		<prop:Property name="IsViolent" paramName="isViolent" childId="_2C803D34-898E-4995-BCBE-5479BBA9A59D" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".boolean" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="IsBloody" paramName="isBloody" childId="_6A9BB505-7069-4F57-BB52-9B49227CCEED" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+			<prop:DataType dataTypeName="Nullable">
+				<plx:passTypeParam dataTypeName=".boolean" />
+			</prop:DataType>
+		</prop:Property>
+		<prop:Property name="Death" paramName="death" reverseChildId="_FC1BDF4D-9F48-4727-9F2E-133B17E43D63" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="UnnaturalDeath" oppositeParamName="unnaturalDeath">
+			<prop:DataType dataTypeName="Death" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="MalePerson" conceptTypeParamName="malePerson" conceptTypeId="_283F6781-8DA6-4D3A-BC97-3EBE5F3AC606">
+		<prop:Property name="Person" paramName="person" reverseChildId="_762462FE-0A06-4658-B715-79A4E69705AD" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="MalePerson" oppositeParamName="malePerson">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+		<prop:Property name="ChildPersonViaFatherCollection" paramName="childPersonViaFatherCollection" reverseChildId="_D181C9DC-4F5E-469D-918B-435FCC7870D3" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Father" oppositeParamName="father">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="ChildPerson" />
+			</prop:DataType>
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="FemalePerson" conceptTypeParamName="femalePerson" conceptTypeId="_664CA6AB-05E2-458B-806A-4C0C74EC309A">
+		<prop:Property name="Person" paramName="person" reverseChildId="_C5286741-1DF0-4D2D-8476-96F1C06BFD96" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="FemalePerson" oppositeParamName="femalePerson">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+		<prop:Property name="ChildPersonViaMotherCollection" paramName="childPersonViaMotherCollection" reverseChildId="_3B3A6FBF-7035-4E78-8C43-DB76AB5BE30C" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Mother" oppositeParamName="mother">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="ChildPerson" />
+			</prop:DataType>
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="ChildPerson" conceptTypeParamName="childPerson" conceptTypeId="_C465FD5A-E194-4730-9080-662DC1722AC7">
+		<prop:Property name="BirthOrderNr" paramName="birthOrderNr" childId="_69315530-6D22-4688-8B2D-10F1CB434651" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".u4" />
+		</prop:Property>
+		<prop:Property name="Father" paramName="father" childId="_D181C9DC-4F5E-469D-918B-435FCC7870D3" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="ChildPerson" oppositeParamName="childPerson" mandatory="alethic">
+			<prop:DataType dataTypeName="MalePerson" />
+		</prop:Property>
+		<prop:Property name="Mother" paramName="mother" childId="_3B3A6FBF-7035-4E78-8C43-DB76AB5BE30C" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="ChildPerson" oppositeParamName="childPerson" mandatory="alethic">
+			<prop:DataType dataTypeName="FemalePerson" />
+		</prop:Property>
+		<prop:Property name="Person" paramName="person" reverseChildId="_F67CFDDE-9DEF-476B-A73A-5A19BF04372E" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="ChildPerson" oppositeParamName="childPerson">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="PersonDrivesCar" conceptTypeParamName="personDrivesCar" conceptTypeId="_FF1AD8EF-C53D-48C3-BEBD-32E557C6FBB7">
+		<prop:Property name="Vin" paramName="vin" childId="_87E27B56-1497-4C57-996E-A3F334665115" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".u4" />
+		</prop:Property>
+		<prop:Property name="DrivenByPerson" paramName="drivenByPerson" childId="_70C07B4E-5D30-4E8B-9647-D6C74F979046" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonDrivesCar" oppositeParamName="personDrivesCar" mandatory="alethic">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="PersonBoughtCarFromPersonOnDate" conceptTypeParamName="personBoughtCarFromPersonOnDate" conceptTypeId="_2797B5D1-7715-4B4D-A8CE-40765B21F7E9">
+		<prop:Property name="Vin" paramName="vin" childId="_32161745-FF70-4826-9A5A-8493CEDD3E2B" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".u4" />
+		</prop:Property>
+		<prop:Property name="YMD" paramName="YMD" childId="_8E0C9593-DB5C-44F8-B80D-48193680ADA5" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".date" />
+		</prop:Property>
+		<prop:Property name="Buyer" paramName="buyer" childId="_FEA3870C-8B9E-43C9-BCB1-1E2FEBE62393" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonBoughtCarFromPersonOnDate" oppositeParamName="personBoughtCarFromPersonOnDate" mandatory="alethic">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+		<prop:Property name="Seller" paramName="seller" childId="_EC830F99-F85D-4E32-A6E9-5D54A4C09AF7" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonBoughtCarFromPersonOnDate" oppositeParamName="personBoughtCarFromPersonOnDate" mandatory="alethic">
+			<prop:DataType dataTypeName="Person" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="Review" conceptTypeParamName="review" conceptTypeId="_0497BD8D-AF11-4139-BFA1-71BBBFD87D8A">
+		<prop:Property name="Vin" paramName="vin" childId="_5DC995BC-6AE6-4904-A87B-1CCE84EFC2F8" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".u4" />
+		</prop:Property>
+		<prop:Property name="Integer" paramName="integer" childId="_84F391EB-04DF-43AC-89C8-7A2E2C3C1C60" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".u4" />
+		</prop:Property>
+		<prop:Property name="Name" paramName="name" childId="_17320BB4-D202-4EFC-AF17-A48A1845FA76" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="PersonHasNickName" conceptTypeParamName="personHasNickName" conceptTypeId="_0A35A511-28A7-4600-B3BF-57CB872676EA">
+		<prop:Property name="NickName" paramName="nickName" childId="_EBA0B0F4-22B1-431D-B7D4-8CF9B670E683" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".string" />
+		</prop:Property>
+		<prop:Property name="Person" paramName="person" childId="_F17E4DAA-7094-4CD6-8F67-53BF5EACF6E1" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="PersonHasNickName" oppositeParamName="personHasNickName" mandatory="alethic">
+			<prop:DataType dataTypeName="Person" />
 		</prop:Property>
 	</prop:Properties>
 </prop:AllProperties>

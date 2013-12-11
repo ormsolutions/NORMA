@@ -130,6 +130,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				new DomainMemberInfo(typeof(ObjectTypeShape), "DisplayRelatedTypes", ObjectTypeShape.DisplayRelatedTypesDomainPropertyId, typeof(ObjectTypeShape.DisplayRelatedTypesPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "ConstraintDisplayPosition", FactTypeShape.ConstraintDisplayPositionDomainPropertyId, typeof(FactTypeShape.ConstraintDisplayPositionPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRoleNames", FactTypeShape.DisplayRoleNamesDomainPropertyId, typeof(FactTypeShape.DisplayRoleNamesPropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeShape), "RoleNameVisibilityChanged", FactTypeShape.RoleNameVisibilityChangedDomainPropertyId, typeof(FactTypeShape.RoleNameVisibilityChangedPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayOrientation", FactTypeShape.DisplayOrientationDomainPropertyId, typeof(FactTypeShape.DisplayOrientationPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRelatedTypes", FactTypeShape.DisplayRelatedTypesDomainPropertyId, typeof(FactTypeShape.DisplayRelatedTypesPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayAsObjectType", FactTypeShape.DisplayAsObjectTypeDomainPropertyId, typeof(FactTypeShape.DisplayAsObjectTypePropertyHandler)),

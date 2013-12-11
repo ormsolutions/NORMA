@@ -1,28 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<prop:AllProperties xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
-	<prop:Properties conceptTypeName="Person">
-		<prop:IdentityField name="Person_id" />
-		<prop:Property name="LastName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+<prop:AllProperties modelName="PersonCountryDemo" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<prop:Properties conceptTypeName="Person" conceptTypeParamName="person" conceptTypeId="_AE6BAFA3-CA60-41D9-AD84-1CE5E4A64086">
+		<prop:IdentityField name="PersonId" paramName="personId" childId="_D5DA2B12-207E-4FA7-9B5F-A771A0D50026" />
+		<prop:Property name="LastName" paramName="lastName" childId="_4E387EBB-515E-46DA-9944-F5D425A227B6" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="FirstName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="FirstName" paramName="firstName" childId="_22486692-7951-48C9-B1DB-7E3AC84FE49F" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="Title" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="Title" paramName="title" childId="_D5E83E9F-52D7-4852-B654-37C946D804D1" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="Country" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person">
+		<prop:Property name="Country" paramName="country" childId="_90B95F7B-D115-4E40-8D7E-D6BBF188CC6C" mandatory="false" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="Person" oppositeParamName="person">
 			<prop:DataType dataTypeName="Country" />
 		</prop:Property>
 	</prop:Properties>
-	<prop:Properties conceptTypeName="Country">
-		<prop:Property name="Country_name" mandatory="alethic" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false">
+	<prop:Properties conceptTypeName="Country" conceptTypeParamName="country" conceptTypeId="_F8E61D26-FD42-42EA-8885-A8F3F7903913">
+		<prop:Property name="CountryName" paramName="countryName" childId="_1CC94E8B-9CAE-49F3-812B-C407BAA8C5D7" isUnique="true" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="Region_Region_code" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="RegionCode" paramName="regionCode" childId="_C61AB777-FE40-46F9-9F57-5B5AFA5DE5F5" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="PersonViaCountryCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Country">
+		<prop:Property name="PersonViaCountryCollection" paramName="personViaCountryCollection" reverseChildId="_90B95F7B-D115-4E40-8D7E-D6BBF188CC6C" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="Country" oppositeParamName="country">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="Person" />
 			</prop:DataType>

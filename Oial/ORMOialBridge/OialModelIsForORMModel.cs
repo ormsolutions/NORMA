@@ -16,16 +16,17 @@
 #endregion
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
 using System.Text;
+using System.Threading;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework;
-using System.Diagnostics;
-using System.IO;
-using System.Collections;
-using System.Threading;
 using ORMSolutions.ORMArchitect.ORMAbstraction;
-using System.Collections.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
@@ -35,7 +36,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// <summary>
 		/// The algorithm version written to the file
 		/// </summary>
-		public const string CurrentAlgorithmVersion = "1.008";
+		public const string CurrentAlgorithmVersion = "1.009";
 		#endregion // CurrentAlgorithmVersion constant
 		#region ValidationPriority enum
 		/// <summary>
@@ -289,6 +290,28 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			GenerateOialModel(decidedFactTypeMappings);
 		}
 		/// <summary>
+		/// Determine if an entity type has a value type with an auto counter
+		/// type as part of its direct identification scheme.
+		/// </summary>
+		private static bool EntityTypeIsAutoIdentified(ObjectType entityType)
+		{
+			UniquenessConstraint pid;
+			if (null != entityType &&
+				null != (pid = entityType.PreferredIdentifier))
+			{
+				foreach (Role identifyingRole in pid.RoleCollection)
+				{
+					ObjectType identifyingRolePlayer;
+					if (null != (identifyingRolePlayer = identifyingRole.RolePlayer) &&
+						identifyingRolePlayer.DataType is AutoCounterNumericDataType)
+					{
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		/// <summary>
 		/// Determines the obvious fact type mappings, and all other potential mappings.
 		/// </summary>
 		/// <param name="modelFactTypes">The <see cref="FactType"/> objects of the model</param>
@@ -311,15 +334,21 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				if (subtypeFact != null)
 				{
 					Role subtypeRole = subtypeFact.SubtypeRole;
+					ObjectType subtype = subtypeRole.RolePlayer;
 					Role supertypeRole = subtypeFact.SupertypeRole;
 					mandatory = supertypeRole.SingleRoleAlethicMandatoryConstraint; // Note that the only way to get a mandatory on the supertype role is with an implied mandatory, verified explicitly below
 
-					// Map deeply toward the supertype.
 					FactTypeMapping factTypeMapping = new FactTypeMapping(
 						subtypeFact,
 						subtypeRole,
 						supertypeRole,
-						FactTypeMappingFlags.Subtype | FactTypeMappingFlags.DeepMapping | FactTypeMappingFlags.FromRoleMandatory | ((mandatory != null && mandatory.IsImplied) ? FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory : FactTypeMappingFlags.None) | (subtypeRole.RolePlayer.IsValueType ? FactTypeMappingFlags.FromValueType | FactTypeMappingFlags.TowardsValueType : FactTypeMappingFlags.None));
+						FactTypeMappingFlags.Subtype |
+							// Map deeply toward the supertype unless the subtype has a generated identifier, in which case
+							// we disallow a deep mapping.
+							((subtypeFact.ProvidesPreferredIdentifier || !EntityTypeIsAutoIdentified(subtype)) ? FactTypeMappingFlags.DeepMapping : FactTypeMappingFlags.None) |
+							FactTypeMappingFlags.FromRoleMandatory |
+							((mandatory != null && mandatory.IsImplied) ? FactTypeMappingFlags.TowardsRoleMandatory | FactTypeMappingFlags.TowardsRoleImpliedMandatory : FactTypeMappingFlags.None) |
+							(subtype.IsValueType ? FactTypeMappingFlags.FromValueType | FactTypeMappingFlags.TowardsValueType : FactTypeMappingFlags.None));
 					decidedOneToOneFactTypeMappings.Add(subtypeFact, factTypeMapping);
 				}
 				else
@@ -469,8 +498,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 										possibilityBits |= FIRST_SECOND_SHALLOW;
 									}
 
-									// Deep map toward secondRolePlayer.
-									possibilityBits |= FIRST_SECOND_DEEP;
+									// Deep map toward secondRolePlayer unless the first role player
+									// is auto identified.
+									if (!EntityTypeIsAutoIdentified(firstRolePlayer))
+									{
+										possibilityBits |= FIRST_SECOND_DEEP;
+									}
 								}
 							}
 							else if (!firstRoleIsExplicitlyMandatory && secondRoleIsExplicitlyMandatory) // ...only secondRole is mandatory...
@@ -520,8 +553,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 										possibilityBits |= SECOND_FIRST_SHALLOW;
 									}
 
-									// Deep map toward firstRolePlayer.
-									possibilityBits |= SECOND_FIRST_DEEP;
+									// Deep map toward firstRolePlayer unless the second role player
+									// is auto identified.
+									if (!EntityTypeIsAutoIdentified(secondRolePlayer))
+									{
+										possibilityBits |= SECOND_FIRST_DEEP;
+									}
 								}
 							}
 							else // ...both roles are mandatory...
@@ -540,8 +577,16 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 									possibilityBits |= FIRST_SECOND_SHALLOW;
 								}
 
-								// Possible deep map toward firstRolePlayer and toward secondRolePlayer
-								possibilityBits |= FIRST_SECOND_DEEP | SECOND_FIRST_DEEP;
+								// Possible deep map toward firstRolePlayer and toward secondRolePlayer,
+								// depending on whether the opposite role player is auto identified.
+								if (!EntityTypeIsAutoIdentified(firstRolePlayer))
+								{
+									possibilityBits |= FIRST_SECOND_DEEP;
+								}
+								if (!EntityTypeIsAutoIdentified(secondRolePlayer))
+								{
+									possibilityBits |= SECOND_FIRST_DEEP;
+								}
 							}
 						}
 					}
@@ -1027,10 +1072,29 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				// Set up the property assignments that are common to both kinds of concept type references.
 				PropertyAssignment isMandatoryPropertyAssignment = new PropertyAssignment(ConceptTypeChild.IsMandatoryDomainPropertyId, isMandatory);
 
-				string name = ResolveRoleName(factTypeMapping.FromRole);
-				string oppositeName = ResolveRoleName(factTypeMapping.TowardsRole);
+				Role fromRole = factTypeMapping.FromRole;
+				Role toRole = factTypeMapping.TowardsRole;
+				RoleBase fromRoleBase = fromRole;
+				RoleBase toRoleBase = toRole;
+				RoleProxy proxy;
+				if (null != (proxy = fromRole.Proxy))
+				{
+					if (toRole.FactType != fromRole.FactType)
+					{
+						fromRoleBase = proxy;
+					}
+				}
+				else if (null != (proxy = toRole.Proxy) &&
+					toRole.FactType != fromRole.FactType)
+				{
+					toRoleBase = proxy;
+				}
+
+				string name = ResolveRoleName(fromRoleBase);
+				string oppositeName = ResolveRoleName(toRoleBase);
 
 				// UNDONE: Yes, these are backwards, but they need to remain so for compatibility reasons until we do a file format change.
+				// Pattern also followed in UpdateChildNamesForFactTypeDelayed
 				PropertyAssignment namePropertyAssignment = new PropertyAssignment(ConceptTypeChild.NameDomainPropertyId, oppositeName);
 				PropertyAssignment oppositeNamePropertyAssignment = new PropertyAssignment(ConceptTypeReferencesConceptType.OppositeNameDomainPropertyId, name);
 
@@ -1267,12 +1331,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					// For each constraint on the opposite role...
 					foreach (ConstraintRoleSequence constraintRoleSequence in oppositeRole.ConstraintRoleSequenceCollection)
 					{
-						UniquenessConstraint uninquenessConstraint = constraintRoleSequence as UniquenessConstraint;
+						UniquenessConstraint uniquenessConstraint = constraintRoleSequence as UniquenessConstraint;
 
 						// If it is a uniqueness constraint...
-						if (uninquenessConstraint != null && uninquenessConstraint.Modality == ConstraintModality.Alethic)
+						if (uniquenessConstraint != null && uniquenessConstraint.Modality == ConstraintModality.Alethic)
 						{
-							if (UniquenessIsForUniquenessConstraint.GetUniqueness(uninquenessConstraint) != null)
+							if (UniquenessIsForUniquenessConstraint.GetUniqueness(uniquenessConstraint) != null)
 							{
 								continue;
 							}
@@ -1281,7 +1345,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 							bool allChildrenMapTowardObjectType = true;
 							IList<FactType> factTypes = new List<FactType>();
 
-							foreach (Role childRole in uninquenessConstraint.RoleCollection)
+							foreach (Role childRole in uniquenessConstraint.RoleCollection)
 							{
 								FactType binarizedFactType = childRole.BinarizedFactType;
 								if (ShouldIgnoreFactType(binarizedFactType))
@@ -1347,14 +1411,14 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 								if (!skipThisUniquenessConstraint)
 								{
-									PropertyAssignment name = new PropertyAssignment(Uniqueness.NameDomainPropertyId, uninquenessConstraint.Name);
-									PropertyAssignment isPreferred = new PropertyAssignment(Uniqueness.IsPreferredDomainPropertyId, uninquenessConstraint.IsPreferred);
+									PropertyAssignment name = new PropertyAssignment(Uniqueness.NameDomainPropertyId, uniquenessConstraint.Name);
+									PropertyAssignment isPreferred = new PropertyAssignment(Uniqueness.IsPreferredDomainPropertyId, uniquenessConstraint.IsPreferred);
 									PropertyAssignment[] propertyAssignments = { name, isPreferred };
 
 									// Create uniquenesss
 									Uniqueness uniqueness = new Uniqueness(Store, propertyAssignments);
 									uniqueness.ConceptType = conceptType;
-									new UniquenessIsForUniquenessConstraint(uniqueness, uninquenessConstraint);
+									new UniquenessIsForUniquenessConstraint(uniqueness, uniquenessConstraint);
 
 									foreach (ConceptTypeChild conceptTypeChild in conceptTypeChildren)
 									{
@@ -1410,18 +1474,50 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		#endregion // Generation Algorithm Methods
 		#region Helper Methods
 		/// <summary>
-		/// Resolve the name that will be used for a <see cref="ConceptTypeChild"/> given the <see cref="Role"/> it's resulting from.
+		/// Resolve the name that will be used for a <see cref="ConceptTypeChild"/> given the <see cref="RoleBase"/>
+		/// for the role it results from.
 		/// </summary>
-		/// <param name="role">The <see cref="Role"/> that the <see cref="ConceptTypeChild"/> is resulting from.</param>
+		/// <param name="roleBase">The <see cref="RoleBase"/> that the <see cref="ConceptTypeChild"/> is resulting from.</param>
 		/// <returns>The name to use for the <see cref="ConceptTypeChild"/>.</returns>
-		private static string ResolveRoleName(Role role)
+		private static string ResolveRoleName(RoleBase roleBase)
 		{
 			// HACK: This is only here until we implement a better alternative.
+			Role role = roleBase.Role;
 			string name = role.Name;
 
 			if (String.IsNullOrEmpty(name))
 			{
 				name = role.RolePlayer.Name;
+				for (;;)
+				{
+					FactType factType;
+					if (null != (factType = roleBase.FactType))
+					{
+						foreach (ReadingOrder order in factType.ReadingOrderCollection)
+						{
+							int roleIndex;
+							LinkedElementCollection<RoleBase> roles;
+							if (-1 != (roleIndex = (roles = order.RoleCollection).IndexOf(roleBase)))
+							{
+								foreach (Reading reading in order.ReadingCollection)
+								{
+									string formatText;
+									if (null != (formatText = VerbalizationHyphenBinder.GetFormatStringForHyphenBoundRole(reading.Text, roleIndex)))
+									{
+										return string.Format(CultureInfo.InvariantCulture, formatText, name);
+									}
+								}
+							}
+						}
+					}
+					if ((object)roleBase == role)
+					{
+						break;
+					}
+					// If we didn't find a hyphen-bound name on the link fact types, then
+					// go ahead and look for the name on the objectified fact type.
+					roleBase = role;
+				}
 			}
 
 			return name;
@@ -1503,11 +1599,22 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				if (factTypeMapping.TowardsObjectType == objectType)
 				{
 					bool isPartOfPreferredIdentifier = false;
-					foreach (ConstraintRoleSequence constraintRoleSequence in factTypeMapping.FromRole.ConstraintRoleSequenceCollection)
+					Role fromRole = factTypeMapping.FromRole;
+					foreach (ConstraintRoleSequence constraintRoleSequence in fromRole.ConstraintRoleSequenceCollection)
 					{
-						UniquenessConstraint uninquenessConstraint = constraintRoleSequence as UniquenessConstraint;
-						if (uninquenessConstraint != null && uninquenessConstraint.IsPreferred)
+						UniquenessConstraint uniquenessConstraint = constraintRoleSequence as UniquenessConstraint;
+						if (uniquenessConstraint != null && uniquenessConstraint.IsPreferred)
 						{
+							// If the uniqueness constraint is over an auto increment role then
+							// we always want this to have its own concept type. Absorbing an
+							// auto counter attribute into another table does not represent the
+							// model, so we choose to always create a concept type in this case.
+							ObjectType rolePlayer;
+							if (null != (rolePlayer = fromRole.RolePlayer) &&
+								rolePlayer.DataType is AutoCounterNumericDataType)
+							{
+								return true;
+							}
 							isPartOfPreferredIdentifier = true;
 							break;
 						}

@@ -1,62 +1,86 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<prop:AllProperties xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
-	<prop:Properties conceptTypeName="BlogEntryLabel">
-		<prop:Property name="blogEntryId" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntryLabel">
-			<prop:DataType dataTypeName="BlogEntry" />
-		</prop:Property>
-		<prop:Property name="blogLabelId" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntryLabel">
-			<prop:DataType dataTypeName="BlogLabel" />
-		</prop:Property>
-	</prop:Properties>
-	<prop:Properties conceptTypeName="BlogEntry">
-		<prop:Property name="BlogEntry_Id" mandatory="alethic" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false">
+<prop:AllProperties modelName="BlogDemo" xmlns:prop="urn:schemas-orm-net:PLiX:CLI:Properties" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<prop:Properties conceptTypeName="BlogEntry" conceptTypeParamName="blogEntry" conceptTypeId="_98A843F8-32CA-424D-B942-9B4E77AA8FB0">
+		<prop:Property name="BlogEntryId" paramName="blogEntryId" childId="_CCD8C01A-B8CC-449B-AB1F-160320350FDF" isUnique="true" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".i4" />
 		</prop:Property>
-		<prop:Property name="entryTitle" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="EntryTitle" paramName="entryTitle" childId="_8BE59BC3-D678-457E-9E98-1A46BC7039EF" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="entryBody" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="EntryBody" paramName="entryBody" childId="_83D3F7E8-0027-45E8-9678-4A6B02EE8966" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="postedDate_MDYValue" mandatory="alethic" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false">
-			<prop:DataType dataTypeName=".i4" />
+		<prop:Property name="MDYValue" paramName="MDYValue" childId="_1A930DD8-7808-4FA7-A234-A738796D3BAF" isUnique="false" canBeNull="false" isCollection="false" isCustomType="false" mandatory="alethic">
+			<prop:DataType dataTypeName=".date" />
 		</prop:Property>
-		<prop:Property name="userId" mandatory="alethic" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntry">
+		<prop:Property name="UserId" paramName="userId" childId="_38924122-E306-4410-81BC-00EFD7D73BD0" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntry" oppositeParamName="blogEntry" mandatory="alethic">
 			<prop:DataType dataTypeName="User" />
 		</prop:Property>
-		<prop:Property name="BlogEntryLabelViablogEntryIdCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="blogEntryId">
+		<prop:Property name="BlogComment" paramName="blogComment" childId="_08FC1B52-80A1-4681-9BA1-B5B1A03967AF" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntry" oppositeParamName="blogEntry">
+			<prop:DataType dataTypeName="BlogComment" />
+		</prop:Property>
+		<prop:Property name="NonCommentEntry" paramName="nonCommentEntry" childId="_D30C9EA0-D120-49A3-B55B-E3DCDB0F9BD5" mandatory="false" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntry" oppositeParamName="blogEntry">
+			<prop:DataType dataTypeName="NonCommentEntry" />
+		</prop:Property>
+		<prop:Property name="BlogEntryLabelViaBlogEntryIdCollection" paramName="blogEntryLabelViaBlogEntryIdCollection" reverseChildId="_07A2BFBB-5E0D-4B29-A404-B9B859C5984D" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="BlogEntryId" oppositeParamName="blogEntryId">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="BlogEntryLabel" />
 			</prop:DataType>
 		</prop:Property>
 	</prop:Properties>
-	<prop:Properties conceptTypeName="User">
-		<prop:Property name="firstName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+	<prop:Properties conceptTypeName="User" conceptTypeParamName="user" conceptTypeId="_F3A2CB87-2B27-448D-9F2C-5B90222A6F2A">
+		<prop:Property name="FirstName" paramName="firstName" childId="_C50BA7FF-4A79-4B0A-AC90-4541CCF9D718" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="lastName" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="LastName" paramName="lastName" childId="_D3919847-636C-4897-AF70-2A11FD336FBE" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="username" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="Username" paramName="username" childId="_99CFC525-D287-4751-BEA1-EFA9E549A04F" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="password" mandatory="alethic" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+		<prop:Property name="Password" paramName="password" childId="_803C0125-4C44-41CE-A4AA-A596B6D05CAC" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false" mandatory="alethic">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="BlogEntryViauserIdCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="userId">
+		<prop:Property name="BlogEntryViaUserIdCollection" paramName="blogEntryViaUserIdCollection" reverseChildId="_38924122-E306-4410-81BC-00EFD7D73BD0" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="UserId" oppositeParamName="userId">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="BlogEntry" />
 			</prop:DataType>
 		</prop:Property>
 	</prop:Properties>
-	<prop:Properties conceptTypeName="BlogLabel">
-		<prop:IdentityField name="BlogLabel_Id" />
-		<prop:Property name="title" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
+	<prop:Properties conceptTypeName="BlogComment" conceptTypeParamName="blogComment" conceptTypeId="_423C6292-F51D-4F0B-9687-9556B1FF8A0A">
+		<prop:Property name="ParentEntryId" paramName="parentEntryId" childId="_429C3BFB-18F5-4B7E-8DE3-E2E1E3168136" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogComment" oppositeParamName="blogComment" mandatory="alethic">
+			<prop:DataType dataTypeName="NonCommentEntry" />
+		</prop:Property>
+		<prop:Property name="BlogEntry" paramName="blogEntry" reverseChildId="_08FC1B52-80A1-4681-9BA1-B5B1A03967AF" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogComment" oppositeParamName="blogComment">
+			<prop:DataType dataTypeName="BlogEntry" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="BlogLabel" conceptTypeParamName="blogLabel" conceptTypeId="_DB5F6255-4006-4027-8CF5-DC36EA0B92D1">
+		<prop:IdentityField name="BlogLabelId" paramName="blogLabelId" childId="_68220A1E-E690-4A1B-AE37-F7559F6E8FA0" />
+		<prop:Property name="Title" paramName="title" childId="_D7807C48-7705-494C-9E33-AA80E87426C4" mandatory="false" isUnique="false" canBeNull="true" isCollection="false" isCustomType="false">
 			<prop:DataType dataTypeName=".string" />
 		</prop:Property>
-		<prop:Property name="BlogEntryLabelViablogLabelIdCollection" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="blogLabelId">
+		<prop:Property name="BlogEntryLabelViaBlogLabelIdCollection" paramName="blogEntryLabelViaBlogLabelIdCollection" reverseChildId="_BCAB25CF-5742-4714-96B5-762AA73ECA59" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="BlogLabelId" oppositeParamName="blogLabelId">
 			<prop:DataType dataTypeName="IEnumerable">
 				<plx:passTypeParam dataTypeName="BlogEntryLabel" />
+			</prop:DataType>
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="BlogEntryLabel" conceptTypeParamName="blogEntryLabel" conceptTypeId="_CE9F9DC1-70E5-4679-8728-8CEB7D652511">
+		<prop:Property name="BlogEntryId" paramName="blogEntryId" childId="_07A2BFBB-5E0D-4B29-A404-B9B859C5984D" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntryLabel" oppositeParamName="blogEntryLabel" mandatory="alethic">
+			<prop:DataType dataTypeName="BlogEntry" />
+		</prop:Property>
+		<prop:Property name="BlogLabelId" paramName="blogLabelId" childId="_BCAB25CF-5742-4714-96B5-762AA73ECA59" isUnique="false" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="BlogEntryLabel" oppositeParamName="blogEntryLabel" mandatory="alethic">
+			<prop:DataType dataTypeName="BlogLabel" />
+		</prop:Property>
+	</prop:Properties>
+	<prop:Properties conceptTypeName="NonCommentEntry" conceptTypeParamName="nonCommentEntry" conceptTypeId="_C7524F11-8C47-48EA-B9D7-2C0ECA48E946">
+		<prop:Property name="BlogEntry" paramName="blogEntry" reverseChildId="_D30C9EA0-D120-49A3-B55B-E3DCDB0F9BD5" mandatory="alethic" isUnique="true" isCollection="false" isCustomType="true" canBeNull="true" oppositeName="NonCommentEntry" oppositeParamName="nonCommentEntry">
+			<prop:DataType dataTypeName="BlogEntry" />
+		</prop:Property>
+		<prop:Property name="BlogCommentViaParentEntryIdCollection" paramName="blogCommentViaParentEntryIdCollection" reverseChildId="_429C3BFB-18F5-4B7E-8DE3-E2E1E3168136" mandatory="false" isUnique="true" isCollection="true" isCustomType="true" canBeNull="true" oppositeName="ParentEntryId" oppositeParamName="parentEntryId">
+			<prop:DataType dataTypeName="IEnumerable">
+				<plx:passTypeParam dataTypeName="BlogComment" />
 			</prop:DataType>
 		</prop:Property>
 	</prop:Properties>

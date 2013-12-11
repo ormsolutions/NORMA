@@ -12,20 +12,14 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="entryTitle">
-			<ddt:characterString type="CHARACTER VARYING" length="30" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
 		<ddl:columnDefinition name="entryBody">
 			<ddt:characterString type="CHARACTER LARGE OBJECT" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="postedDate">
-			<ddt:time type="TIMESTAMP" />
+		<ddl:columnDefinition name="entryTitle">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
@@ -38,6 +32,12 @@
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="lastName">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="postedDate">
+			<ddt:time type="TIMESTAMP" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
@@ -64,14 +64,14 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="username">
-			<ddt:characterString type="CHARACTER VARYING" length="30" />
+		<ddl:columnDefinition name="password">
+			<ddt:characterString type="CHARACTER" length="32" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="password">
-			<ddt:characterString type="CHARACTER" length="32" />
+		<ddl:columnDefinition name="username">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>

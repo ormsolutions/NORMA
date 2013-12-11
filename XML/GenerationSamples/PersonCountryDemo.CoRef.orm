@@ -76,7 +76,7 @@
 		</orm:ValueType>
 	</orm:Objects>
 	<orm:Facts>
-		<orm:Fact id="_C9C8AA4D-9160-41E4-B050-4FE4271B2F56" _Name="PersonHasPerson_id">
+		<orm:Fact id="_C9C8AA4D-9160-41E4-B050-4FE4271B2F56" _Name="PersonHasPersonId">
 			<orm:FactRoles>
 				<orm:Role id="_D6CB6642-E6C6-42D3-838E-1E81413CE968" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_08FCB217-4D5A-4D6E-BB08-033359BFEF51" />
@@ -90,6 +90,9 @@
 					<orm:Readings>
 						<orm:Reading id="_57E9620D-9F14-420B-8153-65E57AB0A634">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -101,6 +104,9 @@
 					<orm:Readings>
 						<orm:Reading id="_543E727D-647E-4730-AC74-D8B6D99B724F">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -115,7 +121,7 @@
 				<orm:UniquenessConstraint ref="_74B04145-6B4D-4B22-BB30-83442E6220A4" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:Fact id="_17006172-BF0E-40E5-B6A8-2992A1408C7E" _Name="CountryIsIdentifiedByCountry_name">
+		<orm:Fact id="_17006172-BF0E-40E5-B6A8-2992A1408C7E" _Name="CountryIsIdentifiedByCountryName">
 			<orm:FactRoles>
 				<orm:Role id="_FF8BF199-9A80-4EE8-B7E6-82C5879ECFC3" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_F074FCA1-6C15-4349-BC79-62CF67C98BC7" />
@@ -129,6 +135,9 @@
 					<orm:Readings>
 						<orm:Reading id="_9BF5DED9-F78F-4219-87E0-30930FEE3427">
 							<orm:Data>{0} is identified by {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is identified by " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -140,6 +149,9 @@
 					<orm:Readings>
 						<orm:Reading id="_C48CEEEF-9B2C-4E4F-9595-71699A0703A2">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -168,6 +180,9 @@
 					<orm:Readings>
 						<orm:Reading id="_430E0044-2E6A-4C30-A566-23578063A9E0">
 							<orm:Data>{0} lives in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" lives in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -194,6 +209,9 @@
 					<orm:Readings>
 						<orm:Reading id="_07016F56-629F-460E-BF62-1761E6758170">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -221,6 +239,9 @@
 					<orm:Readings>
 						<orm:Reading id="_DA9DBED9-84B1-4C03-8588-AA729252914D">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -248,6 +269,9 @@
 					<orm:Readings>
 						<orm:Reading id="_60EDC2C6-8051-4AB1-87FE-D0C3DDFCE36B">
 							<orm:Data>{0} has {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" has " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -274,6 +298,9 @@
 					<orm:Readings>
 						<orm:Reading id="_04E50C42-B107-4DAF-9E78-43288A5B5B4C">
 							<orm:Data>{0} is located in {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is located in " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -286,7 +313,7 @@
 				<orm:UniquenessConstraint ref="_F40A12C0-EDC9-4E17-90EC-1FFBE08032CF" />
 			</orm:InternalConstraints>
 		</orm:Fact>
-		<orm:Fact id="_457DD380-01ED-47E2-8C6A-3333228F3F3F" _Name="RegionIsIdentifiedByRegion_code">
+		<orm:Fact id="_457DD380-01ED-47E2-8C6A-3333228F3F3F" _Name="RegionIsIdentifiedByRegionCode">
 			<orm:FactRoles>
 				<orm:Role id="_29F26797-6934-4F23-9389-9C4445D66530" _IsMandatory="true" _Multiplicity="ZeroToOne" Name="">
 					<orm:RolePlayer ref="_F7905F97-A891-420D-839D-BF1E09269C97" />
@@ -300,6 +327,9 @@
 					<orm:Readings>
 						<orm:Reading id="_8EEDC6AB-0E82-4361-A0BB-106A78ADDF2C">
 							<orm:Data>{0} is identified by {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is identified by " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>
@@ -311,6 +341,9 @@
 					<orm:Readings>
 						<orm:Reading id="_A44A75AB-14E1-41CB-B4FA-A81631E47600">
 							<orm:Data>{0} is of {1}</orm:Data>
+							<orm:ExpandedData>
+								<orm:RoleText RoleIndex="0" FollowingText=" is of " />
+							</orm:ExpandedData>
 						</orm:Reading>
 					</orm:Readings>
 					<orm:RoleSequence>

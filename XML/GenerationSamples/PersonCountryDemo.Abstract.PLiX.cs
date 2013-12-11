@@ -420,7 +420,7 @@ namespace PersonCountryDemo
 			{
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Country, string>> Country_nameChanging
+		public event EventHandler<PropertyChangingEventArgs<Country, string>> CountryNameChanging
 		{
 			add
 			{
@@ -438,17 +438,17 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected bool OnCountry_nameChanging(string newValue)
+		protected bool OnCountryNameChanging(string newValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<Country, string>> eventHandler;
 			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Country, string>>)events[0]) != null)
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Country, string>>(eventHandler, this, new PropertyChangingEventArgs<Country, string>(this, "Country_name", this.Country_name, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Country, string>>(eventHandler, this, new PropertyChangingEventArgs<Country, string>(this, "CountryName", this.CountryName, newValue));
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<Country, string>> Country_nameChanged
+		public event EventHandler<PropertyChangedEventArgs<Country, string>> CountryNameChanged
 		{
 			add
 			{
@@ -466,20 +466,20 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected void OnCountry_nameChanged(string oldValue)
+		protected void OnCountryNameChanged(string oldValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<Country, string>> eventHandler;
 			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Country, string>>)events[1]) != null)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Country, string>>(eventHandler, this, new PropertyChangedEventArgs<Country, string>(this, "Country_name", oldValue, this.Country_name), this._propertyChangedEventHandler);
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Country, string>>(eventHandler, this, new PropertyChangedEventArgs<Country, string>(this, "CountryName", oldValue, this.CountryName), this._propertyChangedEventHandler);
 			}
 			else
 			{
-				this.OnPropertyChanged("Country_name");
+				this.OnPropertyChanged("CountryName");
 			}
 		}
-		public event EventHandler<PropertyChangingEventArgs<Country, string>> Region_Region_codeChanging
+		public event EventHandler<PropertyChangingEventArgs<Country, string>> RegionCodeChanging
 		{
 			add
 			{
@@ -497,17 +497,17 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected bool OnRegion_Region_codeChanging(string newValue)
+		protected bool OnRegionCodeChanging(string newValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangingEventArgs<Country, string>> eventHandler;
 			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangingEventArgs<Country, string>>)events[2]) != null)
 			{
-				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Country, string>>(eventHandler, this, new PropertyChangingEventArgs<Country, string>(this, "Region_Region_code", this.Region_Region_code, newValue));
+				return EventHandlerUtility.InvokeCancelableEventHandler<PropertyChangingEventArgs<Country, string>>(eventHandler, this, new PropertyChangingEventArgs<Country, string>(this, "RegionCode", this.RegionCode, newValue));
 			}
 			return true;
 		}
-		public event EventHandler<PropertyChangedEventArgs<Country, string>> Region_Region_codeChanged
+		public event EventHandler<PropertyChangedEventArgs<Country, string>> RegionCodeChanged
 		{
 			add
 			{
@@ -525,17 +525,17 @@ namespace PersonCountryDemo
 				}
 			}
 		}
-		protected void OnRegion_Region_codeChanged(string oldValue)
+		protected void OnRegionCodeChanged(string oldValue)
 		{
 			System.Delegate[] events;
 			EventHandler<PropertyChangedEventArgs<Country, string>> eventHandler;
 			if ((object)(events = this._events) != null && (object)(eventHandler = (EventHandler<PropertyChangedEventArgs<Country, string>>)events[3]) != null)
 			{
-				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Country, string>>(eventHandler, this, new PropertyChangedEventArgs<Country, string>(this, "Region_Region_code", oldValue, this.Region_Region_code), this._propertyChangedEventHandler);
+				EventHandlerUtility.InvokeEventHandlerAsync<PropertyChangedEventArgs<Country, string>>(eventHandler, this, new PropertyChangedEventArgs<Country, string>(this, "RegionCode", oldValue, this.RegionCode), this._propertyChangedEventHandler);
 			}
 			else
 			{
-				this.OnPropertyChanged("Region_Region_code");
+				this.OnPropertyChanged("RegionCode");
 			}
 		}
 		#endregion // Country Property Change Events
@@ -545,13 +545,13 @@ namespace PersonCountryDemo
 			get;
 		}
 		[DataObjectField(false, false, false)]
-		public abstract string Country_name
+		public abstract string CountryName
 		{
 			get;
 			set;
 		}
 		[DataObjectField(false, false, true)]
-		public abstract string Region_Region_code
+		public abstract string RegionCode
 		{
 			get;
 			set;
@@ -569,7 +569,7 @@ namespace PersonCountryDemo
 		}
 		public virtual string ToString(IFormatProvider provider)
 		{
-			return string.Format(provider, @"Country{0}{{{0}{1}Country_name = ""{2}"",{0}{1}Region_Region_code = ""{3}""{0}}}", Environment.NewLine, @"	", this.Country_name, this.Region_Region_code);
+			return string.Format(provider, @"Country{0}{{{0}{1}CountryName = ""{2}"",{0}{1}RegionCode = ""{3}""{0}}}", Environment.NewLine, @"	", this.CountryName, this.RegionCode);
 		}
 		#endregion // Country ToString Methods
 	}
@@ -588,14 +588,16 @@ namespace PersonCountryDemo
 	[System.CodeDom.Compiler.GeneratedCode("OIALtoPLiX", "1.0")]
 	public interface IPersonCountryDemoContext
 	{
-		Country GetCountryByCountry_name(string Country_name);
-		bool TryGetCountryByCountry_name(string Country_name, out Country Country);
-		Person CreatePerson(string LastName, string FirstName);
+		Person GetPersonByPersonId(int personId);
+		bool TryGetPersonByPersonId(int personId, out Person person);
+		Country GetCountryByCountryName(string countryName);
+		bool TryGetCountryByCountryName(string countryName, out Country country);
+		Person CreatePerson(string lastName, string firstName);
 		IEnumerable<Person> PersonCollection
 		{
 			get;
 		}
-		Country CreateCountry(string Country_name);
+		Country CreateCountry(string countryName);
 		IEnumerable<Country> CountryCollection
 		{
 			get;

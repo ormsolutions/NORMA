@@ -36,23 +36,23 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="lastName">
-			<ddt:characterString type="CHARACTER VARYING" length="30" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
 		<ddl:columnDefinition name="firstName">
 			<ddt:characterString type="CHARACTER VARYING" length="30" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="title">
-			<ddt:domain name="Title" schema="PersonCountryDemo" />
+		<ddl:columnDefinition name="lastName">
+			<ddt:characterString type="CHARACTER VARYING" length="30" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="countryName">
 			<ddt:characterString type="CHARACTER VARYING" length="20" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="title">
+			<ddt:domain name="Title" schema="PersonCountryDemo" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition name="Person_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">

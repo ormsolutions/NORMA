@@ -4,10 +4,10 @@ SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 CREATE TABLE Person
 (
 	personId NUMBER(10,0) NOT NULL,
-	lastName NVARCHAR2(30) NOT NULL,
 	firstName NVARCHAR2(30) NOT NULL,
-	title NVARCHAR2(4) CHECK (title IN (N'Dr', N'Prof', N'Mr', N'Mrs', N'Miss', N'Ms')),
+	lastName NVARCHAR2(30) NOT NULL,
 	countryName NVARCHAR2(20),
+	title NVARCHAR2(4) CHECK (title IN (N'Dr', N'Prof', N'Mr', N'Mrs', N'Miss', N'Ms')),
 	CONSTRAINT Person_PK PRIMARY KEY(personId)
 );
 

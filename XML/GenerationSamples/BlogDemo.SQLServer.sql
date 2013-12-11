@@ -6,13 +6,13 @@ GO
 
 CREATE TABLE BlogDemo.BlogEntry
 (
-	blogEntryId INTEGER NOT NULL,
-	entryTitle NATIONAL CHARACTER VARYING(30) NOT NULL,
-	entryBody NATIONAL CHARACTER VARYING(MAX) NOT NULL,
-	postedDate DATETIME NOT NULL,
-	firstName NATIONAL CHARACTER VARYING(30) NOT NULL,
-	lastName NATIONAL CHARACTER VARYING(30) NOT NULL,
-	blogCommentParentEntryId INTEGER,
+	blogEntryId int NOT NULL,
+	entryBody nvarchar(max) NOT NULL,
+	entryTitle nvarchar(30) NOT NULL,
+	firstName nvarchar(30) NOT NULL,
+	lastName nvarchar(30) NOT NULL,
+	postedDate datetime NOT NULL,
+	blogCommentParentEntryId int,
 	CONSTRAINT BlogEntry_PK PRIMARY KEY(blogEntryId)
 )
 GO
@@ -20,10 +20,10 @@ GO
 
 CREATE TABLE BlogDemo."User"
 (
-	firstName NATIONAL CHARACTER VARYING(30) NOT NULL,
-	lastName NATIONAL CHARACTER VARYING(30) NOT NULL,
-	username NATIONAL CHARACTER VARYING(30) NOT NULL,
-	password NATIONAL CHARACTER(32) NOT NULL,
+	firstName nvarchar(30) NOT NULL,
+	lastName nvarchar(30) NOT NULL,
+	password nchar(32) NOT NULL,
+	username nvarchar(30) NOT NULL,
 	CONSTRAINT User_PK PRIMARY KEY(firstName, lastName)
 )
 GO
@@ -31,8 +31,8 @@ GO
 
 CREATE TABLE BlogDemo.BlogLabel
 (
-	blogLabelId INTEGER IDENTITY (1, 1) NOT NULL,
-	title NATIONAL CHARACTER VARYING(MAX),
+	blogLabelId int IDENTITY (1, 1) NOT NULL,
+	title nvarchar(max),
 	CONSTRAINT BlogLabel_PK PRIMARY KEY(blogLabelId)
 )
 GO
@@ -40,8 +40,8 @@ GO
 
 CREATE TABLE BlogDemo.BlogEntryLabel
 (
-	blogEntryId INTEGER NOT NULL,
-	blogLabelId INTEGER NOT NULL,
+	blogEntryId int NOT NULL,
+	blogLabelId int NOT NULL,
 	CONSTRAINT BlogEntryLabel_PK PRIMARY KEY(blogEntryId, blogLabelId)
 )
 GO

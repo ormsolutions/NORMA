@@ -6,11 +6,11 @@ GO
 
 CREATE TABLE PersonCountryDemo.Person
 (
-	personId INTEGER IDENTITY (1, 1) NOT NULL,
-	lastName NATIONAL CHARACTER VARYING(30) NOT NULL,
-	firstName NATIONAL CHARACTER VARYING(30) NOT NULL,
-	title NATIONAL CHARACTER VARYING(4) CHECK (title IN (N'Dr', N'Prof', N'Mr', N'Mrs', N'Miss', N'Ms')),
-	countryName NATIONAL CHARACTER VARYING(20),
+	personId int IDENTITY (1, 1) NOT NULL,
+	firstName nvarchar(30) NOT NULL,
+	lastName nvarchar(30) NOT NULL,
+	countryName nvarchar(20),
+	title nvarchar(4) CHECK (title IN (N'Dr', N'Prof', N'Mr', N'Mrs', N'Miss', N'Ms')),
 	CONSTRAINT Person_PK PRIMARY KEY(personId)
 )
 GO
@@ -18,8 +18,8 @@ GO
 
 CREATE TABLE PersonCountryDemo.Country
 (
-	countryName NATIONAL CHARACTER VARYING(20) NOT NULL,
-	regionCode NATIONAL CHARACTER(8),
+	countryName nvarchar(20) NOT NULL,
+	regionCode nchar(8),
 	CONSTRAINT Country_PK PRIMARY KEY(countryName)
 )
 GO

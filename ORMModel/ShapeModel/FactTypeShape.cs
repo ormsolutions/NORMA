@@ -6964,8 +6964,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#region RoleName fixup
 		/// <summary>
 		/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Role), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
-		/// Add shape elements for role names. Used during deserialization fixup
-		/// and rules.
+		/// Add shape elements for role names.
 		/// </summary>
 		private static void RoleChangedRule(ElementPropertyChangedEventArgs e)
 		{
@@ -6999,7 +6998,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						if (null != (factTypeShape = pel as FactTypeShape) &&
 							factTypeShape.DisplayRoleNames == DisplayRoleNames.UserDefault)
 						{
-							RoleNameShape.SetRoleNameDisplay(factType);
+							factTypeShape.UpdateRoleNameDisplay();
 						}
 					}
 				}
@@ -7071,6 +7070,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(PreferredIdentifierAddedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(PreferredIdentifierRemovedEvent), action);
 			eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(PreferredIdentifierRolePlayerChangedEvent), action);
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(RoleNameVisibilityChangedDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(RoleNameVisibilityChangedEvent), action);
 		}
 		/// <summary>
 		/// Update the link displays when the modality of an internal uniqueness constraint changes
@@ -7203,9 +7204,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// </summary>
 			protected sealed override void ProcessElement(FactTypeShape element, Store store, INotifyElementAdded notifyAdded)
 			{
-				element.EnsureUnaryRoleDisplayOrder();
-				PointD centerPoint = RolesField.GetBounds(element).Center;
-				element.RolesPosition = (element.DisplayOrientation != DisplayOrientation.Horizontal) ? centerPoint.X : centerPoint.Y;
+				if (!element.IsDeleted)
+				{
+					element.EnsureUnaryRoleDisplayOrder();
+					PointD centerPoint = RolesField.GetBounds(element).Center;
+					element.RolesPosition = (element.DisplayOrientation != DisplayOrientation.Horizontal) ? centerPoint.X : centerPoint.Y;
+					element.UpdateRoleNameDisplay(true);
+				}
 			}
 		}
 		#endregion Deserialization Fixup

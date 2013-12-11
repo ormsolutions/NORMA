@@ -89,7 +89,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return Objectification != null ? GenerateName() : Name;
+				return Objectification != null ? GenerateName(false) : Name;
 			}
 		}
 		string ISurveyNode.EditableSurveyName

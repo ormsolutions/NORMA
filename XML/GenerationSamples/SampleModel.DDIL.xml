@@ -123,44 +123,26 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="firstName">
-			<ddt:characterString type="CHARACTER VARYING" length="64" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="lastName">
-			<ddt:characterString type="CHARACTER VARYING" length="64" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
 		<ddl:columnDefinition name="&quot;date&quot;">
 			<ddt:date type="DATE" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="mandatoryUniqueDecimal">
-			<ddt:domain name="MandatoryUniqueDecimal" schema="SampleModel" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="mandatoryUniqueString">
-			<ddt:characterString type="CHARACTER" length="11" />
-			<ddl:columnConstraintDefinition>
-				<ddl:notNullKeyword />
-			</ddl:columnConstraintDefinition>
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="mandatoryUniqueTinyInt">
-			<ddt:exactNumeric type="TINYINT" />
+		<ddl:columnDefinition name="firstName">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="genderCode">
 			<ddt:domain name="Gender_Code" schema="SampleModel" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="lastName">
+			<ddt:characterString type="CHARACTER VARYING" length="64" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
@@ -183,20 +165,23 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="optionalUniqueString">
+		<ddl:columnDefinition name="mandatoryUniqueDecimal">
+			<ddt:domain name="MandatoryUniqueDecimal" schema="SampleModel" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="mandatoryUniqueString">
 			<ddt:characterString type="CHARACTER" length="11" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="ownsCar">
-			<ddt:domain name="vin" schema="SampleModel" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="optionalUniqueDecimal">
-			<ddt:exactNumeric type="DECIMAL" precision="9" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="optionalUniqueTinyInt">
+		<ddl:columnDefinition name="mandatoryUniqueTinyInt">
 			<ddt:exactNumeric type="TINYINT" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="wife">
-			<ddt:exactNumeric type="INTEGER" />
+			<ddl:columnConstraintDefinition>
+				<ddl:notNullKeyword />
+			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="childPersonBirthOrderNr">
 			<ddt:domain name="BirthOrder_Nr" schema="SampleModel" />
@@ -207,8 +192,41 @@
 		<ddl:columnDefinition name="childPersonMother">
 			<ddt:exactNumeric type="INTEGER" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="ColorARGB">
+		<ddl:columnDefinition name="optionalUniqueDecimal">
+			<ddt:exactNumeric type="DECIMAL" precision="9" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="optionalUniqueString">
+			<ddt:characterString type="CHARACTER" length="11" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="optionalUniqueTinyInt">
+			<ddt:exactNumeric type="TINYINT" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="ownsCar">
+			<ddt:domain name="vin" schema="SampleModel" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="wife">
 			<ddt:exactNumeric type="INTEGER" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="colorARGB">
+			<ddt:exactNumeric type="INTEGER" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="deathCause">
+			<ddt:domain name="DeathCause_Type" schema="SampleModel" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="deathDate">
+			<ddt:date type="DATE" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="deathNaturalDeathIsFromProstateCancer">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="deathUnnaturalDeathIsBloody">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="deathUnnaturalDeathIsViolent">
+			<ddt:boolean type="BOOLEAN" />
+		</ddl:columnDefinition>
+		<ddl:columnDefinition name="hasParents">
+			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="hatTypeStyle">
 			<ddt:characterString type="CHARACTER VARYING" length="256" />
@@ -216,29 +234,11 @@
 		<ddl:columnDefinition name="isDead">
 			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="hasParents">
-			<ddt:boolean type="BOOLEAN" />
-		</ddl:columnDefinition>
 		<ddl:columnDefinition name="optionalNonUniqueTinyInt">
 			<ddt:exactNumeric type="TINYINT" />
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="valueType1DoesSomethingElseWith">
 			<ddt:exactNumeric type="INTEGER" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="deathDate">
-			<ddt:date type="DATE" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="deathCause">
-			<ddt:domain name="DeathCause_Type" schema="SampleModel" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="deathNaturalDeathIsFromProstateCancer">
-			<ddt:boolean type="BOOLEAN" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="deathUnnaturalDeathIsViolent">
-			<ddt:boolean type="BOOLEAN" />
-		</ddl:columnDefinition>
-		<ddl:columnDefinition name="deathUnnaturalDeathIsBloody">
-			<ddt:boolean type="BOOLEAN" />
 		</ddl:columnDefinition>
 		<ddl:tableConstraintDefinition name="Person_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
@@ -330,13 +330,13 @@
 					</dep:nullPredicate>
 					<dep:and>
 						<dep:nullPredicate type="NULL">
-							<dep:columnReference name="deathCause" />
-						</dep:nullPredicate>
-						<dep:nullPredicate type="NULL">
 							<dep:columnReference name="deathDate" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NULL">
 							<dep:columnReference name="deathNaturalDeathIsFromProstateCancer" />
+						</dep:nullPredicate>
+						<dep:nullPredicate type="NULL">
+							<dep:columnReference name="deathCause" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NULL">
 							<dep:columnReference name="deathUnnaturalDeathIsViolent" />
@@ -353,10 +353,10 @@
 				<dep:or>
 					<dep:and>
 						<dep:nullPredicate type="NOT NULL">
-							<dep:columnReference name="childPersonBirthOrderNr" />
+							<dep:columnReference name="childPersonMother" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NOT NULL">
-							<dep:columnReference name="childPersonMother" />
+							<dep:columnReference name="childPersonBirthOrderNr" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NOT NULL">
 							<dep:columnReference name="childPersonFather" />
@@ -364,10 +364,10 @@
 					</dep:and>
 					<dep:and>
 						<dep:nullPredicate type="NULL">
-							<dep:columnReference name="childPersonBirthOrderNr" />
+							<dep:columnReference name="childPersonMother" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NULL">
-							<dep:columnReference name="childPersonMother" />
+							<dep:columnReference name="childPersonBirthOrderNr" />
 						</dep:nullPredicate>
 						<dep:nullPredicate type="NULL">
 							<dep:columnReference name="childPersonFather" />
@@ -421,14 +421,14 @@
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
 	<ddl:tableDefinition name="PersonDrivesCar" schema="SampleModel">
-		<ddl:columnDefinition name="drivesCar">
-			<ddt:domain name="vin" schema="SampleModel" />
+		<ddl:columnDefinition name="drivenByPerson">
+			<ddt:exactNumeric type="INTEGER" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="drivenByPerson">
-			<ddt:exactNumeric type="INTEGER" />
+		<ddl:columnDefinition name="drivesCar">
+			<ddt:domain name="vin" schema="SampleModel" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
@@ -440,15 +440,15 @@
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
 	</ddl:tableDefinition>
-	<ddl:tableDefinition name="PersonBoughtCarFromPersonDate" schema="SampleModel">
-		<ddl:columnDefinition name="carSold">
-			<ddt:domain name="vin" schema="SampleModel" />
+	<ddl:tableDefinition name="PersonBoughtCarFromPersonOnDate" schema="SampleModel">
+		<ddl:columnDefinition name="buyer">
+			<ddt:exactNumeric type="INTEGER" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:columnDefinition name="buyer">
-			<ddt:exactNumeric type="INTEGER" />
+		<ddl:columnDefinition name="carSold">
+			<ddt:domain name="vin" schema="SampleModel" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
@@ -465,21 +465,21 @@
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
-		<ddl:tableConstraintDefinition name="PersonBoughtCarFromPersonDate_PK">
+		<ddl:tableConstraintDefinition name="PersonBoughtCarFromPersonOnDate_PK">
 			<ddl:uniqueConstraintDefinition type="PRIMARY KEY">
 				<dep:simpleColumnReference name="buyer" />
 				<dep:simpleColumnReference name="carSold" />
 				<dep:simpleColumnReference name="seller" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="PersonBoughtCarFromPersonDate_UC1">
+		<ddl:tableConstraintDefinition name="PersonBoughtCarFromPersonOnDate_UC1">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="carSold" />
 				<dep:simpleColumnReference name="saleDate" />
 				<dep:simpleColumnReference name="buyer" />
 			</ddl:uniqueConstraintDefinition>
 		</ddl:tableConstraintDefinition>
-		<ddl:tableConstraintDefinition name="PersonBoughtCarFromPersonDate_UC2">
+		<ddl:tableConstraintDefinition name="PersonBoughtCarFromPersonOnDate_UC2">
 			<ddl:uniqueConstraintDefinition type="UNIQUE">
 				<dep:simpleColumnReference name="saleDate" />
 				<dep:simpleColumnReference name="seller" />
@@ -603,8 +603,8 @@
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>
 	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="PersonBoughtCarFromPersonDate" schema="SampleModel">
-		<ddl:addTableConstraintDefinition name="PersonBoughtCarFromPersonDate_FK1">
+	<ddl:alterTableStatement name="PersonBoughtCarFromPersonOnDate" schema="SampleModel">
+		<ddl:addTableConstraintDefinition name="PersonBoughtCarFromPersonOnDate_FK1">
 			<ddl:referentialConstraintDefinition>
 				<dep:simpleColumnReference name="buyer" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">
@@ -613,8 +613,8 @@
 			</ddl:referentialConstraintDefinition>
 		</ddl:addTableConstraintDefinition>
 	</ddl:alterTableStatement>
-	<ddl:alterTableStatement name="PersonBoughtCarFromPersonDate" schema="SampleModel">
-		<ddl:addTableConstraintDefinition name="PersonBoughtCarFromPersonDate_FK2">
+	<ddl:alterTableStatement name="PersonBoughtCarFromPersonOnDate" schema="SampleModel">
+		<ddl:addTableConstraintDefinition name="PersonBoughtCarFromPersonOnDate_FK2">
 			<ddl:referentialConstraintDefinition>
 				<dep:simpleColumnReference name="seller" />
 				<ddl:referencesSpecification name="Person" onDelete="RESTRICT" onUpdate="RESTRICT" schema="SampleModel">

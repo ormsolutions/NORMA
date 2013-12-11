@@ -45,7 +45,7 @@
 			</orm:ObjectifiedType>
 		</orm:Objects>
 		<orm:Facts>
-			<orm:Fact _Name="CourseHasCourse_code" id="_6E1AC5BE-FA1E-458E-9E8A-EA34447C1346">
+			<orm:Fact id="_6E1AC5BE-FA1E-458E-9E8A-EA34447C1346" _Name="CourseHasCourseCode">
 				<orm:FactRoles>
 					<orm:Role Name="" _IsMandatory="true" _Multiplicity="ZeroToOne" id="_6A7E5312-095C-4CF6-BCB2-CE23D5C854C2">
 						<orm:RolePlayer ref="_028EF971-A69D-453F-BE97-3F798D9D651C" />
@@ -446,7 +446,7 @@
 	</orm:NameGenerator>
 	<orm:GenerationState id="_867D2D7E-B67D-4BFD-8F04-F5FBEAA5D1B9">
 		<orm:GenerationSettings>
-			<ormtooial:AbstractionModelGenerationSetting id="_7C818355-A612-4252-B259-D23C1B8B80CB" AlgorithmVersion="1.008">
+			<ormtooial:AbstractionModelGenerationSetting id="_7C818355-A612-4252-B259-D23C1B8B80CB" AlgorithmVersion="1.009">
 				<ormtooial:AbstractionModel ref="_479BA1D0-80FB-48DE-894E-50E9E8FC0F0B" />
 			</ormtooial:AbstractionModelGenerationSetting>
 			<oialtocdb:SchemaGenerationSetting id="_035C2A13-BCD7-4021-B939-C7B0714C8324" CoreAlgorithmVersion="1.004" NameAlgorithmVersion="1.014">
