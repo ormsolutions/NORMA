@@ -28,7 +28,7 @@
 	</xs:element>
 	<xs:element name="CustomPropertyGroups">
 		<xs:annotation>
-			<xs:documentation>A collection of custom property groups associated with an oil:model</xs:documentation>
+			<xs:documentation>A collection of custom property groups</xs:documentation>
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
@@ -191,11 +191,13 @@
 					</xs:annotation>
 					<xs:restriction base="xs:token">
 						<xs:enumeration value="Model"/>
+						<xs:enumeration value="ElementGrouping"/>
 						<xs:enumeration value="EntityType"/>
 						<xs:enumeration value="ValueType"/>
 						<xs:enumeration value="FactType"/>
 						<xs:enumeration value="SubtypeFact"/>
 						<xs:enumeration value="Role"/>
+						<xs:enumeration value="CardinalityConstraint"/>
 						<xs:enumeration value="FrequencyConstraint"/>
 						<xs:enumeration value="MandatoryConstraint"/>
 						<xs:enumeration value="RingConstraint"/>
@@ -203,6 +205,7 @@
 						<xs:enumeration value="EqualityConstraint"/>
 						<xs:enumeration value="ExclusionConstraint"/>
 						<xs:enumeration value="SubsetConstraint"/>
+						<xs:enumeration value="ValueComparisonConstraint"/>
 						<xs:enumeration value="ValueConstraint"/>
 					</xs:restriction>
 				</xs:simpleType>

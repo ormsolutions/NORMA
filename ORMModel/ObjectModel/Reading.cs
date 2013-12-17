@@ -1211,6 +1211,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooFewRolesCompactMessage, Reading.Text);
+			}
+		}
+		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -1245,6 +1255,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingTooManyRolesCompactMessage, Reading.Text);
+			}
+		}
+		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -1267,7 +1287,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			Reading reading = Reading;
+			Reading reading;
 			ReadingOrder order;
 			IModelErrorDisplayContext context;
 			if (null != (reading = Reading) &&
@@ -1277,7 +1297,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingRequiresUserModificationMessage, context.ErrorDisplayContext ?? "", GenerateReadingText(reading.Text, order)));
 			}
 		}
-
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				Reading reading;
+				ReadingOrder order;
+				if (null != (reading = Reading) &&
+					null != (order = reading.ReadingOrder))
+				{
+					return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorReadingRequiresUserModificationCompactMessage, GenerateReadingText(reading.Text, order));
+				}
+				return "";
+			}
+		}
 		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>

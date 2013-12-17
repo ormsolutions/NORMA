@@ -44,6 +44,20 @@
 					<CommandName>&amp;Validation Errors</CommandName>
 				</Strings>
 			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdDisableErrorList" priority="0x0000" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdErrorEnabling"/>
+				<Strings>
+					<ButtonText>ORM Model Error Disable Error Type List</ButtonText>
+					<CommandName>&amp;Disable Error Display</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdEnableErrorList" priority="0x0010" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdErrorEnabling"/>
+				<Strings>
+					<ButtonText>ORM Model Error Enable Error Type List</ButtonText>
+					<CommandName>&amp;Enable Error Display</CommandName>
+				</Strings>
+			</Menu>
 			<Menu guid="guidORMDesignerCommandSet" id="menuIdDisplayOrientation" priority="0x0000" type="Context">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdFactShapeCommands"/>
 				<Strings>
@@ -105,6 +119,13 @@
 				<Strings>
 					<ButtonText>Delete Elements From Group</ButtonText>
 					<CommandName>&amp;Delete From</CommandName>
+				</Strings>
+			</Menu>
+			<Menu guid="guidORMDesignerCommandSet" id="menuIdSelectInGroup" priority="0x0300" type="Context">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdGroupCommands"/>
+				<Strings>
+					<ButtonText>Select Element in Group</ButtonText>
+					<CommandName>&amp;Select In</CommandName>
 				</Strings>
 			</Menu>
 
@@ -182,6 +203,18 @@
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdErrorList"/>
 			</Group>
 
+			<Group guid="guidORMDesignerCommandSet" id="groupIdErrorEnabling" priority="0x0020">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdErrorList"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdDisableErrorListTest" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdDisableErrorList"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdEnableErrorListTest" priority="0x0010">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdEnableErrorList"/>
+			</Group>
+
 			<Group guid="guidORMDesignerCommandSet" id="groupIdDiagramListTest" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdDiagramList"/>
 			</Group>
@@ -206,6 +239,10 @@
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdDeleteFromGroupListTest" priority="0x0000">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdDeleteFromGroup"/>
+			</Group>
+
+			<Group guid="guidORMDesignerCommandSet" id="groupIdSelectInGroupListTest" priority="0x0000">
+				<Parent guid="guidORMDesignerCommandSet" id="menuIdSelectInGroup"/>
 			</Group>
 
 			<Group guid="guidORMDesignerCommandSet" id="groupIdReportGeneratorListTest" priority="0x0010">
@@ -373,6 +410,28 @@
 				</Strings>
 			</Button>
 
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdDisableErrorList" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdDisableErrorListTest"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No Errors &amp;Enabled</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdEnableErrorList" priority="0x0010" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdEnableErrorListTest"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No Errors &amp;Disabled</ButtonText>
+				</Strings>
+			</Button>
+
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdSelectNextInCurrentDiagram" priority="0x0010" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdDiagramListTest"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
@@ -426,6 +485,17 @@
 
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdDeleteFromGroupList" priority="0x0100" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdDeleteFromGroupListTest"/>
+				<CommandFlag>DynamicItemStart</CommandFlag>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<CommandFlag>TextChanges</CommandFlag>
+				<Strings>
+					<ButtonText>No &amp;Groups</ButtonText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdSelectInGroupList" priority="0x0100" type="Button">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdSelectInGroupListTest"/>
 				<CommandFlag>DynamicItemStart</CommandFlag>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
@@ -1079,6 +1149,9 @@
 			<IDSymbol value="0x010B" name="menuIdIncludeInGroup"/>
 			<IDSymbol value="0x010C" name="menuIdDeleteFromGroup"/>
 			<IDSymbol value="0x010D" name="menuIdZoomCommands"/>
+			<IDSymbol value="0x010E" name="menuIdDisableErrorList"/>
+			<IDSymbol value="0x010F" name="menuIdEnableErrorList"/>
+			<IDSymbol value="0x010G" name="menuIdSelectInGroup"/>
 
 			<!-- Groups (0x10__) -->
 			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>
@@ -1113,6 +1186,10 @@
 			<IDSymbol value="0x101C" name="groupIdDeleteFromGroupListTest"/>
 			<IDSymbol value="0x101D" name="groupIdNumberedZoomCommands"/>
 			<IDSymbol value="0x101E" name="groupIdInOutZoomCommands"/>
+			<IDSymbol value="0x101F" name="groupIdErrorEnabling"/>
+			<IDSymbol value="0x1020" name="groupIdDisableErrorListTest"/>
+			<IDSymbol value="0x1021" name="groupIdEnableErrorListTest"/>
+			<IDSymbol value="0x1022" name="groupIdSelectInGroupListTest"/>
 
 			<!-- Commands (0x2___) -->
 			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
@@ -1199,6 +1276,12 @@
 			<!-- Reserve 2F__ range for include in group list. -->
 			<IDSymbol value="0x3000" name="cmdIdDeleteFromGroupList"/>
 			<!-- Reserve 30__ range for delete from group list. -->
+			<IDSymbol value="0x3100" name="cmdIdDisableErrorList"/>
+			<!-- Reserve 31__ range for disable error list. -->
+			<IDSymbol value="0x3200" name="cmdIdEnableErrorList"/>
+			<!-- Reserve 32__ range for enable error list. -->
+			<IDSymbol value="0x3300" name="cmdIdSelectInGroupList"/>
+			<!-- Reserve 33__ range for include in group list. -->
 		</GuidSymbol>
 		<GuidSymbol name="guidFactEditorFactory" value="{EE99A954-82C4-4098-A2BD-5C75E3D138A7}"/>
 		<GuidSymbol name="guidORMVerbalizationToolbarImages" value="{5743D786-F88A-45F9-8117-F915CA6A9433}">

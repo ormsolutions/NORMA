@@ -276,6 +276,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		SelectNextInCurrentDiagram = 1L << 54,
 		/// <summary>
+		/// Show errors that are disabled for this item
+		/// </summary>
+		DisabledErrorList = 1L << 55,
+		/// <summary>
+		/// Get a list of groups the element is directly included in
+		/// </summary>
+		SelectInGroupList = 1L << 56,
+		/// <summary>
 		/// Mask field representing individual delete commands
 		/// </summary>
 		Delete = DeleteObjectType | DeleteFactType | DeleteConstraint | DeleteRole | DeleteModelNote | DeleteModelNoteReference | DeleteGroup | RemoveFromGroup,

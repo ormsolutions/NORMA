@@ -421,6 +421,22 @@
     <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ValueConstraint</value>
     <comment>Description for EnumerationLiteral &apos;ValueConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>ValueComparisonConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;ValueComparisonConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ValueComparisonConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;ValueComparisonConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/CardinalityConstraint.DisplayName" xml:space="preserve">
+    <value>CardinalityConstraint</value>
+    <comment>Display name for EnumerationLiteral &apos;CardinalityConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/CardinalityConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.CardinalityConstraint</value>
+    <comment>Description for EnumerationLiteral &apos;CardinalityConstraint&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/AllConstraints.DisplayName" xml:space="preserve">
     <value>AllConstraints</value>
     <comment>Display name for EnumerationLiteral &apos;AllConstraints&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
@@ -436,6 +452,14 @@
   <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/Model.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.Model</value>
     <comment>Description for EnumerationLiteral &apos;Model&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ElementGrouping.DisplayName" xml:space="preserve">
+    <value>ElementGrouping</value>
+    <comment>Display name for EnumerationLiteral &apos;ElementGrouping&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ElementGrouping.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ElementGrouping</value>
+    <comment>Description for EnumerationLiteral &apos;ElementGrouping&apos; on DomainEnumeration &apos;ORMTypes&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyDataType/String.DisplayName" xml:space="preserve">
     <value>String</value>

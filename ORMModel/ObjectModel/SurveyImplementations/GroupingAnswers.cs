@@ -370,7 +370,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // ElementGroupingType class
 	#region GroupingElementRelationship class
-	partial class GroupingElementRelationship : ISurveyNodeReference, IAnswerSurveyQuestion<SurveyGroupingChildType>
+	partial class GroupingElementRelationship : ISurveyNodeReference, ISurveyNodeContext, IAnswerSurveyQuestion<SurveyGroupingChildType>
 	{
 		#region ISurveyNodeReference Implementation
 		/// <summary>
@@ -449,6 +449,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return AskGroupingChildTypeQuestion(contextElement);
 		}
 		#endregion // IAnswerSurveyQuestion<SurveyGroupingChildType> Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a grouped element is the <see cref="Grouping"/>.
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return Grouping;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 	}
 	#endregion // GroupingElementRelationship class
 	#region GroupingElementInclusion class
@@ -606,7 +625,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // ElementGroupingExcludesElementGrouping class
 	#region GroupingMembershipContradictionErrorIsForElement class
-	partial class GroupingMembershipContradictionErrorIsForElement : ISurveyNodeReference, IAnswerSurveyQuestion<SurveyGroupingChildType>, IAnswerSurveyQuestion<SurveyGroupingReferenceType>
+	partial class GroupingMembershipContradictionErrorIsForElement : ISurveyNodeReference, ISurveyNodeContext, IAnswerSurveyQuestion<SurveyGroupingChildType>, IAnswerSurveyQuestion<SurveyGroupingReferenceType>
 	{
 		#region ISurveyNodeReference Implementation
 		/// <summary>
@@ -672,6 +691,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return UseSurveyNodeReferenceAnswer(questionType, dynamicValues, answer);
 		}
 		#endregion // ISurveyNodeReference Implementation
+		#region ISurveyNodeContext Implementation
+		/// <summary>
+		/// The survey node context for a grouping contradiction error the <see cref="ElementGrouping"/>.
+		/// </summary>
+		protected object SurveyNodeContext
+		{
+			get
+			{
+				return this.GroupingMembershipContradictionErrorRelationship.Grouping;
+			}
+		}
+		object ISurveyNodeContext.SurveyNodeContext
+		{
+			get
+			{
+				return SurveyNodeContext;
+			}
+		}
+		#endregion // ISurveyNodeContext Implementation
 		#region IAnswerSurveyQuestion<SurveyGroupingChildType> Implementation
 		/// <summary>
 		/// Implements <see cref="IAnswerSurveyQuestion{SurveyGroupingChildType}.AskQuestion"/>

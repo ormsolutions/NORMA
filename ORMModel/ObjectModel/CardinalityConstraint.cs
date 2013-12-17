@@ -794,6 +794,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorCardinalityConstraintCardinalityRangeOverlapError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorCardinalityConstraintCardinalityRangeOverlapCompactError;
+			}
+		}
+		/// <summary>
 		/// Regenerate error text on owner and model name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents

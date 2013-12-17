@@ -298,12 +298,14 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				chkVerbalizeDefaultValue.Enabled = defaultText.Length != 0;
 				ClearCheckedItems(tvModelElements.Nodes);
 				CheckTypeIfNeeded(ORMTypes.Model);
+				CheckTypeIfNeeded(ORMTypes.ElementGrouping);
 				CheckTypeIfNeeded(ORMTypes.EntityType);
 				CheckTypeIfNeeded(ORMTypes.FactType);
 				CheckTypeIfNeeded(ORMTypes.Role);
 				CheckTypeIfNeeded(ORMTypes.AllConstraints);
 				CheckTypeIfNeeded(ORMTypes.SubtypeFact);
 				CheckTypeIfNeeded(ORMTypes.ValueType);
+				CheckTypeIfNeeded(ORMTypes.CardinalityConstraint);
 				CheckTypeIfNeeded(ORMTypes.EqualityConstraint);
 				CheckTypeIfNeeded(ORMTypes.ExclusionConstraint);
 				CheckTypeIfNeeded(ORMTypes.FrequencyConstraint);
@@ -311,6 +313,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				CheckTypeIfNeeded(ORMTypes.RingConstraint);
 				CheckTypeIfNeeded(ORMTypes.SubsetConstraint);
 				CheckTypeIfNeeded(ORMTypes.UniquenessConstraint);
+				CheckTypeIfNeeded(ORMTypes.ValueComparisonConstraint);
 				CheckTypeIfNeeded(ORMTypes.ValueConstraint);
 			}
 
@@ -318,26 +321,31 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		}
 		private void PopulateTreeView()
 		{
-			tvModelElements.Nodes.Clear();
+			TreeNodeCollection nodes = tvModelElements.Nodes;
+			nodes.Clear();
 
-			tvModelElements.Nodes.Add(CreateTreeNode("ORM Model", "Model"));
-			tvModelElements.Nodes.Add(CreateTreeNode("Entity Type", "EntityType"));
-			tvModelElements.Nodes.Add(CreateTreeNode("Value Type", "ValueType"));
-			tvModelElements.Nodes.Add(CreateTreeNode("Fact Type", "FactType"));
-			tvModelElements.Nodes.Add(CreateTreeNode("Subtype Fact", "SubtypeFact"));
-			tvModelElements.Nodes.Add(CreateTreeNode("Role", "Role"));
+			nodes.Add(CreateTreeNode("Entity Type", "EntityType"));
+			nodes.Add(CreateTreeNode("Value Type", "ValueType"));
+			nodes.Add(CreateTreeNode("Fact Type", "FactType"));
+			nodes.Add(CreateTreeNode("Subtype Fact", "SubtypeFact"));
+			nodes.Add(CreateTreeNode("Role", "Role"));
+			nodes.Add(CreateTreeNode("ORM Model", "Model"));
+			nodes.Add(CreateTreeNode("Group", "ElementGrouping"));
 
 			TreeNode constraintsNode = CreateTreeNode("All Constraints", "AllConstraints");
-			tvModelElements.Nodes.Add(constraintsNode);
+			nodes.Add(constraintsNode);
 
-			constraintsNode.Nodes.Add(CreateTreeNode("Frequency Constraint", "FrequencyConstraint"));
-			constraintsNode.Nodes.Add(CreateTreeNode("Mandatory Constraint", "MandatoryConstraint"));
-			constraintsNode.Nodes.Add(CreateTreeNode("Ring Constraint", "RingConstraint"));
-			constraintsNode.Nodes.Add(CreateTreeNode("Uniqueness Constraint", "UniquenessConstraint"));
-			constraintsNode.Nodes.Add(CreateTreeNode("Equality Constraint", "EqualityConstraint"));
-			constraintsNode.Nodes.Add(CreateTreeNode("Exclusion Constraint", "ExclusionConstraint"));
-			constraintsNode.Nodes.Add(CreateTreeNode("Subset Constraint", "SubsetConstraint"));
-			constraintsNode.Nodes.Add(CreateTreeNode("Value Constraint", "ValueConstraint"));
+			nodes = constraintsNode.Nodes;
+			nodes.Add(CreateTreeNode("Mandatory Constraint", "MandatoryConstraint"));
+			nodes.Add(CreateTreeNode("Uniqueness Constraint", "UniquenessConstraint"));
+			nodes.Add(CreateTreeNode("Frequency Constraint", "FrequencyConstraint"));
+			nodes.Add(CreateTreeNode("Ring Constraint", "RingConstraint"));
+			nodes.Add(CreateTreeNode("Value Comparison Constraint", "ValueComparisonConstraint"));
+			nodes.Add(CreateTreeNode("Equality Constraint", "EqualityConstraint"));
+			nodes.Add(CreateTreeNode("Exclusion Constraint", "ExclusionConstraint"));
+			nodes.Add(CreateTreeNode("Subset Constraint", "SubsetConstraint"));
+			nodes.Add(CreateTreeNode("Cardinality Constraint", "CardinalityConstraint"));
+			nodes.Add(CreateTreeNode("Value Constraint", "ValueConstraint"));
 		}
 		private TreeNode CreateTreeNode(string name, string tag)
 		{

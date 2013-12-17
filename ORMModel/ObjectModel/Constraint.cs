@@ -10166,9 +10166,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ORMModel model = Model;
 			ErrorText = string.Format(
 				CultureInfo.InvariantCulture,
-				ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesText,
+				ResourceStrings.ModelErrorConstraintHasTooManyRoleSequences,
 				(parent != null) ? parent.Name : "",
 				(model != null) ? model.Name : "");
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorConstraintHasTooManyRoleSequencesCompact;
+			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -10239,6 +10249,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = string.Format(CultureInfo.InvariantCulture, formatString, parentName, modelName, addendum);
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				SetConstraint setConstraint;
+				SetComparisonConstraint setComparisonConstraint;
+				string formatString = "";
+				string addendum = "";
+				if (null != (setConstraint = SetConstraint))
+				{
+					formatString = (0 != (((IConstraint)setConstraint).RoleSequenceStyles & RoleSequenceStyles.TwoRoleSequences)) ?
+						ResourceStrings.ModelErrorConstraintHasTooFewSequenceRolesExactlyTwoCompact :
+						ResourceStrings.ModelErrorConstraintHasTooFewSequenceRolesTwoOrMoreCompact;
+					switch (setConstraint.RoleCollection.Count)
+					{
+						case 0:
+							addendum = ResourceStrings.ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendumCompact;
+							break;
+						case 1:
+							addendum = ResourceStrings.ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendumCompact;
+							break;
+					}
+				}
+				else if (null != (setComparisonConstraint = SetComparisonConstraint))
+				{
+					formatString = (0 != (((IConstraint)setComparisonConstraint).RoleSequenceStyles & RoleSequenceStyles.TwoRoleSequences)) ?
+						ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesExactlyTwoCompact :
+						ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesTwoOrMoreCompact;
+					LinkedElementCollection<SetComparisonConstraintRoleSequence> sequences;
+					switch ((sequences = setComparisonConstraint.RoleSequenceCollection).Count)
+					{
+						case 0:
+							addendum = ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesNoSequenceAddendumCompact;
+							break;
+						case 1:
+							addendum = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintHasTooFewRoleSequencesOneSequenceAddendumCompact, sequences[0].RoleCollection.Count);
+							break;
+					}
+				}
+				return string.Format(CultureInfo.InvariantCulture, formatString, addendum);
+			}
+		}
+		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10270,6 +10325,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				(model != null) ? model.Name : "");
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorConstraintExternalConstraintArityMismatchCompact;
+			}
+		}
+		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10292,13 +10357,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			SetComparisonConstraint multiColumnParent = SetComparisonConstraint;
+			SetComparisonConstraint comparisonConstraint = SetComparisonConstraint;
 			ORMNamedElement namedParent;
 			bool useColumn;
-			if (multiColumnParent != null)
+			if (comparisonConstraint != null)
 			{
-				namedParent = multiColumnParent;
-				useColumn = multiColumnParent.RoleSequenceCollection[0].RoleCollection.Count > 1;
+				namedParent = comparisonConstraint;
+				useColumn = comparisonConstraint.RoleSequenceCollection[0].RoleCollection.Count > 1;
 			}
 			else
 			{
@@ -10311,6 +10376,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = useColumn ?
 				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError, parentName, modelName, (Column + 1).ToString(CultureInfo.InvariantCulture)) :
 				string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetConstraintCompatibleRolePlayerTypeError, parentName, modelName);
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				SetComparisonConstraint comparisonConstraint;
+				if (null != (comparisonConstraint = SetComparisonConstraint) &&
+					comparisonConstraint.RoleSequenceCollection[0].RoleCollection.Count > 1)
+				{
+					return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeErrorCompact, (Column + 1).ToString(CultureInfo.InvariantCulture));
+				}
+				return ResourceStrings.ModelErrorSetConstraintCompatibleRolePlayerTypeErrorCompact;
+			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -10354,6 +10435,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError, constraintName, modelName);
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorCompact;
+			}
+		}
+		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10378,6 +10469,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = (IModelErrorDisplayContext)RoleSequence;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintRoleSequenceJoinPathRequiredError, displayContext.ErrorDisplayContext));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				SetComparisonConstraintRoleSequence numberedSequence;
+				SetComparisonConstraint comparisonConstraint;
+				if (null != (numberedSequence = RoleSequence as SetComparisonConstraintRoleSequence) &&
+					null != (comparisonConstraint = numberedSequence.ExternalConstraint))
+				{
+					return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorSetComparisonConstraintRoleSequenceJoinPathRequiredErrorCompact, (comparisonConstraint.RoleSequenceCollection.IndexOf(numberedSequence) + 1).ToString(CultureInfo.InvariantCulture));
+				}
+				return ResourceStrings.ModelErrorConstraintRoleSequenceJoinPathRequiredErrorCompact;
+			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -10406,6 +10514,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintMinMaxError, (parent != null) ? parent.Name : "", Model.Name);
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorFrequencyConstraintMinMaxErrorCompact;
+			}
+		}		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10430,6 +10547,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			FrequencyConstraint parent = this.FrequencyConstraint;
 			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintExactlyOneError, (parent != null) ? parent.Name : "", Model.Name);
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorFrequencyConstraintExactlyOneErrorCompact;
+			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -10458,6 +10585,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintNonRestrictiveRangeError, (parent != null) ? parent.Name : "", Model.Name);
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorFrequencyConstraintNonRestrictiveRangeErrorCompact;
+			}
+		}		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10484,10 +10620,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ORMModel model = Model;
 			string parentName = (parent != null) ? parent.Name : "";
 			string modelName = (model != null) ? model.Name : "";
-			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText, parentName, modelName);
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFrequencyConstraintViolatedByUniquenessConstraint, parentName, modelName);
 			string currentText = ErrorText;
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorFrequencyConstraintViolatedByUniquenessConstraintCompact;
+			}
+		}		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10529,6 +10674,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorImpliedInternalUniquenessConstraintError, context != null ? (context.ErrorDisplayContext ?? "") : ""));
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorImpliedInternalUniquenessConstraintErrorCompact;
+			}
+		}
+		/// <summary>
 		/// Regenerates the error text when the Fact type changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10558,6 +10713,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorValueComparisonConstraintOperatorNotSpecified, parentName, modelName);
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorValueComparisonConstraintOperatorNotSpecifiedCompact;
+			}
+		}		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10585,6 +10749,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			string parentName = (parent != null) ? parent.Name : "";
 			string modelName = (model != null) ? model.Name : "";
 			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorValueComparisonRolesNotComparable, parentName, modelName);
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorValueComparisonRolesNotComparableCompact;
+			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
@@ -10615,6 +10789,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRingConstraintTypeNotSpecified, parentName, modelName);
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRingConstraintTypeNotSpecifiedCompact;
+			}
+		}		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10655,6 +10838,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = String.Format(CultureInfo.InvariantCulture, impliedBySuperset ? ResourceStrings.ModelErrorConstraintImplicationBySuperset : ResourceStrings.ModelErrorConstraintImplicationBySubset, errorName, Model.Name);
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return SetComparisonConstraint != null ? ResourceStrings.ModelErrorConstraintImplicationBySupersetCompact : ResourceStrings.ModelErrorConstraintImplicationBySubsetCompact;
+			}
+		}		/// <summary>
 		/// Regenerate error text when the constraint name or model name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10666,7 +10858,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion //Base Overrides
 	}
-	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class EqualityOrSubsetImpliedByMandatoryError
 	{
 		#region Base Overrides
@@ -10681,6 +10872,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = String.Format(CultureInfo.InvariantCulture, ((IConstraint)constraint).ConstraintType == ConstraintType.Subset ? ResourceStrings.ModelErrorConstraintImplicationSubsetMandatory : ResourceStrings.ModelErrorConstraintImplicationEqualityMandatory, errorName, Model.Name);
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return (EqualityOrSubsetConstraint is SubsetConstraint) ?
+					ResourceStrings.ModelErrorConstraintImplicationSubsetMandatoryCompact :
+					ResourceStrings.ModelErrorConstraintImplicationEqualityMandatoryCompact;
+			}
+		}		/// <summary>
 		/// Regenerate error text when the constraint name or model name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10753,7 +10955,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // Base overrides
 	}
-	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class ExclusionContradictsMandatoryError : IRepresentModelElements
 	{
 		#region Base overrides
@@ -10802,6 +11003,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintContradiction, errorConstraints, Model.Name);
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorConstraintExclusionAndMandatoryContradictionCompact;
+			}
+		}		/// <summary>
 		/// Regenerate the error text when the model name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -10840,6 +11050,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // IRepresentModelElements Implementation
 	}
+	partial class ExclusionContradictsEqualityError
+	{
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorConstraintExclusionAndEqualityContradictionCompact;
+			}
+		}
+	}
+	partial class ExclusionContradictsSubsetError
+	{
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorConstraintExclusionAndSubsetContradictionCompact;
+			}
+		}
+	}
 	#endregion
 	[ModelErrorDisplayFilter(typeof(ConstraintImplicationAndContradictionErrorCategory))]
 	public partial class NotWellModeledSubsetAndMandatoryError
@@ -10853,6 +11089,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			SubsetConstraint subset = SubsetConstraint;
 			MandatoryConstraint mandatory = MandatoryConstraint;
 			ErrorText = String.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorNotWellModeledSubsetAndMandatoryError, (subset != null) ? subset.Name : "", (mandatory != null) ? mandatory.Name : "", Model.Name);
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorNotWellModeledSubsetAndMandatoryErrorCompact;
+			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the model name changes

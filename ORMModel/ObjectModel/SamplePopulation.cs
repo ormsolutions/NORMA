@@ -63,6 +63,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				model != null ? model.Name : "");
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				EntityTypeInstance entityInstance = EntityTypeInstance;
+				return string.Format(
+					ResourceStrings.ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesCompactMessage,
+					entityInstance != null ? entityInstance.Name : "");
+			}
+		}
+		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -91,6 +104,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				model != null ? model.Name : "");
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				FactTypeInstance factInstance = FactTypeInstance;
+				return string.Format(
+					ResourceStrings.ModelErrorFactTypeRequiresInternalUniquenessConstraintCompactMessage,
+					factInstance != null ? factInstance.Name : "");
+			}
+		}
+		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -113,17 +139,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			ValueTypeInstance valueTypeInstance = ValueTypeInstance;
 			ObjectType valueType = (valueTypeInstance != null) ? valueTypeInstance.ValueType : null;
-			string valueName = (valueType != null) ? valueType.Name : "";
-			string dataType = (valueType != null) ? valueType.DataType.PortableDataType.ToString() : "";
 			// Go ahead and use the value directly here instead of looking at the invariant value.
 			// If the invariant value succeeds as a backup then you don't get to this point.
-			string value = (valueTypeInstance != null) ? valueTypeInstance.Value : "";
-			string modelName = Model.Name;
-			string currentText = ErrorText;
-			string newText = string.Format(ResourceStrings.ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage, value, valueName, modelName, dataType);
-			if (currentText != newText)
+			ORMModel model = Model;
+			ErrorText = string.Format(
+				ResourceStrings.ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage,
+				valueTypeInstance != null ? valueTypeInstance.Value : "",
+				valueType != null ? valueType.Name : "",
+				model != null ? model.Name : "",
+				valueType != null ? valueType.DataType.PortableDataType.ToString() : "");
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
 			{
-				ErrorText = newText;
+				ValueTypeInstance valueTypeInstance = ValueTypeInstance;
+				ObjectType valueType = (valueTypeInstance != null) ? valueTypeInstance.ValueType : null;
+				// Go ahead and use the value directly here instead of looking at the invariant value.
+				// If the invariant value succeeds as a backup then you don't get to this point.
+				return string.Format(
+					ResourceStrings.ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueCompactMessage,
+					valueTypeInstance != null ? valueTypeInstance.Value : "",
+					valueType != null ? valueType.DataType.PortableDataType.ToString() : "");
 			}
 		}
 		/// <summary>
@@ -170,27 +210,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ObjectTypeInstance duplicateInstance = DuplicateObjectTypeInstance;
 			Role commonRole = CommonRole;
-			string instanceDisplayString = duplicateInstance.Name;
-			string formatString, typeName;
-			if(commonRole.Name.Length != 0)
+			string roleName = commonRole.Name;
+			string formatString;
+			string typeName;
+			if(roleName.Length != 0)
 			{
 				formatString = ResourceStrings.ModelErrorModelHasPopulationUniquenessErrorWithNamedRole;
-				typeName = commonRole.Name;
+				typeName = roleName;
 			}
 			else
 			{
 				formatString = ResourceStrings.ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole;
 				typeName = commonRole.FactType.Name;
 			}
-			string modelName = Model.Name;
-			string objectTypeName = commonRole.RolePlayer.Name;
-			string currentText = ErrorText;
-			string newText = string.Format(CultureInfo.CurrentCulture, formatString, objectTypeName, instanceDisplayString, modelName, typeName);
-			if (currentText != newText)
+			ORMModel model = Model;
+			ErrorText = string.Format(
+				CultureInfo.CurrentCulture,
+				formatString,
+				commonRole.RolePlayer.Name,
+				DuplicateObjectTypeInstance.Name,
+				model != null ? model.Name : "",
+				typeName);
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
 			{
-				ErrorText = newText;
+				Role commonRole = CommonRole;
+				string roleName = commonRole.Name;
+				string formatString;
+				string typeName;
+				if (roleName.Length != 0)
+				{
+					formatString = ResourceStrings.ModelErrorModelHasPopulationUniquenessErrorWithNamedRoleCompact;
+					typeName = roleName;
+				}
+				else
+				{
+					formatString = ResourceStrings.ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRoleCompact;
+					typeName = commonRole.FactType.Name;
+				}
+				return string.Format(
+					CultureInfo.CurrentCulture,
+					formatString,
+					DuplicateObjectTypeInstance.Name,
+					typeName);
 			}
 		}
 		/// <summary>
@@ -235,7 +303,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public override void GenerateErrorText()
 		{
-			ObjectTypeInstance objectInstance = ObjectTypeInstance;
 			LinkedElementCollection<Role> roles = MandatoryConstraint.RoleCollection;
 			string additionalFactTypes = null;
 			int roleCount = roles.Count;
@@ -249,14 +316,45 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			Role role = roles[0];
-			string instanceDisplayString = objectInstance.Name;
-			string modelName = Model.Name;
-			string currentText = ErrorText;
 			ObjectType rolePlayer = role.RolePlayer;
-			string newText = string.Format(formatProvider, ResourceStrings.ModelErrorModelHasPopulationMandatoryError, rolePlayer != null ? rolePlayer.Name : "", instanceDisplayString, modelName, role.FactType.Name, additionalFactTypes);
-			if (currentText != newText)
+			ORMModel model = Model;
+			ErrorText = string.Format(
+				formatProvider,
+				ResourceStrings.ModelErrorModelHasPopulationMandatoryError,
+				rolePlayer != null ? rolePlayer.Name : "",
+				ObjectTypeInstance.Name,
+				model != null ? model.Name : "",
+				role.FactType.Name,
+				additionalFactTypes);
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
 			{
-				ErrorText = newText;
+				LinkedElementCollection<Role> roles = MandatoryConstraint.RoleCollection;
+				string additionalFactTypes = null;
+				int roleCount = roles.Count;
+				IFormatProvider formatProvider = CultureInfo.CurrentCulture;
+				if (roleCount > 1)
+				{
+					string additionalFactTypeFormatString = ResourceStrings.ModelErrorModelHasPopulationMandatoryErrorAdditionalFactType;
+					for (int i = roleCount - 1; i > 0; --i)
+					{
+						additionalFactTypes = string.Format(formatProvider, additionalFactTypeFormatString, roles[i].FactType.Name, additionalFactTypes);
+					}
+				}
+				Role role = roles[0];
+				ObjectType rolePlayer = role.RolePlayer;
+				ORMModel model = Model;
+				return string.Format(
+					formatProvider,
+					ResourceStrings.ModelErrorModelHasPopulationMandatoryErrorCompact,
+					ObjectTypeInstance.Name,
+					role.FactType.Name,
+					additionalFactTypes);
 			}
 		}
 		/// <summary>
@@ -339,9 +437,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = string.Format(
 				CultureInfo.InvariantCulture,
 				ResourceStrings.ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredMessage,
-				(instance != null) ? instance.Name : "",
-				(entityType != null) ? entityType.Name : "",
-				(model != null) ? model.Name : "");
+				instance != null ? instance.Name : "",
+				entityType != null ? entityType.Name : "",
+				model != null ? model.Name : "");
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return string.Format(
+					CultureInfo.InvariantCulture,
+					ResourceStrings.ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredCompactMessage,
+					ObjectTypeInstance.Name);
+			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the model name changes
@@ -384,6 +495,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ResourceStrings.ModelErrorFactTypeInstanceObjectifyingInstanceRequiredMessage,
 				instance != null ? instance.Name : "",
 				model != null ? model.Name : "");
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return string.Format(
+					CultureInfo.InvariantCulture,
+					ResourceStrings.ModelErrorFactTypeInstanceObjectifyingInstanceRequiredCompactMessage,
+					FactTypeInstance.Name);
+			}
 		}
 		/// <summary>
 		/// Regenerate the error text when the model name changes

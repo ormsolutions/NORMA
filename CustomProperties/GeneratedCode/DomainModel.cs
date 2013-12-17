@@ -533,18 +533,39 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		ValueConstraint = 4096,
 		/// <summary>
+		/// ValueComparisonConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ValueComparisonConstraint
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ValueComparisonConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		ValueComparisonConstraint = 8192,
+		/// <summary>
+		/// CardinalityConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.CardinalityConstraint
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/CardinalityConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		CardinalityConstraint = 16384,
+		/// <summary>
 		/// AllConstraints
 		/// Description for
 		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.AllConstraints
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/AllConstraints.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
-		AllConstraints = 8160,
+		AllConstraints = 32736,
 		/// <summary>
 		/// Model
 		/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.Model
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/Model.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
-		Model = 8192,
+		Model = 32768,
+		/// <summary>
+		/// ElementGrouping
+		/// Description for
+		/// ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ElementGrouping
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ElementGrouping.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		ElementGrouping = 65536,
 	}
 }
 namespace ORMSolutions.ORMArchitect.CustomProperties

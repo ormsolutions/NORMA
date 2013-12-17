@@ -64,6 +64,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		// Dynamic command set caches
 		private ElementGrouping[] myIncludeInGroups;
 		private ElementGrouping[] myDeleteFromGroups;
+		private ElementGrouping[] mySelectInGroups;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -419,6 +420,73 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 						}
 					}
+					else if (0 != (commandFlags & ORMDesignerCommands.SelectInGroupList))
+					{
+						// UNDONE: This duplicates the version in ORMDesignerCommandManager, which also assumes
+						// single-select capabilities. These both need to be updated when the browser supports
+						// multi-select.
+						// Share the implementations when the model browser is multiselect.
+						if (isEnabled)
+						{
+							ElementGrouping[] cachedGroupings = currentWindow.mySelectInGroups;
+							if (cachedGroupings == null)
+							{
+								ModelElement element = EditorUtility.ResolveContextInstance(currentWindow.SelectedNode, false) as ModelElement;
+								if (element == null)
+								{
+									cachedGroupings = new ElementGrouping[0]; // Set this even for zero to indicate that we tried to get it
+								}
+								else
+								{
+									// Get groups associated with this through a direct relationship (inclusion
+									// or exclusion) or a contradiction validation error. Only one of these will
+									// exist per associated group. Sort the results by group name.
+									List<ElementGrouping> groupingList = null;
+									ICollection<ElementGrouping> groupingLinks = GroupingElementRelationship.GetGroupingCollection(element);
+									if (groupingLinks.Count != 0)
+									{
+										groupingList = new List<ElementGrouping>(groupingLinks);
+									}
+									foreach (ElementGroupingHasMembershipContradictionError contradictionErrorLink in GroupingMembershipContradictionErrorIsForElement.GetMembershipContradictionErrorCollection(element))
+									{
+										(groupingList ?? (groupingList = new List<ElementGrouping>())).Add(contradictionErrorLink.Grouping);
+									}
+									if (groupingList == null)
+									{
+										cachedGroupings = new ElementGrouping[0];
+									}
+									else
+									{
+										int groupingCount = groupingList.Count;
+										cachedGroupings = new ElementGrouping[groupingCount];
+										groupingList.CopyTo(cachedGroupings);
+
+										if (groupingCount > 1)
+										{
+											Array.Sort<ElementGrouping>(cachedGroupings, NamedElementComparer<ElementGrouping>.CurrentCulture);
+										}
+									}
+								}
+								currentWindow.mySelectInGroups = cachedGroupings;
+							}
+
+							OleMenuCommand cmd = (OleMenuCommand)sender;
+							int groupIndex = cmd.MatchedCommandId;
+							if (groupIndex < cachedGroupings.Length)
+							{
+								cmd.Enabled = true;
+								cmd.Visible = true;
+								cmd.Supported = true;
+								cmd.Text = "&" + cachedGroupings[groupIndex].Name;
+							}
+							else
+							{
+								cmd.Supported = false;
+								cmd.Enabled = false;
+								cmd.Visible = false;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -635,6 +703,42 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
+		/// Select the reference to the selected item in the group at the specified index
+		/// </summary>
+		/// <param name="groupIndex">The offset of the group in the current set of current groups</param>
+		public virtual void OnMenuSelectInGroupList(int groupIndex)
+		{
+			ModelElement currentNode = EditorUtility.ResolveContextInstance(SelectedNode, false) as ModelElement;
+			ElementGrouping[] eligibleGroups;
+			if (currentNode != null &&
+				!currentNode.IsDeleted &&
+				null != (eligibleGroups = mySelectInGroups) &&
+				groupIndex < eligibleGroups.Length)
+			{
+				ElementGrouping grouping = eligibleGroups[groupIndex];
+				GroupingElementRelationship groupingLink;
+				IORMToolServices services;
+				if (null != (services = grouping.Store as IORMToolServices))
+				{
+					if (null != (groupingLink = GroupingElementRelationship.GetLink(grouping, currentNode)))
+					{
+						services.NavigateTo(groupingLink, NavigateToWindow.ModelBrowser);
+					}
+					else
+					{
+						foreach (GroupingMembershipContradictionErrorIsForElement errorLink in GroupingMembershipContradictionErrorIsForElement.GetLinksToMembershipContradictionErrorCollection(currentNode))
+						{
+							if (errorLink.GroupingMembershipContradictionErrorRelationship.Grouping == grouping)
+							{
+								services.NavigateTo(errorLink, NavigateToWindow.ModelBrowser);
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
 		/// Place the element label editing mode
 		/// </summary>
 		protected virtual void OnMenuEditLabel()
@@ -768,6 +872,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myStatusCacheValid = false;
 			myIncludeInGroups = null;
 			myDeleteFromGroups = null;
+			mySelectInGroups = null;
 		}
 		private void EnsureCommandStatusCache()
 		{

@@ -105,10 +105,21 @@ namespace ORMSolutions.ORMArchitect.ExtensionExample
 			if (objectType != null)
 			{
 				string newText = string.Format(CultureInfo.CurrentCulture,
-					"Object '{0}' in model '{1}' needs a meaningful name.",
+					"Object type '{0}' in model '{1}' requires a meaningful name.",
 					objectType.Name,
 					objectType.Model.Name);
 				ErrorText = newText;
+			}
+		}
+		/// <summary>
+		/// This method is called for a short error text where the context
+		/// of the error is already known.
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return "Object type requires a meaningful name.";
 			}
 		}
 		/// <summary>

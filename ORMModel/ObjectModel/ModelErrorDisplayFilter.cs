@@ -354,6 +354,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			myIncludedErrorsChanged = false;
 		}
 		/// <summary>
+		/// Test if this element has any committed current filters.
+		/// </summary>
+		public bool IsFiltered
+		{
+			get
+			{
+				return this.ExcludedErrors.Length != 0 || this.ExcludedCategories.Length != 0 || this.IncludedErrors.Length != 0;
+			}
+		}
+		/// <summary>
 		/// returns string.Empty
 		/// </summary>
 		/// <returns></returns>

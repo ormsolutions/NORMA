@@ -268,29 +268,57 @@
 		<value>ORM Context Window</value>
 		<comment>Text to place in the title bar of the context tool window.</comment>
 	</data>
+	<data name="ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.CompactText" xml:space="preserve">
+		<value>An aggregation function requires an aggregation context.</value>
+		<comment>Model validation error text for an aggregate calculation with no aggregation context. Compact form.</comment>
+	</data>
 	<data name="ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.Text" xml:space="preserve">
 		<value>{0} must provide an aggregation context.</value>
 		<comment>Model validation error text for an aggregate calculation with no aggregation context. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.CompactText" xml:space="preserve">
+		<value>A calculation must specify a function.</value>
+		<comment>Model validation error text for a path calculation without no specified function. Compact form.</comment>
 	</data>
 	<data name="ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.Text" xml:space="preserve">
 		<value>{0} has a calculation with no function.</value>
 		<comment>Model validation error text for a path calculation without no specified function. {0}=error display context</comment>
 	</data>
+	<data name="ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.CompactText" xml:space="preserve">
+		<value>Parameter '{0}' requires input.</value>
+		<comment>Model validation error text for a path calculation with no binding for some parameter. Compact form. {0}=parameter name</comment>
+	</data>
 	<data name="ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.Text" xml:space="preserve">
 		<value>{0} must provide input for parameter '{1}'.</value>
 		<comment>Model validation error text for a path calculation with no binding for some parameter. {0}=error display context,{1}=parameter name</comment>
+	</data>
+	<data name="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.CompactText" xml:space="preserve">
+		<value>A calculation result must be used as a path condition, calculation input, or projection source.</value>
+		<comment>Model validation error text for a path calculation with a result that is not being used. Compact form.</comment>
 	</data>
 	<data name="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text" xml:space="preserve">
 		<value>{0} must use a calculation result as a path condition, calculation input, or projection source.</value>
 		<comment>Model validation error text for a path calculation with a result that is not being used. {0}=error display context</comment>
 	</data>
+	<data name="ModelError.CardinalityConstraint.CardinalityRangeOverlapError.CompactMessage" xml:space="preserve">
+		<value>Cardinality ranges have overlapping or non-increasing values.</value>
+		<comment>CardinalityRangeOverlapError compact text</comment>
+	</data>
 	<data name="ModelError.CardinalityConstraint.CardinalityRangeOverlapError.Message" xml:space="preserve">
 		<value>{0} has a cardinality constraint with overlapping or non-increasing values.</value>
 		<comment>CardinalityRangeOverlapError text with owner place holder. The resulting sentence will be capitablized automatically. {0}=owner information</comment>
 	</data>
+	<data name="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.CompactText" xml:space="preserve">
+		<value>Constrained roles have incompatible role player types.</value>
+		<comment>The role players in an external constraint must have compatible types. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' has role players with incompatible types.</value>
 		<comment>The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</comment>
+	</data>
+	<data name="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.CompactText" xml:space="preserve">
+		<value>Role players in column '{0}' have incompatible types.</value>
+		<comment>The role players in an external constraint column must have compatible types. Compact form. {0} is the (1-based) column number.</comment>
 	</data>
 	<data name="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' has role players in column '{2}' with incompatible types.</value>
@@ -300,49 +328,109 @@
 		<value>Constraints {0} in model '{1}' are in a state of contradiction.</value>
 		<comment>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles and are in a state of contradiction.</comment>
 	</data>
+	<data name="ModelError.Constraint.ExclusionAndMandatoryContradiction.CompactText" xml:space="preserve">
+		<value>Overlapping exclusion and mandatory constraints are contradictory.</value>
+		<comment>Model validation error text when overlapping exclusion and mandatory constraint are contradictory. Compact form.</comment>
+	</data>
+	<data name="ModelError.Constraint.ExclusionAndEqualityContradiction.CompactText" xml:space="preserve">
+		<value>Overlapping exclusion and equality constraints are contradictory.</value>
+		<comment>Model validation error text when overlapping exclusion and equality constraints are contradictory. Compact form.</comment>
+	</data>
+	<data name="ModelError.Constraint.ExclusionAndSubsetContradiction.CompactText" xml:space="preserve">
+		<value>Overlapping exclusion and subset constraints are contradictory.</value>
+		<comment>Model validation error text when overlapping exclusion and subset constraints are contradictory. Compact form.</comment>
+	</data>
+	<data name="ModelError.Constraint.EqualityImpliedByMandatoryError.CompactText" xml:space="preserve">
+		<value>Equality constraint implied by mandatory constrained roles.</value>
+		<comment>Model validation error text when a single-column equality constraint is put on a set of mandatory roles. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.EqualityImpliedByMandatoryError.Text" xml:space="preserve">
 		<value>Equality constraint '{0}' in model '{1}' is implied by simple mandatory constraints on all roles in the constraint.</value>
 		<comment>Model validation error text when a single-column equality constraint is put on a set of mandatory roles.</comment>
+	</data>
+	<data name="ModelError.Constraint.ExternalConstraintArityMismatch.CompactText" xml:space="preserve">
+		<value>Constrained role sequences have different numbers of roles.</value>
+		<comment>Model validation error compact text when role sequences in a multi column constraint have different role counts (arity).</comment>
 	</data>
 	<data name="ModelError.Constraint.ExternalConstraintArityMismatch.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' has role sequences with different numbers of roles.</value>
 		<comment>Model validation error text when role sequences in a multi column constraint have different role counts (arity). {0}=constraint name, {1}=model name</comment>
 	</data>
+	<data name="ModelError.Constraint.FrequencyConstraintExactlyOneError.CompactText" xml:space="preserve">
+		<value>A frequency constraint with range of exactly one should be a uniqueness constraint.</value>
+		<comment>The frequency constraint has minimum and maximum values of exactly one, should be represented as a uniqueness constraint. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintExactlyOneError.Text" xml:space="preserve">
-		<value>Constraint '{0}' in model '{1}' has a range of exactly one, should be a Uniqueness constraint.</value>
+		<value>Constraint '{0}' in model '{1}' has a range of exactly one, should be a uniqueness constraint.</value>
 		<comment>The frequency constraint has minimum and maximum values of exactly one, should be represented as a uniqueness constraint. {0}=constraint name {1}=model name</comment>
+	</data>
+	<data name="ModelError.Constraint.FrequencyConstraintMinMaxError.CompactText" xml:space="preserve">
+		<value>Maximum frequency value cannot be less than minimum.</value>
+		<comment>The frequency constraint minimum must be less than or equal to the maximum. Compact form.</comment>
 	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintMinMaxError.Text" xml:space="preserve">
 		<value>Maximum value for constraint '{0}' in model '{1}' cannot be less than the minimum value.</value>
 		<comment>The frequency constraint minimum must be less than or equal to the maximum. {0}=constraint name {1}=model name</comment>
 	</data>
+	<data name="ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.CompactText" xml:space="preserve">
+		<value>An unbounded range with a minimum of one is always satisfied.</value>
+		<comment>A frequency constraint with a minimum of 1 and an unbounded maximum is always true and should not be specified. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' has an unbounded range with a minimum of one. This frequency pattern is always satisfied.</value>
 		<comment>A frequency constraint with a minimum of 1 and an unbounded maximum is always true and should not be specified. {0}=constraint name {1}=model name</comment>
 	</data>
+	<data name="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.CompactText" xml:space="preserve">
+		<value>Frequency constraint is violated by a uniqueness constraint on the same roles.</value>
+		<comment>Model validation error text used when a frequency constraint is places on the same roles as a uniqueness constraint. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text" xml:space="preserve">
-		<value>Frequency constraint '{0}' in model '{1}' is violated by a Uniqueness constraint on the same roles.</value>
+		<value>Frequency constraint '{0}' in model '{1}' is violated by a uniqueness constraint on the same roles.</value>
 		<comment>Model validation error text used when a frequency constraint is places on the same roles as a uniqueness constraint. {0}=constraint name {1}=model name</comment>
 	</data>
 	<data name="ModelError.Constraint.ImplicationError.ImpliedBySubsetText" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' is implied by at least one constraint of the same type attached to a subset of the same roles.</value>
 		<comment>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a subset of the constraint roles.</comment>
 	</data>
+	<data name="ModelError.Constraint.ImplicationError.ImpliedBySubsetCompactText" xml:space="preserve">
+		<value>Constraint is implied by a constraint of the same type attached to a subset of the same roles.</value>
+		<comment>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a subset of the constraint roles. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.ImplicationError.ImpliedBySupersetText" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' is implied by at least one constraint of the same type attached to a superset of the same roles.</value>
 		<comment>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a superset of the constraint roles.</comment>
+	</data>
+	<data name="ModelError.Constraint.ImplicationError.ImpliedBySupersetCompactText" xml:space="preserve">
+		<value>Constraint is implied by a constraint of the same type attached to a superset of the same roles.</value>
+		<comment>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a superset of the constraint roles. Compact form.</comment>
+	</data>
+	<data name="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.CompactText" xml:space="preserve">
+		<value>Overlapping subset and mandatory constraints are not both needed.</value>
+		<comment>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship. Compact form</comment>
 	</data>
 	<data name="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text" xml:space="preserve">
 		<value>Subset constraint '{0}' and mandatory constraint '{1}' in model '{2}' are not well-modeled. Suggested ways to fix: (1) Delete the mandatory constraint. (2) Add another mandatory constraint on the superset role. (3) Delete the subset constraint.</value>
 		<comment>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</comment>
 	</data>
+	<data name="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.CompactMessage" xml:space="preserve">
+		<value>A ring type must be specified.</value>
+		<comment>The ring constraint type must be specified. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message" xml:space="preserve">
 		<value>The ring type for ring constraint '{0}' in model '{1}' is not specified.</value>
 		<comment>The ring constraint type must be specified. {0} is the constraint name and {1} is the model name.</comment>
 	</data>
+	<data name="ModelError.Constraint.SubsetImpliedByMandatoryError.CompactText" xml:space="preserve">
+		<value>Subset constraint implied by mandatory superset role.</value>
+		<comment>Model validation error text when a single-column subset constraint targets a mandatory role. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.SubsetImpliedByMandatoryError.Text" xml:space="preserve">
 		<value>Subset constraint '{0}' in model '{1}' is implied by a simple mandatory constraint on the superset role.</value>
 		<comment>Model validation error text when a single-column subset constraint targets a mandatory role.</comment>
+	</data>
+	<data name="ModelError.Constraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.CompactText" xml:space="preserve">
+		<value>Subset constraint from a subtyping relationship must not be to role with a subtype role player.</value>
+		<comment>When a subset constraint goes from a subtype relationship to an normal role, the role player must not be a subtype of the role player for that role. This would indicates that the supertype must be a subset of one of its subtypes. Compact form.</comment>
 	</data>
 	<data name="ModelError.Constraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Text" xml:space="preserve">
 		<value>Subset constraint '{0}' in model '{1}' is from a subtype and has a superset role player that is a subtype of the supertype in that relationship.</value>
@@ -352,121 +440,245 @@
 		<value>Constraint '{0}' in model '{1}' requires exactly two constrained role sequences.{2}</value>
 		<comment>Model validation error text when too few role sequences are specified for a constraint that requires exactly two role sequences. {0}=constraint name, {1}=model name, {2}=addendum describing current sequence state for the constraint.</comment>
 	</data>
+	<data name="ModelError.Constraint.TooFewRoleSequences.ExactlyTwo.Compact" xml:space="preserve">
+		<value>Constraint requires exactly two role sequences.{0}</value>
+		<comment>Model validation error text when too few role sequences are specified for a constraint that requires exactly two role sequences. Compact form. {0}=addendum describing current sequence state for the constraint.</comment>
+	</data>
 	<data name="ModelError.Constraint.TooFewRoleSequences.TwoOrMore" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' requires two or more constrained role sequences.{2}</value>
 		<comment>Model validation error text when too few role sequences are specified for a constraint that requires multiple role sequences. {0}=constraint name, {1}=model name, {2}=addendum describing current sequence state for the constraint.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewRoleSequences.TwoOrMore.Compact" xml:space="preserve">
+		<value>Constraint requires two or more role sequences.{0}</value>
+		<comment>Model validation error text when too few role sequences are specified for a constraint that requires multiple role sequences. Compact form. {0}=addendum describing current sequence state for the constraint.</comment>
 	</data>
 	<data name="ModelError.Constraint.TooFewRoleSequences.NoSequenceAddendum" xml:space="preserve">
 		<value> No role sequences are currently constrained.</value>
 		<comment>Addendum for too few role sequences messages when no sequences are constrained.</comment>
 	</data>
+	<data name="ModelError.Constraint.TooFewRoleSequences.NoSequenceAddendum.Compact" xml:space="preserve">
+		<value> Currently: no sequences.</value>
+		<comment>Addendum for too few role sequences messages when no sequences are constrained. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.TooFewRoleSequences.OneSequenceAddendum" xml:space="preserve">
-		<value> One role sequence with '{0}' role(s) is currently constrained.</value>
+		<value> One role sequence with {0} role(s) is currently constrained.</value>
 		<comment>Addendum for too few role sequences messages when one sequence is constrained. {0}=count of roles in the single sequence.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewRoleSequences.OneSequenceAddendum.Compact" xml:space="preserve">
+		<value> Currently: one sequence with {0} role(s).</value>
+		<comment>Addendum for too few role sequences messages when one sequence is constrained. Compact form. {0}=count of roles in the single sequence.</comment>
 	</data>
 	<data name="ModelError.Constraint.TooFewSequenceRoles.ExactlyTwo" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' requires exactly two roles.{2}</value>
 		<comment>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring exactly two roles. {0}=constraint name, {1}=model name, {2}=addendum describing current role count for the constraint.</comment>
 	</data>
+	<data name="ModelError.Constraint.TooFewSequenceRoles.ExactlyTwo.Compact" xml:space="preserve">
+		<value>Constraint requires exactly two roles.{0}</value>
+		<comment>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring exactly two roles. Compact form. {0}=addendum describing current role count for the constraint.</comment>
+	</data>
 	<data name="ModelError.Constraint.TooFewSequenceRoles.TwoOrMore" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' requires two or more roles.{2}</value>
 		<comment>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring two or more roles. {0}=constraint name, {1}=model name, {2}=addendum describing current role count for the constraint.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewSequenceRoles.TwoOrMore.Compact" xml:space="preserve">
+		<value>Constraint requires two or more roles.{0}</value>
+		<comment>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring two or more roles. Compact form. {0}=addendum describing current role count for the constraint.</comment>
 	</data>
 	<data name="ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum" xml:space="preserve">
 		<value> No roles are currently constrained.</value>
 		<comment>Addendum for too few sequence roles messages when no roles are constrained.</comment>
 	</data>
+	<data name="ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum.Compact" xml:space="preserve">
+		<value> Currently: no roles.</value>
+		<comment>Addendum for too few sequence roles messages when no roles are constrained. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum" xml:space="preserve">
 		<value> A single role is currently constrained.</value>
 		<comment>Addendum for too few sequence roles messages when a single role is constrained.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum.Compact" xml:space="preserve">
+		<value> Currently: one role.</value>
+		<comment>Addendum for too few sequence roles messages when a single role is constrained. Compact form.</comment>
+	</data>
+	<data name="ModelError.Constraint.TooManyRoleSequences.CompactText" xml:space="preserve">
+		<value>Constraint compares too many role sequences.</value>
+		<comment>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file. Compact form.</comment>
 	</data>
 	<data name="ModelError.Constraint.TooManyRoleSequences.Text" xml:space="preserve">
 		<value>Constraint '{0}' in model '{1}' has too many role sequences.</value>
 		<comment>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file. {0}=constraint name, {1}=model name</comment>
 	</data>
+	<data name="ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.CompactMessage" xml:space="preserve">
+		<value>A comparison operator must be specified.</value>
+		<comment>The value comparison constraint operator must be specified. Compact form.</comment>
+	</data>
 	<data name="ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.Message" xml:space="preserve">
 		<value>The comparison operator for value comparison constraint '{0}' in model '{1}' is not specified.</value>
 		<comment>The value comparison constraint operator must be specified. {0} is the constraint name and {1} is the model name.</comment>
+	</data>
+	<data name="ModelError.Constraint.ValueComparisonRolesNotComparableError.CompactMessage" xml:space="preserve">
+		<value>Compared roles must resolve to the same unit or to value types with comparable data types.</value>
+		<comment>The two value comparison constraint roles must be single-valued and comparable. Compact form.</comment>
 	</data>
 	<data name="ModelError.Constraint.ValueComparisonRolesNotComparableError.Message" xml:space="preserve">
 		<value>The roles compared by value comparison constraint '{0}' in model '{1}' must resolve to the same unit or to value types with comparable data types.</value>
 		<comment>The two value comparison constraint roles must be single-valued and comparable. {0} is the constraint name and {1} is the model name.</comment>
 	</data>
+	<data name="ModelError.ConstraintRoleProjection.IncompatibleProjection.CompactText" xml:space="preserve">
+		<value>The role player of a constrained role is incompatible with the join path projection.</value>
+		<comment>Model validation error text for projection on a constraint role from a join path where the type of projection does not match the type of the constrained role. Compact form.</comment>
+	</data>
 	<data name="ModelError.ConstraintRoleProjection.IncompatibleProjection.Text" xml:space="preserve">
 		<value>{0} has a constrained role with an incompatible join path projection.</value>
 		<comment>Model validation error text for projection on a constraint role from a join path where the type of projection does not match the type of the constrained role. {0}=error display context (from join path)</comment>
 	</data>
+	<data name="ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.CompactText" xml:space="preserve">
+		<value>At least one join path must be projected on constrained roles.</value>
+		<comment>Model validation error text for a constraint join path with no path projection. Compact form.</comment>
+	</data>
 	<data name="ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.Text" xml:space="preserve">
-		<value>{0} must project constrained roles from at least one source path.</value>
+		<value>{0} must project constrained roles from at least one join path.</value>
 		<comment>Model validation error text for a constraint join path with no path projection. {0}=error display context</comment>
 	</data>
+	<data name="ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.CompactText" xml:space="preserve">
+		<value>All constrained roles must be projected from each projected join path.</value>
+		<comment>Model validation error text for a constraint join path projection that does not project all constraint roles. Compact form.</comment>
+	</data>
 	<data name="ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.Text" xml:space="preserve">
-		<value>{0} must project all constrained roles from each projected source path.</value>
+		<value>{0} must project all constrained roles from each projected join path.</value>
 		<comment>Model validation error text for a constraint join path projection that does not project all constraint roles. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.DerivedRoleProjection.IncompatibleProjection.CompactText" xml:space="preserve">
+		<value>A role player is incompatible with the derivation rule projection.</value>
+		<comment>Model validation error text for projection on a role from a derived fact type where the type of projection does not match the type of the role. Compact form.</comment>
 	</data>
 	<data name="ModelError.DerivedRoleProjection.IncompatibleProjection.Text" xml:space="preserve">
 		<value>{0} has a derivation projection with an incompatible type.</value>
 		<comment>Model validation error text for projection on a role from a derived fact type where the type of projection does not match the type of the role. {0}=error display context (from role)</comment>
 	</data>
+	<data name="ModelError.ElementGrouping.DuplicateNameError.CompactMessage" xml:space="preserve">
+		<value>Group name '{0}' is used by multiple groups.</value>
+		<comment>Model validation error text used when multiple groups with the same name are loaded into a model. Compact form. field 0 is the element name. This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
 	<data name="ModelError.ElementGrouping.DuplicateNameError.Message" xml:space="preserve">
 		<value>Model '{0}' contains multiple groups named '{1}'. Group names must be unique in the model.</value>
 		<comment>Model validation error text used when multiple groups with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
+	<data name="ModelError.ElementGrouping.MembershipContradictionError.CompactMessage" xml:space="preserve">
+		<value>Group types conflict on membership of '{0}'.</value>
+		<comment>Model validation error text used when an element is explicitly included by one grouptype and explicitly excluded by another. Compact form. Field 0 is the element name.</comment>
+	</data>
 	<data name="ModelError.ElementGrouping.MembershipContradictionError.Message" xml:space="preserve">
-		<value>GroupTypes for Group '{0}' conflict on the group membership of '{1}'.</value>
+		<value>Group types for group '{0}' conflict on the group membership of '{1}'.</value>
 		<comment>Model validation error text used when an element is explicitly included by one grouptype and explicitly excluded by another. Field 0 is the group name, field 1 is the element name.</comment>
+	</data>
+	<data name="ModelError.EntityType.RequiresReferenceScheme.CompactMessage" xml:space="preserve">
+		<value>Entity type requires a reference scheme.</value>
+		<comment>Compact message for an entity type must have a preferred reference scheme.</comment>
 	</data>
 	<data name="ModelError.EntityType.RequiresReferenceScheme.Message" xml:space="preserve">
 		<value>Entity type '{0}' in model '{1}' requires a local preferred reference scheme or supertype(s) that provide preferred identification.</value>
 		<comment>An entity type must have a preferred reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</comment>
 	</data>
+	<data name="ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.CompactMessage" xml:space="preserve">
+		<value>Objectified fact required for entity '{0}'.</value>
+		<comment>Text displayed when an objectified fact instance is not associated with an external identifying instance. Compact form. {0}=instance</comment>
+	</data>
 	<data name="ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.Message" xml:space="preserve">
 		<value>Objectified fact instance required for instance '{0}' of '{1}' in model '{2}'.</value>
 		<comment>Text displayed when an objectified fact instance is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</comment>
+	</data>
+	<data name="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.CompactMessage" xml:space="preserve">
+		<value>Instance '{0}' has an incomplete identifier.</value>
+		<comment>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. Compact form {0}=instance.</comment>
 	</data>
 	<data name="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message" xml:space="preserve">
 		<value>'{0}' instance '{1}' in model '{2}' has an incomplete identifier.</value>
 		<comment>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. {0}=entitytype, {1}=instance, {2}=model.</comment>
 	</data>
+	<data name="ModelError.FactType.ImpliedInternalUniquenessConstraintError.CompactText" xml:space="preserve">
+		<value>Some internal uniqueness constraint(s) duplicate or imply each other.</value>
+		<comment>Text used in the ImpliedInternalUniquenessConstraintError'. Compact form.</comment>
+	</data>
 	<data name="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text" xml:space="preserve">
 		<value>{0} contains one or more internal uniqueness constraints that are implied by or duplicates of other internal uniqueness constraints.</value>
-		<comment>Text used in the ImpliedInternalUniquenessConstraintError' {0}=fact type display context</comment>
+		<comment>Text used in the ImpliedInternalUniquenessConstraintError'. {0}=fact type display context</comment>
+	</data>
+	<data name="ModelError.FactType.NMinusOneRule.CompactText" xml:space="preserve">
+		<value>Internal uniqueness constraint must span at least {0} roles.</value>
+		<comment>Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. Compact form. {0}=factarity - 1</comment>
 	</data>
 	<data name="ModelError.FactType.NMinusOneRule.Text" xml:space="preserve">
 		<value>Uniqueness constraint '{0}' on {1} must span at least {2} roles.</value>
 		<comment>Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact type display context, {2}=factarity-1</comment>
 	</data>
+	<data name="ModelError.FactType.RequiresInternalUniquenessConstraint.CompactMessage" xml:space="preserve">
+		<value>Fact type requires an internal uniqueness constraint with alethic modality.</value>
+		<comment>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError. Compact form.</comment>
+	</data>
 	<data name="ModelError.FactType.RequiresInternalUniquenessConstraint.Message" xml:space="preserve">
 		<value>{0} requires an internal uniqueness constraint with alethic modality.</value>
 		<comment>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError. {0}=fact type display context</comment>
+	</data>
+	<data name="ModelError.FactType.RequiresReading.CompactMessage" xml:space="preserve">
+		<value>Fact type requires at least one reading.</value>
+		<comment>Text displayed in the text of the FactTypeRequiresReadingError. Compact form.</comment>
 	</data>
 	<data name="ModelError.FactType.RequiresReading.Message" xml:space="preserve">
 		<value>At least one reading is required for {0}.</value>
 		<comment>Text displayed in the text of the FactTypeRequiresReadingError. {0}=fact type display context</comment>
 	</data>
+	<data name="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.CompactMessage" xml:space="preserve">
+		<value>Identifier required for fact '{0}'.</value>
+		<comment>Text displayed when an external identifier is needed for a FactTypeInstance. Compact form. {0}=instance.</comment>
+	</data>
 	<data name="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.Message" xml:space="preserve">
 		<value>Identifier required for fact instance '{0}' in model '{1}'.</value>
 		<comment>Text displayed when an external identifier is needed for a FactTypeInstance. {0}=instance {1}=model.</comment>
 	</data>
+	<data name="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.CompactMessage" xml:space="preserve">
+		<value>Fact '{0}' has a partial population.</value>
+		<comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. Compact form. {0}=instance.</comment>
+	</data>
 	<data name="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message" xml:space="preserve">
 		<value>Fact instance '{0}' in model '{1}' has a partial population.</value>
-		<comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=facttype {1}=model.</comment>
+		<comment>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=instance {1}=model.</comment>
+	</data>
+	<data name="ModelError.Model.DuplicateConstraintNames.CompactText" xml:space="preserve">
+		<value>Constraint name '{0}' is used by multiple constraints.</value>
+		<comment>Model validation error text used when multiple constraints with the same name are loaded into a model. Compact form. Field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
 	<data name="ModelError.Model.DuplicateConstraintNames.Text" xml:space="preserve">
 		<value>Model '{0}' contains multiple constraints named '{1}'. Constraint names must be unique in the model.</value>
 		<comment>Model validation error text used when multiple constraints with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
+	<data name="ModelError.Model.DuplicateFunctionNames.CompactText" xml:space="preserve">
+		<value>Function name '{0}' is used by multiple functions.</value>
+		<comment>Model validation error text used when multiple functions with the same name are loaded into a model. Compact form. Field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
 	<data name="ModelError.Model.DuplicateFunctionNames.Text" xml:space="preserve">
 		<value>Model '{0}' contains multiple functions named '{1}'. Function names must be unique across all functions defined in a model.</value>
-		<comment>Model validation error text used when multiple functions with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+		<comment>Model validation error text used when multiple functions with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
+	<data name="ModelError.Model.DuplicateObjectTypeNames.CompactText" xml:space="preserve">
+		<value>Object type name '{0}' is used by multiple object types.</value>
+		<comment>Model validation error text used when multiple object types with the same name are loaded into a model. Compact form. Field 0 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
 	<data name="ModelError.Model.DuplicateObjectTypeNames.Text" xml:space="preserve">
 		<value>Model '{0}' contains multiple object types named '{1}'. Type names must be unique across all entity and value types in a model.</value>
-		<comment>Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+		<comment>Model validation error text used when multiple object types with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
+	<data name="ModelError.Model.DuplicateRecognizedPhraseNames.CompactText" xml:space="preserve">
+		<value>Phrase '{0}' is used by multiple recognized phrases.</value>
+		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model. Compact form. Field 0 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
 	</data>
 	<data name="ModelError.Model.DuplicateRecognizedPhraseNames.Text" xml:space="preserve">
 		<value>Model '{0}' contains multiple recognized phrases called '{1}'. Phrase names must be unique across all phrases in a model.</value>
-		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
+	<data name="ModelError.Model.PopulationMandatoryError.CompactText" xml:space="preserve">
+		<value>Instance '{0}' must participate in fact type '{1}'{2}.</value>
+		<comment>Model validation error shown when a population violates a mandatory constraint. Compact form. Field 0 is the derived name of the instance, field 2 is the name of the first facttype name, field 3 is a placeholder for additional fact types.</comment>
 	</data>
 	<data name="ModelError.Model.PopulationMandatoryError.Text" xml:space="preserve">
 		<value>'{0}' instance '{1}' in model '{2}' must participate in fact type '{3}'{4}.</value>
@@ -476,61 +688,117 @@
 		<value> or fact type '{0}'{1}</value>
 		<comment>Model validation error shown when a population violates a mandatory constraint (additional fact types). Field 0 is the name of the fact type, field 1 is the following fact type (replaced by yet another trailing fact type, if available).</comment>
 	</data>
+	<data name="ModelError.Model.PopulationUniquenessError.FactType.CompactText" xml:space="preserve">
+		<value>Instance '{0}' violates a uniqueness constraint on fact type '{1}'.</value>
+		<comment>Model validation error shown when a population violates a uniqueness constraint and its role is unnamed. Compact form. Field 0 is the string representation of the instance, field 1 is the facttype name.</comment>
+	</data>
 	<data name="ModelError.Model.PopulationUniquenessError.FactType.Text" xml:space="preserve">
 		<value>'{0}' instance '{1}' in model '{2}' violates a uniqueness constraint on fact type '{3}'.</value>
 		<comment>Model validation error shown when a population violates a uniqueness constraint and its role is unnamed.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the facttype name.</comment>
 	</data>
+	<data name="ModelError.Model.PopulationUniquenessError.Role.CompactText" xml:space="preserve">
+		<value>Instance '{0}' violates a uniqueness constraint for role '{1}'.</value>
+		<comment>Model validation error shown when a population violates a uniqueness constraint and its role is named. Compact form. Field 0 is the string representation of the instance, field 1 is the role name.</comment>
+	</data>
 	<data name="ModelError.Model.PopulationUniquenessError.Role.Text" xml:space="preserve">
-		<value>'{0}' instance '{1}' in model '{2}' violates a uniqueness constraint for Role '{3}'.</value>
+		<value>'{0}' instance '{1}' in model '{2}' violates a uniqueness constraint for role '{3}'.</value>
 		<comment>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the role name.</comment>
+	</data>
+	<data name="ModelError.ObjectType.CompatibleSupertypesError.CompactMessage" xml:space="preserve">
+		<value>Direct supertypes must not be transitively implied or mutually exclusive.</value>
+		<comment>Text displayed in the text of the CompatibleSupertypesError. Compact form.</comment>
 	</data>
 	<data name="ModelError.ObjectType.CompatibleSupertypesError.Message" xml:space="preserve">
 		<value>Direct supertypes of {0} must be overlapping without transitive implication or mutual exclusion.</value>
 		<comment>Text displayed in the text of the CompatibleSupertypesError. {0}=object type display context.</comment>
 	</data>
+	<data name="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.CompactMessage" xml:space="preserve">
+		<value>The preferred identification scheme has no mandatory roles.</value>
+		<comment>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. Compact form.</comment>
+	</data>
 	<data name="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message" xml:space="preserve">
 		<value>{0} has a preferred identification scheme with no corresponding mandatory roles. One or more near roles in the facts attached to the preferred identifier must be mandatory.</value>
 		<comment>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=object type display context</comment>
 	</data>
+	<data name="ModelError.Reading.DuplicateSignature.CompactText" xml:space="preserve">
+		<value>Reading signature '{0}' is used by multiple readings.</value>
+		<comment>Model validation error text used when multiple readings have the same normalized reading signature. Compact form. Field 1 is the expanded reading signature.</comment>
+	</data>
 	<data name="ModelError.Reading.DuplicateSignature.Text" xml:space="preserve">
 		<value>Model '{0}' contains multiple readings with an expanded reading signature of '{1}'. Each reading must be unique in the model.</value>
-		<comment>Model validation error text used when multiple readings have the same normalized reading signature.Field 0 is the model name, field 1 is the expanded reading signature.</comment>
+		<comment>Model validation error text used when multiple readings have the same normalized reading signature. Field 0 is the model name, field 1 is the expanded reading signature.</comment>
+	</data>
+	<data name="ModelError.Reading.RequiresUserModification.CompactMessage" xml:space="preserve">
+		<value>Reading text '{0}' requires user modification.</value>
+		<comment>Text displayed in the text of the ReadingRequiresUserModificationError. Compact form. {0}=reading text</comment>
 	</data>
 	<data name="ModelError.Reading.RequiresUserModification.Message" xml:space="preserve">
 		<value>{0} requires user modification of the reading text '{1}'.</value>
 		<comment>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact type display context,{1}=reading text</comment>
 	</data>
-	<data name="ModelError.Reading.TooFewRoles.Message" xml:space="preserve">
-		<value>{0} has too few roles for the reading with text '{1}'.</value>
+	<data name="ModelError.Reading.TooFewRoles.CompactMessage" xml:space="preserve">
+		<value>Reading text '{0}' has too few roles role placeholders.</value>
 		<comment>Text displayed in the text of the TooFewRolesError. {0}=fact type display context,{1}=reading text</comment>
 	</data>
+	<data name="ModelError.Reading.TooFewRoles.Message" xml:space="preserve">
+		<value>{0} has too few role placeholders for the reading with text '{1}'.</value>
+		<comment>Text displayed in the text of the TooFewRolesError. {0}=fact type display context,{1}=reading text</comment>
+	</data>
+	<data name="ModelError.Reading.TooManyRoles.CompactMessage" xml:space="preserve">
+		<value>Reading text '{0}' has too many role placeholders.</value>
+		<comment>Text displayed in the text of the TooManyRolesError. Compact form. {0}=reading text</comment>
+	</data>
 	<data name="ModelError.Reading.TooManyRoles.Message" xml:space="preserve">
-		<value>{0} has too many roles for the reading with text '{1}'.</value>
+		<value>{0} has too many role placeholders for the reading with text '{1}'.</value>
 		<comment>Text displayed in the text of the TooManyRolesError. {0}=fact type display context,{1}=reading text</comment>
 	</data>
 	<data name="ModelError.RecognizedPhrase.DuplicateNameError.Message" xml:space="preserve">
 		<value>Model '{0}' contains multiple recognized phrases named '{1}'.</value>
-		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+		<comment>Model validation error text used when multiple recognized phrases with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</comment>
+	</data>
+	<data name="ModelError.Role.RolePlayerRequired.CompactMessage" xml:space="preserve">
+		<value>Roles requires a role player.</value>
+		<comment>Model validation error text displayed when a role does not have a specified role player. Compact form.</comment>
 	</data>
 	<data name="ModelError.Role.RolePlayerRequired.Message" xml:space="preserve">
 		<value>{0} requires a role player.</value>
 		<comment>Model validation error text displayed when a role does not have a specified role player. {0}=error display context for role.</comment>
 	</data>
+	<data name="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.CompactText" xml:space="preserve">
+		<value>A path role is joined to a path element with an incompatible role player.</value>
+		<comment>Model validation error text for a join to a pathed role with a role player that is not compatible with the join source. Compact form.</comment>
+	</data>
 	<data name="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.Text" xml:space="preserve">
 		<value>{0} joins to a path role with an incompatible role player.</value>
 		<comment>Model validation error text for a join to a pathed role with a role player that is not compatible with the join source. {0}=error display context</comment>
 	</data>
+	<data name="ModelError.RolePath.ObjectUnifierRequiresCompatibleObjectTypes.CompactText" xml:space="preserve">
+		<value>Correlation exists between path elements with incompatible object types.</value>
+		<comment>Model validation error text for explicit object unifiers relating multiple disconnected pathed roles and path roots. Compact form.</comment>
+	</data>
 	<data name="ModelError.RolePath.ObjectUnifierRequiresCompatibleObjectTypes.Text" xml:space="preserve">
-		<value>{0} unifies path elements with incompatible object types.</value>
+		<value>{0} correlates path elements with incompatible object types.</value>
 		<comment>Model validation error text for explicit object unifiers relating multiple disconnected pathed roles and path roots. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.OuterJoinRequiresOptionalRole.CompactText" xml:space="preserve">
+		<value>An outer join cannot target a mandatory role.</value>
+		<comment>Model validation error text for an outer join to a mandatory role. Compact form.</comment>
 	</data>
 	<data name="ModelError.RolePath.OuterJoinRequiresOptionalRole.Text" xml:space="preserve">
 		<value>{0} has outer join semantics to a mandatory role.</value>
 		<comment>Model validation error text for an outer join to a mandatory role. {0}=error display context</comment>
 	</data>
+	<data name="ModelError.RolePath.RequiresRootObjectType.CompactText" xml:space="preserve">
+		<value>A role path requires a root object type.</value>
+		<comment>Model validation error text for a role path with no root object type. Compact form.</comment>
+	</data>
 	<data name="ModelError.RolePath.RequiresRootObjectType.Text" xml:space="preserve">
 		<value>{0} has a role path with no root object type.</value>
 		<comment>Model validation error text for a role path with no root object type. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RolePath.SameFactTypeRoleFollowsJoin.CompactText" xml:space="preserve">
+		<value>A fact type is used from a fact type without an entry role.</value>
+		<comment>Model validation error text for a same fact type role specified without a corresponding start or join role. Compact form.</comment>
 	</data>
 	<data name="ModelError.RolePath.SameFactTypeRoleFollowsJoin.Text" xml:space="preserve">
 		<value>{0} has a same fact type role without a preceding fact type entry.</value>
@@ -540,9 +808,17 @@
 		<value>{0} has a start role in an invalid path position.</value>
 		<comment>Model validation error text for a pathed role that is not marked as a start role or is marked as a start role and should not be. {0}=error display context</comment>
 	</data>
+	<data name="ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.CompactText" xml:space="preserve">
+		<value>At least one derivation path must be projected on derived roles.</value>
+		<comment>Model validation error text for a fact type or query derivation with no path projection. Compact form.</comment>
+	</data>
 	<data name="ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.Text" xml:space="preserve">
 		<value>{0} must project derived roles from at least one source path.</value>
 		<comment>Model validation error text for a fact type or query derivation with no path projection. {0}=error display context</comment>
+	</data>
+	<data name="ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.CompactText" xml:space="preserve">
+		<value>All derived roles must be projected from each projected derivation path.</value>
+		<comment>Model validation error text for a fact type or query derivation projection that does not project all roles. Compact form.</comment>
 	</data>
 	<data name="ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.Text" xml:space="preserve">
 		<value>{0} must project all derived roles from each projected source path.</value>
@@ -592,29 +868,53 @@
 		<value>subtype derivation rule for '{0}' in model '{1}'</value>
 		<comment>Dynamic text replacement for an error associated with the derivation rule of a subtype. Automatically capitalized on replacement. {0}=ObjectType {1}=Model.</comment>
 	</data>
+	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.CompactMessage" xml:space="preserve">
+		<value>Value constraint ranges have overlapping values.</value>
+		<comment>ValueRangeOverlapError text. Compact form.</comment>
+	</data>
 	<data name="ModelError.ValueConstraint.ValueRangeOverlapError.Message" xml:space="preserve">
 		<value>{0} has a value constraint with overlapping values.</value>
 		<comment>ValueRangeOverlapError text with owner place holder. The resulting sentence will be capitablized automatically. {0}=owner information</comment>
+	</data>
+	<data name="ModelError.ValueConstraint.ValueTypeDetachedError.CompactMessage" xml:space="preserve">
+		<value>Value constraint requires an associated value type.</value>
+		<comment>ValueConstraintValueTypeDetachedError text. Compact form.</comment>
 	</data>
 	<data name="ModelError.ValueConstraint.ValueTypeDetachedError.Message" xml:space="preserve">
 		<value>{0} has a value constraint with no associated value type.</value>
 		<comment>ValueConstraintValueTypeDetachedError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
 	</data>
+	<data name="ModelError.ValueRange.MaxValueMismatchError.CompactMessage" xml:space="preserve">
+		<value>Value constraint uses a maximum value that does not match the specified data type.</value>
+		<comment>MaxValueMismatchError text. Compact form.</comment>
+	</data>
 	<data name="ModelError.ValueRange.MaxValueMismatchError.Message" xml:space="preserve">
 		<value>{0} has a maximum value that does not match the specified data type.</value>
 		<comment>MaxValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
+	</data>
+	<data name="ModelError.ValueRange.MinValueMismatchError.CompactMessage" xml:space="preserve">
+		<value>Value constraint uses a minimum value that does not match the specified data type.</value>
+		<comment>MinValueMismatchError text. Compact form.</comment>
 	</data>
 	<data name="ModelError.ValueRange.MinValueMismatchError.Message" xml:space="preserve">
 		<value>{0} has a minimum value that does not match the specified data type.</value>
 		<comment>MinValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</comment>
 	</data>
+	<data name="ModelError.ValueType.DataTypeNotSpecified.CompactMessage" xml:space="preserve">
+		<value>A data type must be specified for a value type.</value>
+		<comment>Text displayed for an unspecified data type. Compact form.</comment>
+	</data>
 	<data name="ModelError.ValueType.DataTypeNotSpecified.Message" xml:space="preserve">
 		<value>A data type must be specified for value type '{0}' in model '{1}'.</value>
 		<comment>Text displayed for an unspecified data type</comment>
 	</data>
+	<data name="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.CompactMessage" xml:space="preserve">
+		<value>Value '{0}' is not of the specified data type '{1}'.</value>
+		<comment>Text displayed when the data type of the sample data doesn't match it's set data type. Compact form. {0}=value, {1}=datatype.</comment>
+	</data>
 	<data name="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message" xml:space="preserve">
 		<value>Value '{0}' in the sample population for value type '{1}' in model '{2}' is not of the specified data type '{3}'.</value>
-		<comment>Text displayed when the data type of the sample data doesn't match it's set data type. {0}=value {1}=valuetype {2}=model.</comment>
+		<comment>Text displayed when the data type of the sample data doesn't match it's set data type. {0}=value {1}=valuetype {2}=model {3}=datatype.</comment>
 	</data>
 	<data name="ModelErrorDisplayFilter.ToStringOverrideText" xml:space="preserve">
 		<value>(Filtered)</value>
@@ -655,6 +955,14 @@
 	<data name="ModelException.ConstraintRoleSequenceHasRole.EnforceNoRolePlayerChange" xml:space="preserve">
 		<value>Direct modification of role players on a ConstraintRoleSequenceHasRole relationship is not supported. As an alternative, first delete the link then add a new one.</value>
 		<comment>Exception message when an attempt is made to directly modify role players on the ConstraintRoleSequenceHasRole relationship.</comment>
+	</data>
+	<data name="ModelError.ConstraintRoleSequence.JoinPathRequiredError.CompactText" xml:space="preserve">
+		<value>Constrained roles in different fact types require a join path.</value>
+		<comment>The roles in a set constraint are in different fact types and a join path has not been provided. Compact form.</comment>
+	</data>
+	<data name="ModelError.SetComparisonConstraintRoleSequence.JoinPathRequiredError.CompactText" xml:space="preserve">
+		<value>Constrained roles in sequence {0} are in different fact types and require a join path.</value>
+		<comment>The roles in a set comparison constraint role sequence are in different fact types and a join path has not been provided. Compact form. Replacement field {0} is the (1-based) sequence number.</comment>
 	</data>
 	<data name="ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text" xml:space="preserve">
 		<value>{0} requires a join path.</value>

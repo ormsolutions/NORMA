@@ -353,6 +353,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		// Dynamic command set caches
 		private ElementGrouping[] myIncludeInGroups;
 		private ElementGrouping[] myDeleteFromGroups;
+		private ElementGrouping[] mySelectInGroups;
 
 		/// <summary>
 		/// The filter for multi selection when the elements are all of the same type.
@@ -436,6 +437,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myStatusCacheValid = false;
 			myIncludeInGroups = null;
 			myDeleteFromGroups = null;
+			mySelectInGroups = null;
 		}
 		private void EnsureCommandStatusCache()
 		{
@@ -1023,18 +1025,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					// adding the link will save with a bogus reference. We could extract the serialization
 					// info from the role players (on this and any base links) to determine this, but this
 					// is a lot of work given that we have no current use case for it.
-					toleratedCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
+					toleratedCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList | ORMDesignerCommands.SelectInGroupList;
 				}
 				else
 				{
-					visibleCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
-					enabledCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList;
+					visibleCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList | ORMDesignerCommands.SelectInGroupList;
+					enabledCommands |= ORMDesignerCommands.IncludeInNewGroup | ORMDesignerCommands.IncludeInGroupList | ORMDesignerCommands.DeleteFromGroupList | ORMDesignerCommands.SelectInGroupList;
 				}
 			}
 			// Turn on standard commands for all selections
 			// Consider adding anything here to the EnabledSimpleMultiSelectCommandFilter above
-			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser | ORMDesignerCommands.Zoom;
-			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser | ORMDesignerCommands.Zoom;
+			visibleCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.DisabledErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser | ORMDesignerCommands.Zoom;
+			enabledCommands |= ORMDesignerCommands.DisplayStandardWindows | ORMDesignerCommands.CopyImage | ORMDesignerCommands.SelectAll | ORMDesignerCommands.ExtensionManager | ORMDesignerCommands.ErrorList | ORMDesignerCommands.DisabledErrorList | ORMDesignerCommands.ReportGeneratorList | ORMDesignerCommands.FreeFormCommandList | ORMDesignerCommands.SelectInModelBrowser | ORMDesignerCommands.Zoom;
 		}
 		private static void UpdateMoveRoleCommandStatus(FactTypeShape factShape, RoleBase role, ref ORMDesignerCommands visibleCommands, ref ORMDesignerCommands enabledCommands)
 		{
@@ -1287,66 +1289,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					if (isEnabled)
 					{
-						OleMenuCommand cmd = (OleMenuCommand)command;
-						string errorText = null;
-						int errorIndex = cmd.MatchedCommandId;
-						foreach (ModelElement mel in designerView.SelectedElements)
-						{
-							IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
-							if (errorOwner != null)
-							{
-								ModelErrorDisplayFilter displayFilter = null;
-								ORMDiagram diagram;
-								ORMModel model;
-								if (null != (diagram = designerView.CurrentDiagram as ORMDiagram) &&
-									null != (model = diagram.ModelElement as ORMModel))
-								{
-									displayFilter = model.ModelErrorDisplayFilter;
-								}
-								Dictionary<ModelError, object> seenErrors = null;
-								foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
-								{
-									if (ModelError.IsDisplayed(error, displayFilter))
-									{
-										if (seenErrors == null)
-										{
-											if (errorIndex != 0)
-											{
-												seenErrors = new Dictionary<ModelError, object>();
-												seenErrors[error] = null;
-											}
-										}
-										else if (seenErrors.ContainsKey(error))
-										{
-											continue;
-										}
-										else
-										{
-											seenErrors[error] = null;
-										}
-										if (errorIndex == 0)
-										{
-											errorText = error.ErrorText;
-											break;
-										}
-										--errorIndex;
-									}
-								}
-							}
-						}
-						if (errorText != null)
-						{
-							cmd.Enabled = true;
-							cmd.Visible = true;
-							cmd.Supported = true;
-							cmd.Text = errorText;
-						}
-						else
-						{
-							cmd.Supported = false;
-							cmd.Enabled = false;
-							cmd.Visible = false;
-						}
+						OnStatusErrorListCommand(designerView, command, false);
+					}
+				}
+				else if (commandFlag == ORMDesignerCommands.DisabledErrorList)
+				{
+					if (isEnabled)
+					{
+						OnStatusErrorListCommand(designerView, command, true);
 					}
 				}
 				else if (commandFlag == ORMDesignerCommands.DiagramList)
@@ -1658,6 +1608,73 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 					}
 				}
+				else if (commandFlag == ORMDesignerCommands.SelectInGroupList)
+				{
+					// UNDONE: This duplicates the version in ORMModelBrowser, which also assumes
+					// single-select capabilities. These both need to be updated when the browser supports
+					// multi-select.
+					// Share the implementations when the model browser is multiselect.
+					if (isEnabled)
+					{
+						ElementGrouping[] cachedGroupings = designerView.CommandManager.mySelectInGroups;
+						if (cachedGroupings == null)
+						{
+							ModelElement element = EditorUtility.ResolveContextInstance(designerView.SelectedElements[0], false) as ModelElement;
+							if (element == null)
+							{
+								cachedGroupings = new ElementGrouping[0]; // Set this even for zero to indicate that we tried to get it
+							}
+							else
+							{
+								// Get groups associated with this through a direct relationship (inclusion
+								// or exclusion) or a contradiction validation error. Only one of these will
+								// exist per associated group. Sort the results by group name.
+								List<ElementGrouping> groupingList = null;
+								ICollection<ElementGrouping> groupingLinks = GroupingElementRelationship.GetGroupingCollection(element);
+								if (groupingLinks.Count != 0)
+								{
+									groupingList = new List<ElementGrouping>(groupingLinks);
+								}
+								foreach (ElementGroupingHasMembershipContradictionError contradictionErrorLink in GroupingMembershipContradictionErrorIsForElement.GetMembershipContradictionErrorCollection(element))
+								{
+									(groupingList ?? (groupingList = new List<ElementGrouping>())).Add(contradictionErrorLink.Grouping);
+								}
+								if (groupingList == null)
+								{
+									cachedGroupings = new ElementGrouping[0];
+								}
+								else
+								{
+									int groupingCount = groupingList.Count;
+									cachedGroupings = new ElementGrouping[groupingCount];
+									groupingList.CopyTo(cachedGroupings);
+
+									if (groupingCount > 1)
+									{
+										Array.Sort<ElementGrouping>(cachedGroupings, NamedElementComparer<ElementGrouping>.CurrentCulture);
+									}
+								}
+							}
+							designerView.CommandManager.mySelectInGroups = cachedGroupings;
+						}
+
+						OleMenuCommand cmd = (OleMenuCommand)sender;
+						int groupIndex = cmd.MatchedCommandId;
+						if (groupIndex < cachedGroupings.Length)
+						{
+							cmd.Enabled = true;
+							cmd.Visible = true;
+							cmd.Supported = true;
+							cmd.Text = "&" + cachedGroupings[groupIndex].Name;
+						}
+						else
+						{
+							cmd.Supported = false;
+							cmd.Enabled = false;
+							cmd.Visible = false;
+						}
+					}
+				}
 				else if (commandFlag == ORMDesignerCommands.AddInternalUniqueness)
 				{
 					if (isEnabled)
@@ -1745,7 +1762,71 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 			}
 		}
-
+		private static void OnStatusErrorListCommand(IORMDesignerView designerView, MenuCommand command, bool disabledErrors)
+		{
+			OleMenuCommand cmd = (OleMenuCommand)command;
+			string errorText = null;
+			int errorIndex = cmd.MatchedCommandId;
+			foreach (ModelElement mel in designerView.SelectedElements)
+			{
+				IModelErrorOwner errorOwner = EditorUtility.ResolveContextInstance(mel, false) as IModelErrorOwner;
+				if (errorOwner != null)
+				{
+					ModelErrorDisplayFilter displayFilter = null;
+					ORMDiagram diagram;
+					ORMModel model;
+					if (null != (diagram = designerView.CurrentDiagram as ORMDiagram) &&
+						null != (model = diagram.ModelElement as ORMModel))
+					{
+						displayFilter = model.ModelErrorDisplayFilter;
+					}
+					Dictionary<ModelError, object> seenErrors = null;
+					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
+					{
+						if (disabledErrors ?
+								ModelError.IsDisplayFiltered(error, displayFilter) :
+								ModelError.IsDisplayed(error, displayFilter))
+						{
+							if (seenErrors == null)
+							{
+								if (errorIndex != 0)
+								{
+									seenErrors = new Dictionary<ModelError, object>();
+									seenErrors[error] = null;
+								}
+							}
+							else if (seenErrors.ContainsKey(error))
+							{
+								continue;
+							}
+							else
+							{
+								seenErrors[error] = null;
+							}
+							if (errorIndex == 0)
+							{
+								errorText = error.CompactErrorText;
+								break;
+							}
+							--errorIndex;
+						}
+					}
+				}
+			}
+			if (errorText != null)
+			{
+				cmd.Enabled = true;
+				cmd.Visible = true;
+				cmd.Supported = true;
+				cmd.Text = errorText;
+			}
+			else
+			{
+				cmd.Supported = false;
+				cmd.Enabled = false;
+				cmd.Visible = false;
+			}
+		}
 		/// <summary>
 		/// Set the menu's text for the delete element command
 		/// </summary>
@@ -2680,6 +2761,81 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="errorIndex">Index of the error in the error collection</param>
 		public virtual void OnMenuErrorList(int errorIndex)
 		{
+			OnMenuErrorAction(
+				errorIndex,
+				false,
+				delegate(ModelError error)
+				{
+					IORMToolTaskItem task;
+					IORMToolServices services;
+					IORMToolTaskProvider provider;
+					if (null != (task = error.TaskData as IORMToolTaskItem) &&
+						null != (services = error.Store as IORMToolServices) &&
+						null != (provider = services.TaskProvider))
+					{
+						provider.NavigateTo(task);
+					}
+				});
+		}
+		/// <summary>
+		/// Expand the context menu to disable display of locally displayed errors.
+		/// </summary>
+		/// <param name="errorIndex">Index of the error in the error collection</param>
+		public virtual void OnMenuDisableErrorList(int errorIndex)
+		{
+			OnMenuErrorDisplayAction(errorIndex, true);
+		}
+		/// <summary>
+		/// Expand the context menu to display hidden local errors
+		/// </summary>
+		/// <param name="errorIndex">Index of the error in the error collection</param>
+		public virtual void OnMenuEnableErrorList(int errorIndex)
+		{
+			OnMenuErrorDisplayAction(errorIndex, false);
+		}
+		private void OnMenuErrorDisplayAction(int errorIndex, bool disableError)
+		{
+			IORMDesignerView view;
+			ORMDiagram diagram;
+			ORMModel model;
+			Store store;
+			if (null == (view = myDesignerView) ||
+				null == (store = view.Store) ||
+				null == (diagram = view.CurrentDiagram as ORMDiagram) ||
+				null == (model = diagram.ModelElement as ORMModel))
+			{
+				return;
+			}
+			OnMenuErrorAction(
+				errorIndex,
+				!disableError,
+				delegate(ModelError error)
+				{
+					using (Transaction t = store.TransactionManager.BeginTransaction(disableError ?
+						ResourceStrings.ModelErrorDisplayFilterChangeErrorDisabledTransactionName :
+						ResourceStrings.ModelErrorDisplayFilterChangeErrorEnabledTransactionName))
+					{
+						ModelErrorDisplayFilter displayFilter = model.ModelErrorDisplayFilter;
+						if (displayFilter == null)
+						{
+							displayFilter = new ModelErrorDisplayFilter(store);
+							displayFilter.Model = model;
+						}
+						displayFilter.ToggleError(error.GetType(), disableError);
+						displayFilter.CommitChanges();
+						if (!displayFilter.IsFiltered)
+						{
+							displayFilter.Delete();
+						}
+						if (t.HasPendingChanges)
+						{
+							t.Commit();
+						}
+					}
+				});
+		}
+		private void OnMenuErrorAction(int errorIndex, bool disabledErrors, Action<ModelError> action)
+		{
 			IORMDesignerView view = myDesignerView;
 			IList selectedElements = view.SelectedElements;
 			for (int i = selectedElements.Count - 1; i >= 0; i++)
@@ -2698,7 +2854,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					Dictionary<ModelError, object> seenErrors = null;
 					foreach (ModelError error in errorOwner.GetErrorCollection(ModelErrorUses.DisplayPrimary))
 					{
-						if (ModelError.IsDisplayed(error, displayFilter))
+						if (disabledErrors ?
+							ModelError.IsDisplayFiltered(error, displayFilter) :
+								ModelError.IsDisplayed(error, displayFilter))
 						{
 							if (seenErrors == null)
 							{
@@ -2718,15 +2876,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							if (errorIndex == 0)
 							{
-								IORMToolTaskItem task;
-								IORMToolServices services;
-								IORMToolTaskProvider provider;
-								if (null != (task = error.TaskData as IORMToolTaskItem) &&
-									null != (services = error.Store as IORMToolServices) &&
-									null != (provider = services.TaskProvider))
-								{
-									provider.NavigateTo(task);
-								}
+								action(error);
 								break;
 							}
 							--errorIndex;
@@ -4089,6 +4239,48 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						t.Commit();
 					}
+				}
+			}
+		}
+		/// <summary>
+		/// Select the reference to the selected item in the group at the specified index
+		/// </summary>
+		/// <param name="groupIndex">The offset of the group in the current set of current groups</param>
+		public virtual void OnMenuSelectInGroupList(int groupIndex)
+		{
+			IORMDesignerView view;
+			ElementGrouping[] eligibleGroups;
+			IORMToolServices services;
+			if (null != (eligibleGroups = mySelectInGroups) &&
+				groupIndex < eligibleGroups.Length &&
+				null != (view = myDesignerView) &&
+				null != (services = view.Store as IORMToolServices))
+			{
+				foreach (object element in view.SelectedElements)
+				{
+					// Expecting single select here, just use the first selected element.
+					ModelElement normalizedElement;
+					if (null != (normalizedElement = EditorUtility.ResolveContextInstance(element, false) as ModelElement))
+					{
+						ElementGrouping grouping = eligibleGroups[groupIndex];
+						GroupingElementRelationship groupingLink;
+						if (null != (groupingLink = GroupingElementRelationship.GetLink(grouping, normalizedElement)))
+						{
+							services.NavigateTo(groupingLink, NavigateToWindow.ModelBrowser);
+						}
+						else
+						{
+							foreach (GroupingMembershipContradictionErrorIsForElement errorLink in GroupingMembershipContradictionErrorIsForElement.GetLinksToMembershipContradictionErrorCollection(normalizedElement))
+							{
+								if (errorLink.GroupingMembershipContradictionErrorRelationship.Grouping == grouping)
+								{
+									services.NavigateTo(errorLink, NavigateToWindow.ModelBrowser);
+									break;
+								}
+							}
+						}
+					}
+					break;
 				}
 			}
 		}

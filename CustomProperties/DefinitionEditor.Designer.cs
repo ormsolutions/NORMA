@@ -65,21 +65,25 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			// groupBox2
 			// 
-			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox2.Controls.Add(this.tvModelElements);
-			this.groupBox2.Location = new System.Drawing.Point(2, 160);
+			this.groupBox2.Location = new System.Drawing.Point(2, 197);
+			this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
 			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(235, 130);
+			this.groupBox2.Size = new System.Drawing.Size(314, 202);
 			this.groupBox2.TabIndex = 15;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "&Model Elements";
 			// 
 			// tvModelElements
 			// 
+			this.tvModelElements.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.tvModelElements.CheckBoxes = true;
-			this.tvModelElements.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tvModelElements.Location = new System.Drawing.Point(3, 16);
+			this.tvModelElements.Location = new System.Drawing.Point(3, 19);
 			this.tvModelElements.Name = "tvModelElements";
 			treeNode1.Name = "Node5";
 			treeNode1.Text = "Node5";
@@ -103,16 +107,16 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
             treeNode3,
             treeNode6,
             treeNode9});
-			this.tvModelElements.Size = new System.Drawing.Size(229, 111);
+			this.tvModelElements.Size = new System.Drawing.Size(305, 177);
 			this.tvModelElements.TabIndex = 0;
 			this.tvModelElements.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tvModelElements_AfterCheck);
 			// 
 			// btnEditCustomEnum
 			// 
 			this.btnEditCustomEnum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnEditCustomEnum.Location = new System.Drawing.Point(213, 132);
+			this.btnEditCustomEnum.Location = new System.Drawing.Point(284, 162);
 			this.btnEditCustomEnum.Name = "btnEditCustomEnum";
-			this.btnEditCustomEnum.Size = new System.Drawing.Size(25, 23);
+			this.btnEditCustomEnum.Size = new System.Drawing.Size(33, 28);
 			this.btnEditCustomEnum.TabIndex = 14;
 			this.btnEditCustomEnum.Text = "...";
 			this.btnEditCustomEnum.UseVisualStyleBackColor = true;
@@ -123,18 +127,18 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			this.tbxCustomEnum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbxCustomEnum.Location = new System.Drawing.Point(79, 134);
+			this.tbxCustomEnum.Location = new System.Drawing.Point(105, 165);
 			this.tbxCustomEnum.Name = "tbxCustomEnum";
-			this.tbxCustomEnum.Size = new System.Drawing.Size(133, 20);
+			this.tbxCustomEnum.Size = new System.Drawing.Size(176, 22);
 			this.tbxCustomEnum.TabIndex = 13;
 			this.tbxCustomEnum.Visible = false;
 			// 
 			// label4
 			// 
 			this.label4.AutoSize = true;
-			this.label4.Location = new System.Drawing.Point(2, 137);
+			this.label4.Location = new System.Drawing.Point(2, 169);
 			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(72, 13);
+			this.label4.Size = new System.Drawing.Size(95, 17);
 			this.label4.TabIndex = 12;
 			this.label4.Text = "Custom Enum";
 			this.label4.Visible = false;
@@ -143,9 +147,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			this.tbxDefaultValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbxDefaultValue.Location = new System.Drawing.Point(79, 108);
+			this.tbxDefaultValue.Location = new System.Drawing.Point(105, 133);
 			this.tbxDefaultValue.Name = "tbxDefaultValue";
-			this.tbxDefaultValue.Size = new System.Drawing.Size(158, 20);
+			this.tbxDefaultValue.Size = new System.Drawing.Size(209, 22);
 			this.tbxDefaultValue.TabIndex = 10;
 			this.tbxDefaultValue.Tag = "defaultValue";
 			this.tbxDefaultValue.TextChanged += new System.EventHandler(this.tbx_TextChanged);
@@ -153,9 +157,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(2, 111);
+			this.label3.Location = new System.Drawing.Point(2, 137);
 			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(71, 13);
+			this.label3.Size = new System.Drawing.Size(93, 17);
 			this.label3.TabIndex = 9;
 			this.label3.Text = "Default &Value";
 			// 
@@ -170,9 +174,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
             "integer",
             "decimal",
             "datetime"});
-			this.cmbxDataType.Location = new System.Drawing.Point(79, 81);
+			this.cmbxDataType.Location = new System.Drawing.Point(105, 100);
 			this.cmbxDataType.Name = "cmbxDataType";
-			this.cmbxDataType.Size = new System.Drawing.Size(158, 21);
+			this.cmbxDataType.Size = new System.Drawing.Size(209, 24);
 			this.cmbxDataType.TabIndex = 8;
 			this.cmbxDataType.SelectedIndexChanged += new System.EventHandler(this.cmbxDataType_SelectedIndexChanged);
 			// 
@@ -180,9 +184,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			this.tbxCategory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbxCategory.Location = new System.Drawing.Point(79, 55);
+			this.tbxCategory.Location = new System.Drawing.Point(105, 68);
 			this.tbxCategory.Name = "tbxCategory";
-			this.tbxCategory.Size = new System.Drawing.Size(158, 20);
+			this.tbxCategory.Size = new System.Drawing.Size(209, 22);
 			this.tbxCategory.TabIndex = 6;
 			this.tbxCategory.Tag = "category";
 			this.tbxCategory.TextChanged += new System.EventHandler(this.tbx_TextChanged);
@@ -190,18 +194,18 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(2, 58);
+			this.label10.Location = new System.Drawing.Point(2, 71);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(49, 13);
+			this.label10.Size = new System.Drawing.Size(65, 17);
 			this.label10.TabIndex = 5;
 			this.label10.Text = "&Category";
 			// 
 			// label9
 			// 
 			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(2, 84);
+			this.label9.Location = new System.Drawing.Point(2, 103);
 			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(57, 13);
+			this.label9.Size = new System.Drawing.Size(74, 17);
 			this.label9.TabIndex = 7;
 			this.label9.Text = "Data &Type";
 			// 
@@ -209,9 +213,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			this.tbxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbxDescription.Location = new System.Drawing.Point(79, 29);
+			this.tbxDescription.Location = new System.Drawing.Point(105, 36);
 			this.tbxDescription.Name = "tbxDescription";
-			this.tbxDescription.Size = new System.Drawing.Size(133, 20);
+			this.tbxDescription.Size = new System.Drawing.Size(176, 22);
 			this.tbxDescription.TabIndex = 3;
 			this.tbxDescription.Tag = "description";
 			this.tbxDescription.TextChanged += new System.EventHandler(this.tbx_TextChanged);
@@ -219,9 +223,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(2, 32);
+			this.label2.Location = new System.Drawing.Point(2, 39);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(60, 13);
+			this.label2.Size = new System.Drawing.Size(79, 17);
 			this.label2.TabIndex = 2;
 			this.label2.Text = "&Description";
 			// 
@@ -229,9 +233,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			this.tbxName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbxName.Location = new System.Drawing.Point(79, 3);
+			this.tbxName.Location = new System.Drawing.Point(105, 4);
 			this.tbxName.Name = "tbxName";
-			this.tbxName.Size = new System.Drawing.Size(158, 20);
+			this.tbxName.Size = new System.Drawing.Size(209, 22);
 			this.tbxName.TabIndex = 1;
 			this.tbxName.Tag = "name";
 			this.tbxName.TextChanged += new System.EventHandler(this.tbx_TextChanged);
@@ -239,18 +243,18 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(2, 6);
+			this.label1.Location = new System.Drawing.Point(2, 7);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(35, 13);
+			this.label1.Size = new System.Drawing.Size(45, 17);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "&Name";
 			// 
 			// btnEditDescription
 			// 
 			this.btnEditDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnEditDescription.Location = new System.Drawing.Point(213, 27);
+			this.btnEditDescription.Location = new System.Drawing.Point(284, 33);
 			this.btnEditDescription.Name = "btnEditDescription";
-			this.btnEditDescription.Size = new System.Drawing.Size(25, 23);
+			this.btnEditDescription.Size = new System.Drawing.Size(33, 28);
 			this.btnEditDescription.TabIndex = 4;
 			this.btnEditDescription.Text = "...";
 			this.btnEditDescription.UseVisualStyleBackColor = true;
@@ -259,9 +263,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// chkVerbalizeDefaultValue
 			// 
 			this.chkVerbalizeDefaultValue.AutoSize = true;
-			this.chkVerbalizeDefaultValue.Location = new System.Drawing.Point(2, 137);
+			this.chkVerbalizeDefaultValue.Location = new System.Drawing.Point(2, 169);
 			this.chkVerbalizeDefaultValue.Name = "chkVerbalizeDefaultValue";
-			this.chkVerbalizeDefaultValue.Size = new System.Drawing.Size(178, 13);
+			this.chkVerbalizeDefaultValue.Size = new System.Drawing.Size(178, 21);
 			this.chkVerbalizeDefaultValue.TabIndex = 11;
 			this.chkVerbalizeDefaultValue.Tag = "verbalizeDefaultValue";
 			this.chkVerbalizeDefaultValue.Text = "Ver&balize Default Value";
@@ -270,7 +274,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			// DefinitionEditor
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.chkVerbalizeDefaultValue);
 			this.Controls.Add(this.btnEditDescription);
@@ -289,7 +293,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.Controls.Add(this.tbxName);
 			this.Controls.Add(this.label1);
 			this.Name = "DefinitionEditor";
-			this.Size = new System.Drawing.Size(238, 300);
+			this.Size = new System.Drawing.Size(317, 399);
 			this.groupBox2.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();

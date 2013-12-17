@@ -595,7 +595,15 @@
     <value xml:space="preserve">Change Error Display</value>
     <comment xml:space="preserve">The transaction name used by the model error display filter dialog when a filter is changed. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>
-  <data name="ModelNoteConnectAction.TransactionName">
+	<data name="ModelErrorDisplayFilterChange.ErrorDisabled.TransactionName">
+		<value xml:space="preserve">Disable Error Display</value>
+		<comment xml:space="preserve">The transaction name used when display of a specific error type is disabled by selecting an instance of that error type. The text appears in the undo dropdown in the VS IDE.</comment>
+	</data>
+	<data name="ModelErrorDisplayFilterChange.ErrorEnabled.TransactionName">
+		<value xml:space="preserve">Enable Error Display</value>
+		<comment xml:space="preserve">The transaction name used when display of a specific error type is enabled by selecting an instance of that error type. The text appears in the undo dropdown in the VS IDE.</comment>
+	</data>
+	<data name="ModelNoteConnectAction.TransactionName">
     <value xml:space="preserve">Associate Note</value>
     <comment xml:space="preserve">The transaction name used by the modelnote connect action. The text appears in the undo dropdown in the VS IDE.</comment>
   </data>

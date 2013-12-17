@@ -418,7 +418,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				//we need to find out each enumeration that has been specified for the object and add it to the xml.
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.AllConstraints, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.Model, newOrmTypes);
+				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.ElementGrouping, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.EntityType, newOrmTypes);
+				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.CardinalityConstraint, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.EqualityConstraint, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.ExclusionConstraint, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.FactType, newOrmTypes);
@@ -429,6 +431,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.SubsetConstraint, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.SubtypeFact, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.UniquenessConstraint, newOrmTypes);
+				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.ValueComparisonConstraint, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.ValueConstraint, newOrmTypes);
 				AddORMTypeToGroupIfNeeded(newDef.ORMTypes, ORMTypes.ValueType, newOrmTypes);
 

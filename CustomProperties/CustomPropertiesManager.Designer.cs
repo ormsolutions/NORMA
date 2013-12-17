@@ -89,9 +89,11 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			// tvCustomProperties
 			// 
-			this.tvCustomProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tvCustomProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)));
 			this.tvCustomProperties.HideSelection = false;
-			this.tvCustomProperties.Location = new System.Drawing.Point(3, 41);
+			this.tvCustomProperties.Location = new System.Drawing.Point(4, 53);
+			this.tvCustomProperties.Margin = new System.Windows.Forms.Padding(4);
 			this.tvCustomProperties.Name = "tvCustomProperties";
 			treeNode1.Name = "Node0";
 			treeNode1.Text = "Machine";
@@ -100,18 +102,22 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.tvCustomProperties.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});
-			this.tvCustomProperties.Size = new System.Drawing.Size(214, 307);
+			this.tvCustomProperties.Size = new System.Drawing.Size(284, 395);
 			this.tvCustomProperties.TabIndex = 1;
 			this.tvCustomProperties.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvCustomProperties_AfterSelect);
 			this.tvCustomProperties.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tvCustomProperties_KeyUp);
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)));
 			this.groupBox1.Controls.Add(this.tvCustomProperties);
 			this.groupBox1.Controls.Add(this.toolStrip1);
-			this.groupBox1.Location = new System.Drawing.Point(15, 12);
+			this.groupBox1.Location = new System.Drawing.Point(2, 3);
+			this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(220, 351);
+			this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+			this.groupBox1.Size = new System.Drawing.Size(293, 456);
 			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "&Properties";
@@ -128,9 +134,9 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
             this.tsbAddGroupToModel,
             this.toolStripSeparator1,
             this.tsbDelete});
-			this.toolStrip1.Location = new System.Drawing.Point(3, 16);
+			this.toolStrip1.Location = new System.Drawing.Point(4, 19);
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(214, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(285, 25);
 			this.toolStrip1.TabIndex = 0;
 			this.toolStrip1.Text = "toolStrip1";
 			// 
@@ -171,9 +177,11 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			// btnSave
 			// 
-			this.btnSave.Location = new System.Drawing.Point(353, 340);
+			this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnSave.Location = new System.Drawing.Point(444, 421);
+			this.btnSave.Margin = new System.Windows.Forms.Padding(4);
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(75, 23);
+			this.btnSave.Size = new System.Drawing.Size(100, 28);
 			this.btnSave.TabIndex = 3;
 			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
@@ -181,10 +189,12 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			// btnCancel
 			// 
+			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.Location = new System.Drawing.Point(434, 340);
+			this.btnCancel.Location = new System.Drawing.Point(552, 421);
+			this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
 			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(75, 23);
+			this.btnCancel.Size = new System.Drawing.Size(100, 28);
 			this.btnCancel.TabIndex = 4;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
@@ -192,37 +202,49 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			// 
 			// definitionEditor1
 			// 
-			this.definitionEditor1.Location = new System.Drawing.Point(241, 12);
+			this.definitionEditor1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.definitionEditor1.Location = new System.Drawing.Point(304, 3);
+			this.definitionEditor1.Margin = new System.Windows.Forms.Padding(5);
 			this.definitionEditor1.Name = "definitionEditor1";
-			this.definitionEditor1.Size = new System.Drawing.Size(268, 300);
+			this.definitionEditor1.Size = new System.Drawing.Size(368, 409);
 			this.definitionEditor1.TabIndex = 1;
 			this.definitionEditor1.Visible = false;
 			this.definitionEditor1.NameChanged += new ORMSolutions.ORMArchitect.CustomProperties.NameChangedHandler(this.editor_NameChanged);
 			// 
 			// groupEditor1
 			// 
+			this.groupEditor1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+						| System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupEditor1.GroupNode = null;
-			this.groupEditor1.Location = new System.Drawing.Point(241, 12);
+			this.groupEditor1.Location = new System.Drawing.Point(304, 3);
+			this.groupEditor1.Margin = new System.Windows.Forms.Padding(5);
 			this.groupEditor1.Name = "groupEditor1";
-			this.groupEditor1.Size = new System.Drawing.Size(268, 300);
+			this.groupEditor1.Size = new System.Drawing.Size(368, 394);
 			this.groupEditor1.TabIndex = 2;
 			this.groupEditor1.Visible = false;
 			this.groupEditor1.NameChanged += new ORMSolutions.ORMArchitect.CustomProperties.NameChangedHandler(this.editor_NameChanged);
 			// 
 			// CustomPropertiesManager
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AcceptButton = this.btnSave;
+			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(521, 375);
+			this.CancelButton = this.btnCancel;
+			this.ClientSize = new System.Drawing.Size(677, 462);
 			this.Controls.Add(this.definitionEditor1);
 			this.Controls.Add(this.groupEditor1);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.btnSave);
 			this.Controls.Add(this.btnCancel);
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
+			this.MinimumSize = new System.Drawing.Size(574, 430);
 			this.Name = "CustomPropertiesManager";
+			this.ShowIcon = false;
 			this.Text = "Custom Properties";
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();

@@ -1893,6 +1893,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePlayerRequiredError, context != null ? (context.ErrorDisplayContext ?? "") : ""));
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRolePlayerRequiredErrorCompact;
+			}
+		}
+		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents

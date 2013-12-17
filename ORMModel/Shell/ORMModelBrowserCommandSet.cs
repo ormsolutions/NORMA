@@ -93,14 +93,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					new EventHandler(OnStatusIncludeInNewGroup),
 					new EventHandler(OnMenuIncludeInNewGroup),
 					ORMDesignerDocView.ORMDesignerCommandIds.IncludeInNewGroup)
-					,new DynamicIncludeInGroupCommand(
+					,new DynamicGroupCommand(
 					new EventHandler(OnStatusIncludeInGroupList),
 					new EventHandler(OnMenuIncludeInGroupList),
 					ORMDesignerDocView.ORMDesignerCommandIds.IncludeInGroupList)
-					,new DynamicDeleteFromGroupCommand(
+					,new DynamicGroupCommand(
 					new EventHandler(OnStatusDeleteFromGroupList),
 					new EventHandler(OnMenuDeleteFromGroupList),
 					ORMDesignerDocView.ORMDesignerCommandIds.DeleteFromGroupList)
+					,new DynamicGroupCommand(
+					new EventHandler(OnStatusSelectInGroupList),
+					new EventHandler(OnMenuSelectInGroupList),
+					ORMDesignerDocView.ORMDesignerCommandIds.SelectInGroupList)
 				};
 				#endregion //command array
 				AddCommands(myCommands);
@@ -223,9 +227,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					currentWindow.OnMenuIncludeInNewGroup();
 				}
 			}
-			private sealed class DynamicIncludeInGroupCommand : DynamicStatusMenuCommand
+			private sealed class DynamicGroupCommand : DynamicStatusMenuCommand
 			{
-				public DynamicIncludeInGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+				public DynamicGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
 					: base(statusHandler, invokeHandler, id)
 				{
 					//Declare class variable with object containing diagram list
@@ -236,7 +240,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					int testId = cmdId - baseCmdId;
 
 
-					if (testId >= 0 && testId < ORMDesignerDocView.ORMDesignerCommandIds.IncludeInGroupListLength)
+					if (testId >= 0 && testId < ORMDesignerDocView.ORMDesignerCommandIds.GroupListLength)
 					{
 						MatchedCommandId = testId;
 						return true;
@@ -257,27 +261,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					currentWindow.OnMenuIncludeInGroupList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
-			private sealed class DynamicDeleteFromGroupCommand : DynamicStatusMenuCommand
-			{
-				public DynamicDeleteFromGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
-					: base(statusHandler, invokeHandler, id)
-				{
-					//Declare class variable with object containing diagram list
-				}
-				public sealed override bool DynamicItemMatch(int cmdId)
-				{
-					int baseCmdId = CommandID.ID;
-					int testId = cmdId - baseCmdId;
-
-
-					if (testId >= 0 && testId < ORMDesignerDocView.ORMDesignerCommandIds.DeleteFromGroupListLength)
-					{
-						MatchedCommandId = testId;
-						return true;
-					}
-					return false;
-				}
-			}
 			public void OnStatusDeleteFromGroupList(object sender, EventArgs e)
 			{
 				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.DeleteFromGroupList, CurrentToolWindow);
@@ -289,6 +272,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				if (currentWindow != null)
 				{
 					currentWindow.OnMenuDeleteFromGroupList(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			public void OnStatusSelectInGroupList(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow.OnStatusCommand(sender, ORMDesignerCommands.SelectInGroupList, CurrentToolWindow);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			public void OnMenuSelectInGroupList(object sender, EventArgs e)
+			{
+				ORMModelBrowserToolWindow currentWindow = CurrentToolWindow;
+				if (currentWindow != null)
+				{
+					currentWindow.OnMenuSelectInGroupList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
 			public void OnStatusEditLabel(Object sender, EventArgs e)

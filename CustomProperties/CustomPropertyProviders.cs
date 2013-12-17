@@ -52,6 +52,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			{
 				GetProvidedProperties(ORMTypes.Model, extendableElement, properties);
 			};
+			public static readonly PropertyProvider ElementGrouping = delegate(object extendableElement, PropertyDescriptorCollection properties)
+			{
+				GetProvidedProperties(ORMTypes.ElementGrouping, extendableElement, properties);
+			};
 			public static readonly PropertyProvider ObjectType = delegate(object extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(((ObjectType)extendableElement).IsValueType ? ORMTypes.ValueType : ORMTypes.EntityType, extendableElement, properties);
@@ -67,6 +71,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			public static readonly PropertyProvider Role = delegate(object extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.Role, extendableElement, properties);
+			};
+			public static readonly PropertyProvider CardinalityConstraint = delegate(object extendableElement, PropertyDescriptorCollection properties)
+			{
+				GetProvidedProperties(ORMTypes.CardinalityConstraint, extendableElement, properties);
 			};
 			public static readonly PropertyProvider FrequencyConstraint = delegate(object extendableElement, PropertyDescriptorCollection properties)
 			{
@@ -95,6 +103,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			public static readonly PropertyProvider SubsetConstraint = delegate(object extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.SubsetConstraint, extendableElement, properties);
+			};
+			public static readonly PropertyProvider ValueComparisonConstraint = delegate(object extendableElement, PropertyDescriptorCollection properties)
+			{
+				GetProvidedProperties(ORMTypes.ValueComparisonConstraint, extendableElement, properties);
 			};
 			public static readonly PropertyProvider ValueConstraint = delegate(object extendableElement, PropertyDescriptorCollection properties)
 			{
@@ -211,8 +223,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 						foreach (CustomPropertyDefinition customPropertyDefinition in propertyOwner.Store.ElementDirectory.FindElements<CustomPropertyDefinition>())
 						{
 							object defaultValue;
+							string defaultValueString;
 							if (!customPropertyDefinition.VerbalizeDefaultValue ||
 								null == (defaultValue = customPropertyDefinition.DefaultValue) ||
+								(null != (defaultValueString = defaultValue as string) && defaultValueString.Length == 0) ||
 								(propertyFilter != null && !propertyFilter(propertyOwner, customPropertyDefinition)))
 							{
 								continue;
@@ -244,6 +258,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			{
 				return 0 != (propertyDefinition.ORMTypes & ORMTypes.Model);
 			});
+			public static readonly IVerbalizeExtensionChildren ElementGrouping = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
+			{
+				return 0 != (propertyDefinition.ORMTypes & ORMTypes.ElementGrouping);
+			});
 			public static readonly IVerbalizeExtensionChildren ObjectType = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
 			{
 				return 0 != (propertyDefinition.ORMTypes & (((ObjectType)propertyOwner).IsValueType ? ORMTypes.ValueType : ORMTypes.EntityType));
@@ -259,6 +277,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			public static readonly IVerbalizeExtensionChildren Role = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
 			{
 				return 0 != (propertyDefinition.ORMTypes & ORMTypes.Role);
+			});
+			public static readonly IVerbalizeExtensionChildren CardinalityConstraint = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
+			{
+				return 0 != (propertyDefinition.ORMTypes & ORMTypes.CardinalityConstraint);
 			});
 			public static readonly IVerbalizeExtensionChildren FrequencyConstraint = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
 			{
@@ -288,6 +310,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			{
 				return 0 != (propertyDefinition.ORMTypes & ORMTypes.SubsetConstraint);
 			});
+			public static readonly IVerbalizeExtensionChildren ValueComparisonConstraint = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
+			{
+				return 0 != (propertyDefinition.ORMTypes & ORMTypes.ValueComparisonConstraint);
+			});
 			public static readonly IVerbalizeExtensionChildren ValueConstraint = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
 			{
 				return 0 != (propertyDefinition.ORMTypes & ORMTypes.ValueConstraint);
@@ -305,10 +331,12 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				IExtensionVerbalizerService verbalizerService = ((IORMToolServices)store).ExtensionVerbalizerService;
 				propertyService.AddOrRemovePropertyProvider(typeof(ORMModel), CustomPropertyProviders.CustomPropertiesEditor, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(ORMModel), CustomPropertyProviders.Model, false, action);
+				propertyService.AddOrRemovePropertyProvider(typeof(ElementGrouping), CustomPropertyProviders.ElementGrouping, false, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(ObjectType), CustomPropertyProviders.ObjectType, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(SubtypeFact), CustomPropertyProviders.SubtypeFact, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(FactType), CustomPropertyProviders.FactType, false, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(Role), CustomPropertyProviders.Role, true, action);
+				propertyService.AddOrRemovePropertyProvider(typeof(CardinalityConstraint), CustomPropertyProviders.CardinalityConstraint, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(FrequencyConstraint), CustomPropertyProviders.FrequencyConstraint, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(MandatoryConstraint), CustomPropertyProviders.MandatoryConstraint, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(RingConstraint), CustomPropertyProviders.RingConstraint, true, action);
@@ -316,14 +344,17 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				propertyService.AddOrRemovePropertyProvider(typeof(EqualityConstraint), CustomPropertyProviders.EqualityConstraint, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(ExclusionConstraint), CustomPropertyProviders.ExclusionConstraint, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(SubsetConstraint), CustomPropertyProviders.SubsetConstraint, true, action);
+				propertyService.AddOrRemovePropertyProvider(typeof(ValueComparisonConstraint), CustomPropertyProviders.ValueComparisonConstraint, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(ValueConstraint), CustomPropertyProviders.ValueConstraint, true, action);
 				if (verbalizerService != null)
 				{
-					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ORMModel), DefaultVerbalizationProviders.Model, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ORMModel), DefaultVerbalizationProviders.Model, false, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ElementGrouping), DefaultVerbalizationProviders.ElementGrouping, false, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ObjectType), DefaultVerbalizationProviders.ObjectType, true, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(SubtypeFact), DefaultVerbalizationProviders.SubtypeFact, true, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(FactType), DefaultVerbalizationProviders.FactType, false, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(Role), DefaultVerbalizationProviders.Role, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(CardinalityConstraint), DefaultVerbalizationProviders.CardinalityConstraint, true, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(FrequencyConstraint), DefaultVerbalizationProviders.FrequencyConstraint, true, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(MandatoryConstraint), DefaultVerbalizationProviders.MandatoryConstraint, true, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(RingConstraint), DefaultVerbalizationProviders.RingConstraint, true, action);
@@ -331,6 +362,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(EqualityConstraint), DefaultVerbalizationProviders.EqualityConstraint, true, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ExclusionConstraint), DefaultVerbalizationProviders.ExclusionConstraint, true, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(SubsetConstraint), DefaultVerbalizationProviders.SubsetConstraint, true, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ValueComparisonConstraint), DefaultVerbalizationProviders.ValueComparisonConstraint, true, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ValueConstraint), DefaultVerbalizationProviders.ValueConstraint, true, action);
 				}
 			}

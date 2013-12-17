@@ -2790,6 +2790,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected abstract string ErrorFormatText { get;}
 		/// <summary>
+		/// Get the text to display the duplicate error information in compact
+		/// form. Replacement field {0} is replaced by the element name.
+		/// </summary>
+		protected abstract string CompactErrorFormatText { get;}
+		/// <summary>
 		/// Get the name of an element. The default implementation uses
 		/// the <see cref="DomainClassInfo.NameDomainProperty"/> to determine
 		/// the name. Derived classes can produce a more efficient implementation
@@ -2852,14 +2857,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			IList<ModelElement> elements = DuplicateElements;
-			string elementName = (elements.Count != 0) ? GetElementName(elements[0]) : string.Empty;
 			ORMModel model = Model;
-			string modelName = (model != null) ? model.Name : string.Empty;
-			string newText = string.Format(CultureInfo.InvariantCulture, ErrorFormatText, modelName, elementName);
-			string currentText = ErrorText;
-			if (currentText != newText)
+			ErrorText = string.Format(
+				CultureInfo.InvariantCulture,
+				ErrorFormatText,
+				(model != null) ? model.Name : string.Empty,
+				(elements.Count != 0) ? GetElementName(elements[0]) : string.Empty);
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
 			{
-				ErrorText = newText;
+				IList<ModelElement> elements = DuplicateElements;
+				return string.Format(
+					CultureInfo.InvariantCulture,
+					CompactErrorFormatText,
+					(elements.Count != 0) ? GetElementName(elements[0]) : string.Empty);
 			}
 		}
 		/// <summary>
@@ -2994,6 +3010,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ResourceStrings.ModelErrorModelHasDuplicateObjectTypeNames;
 			}
 		}
+		/// <summary>
+		/// Get the format string for the short form of the error message
+		/// </summary>
+		protected override string CompactErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorModelHasDuplicateObjectTypeNamesCompact;
+			}
+		}
 		#endregion // Base overrides
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
@@ -3049,6 +3075,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return ResourceStrings.ModelErrorModelHasDuplicateConstraintNames;
+			}
+		}
+		/// <summary>
+		/// Get the format string for the short form of the error message
+		/// </summary>
+		protected override string CompactErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorModelHasDuplicateConstraintNamesCompact;
 			}
 		}
 		#endregion // Base overrides
@@ -3278,6 +3314,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ResourceStrings.ModelErrorModelHasDuplicateRecognizedPhraseNames;
 			}
 		}
+		/// <summary>
+		/// Get the format string for the short form of the error message
+		/// </summary>
+		protected override string CompactErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorModelHasDuplicateRecognizedPhraseNamesCompact;
+			}
+		}
 		#endregion // Base overrides
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
@@ -3335,6 +3381,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ResourceStrings.ModelErrorModelHasDuplicateFunctionNames;
 			}
 		}
+		/// <summary>
+		/// Get the format string for the short form of the error message
+		/// </summary>
+		protected override string CompactErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorModelHasDuplicateFunctionNamesCompact;
+			}
+		}
 		#endregion // Base overrides
 		#region IHasIndirectModelErrorOwner Implementation
 		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
@@ -3390,6 +3446,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return ResourceStrings.ModelErrorReadingDuplicateSignature;
+			}
+		}
+		/// <summary>
+		/// Get the format string for the short form of the error message
+		/// </summary>
+		protected override string CompactErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorReadingDuplicateSignatureCompact;
 			}
 		}
 		#endregion // Base overrides

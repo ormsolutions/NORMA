@@ -276,6 +276,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnStatusErrorList),
 						new EventHandler(OnMenuErrorList),
 						ORMDesignerCommandIds.ErrorList)
+						,new DynamicErrorCommand(
+						new EventHandler(OnStatusErrorList), // Share status with error list, items have the same content
+						new EventHandler(OnMenuDisableErrorList),
+						ORMDesignerCommandIds.DisableErrorList)
+						,new DynamicErrorCommand(
+						new EventHandler(OnStatusEnableErrorList),
+						new EventHandler(OnMenuEnableErrorList),
+						ORMDesignerCommandIds.EnableErrorList)
 						,new DynamicStatusMenuCommand(
 						new EventHandler(OnStatusSelectNextInCurrentDiagram),
 						new EventHandler(OnMenuSelectNextInCurrentDiagram),
@@ -300,14 +308,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnStatusIncludeInNewGroup),
 						new EventHandler(OnMenuIncludeInNewGroup),
 						ORMDesignerCommandIds.IncludeInNewGroup)
-						,new DynamicIncludeInGroupCommand(
+						,new DynamicGroupCommand(
 						new EventHandler(OnStatusIncludeInGroupList),
 						new EventHandler(OnMenuIncludeInGroupList),
 						ORMDesignerCommandIds.IncludeInGroupList)
-						,new DynamicDeleteFromGroupCommand(
+						,new DynamicGroupCommand(
 						new EventHandler(OnStatusDeleteFromGroupList),
 						new EventHandler(OnMenuDeleteFromGroupList),
 						ORMDesignerCommandIds.DeleteFromGroupList)
+						,new DynamicGroupCommand(
+						new EventHandler(OnStatusSelectInGroupList),
+						new EventHandler(OnMenuSelectInGroupList),
+						ORMDesignerCommandIds.SelectInGroupList)
 						,new MenuCommand(
 						new EventHandler(OnMenuNewWindow),
 						new CommandID(VSConstants.GUID_VSStandardCommandSet97, (int)VSConstants.VSStd97CmdID.NewWindow))
@@ -1196,6 +1208,38 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					designerView.CommandManager.OnMenuErrorList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuDisableErrorList(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					// Defer to the doc view
+					designerView.CommandManager.OnMenuDisableErrorList(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusEnableErrorList(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.DisabledErrorList);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuEnableErrorList(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					// Defer to the doc view
+					designerView.CommandManager.OnMenuEnableErrorList(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
 			private sealed class DynamicDiagramCommand : DynamicStatusMenuCommand
 			{
 				public DynamicDiagramCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
@@ -1340,9 +1384,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					designerView.CommandManager.OnMenuIncludeInNewGroup();
 				}
 			}
-			private sealed class DynamicIncludeInGroupCommand : DynamicStatusMenuCommand
+			private sealed class DynamicGroupCommand : DynamicStatusMenuCommand
 			{
-				public DynamicIncludeInGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
+				public DynamicGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
 					: base(statusHandler, invokeHandler, id)
 				{
 					//Declare class variable with object containing diagram list
@@ -1353,7 +1397,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					int testId = cmdId - baseCmdId;
 
 
-					if (testId >= 0 && testId < ORMDesignerCommandIds.IncludeInGroupListLength)
+					if (testId >= 0 && testId < ORMDesignerCommandIds.GroupListLength)
 					{
 						MatchedCommandId = testId;
 						return true;
@@ -1381,27 +1425,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					designerView.CommandManager.OnMenuIncludeInGroupList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
-			private sealed class DynamicDeleteFromGroupCommand : DynamicStatusMenuCommand
-			{
-				public DynamicDeleteFromGroupCommand(EventHandler statusHandler, EventHandler invokeHandler, CommandID id)
-					: base(statusHandler, invokeHandler, id)
-				{
-					//Declare class variable with object containing diagram list
-				}
-				public sealed override bool DynamicItemMatch(int cmdId)
-				{
-					int baseCmdId = CommandID.ID;
-					int testId = cmdId - baseCmdId;
-
-
-					if (testId >= 0 && testId < ORMDesignerCommandIds.DeleteFromGroupListLength)
-					{
-						MatchedCommandId = testId;
-						return true;
-					}
-					return false;
-				}
-			}
 			/// <summary>
 			/// Status callback
 			/// </summary>
@@ -1420,6 +1443,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					// Defer to the doc view
 					designerView.CommandManager.OnMenuDeleteFromGroupList(((OleMenuCommand)sender).MatchedCommandId);
+				}
+			}
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			protected void OnStatusSelectInGroupList(object sender, EventArgs e)
+			{
+				ORMDesignerCommandManager.OnStatusCommand(sender, CurrentORMView, ORMDesignerCommands.SelectInGroupList);
+				((OleMenuCommand)sender).MatchedCommandId = 0;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuSelectInGroupList(object sender, EventArgs e)
+			{
+				IORMDesignerView designerView = CurrentORMView;
+				if (designerView != null)
+				{
+					// Defer to the doc view
+					designerView.CommandManager.OnMenuSelectInGroupList(((OleMenuCommand)sender).MatchedCommandId);
 				}
 			}
 			#endregion // Grouping Commands
@@ -1908,6 +1951,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			public const int ErrorListLength = cmdIdErrorListEnd - cmdIdErrorList + 1;
 			/// <summary>
+			/// Available to any type that has enabled errors
+			/// </summary>
+			public static readonly CommandID DisableErrorList = new CommandID(guidORMDesignerCommandSet, cmdIdDisableErrorList);
+			/// <summary>
+			/// Available to any type that has disabled errors
+			/// </summary>
+			public static readonly CommandID EnableErrorList = new CommandID(guidORMDesignerCommandSet, cmdIdEnableErrorList);
+			/// <summary>
 			/// Activate the next shape in the same diagram corresponding the current backing element.
 			/// </summary>
 			public static readonly CommandID SelectNextInCurrentDiagram = new CommandID(guidORMDesignerCommandSet, cmdIdSelectNextInCurrentDiagram);
@@ -1967,15 +2018,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Indicates the number of command ids reserved for adding an element to a group
 			/// </summary>
-			public const int IncludeInGroupListLength = cmdIdIncludeInGroupListEnd - cmdIdIncludeInGroupList + 1;
+			public const int GroupListLength = cmdIdIncludeInGroupListEnd - cmdIdIncludeInGroupList + 1;
 			/// <summary>
 			/// The list of available groups containing the selected elements
 			/// </summary>
 			public static readonly CommandID DeleteFromGroupList = new CommandID(guidORMDesignerCommandSet, cmdIdDeleteFromGroupList);
 			/// <summary>
-			/// Indicates the number of command ids reserved for removing an element from a group
+			/// The list of available groups containing the selected elements
 			/// </summary>
-			public const int DeleteFromGroupListLength = cmdIdDeleteFromGroupListEnd - cmdIdDeleteFromGroupList + 1;
+			public static readonly CommandID SelectInGroupList = new CommandID(guidORMDesignerCommandSet, cmdIdSelectInGroupList);
 			/// <summary>
 			/// Zoom 10 percent.
 			/// </summary>
@@ -2162,6 +2213,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// The last allowed id for a report generator list
 			/// </summary>
 			private const int cmdIdReportGeneratorListEnd = 0x2cfe;
+			/// <summary>
+			/// The context menu for disabling local errors
+			/// </summary>
+			private const int cmdIdDisableErrorList = 0x3100;
+			// private const int cmdIdDisableErrorListEnd = 0x31fe; // Uses the same offset as cmdIdErrorList to cmdIdErrorListEnd
+			/// <summary>
+			/// The context menu for enabling local errors
+			/// </summary>
+			private const int cmdIdEnableErrorList = 0x3200;
+			// private const int cmdIdEnabledErrorListEnd = 0x32fe; // Uses the same offset as cmdIdErrorList to cmdIdErrorListEnd
 			/// <summary>
 			/// The context menu for the diagram
 			/// </summary>
@@ -2377,10 +2438,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// The list of available groups to remove from
 			/// </summary>
 			private const int cmdIdDeleteFromGroupList = 0x3000;
+			// private const int cmdIdDeleteFromGroupListEnd = 0x30fe; // Uses same offset as cmdIdIncludeInGroupList to cmdIdIncludeInGroupListEnd
 			/// <summary>
-			/// The last allowed id for a remove from group list
+			/// The list of available groups to remove from
 			/// </summary>
-			private const int cmdIdDeleteFromGroupListEnd = 0x30fe;
+			private const int cmdIdSelectInGroupList = 0x3300;
+			// private const int cmdIdSelectInGroupListEnd = 0x33fe; // Uses same offset as cmdIdIncludeInGroupList to cmdIdIncludeInGroupListEnd
 			#endregion
 		}
 	}

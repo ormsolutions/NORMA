@@ -7944,6 +7944,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IModelErrorDisplayContext displayContext = RolePath.RootRolePath;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePathRequiresRootObjectType, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRolePathRequiresRootObjectTypeCompact;
+			}
+		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
 	partial class PathSameFactTypeRoleFollowsJoinError
@@ -7965,6 +7975,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = PathedRole;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePathSameFactTypeRoleFollowsJoin, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRolePathSameFactTypeRoleFollowsJoinCompact;
+			}
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
@@ -7988,6 +8008,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IModelErrorDisplayContext displayContext = PathedRole;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePathIncompatibleJoin, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRolePathIncompatibleJoinCompact;
+			}
+		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
 	partial class PathObjectUnifierRequiresCompatibleObjectTypesError
@@ -8009,6 +8039,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = ObjectUnifier;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRolePathObjectUnifierIncompatibleCorrelation, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRolePathObjectUnifierIncompatibleCorrelationCompact;
+			}
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
@@ -8032,6 +8072,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IModelErrorDisplayContext displayContext = PathedRole;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture,ResourceStrings.ModelErrorRolePathMandatoryOuterJoin, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRolePathMandatoryOuterJoinCompact;
+			}
+		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
 	partial class CalculatedPathValueRequiresFunctionError
@@ -8054,6 +8104,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IModelErrorDisplayContext displayContext = CalculatedPathValue;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorCalculatedPathValueRequiresFunction, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorCalculatedPathValueRequiresFunctionCompact;
+			}
+		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
 	partial class CalculatedPathValueRequiresAggregationContextError
@@ -8075,6 +8135,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = CalculatedPathValue;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorCalculatedPathValueRequiresAggregationContext, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorCalculatedPathValueRequiresAggregationContextCompact;
+			}
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
@@ -8113,6 +8183,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FunctionParameter parameter = errorLink.Parameter;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorCalculatedPathValueParameterBinding, displayContext != null ? displayContext.ErrorDisplayContext : "", parameter != null ? parameter.Name : ""));
 		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				CalculatedPathValueHasUnboundParameterError errorLink = CalculatedPathValueHasUnboundParameterError.GetLinkToCalculatedPathValue(this);
+				FunctionParameter parameter = errorLink.Parameter;
+				return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorCalculatedPathValueParameterBindingCompact, parameter != null ? parameter.Name : "");
+			}
+		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
 	partial class CalculatedPathValueMustBeConsumedError
@@ -8134,6 +8216,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = CalculatedPathValue;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorCalculatedPathValueMustBeConsumed, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorCalculatedPathValueMustBeConsumedCompact;
+			}
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
@@ -8157,6 +8249,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IModelErrorDisplayContext displayContext = (IModelErrorDisplayContext)DerivationRule;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRoleProjectedDerivationRuleProjectionRequired, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRoleProjectedDerivationRuleProjectionRequiredCompact;
+			}
+		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
 	partial class PartialRoleSetDerivationProjectionError
@@ -8178,6 +8280,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = DerivationProjection;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorRoleProjectedDerivationRulePartialProjection, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorRoleProjectedDerivationRulePartialProjectionCompact;
+			}
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
@@ -8201,6 +8313,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IModelErrorDisplayContext displayContext = Projection.ProjectedRole;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorDerivedRoleProjectionIncompatibleProjection, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorDerivedRoleProjectionIncompatibleProjectionCompact;
+			}
+		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
 	partial class ConstraintRoleSequenceJoinPathRequiresProjectionError
@@ -8222,6 +8344,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = JoinPath;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorJoinPathProjectionRequired, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorJoinPathProjectionRequiredCompact;
+			}
 		}
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
@@ -8245,6 +8377,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			IModelErrorDisplayContext displayContext = JoinPathProjection;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorJoinPathPartialProjection, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorJoinPathPartialProjectionCompact;
+			}
+		}
+
 	}
 	[ModelErrorDisplayFilter(typeof(RolePathErrorCategory))]
 	partial class ConstraintRoleRequiresCompatibleJoinPathProjectionError
@@ -8266,6 +8409,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = Projection.JoinPathProjection;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorConstraintRoleProjectionIncompatibleProjection, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorConstraintRoleProjectionIncompatibleProjectionCompact;
+			}
 		}
 	}
 	#endregion // Path Errors

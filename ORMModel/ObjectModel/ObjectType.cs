@@ -5311,7 +5311,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorEntityTypeRequiresReferenceSchemeMessage, ObjectType.Name, Model.Name);
 		}
-
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorEntityTypeRequiresReferenceSchemeCompactMessage;
+			}
+		}
 		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
@@ -5336,7 +5345,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			IModelErrorDisplayContext context = ObjectType;
-			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError, context != null ? (context.ErrorDisplayContext ?? "") : ""));
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatory, context != null ? (context.ErrorDisplayContext ?? "") : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorObjectTypePreferredIdentifierRequiresMandatoryCompact;
+			}
 		}
 		/// <summary>
 		/// Regenerate error text when the object name changes or model name changes
@@ -5359,7 +5378,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override void GenerateErrorText()
 		{
 			IModelErrorDisplayContext context = ObjectType;
-			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeCompatibleSupertypesError, context != null ? (context.ErrorDisplayContext ?? "") : "");
+			ErrorText = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorObjectTypeCompatibleSupertypes, context != null ? (context.ErrorDisplayContext ?? "") : "");
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorObjectTypeCompatibleSupertypesCompact;
+			}
 		}
 		/// <summary>
 		/// Regenerate error text when the object name changes or model name changes

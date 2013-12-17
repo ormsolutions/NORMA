@@ -183,9 +183,12 @@
 				<EnumerationLiteral Name="ExclusionConstraint" Value="1024"/>
 				<EnumerationLiteral Name="SubsetConstraint" Value="2048"/>
 				<EnumerationLiteral Name="ValueConstraint" Value="4096"/>
-				<EnumerationLiteral Name="AllConstraints" Value="8160"/>
+				<EnumerationLiteral Name="ValueComparisonConstraint" Value="8192"/>
+				<EnumerationLiteral Name="CardinalityConstraint" Value="16384"/>
+				<EnumerationLiteral Name="AllConstraints" Value="32736"/>
 
-				<EnumerationLiteral Name="Model" Value="8192"/>
+				<EnumerationLiteral Name="Model" Value="32768"/>
+				<EnumerationLiteral Name="ElementGrouping" Value="65536"/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">

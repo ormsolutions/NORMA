@@ -156,6 +156,8 @@
 	<ResourceString name="SubtypeConnectActionTransactionName" model="Diagram" resourceName="SubtypeConnectAction.TransactionName"/>
 	<ResourceString name="ModelNoteConnectActionTransactionName" model="Diagram" resourceName="ModelNoteConnectAction.TransactionName"/>
 	<ResourceString name="ModelErrorDisplayFilterChangeTransactionName" model="Diagram" resourceName="ModelErrorDisplayFilterChange.TransactionName"/>
+	<ResourceString name="ModelErrorDisplayFilterChangeErrorDisabledTransactionName" model="Diagram" resourceName="ModelErrorDisplayFilterChange.ErrorDisabled.TransactionName"/>
+	<ResourceString name="ModelErrorDisplayFilterChangeErrorEnabledTransactionName" model="Diagram" resourceName="ModelErrorDisplayFilterChange.ErrorEnabled.TransactionName"/>
 	<ResourceString name="OptionsPageChangeTransactionName" model="Diagram" resourceName="OptionsPageChange.TransactionName"/>
 	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueCustom" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Custom"/>
 	<ResourceString name="OptionsPagePropertyCustomVerbalizationSnippetsDisplayValueDefault" model="Diagram" resourceName="OptionsPage.Property.CustomVerbalizationSnippets.DisplayValue.Default"/>
@@ -181,24 +183,45 @@
 	<ResourceString name="ModelExceptionReadingIsPrimaryToFalse" model="Model" resourceName="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse"/>
 	<ResourceString name="ModelExceptionFactAddReadingInvalidReadingText" model="Model" resourceName="ModelException.Fact.AddReading.InvalidReadingText"/>
 	<ResourceString name="ModelErrorCalculatedPathValueRequiresAggregationContext" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.Text"/>
+	<ResourceString name="ModelErrorCalculatedPathValueRequiresAggregationContextCompact" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.CompactText"/>
 	<ResourceString name="ModelErrorCalculatedPathValueRequiresFunction" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.Text"/>
+	<ResourceString name="ModelErrorCalculatedPathValueRequiresFunctionCompact" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.CompactText"/>
 	<ResourceString name="ModelErrorCalculatedPathValueParameterBinding" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.Text"/>
+	<ResourceString name="ModelErrorCalculatedPathValueParameterBindingCompact" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.CompactText"/>
 	<ResourceString name="ModelErrorCalculatedPathValueMustBeConsumed" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text"/>
+	<ResourceString name="ModelErrorCalculatedPathValueMustBeConsumedCompact" model="Model" resourceName="ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.CompactText"/>
 	<ResourceString name="ModelErrorCardinalityConstraintCardinalityRangeOverlapError" model="Model" resourceName="ModelError.CardinalityConstraint.CardinalityRangeOverlapError.Message"/>
+	<ResourceString name="ModelErrorCardinalityConstraintCardinalityRangeOverlapCompactError" model="Model" resourceName="ModelError.CardinalityConstraint.CardinalityRangeOverlapError.CompactMessage"/>
 	<ResourceString name="ModelErrorConstraintImplicationBySubset" model="Model" resourceName="ModelError.Constraint.ImplicationError.ImpliedBySubsetText"/>
+	<ResourceString name="ModelErrorConstraintImplicationBySubsetCompact" model="Model" resourceName="ModelError.Constraint.ImplicationError.ImpliedBySubsetCompactText"/>
 	<ResourceString name="ModelErrorConstraintImplicationBySuperset" model="Model" resourceName="ModelError.Constraint.ImplicationError.ImpliedBySupersetText"/>
+	<ResourceString name="ModelErrorConstraintImplicationBySupersetCompact" model="Model" resourceName="ModelError.Constraint.ImplicationError.ImpliedBySupersetCompactText"/>
 	<ResourceString name="ModelErrorConstraintImplicationEqualityMandatory" model="Model" resourceName="ModelError.Constraint.EqualityImpliedByMandatoryError.Text"/>
+	<ResourceString name="ModelErrorConstraintImplicationEqualityMandatoryCompact" model="Model" resourceName="ModelError.Constraint.EqualityImpliedByMandatoryError.CompactText"/>
 	<ResourceString name="ModelErrorConstraintImplicationSubsetMandatory" model="Model" resourceName="ModelError.Constraint.SubsetImpliedByMandatoryError.Text"/>
+	<ResourceString name="ModelErrorConstraintImplicationSubsetMandatoryCompact" model="Model" resourceName="ModelError.Constraint.SubsetImpliedByMandatoryError.CompactText"/>
 	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryError" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text"/>
+	<ResourceString name="ModelErrorNotWellModeledSubsetAndMandatoryErrorCompact" model="Model" resourceName="ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.CompactText"/>
 	<ResourceString name="ModelErrorConstraintContradiction" model="Model" resourceName="ModelError.Constraint.ContradictionError.Text"/>
+	<ResourceString name="ModelErrorConstraintExclusionAndEqualityContradictionCompact" model="Model" resourceName="ModelError.Constraint.ExclusionAndEqualityContradiction.CompactText"/>
+	<ResourceString name="ModelErrorConstraintExclusionAndMandatoryContradictionCompact" model="Model" resourceName="ModelError.Constraint.ExclusionAndMandatoryContradiction.CompactText"/>
+	<ResourceString name="ModelErrorConstraintExclusionAndSubsetContradictionCompact" model="Model" resourceName="ModelError.Constraint.ExclusionAndSubsetContradiction.CompactText"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesExactlyTwo" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.ExactlyTwo"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesExactlyTwoCompact" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.ExactlyTwo.Compact"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesTwoOrMore" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.TwoOrMore"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesTwoOrMoreCompact" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.TwoOrMore.Compact"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesNoSequenceAddendum" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.NoSequenceAddendum"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesNoSequenceAddendumCompact" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.NoSequenceAddendum.Compact"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesOneSequenceAddendum" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.OneSequenceAddendum"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewRoleSequencesOneSequenceAddendumCompact" model="Model" resourceName="ModelError.Constraint.TooFewRoleSequences.OneSequenceAddendum.Compact"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesExactlyTwo" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.ExactlyTwo"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesExactlyTwoCompact" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.ExactlyTwo.Compact"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesTwoOrMore" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.TwoOrMore"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesTwoOrMoreCompact" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.TwoOrMore.Compact"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendum" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendumCompact" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum.Compact"/>
 	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendum" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum"/>
+	<ResourceString name="ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendumCompact" model="Model" resourceName="ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum.Compact"/>
 	<ResourceString name="ModelErrorDisplayContextFactType" model="Model" resourceName="ModelError.DisplayContext.FactType"/>
 	<ResourceString name="ModelErrorDisplayContextFactTypeRole" model="Model" resourceName="ModelError.DisplayContext.FactTypeRole"/>
 	<ResourceString name="ModelErrorDisplayContextObjectType" model="Model" resourceName="ModelError.DisplayContext.ObjectType"/>
@@ -209,31 +232,54 @@
 	<ResourceString name="ModelErrorDisplayContextSetConstraintJoinPath" model="Model" resourceName="ModelError.DisplayContext.SetConstraintJoinPath"/>
 	<ResourceString name="ModelErrorDisplayContextSubquery" model="Model" resourceName="ModelError.DisplayContext.Subquery"/>
 	<ResourceString name="ModelErrorDisplayContextSubtypeDerivationRule" model="Model" resourceName="ModelError.DisplayContext.SubtypeDerivationRule"/>
-	<ResourceString name="ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text"/>
-	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesText" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text"/>
+	<ResourceString name="ModelErrorFrequencyConstraintViolatedByUniquenessConstraint" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text"/>
+	<ResourceString name="ModelErrorFrequencyConstraintViolatedByUniquenessConstraintCompact" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.CompactText"/>
+	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequences" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.Text"/>
+	<ResourceString name="ModelErrorConstraintHasTooManyRoleSequencesCompact" model="Model" resourceName="ModelError.Constraint.TooManyRoleSequences.CompactText"/>
 	<ResourceString name="ModelErrorConstraintExternalConstraintArityMismatch" model="Model" resourceName="ModelError.Constraint.ExternalConstraintArityMismatch.Text"/>
+	<ResourceString name="ModelErrorConstraintExternalConstraintArityMismatchCompact" model="Model" resourceName="ModelError.Constraint.ExternalConstraintArityMismatch.CompactText"/>
 	<ResourceString name="ModelErrorJoinPathProjectionRequired" model="Model" resourceName="ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.Text"/>
+	<ResourceString name="ModelErrorJoinPathProjectionRequiredCompact" model="Model" resourceName="ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.CompactText"/>
 	<ResourceString name="ModelErrorJoinPathPartialProjection" model="Model" resourceName="ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.Text"/>
+	<ResourceString name="ModelErrorJoinPathPartialProjectionCompact" model="Model" resourceName="ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.CompactText"/>
 	<ResourceString name="ModelErrorModelHasDuplicateConstraintNames" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.Text"/>
+	<ResourceString name="ModelErrorModelHasDuplicateConstraintNamesCompact" model="Model" resourceName="ModelError.Model.DuplicateConstraintNames.CompactText"/>
 	<ResourceString name="ModelErrorModelHasDuplicateFunctionNames" model="Model" resourceName="ModelError.Model.DuplicateFunctionNames.Text"/>
+	<ResourceString name="ModelErrorModelHasDuplicateFunctionNamesCompact" model="Model" resourceName="ModelError.Model.DuplicateFunctionNames.CompactText"/>
 	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNames" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.Text"/>
+	<ResourceString name="ModelErrorModelHasDuplicateObjectTypeNamesCompact" model="Model" resourceName="ModelError.Model.DuplicateObjectTypeNames.CompactText"/>
 	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhraseNames" model="Model" resourceName="ModelError.Model.DuplicateRecognizedPhraseNames.Text"/>
+	<ResourceString name="ModelErrorModelHasDuplicateRecognizedPhraseNamesCompact" model="Model" resourceName="ModelError.Model.DuplicateRecognizedPhraseNames.CompactText"/>
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithNamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.Role.Text"/>
+	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithNamedRoleCompact" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.Role.CompactText"/>
 	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.Text"/>
+	<ResourceString name="ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRoleCompact" model="Model" resourceName="ModelError.Model.PopulationUniquenessError.FactType.CompactText"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryError" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.Text"/>
+	<ResourceString name="ModelErrorModelHasPopulationMandatoryErrorCompact" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.CompactText"/>
 	<ResourceString name="ModelErrorModelHasPopulationMandatoryErrorAdditionalFactType" model="Model" resourceName="ModelError.Model.PopulationMandatoryError.AdditionalFactTypeText"/>
 	<ResourceString name="ModelErrorRolePathObjectUnifierIncompatibleCorrelation" model="Model" resourceName="ModelError.RolePath.ObjectUnifierRequiresCompatibleObjectTypes.Text"/>
+	<ResourceString name="ModelErrorRolePathObjectUnifierIncompatibleCorrelationCompact" model="Model" resourceName="ModelError.RolePath.ObjectUnifierRequiresCompatibleObjectTypes.CompactText"/>
 	<ResourceString name="ModelErrorRolePathIncompatibleJoin" model="Model" resourceName="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.Text"/>
+	<ResourceString name="ModelErrorRolePathIncompatibleJoinCompact" model="Model" resourceName="ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.CompactText"/>
 	<ResourceString name="ModelErrorRolePathSameFactTypeRoleFollowsJoin" model="Model" resourceName="ModelError.RolePath.SameFactTypeRoleFollowsJoin.Text"/>
+	<ResourceString name="ModelErrorRolePathSameFactTypeRoleFollowsJoinCompact" model="Model" resourceName="ModelError.RolePath.SameFactTypeRoleFollowsJoin.CompactText"/>
 	<ResourceString name="ModelErrorRolePathStartRoleFollowsRootObjectType" model="Model" resourceName="ModelError.RolePath.StartRoleFollowsRootObjectType.Text"/>
 	<ResourceString name="ModelErrorRolePathMandatoryOuterJoin" model="Model" resourceName="ModelError.RolePath.OuterJoinRequiresOptionalRole.Text"/>
+	<ResourceString name="ModelErrorRolePathMandatoryOuterJoinCompact" model="Model" resourceName="ModelError.RolePath.OuterJoinRequiresOptionalRole.CompactText"/>
 	<ResourceString name="ModelErrorRolePathRequiresRootObjectType" model="Model" resourceName="ModelError.RolePath.RequiresRootObjectType.Text"/>
+	<ResourceString name="ModelErrorRolePathRequiresRootObjectTypeCompact" model="Model" resourceName="ModelError.RolePath.RequiresRootObjectType.CompactText"/>
 	<ResourceString name="ModelErrorRoleProjectedDerivationRuleProjectionRequired" model="Model" resourceName="ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.Text"/>
+	<ResourceString name="ModelErrorRoleProjectedDerivationRuleProjectionRequiredCompact" model="Model" resourceName="ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.CompactText"/>
 	<ResourceString name="ModelErrorRoleProjectedDerivationRulePartialProjection" model="Model" resourceName="ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.Text"/>
+	<ResourceString name="ModelErrorRoleProjectedDerivationRulePartialProjectionCompact" model="Model" resourceName="ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.CompactText"/>
 	<ResourceString name="ModelErrorValueConstraintValueTypeDetachedError" model="Model" resourceName="ModelError.ValueConstraint.ValueTypeDetachedError.Message"/>
+	<ResourceString name="ModelErrorValueConstraintValueTypeDetachedErrorCompact" model="Model" resourceName="ModelError.ValueConstraint.ValueTypeDetachedError.CompactMessage"/>
 	<ResourceString name="ModelErrorValueConstraintValueRangeOverlapError" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.Message"/>
+	<ResourceString name="ModelErrorValueConstraintValueRangeOverlapErrorCompact" model="Model" resourceName="ModelError.ValueConstraint.ValueRangeOverlapError.CompactMessage"/>
 	<ResourceString name="ModelErrorValueRangeMaxValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.Message"/>
+	<ResourceString name="ModelErrorValueRangeMaxValueMismatchErrorCompact" model="Model" resourceName="ModelError.ValueRange.MaxValueMismatchError.CompactMessage"/>
 	<ResourceString name="ModelErrorValueRangeMinValueMismatchError" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.Message"/>
+	<ResourceString name="ModelErrorValueRangeMinValueMismatchErrorCompact" model="Model" resourceName="ModelError.ValueRange.MinValueMismatchError.CompactMessage"/>
 	<ResourceString name="ModelErrorUncategorized" model="Model" resourceName="ModelError.UncategorizedModelError.CategoryDisplayName"/>
 	<ResourceString name="ModelErrorDisplayFilteredText" model="Model" resourceName="ModelErrorDisplayFilter.ToStringOverrideText"/>
 	<ResourceString name="ModelExceptionPathConstantInconsistentWithBagInput" model="Model" resourceName="ModelException.CalculatedPathValueInputBindsToPathConstant.PathConstantInconsistentWithBagInput"/>
@@ -385,20 +431,34 @@
 	<ResourceString name="ModelExceptionSupertypeMetaRoleUnsupportedConstraintType" model="Model" resourceName="ModelException.SupertypeMetaRole.UnsupportedConstraintType"/>
 	<ResourceString name="ModelReferenceModePickerFormatString" model="Model" resourceName="ModelReferenceModePicker.FormatString"/>
 	<ResourceString name="ModelErrorReadingDuplicateSignature" model="Model" resourceName="ModelError.Reading.DuplicateSignature.Text"/>
+	<ResourceString name="ModelErrorReadingDuplicateSignatureCompact" model="Model" resourceName="ModelError.Reading.DuplicateSignature.CompactText"/>
 	<ResourceString name="ModelErrorReadingTooFewRolesMessage" model="Model" resourceName="ModelError.Reading.TooFewRoles.Message"/>
+	<ResourceString name="ModelErrorReadingTooFewRolesCompactMessage" model="Model" resourceName="ModelError.Reading.TooFewRoles.CompactMessage"/>
 	<ResourceString name="ModelErrorReadingRequiresUserModificationMessage" model="Model" resourceName="ModelError.Reading.RequiresUserModification.Message"/>
+	<ResourceString name="ModelErrorReadingRequiresUserModificationCompactMessage" model="Model" resourceName="ModelError.Reading.RequiresUserModification.CompactMessage"/>
+	<ResourceString name="ModelErrorReadingTooManyRolesCompactMessage" model="Model" resourceName="ModelError.Reading.TooManyRoles.CompactMessage"/>
 	<ResourceString name="ModelErrorReadingTooManyRolesMessage" model="Model" resourceName="ModelError.Reading.TooManyRoles.Message"/>
 	<ResourceString name="ModelReadingRoleDeletedRoleText" model="Model" resourceName="Model.Reading.RoleDeletedText"/>
-	<ResourceString name="ModelErrorElementGroupingDuplicateNameError" model="Model" resourceName="ModelError.ElementGrouping.DuplicateNameError.Message"/>
+	<ResourceString name="ModelErrorElementGroupingDuplicateName" model="Model" resourceName="ModelError.ElementGrouping.DuplicateNameError.Message"/>
+	<ResourceString name="ModelErrorElementGroupingDuplicateNameCompact" model="Model" resourceName="ModelError.ElementGrouping.DuplicateNameError.CompactMessage"/>
 	<ResourceString name="ModelErrorElementGroupingMembershipContradictionError" model="Model" resourceName="ModelError.ElementGrouping.MembershipContradictionError.Message"/>
+	<ResourceString name="ModelErrorElementGroupingMembershipContradictionErrorCompact" model="Model" resourceName="ModelError.ElementGrouping.MembershipContradictionError.CompactMessage"/>
 	<ResourceString name="ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage" model="Model" resourceName="ModelError.FactType.RequiresInternalUniquenessConstraint.Message"/>
+	<ResourceString name="ModelErrorFactTypeRequiresInternalUniquenessConstraintCompactMessage" model="Model" resourceName="ModelError.FactType.RequiresInternalUniquenessConstraint.CompactMessage"/>
 	<ResourceString name="ModelErrorFactTypeRequiresReadingMessage" model="Model" resourceName="ModelError.FactType.RequiresReading.Message"/>
+	<ResourceString name="ModelErrorFactTypeRequiresReadingMessageCompact" model="Model" resourceName="ModelError.FactType.RequiresReading.CompactMessage"/>
 	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessage" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.Message"/>
+	<ResourceString name="ModelErrorValueTypeDataTypeNotSpecifiedMessageCompact" model="Model" resourceName="ModelError.ValueType.DataTypeNotSpecified.CompactMessage"/>
 	<ResourceString name="ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredMessage" model="Model" resourceName="ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.Message"/>
+	<ResourceString name="ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredCompactMessage" model="Model" resourceName="ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.CompactMessage"/>
 	<ResourceString name="ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage" model="Model" resourceName="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message"/>
+	<ResourceString name="ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesCompactMessage" model="Model" resourceName="ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.CompactMessage"/>
 	<ResourceString name="ModelErrorFactTypeInstanceObjectifyingInstanceRequiredMessage" model="Model" resourceName="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.Message"/>
+	<ResourceString name="ModelErrorFactTypeInstanceObjectifyingInstanceRequiredCompactMessage" model="Model" resourceName="ModelError.FactTypeInstance.ObjectifyingInstanceRequired.CompactMessage"/>
 	<ResourceString name="ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage" model="Model" resourceName="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message"/>
+	<ResourceString name="ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesCompactMessage" model="Model" resourceName="ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.CompactMessage"/>
 	<ResourceString name="ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage" model="Model" resourceName="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message"/>
+	<ResourceString name="ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueCompactMessage" model="Model" resourceName="ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.CompactMessage"/>
 	<ResourceString name="ExclusiveOrConstraint" model="Model" resourceName="ExclusiveOrConstraint.ClassName"/>
 	<ResourceString name="ExclusiveOrConstraintMandatoryConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.MandatoryConstraintName.DisplayName"/>
 	<ResourceString name="ExclusiveOrConstraintExclusionConstraintNameDisplayName" model="Model" resourceName="ExclusiveOrConstraint.ExclusionConstraintName.DisplayName"/>
@@ -452,28 +512,47 @@
 	<ResourceString name="ReadingShapeAttachedRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedRoleDisplay"/>
 	<ResourceString name="ReadingShapeAttachedDuplicateRoleDisplay" model="Diagram" resourceName="ReadingShape.AttachedDuplicateRoleDisplay"/>
 	<ResourceString name="ReadingShapeUnattachedRoleDisplay" model="Diagram" resourceName="ReadingShape.UnattachedRoleDisplay"/>
-	<ResourceString name="NMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text"/>
+	<ResourceString name="ModelErrorNMinusOneRuleInternalSpan" model="Model" resourceName="ModelError.FactType.NMinusOneRule.Text"/>
+	<ResourceString name="ModelErrorNMinusOneRuleInternalSpanCompact" model="Model" resourceName="ModelError.FactType.NMinusOneRule.CompactText"/>
 	<ResourceString name="ModelErrorConstraintRoleProjectionAutomaticProjectionUnavailable" model="Model" resourceName="ModelError.ConstraintRoleProjection.AutomaticProjectionUnavailable.Text"/>
 	<ResourceString name="ModelErrorConstraintRoleProjectionAutomaticProjectionUnavailableForAutomaticJoinPath" model="Model" resourceName="ModelError.ConstraintRoleProjection.AutomaticProjectionUnavailableForAutomaticJoinPath.Text"/>
 	<ResourceString name="ModelErrorConstraintRoleProjectionIncompatibleProjection" model="Model" resourceName="ModelError.ConstraintRoleProjection.IncompatibleProjection.Text"/>
+	<ResourceString name="ModelErrorConstraintRoleProjectionIncompatibleProjectionCompact" model="Model" resourceName="ModelError.ConstraintRoleProjection.IncompatibleProjection.CompactText"/>
 	<ResourceString name="ModelErrorConstraintRoleSequenceJoinPathRequiredError" model="Model" resourceName="ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text"/>
+	<ResourceString name="ModelErrorConstraintRoleSequenceJoinPathRequiredErrorCompact" model="Model" resourceName="ModelError.ConstraintRoleSequence.JoinPathRequiredError.CompactText"/>
 	<ResourceString name="ModelErrorDerivedRoleProjectionProjectionAutomaticProjectionUnavailable" model="Model" resourceName="ModelError.DerivedRoleProjection.AutomaticProjectionUnavailable.Text"/>
 	<ResourceString name="ModelErrorDerivedRoleProjectionIncompatibleProjection" model="Model" resourceName="ModelError.DerivedRoleProjection.IncompatibleProjection.Text"/>
+	<ResourceString name="ModelErrorDerivedRoleProjectionIncompatibleProjectionCompact" model="Model" resourceName="ModelError.DerivedRoleProjection.IncompatibleProjection.CompactText"/>
 	<ResourceString name="ModelErrorSetConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text"/>
+	<ResourceString name="ModelErrorSetConstraintCompatibleRolePlayerTypeErrorCompact" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.Set.CompactText"/>
 	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeError" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text"/>
+	<ResourceString name="ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeErrorCompact" model="Model" resourceName="ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.CompactText"/>
+	<ResourceString name="ModelErrorSetComparisonConstraintRoleSequenceJoinPathRequiredErrorCompact" model="Model" resourceName="ModelError.SetComparisonConstraintRoleSequence.JoinPathRequiredError.CompactText"/>
 	<ResourceString name="ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError" model="Model" resourceName="ModelError.Constraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Text"/>
+	<ResourceString name="ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorCompact" model="Model" resourceName="ModelError.Constraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.CompactText"/>
 	<ResourceString name="ModelErrorRolePlayerRequiredError" model="Model" resourceName="ModelError.Role.RolePlayerRequired.Message"/>
-	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesError" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message"/>
-	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message"/>
+	<ResourceString name="ModelErrorRolePlayerRequiredErrorCompact" model="Model" resourceName="ModelError.Role.RolePlayerRequired.CompactMessage"/>
+	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypes" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.Message"/>
+	<ResourceString name="ModelErrorObjectTypeCompatibleSupertypesCompact" model="Model" resourceName="ModelError.ObjectType.CompatibleSupertypesError.CompactMessage"/>
+	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatory" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message"/>
+	<ResourceString name="ModelErrorObjectTypePreferredIdentifierRequiresMandatoryCompact" model="Model" resourceName="ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.CompactMessage"/>
 	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.Message"/>
+	<ResourceString name="ModelErrorEntityTypeRequiresReferenceSchemeCompactMessage" model="Model" resourceName="ModelError.EntityType.RequiresReferenceScheme.CompactMessage"/>
 	<ResourceString name="ModelErrorRingConstraintTypeNotSpecified" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message"/>
+	<ResourceString name="ModelErrorRingConstraintTypeNotSpecifiedCompact" model ="Model" resourceName="ModelError.Constraint.RingConstraintTypeNotSpecifiedError.CompactMessage"/>
 	<ResourceString name="ModelErrorValueComparisonConstraintOperatorNotSpecified" model ="Model" resourceName="ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.Message"/>
+	<ResourceString name="ModelErrorValueComparisonConstraintOperatorNotSpecifiedCompact" model ="Model" resourceName="ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.CompactMessage"/>
 	<ResourceString name="ModelErrorValueComparisonRolesNotComparable" model ="Model" resourceName="ModelError.Constraint.ValueComparisonRolesNotComparableError.Message"/>
+	<ResourceString name="ModelErrorValueComparisonRolesNotComparableCompact" model ="Model" resourceName="ModelError.Constraint.ValueComparisonRolesNotComparableError.CompactMessage"/>
 	<ResourceString name="ModelErrorFrequencyConstraintMinMaxError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.Text"/>
+	<ResourceString name="ModelErrorFrequencyConstraintMinMaxErrorCompact" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintMinMaxError.CompactText"/>
 	<ResourceString name="ModelErrorFrequencyConstraintExactlyOneError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintExactlyOneError.Text"/>
+	<ResourceString name="ModelErrorFrequencyConstraintExactlyOneErrorCompact" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintExactlyOneError.CompactText"/>
 	<ResourceString name="ModelErrorFrequencyConstraintNonRestrictiveRangeError" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.Text"/>
+	<ResourceString name="ModelErrorFrequencyConstraintNonRestrictiveRangeErrorCompact" model="Model" resourceName="ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.CompactText"/>
 	<ResourceString name="ModelVerbalizationWindowTitle" model="Model" resourceName="ModelVerbalization.WindowTitle"/>
 	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintError" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text"/>
+	<ResourceString name="ModelErrorImpliedInternalUniquenessConstraintErrorCompact" model="Model" resourceName="ModelError.FactType.ImpliedInternalUniquenessConstraintError.CompactText"/>
 	<ResourceString name="CopyMergeExtensionRequiredMessage" model="Diagram" resourceName="MessageBox.CopyMergeExtensionRequired.Message"/>
 	<ResourceString name="CopyMergeExtensionRequiredMessageJoinSeparator" model="Diagram" resourceName="MessageBox.CopyMergeExtensionRequired.Message.JoinSeparator"/>
 	<ResourceString name="ElementNotInModelBrowserMessage" model="Diagram" resourceName="MessageBox.ElementNotInModelBrowser.Message"/>

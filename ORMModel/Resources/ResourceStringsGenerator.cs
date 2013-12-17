@@ -852,6 +852,22 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ModelErrorDisplayFilterChange.TransactionName");
 			}
 		}
+		/// <summary>The transaction name used when display of a specific error type is disabled by selecting an instance of that error type. The text appears in the undo dropdown in the VS IDE.</summary>
+		public static string ModelErrorDisplayFilterChangeErrorDisabledTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ModelErrorDisplayFilterChange.ErrorDisabled.TransactionName");
+			}
+		}
+		/// <summary>The transaction name used when display of a specific error type is enabled by selecting an instance of that error type. The text appears in the undo dropdown in the VS IDE.</summary>
+		public static string ModelErrorDisplayFilterChangeErrorEnabledTransactionName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ModelErrorDisplayFilterChange.ErrorEnabled.TransactionName");
+			}
+		}
 		/// <summary>The transaction name used when an options page change modifies diagram layout and connections. The text appears in the undo dropdown in the VS IDE.</summary>
 		public static string OptionsPageChangeTransactionName
 		{
@@ -1052,12 +1068,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.Text");
 			}
 		}
+		/// <summary>Model validation error text for an aggregate calculation with no aggregation context. Compact form.</summary>
+		public static string ModelErrorCalculatedPathValueRequiresAggregationContextCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueRequiresAggregationContext.CompactText");
+			}
+		}
 		/// <summary>Model validation error text for a path calculation without no specified function. {0}=error display context</summary>
 		public static string ModelErrorCalculatedPathValueRequiresFunction
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.Text");
+			}
+		}
+		/// <summary>Model validation error text for a path calculation without no specified function. Compact form.</summary>
+		public static string ModelErrorCalculatedPathValueRequiresFunctionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueRequiresFunction.CompactText");
 			}
 		}
 		/// <summary>Model validation error text for a path calculation with no binding for some parameter. {0}=error display context,{1}=parameter name</summary>
@@ -1068,12 +1100,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.Text");
 			}
 		}
+		/// <summary>Model validation error text for a path calculation with no binding for some parameter. Compact form. {0}=parameter name</summary>
+		public static string ModelErrorCalculatedPathValueParameterBindingCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueParameterBinding.CompactText");
+			}
+		}
 		/// <summary>Model validation error text for a path calculation with a result that is not being used. {0}=error display context</summary>
 		public static string ModelErrorCalculatedPathValueMustBeConsumed
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.Text");
+			}
+		}
+		/// <summary>Model validation error text for a path calculation with a result that is not being used. Compact form.</summary>
+		public static string ModelErrorCalculatedPathValueMustBeConsumedCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CalculatedPathValue.CalculatedPathValueMustBeConsumed.CompactText");
 			}
 		}
 		/// <summary>CardinalityRangeOverlapError text with owner place holder. The resulting sentence will be capitablized automatically. {0}=owner information</summary>
@@ -1084,12 +1132,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CardinalityConstraint.CardinalityRangeOverlapError.Message");
 			}
 		}
+		/// <summary>CardinalityRangeOverlapError compact text</summary>
+		public static string ModelErrorCardinalityConstraintCardinalityRangeOverlapCompactError
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.CardinalityConstraint.CardinalityRangeOverlapError.CompactMessage");
+			}
+		}
 		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a subset of the constraint roles.</summary>
 		public static string ModelErrorConstraintImplicationBySubset
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.ImpliedBySubsetText");
+			}
+		}
+		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a subset of the constraint roles. Compact form.</summary>
+		public static string ModelErrorConstraintImplicationBySubsetCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.ImpliedBySubsetCompactText");
 			}
 		}
 		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a superset of the constraint roles.</summary>
@@ -1100,12 +1164,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.ImpliedBySupersetText");
 			}
 		}
+		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraint's roles are a superset of the constraint roles. Compact form.</summary>
+		public static string ModelErrorConstraintImplicationBySupersetCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ImplicationError.ImpliedBySupersetCompactText");
+			}
+		}
 		/// <summary>Model validation error text when a single-column equality constraint is put on a set of mandatory roles.</summary>
 		public static string ModelErrorConstraintImplicationEqualityMandatory
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.EqualityImpliedByMandatoryError.Text");
+			}
+		}
+		/// <summary>Model validation error text when a single-column equality constraint is put on a set of mandatory roles. Compact form.</summary>
+		public static string ModelErrorConstraintImplicationEqualityMandatoryCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.EqualityImpliedByMandatoryError.CompactText");
 			}
 		}
 		/// <summary>Model validation error text when a single-column subset constraint targets a mandatory role.</summary>
@@ -1116,12 +1196,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SubsetImpliedByMandatoryError.Text");
 			}
 		}
+		/// <summary>Model validation error text when a single-column subset constraint targets a mandatory role. Compact form.</summary>
+		public static string ModelErrorConstraintImplicationSubsetMandatoryCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SubsetImpliedByMandatoryError.CompactText");
+			}
+		}
 		/// <summary>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship.</summary>
 		public static string ModelErrorNotWellModeledSubsetAndMandatoryError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.Text");
+			}
+		}
+		/// <summary>Model validation error text when a mandatory constraint is put on the subset role of a subset constraint relationship. Compact form</summary>
+		public static string ModelErrorNotWellModeledSubsetAndMandatoryErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.NotWellModeledSubsetAndMandatoryError.CompactText");
 			}
 		}
 		/// <summary>Model validation error text when a constraint intersects a second constraint where the second constraints roles are a subset of the constraint roles and are in a state of contradiction.</summary>
@@ -1132,12 +1228,44 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ContradictionError.Text");
 			}
 		}
+		/// <summary>Model validation error text when overlapping exclusion and equality constraints are contradictory. Compact form.</summary>
+		public static string ModelErrorConstraintExclusionAndEqualityContradictionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExclusionAndEqualityContradiction.CompactText");
+			}
+		}
+		/// <summary>Model validation error text when overlapping exclusion and mandatory constraint are contradictory. Compact form.</summary>
+		public static string ModelErrorConstraintExclusionAndMandatoryContradictionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExclusionAndMandatoryContradiction.CompactText");
+			}
+		}
+		/// <summary>Model validation error text when overlapping exclusion and subset constraints are contradictory. Compact form.</summary>
+		public static string ModelErrorConstraintExclusionAndSubsetContradictionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExclusionAndSubsetContradiction.CompactText");
+			}
+		}
 		/// <summary>Model validation error text when too few role sequences are specified for a constraint that requires exactly two role sequences. {0}=constraint name, {1}=model name, {2}=addendum describing current sequence state for the constraint.</summary>
 		public static string ModelErrorConstraintHasTooFewRoleSequencesExactlyTwo
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.ExactlyTwo");
+			}
+		}
+		/// <summary>Model validation error text when too few role sequences are specified for a constraint that requires exactly two role sequences. Compact form. {0}=addendum describing current sequence state for the constraint.</summary>
+		public static string ModelErrorConstraintHasTooFewRoleSequencesExactlyTwoCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.ExactlyTwo.Compact");
 			}
 		}
 		/// <summary>Model validation error text when too few role sequences are specified for a constraint that requires multiple role sequences. {0}=constraint name, {1}=model name, {2}=addendum describing current sequence state for the constraint.</summary>
@@ -1148,12 +1276,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.TwoOrMore");
 			}
 		}
+		/// <summary>Model validation error text when too few role sequences are specified for a constraint that requires multiple role sequences. Compact form. {0}=addendum describing current sequence state for the constraint.</summary>
+		public static string ModelErrorConstraintHasTooFewRoleSequencesTwoOrMoreCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.TwoOrMore.Compact");
+			}
+		}
 		/// <summary>Addendum for too few role sequences messages when no sequences are constrained.</summary>
 		public static string ModelErrorConstraintHasTooFewRoleSequencesNoSequenceAddendum
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.NoSequenceAddendum");
+			}
+		}
+		/// <summary>Addendum for too few role sequences messages when no sequences are constrained. Compact form.</summary>
+		public static string ModelErrorConstraintHasTooFewRoleSequencesNoSequenceAddendumCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.NoSequenceAddendum.Compact");
 			}
 		}
 		/// <summary>Addendum for too few role sequences messages when one sequence is constrained. {0}=count of roles in the single sequence.</summary>
@@ -1164,12 +1308,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.OneSequenceAddendum");
 			}
 		}
+		/// <summary>Addendum for too few role sequences messages when one sequence is constrained. Compact form. {0}=count of roles in the single sequence.</summary>
+		public static string ModelErrorConstraintHasTooFewRoleSequencesOneSequenceAddendumCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewRoleSequences.OneSequenceAddendum.Compact");
+			}
+		}
 		/// <summary>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring exactly two roles. {0}=constraint name, {1}=model name, {2}=addendum describing current role count for the constraint.</summary>
 		public static string ModelErrorConstraintHasTooFewSequenceRolesExactlyTwo
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.ExactlyTwo");
+			}
+		}
+		/// <summary>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring exactly two roles. Compact form. {0}=addendum describing current role count for the constraint.</summary>
+		public static string ModelErrorConstraintHasTooFewSequenceRolesExactlyTwoCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.ExactlyTwo.Compact");
 			}
 		}
 		/// <summary>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring two or more roles. {0}=constraint name, {1}=model name, {2}=addendum describing current role count for the constraint.</summary>
@@ -1180,6 +1340,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.TwoOrMore");
 			}
 		}
+		/// <summary>Model validation error text when too few roles are specified for a constraint with a single role sequence requiring two or more roles. Compact form. {0}=addendum describing current role count for the constraint.</summary>
+		public static string ModelErrorConstraintHasTooFewSequenceRolesTwoOrMoreCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.TwoOrMore.Compact");
+			}
+		}
 		/// <summary>Addendum for too few sequence roles messages when no roles are constrained.</summary>
 		public static string ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendum
 		{
@@ -1188,12 +1356,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum");
 			}
 		}
+		/// <summary>Addendum for too few sequence roles messages when no roles are constrained. Compact form.</summary>
+		public static string ModelErrorConstraintHasTooFewSequenceRolesNoRoleAddendumCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.NoRoleAddendum.Compact");
+			}
+		}
 		/// <summary>Addendum for too few sequence roles messages when a single role is constrained.</summary>
 		public static string ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendum
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum");
+			}
+		}
+		/// <summary>Addendum for too few sequence roles messages when a single role is constrained. Compact form.</summary>
+		public static string ModelErrorConstraintHasTooFewSequenceRolesOneRoleAddendumCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooFewSequenceRoles.OneRoleAddendum.Compact");
 			}
 		}
 		/// <summary>Dynamic text replacement for an error associated a normal FactType. Automatically capitalized on replacement. {0}=FactType {1}=Model.</summary>
@@ -1277,19 +1461,35 @@ namespace ORMSolutions.ORMArchitect.Core
 			}
 		}
 		/// <summary>Model validation error text used when a frequency constraint is places on the same roles as a uniqueness constraint. {0}=constraint name {1}=model name</summary>
-		public static string ModelErrorFrequencyConstraintViolatedByUniquenessConstraintText
+		public static string ModelErrorFrequencyConstraintViolatedByUniquenessConstraint
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.Text");
 			}
 		}
+		/// <summary>Model validation error text used when a frequency constraint is places on the same roles as a uniqueness constraint. Compact form.</summary>
+		public static string ModelErrorFrequencyConstraintViolatedByUniquenessConstraintCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintViolatedByUniquenessConstraintError.CompactText");
+			}
+		}
 		/// <summary>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file. {0}=constraint name, {1}=model name</summary>
-		public static string ModelErrorConstraintHasTooManyRoleSequencesText
+		public static string ModelErrorConstraintHasTooManyRoleSequences
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooManyRoleSequences.Text");
+			}
+		}
+		/// <summary>Model validation error text when too many role sequences are specified for a constraint. This is an uncommon condition that should only occur with a hand edit to a model file. Compact form.</summary>
+		public static string ModelErrorConstraintHasTooManyRoleSequencesCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.TooManyRoleSequences.CompactText");
 			}
 		}
 		/// <summary>Model validation error text when role sequences in a multi column constraint have different role counts (arity). {0}=constraint name, {1}=model name</summary>
@@ -1300,12 +1500,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalConstraintArityMismatch.Text");
 			}
 		}
+		/// <summary>Model validation error compact text when role sequences in a multi column constraint have different role counts (arity).</summary>
+		public static string ModelErrorConstraintExternalConstraintArityMismatchCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ExternalConstraintArityMismatch.CompactText");
+			}
+		}
 		/// <summary>Model validation error text for a constraint join path with no path projection. {0}=error display context</summary>
 		public static string ModelErrorJoinPathProjectionRequired
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.Text");
+			}
+		}
+		/// <summary>Model validation error text for a constraint join path with no path projection. Compact form.</summary>
+		public static string ModelErrorJoinPathProjectionRequiredCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequenceJoinPath.ConstraintRoleSequenceJoinPathRequiresProjection.CompactText");
 			}
 		}
 		/// <summary>Model validation error text for a constraint join path projection that does not project all constraint roles. {0}=error display context</summary>
@@ -1316,6 +1532,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.Text");
 			}
 		}
+		/// <summary>Model validation error text for a constraint join path projection that does not project all constraint roles. Compact form.</summary>
+		public static string ModelErrorJoinPathPartialProjectionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequenceJoinPath.PartialConstraintRoleSequenceJoinPathProjection.CompactText");
+			}
+		}
 		/// <summary>Model validation error text used when multiple constraints with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorModelHasDuplicateConstraintNames
 		{
@@ -1324,7 +1548,15 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateConstraintNames.Text");
 			}
 		}
-		/// <summary>Model validation error text used when multiple functions with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		/// <summary>Model validation error text used when multiple constraints with the same name are loaded into a model. Compact form. Field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorModelHasDuplicateConstraintNamesCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateConstraintNames.CompactText");
+			}
+		}
+		/// <summary>Model validation error text used when multiple functions with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorModelHasDuplicateFunctionNames
 		{
 			get
@@ -1332,7 +1564,15 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateFunctionNames.Text");
 			}
 		}
-		/// <summary>Model validation error text used when multiple object types with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		/// <summary>Model validation error text used when multiple functions with the same name are loaded into a model. Compact form. Field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorModelHasDuplicateFunctionNamesCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateFunctionNames.CompactText");
+			}
+		}
+		/// <summary>Model validation error text used when multiple object types with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorModelHasDuplicateObjectTypeNames
 		{
 			get
@@ -1340,12 +1580,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateObjectTypeNames.Text");
 			}
 		}
-		/// <summary>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		/// <summary>Model validation error text used when multiple object types with the same name are loaded into a model. Compact form. Field 0 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorModelHasDuplicateObjectTypeNamesCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateObjectTypeNames.CompactText");
+			}
+		}
+		/// <summary>Model validation error text used when multiple recognized phrases with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorModelHasDuplicateRecognizedPhraseNames
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateRecognizedPhraseNames.Text");
+			}
+		}
+		/// <summary>Model validation error text used when multiple recognized phrases with the same name are loaded into a model. Compact form. Field 0 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorModelHasDuplicateRecognizedPhraseNamesCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.DuplicateRecognizedPhraseNames.CompactText");
 			}
 		}
 		/// <summary>Model validation error shown when a population violates a uniqueness constraint and its role is named.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the role name.</summary>
@@ -1356,6 +1612,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationUniquenessError.Role.Text");
 			}
 		}
+		/// <summary>Model validation error shown when a population violates a uniqueness constraint and its role is named. Compact form. Field 0 is the string representation of the instance, field 1 is the role name.</summary>
+		public static string ModelErrorModelHasPopulationUniquenessErrorWithNamedRoleCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationUniquenessError.Role.CompactText");
+			}
+		}
 		/// <summary>Model validation error shown when a population violates a uniqueness constraint and its role is unnamed.  Field 0 is the name of the object type, field 1 is the string representation of the instance, field 2 is the model name, field 3 is the facttype name.</summary>
 		public static string ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRole
 		{
@@ -1364,12 +1628,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationUniquenessError.FactType.Text");
 			}
 		}
+		/// <summary>Model validation error shown when a population violates a uniqueness constraint and its role is unnamed. Compact form. Field 0 is the string representation of the instance, field 1 is the facttype name.</summary>
+		public static string ModelErrorModelHasPopulationUniquenessErrorWithUnnamedRoleCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationUniquenessError.FactType.CompactText");
+			}
+		}
 		/// <summary>Model validation error shown when a population violates a mandatory constraint. Field 0 is the name of the role player, field 1 is the derived name of the instance, field 2 is the model name, field 3 is the name of the first facttype name, field 4 is a placeholder for additional fact types.</summary>
 		public static string ModelErrorModelHasPopulationMandatoryError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationMandatoryError.Text");
+			}
+		}
+		/// <summary>Model validation error shown when a population violates a mandatory constraint. Compact form. Field 0 is the derived name of the instance, field 2 is the name of the first facttype name, field 3 is a placeholder for additional fact types.</summary>
+		public static string ModelErrorModelHasPopulationMandatoryErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Model.PopulationMandatoryError.CompactText");
 			}
 		}
 		/// <summary>Model validation error shown when a population violates a mandatory constraint (additional fact types). Field 0 is the name of the fact type, field 1 is the following fact type (replaced by yet another trailing fact type, if available).</summary>
@@ -1388,6 +1668,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.ObjectUnifierRequiresCompatibleObjectTypes.Text");
 			}
 		}
+		/// <summary>Model validation error text for explicit object unifiers relating multiple disconnected pathed roles and path roots. Compact form.</summary>
+		public static string ModelErrorRolePathObjectUnifierIncompatibleCorrelationCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.ObjectUnifierRequiresCompatibleObjectTypes.CompactText");
+			}
+		}
 		/// <summary>Model validation error text for a join to a pathed role with a role player that is not compatible with the join source. {0}=error display context</summary>
 		public static string ModelErrorRolePathIncompatibleJoin
 		{
@@ -1396,12 +1684,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.Text");
 			}
 		}
+		/// <summary>Model validation error text for a join to a pathed role with a role player that is not compatible with the join source. Compact form.</summary>
+		public static string ModelErrorRolePathIncompatibleJoinCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.JoinedPathRoleRequiresCompatibleRolePlayer.CompactText");
+			}
+		}
 		/// <summary>Model validation error text for a same fact type role specified without a corresponding start or join role. {0}=error display context</summary>
 		public static string ModelErrorRolePathSameFactTypeRoleFollowsJoin
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.SameFactTypeRoleFollowsJoin.Text");
+			}
+		}
+		/// <summary>Model validation error text for a same fact type role specified without a corresponding start or join role. Compact form.</summary>
+		public static string ModelErrorRolePathSameFactTypeRoleFollowsJoinCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.SameFactTypeRoleFollowsJoin.CompactText");
 			}
 		}
 		/// <summary>Model validation error text for a pathed role that is not marked as a start role or is marked as a start role and should not be. {0}=error display context</summary>
@@ -1420,12 +1724,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.OuterJoinRequiresOptionalRole.Text");
 			}
 		}
+		/// <summary>Model validation error text for an outer join to a mandatory role. Compact form.</summary>
+		public static string ModelErrorRolePathMandatoryOuterJoinCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.OuterJoinRequiresOptionalRole.CompactText");
+			}
+		}
 		/// <summary>Model validation error text for a role path with no root object type. {0}=error display context</summary>
 		public static string ModelErrorRolePathRequiresRootObjectType
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.RequiresRootObjectType.Text");
+			}
+		}
+		/// <summary>Model validation error text for a role path with no root object type. Compact form.</summary>
+		public static string ModelErrorRolePathRequiresRootObjectTypeCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RolePath.RequiresRootObjectType.CompactText");
 			}
 		}
 		/// <summary>Model validation error text for a fact type or query derivation with no path projection. {0}=error display context</summary>
@@ -1436,12 +1756,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.Text");
 			}
 		}
+		/// <summary>Model validation error text for a fact type or query derivation with no path projection. Compact form.</summary>
+		public static string ModelErrorRoleProjectedDerivationRuleProjectionRequiredCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RoleProjectedDerivationRule.RoleProjectDerivationRequiresProjection.CompactText");
+			}
+		}
 		/// <summary>Model validation error text for a fact type or query derivation projection that does not project all roles. {0}=error display context</summary>
 		public static string ModelErrorRoleProjectedDerivationRulePartialProjection
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.Text");
+			}
+		}
+		/// <summary>Model validation error text for a fact type or query derivation projection that does not project all roles. Compact form.</summary>
+		public static string ModelErrorRoleProjectedDerivationRulePartialProjectionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.RoleProjectedDerivationRule.PartialRoleDerivationProjection.CompactText");
 			}
 		}
 		/// <summary>ValueConstraintValueTypeDetachedError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
@@ -1452,12 +1788,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueTypeDetachedError.Message");
 			}
 		}
+		/// <summary>ValueConstraintValueTypeDetachedError text. Compact form.</summary>
+		public static string ModelErrorValueConstraintValueTypeDetachedErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueTypeDetachedError.CompactMessage");
+			}
+		}
 		/// <summary>ValueRangeOverlapError text with owner place holder. The resulting sentence will be capitablized automatically. {0}=owner information</summary>
 		public static string ModelErrorValueConstraintValueRangeOverlapError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.Message");
+			}
+		}
+		/// <summary>ValueRangeOverlapError text. Compact form.</summary>
+		public static string ModelErrorValueConstraintValueRangeOverlapErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueConstraint.ValueRangeOverlapError.CompactMessage");
 			}
 		}
 		/// <summary>MaxValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
@@ -1468,12 +1820,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.Message");
 			}
 		}
+		/// <summary>MaxValueMismatchError text. Compact form.</summary>
+		public static string ModelErrorValueRangeMaxValueMismatchErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MaxValueMismatchError.CompactMessage");
+			}
+		}
 		/// <summary>MinValueMismatchError text with owner place holder. The resulting sentence will be capitalized automatically. {0}=owner information</summary>
 		public static string ModelErrorValueRangeMinValueMismatchError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.Message");
+			}
+		}
+		/// <summary>MinValueMismatchError text. Compact form.</summary>
+		public static string ModelErrorValueRangeMinValueMismatchErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueRange.MinValueMismatchError.CompactMessage");
 			}
 		}
 		/// <summary>Category name to display for uncategorized model errors.</summary>
@@ -2666,12 +3034,20 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModePicker.FormatString");
 			}
 		}
-		/// <summary>Model validation error text used when multiple readings have the same normalized reading signature.Field 0 is the model name, field 1 is the expanded reading signature.</summary>
+		/// <summary>Model validation error text used when multiple readings have the same normalized reading signature. Field 0 is the model name, field 1 is the expanded reading signature.</summary>
 		public static string ModelErrorReadingDuplicateSignature
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.DuplicateSignature.Text");
+			}
+		}
+		/// <summary>Model validation error text used when multiple readings have the same normalized reading signature. Compact form. Field 1 is the expanded reading signature.</summary>
+		public static string ModelErrorReadingDuplicateSignatureCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.DuplicateSignature.CompactText");
 			}
 		}
 		/// <summary>Text displayed in the text of the TooFewRolesError. {0}=fact type display context,{1}=reading text</summary>
@@ -2682,12 +3058,36 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooFewRoles.Message");
 			}
 		}
+		/// <summary>Text displayed in the text of the TooFewRolesError. {0}=fact type display context,{1}=reading text</summary>
+		public static string ModelErrorReadingTooFewRolesCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooFewRoles.CompactMessage");
+			}
+		}
 		/// <summary>Text displayed in the text of the ReadingRequiresUserModificationError. {0}=fact type display context,{1}=reading text</summary>
 		public static string ModelErrorReadingRequiresUserModificationMessage
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.RequiresUserModification.Message");
+			}
+		}
+		/// <summary>Text displayed in the text of the ReadingRequiresUserModificationError. Compact form. {0}=reading text</summary>
+		public static string ModelErrorReadingRequiresUserModificationCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.RequiresUserModification.CompactMessage");
+			}
+		}
+		/// <summary>Text displayed in the text of the TooManyRolesError. Compact form. {0}=reading text</summary>
+		public static string ModelErrorReadingTooManyRolesCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Reading.TooManyRoles.CompactMessage");
 			}
 		}
 		/// <summary>Text displayed in the text of the TooManyRolesError. {0}=fact type display context,{1}=reading text</summary>
@@ -2707,11 +3107,19 @@ namespace ORMSolutions.ORMArchitect.Core
 			}
 		}
 		/// <summary>Model validation error text used when multiple groups with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
-		public static string ModelErrorElementGroupingDuplicateNameError
+		public static string ModelErrorElementGroupingDuplicateName
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ElementGrouping.DuplicateNameError.Message");
+			}
+		}
+		/// <summary>Model validation error text used when multiple groups with the same name are loaded into a model. Compact form. field 0 is the element name. This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		public static string ModelErrorElementGroupingDuplicateNameCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ElementGrouping.DuplicateNameError.CompactMessage");
 			}
 		}
 		/// <summary>Model validation error text used when an element is explicitly included by one grouptype and explicitly excluded by another. Field 0 is the group name, field 1 is the element name.</summary>
@@ -2722,12 +3130,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ElementGrouping.MembershipContradictionError.Message");
 			}
 		}
+		/// <summary>Model validation error text used when an element is explicitly included by one grouptype and explicitly excluded by another. Compact form. Field 0 is the element name.</summary>
+		public static string ModelErrorElementGroupingMembershipContradictionErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ElementGrouping.MembershipContradictionError.CompactMessage");
+			}
+		}
 		/// <summary>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError. {0}=fact type display context</summary>
 		public static string ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresInternalUniquenessConstraint.Message");
+			}
+		}
+		/// <summary>Text displayed in the text of the FactTypeRequiresInternalUniquenessContraintError. Compact form.</summary>
+		public static string ModelErrorFactTypeRequiresInternalUniquenessConstraintCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresInternalUniquenessConstraint.CompactMessage");
 			}
 		}
 		/// <summary>Text displayed in the text of the FactTypeRequiresReadingError. {0}=fact type display context</summary>
@@ -2738,12 +3162,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresReading.Message");
 			}
 		}
+		/// <summary>Text displayed in the text of the FactTypeRequiresReadingError. Compact form.</summary>
+		public static string ModelErrorFactTypeRequiresReadingMessageCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.RequiresReading.CompactMessage");
+			}
+		}
 		/// <summary>Text displayed for an unspecified data type</summary>
 		public static string ModelErrorValueTypeDataTypeNotSpecifiedMessage
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.Message");
+			}
+		}
+		/// <summary>Text displayed for an unspecified data type. Compact form.</summary>
+		public static string ModelErrorValueTypeDataTypeNotSpecifiedMessageCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueType.DataTypeNotSpecified.CompactMessage");
 			}
 		}
 		/// <summary>Text displayed when an objectified fact instance is not associated with an external identifying instance. {0}=instance, {1}=entitytype, {2}=model.</summary>
@@ -2754,12 +3194,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.Message");
 			}
 		}
+		/// <summary>Text displayed when an objectified fact instance is not associated with an external identifying instance. Compact form. {0}=instance</summary>
+		public static string ModelErrorEntityTypeInstanceObjectifiedInstanceRequiredCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.ObjectifiedInstanceRequired.CompactMessage");
+			}
+		}
 		/// <summary>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. {0}=entitytype, {1}=instance, {2}=model.</summary>
 		public static string ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesMessage
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.Message");
+			}
+		}
+		/// <summary>Text displayed when there aren't enough entity type role instances to completely fill a single entity population row. Compact form {0}=instance.</summary>
+		public static string ModelErrorEntityTypeInstanceTooFewEntityTypeRoleInstancesCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityTypeInstance.TooFewEntityTypeRoleInstances.CompactMessage");
 			}
 		}
 		/// <summary>Text displayed when an external identifier is needed for a FactTypeInstance. {0}=instance {1}=model.</summary>
@@ -2770,7 +3226,15 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.ObjectifyingInstanceRequired.Message");
 			}
 		}
-		/// <summary>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=facttype {1}=model.</summary>
+		/// <summary>Text displayed when an external identifier is needed for a FactTypeInstance. Compact form. {0}=instance.</summary>
+		public static string ModelErrorFactTypeInstanceObjectifyingInstanceRequiredCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.ObjectifyingInstanceRequired.CompactMessage");
+			}
+		}
+		/// <summary>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. {0}=instance {1}=model.</summary>
 		public static string ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesMessage
 		{
 			get
@@ -2778,12 +3242,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.Message");
 			}
 		}
-		/// <summary>Text displayed when the data type of the sample data doesn't match it's set data type. {0}=value {1}=valuetype {2}=model.</summary>
+		/// <summary>Text displayed when there aren't enough fact type role instances to completely fill a single fact type population row. Compact form. {0}=instance.</summary>
+		public static string ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactTypeInstance.TooFewFactTypeRoleInstances.CompactMessage");
+			}
+		}
+		/// <summary>Text displayed when the data type of the sample data doesn't match it's set data type. {0}=value {1}=valuetype {2}=model {3}=datatype.</summary>
 		public static string ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueMessage
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.Message");
+			}
+		}
+		/// <summary>Text displayed when the data type of the sample data doesn't match it's set data type. Compact form. {0}=value, {1}=datatype.</summary>
+		public static string ModelErrorValueTypeInstanceCompatibleValueTypeInstanceValueCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ValueTypeInstance.CompatibleValueTypeInstanceValue.CompactMessage");
 			}
 		}
 		/// <summary>Text used as the class name, displayed in the properties window.</summary>
@@ -2923,7 +3403,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.ValueRangeRegexPattern");
 			}
 		}
-		/// <summary>Model validation error text used when multiple recognized phrases with the same name are loaded into a model.Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
+		/// <summary>Model validation error text used when multiple recognized phrases with the same name are loaded into a model. Field 0 is the model name, field 1 is the element name.This is an uncommon condition that should only occur with a hand edit to a model file.</summary>
 		public static string ModelErrorModelHasDuplicateRecognizedPhrases
 		{
 			get
@@ -3220,11 +3700,19 @@ namespace ORMSolutions.ORMArchitect.Core
 			}
 		}
 		/// <summary>Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. {0}=constraint name, {1}=fact type display context, {2}=factarity-1</summary>
-		public static string NMinusOneRuleInternalSpan
+		public static string ModelErrorNMinusOneRuleInternalSpan
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.NMinusOneRule.Text");
+			}
+		}
+		/// <summary>Text diplayed in the Model Error when the span of the internal constraint is less than the span of the Fact Type - 1. Compact form. {0}=factarity - 1</summary>
+		public static string ModelErrorNMinusOneRuleInternalSpanCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.NMinusOneRule.CompactText");
 			}
 		}
 		/// <summary>Automatic projection is explicitly requested for a constrained role in a joined constraint sequence when a single node of a matching type does not exist in the role path.</summary>
@@ -3251,12 +3739,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleProjection.IncompatibleProjection.Text");
 			}
 		}
+		/// <summary>Model validation error text for projection on a constraint role from a join path where the type of projection does not match the type of the constrained role. Compact form.</summary>
+		public static string ModelErrorConstraintRoleProjectionIncompatibleProjectionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleProjection.IncompatibleProjection.CompactText");
+			}
+		}
 		/// <summary>The roles in a set constraint are in different fact types and a join path has not been provided. Replacement field {0} is context owner name.</summary>
 		public static string ModelErrorConstraintRoleSequenceJoinPathRequiredError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequence.JoinPathRequiredError.Text");
+			}
+		}
+		/// <summary>The roles in a set constraint are in different fact types and a join path has not been provided. Compact form.</summary>
+		public static string ModelErrorConstraintRoleSequenceJoinPathRequiredErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ConstraintRoleSequence.JoinPathRequiredError.CompactText");
 			}
 		}
 		/// <summary>Automatic projection is explicitly requested for a role in a derived fact type when a single node of a matching type does not exist in the role path.</summary>
@@ -3275,12 +3779,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DerivedRoleProjection.IncompatibleProjection.Text");
 			}
 		}
+		/// <summary>Model validation error text for projection on a role from a derived fact type where the type of projection does not match the type of the role. Compact form.</summary>
+		public static string ModelErrorDerivedRoleProjectionIncompatibleProjectionCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.DerivedRoleProjection.IncompatibleProjection.CompactText");
+			}
+		}
 		/// <summary>The role players in an external constraint must have compatible types. Replacement field {0} is the constraint name and {1} is the model name.</summary>
 		public static string ModelErrorSetConstraintCompatibleRolePlayerTypeError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.Set.Text");
+			}
+		}
+		/// <summary>The role players in an external constraint must have compatible types. Compact form.</summary>
+		public static string ModelErrorSetConstraintCompatibleRolePlayerTypeErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.Set.CompactText");
 			}
 		}
 		/// <summary>The role players in an external constraint column must have compatible types. Replacement field {0} is the constraint name, {1} is the model name, and {2} is the (1-based) column number.</summary>
@@ -3291,12 +3811,36 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.Text");
 			}
 		}
+		/// <summary>The role players in an external constraint column must have compatible types. Compact form. {0} is the (1-based) column number.</summary>
+		public static string ModelErrorSetComparisonConstraintCompatibleRolePlayerTypeErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.CompatibleRolePlayerTypeError.SetComparison.CompactText");
+			}
+		}
+		/// <summary>The roles in a set comparison constraint role sequence are in different fact types and a join path has not been provided. Compact form. Replacement field {0} is the (1-based) sequence number.</summary>
+		public static string ModelErrorSetComparisonConstraintRoleSequenceJoinPathRequiredErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.SetComparisonConstraintRoleSequence.JoinPathRequiredError.CompactText");
+			}
+		}
 		/// <summary>When a subset constraint goes from a subtype relationship to an normal role, the role player must not be a subtype of the role player for that role. This would indicates that the supertype must be a subset of one of its subtypes. Replacement field {0} is the constraint name, {1} is the model name.</summary>
 		public static string ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.Text");
+			}
+		}
+		/// <summary>When a subset constraint goes from a subtype relationship to an normal role, the role player must not be a subtype of the role player for that role. This would indicates that the supertype must be a subset of one of its subtypes. Compact form.</summary>
+		public static string ModelErrorSupersetRoleOfSubtypeSubsetConstraintNotSubtypeErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.SupersetRoleOfSubtypeSubsetConstraintNotSubtypeError.CompactText");
 			}
 		}
 		/// <summary>Model validation error text displayed when a role does not have a specified role player. {0}=error display context for role.</summary>
@@ -3307,20 +3851,44 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Role.RolePlayerRequired.Message");
 			}
 		}
+		/// <summary>Model validation error text displayed when a role does not have a specified role player. Compact form.</summary>
+		public static string ModelErrorRolePlayerRequiredErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Role.RolePlayerRequired.CompactMessage");
+			}
+		}
 		/// <summary>Text displayed in the text of the CompatibleSupertypesError. {0}=object type display context.</summary>
-		public static string ModelErrorObjectTypeCompatibleSupertypesError
+		public static string ModelErrorObjectTypeCompatibleSupertypes
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.CompatibleSupertypesError.Message");
 			}
 		}
+		/// <summary>Text displayed in the text of the CompatibleSupertypesError. Compact form.</summary>
+		public static string ModelErrorObjectTypeCompatibleSupertypesCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.CompatibleSupertypesError.CompactMessage");
+			}
+		}
 		/// <summary>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. {0}=object type display context</summary>
-		public static string ModelErrorObjectTypePreferredIdentifierRequiresMandatoryError
+		public static string ModelErrorObjectTypePreferredIdentifierRequiresMandatory
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.Message");
+			}
+		}
+		/// <summary>Text displayed in the text of the PreferredIdentifierRequiresMandatoryError. Compact form.</summary>
+		public static string ModelErrorObjectTypePreferredIdentifierRequiresMandatoryCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.ObjectType.PreferredIdentifierRequiresMandatoryError.CompactMessage");
 			}
 		}
 		/// <summary>An entity type must have a preferred reference scheme. Replacement field {0} is the entity type name and {1} is the model name.</summary>
@@ -3331,12 +3899,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityType.RequiresReferenceScheme.Message");
 			}
 		}
+		/// <summary>Compact message for an entity type must have a preferred reference scheme.</summary>
+		public static string ModelErrorEntityTypeRequiresReferenceSchemeCompactMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.EntityType.RequiresReferenceScheme.CompactMessage");
+			}
+		}
 		/// <summary>The ring constraint type must be specified. {0} is the constraint name and {1} is the model name.</summary>
 		public static string ModelErrorRingConstraintTypeNotSpecified
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.RingConstraintTypeNotSpecifiedError.Message");
+			}
+		}
+		/// <summary>The ring constraint type must be specified. Compact form.</summary>
+		public static string ModelErrorRingConstraintTypeNotSpecifiedCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.RingConstraintTypeNotSpecifiedError.CompactMessage");
 			}
 		}
 		/// <summary>The value comparison constraint operator must be specified. {0} is the constraint name and {1} is the model name.</summary>
@@ -3347,12 +3931,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.Message");
 			}
 		}
+		/// <summary>The value comparison constraint operator must be specified. Compact form.</summary>
+		public static string ModelErrorValueComparisonConstraintOperatorNotSpecifiedCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ValueComparisonConstraintOperatorTypeNotSpecifiedError.CompactMessage");
+			}
+		}
 		/// <summary>The two value comparison constraint roles must be single-valued and comparable. {0} is the constraint name and {1} is the model name.</summary>
 		public static string ModelErrorValueComparisonRolesNotComparable
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ValueComparisonRolesNotComparableError.Message");
+			}
+		}
+		/// <summary>The two value comparison constraint roles must be single-valued and comparable. Compact form.</summary>
+		public static string ModelErrorValueComparisonRolesNotComparableCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.ValueComparisonRolesNotComparableError.CompactMessage");
 			}
 		}
 		/// <summary>The frequency constraint minimum must be less than or equal to the maximum. {0}=constraint name {1}=model name</summary>
@@ -3363,12 +3963,28 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintMinMaxError.Text");
 			}
 		}
+		/// <summary>The frequency constraint minimum must be less than or equal to the maximum. Compact form.</summary>
+		public static string ModelErrorFrequencyConstraintMinMaxErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintMinMaxError.CompactText");
+			}
+		}
 		/// <summary>The frequency constraint has minimum and maximum values of exactly one, should be represented as a uniqueness constraint. {0}=constraint name {1}=model name</summary>
 		public static string ModelErrorFrequencyConstraintExactlyOneError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintExactlyOneError.Text");
+			}
+		}
+		/// <summary>The frequency constraint has minimum and maximum values of exactly one, should be represented as a uniqueness constraint. Compact form.</summary>
+		public static string ModelErrorFrequencyConstraintExactlyOneErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintExactlyOneError.CompactText");
 			}
 		}
 		/// <summary>A frequency constraint with a minimum of 1 and an unbounded maximum is always true and should not be specified. {0}=constraint name {1}=model name</summary>
@@ -3379,6 +3995,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.Text");
 			}
 		}
+		/// <summary>A frequency constraint with a minimum of 1 and an unbounded maximum is always true and should not be specified. Compact form.</summary>
+		public static string ModelErrorFrequencyConstraintNonRestrictiveRangeErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.Constraint.FrequencyConstraintNonRestrictiveRangeError.CompactText");
+			}
+		}
 		/// <summary>Text to place in the title of the verbalization tool window.</summary>
 		public static string ModelVerbalizationWindowTitle
 		{
@@ -3387,12 +4011,20 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelVerbalization.WindowTitle");
 			}
 		}
-		/// <summary>Text used in the ImpliedInternalUniquenessConstraintError' {0}=fact type display context</summary>
+		/// <summary>Text used in the ImpliedInternalUniquenessConstraintError'. {0}=fact type display context</summary>
 		public static string ModelErrorImpliedInternalUniquenessConstraintError
 		{
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.ImpliedInternalUniquenessConstraintError.Text");
+			}
+		}
+		/// <summary>Text used in the ImpliedInternalUniquenessConstraintError'. Compact form.</summary>
+		public static string ModelErrorImpliedInternalUniquenessConstraintErrorCompact
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelError.FactType.ImpliedInternalUniquenessConstraintError.CompactText");
 			}
 		}
 		/// <summary>The message displayed if a merge operation is attempted but not all extensions are enabled.</summary>

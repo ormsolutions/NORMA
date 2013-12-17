@@ -2176,6 +2176,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueRangeMinValueMismatchError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorValueRangeMinValueMismatchErrorCompact;
+			}
+		}
+		/// <summary>
 		/// Get the associated <see cref="ValueConstraint"/>
 		/// </summary>
 		public override ValueConstraint ContextValueConstraint
@@ -2218,6 +2228,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ValueConstraint valueConstraint = ValueRange.ValueConstraint;
 			IModelErrorDisplayContext displayContext = valueConstraint != null ? valueConstraint.ErrorDisplayContext : null;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueRangeMaxValueMismatchError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorValueRangeMaxValueMismatchErrorCompact;
+			}
 		}
 		/// <summary>
 		/// Get the associated <see cref="ValueConstraint"/>
@@ -2263,6 +2283,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueConstraintValueTypeDetachedError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorValueConstraintValueTypeDetachedErrorCompact;
+			}
+		}
+		/// <summary>
 		/// Get the associated <see cref="ValueConstraint"/>
 		/// </summary>
 		public override ValueConstraint ContextValueConstraint
@@ -2290,6 +2320,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			IModelErrorDisplayContext displayContext = ValueConstraint.ErrorDisplayContext;
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.CurrentCulture, ResourceStrings.ModelErrorValueConstraintValueRangeOverlapError, displayContext != null ? displayContext.ErrorDisplayContext : ""));
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorValueConstraintValueRangeOverlapErrorCompact;
+			}
 		}
 		/// <summary>
 		/// Get the associated <see cref="ValueConstraint"/>

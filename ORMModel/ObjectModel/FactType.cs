@@ -3821,6 +3821,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresReadingMessage, context != null ? (context.ErrorDisplayContext ?? "") : ""));
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorFactTypeRequiresReadingMessageCompact;
+			}
+		}
+		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -3847,6 +3857,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorFactTypeRequiresInternalUniquenessConstraintMessage, context != null ? (context.ErrorDisplayContext ?? "") : ""));
 		}
 		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorFactTypeRequiresInternalUniquenessConstraintCompactMessage;
+			}
+		}
+		/// <summary>
 		/// Sets regenerate to ModelNameChange | OwnerNameChange
 		/// </summary>
 		public override RegenerateErrorTextEvents RegenerateEvents
@@ -3871,8 +3891,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			UniquenessConstraint iuc = Constraint;
 			FactType factType = iuc.FactTypeCollection[0];
-			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.NMinusOneRuleInternalSpan, iuc.Name, ((IModelErrorDisplayContext)factType).ErrorDisplayContext ?? "", factType.RoleCollection.Count - 1));
+			ErrorText = Utility.UpperCaseFirstLetter(string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorNMinusOneRuleInternalSpan, iuc.Name, ((IModelErrorDisplayContext)factType).ErrorDisplayContext ?? "", factType.RoleCollection.Count - 1));
 		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				return string.Format(CultureInfo.InvariantCulture, ResourceStrings.ModelErrorNMinusOneRuleInternalSpanCompact, Constraint.FactTypeCollection[0].RoleCollection.Count - 1);
+			}
+		}
+
 		/// <summary>
 		/// Regenerate the error text when the constraint name changes
 		/// </summary>

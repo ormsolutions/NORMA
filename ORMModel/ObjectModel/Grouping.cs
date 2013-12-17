@@ -200,7 +200,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // ElemengGroupTypeDisplayAttribute class
 	#region ElementGrouping class
-	partial class ElementGrouping : IModelErrorOwner
+	partial class ElementGrouping : IModelErrorOwner, IVerbalizeChildren
 	{
 		#region IModelErrorOwner Implementation
 		/// <summary>
@@ -1063,7 +1063,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return ResourceStrings.ModelErrorElementGroupingDuplicateNameError;
+				return ResourceStrings.ModelErrorElementGroupingDuplicateName;
+			}
+		}
+		/// <summary>
+		/// Get the format string for the short form of the error message
+		/// </summary>
+		protected override string CompactErrorFormatText
+		{
+			get
+			{
+				return ResourceStrings.ModelErrorElementGroupingDuplicateNameCompact;
 			}
 		}
 		#endregion // DuplicateNameError overrides
@@ -1120,6 +1130,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ResourceStrings.ModelErrorElementGroupingMembershipContradictionError,
 				(group != null) ? group.Name : "",
 				(element != null) ? ((null != (nameProperty = element.GetDomainClass().NameDomainProperty)) ? nameProperty.GetValue(element) as string : element.ToString()) : "");
+		}
+		/// <summary>
+		/// Provide a compact error description
+		/// </summary>
+		public override string CompactErrorText
+		{
+			get
+			{
+				ModelElement element = Element;
+				DomainPropertyInfo nameProperty;
+				return string.Format(
+					CultureInfo.InvariantCulture,
+					ResourceStrings.ModelErrorElementGroupingMembershipContradictionErrorCompact,
+					(element != null) ? ((null != (nameProperty = element.GetDomainClass().NameDomainProperty)) ? nameProperty.GetValue(element) as string : element.ToString()) : "");
+			}
 		}
 		/// <summary>
 		/// Regenerate events when the owner name changes

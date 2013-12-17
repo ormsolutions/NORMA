@@ -4214,6 +4214,7 @@
 			<xs:element name="GroupTypes" type="GroupTypesType" minOccurs="0"/>
 			<xs:element name="Elements" type="GroupElementsType" minOccurs="0"/>
 			<xs:element name="NestedGroups" type="NestedGroupsType" minOccurs="0"/>
+			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:all>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attribute name="Name" use="required" type="xs:string">

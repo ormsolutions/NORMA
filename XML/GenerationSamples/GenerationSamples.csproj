@@ -113,6 +113,7 @@
       <Generator>NUPlixLoader</Generator>
       <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>CLIPropertiesToPLiXAbstract</ORMGenerator>
+      <LastGenOutput>BlogDemo.Abstract.PLiX.cs</LastGenOutput>
     </None>
     <None Include="BlogDemo.CLIProperties.xml">
       <AutoGen>True</AutoGen>
@@ -186,6 +187,7 @@
       <Generator>NUPlixLoader</Generator>
       <DependentUpon>BlogDemo.orm</DependentUpon>
       <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
+      <LastGenOutput>BlogDemo.Implementation.PLiX.cs</LastGenOutput>
     </None>
     <None Include="BlogDemo.MySQL.sql">
       <AutoGen>True</AutoGen>
@@ -399,6 +401,7 @@
       <Generator>NUPlixLoader</Generator>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>CLIPropertiesToPLiXAbstract</ORMGenerator>
+      <LastGenOutput>SampleModel.Abstract.PLiX.cs</LastGenOutput>
     </None>
     <None Include="SampleModel.CLIProperties.xml">
       <AutoGen>True</AutoGen>
@@ -471,6 +474,7 @@
       <Generator>NUPlixLoader</Generator>
       <DependentUpon>SampleModel.orm</DependentUpon>
       <ORMGenerator>CLIPropertiesToPLiXInMemory</ORMGenerator>
+      <LastGenOutput>SampleModel.Implementation.PLiX.cs</LastGenOutput>
     </None>
     <None Include="SampleModel.MySQL.sql">
       <AutoGen>True</AutoGen>

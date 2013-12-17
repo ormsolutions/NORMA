@@ -395,7 +395,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			set { myTaskData = value; }
 		}
 		/// <summary>
-		/// Test if an error should be displayed to the use based on
+		/// Test if an error should be displayed to the use based on the
 		/// current type-based filter state and the <see cref="ErrorState"/>
 		/// of the error itself.
 		/// </summary>
@@ -408,6 +408,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return error != null &&
 				error.ErrorState != ModelErrorState.Ignored &&
 				(filter == null || !filter.IsErrorExcluded(error.GetType()));
+		}
+		/// <summary>
+		/// Test if an error would normally be displayed but is currently hidden
+		/// based on the current type-based filter state and the <see cref="ErrorState"/>
+		/// of the error itself.
+		/// </summary>
+		/// <param name="error">The error to test.</param>
+		/// <param name="filter">The filter to apply. Can be <see langword="null"/>.</param>
+		/// <returns><see langword="true"/> if the error exists in a non-ignored state
+		/// and the error type is allowed by the current filter.</returns>
+		public static bool IsDisplayFiltered(ModelError error, ModelErrorDisplayFilter filter)
+		{
+			return error != null &&
+				error.ErrorState != ModelErrorState.Ignored &&
+				(filter != null && filter.IsErrorExcluded(error.GetType()));
 		}
 		/// <summary>
 		/// Helper function to add an error to the task provider
@@ -446,6 +461,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Called to set the name of the error.
 		/// </summary>
 		public abstract void GenerateErrorText();
+		/// <summary>
+		/// Get a compact version of the error text that does not include
+		/// any context information. This text should be short enough
+		/// to fit in space-limited spaces such as a context menu.
+		/// </summary>
+		public abstract string CompactErrorText { get;}
 		/// <summary>
 		/// Determines which name change events will
 		/// automatically regenerate the error text.
