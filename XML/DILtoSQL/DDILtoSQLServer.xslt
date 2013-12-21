@@ -178,8 +178,20 @@
 		<xsl:text>varbinary</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="@type[.='DATE' or .='TIME' or .='TIMESTAMP']" mode="ForDataType">
+	<xsl:template match="@type[.='DATE']" mode="ForDataType">
+		<xsl:text>date</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='DATETIME']" mode="ForDataType">
 		<xsl:text>datetime</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='TIME']" mode="ForDataType">
+		<xsl:text>time</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="@type[.='TIMESTAMP']" mode="ForDataType">
+		<xsl:text>rowversion</xsl:text>
 	</xsl:template>
 
 	<xsl:template match="@type[.='BOOLEAN']" mode="ForDataType">

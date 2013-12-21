@@ -363,7 +363,7 @@
 	<xsl:template match="dcl:predefinedDataType[@name='DATE']">
 		<ddt:date type="{@name}"/>
 	</xsl:template>
-	<xsl:template match="dcl:predefinedDataType[@name='TIME' or @name='TIMESTAMP']">
+	<xsl:template match="dcl:predefinedDataType[@name='TIME' or @name='TIMESTAMP' or @name='DATETIME']">
 		<!-- TODO: DCIL currently doesn't have a way for the user to specify the @zone they want for a TIME or TIMESTAMP -->
 		<ddt:time type="{@name}"/>
 	</xsl:template>

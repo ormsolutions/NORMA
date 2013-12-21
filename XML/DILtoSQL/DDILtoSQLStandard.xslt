@@ -650,6 +650,7 @@
 	<xsl:template match="ddl:defaultClause">
 		<xsl:text> DEFAULT </xsl:text>
 		<xsl:apply-templates select="ddt:dateLiteral"/>
+		<xsl:apply-templates select="ddt:datetimeLiteral"/>
 		<xsl:apply-templates select="ddt:characterStringLiteral"/>
 		<xsl:apply-templates select="ddt:binaryStringLiteral"/>
 		<xsl:apply-templates select="ddt:timeLiteral"/>
@@ -884,6 +885,10 @@
 		<xsl:value-of select="."/>
 	</xsl:template>
 
+	<xsl:template match="@type[.='DATETIME']" mode="ForDataType">
+		<xsl:text>TIMESTAMP</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="ddt:characterString | ddt:binaryString" mode="GetTotalDataTypeLength" name="GetTotalDataTypeLength">
 		<xsl:param name="length" select="number(@length)"/>
 		<xsl:param name="lengthMultiplier" select="string(@lengthMultiplier)"/>
@@ -1082,7 +1087,7 @@
 		<xsl:text>'</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="ddt:timestampLiteral">
+	<xsl:template match="ddt:timestampLiteral | ddt:datetimeLiteral">
 		<xsl:text>TIMESTAMP '</xsl:text>
 		<xsl:value-of select="translate(@value,'T',' ')"/>
 		<xsl:text>'</xsl:text>

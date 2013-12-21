@@ -155,7 +155,7 @@
 		<xsl:text>23</xsl:text>
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
-	<xsl:template match="@type[.='TIMESTAMP']" mode="ForDataType">
+	<xsl:template match="@type[.='TIMESTAMP' or .='DATETIME']" mode="ForDataType">
 		<!-- Although MySQL has a TIMESTAMP type, their DATETIME is closer to the SQL Standard's TIMESTAMP. -->
 		<xsl:text>DATETIME</xsl:text>
 	</xsl:template>

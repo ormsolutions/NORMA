@@ -282,6 +282,10 @@
 						<xsl:value-of select="'ddt:timeLiteral'"/>
 					</xsl:when>
 					<xsl:when test="
+						$predefinedDataTypeName = 'DATETIME'">
+						<xsl:value-of select="'ddt:datetimeLiteral'"/>
+					</xsl:when>
+					<xsl:when test="
 						$predefinedDataTypeName = 'TIMESTAMP'">
 						<xsl:value-of select="'ddt:timestampLiteral'"/>
 					</xsl:when>
@@ -1010,8 +1014,11 @@
 
 				<xsl:variable name="predefinedDataTypeName">
 					<xsl:choose>
-						<xsl:when test="$modelDataType/self::orm:AutoTimestampTemporalDataType or $modelDataType/self::orm:DateAndTimeTemporalDataType">
+						<xsl:when test="$modelDataType/self::orm:AutoTimestampTemporalDataType">
 							<xsl:value-of select="'TIMESTAMP'"/>
+						</xsl:when>
+						<xsl:when test="$modelDataType/self::orm:DateAndTimeTemporalDataType">
+							<xsl:value-of select="'DATETIME'"/>
 						</xsl:when>
 						<xsl:when test="$modelDataType/self::orm:TimeTemporalDataType">
 							<xsl:value-of select="'TIME'"/>

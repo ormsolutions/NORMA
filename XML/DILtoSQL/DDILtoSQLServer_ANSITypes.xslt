@@ -175,7 +175,7 @@
 		<xsl:text>BINARY VARYING</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="@type[.='DATE' or .='TIME' or .='TIMESTAMP']" mode="ForDataType">
+	<xsl:template match="@type[.='DATE' or .='TIME' or .='TIMESTAMP' or .='DATETIME']" mode="ForDataType">
 		<xsl:text>DATETIME</xsl:text>
 	</xsl:template>
 
