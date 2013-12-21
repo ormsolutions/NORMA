@@ -3237,6 +3237,9 @@
 			<xsl:when test="$predefinedDataTypeName = 'DATE'">
 				<xsl:value-of select="'DateTime'"/>
 			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DATETIME'">
+				<xsl:value-of select="'DateTime'"/>
+			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'TIME'">
 				<xsl:value-of select="'DateTime'"/>
 			</xsl:when>
@@ -3369,6 +3372,9 @@
 				<xsl:value-of select="'Boolean'"/>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'DATE'">
+				<xsl:value-of select="'DateTime'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DATETIME'">
 				<xsl:value-of select="'DateTime'"/>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'TIME'">

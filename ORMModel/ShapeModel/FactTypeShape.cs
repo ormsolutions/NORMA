@@ -1973,6 +1973,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						ORMModel model;
 						ModelElement constraintElement = (ModelElement)currentConstraint;
+						FactType factType = null;
 						if (ModelError.HasErrors(constraintElement, ModelErrorUses.DisplayPrimary, (null != (model = currentConstraint.Model)) ? model.ModelErrorDisplayFilter : null) && isInternalConstraint && !isSticky)
 						{
 							Brush backBrush;
@@ -1988,7 +1989,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						else
 						{
-							FactType factType;
 							if (isHighlighted || isSticky || ModelError.HasErrors(factType = factShape.AssociatedFactType, ModelErrorUses.DisplayPrimary, (null != (model = factType.ResolvedModel)) ? model.ModelErrorDisplayFilter : null))
 							{
 								factShape.DrawHighlight(g, boundsF, isSticky ? null : factShape.BackgroundBrushId, null, isSticky, factShapeHighlighted || isHighlighted);
@@ -1999,14 +1999,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						{
 							if (selection != null)
 							{
+								FactSetConstraint constraintLink = FactSetConstraint.GetLink((UniquenessConstraint)constraintElement, factType ?? factShape.AssociatedFactType);
 								if (testSubField == null)
 								{
-									testSubField = new ConstraintSubField(constraintElement);
+									testSubField = new ConstraintSubField(constraintLink);
 									testSelect = new DiagramItem(parentShape, this, testSubField);
 								}
 								else
 								{
-									testSubField.BackingElement = constraintElement;
+									testSubField.BackingElement = constraintLink;
 								}
 								if (selection.Contains(testSelect))
 								{
@@ -5751,7 +5752,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public DiagramItem GetDiagramItem(UniquenessConstraint constraint)
 		{
 			Debug.Assert(constraint.IsInternal);
-			return new DiagramItem(this, InternalConstraintShapeField, new ConstraintSubField(constraint));
+			return new DiagramItem(this, InternalConstraintShapeField, new ConstraintSubField(FactSetConstraint.GetLink(constraint, AssociatedFactType)));
 		}
 		/// <summary>
 		/// Get a diagram item for a role on the associated fact.

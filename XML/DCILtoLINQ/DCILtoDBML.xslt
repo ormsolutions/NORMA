@@ -249,12 +249,11 @@
 					<xsl:value-of select="true()"/>
 				</xsl:attribute>
 			</xsl:if>
-			<!-- Timestamp does not mean the same thing in DCIL as it does in SQL Server.-->
-			<!--<xsl:if test="dcl:predefinedDataType/@name = 'TIMESTAMP'">
+			<xsl:if test="dcl:predefinedDataType/@name = 'TIMESTAMP'">
 				<xsl:attribute name="IsVersion">
 					<xsl:value-of select="true()"/>
 				</xsl:attribute>
-			</xsl:if>-->
+			</xsl:if>
 		</Column>
 	</xsl:template>
 
@@ -394,6 +393,9 @@
 				<xsl:value-of select="'Bit'"/>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'DATE'">
+				<xsl:value-of select="'DateTime'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DATETIME'">
 				<xsl:value-of select="'DateTime'"/>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'TIME'">
@@ -547,6 +549,9 @@
 				<xsl:value-of select="'Boolean'"/>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'DATE'">
+				<xsl:value-of select="'DateTime'"/>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'DATETIME'">
 				<xsl:value-of select="'DateTime'"/>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'TIME'">

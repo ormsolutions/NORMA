@@ -196,6 +196,7 @@
 	<xs:group name="datetimeLiteral">
 		<xs:choice>
 			<xs:element ref="ddt:dateLiteral"/>
+			<xs:element ref="ddt:datetimeLiteral"/>
 			<xs:element ref="ddt:timeLiteral"/>
 			<xs:element ref="ddt:timestampLiteral"/>
 		</xs:choice>
@@ -214,6 +215,15 @@
 			<xs:complexContent>
 				<xs:restriction base="ddt:literal">
 					<xs:attribute name="value" use="required" type="xs:time"/>
+				</xs:restriction>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="datetimeLiteral">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:restriction base="ddt:literal">
+					<xs:attribute name="value" use="required" type="xs:dateTime"/>
 				</xs:restriction>
 			</xs:complexContent>
 		</xs:complexType>
@@ -703,6 +713,11 @@
 	<xs:simpleType name="timeTypes">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="TIME">
+				<xs:annotation>
+					<xs:documentation></xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DATETIME">
 				<xs:annotation>
 					<xs:documentation></xs:documentation>
 				</xs:annotation>

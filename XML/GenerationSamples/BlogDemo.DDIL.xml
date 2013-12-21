@@ -37,7 +37,7 @@
 			</ddl:columnConstraintDefinition>
 		</ddl:columnDefinition>
 		<ddl:columnDefinition name="postedDate">
-			<ddt:time type="TIMESTAMP" />
+			<ddt:time type="DATETIME" />
 			<ddl:columnConstraintDefinition>
 				<ddl:notNullKeyword />
 			</ddl:columnConstraintDefinition>

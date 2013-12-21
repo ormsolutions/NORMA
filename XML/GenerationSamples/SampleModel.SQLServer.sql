@@ -7,7 +7,7 @@ GO
 CREATE TABLE SampleModel.Person
 (
 	personId int IDENTITY (1, 1) NOT NULL,
-	"date" datetime NOT NULL,
+	"date" date NOT NULL,
 	firstName nvarchar(64) NOT NULL,
 	genderCode nchar(1) CHECK (genderCode IN (N'M', N'F')) NOT NULL,
 	lastName nvarchar(64) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE SampleModel.Person
 	wife int,
 	colorARGB int,
 	deathCause nvarchar(14) CHECK (deathCause IN (N'natural', N'not so natural')),
-	deathDate datetime,
+	deathDate date,
 	deathNaturalDeathIsFromProstateCancer bit,
 	deathUnnaturalDeathIsBloody bit,
 	deathUnnaturalDeathIsViolent bit,
@@ -166,7 +166,7 @@ CREATE TABLE SampleModel.PersonBoughtCarFromPersonOnDate
 	buyer int NOT NULL,
 	carSold int CHECK (carSold >= 0) NOT NULL,
 	seller int NOT NULL,
-	saleDate datetime NOT NULL,
+	saleDate date NOT NULL,
 	CONSTRAINT PersonBoughtCarFromPersonOnDate_PK PRIMARY KEY(buyer, carSold, seller),
 	CONSTRAINT PersonBoughtCarFromPersonOnDate_UC1 UNIQUE(carSold, saleDate, buyer),
 	CONSTRAINT PersonBoughtCarFromPersonOnDate_UC2 UNIQUE(saleDate, seller, carSold)

@@ -673,6 +673,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 																selectedRoles[j] = null;
 																--unusedRoleCount;
 																lastUnusedRoleIndex = j + 1;
+																break;
 															}
 														}
 													}

@@ -139,8 +139,9 @@
 
 	<String Id="ExitDialog_Title">[ProductName] Setup</String>
 	<String Id="ExitDialogBitmap">WixUI_Bmp_Dialog</String>
+	<String Id="ExitDialogInstructions">{\WixUI_Font_Bigger}To launch the NORMA designer in Visual Studio, create a new 'Object-Role Modeling File' from the General section of the New File dialog.</String>
 	<String Id="ExitDialogDescription">Click the Finish button to exit the Setup Wizard.</String>
-	<String Id="ExitDialogTitle">{\WixUI_Font_Bigger}Completed the [ProductName] Setup Wizard</String>
+	<String Id="ExitDialogTitle">Completed the [ProductName] Setup Wizard.</String>
 
 	<String Id="FatalError_Title">[ProductName] Setup</String>
 	<String Id="FatalErrorBitmap">WixUI_Bmp_Dialog</String>

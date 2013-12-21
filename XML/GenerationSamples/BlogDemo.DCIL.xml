@@ -17,7 +17,7 @@
 			<dcl:predefinedDataType name="CHARACTER VARYING" length="30" />
 		</dcl:column>
 		<dcl:column name="postedDate" isNullable="false" isIdentity="false">
-			<dcl:predefinedDataType name="TIMESTAMP" />
+			<dcl:predefinedDataType name="DATETIME" />
 		</dcl:column>
 		<dcl:column name="blogCommentParentEntryId" isNullable="true" isIdentity="false">
 			<dcl:predefinedDataType name="INTEGER" />

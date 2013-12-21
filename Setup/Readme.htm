@@ -3,20 +3,44 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA May 2013 CTP Readme</title>
+<title>NORMA December 2013 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
+	.toggle{font-size:larger;cursor:pointer;font-family: monospace; color:rgb(97, 133, 160); display:inline; padding-right:.15em;}
 	li {padding-bottom: 3px;}
 </style>
+<script type="text/javascript">
+function setText(element, text) {
+	// Apply to any element except textarea
+	if (element['textContent'] !== undefined) {
+		element['textContent'] = text;
+	} else {
+		element['innerText'] = text;
+	}
+}
+function toggleDisp(sign,bodyId) {
+	var body, style, signText;
+	if (body=document.getElementById(bodyId)) {
+		if ((style = body.style).display=='none') {
+			style.display = 'block';
+			setText(sign,'-');
+		} else {
+			style.display = 'none';
+			setText(sign, '+');
+		}
+	}
+}
+</script>
 </head>
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2013 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA December 2013 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The May 2013 release is a bug fix release with no major feature changes. See detailed change notes below for specifics.<br/><br/>
+The December 2013 release adds support for Visual Studio 2013, implements value comparison and cardinality constraints, adds validation checks for duplicate fact type reading signatures, adds new menu items for managing validation errors, and changes relational mapping defaults for entity types identified with an autocounter data type. See detailed change notes below for specifics.<br/><br/>
 </p>
-<h2>Contents</h2>
+<h2><span class="toggle" onclick="toggleDisp(this,'contents')">-</span>Contents</h2>
+<div id="contents">
 <ul>
   <li><a href="#Setup">Installing NORMA</a></li>
   <li><a href="#General Use">General Use</a></li>
@@ -31,20 +55,67 @@ The May 2013 release is a bug fix release with no major feature changes. See det
   <li><a href="#Database Import">Database Import</a></li>
   <li><a href="#Code Generation">Code Generation</a></li>
   <li><a href="#Reporting Issues">Instructions for reporting issues with NORMA</a></li>
-  <li><a href="#VS2010 Bugs">Unresolved issues in Visual Studio 2010</a></li>
+  <li><a href="#VS2010 Bugs">Unresolved issues in Visual Studio 2010 (and above)</a></li>
   <li><a href="#Mystery Bugs">Things we've seen or heard about but can't reproduce</a></li>
   <li><a href="#Version Numbers">Version Numbers</a></li>
 </ul>
+</div>
 <!--<hr/>
-<h2>Daily Changes</h2>
+<h2><span class="toggle" onclick="toggleDisp(this,'daily')">-</span>Daily Changes</h2>
+<div id="daily">
 <div>The daily drop includes all modifications since the last CTP drop. Build numbers are marked below.</div>
 <ul>
 <li><a href="#TOPIC DAILY">TOPIC DESCRIPTION</a>&nbsp;(Build ####)</li>
-</ul>-->
+</ul>
+</div>-->
 
 <hr/>
-<h2>May 2013 CTP Changes</h2>
-<div>The May 2013 CTP release includes all modifications through changeset 1518. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<h2><span class="toggle" onclick="toggleDisp(this,'dec2013')">-</span>December 2013 CTP Changes</h2>
+<div id="dec2013">
+<div>The December 2013 CTP release includes all modifications through changeset 1539. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li><a href="#ReadingSignatures 2013-12">Duplicate Reading Signature Validation</a>&nbsp;</li>
+<li><a href="#ValueComparisonConstraint 2013-12">Value Comparison Constraints</a>&nbsp;</li>
+<li><a href="#CardinalityConstraint 2013-12">Cardinality Constraints</a>&nbsp;</li>
+<li><a href="#ErrorDisplayMenus 2013-12">Error Display Menus</a>&nbsp;</li>
+<li><a href="#SelectInGroup 2013-12">Select In Group</a>&nbsp;</li>
+<li><a href="#SQLServerDateTypes 2013-12">SQL Server Date Types</a>&nbsp;</li>
+<li>Other Features:
+<ol>
+<li>Visual Studio 2013 installation.</li>
+<li>The <em>Error Validation</em> menu in the NORMA context menu shows shortened forms of the error messages that fit in the menu structure. The context information (model name, element identification, and further contextual descriptions) are all clear from the current selection and do not need to be shown in the menus. Selecting the item while viewing the Verbalization Browser tool window will show the full error text.</li>
+<li>The <em>Custom Properties</em> extension supports adding properties to <a href="#Groups">groups</a> as well as the the new constraint types (value comparison and cardinality).</li>
+<li>Added Control-ZOOMKEY key bindings for zoom operations (in addition to the existing Control-Shift-ZOOMKey). See expanded comments in <a href="#ZoomCommands 2011-06">zoom commands</a>.</li>
+<li>Role name shape display failed badly during undo/redo operations, after the user default display options were changed, or during a file load with different default display settings than it was saved with.</li>
+<li>Entity type subtypes with an auto counter data type can no longer be absorbed into the parent table. Similarly, no entity type identified by an autocounter can be created without its own table. Although the user can introduce pathological patterns (using value type properties with autocounter data types) that can produce multiple IDENTITY columns in a single table, all of the common cases that produce this pattern are handled by this change.</li>
+<li>Made significant updates to the 'PLiX Implementation' code generator, including handling of non-standard and duplicate names, subtypes (including cases where one entity type has multiple supertypes).</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Index out of range exception occurs renaming or making other changes to an object type with a sample population.</li>
+<li>Sample population errors for missing populations on disjunctive mandatory constraints with different (compatible) role players not automatically cleared when a satisfying population is entered.</li>
+<li>Choosing the <em>RequireUserModification</em> option during database import caused an XML schema violation during load.</li>
+<li>Adding a value range to a 'DisplayAsObjectType' objectified fact type with an external identifier does not show the value range shape.</li>
+<li>Switching a frequency constraint from constraining one fact type constraining two does not correctly redraw the frequency constraint with a border on the constraint shape.</li>
+<li>Dropping shapes with doubly-nested children (specifically a value or cardinality constraint on the name shape of an objectified fact type) did not recreate the nested shapes (applied to VS2005 and VS2008 only).</li>
+<li>Model error activation not working after a file reload, including adding/removing extensions with the Extension Manager.</li>
+<li>Note and description editors not keeping in sync during undo/redo with some selected items (constraints, for example).</li>
+<li>File serialization with relational extensions fails with sort errors on sufficiently large models in VS2012.</li>
+<li>Fact type name generation did not handle non-standard object type names (names with leading lower case and spaces).</li>
+<li>Changing display options in the Tools/ORM Designer page is painfully slow for large models.</li>
+<li>Removing the last generation target crashes the ORM Generator Settings dialog on commit.</li>
+<li>Replacing n roles with less than n roles in the fact editor for a selected fact type does not delete the extra roles from the fact type, just from the associated readings.</li>
+</ol>
+</li>
+</ul>
+<hr/>
+</div>
+<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
+<div style="display:none;" id="oldChanges">
+<h3><span class="toggle" onclick="toggleDisp(this,'may2013')">+</span>May 2013 CTP Changes</h3>
+<div style="display:none;" id="may2013">
+<div>The May 2013 CTP release includes all modifications through changeset 1518.</div>
 <ul>
 <li>Feature Changes:
 <ol>
@@ -67,7 +138,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ul>
 
 <hr/>
-<h2>January 2013 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'jan2013')">+</span>January 2013 CTP Changes</h3>
+<div style="display:none;" id="jan2013">
 <div>The January 2013 CTP release includes all modifications through changeset 1510.</div>
 <ul>
 <li><a href="#VerbalizedObjectTypeNameRemoveSpecialCharacterDisplay 2013-01">Verbalized object type name separator character removal options</a></li>
@@ -76,6 +149,7 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 
 <li>Other Features:
 <ol>
+<li>Visual Studio 2012 installation.</li>
 <li>The <em>ORM Generator Selection</em> dialog no longer offers expansions for generated items when only one generation transform is available. The information lost here is of little use to the user, and suppressing these buttons emphasizes items (such as the SQL Server node) that have more than one available generator.</li>
 <li>Object type name verbalization has been enhanced to recognize reference mode patterns as separate names, regardless of casing. If you use the <em>ORM Reference Mode Editor</em> to change the <em>Value Type Name Format</em> field for the <em>Popular</em> reference mode kind to <em>{EntityTypeName}{ReferenceModeName}</em> instead of the default <em>{EntityTypeName}_{ReferenceModeName}</em>, then an entity type with a reference mode of <em>Country(.code)</em> generates a value type called <em>Countrycode</em>. Previously, this would be shown as single name when normalized or expanded by the verbalizer (because 'code' is not upper cased), but will now be treated as distinct words because of the matching reference mode pattern.</li>
 </ol>
@@ -109,7 +183,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ul>
 
 <hr/>
-<h2>April 2012 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'apr2012')">+</span>April 2012 CTP Changes</h3>
+<div style="display:none;" id="apr2012">
 <div>The April 2012 CTP release includes all modifications through changeset 1487.</div>
 <ul>
 <li><a href="#VerbalizePossiblePopulationsOption 2012-04">Verbalize possible populations option</a>&nbsp;</li>
@@ -130,7 +206,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ul>
 
 <hr/>
-<h2>January 2012 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'jan2012')">+</span>January 2012 CTP Changes</h3>
+<div style="display:none;" id="jan2012">
 <div>The January 2012 CTP release includes all modifications through changeset 1482.</div>
 <ul>
 <li><a href="#SchemaCustomization 2012-01">Custom relational names and column ordering</a>&nbsp;</li>
@@ -156,7 +234,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ul>
 
 <hr/>
-<h2>October 2011 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'oct2011')">+</span>October 2011 CTP Changes</h3>
+<div style="display:none;" id="oct2011">
 <div>The October 2011 CTP release includes all modifications through changeset 1476.</div>
 <ul>
 <li>Features:
@@ -175,7 +255,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ul>
 
 <hr/>
-<h2>June 2011 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'jun2011')">+</span>June 2011 CTP Changes</h3>
+<div style="display:none;" id="jun2011">
 <div>The June 2011 CTP release includes all modifications through changeset 1473.</div>
 <ul>
 <li><a href="#DisplayAsObjectType 2011-06">Display Objectified Fact Type as Object Type</a>&nbsp;</li>
@@ -213,7 +295,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ul>
 
 <hr/>
-<h2>December 2010 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'dec2010')">+</span>December 2010 CTP Changes</h3>
+<div style="display:none;" id="dec2010">
 <div>The December 2010 CTP release includes all modifications through changeset 1464.</div>
 <ul>
 <li><a href="#CrossModelDrag 2010-12">Cross Model Drag-Drop</a>&nbsp;</li>
@@ -230,7 +314,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ul>
 
 <hr/>
-<h2>July 2010 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'jul2010')">+</span>July 2010 CTP Changes</h3>
+<div style="display:none;" id="jul2010">
 <div>The July 2010 CTP release includes all modifications through changeset 1452.</div>
 <ul>
 <li><a href="#Uniqueness Frequency Join Path Verbalization 2010-07">Uniqueness and frequency constraint join path verbalization</a>&nbsp;</li>
@@ -257,7 +343,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ul>
 
 <hr/>
-<h2>February 2010 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'feb2010')">+</span>February 2010 CTP Changes</h3>
+<div style="display:none;" id="feb2010">
 <div>The February 2010 CTP release includes all modifications through changeset 1432.</div>
 <ul>
 <li><a href="#Localized Value Constraints 2010-02">Localized value constraints</a>&nbsp;</li>
@@ -284,7 +372,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ul>
 
 <hr/>
-<h2>October 2009 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'oct2009')">+</span>October 2009 CTP Changes</h3>
+<div style="display:none;" id="oct2009">
 <div>The October 2009 CTP release includes all modifications through changeset 1416.</div>
 <ul>
 <li><a href="#Multiline Value Constraint Shapes 2009-10">Multiline value constraint shapes</a>&nbsp;</li>
@@ -313,7 +403,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 
 
 <hr/>
-<h2>June 2009 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'jun2009')">+</span>June 2009 CTP Changes</h3>
+<div style="display:none;" id="jun2009">
 <div>The June 2009 CTP release includes all modifications through changeset 1397.</div>
 <ul>
 <li><a href="#Sample population mandatory error activation 2009-06">Sample population mandatory error activation</a>&nbsp;</li>
@@ -337,7 +429,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </li>
 </ul>
 <hr/>
-<h2>May 2009 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'may2009')">+</span>May 2009 CTP Changes</h3>
+<div style="display:none;" id="may2009">
 <div>The May 2009 CTP release includes all modifications through changeset 1390.</div>
 <ul>
 <li><a href="#Display Related Types 2009-05">Controlling display of subtype lines</a>&nbsp;</li>
@@ -357,7 +451,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </li>
 </ul>
 <hr/>
-<h2>March 2009 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'mar2009')">+</span>March 2009 CTP Changes</h3>
+<div style="display:none;" id="mar2009">
 <div>The March 2009 CTP release includes all modifications through changeset 1383.</div>
 <ul>
 <li>Notable Changes:
@@ -375,7 +471,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </li>
 </ul>
 <hr/>
-<h2>February 2009 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'feb2009')">+</span>February 2009 CTP Changes</h3>
+<div style="display:none;" id="feb2009">
 <div>The February 2009 CTP release includes all modifications through changeset 1370.</div>
 <ul>
 <li><a href="#Element Grouping 2009-02">Element Grouping</a>&nbsp;</li>
@@ -393,7 +491,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </li>
 </ul>
 <hr/>
-<h2>January 2009 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'jan2009')">+</span>January 2009 CTP Changes</h3>
+<div style="display:none;" id="jan2009">
 <div>The January 2009 CTP release includes all modifications through changeset 1356.</div>
 <ul>
 <li><a href="#FactEditor Inverse Readings 2009-01">Fact Editor inverse readings</a>&nbsp;</li>
@@ -407,7 +507,9 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 </ol>
 </li>
 </ul><hr/>
-<h2>December 2008 CTP Changes</h2>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'dec2008')">+</span>December 2008 CTP Changes</h3>
+<div style="display:none;" id="dec2008">
 <div>The December 2008 CTP (a) release includes all modifications through changeset 1350.</div>
 <ul>
 <li><a href="#Diagram Management 2008-12">Diagram order and position caching</a>&nbsp;</li>
@@ -418,8 +520,11 @@ The May 2013 release is a bug fix release with no major feature changes. See det
 <li>Role display in the model browser has been improved by displaying the role player ObjectType names and glyphs.</li>
 </ol>
 </li>
-</ul><hr/>
-<h2>October 2008 CTP Changes</h2>
+</ul>
+<hr/>
+</div>
+<h3><span class="toggle" onclick="toggleDisp(this,'oct2008')">+</span>October 2008 CTP Changes</h3>
+<div style="display:none;" id="oct2008">
 <div>The October 2008 CTP release includes all modifications through changeset 1340.<br/><br/>
 The October 2008 release includes two major functionality additions plus a number of smaller pieces. The major changes relate to sample population (you can now fully populate a model, including objectified FactTypes and Subtypes) and model navigation using the Verbalization Browser and the new 'ORM Diagram Spy' tool window.
 </div>
@@ -443,14 +548,16 @@ The October 2008 release includes two major functionality additions plus a numbe
   <li><a href="#Verbalization Hyperlinks 2008-10">Verbalization Browser hyperlinks activated</a></li>
   <li><a href="#Verbalization FactTypesWithObjectType 2008-10">Verbalization of associated FactTypes for ObjectType selection</a></li>
 </ul>
-<hr/>
+</div>
+</div>
+<hr />
 <h3><a id="Setup">Installing NORMA</a></h3>
 <ol>
 <li>Updating NORMA to the latest version requires Setup.bat to be run from the downloaded .zip file, which should be chosen based on whether you want to install for Visual Studio 2010, Visual Studio 2008, or Visual Studio 2005. NORMA does not share installation files between these two products, so you must choose your target when you download the installation package.</li>
 <li>Any previous NORMA versions and any dependencies will be automatically uninstalled and reinstalled by the Setup.bat file. Make sure Visual Studio is not running during the installation pocess. Please be patient with the uninstall, which takes roughly the same amount of time as the install. Killing installation processes (the setup command prompt, msiexec, devenv) can leave you with a system that requires manual intervention to restore.</li>
 <li>First extract the files from the .zip file first unless you open them with the standard 'Compressed (zipped) Folders' viewer, in which case you can usually run Setup.bat without pre-expanding the zip file. Vista is likely to recommend expansion even with the standard viewer.</li>
 <li><a id="#Setup 2008-10" class="new" title="October 2008 CTP: SetupVistaOrLater.bat elevates install permissions on Vista, Windows7, and later operating systems.">2008-10</a>&nbsp;
-The setup process must be run with admistrative permissions on Vista, Windows7, and later operating systems. You can either right-click the Setup.bat file and choose 'Run as Administrator', or you can run SetupVistaOrLater.bat instead of Setup.bat and agree to the security warnings.</li>
+The setup process must be run with admistrative permissions on Vista, Windows7, and later operating systems. You can either right-click the Setup.bat file and choose 'Run as Administrator', or you can run SetupVistaOrLater.bat instead of Setup.bat and agree to the security warnings. [Note that SetupVistaOrLater.bat relies on a system where a .js extension is treated as an executable scripting file. Some other products (especially some from Adobe) may override this default system setting. If SetupVistaOrLater.bat does not appear to do anything, then explicitly run Setup.bat as an administrator.]</li>
 <li>(Visual Studio 2005 Install Only) The DSLToolsRedist.msi included with this release will not automatically upgrade if you have an older DSL installation on your machine. If you were an early user of NORMA or other DSL products and have not previously upgraded, or have experience designer issues on Windows Vista, then you may want to explicit uninstall the 'Microsoft DSL Tools Redistributable' product before running NORMA setup.</li>
 </ol>
 <a href="#The Top">Return to top</a>
@@ -491,16 +598,27 @@ ORM elements can be dragged from one model to another. Cross-model drag is suppo
 Hovering over a diagram tab (at the bottom of the designer) during any drag operation will activate that diagram. Hovering over the left edge of the leftmost tab will scroll the diagrams to the left. Combined with the Visual Studio support for activating a file by hovering over the file tabe and bump scrolling within a diagram, this makes it much easier to drag items between models and copy shapes within models. Without this support, cross-diagram drag required both the source and target diagrams to be visible in either multiple document windows or the <em>Diagram Spy</em> tool window.
 </li>
 <li><a id="ZoomCommands 2011-06" class="new" title="June 2011 CTP: Zoom Commands">2011-06</a>&nbsp;
-A Zoom submenu enables zooming to a specific percentage or with incremental zoom in/zoom out commands. There are corresponding mouse gestures and hotkeys cooresponding to these commands. All of these commands work with 'Control-Shift' modifiers. Pressing control-shift will change the designer cursor to a magnifying glass, indicating zoom.<br />Mouse and keyboard zoom commands:
+A Zoom submenu enables zooming to a specific percentage or with incremental zoom in/zoom out commands. There are corresponding mouse gestures and hotkeys cooresponding to these commands. All of these commands work with both 'Control-Shift' and 'Control' modifiers (following standard web browser keystrokes). Pressing control-shift will change the designer cursor to a magnifying glass, indicating zoom.<br />Mouse and keyboard zoom commands:
 <ul>
-<li><strong>Zoom In: </strong>Control-Shift-PlusKey, Control-Shift-LeftClick, Control-MouseWheel, Control-Shift-MouseWheel</li>
-<li><strong>Zoom Out: </strong>Control-Shift-MinusKey, Control-Shift-RightClick, Control-MouseWheel, Control-Shift-MouseWheel</li>
-<li><strong>Zoom Restore: </strong>Control-Shift-0 (Zero Key, correspond to Zoom/100%)</li>
+<li><strong>Zoom In: </strong>Control-Shift-EqualsKey, Control-EqualsKey, Control-Shift-LeftClick, Control-MouseWheel, Control-Shift-MouseWheel</li>
+<li><strong>Zoom Out: </strong>Control-Shift-MinusKey, Control-MinusKey, Control Control-Shift-RightClick, Control-MouseWheel, Control-Shift-MouseWheel</li>
+<li><strong>Zoom Restore: </strong>Control-Shift-0, Control-0 (Zero Key, correspond to Zoom/100%). Note that Control-Shift-0 is a default system hotkey used for keyboard switching in Vista and later operating systems (even if you don't have multiple keyboards installed), so use Control-0 is Control-Shift-0 has no effect on your system.</li>
 <li><strong>Scroll: </strong>MouseWheel for vertical scroll, Shift-MouseWheel for horizontal scroll.</li>
 </ul>
 </li>
 <li><a id="ZoomSensitiveNudge 2011-06" class="new" title="June 2011 CTP: Zoom Sensitive Nudge Distance">2011-06</a>&nbsp;
 Keyboard nudging of selected shapes depends on the zoom level. At maximum zoom (400%) the keyboard nudge distance is very small with the intent of allowing extremely fine-grained shape alignment. The nudge distance is fixed from 10% to 100% zoom, at which point it linearly decreases to the fine-grained setting at maximum zoom.
+</li>
+<li><a id="ErrorDisplayMenus 2013-12" class="new" title="December 2013 CTP: Error Display Menus">2013-12</a>&nbsp;
+Disabling the display of specific errors (by class and category) is possible through the <em>ErrorDisplay</em> property on the model. However, with the large number of validation errors in NORMA, it is not always obvious which error class or category corresponds to a displayed error. For a more direct approach to error management, the <em>Validation Errors</em> submenu on the NORMA context menu has an additional <em>Display Error Display</em> submenu listed after the validation errors for the current context. Selecting an error in the main <em>Validation Errors</em> submenu attempts to activate an editing action that will repair the error (not all errors have activators). Expanding this submenu repeats the displayed errors, but selecting the error disables the display for all errors in that error class instead of activating the error (NORMA does not control display of individual errors, just the error class).<br /><br />
+If a selected diagram shape has disabled errors, then an additional <em>Enable Error Display</em> submenu will also appear showing the undisplayed errors. Selecting a validation error in this list will reenable error display. Enabling error display will immediately display error feedback on the diagram, and reopening the <em>Validation Errors</em> submenu will offer the error in the error activation list.
+</li>
+<li><a id="ReadingSignatures 2013-12" class="new" title="December 2013 CTP: Duplicate Reading Signature Validation">2013-12</a>&nbsp;
+ORM theory states that all readings with the role player names inserted should be unique within a model. The reading text itself does not have to be unique. For example, <em>Person drives Car</em> and <em>Cowboy drives CattleHerd</em> can coexist in the same model without conflict. NORMA takes this one step further and normalizes the readings by expanding combined object types names, normalizing spaces, and removing any hyphen-binding markup. This is done so that different representations of the same name (CattleHerd, cattleHerd, Cattle Herd, cattle herd) used in different implementations and verbalizations of the model are always unique across the model. For example, the signature for the reading <em>Cowboy drives CattleHerd</em> is <em>cowboy drives cattle herd</em>, and placing the reading <em>Cowboy drives cattle- Herd</em> in the same model will create a duplicate reading signature validation error because the signature is already in use, even though the role players are different (Herd instead of CattleHerd).<br /><br />
+One unexpected place you will see this error is with an objectified fact type that has the same object type in multiple roles. NORMA always creates link fact types for asserted objectified fact types, so an objectification of <em>Person likes Person</em> will automatically add a link fact type for each role. The readings for each of these fact types will be <em>Person is involved in PersonLikesPerson</em> and <em>PersonLikesPerson involves Person</em>. You will always get two duplicate signature errors in this situation because these initial forward and reverse link fact type readings are the same. Activating the error (via the <em>Validation Errors</em> submenu on the diagram context menu, error hyperlinks in the Verbalization Browser, or the Error List tool window) will select the role corresponding to the first of the duplicate link fact types, expand the <em>Implied Fact Type Readings</em> branch, and activate the editor for the given reading. Changing the reading (to something like <em>first- Person is involved in PersonLikesPerson</em>) will remove the first error, and editing the reverse reading will remove the other. Although there will be no errors at this point, we recommend at this point that you select the other role in the objectified fact type as well and create a corresponding reading for the other link fact type.<br /><br />
+Note that link fact types are also created for implicitly objectifications (binary fact types with a spanning uniqueness constraint or any n-ary fact type). You will not see an error for these implied link fact types, but these readings can affect names in physical implementations of the model. You can edit these link fact types yourself using the same role-selection technique and the Reading Editor.<br /><br />
+There are numerous designer operations—ranging from role player changes to object type name changes to objectifying a fact type—that can introduce duplicate reading signatures in the model. The designer will only throw an exception to block the addition of a duplicate reading signature if the user is making a direct edit to the fact type reading using either the Reading Editor or Fact Editor tool windows. Any other edit that introduces a duplicate reading signature will just add the duplicate signature error to the set of validation errors.<br /><br />
+The Fact Editor also checks for a single existing fact type with a matching signature before committing a new fact type. If a matching fact type is found, then the editor adds a new shape for that fact type, not a new conflicting fact type. If the forward and reverse readings entered in the fact editor match different fact types then you will see a duplicate reading signature exception when the fact editor line is committed.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>
@@ -736,6 +854,18 @@ Selected external constraints can now be connected simultaneously to a subtyping
 <li>Subset constraints from a subtyping relationship to a single role. The editing behavior is the same as with an exclusion constraint. The editor will allow selection of a subtyping relationship only on the first click, and menu items to reorder the role sequences are disabled.</li>
 </ul>
 Other set comparison constraints (equality and subset from a role to a subtype relationship) were intentionally omitted. Both of these constructs indicate that instance playing the role is always the subtype of the subtyping relationship. The correct model in this case should change the role player to the subtype instead of the supertype. Adding a subset constraint from a subtyping relationship to a role on the relationship subtype (or another of its subtypes) indicates a similar situation, so a new validation error is generated in this case.</li>
+<li><a id="ValueComparisonConstraint 2013-12" class="new" title="December 2013 CTP: Value Comparison Constraints">2013-12</a>&nbsp;
+Value comparison constraints are used to enforce an ordering (or equality or inequality) over two related role players. A cardinality constraint item has been added to the toolbox, with editing gestures the same as an external uniqueness constraint and all other non-set comparison constraints. Value comparison constraints will produce errors if either role player does not map to an object type, or if an operator is not specified, or if the selected role players cannot be compared. Comparison is done at the data type level, so the role players do not need to be compatible if the data types can be compared. However, if either data type has a unit-based reference scheme, then that unit must match to allow comparison. Value comparison constraint cannot include unary roles.<br /><br />
+Value comparison constraints support equality and inequality operators for comparisons between incompatible role players. If the role players have compatible types, then equality and inequality value comparison constraints are more easily represented using equality and exclusion set comparison constraints.<br /><br />
+<em>The December 2013 release introduces value comparison constraint notation, validation, and verbalization, but does not yet map these constraints to the generated relational model or other physical representations.</em>
+</li>
+<li><a id="CardinalityConstraint 2013-12" class="new" title="December 2013 CTP: Cardinality Constraints">2013-12</a>&nbsp;
+Cardinality constraints specify restrictions on the total number of instances of an object type in model population. These constraints can also be applied to unary fact types, limiting the number of different roles players that are allowed to play the given role player. A new cardinality constraint is added with the <em>CardinalityConstraint</em> property on an object type or unary fact type. This property acts like the <em>ValueRange</em> property by adding a cardinality constraint shape to the diagram. The shape can then be selected to edit the cardinality or set other properties (constraint name, modality, etc.).<br /><br />
+Care should be taken when selecting a unary fact type that the fact type itself is selected, not the unary role. There are some visual feedbacks on the diagram during mouse hover than will help you disinguish the two: the highlighted background is different with the full fact type highlighting some space outside the shape and the role highlight affecting only the role; the mouse cursor is different for the two different objects, with a <em>move</em> cursor for the fact type and a <em>pointer</em> cursor for the role.<br /><br />
+Cardinality constraints support multiple ranges, including the value of zero. The default cardinality (without a constraint) is always zero or more. Of course, the zero corresponds to an empty population, which you will always have with an initial database. If you set a cardinality that does <em>not</em> include zero, then you're saying that you are planning on providing seed data for your system that will be provided before the cardinality constraint is enforced. If you want your constraint to apply only when some population is present, then provide multiple cardinality ranges, the first of which is exactly zero. For example, '0,2' says that if any instances are present then you must have exactly two instances.<br /><br />
+Cardinality ranges are displayed in the cardinality constraint shape starting with a '#' and using '..' for a range and '&#x2264;&#x2265;' for open ended ranges. Multiple ranges are shown in curly braces separated with the list separator specific to your machine locale (a comma in English). A leading '=' is provided if a single value is given. So, <em>#=2</em> means exactly two instances, <em>#{2,4}</em> means two or four instances, <em>#{0,&#x2265;3}</em> means 0 or 3 or more instances, and <em>5..10</em> means between five and ten instances. The editor for these ranges, including the <em>CardinalityConstraint</em> property, is not exactly the same as the display because not all of the display characters are easily typed. Full directions for recognized patterns are shown in the description pane of the Property Browser when the CardinalityConstraint property (or the Ranges property of an existing constraint) are selected. As an example, <em>#{0,&#x2265;3}</em> is entered as <em>0,3..</em> or <em>0,>2</em> or <em>0,>=3</em>.<br /><br />
+<em>The December 2013 release introduces cardinality constraint notation, validation, and verbalization, but does not yet map these constraints to the generated relational model or other physical implementations.</em>
+</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -755,7 +885,9 @@ The <em>Groups</em> menu and corresponding Model Browser node is a facility for 
 <li>A new group can be added via the context menu on the Groups node in the Model Browser, or by the <em>Groups/Include In/New Group</em> command. Groups can be renamed the same as any other element (via the Properties Window, or by pressing F2 to edit the name inline in the Model Browser).</li>
 <li>Most elements can be dragged onto a Group node to add them to the group. Any element than cannot be dragged (for example, Role and Internal UniquessConstraint) can be included in a group using the Groups menu, or by dragging the individual elements from another branch of the model browser.</li>
 <li>Elements can be deleted from a group using the Groups menu or by using 'Delete' with the linked element selection in the Model Browser.</li>
-<li>Double-clicking a linked element in the Model Browser will navigate to the specified element. It is possible for a grouped element to have no corresponding primary node in the tree. These elements do not provide a link indicator on the icon.</li>
+<li><a id="SelectInGroup 2013-12" class="new" title="December 2013 CTP: Select In Group">2013-12</a>&nbsp;An element can be selected inside its group using the <em>Select In</em> submenu on the groups menu.</li>
+<li>Double-clicking a linked element in the Model Browser will navigate to the specified element.</li>
+<li>It is possible for a grouped element to have no corresponding primary node in the tree. These elements do not provide a link indicator on the icon.</li>
 <li>[The remaining points are part of the grouping facility, but are not applicable until group types are added in future releases.] The <em>GroupTypes</em> property contains a checked list of Group Types, which can be added to the system by extension models. Multiple group types can be specified for one group. A group type can automatically add member elements to a group as well as blocking elements from inclusion in the group.</li>
 <li>The <em>GroupTypeCompliance</em> property is used to determine how tightly the group types control constrain group membership. The default setting (<em>Not Excluded)</em> allows element inclusion as long as no group type explicitly excludes the element. The other two settings (<em>Approved by Some Type</em> and <em>Approved by All types</em>) require one or all associated group types to either formally recognize or automatically include the element. Any automatically included elements can be explicitly excluded by the user, and will appear greyed out with an 'x' on the icon. If an element is automatically included by one group type and excluded by another then an error state is display with a '?' on the group member icon and a validation error '!' on the group node icon.</li>
 </ul>
@@ -797,7 +929,11 @@ Prior to this release, regenerating the relational schema (a frequent occurrence
 </li>
 <li><a id="SQLServerNativeDataTypes 2013-01" class="new" title="January 2013 CTP: SQL Server Native Data Types">2013-01</a>&nbsp;
 Prior to this release, the DDL generated for SQL Server used ANSI standard data type names, but these are not supported by default in SQL Server 2012. The default has now been changed to use native SQL Server data type names. The generator that produces ANSI data types is still included. To use the ANSI types, expand the SQL_SQLServer node in the <em>ORM Generator Settings</em> dialog and choose <em>DDIL to SQL Server (ANSI Types)</em> instead of the default <em>DDIL to SQL Server</em>.
-<br />You will need to open and save a model file to see the new data types, or right-click the .ORM file in the Solution Explorer and choose the 'Run Custom Tool' menu item.
+<br /><br />You will need to open and save a model file to see the new data types, or right-click the .ORM file in the Solution Explorer and choose the 'Run Custom Tool' menu item.
+</li>
+<li><a id="SQLServerDateTypes 2013-12" class="new" title="December 2013 CTP: SQL Server Date Types">2013-12</a>&nbsp;
+Prior to this release, the native data types (see previous item) mapped all of the ORM temporal data types to the 'datetime' data type. SQL Server has supported time- and date- only temporal types for several releases, so this has been expanded. The {Date, Time, Date & Time, Auto Timestamp} temporal data types now map to the {date, time, datetime, rowversion} data types.
+<br /><br />You will need to open and save a model file to see the new data types, or right-click the .ORM file in the Solution Explorer and choose the 'Run Custom Tool' menu item.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>
@@ -820,22 +956,55 @@ The settings file for the LinqToSqlAttributeMapping layer has been updated. This
 <hr/>
 <h3><a id="Reporting Issues">Instructions for reporting issues in NORMA</a></h3>
 <ol>
-<li>NORMA issues should be reported to the <a href="http://www.ormfoundation.org/forums/30.aspx">NORMA Technical support</a> forum on the <a href="http://www.ormfoundation.org">ORM foundation</a> site.</li>
+<li>NORMA issues should be reported to the <a href="http://www.ormfoundation.org/forums/30.aspx">NORMA Technical support</a> forum on the <a href="http://www.ormfoundation.org">ORM foundation</a> site. All reports should include the Visual Studio version and NORMA version.</li>
 <li>The posted NORMA versions are debug builds. This means that asserts are enabled in the code base. The asserts basically say 'you've reached a state that wasn't expected'. Assert dialogs are not crashes. They are meant to help the developer determine how an unexpected state was reached and handle the case. You will see three buttons on the dialog box (Abort, Retry, Ignore). Your default reaction to an assert dialog should be to:
 <ul>
 <li>Ctrl-C to copy the assert dialog contents, which will include a message and a callstack. Paste into notepad to make sure you have the contents before closing the dialog.</li>
 <li>Press Ignore to continue with NORMA. Abort will end the program immediately, Retry will attempt to attach a debugger. Obviously, if the asserts keep coming you may eventually have to quit, but most of these asserts can be ignored and you will be able to save.</li>
 <li>Attempt to reproduce the condition and report the issue.</li>
-</ul></li>
-<li>You will also see 'crash' dialogs from Visual Studio. NORMA is written in managed .NET code, while VS itself is a native (C++) framework. If you see a crash dialog, it generally means that an exception made it past the .NET code, but was handled by the native code. In most cases, you can safely continue and keep running. Do not panic and abort the program unless the dialog keeps coming back. You should also be able to get a callstack. A couple of NORMA notes in this area.
+</ul>
+</li>
+<li>You may also see 'crash' dialogs from Visual Studio. NORMA is written in managed .NET code, while VS itself is a native (C++) framework. If you see a crash dialog, it generally means that an exception made it past the .NET code, but was handled by the native code. In most cases, you can safely continue and keep running. Do not panic and abort the program unless the dialog keeps coming back. You should also be able to get a callstack. The following extraction from a 27 August 2013 ORM Foundation post describes different classes of NORMA errors and how to callstack that can be used to track the problem.<br /><br />
+
+<div style="border-left-style:solid;border-left-width:2px;padding-left:6px;border-left-color:rgb(220,220,220);">There are three classes of errors in NORMA:
+
+<ol>
+<li><em>Errors that happen during a model change.</em> Each item that shows up on the undo list is a single model change. These all happen under a transacted object model, and the model will return to the exact state as before the change, then report the error. This type of bug (which I've found to be the most common, and includes this one) are the easiest to track because they can be immediately reproduced by replicating the change.</li>
+<li><em>Errors that happen during playback of atomic changes in a single model change.</em> These happen during the initial change, undo, and redo and always occur after the model change has been committed. The general source of these errors is one of the tool windows. NORMA is built with custom framework components that prevent one error from one rogue tool window during event processing (this stage) from bringing down the system. If an error occurs it is recorded but does not terminate playback. An error dialog is shown after the transaction playback is complete, and the system remains stable.</li>
+<li><em>Errors that happen during rendering</em> of the diagram or one of the tool window states. These are generally the bugs that will lead to a crash, and are the hardest to reproduce because they can take the system down.</li>
+</ol>
+If you get a reproducible failure that does not crash the system, then you can attach a debugger and get a callstack at the point the error occurs. NORMA installs the .pdb (debug symbol) files, so the callstack is generally readable. To do this (this looks long, but takes about 15 seconds the second time you do it. This should already be familiar for those who are developers as well as modelers).
+<ol>
+<li>Open a second instance of Visual Studio.</li>
+<li>Choose the 'Attach to Process' command on the Tools menu (usually Ctrl-Alt-P).</li>
+<li>Before attaching your process, make sure the <em>Attach to:</em> settings are correct. You need to attach to the right version of <em>Managed</em> code, which varies depending on the Visual Studio version you're using. If the automatic setting matches what you need you may use it, but we recommend explicitly choosing your debugger type.
 <ul>
-<li>NORMA is built on a transacted object model, so if you get an exception during a transaction (basically, any user action such as setting a property. A single transaction corresponds to one item on the undo stack) then the state is already rolled back before you even see the dialog.</li>
-<li>Another set of exceptions comes from tool windows. All exceptions in NORMA tool windows are cached and displayed after all tool windows have finished updating. This was added as a stability feature to stop one unhandled transaction state or poorly implemented tool window from taking down all of VS. However, a successful recovery does not help if you abort the process.</li>
+<li>There are two kinds of managed code you can attach to—those before .NET 4.0 (versions 1.1, 2.0, 3.0, 3.5) and those after (currently 4.0 and 4.5). Visual studio 2005 and 2008 use the earlier managed code, and 2010 and higher use the latter.</li>
+<li>If you aren't sure you'll attach to the right kind of debugger code, then use the <em>Select…</em> dialog to lock in the correct kind of debugging. Attaching a native code debugger to Visual Studio will give you a much slower debugging process, so make sure that you do not have this selected. Just select the <em>Managed</em> version that corresponds to your Visual Studio version.</li>
 </ul></li>
+<li>In the <em>Available Processes</em> list, choose to the 'devenv.exe' instance that is hosting the NORMA designer, then click the <em>Attach</em> button. You're attached to the NORMA Visual Studio process Visual Studio status bar stops flashing new messages and the title bar of Visual Studio includes the term <em>(Running)</em>.</li>
+<li>Try to reproduce the bug. You may stop in the debugger at the point the error is thrown. If you don't, do the following:
+<ul>
+<li>Using the dialog from Tools/Options menu, choose the 'Debugger' category and uncheck the 'Just My Code' option, then choose OK to commit your options.</li>
+<li>Open the Exceptions dialog from the Debug menu (usually Ctrl-Alt-E) and check the 'Thrown' column for the 'Common Language Runtime' category, then commit the dialog.</li>
+<li>You should now stop somewhere in the code when you reproduce the bug.</li>
+</ul></li>
+<li>You may be prompted for a source location when the debugger stops. You can either ignore this, or pull the source code onto your machine from sourceforge. This is easiest if you have SVN and/or TortoiseSVN installed. Make sure you get the right changeset (the changeset number is shown in this file with the summary of the most recent changes). If you click the 'Code' page from orm.sf.net you'll see instructions on how to get a read-only copy. This can take two or three minutes. <strong>This step is optional.</strong> Obviously, it is really nice to have an exact line in the code, and this is easy if you already have SVN on your machine, but the problem can almost always be determined from the callstack (next step).</li>
+<li>Once the debugger is stopped, use the Debug/Windows/Call Stack menu to see the callstack.
+<ul>
+<li>If you see [External Code] in the list (this won't happen if 'Just my Code' is off), then right click in the dialog and choose 'Show External Code'.</li>
+<li>You can also make sure that all of the options at the bottom of the context menu are checked (<em>Show Module Names</em> through <em>Show Byte Offsets</em>) to get the most information.</li>
+</ul></li>
+<li>With focus in the Call Stack tool window, Select All and Copy to get the callstack (Ctrl-A/Ctrl-C, or use the items on the context menu).</li>
+<li>Provide the callstack with the error report (a .txt attachment is fine).</li>
+</ol>
+Please note that not all thrown exceptions that are thrown during are actual problems. In general, NORMA minimizes the number of thrown exceptions during normal processing cases, but that is not true for all of the VS components used by NORMA. Generally, if you attach a debugger after the .orm file is loaded then you will see very few 'false negative' exceptions, but you may see a ton during system startup and file load.<br /><br />
+
+NORMA is a good-sized code base, with well over half a million lines of active code. Unfortunately, there is very little the NORMA team can do with an error report that is extremely general ("I occasionally have problems", "I saw this error once", etc.). If you're using the tool, please take the required 5 minutes if you see a problem to get a callstack and/or reproduce the scenario from scratch. Please don't assume that we know about the problem. The bottom line is that there is no way to fix an issue that we don't know about and/or can't reproduce.</div></li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>
-<h3><a id="VS2010 Bugs">Unresolved issues in Visual Studio 2010</a></h3>
+<h3><a id="VS2010 Bugs">Unresolved issues in Visual Studio 2010 (and above)</a></h3>
 <p>These are areas that are incomplete and known issues with Visual Studio 2010.</p>
 <ol>
 <li>If the .orm designer is opened simultaneously with more than one other file (such as when opening a solution) and is the active file immediately after load, then the ORM designer tool windows and menu items will not activate properly. Activating a second document (of any type) and reactivating the ORM designer will fix the problem. <em>This is a Visual Studio 2010 bug</em> (I can reproduce similar behavior with missing menus with one XML and one Text file).</li>
