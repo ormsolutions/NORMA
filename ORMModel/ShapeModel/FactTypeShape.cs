@@ -2306,6 +2306,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				if (ORMBaseShape.AttemptErrorActivation(e))
 				{
+					HandledDoubleClickArgs = e;
 					base.OnDoubleClick(e);
 					return;
 				}
@@ -2341,6 +2342,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				// click and did not change during the callback, but is definitely not appropriate
 				// if the double click activated the mouse action.
 				//e.Handled = true;
+				HandledDoubleClickArgs = e;
 				base.OnDoubleClick(e);
 			}
 			#endregion // Mouse handling
@@ -3070,7 +3072,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			#region Mouse handling
 			public sealed override void OnDoubleClick(DiagramPointEventArgs e)
 			{
-				ORMBaseShape.AttemptErrorActivation(e);
+				if (ORMBaseShape.AttemptErrorActivation(e))
+				{
+					HandledDoubleClickArgs = e;
+				}
 				base.OnDoubleClick(e);
 			}
 			#endregion // Mouse handling
@@ -3451,14 +3456,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return null;
 		}
 		/// <summary>
-		/// The roles shape field is the default and only shape field inside
-		/// a FactType shape.
+		/// Return a different default shape field depending on whether the shape
+		/// is currently displayed as an object type.
 		/// </summary>
 		public override ShapeField DefaultShapeField
 		{
 			get
 			{
-				return myRolesShapeField;
+				return DisplayAsObjectType ? (ShapeField)myObjectTypeNameTextField : myRolesShapeField;
 			}
 		}
 		#endregion // RoleSubField integration
@@ -5678,11 +5683,34 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#endregion // IConfigureableLinkEndpoint Implementation
 		#region Mouse handling
 		/// <summary>
+		/// Hack workaround for not being able to set Handled=true in
+		/// double click events on the subfields. If this is set, then
+		/// the mouse action is always cleared. If it is not set, then
+		/// the shape double click is called in addition to the subfield
+		/// double click, resulting in the possible activation of multiple
+		/// errors. This can be set in a subfield double click and will
+		/// be cleared again in the supertype.
+		/// </summary>
+		private static DiagramPointEventArgs HandledDoubleClickArgs = null;
+		/// <summary>
 		/// Attempt model error activation
 		/// </summary>
 		public override void OnDoubleClick(DiagramPointEventArgs e)
 		{
-			ORMBaseShape.AttemptErrorActivation(e);
+			bool attemptActivation = true;
+			DiagramPointEventArgs handledArgs = HandledDoubleClickArgs;
+			if (handledArgs != null)
+			{
+				HandledDoubleClickArgs = null;
+				if (e == handledArgs)
+				{
+					attemptActivation = false;
+				}
+			}
+			if (attemptActivation)
+			{
+				ORMBaseShape.AttemptErrorActivation(e);
+			}
 			base.OnDoubleClick(e);
 		}
 		#endregion // Mouse handling

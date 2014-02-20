@@ -1352,6 +1352,354 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // SubtypeFact class
+	#region Subquery class
+	partial class Subquery : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// Map a subquery based on owner and signature
+		/// </summary>
+		protected new bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			RolePathOwner pathOwner = PathOwner;
+			RolePathOwner otherPathOwner;
+			if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(pathOwner, foreignStore, elementTracker)))
+			{
+				ReadOnlyLinkedElementCollection<Subquery> otherSubqueries = otherPathOwner.SubqueryCollection;
+				if (otherSubqueries.Count != 0)
+				{
+					RoleProjectedDerivationRule derivationRule;
+					ReadOnlyLinkedElementCollection<LeadRolePath> rolePaths = null;
+					if (null != (derivationRule = this.DerivationRule))
+					{
+						if ((rolePaths = derivationRule.LeadRolePathCollection).Count == 0)
+						{
+							rolePaths = null;
+						}
+					}
+					ReadOnlyLinkedElementCollection<Subquery> allOwnedSubqueries = pathOwner.SubqueryCollection;
+					if (allOwnedSubqueries.Count == 1)
+					{
+						allOwnedSubqueries = null;
+					}
+
+					// Match subqueries on order called and signature.
+					ObjectType[] otherMatchTypes = null; // Match object types for roles and parameters
+					int roleCount = 0;
+					int parameterCount = 0;
+					int iMatch;
+					LinkedElementCollection<RoleBase> roles = null;
+					LinkedElementCollection<QueryParameter> parameters = null;
+					List<Subquery> signatureMatchedOtherSubqueries = null;
+					LinkedElementCollection<RoleBase> otherRoles;
+					LinkedElementCollection<QueryParameter> otherParameters;
+					foreach (Subquery otherQuery in otherPathOwner.SubqueryCollection)
+					{
+						if (allOwnedSubqueries != null)
+						{
+							bool previouslyMatched = false;
+							foreach (Subquery ownedSubquery in allOwnedSubqueries)
+							{
+								if (elementTracker.GetEquivalentElement(ownedSubquery) == otherQuery)
+								{
+									// See comments in LeadRolePath.GetUnmappedPaths
+									previouslyMatched = true;
+									break;
+								}
+							}
+							if (previouslyMatched)
+							{
+								continue;
+							}
+						}
+						if (otherMatchTypes == null)
+						{
+							roles = this.RoleCollection;
+							parameters = this.ParameterCollection;
+							otherMatchTypes = new ObjectType[(roleCount = roles.Count) + (parameterCount = parameters.Count)];
+							iMatch = 0;
+							foreach (RoleBase roleBase in roles)
+							{
+								ObjectType matchType = roleBase.Role.RolePlayer;
+								if (matchType != null)
+								{
+									if (null == (matchType = CopyMergeUtility.GetEquivalentElement(matchType, foreignStore, elementTracker)))
+									{
+										return false;
+									}
+								}
+								otherMatchTypes[iMatch] = matchType;
+								++iMatch;
+							}
+							foreach (QueryParameter parameter in parameters)
+							{
+								ObjectType matchType = parameter.ParameterType;
+								if (matchType != null)
+								{
+									if (null == (matchType = CopyMergeUtility.GetEquivalentElement(matchType, foreignStore, elementTracker)))
+									{
+										return false;
+									}
+								}
+								otherMatchTypes[iMatch] = matchType;
+								++iMatch;
+							}
+						}
+						if ((otherRoles = otherQuery.RoleCollection).Count == roleCount &&
+							(otherParameters = otherQuery.ParameterCollection).Count == parameterCount)
+						{
+							bool haveMatch = true;
+							iMatch = 0;
+							if (roleCount != 0)
+							{
+								foreach (RoleBase otherRole in otherRoles)
+								{
+									if (otherRole.Role.RolePlayer != otherMatchTypes[iMatch])
+									{
+										haveMatch = false;
+										break;
+									}
+									++iMatch;
+								}
+							}
+							if (haveMatch && parameterCount != 0)
+							{
+								foreach (QueryParameter otherParameter in otherParameters)
+								{
+									if (otherParameter.ParameterType != otherMatchTypes[iMatch])
+									{
+										haveMatch = false;
+										break;
+									}
+									++iMatch;
+								}
+							}
+							if (haveMatch)
+							{
+								if (rolePaths == null &&
+									(null == (derivationRule = otherQuery.DerivationRule) ||
+									0 == derivationRule.LeadRolePathCollection.Count))
+								{
+									// Immediately match a path-free query with the same signature. Otherwise,
+									// match the first other query if no empty ones are found.
+									elementTracker.AddEquivalentElement(this, otherQuery);
+									for (int i = 0; i < roleCount; ++i)
+									{
+										elementTracker.AddEquivalentElement(roles[i], otherRoles[i]);
+									}
+									for (int i = 0; i < parameterCount; ++i)
+									{
+										elementTracker.AddEquivalentElement(parameters[i], otherParameters[i]);
+									}
+									return true;
+								}
+								(signatureMatchedOtherSubqueries ?? (signatureMatchedOtherSubqueries = new List<Subquery>())).Add(otherQuery);
+							}
+						}
+					}
+					if (signatureMatchedOtherSubqueries != null)
+					{
+						if (rolePaths != null)
+						{
+							Dictionary<ModelElement, ModelElement> matchedElements = new Dictionary<ModelElement,ModelElement>();
+							PathMatcher matcher = new PathMatcher(signatureMatchedOtherSubqueries);
+							foreach (LeadRolePath rolePath in rolePaths)
+							{
+								LeadRolePath matchedPath;
+								if (null != (matchedPath = rolePath.GetMatchingPath(matcher.MatchPaths(), matchedElements, foreignStore, elementTracker)))
+								{
+									Subquery otherQuery = matcher.LastProcessedSubquery;
+									elementTracker.AddEquivalentElement(this, otherQuery);
+									if (roleCount != 0)
+									{
+										otherRoles = otherQuery.RoleCollection;
+										for (int i = 0; i < roleCount; ++i)
+										{
+											elementTracker.AddEquivalentElement(roles[i], otherRoles[i]);
+										}
+									}
+									if (parameterCount != 0)
+									{
+										otherParameters = otherQuery.ParameterCollection;
+										for (int i = 0; i < parameterCount; ++i)
+										{
+											elementTracker.AddEquivalentElement(parameters[i], otherParameters[i]);
+										}
+									}
+									if (!matcher.LastProcessedSubqueryReferencesMatchedPath)
+									{
+										foreach (KeyValuePair<ModelElement, ModelElement> pair in matchedElements)
+										{
+											elementTracker.AddEquivalentElement(pair.Key, pair.Value);
+										}
+									}
+									return true;
+								}
+							}
+						}
+						else
+						{
+							// This subquery has no currently defined paths to match on. We could grab the first subquery
+							// at this point, but we could end up stealing a path from another one with a match, so we first
+							// walk the other unmatched queries to make sure we don't match something that is a better match
+							// for another subquery.
+							if (allOwnedSubqueries != null)
+							{
+								foreach (Subquery siblingQuery in allOwnedSubqueries)
+								{
+									ReadOnlyLinkedElementCollection<LeadRolePath> siblingRolePaths;
+									RoleProjectedDerivationRule siblingDerivationRule;
+									if (siblingQuery == this ||
+										null != elementTracker.GetEquivalentElement(siblingQuery) ||
+										null == (siblingDerivationRule = siblingQuery.DerivationRule) ||
+										0 == (siblingRolePaths = siblingDerivationRule.LeadRolePathCollection).Count)
+									{
+										continue;
+									}
+									// Check signature
+									if ((otherRoles = siblingQuery.RoleCollection).Count == roleCount &&
+										(otherParameters = siblingQuery.ParameterCollection).Count == parameterCount)
+									{
+										bool haveMatch = true;
+										for (int i = 0; i < roleCount; ++i)
+										{
+											if (otherRoles[i].Role.RolePlayer != roles[i].Role.RolePlayer)
+											{
+												haveMatch = false;
+												break;
+											}
+										}
+										if (haveMatch)
+										{
+											for (int i = 0; i < parameterCount; ++i)
+											{
+												if (otherParameters[i].ParameterType != parameters[i].ParameterType)
+												{
+													haveMatch = false;
+													break;
+												}
+											}
+											if (haveMatch)
+											{
+												// See if we can match role paths
+												Dictionary<ModelElement, ModelElement> matchedElements = new Dictionary<ModelElement, ModelElement>();
+												PathMatcher matcher = new PathMatcher(signatureMatchedOtherSubqueries);
+												foreach (LeadRolePath rolePath in siblingRolePaths)
+												{
+													int matchedIndex;
+													if (null != rolePath.GetMatchingPath(matcher.MatchPaths(), matchedElements, foreignStore, elementTracker) &&
+														-1 != (matchedIndex = signatureMatchedOtherSubqueries.IndexOf(matcher.LastProcessedSubquery)))
+													{
+														signatureMatchedOtherSubqueries[matchedIndex] = null;
+														break;
+													}
+												}
+											}
+										}
+									}
+								}
+								int matchedSigCount = signatureMatchedOtherSubqueries.Count;
+								for (int i = 0; i < matchedSigCount; ++i)
+								{
+									Subquery otherQuery;
+									if (null != (otherQuery = signatureMatchedOtherSubqueries[i]))
+									{
+										elementTracker.AddEquivalentElement(this, otherQuery);
+										if (roleCount != 0)
+										{
+											otherRoles = otherQuery.RoleCollection;
+											for (int j = 0; j < roleCount; ++j)
+											{
+												elementTracker.AddEquivalentElement(roles[j], otherRoles[j]);
+											}
+										}
+										if (parameterCount != 0)
+										{
+											otherParameters = otherQuery.ParameterCollection;
+											for (int j = 0; j < parameterCount; ++j)
+											{
+												elementTracker.AddEquivalentElement(parameters[j], otherParameters[j]);
+											}
+										}
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			return false;
+		}
+		/// <summary>
+		/// Small helper struct to test rule matches in select queries and
+		/// determine which of the paths matched.
+		/// </summary>
+		private class PathMatcher
+		{
+			private IList<Subquery> myOtherSubqueries;
+			private Subquery myLastProcessed;
+			private bool myProcessedSharedQuery;
+			public PathMatcher(IList<Subquery> otherSubqueries)
+			{
+				myOtherSubqueries = otherSubqueries;
+			}
+			public Subquery LastProcessedSubquery
+			{
+				get
+				{
+					return myLastProcessed;
+				}
+			}
+			public bool LastProcessedSubqueryReferencesMatchedPath
+			{
+				get
+				{
+					return myProcessedSharedQuery;
+				}
+			}
+			public IEnumerable<LeadRolePath> MatchPaths()
+			{
+				// Match owned paths first, then shared paths
+				RoleProjectedDerivationRule derivationRule;
+				IList<Subquery> otherSubqueries = myOtherSubqueries;
+				int otherSubqueryCount = otherSubqueries.Count;
+				Subquery otherSubquery;
+				myProcessedSharedQuery = false;
+				for (int i = 0; i < otherSubqueryCount; ++i)
+				{
+					// Allow calling code to null out elements in the referenced list
+					if (null != (otherSubquery = otherSubqueries[i]) &&
+						null != (derivationRule = otherSubquery.DerivationRule))
+					{
+						myLastProcessed = otherSubquery;
+						foreach (LeadRolePath otherRolePath in derivationRule.OwnedLeadRolePathCollection)
+						{
+							yield return otherRolePath;
+						}
+					}
+				}
+				myProcessedSharedQuery = true;
+				for (int i = 0; i < otherSubqueryCount; ++i)
+				{
+					if (null != (otherSubquery = otherSubqueries[i]) &&
+						null != (derivationRule = otherSubquery.DerivationRule))
+					{
+						myLastProcessed = otherSubquery;
+						foreach (LeadRolePath otherRolePath in derivationRule.SharedLeadRolePathCollection)
+						{
+							yield return otherRolePath;
+						}
+					}
+				}
+			}
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // Subquery class
 	#region FactTypeInstance class
 	partial class FactTypeInstance : IElementEquivalence
 	{
@@ -1748,6 +2096,291 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	partial class LeadRolePath : IElementEquivalence
 	{
 		/// <summary>
+		/// Find a lead role path from an enumeration that matches this one. Used for copy/merge operations.
+		/// </summary>
+		/// <param name="otherPaths">An enumeration of paths to test for equivalence.</param>
+		/// <param name="matchedPathElements">A dictionary to hold matched elements from this routine. This may
+		/// be cleared during processing.</param>
+		/// <param name="foreignStore">The store being copied from.</param>
+		/// <param name="elementTracker">The element tracker determining which elements are imported.</param>
+		/// <returns>The first role path in the enumeration that is equivalent to this one.</returns>
+		public LeadRolePath GetMatchingPath(IEnumerable<LeadRolePath> otherPaths, Dictionary<ModelElement, ModelElement> matchedPathElements, Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			LinkedElementCollection<PathObjectUnifier> unifiers = null;
+			LinkedElementCollection<CalculatedPathValue> conditions = null;
+			LinkedElementCollection<CalculatedPathValue> calculations = null;
+			int unifierCount = 0;
+			int conditionCount = 0;
+			int calculationCount = 0;
+			int[] matchingOtherCalculations = null; // Array indexed into other calculations (index +1, zero means empty)
+			int[] matchingOtherUnifiers = null; // Array indexed into other unifiers (index +1, zero means empty)
+			BitTracker matchedOthers = default(BitTracker);
+			foreach (LeadRolePath otherLeadRolePath in otherPaths)
+			{
+				matchedPathElements.Clear();
+				if (IsEquivalentPath(this, otherLeadRolePath, matchedPathElements, foreignStore, elementTracker))
+				{
+					// Verify all object unifiers
+					if (unifiers == null)
+					{
+						unifiers = ObjectUnifierCollection;
+						unifierCount = unifiers.Count;
+					}
+					LinkedElementCollection<PathObjectUnifier> otherUnifiers = otherLeadRolePath.ObjectUnifierCollection;
+					if (unifierCount != otherUnifiers.Count)
+					{
+						continue;
+					}
+					else if (unifierCount != 0)
+					{
+						if (matchingOtherUnifiers == null)
+						{
+							matchingOtherUnifiers = new int[unifierCount];
+						}
+						else
+						{
+							Array.Clear(matchingOtherUnifiers, 0, unifierCount);
+						}
+						matchedOthers.Reset(unifierCount);
+						int i = 0;
+						for (; i < unifierCount; ++i)
+						{
+							PathObjectUnifier unifier = unifiers[i];
+							LinkedElementCollection<PathedRole> unifiedRoles = unifier.PathedRoleCollection;
+							LinkedElementCollection<RolePathObjectTypeRoot> unifiedRoots = unifier.PathRootCollection;
+							int unifiedRoleCount = unifiedRoles.Count;
+							int unifiedRootCount = unifiedRoots.Count;
+							int j = 0;
+							for (; j < unifierCount; ++j)
+							{
+								if (!matchedOthers[j])
+								{
+									PathObjectUnifier otherUnifier = otherUnifiers[j];
+									LinkedElementCollection<PathedRole> otherUnifiedRoles = otherUnifier.PathedRoleCollection;
+									if (otherUnifiedRoles.Count == unifiedRoleCount)
+									{
+										int k = 0;
+										for (; k < unifiedRoleCount; ++k)
+										{
+											if (!otherUnifiedRoles.Contains((PathedRole)matchedPathElements[unifiedRoles[k]]))
+											{
+												break;
+											}
+										}
+										if (k < unifiedRoleCount)
+										{
+											continue;
+										}
+									}
+									else
+									{
+										continue;
+									}
+									LinkedElementCollection<RolePathObjectTypeRoot> otherUnifiedRoots = otherUnifier.PathRootCollection;
+									if (otherUnifiedRoots.Count == unifiedRootCount)
+									{
+										int k = 0;
+										for (; k < unifiedRootCount; ++k)
+										{
+											if (!otherUnifiedRoots.Contains((RolePathObjectTypeRoot)matchedPathElements[unifiedRoots[k]]))
+											{
+												break;
+											}
+										}
+										if (k < unifiedRootCount)
+										{
+											continue;
+										}
+									}
+									else
+									{
+										continue;
+									}
+									matchingOtherUnifiers[i] = j + 1;
+									matchedOthers[j] = true;
+									break;
+								}
+							}
+							if (j == unifierCount)
+							{
+								break; // No match found
+							}
+						}
+						if (i != unifierCount)
+						{
+							// Not a full match
+							continue;
+						}
+					}
+
+					// Verify all conditional functions. Additional functions are used as projections,
+					// but do not change the path equality. So, condition functions are matched first
+					// to test path equality, then remaining functions are filled in after path equality
+					// has been established.
+					if (conditions == null)
+					{
+						conditions = CalculatedConditionCollection;
+						conditionCount = conditions.Count;
+					}
+					LinkedElementCollection<CalculatedPathValue> otherConditions = otherLeadRolePath.CalculatedConditionCollection;
+					LinkedElementCollection<CalculatedPathValue> otherCalculations = null;
+					if (conditionCount == otherConditions.Count)
+					{
+						if (conditionCount != 0)
+						{
+							if (calculations == null)
+							{
+								calculations = CalculatedValueCollection;
+								calculationCount = calculations.Count;
+							}
+							otherCalculations = otherLeadRolePath.CalculatedValueCollection;
+							if (matchingOtherCalculations == null)
+							{
+								matchingOtherCalculations = new int[calculationCount];
+							}
+							else
+							{
+								Array.Clear(matchingOtherCalculations, 0, calculationCount);
+							}
+							matchedOthers.Reset(conditionCount);
+							int i = 0;
+							for (; i < conditionCount; ++i)
+							{
+								CalculatedPathValue condition = conditions[i];
+								int calculationIndex = calculations.IndexOf(condition);
+								int j = 0;
+								for (; j < conditionCount; ++j)
+								{
+									if (!matchedOthers[j])
+									{
+										if ((matchingOtherCalculations[calculationIndex] - 1) == j ||
+											IsEquivalentCalculation(calculations, otherCalculations, i, j, matchingOtherCalculations, matchedPathElements, foreignStore, elementTracker))
+										{
+											// This condition was picked as as the input to another calculation
+											matchedOthers[j] = true;
+											break;
+										}
+									}
+								}
+								if (j == conditionCount)
+								{
+									break;
+								}
+							}
+							if (i < conditionCount)
+							{
+								continue;
+							}
+						}
+
+						// All conditions match, the paths are equivalent.
+						// Now try to pair up any remaining unmapped functions.
+						if (calculations == null)
+						{
+							calculations = CalculatedValueCollection;
+							calculationCount = calculations.Count;
+						}
+						if (calculationCount != 0)
+						{
+							int otherCalculationCount;
+							if (otherCalculations != null)
+							{
+								otherCalculationCount = otherCalculations.Count;
+							}
+							else
+							{
+								otherCalculations = otherLeadRolePath.CalculatedValueCollection;
+								otherCalculationCount = otherCalculations.Count;
+							}
+							if (otherCalculationCount != 0)
+							{
+								matchedOthers.Reset(otherCalculationCount);
+								int alreadyMatchedCount = 0;
+								if (matchingOtherCalculations == null)
+								{
+									matchingOtherCalculations = new int[calculationCount];
+								}
+								else
+								{
+									for (int i = 0; i < calculationCount; ++i)
+									{
+										int alreadyMatchedIndex = matchingOtherCalculations[i];
+										if (alreadyMatchedIndex != 0)
+										{
+											matchedOthers[alreadyMatchedIndex - 1] = true;
+											++alreadyMatchedCount;
+										}
+									}
+								}
+								if (alreadyMatchedCount < otherCalculationCount &&
+									alreadyMatchedCount < calculationCount)
+								{
+									for (int i = 0; i < calculationCount; ++i)
+									{
+										if (0 == matchingOtherCalculations[i])
+										{
+											CalculatedPathValue calculation = calculations[i];
+											for (int j = 0; j < otherCalculationCount; ++j)
+											{
+												if (!matchedOthers[j] &&
+													IsEquivalentCalculation(calculations, otherCalculations, i, j, matchingOtherCalculations, matchedPathElements, foreignStore, elementTracker))
+												{
+													matchedOthers[j] = true;
+													++alreadyMatchedCount;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+
+						// Add unifiers and calculations to the matched elements
+						if (matchingOtherUnifiers != null)
+						{
+							for (int i = 0; i < unifierCount; ++i)
+							{
+								matchedPathElements[unifiers[i]] = otherUnifiers[matchingOtherUnifiers[i] - 1];
+							}
+						}
+
+						// Register matched functions and inputs
+						if (matchingOtherCalculations != null)
+						{
+							for (int i = 0; i < calculationCount; ++i)
+							{
+								int otherCalculationIndex = matchingOtherCalculations[i];
+								if (otherCalculationIndex != 0)
+								{
+									CalculatedPathValue calculation = calculations[i];
+									CalculatedPathValue otherCalculation = otherCalculations[otherCalculationIndex - 1];
+									matchedPathElements[calculation] = otherCalculation;
+									LinkedElementCollection<CalculatedPathValueInput> otherInputs = null;
+									foreach (CalculatedPathValueInput input in calculation.InputCollection)
+									{
+										FunctionParameter otherParameter = elementTracker.GetEquivalentElement(input.Parameter) as FunctionParameter;
+										if (otherParameter != null)
+										{
+											foreach (CalculatedPathValueInput otherInput in (otherInputs ?? (otherInputs = otherCalculation.InputCollection)))
+											{
+												if (otherInput.Parameter == otherParameter)
+												{
+													matchedPathElements[input] = otherInput;
+													break;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+						return otherLeadRolePath;
+					}
+				}
+			}
+			return null;
+		}
+		/// <summary>
 		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
 		/// Match paths by roots, pathed roles, and conditional calculations.
 		/// </summary>
@@ -1757,323 +2390,56 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RolePathOwner otherPathOwner;
 			if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(pathOwner, foreignStore, elementTracker)))
 			{
-				LinkedElementCollection<PathObjectUnifier> unifiers = null;
-				LinkedElementCollection<CalculatedPathValue> conditions = null;
-				LinkedElementCollection<CalculatedPathValue> calculations = null;
-				int unifierCount = 0;
-				int conditionCount = 0;
-				int calculationCount = 0;
-				int[] matchingOtherCalculations = null; // Array indexed into other calculations (index +1, zero means empty)
-				int[] matchingOtherUnifiers = null; // Array indexed into other unifiers (index +1, zero means empty)
-				BitTracker matchedOthers = default(BitTracker);
-				Dictionary<ModelElement, ModelElement> preMatchedElements = null;
-				LinkedElementCollection<LeadRolePath> allOwnedPaths = pathOwner.OwnedLeadRolePathCollection;
-				if (allOwnedPaths.Count == 1)
+				Dictionary<ModelElement, ModelElement> matchedElements = new Dictionary<ModelElement,ModelElement>();
+				if (null != (GetMatchingPath(GetUnmappedOtherPaths(pathOwner, otherPathOwner, elementTracker), matchedElements, foreignStore, elementTracker)))
 				{
-					allOwnedPaths = null;
-				}
-				foreach (LeadRolePath otherLeadRolePath in otherPathOwner.OwnedLeadRolePathCollection)
-				{
-					if (allOwnedPaths != null)
+					// Register prematched paths, path roots, pathed roles, unifiers, and calculations
+					foreach (KeyValuePair<ModelElement, ModelElement> pair in matchedElements)
 					{
-						bool previouslyMatched = false;
-						foreach (LeadRolePath ownedPath in allOwnedPaths)
-						{
-							if (ownedPath != this &&
-								elementTracker.GetEquivalentElement(ownedPath) == otherLeadRolePath)
-							{
-								// Do a sanity check before we continue. It is possible for one owner
-								// to have two equivalent paths (possibly with alternate projections, etc).
-								// The merge framework does not track reverse elements, so we need to make
-								// sure that we don't match with two different things. Without this check,
-								// two projections can end up mapping the same lead role path. For the more
-								// common case of a relatively small number of different paths, this also
-								// avoids repetitions of the matching code below.
-								previouslyMatched = true;
-								break;
-							}
-						}
-						if (previouslyMatched)
-						{
-							continue;
-						}
+						elementTracker.AddEquivalentElement(pair.Key, pair.Value);
 					}
-					if (preMatchedElements == null)
-					{
-						preMatchedElements = new Dictionary<ModelElement,ModelElement>();
-					}
-					else
-					{
-						preMatchedElements.Clear();
-					}
-					if (IsEquivalentPath(this, otherLeadRolePath, preMatchedElements, foreignStore, elementTracker))
-					{
-						// Verify all object unifiers
-						if (unifiers == null)
-						{
-							unifiers = ObjectUnifierCollection;
-							unifierCount = unifiers.Count;
-						}
-						LinkedElementCollection<PathObjectUnifier> otherUnifiers = otherLeadRolePath.ObjectUnifierCollection;
-						if (unifierCount != otherUnifiers.Count)
-						{
-							continue;
-						}
-						else if (unifierCount != 0)
-						{
-							if (matchingOtherUnifiers == null)
-							{
-								matchingOtherUnifiers = new int[unifierCount];
-							}
-							else
-							{
-								Array.Clear(matchingOtherUnifiers, 0, unifierCount);
-							}
-							matchedOthers.Reset(unifierCount);
-							int i = 0;
-							for (; i < unifierCount; ++i)
-							{
-								PathObjectUnifier unifier = unifiers[i];
-								LinkedElementCollection<PathedRole> unifiedRoles = unifier.PathedRoleCollection;
-								LinkedElementCollection<RolePathObjectTypeRoot> unifiedRoots = unifier.PathRootCollection;
-								int unifiedRoleCount = unifiedRoles.Count;
-								int unifiedRootCount = unifiedRoots.Count;
-								int j = 0;
-								for (; j < unifierCount; ++j)
-								{
-									if (!matchedOthers[j])
-									{
-										PathObjectUnifier otherUnifier = otherUnifiers[j];
-										LinkedElementCollection<PathedRole> otherUnifiedRoles = otherUnifier.PathedRoleCollection;
-										if (otherUnifiedRoles.Count == unifiedRoleCount)
-										{
-											int k = 0;
-											for (; k < unifiedRoleCount; ++k)
-											{
-												if (!otherUnifiedRoles.Contains((PathedRole)preMatchedElements[unifiedRoles[k]]))
-												{
-													break;
-												}
-											}
-											if (k < unifiedRoleCount)
-											{
-												continue;
-											}
-										}
-										else
-										{
-											continue;
-										}
-										LinkedElementCollection<RolePathObjectTypeRoot> otherUnifiedRoots = otherUnifier.PathRootCollection;
-										if (otherUnifiedRoots.Count == unifiedRootCount)
-										{
-											int k = 0;
-											for (; k < unifiedRootCount; ++k)
-											{
-												if (!otherUnifiedRoots.Contains((RolePathObjectTypeRoot)preMatchedElements[unifiedRoots[k]]))
-												{
-													break;
-												}
-											}
-											if (k < unifiedRootCount)
-											{
-												continue;
-											}
-										}
-										else
-										{
-											continue;
-										}
-										matchingOtherUnifiers[i] = j + 1;
-										matchedOthers[j] = true;
-										break;
-									}
-								}
-								if (j == unifierCount)
-								{
-									break; // No match found
-								}
-							}
-							if (i != unifierCount)
-							{
-								// Not a full match
-								continue;
-							}
-						}
-						
-						// Verify all conditional functions. Additional functions are used as projections,
-						// but do not change the path equality. So, condition functions are matched first
-						// to test path equality, then remaining functions are filled in after path equality
-						// has been established.
-						if (conditions == null)
-						{
-							conditions = CalculatedConditionCollection;
-							conditionCount = conditions.Count;
-						}
-						LinkedElementCollection<CalculatedPathValue> otherConditions = otherLeadRolePath.CalculatedConditionCollection;
-						LinkedElementCollection<CalculatedPathValue> otherCalculations = null;
-						if (conditionCount == otherConditions.Count)
-						{
-							if (conditionCount != 0)
-							{
-								if (calculations == null)
-								{
-									calculations = CalculatedValueCollection;
-									calculationCount = calculations.Count;
-								}
-								otherCalculations = otherLeadRolePath.CalculatedValueCollection;
-								if (matchingOtherCalculations == null)
-								{
-									matchingOtherCalculations = new int[calculationCount];
-								}
-								else
-								{
-									Array.Clear(matchingOtherCalculations, 0, calculationCount);
-								}
-								matchedOthers.Reset(conditionCount);
-								int i = 0;
-								for (; i < conditionCount; ++i)
-								{
-									CalculatedPathValue condition = conditions[i];
-									int calculationIndex = calculations.IndexOf(condition);
-									int j = 0;
-									for (; j < conditionCount; ++j)
-									{
-										if (!matchedOthers[j])
-										{
-											if ((matchingOtherCalculations[calculationIndex] - 1) == j ||
-												IsEquivalentCalculation(calculations, otherCalculations, i, j, matchingOtherCalculations, preMatchedElements, foreignStore, elementTracker))
-											{
-												// This condition was picked as as the input to another calculation
-												matchedOthers[j] = true;
-												break;
-											}
-										}
-									}
-									if (j == conditionCount)
-									{
-										break;
-									}
-								}
-								if (i < conditionCount)
-								{
-									continue;
-								}
-							}
-
-							// All conditions match, the paths are equivalent.
-							// Now try top pair up any remaining unmapped functions.
-							if (calculations == null)
-							{
-								calculations = CalculatedValueCollection;
-								calculationCount = calculations.Count;
-							}
-							if (calculationCount != 0)
-							{
-								int otherCalculationCount;
-								if (otherCalculations != null)
-								{
-									otherCalculationCount = otherCalculations.Count;
-								}
-								else
-								{
-									otherCalculations = otherLeadRolePath.CalculatedValueCollection;
-									otherCalculationCount = otherCalculations.Count;
-								}
-								if (otherCalculationCount != 0)
-								{
-									matchedOthers.Reset(otherCalculationCount);
-									int alreadyMatchedCount = 0;
-									if (matchingOtherCalculations == null)
-									{
-										matchingOtherCalculations = new int[calculationCount];
-									}
-									else
-									{
-										for (int i = 0; i < calculationCount; ++i)
-										{
-											int alreadyMatchedIndex = matchingOtherCalculations[i];
-											if (alreadyMatchedIndex != 0)
-											{
-												matchedOthers[alreadyMatchedIndex - 1] = true;
-												++alreadyMatchedCount;
-											}
-										}
-									}
-									if (alreadyMatchedCount < otherCalculationCount &&
-										alreadyMatchedCount < calculationCount)
-									{
-										for (int i = 0; i < calculationCount; ++i)
-										{
-											if (0 == matchingOtherCalculations[i])
-											{
-												CalculatedPathValue calculation = calculations[i];
-												for (int j = 0; j < otherCalculationCount; ++j)
-												{
-													if (!matchedOthers[j] &&
-														IsEquivalentCalculation(calculations, otherCalculations, i, j, matchingOtherCalculations, preMatchedElements, foreignStore, elementTracker))
-													{
-														matchedOthers[j] = true;
-														++alreadyMatchedCount;
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-
-							// Register prematched paths, path roots, pathed roles
-							foreach (KeyValuePair<ModelElement, ModelElement> pair in preMatchedElements)
-							{
-								elementTracker.AddEquivalentElement(pair.Key, pair.Value);
-							}
-
-							// Register unifiers
-							if (matchingOtherUnifiers != null)
-							{
-								for (int i = 0; i < unifierCount; ++i)
-								{
-									elementTracker.AddEquivalentElement(unifiers[i], otherUnifiers[matchingOtherUnifiers[i] - 1]);
-								}
-							}
-							
-							// Register matched functions and inputs
-							if (matchingOtherCalculations != null)
-							{
-								for (int i = 0; i < calculationCount; ++i)
-								{
-									int otherCalculationIndex = matchingOtherCalculations[i];
-									if (otherCalculationIndex != 0)
-									{
-										CalculatedPathValue calculation = calculations[i];
-										CalculatedPathValue otherCalculation = otherCalculations[otherCalculationIndex - 1];
-										elementTracker.AddEquivalentElement(calculation, otherCalculation);
-										LinkedElementCollection<CalculatedPathValueInput> otherInputs = null;
-										foreach (CalculatedPathValueInput input in calculation.InputCollection)
-										{
-											FunctionParameter otherParameter = elementTracker.GetEquivalentElement(input.Parameter) as FunctionParameter;
-											if (otherParameter != null)
-											{
-												foreach (CalculatedPathValueInput otherInput in (otherInputs ?? (otherInputs = otherCalculation.InputCollection)))
-												{
-													if (otherInput.Parameter == otherParameter)
-													{
-														elementTracker.AddEquivalentElement(input, otherInput);
-														break;
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-							return true;
-						}
-					}
+					return true;
 				}
 			}
 			return false;
+		}
+		/// <summary>
+		/// Helper for MapEquivalentElements. Used as input to <see cref="GetMatchingPath"/>.
+		/// </summary>
+		private IEnumerable<LeadRolePath> GetUnmappedOtherPaths(RolePathOwner pathOwner, RolePathOwner otherPathOwner, IEquivalentElementTracker elementTracker)
+		{
+			LinkedElementCollection<LeadRolePath> allOwnedPaths = pathOwner.OwnedLeadRolePathCollection;
+			if (allOwnedPaths.Count == 1)
+			{
+				allOwnedPaths = null;
+			}
+			foreach (LeadRolePath otherLeadRolePath in otherPathOwner.OwnedLeadRolePathCollection)
+			{
+				if (allOwnedPaths != null)
+				{
+					bool previouslyMatched = false;
+					foreach (LeadRolePath ownedPath in allOwnedPaths)
+					{
+						if (elementTracker.GetEquivalentElement(ownedPath) == otherLeadRolePath)
+						{
+							// Do a sanity check before we test for equivalent. It is possible for one
+							// owner to have two equivalent paths (possibly with alternate projections,
+							// etc). The merge framework does not track reverse elements, so we need to
+							// make sure that we don't match with two different things. Without this check,
+							// two projections can end up mapping the same lead role path. For the more
+							// common case of a relatively small number of different paths, this also
+							// avoids repetitions of the matching code.
+							previouslyMatched = true;
+							break;
+						}
+					}
+					if (previouslyMatched)
+					{
+						continue;
+					}
+				}
+				yield return otherLeadRolePath;
+			}
 		}
 		/// <summary>
 		/// Helper for <see cref="MapEquivalentElements"/>

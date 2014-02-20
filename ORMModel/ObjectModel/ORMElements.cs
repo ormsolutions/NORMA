@@ -19,11 +19,12 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region ORMModelElement
-	public abstract partial class ORMModelElement : IORMExtendableElement, IModelErrorOwner
+	public abstract partial class ORMModelElement : IORMExtendableElement, IModelErrorOwner, ISurveyNodeReferenceDeletion
 	{
 		/// <summary>
 		/// The <see cref="IORMToolServices"/> for this <see cref="ORMModelElement"/>.
@@ -74,6 +75,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
+		#region ISurveyNodeReferenceDeletion Implementation
+		/// <summary>
+		/// Implements <see cref="ISurveyNodeReferenceDeletion.PreserveSurveyNodeReference"/>.
+		/// By default, references to elements are preserved if the element is not deleted.
+		/// </summary>
+		protected bool PreserveSurveyNodeReference(ISurveyNodeReference reference)
+		{
+			return !this.IsDeleted;
+		}
+		bool ISurveyNodeReferenceDeletion.PreserveSurveyNodeReference(ISurveyNodeReference reference)
+		{
+			return PreserveSurveyNodeReference(reference);
+		}
+		#endregion // ISurveyNodeReferenceDeletion Implementation
 	}
 	#endregion // ORMModelElement
 	#region ORMNamedElement

@@ -5752,6 +5752,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Debug.Assert(connectInstance != null);
 				if (factTypeRole != null)
 				{
+					connectInstance = EntityTypeSubtypeInstance.GetTypedInstance(connectInstance, factTypeRole.RolePlayer);
 					Store store = factTypeRole.Store;
 					FactType factType = factTypeRole.FactType;
 					if (parentInstance == null)

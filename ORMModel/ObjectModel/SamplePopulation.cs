@@ -112,7 +112,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				FactTypeInstance factInstance = FactTypeInstance;
 				return string.Format(
-					ResourceStrings.ModelErrorFactTypeRequiresInternalUniquenessConstraintCompactMessage,
+					ResourceStrings.ModelErrorFactTypeInstanceTooFewFactTypeRoleInstancesCompactMessage,
 					factInstance != null ? factInstance.Name : "");
 			}
 		}
@@ -315,16 +315,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					additionalFactTypes = string.Format(formatProvider, additionalFactTypeFormatString, roles[i].FactType.Name, additionalFactTypes);
 				}
 			}
-			Role role = roles[0];
-			ObjectType rolePlayer = role.RolePlayer;
+			ObjectTypeInstance instance = ObjectTypeInstance;
+			ObjectType rolePlayer = instance.ObjectType;
 			ORMModel model = Model;
 			ErrorText = string.Format(
 				formatProvider,
 				ResourceStrings.ModelErrorModelHasPopulationMandatoryError,
 				rolePlayer != null ? rolePlayer.Name : "",
-				ObjectTypeInstance.Name,
+				instance.Name,
 				model != null ? model.Name : "",
-				role.FactType.Name,
+				roles[0].FactType.Name,
 				additionalFactTypes);
 		}
 		/// <summary>
@@ -581,10 +581,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public FactTypeRoleInstance EnsureRoleInstance(Role factRole, ObjectTypeInstance instance)
 		{
 			FactTypeRoleInstance roleInstance = FindRoleInstance(factRole);
+			ObjectTypeInstance existingInstance = null;
 			bool sameInstance = false;
 			if (roleInstance != null)
 			{
-				sameInstance = roleInstance.ObjectTypeInstance == instance;
+				sameInstance = (existingInstance = roleInstance.ObjectTypeInstance) == instance;
 #if !ROLEINSTANCE_ROLEPLAYERCHANGE
 				if (!sameInstance)
 				{
@@ -592,9 +593,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 #endif // !ROLEINSTANCE_ROLEPLAYERCHANGE
 			}
-			if (!sameInstance)
+			if (!sameInstance &&
+				existingInstance != (instance = EntityTypeSubtypeInstance.GetTypedInstance(instance, factRole.RolePlayer)))
 			{
-
 #if ROLEINSTANCE_ROLEPLAYERCHANGE
 				if (roleInstance == null)
 				{
@@ -2227,57 +2228,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							else if (identifyingObjectType != null)
 							{
-								LinkedElementCollection<ObjectTypeInstance> identifyingInstances = identifiedObjectType.ObjectTypeInstanceCollection;
-								if (identifyingInstances.Count != 0)
-								{
-									// Find disjunctive mandatory roles
-									foreach (ConstraintRoleSequence sequence in identifierRole.ConstraintRoleSequenceCollection)
-									{
-										MandatoryConstraint constraint = sequence as MandatoryConstraint;
-										if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
-										{
-											LinkedElementCollection<Role> constraintRoles = null;
-											foreach (ObjectTypeInstance identifyingInstance in identifyingInstances)
-											{
-												bool requireError = true;
-												foreach (EntityTypeRoleInstance roleInstance in EntityTypeRoleInstance.GetLinksToRoleCollection(identifyingInstance))
-												{
-													// Check all constraint roles, not just the identifier role, to handle
-													// disjunctive mandatory constraints correctly.
-													if ((constraintRoles ?? (constraintRoles = constraint.RoleCollection)).Contains(roleInstance.Role))
-													{
-														requireError = false;
-														break;
-													}
-												}
-												PopulationMandatoryError error = null;
-												foreach (PopulationMandatoryError testError in constraint.PopulationMandatoryErrorCollection)
-												{
-													if (testError.ObjectTypeInstance == identifyingInstance)
-													{
-														error = testError;
-														break;
-													}
-												}
-												if (requireError)
-												{
-													if (error == null)
-													{
-														error = new PopulationMandatoryError(element.Partition);
-														error.ObjectTypeInstance = identifyingInstance;
-														error.MandatoryConstraint = constraint;
-														error.Model = constraint.ResolvedModel;
-													}
-													error.GenerateErrorText();
-												}
-												else if (error != null)
-												{
-													error.Delete();
-												}
-											}
-										}
-									}
-								}
+								FrameworkDomainModel.DelayValidateElement(identifierRole, DelayValidateRolePopulationMandatoryError);
 							}
 						}
 					}
@@ -3243,7 +3194,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					yield return objectifiedInstance;
 				}
-
+			}
+			if (filter == (ModelErrorUses)(-1))
+			{
 				ReadOnlyCollection<RoleInstance> roleInstances = RoleInstance.GetLinksToRoleCollection(this);
 				int roleInstanceCount = roleInstances.Count;
 				for (int i = 0; i < roleInstanceCount; ++i)
@@ -3254,9 +3207,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						yield return error;
 					}
 				}
-			}
-			if (filter == (ModelErrorUses)(-1))
-			{
+
 				foreach (PopulationMandatoryError populationMandatoryError in PopulationMandatoryErrorCollection)
 				{
 					yield return populationMandatoryError;
@@ -4015,6 +3966,97 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			(element as ObjectTypeInstance).ValidateInstancePopulationMandatoryError(null);
 		}
+		#region InstanceTyper struct
+		/// <summary>
+		/// Helper struct to get a typed version of a given instance.
+		/// </summary>
+		private struct InstanceTyper
+		{
+			private readonly ObjectTypeInstance myInstance;
+			private readonly ObjectType myType;
+			private bool myInitialized;
+			private EntityTypeInstance mySupertypeInstance;
+			private ObjectType mySupertypeType;
+			private LinkedElementCollection<EntityTypeSubtypeInstance> mySubtypeInstances;
+			/// <summary>
+			/// Create a new instance typer for the given instance.
+			/// </summary>
+			/// <param name="instance">The instance to base other types on.</param>
+			public InstanceTyper(ObjectTypeInstance instance)
+			{
+				myInstance = instance;
+				myType = instance.ObjectType;
+				myInitialized = false;
+				mySupertypeType = null;
+				mySupertypeInstance = null;
+				mySubtypeInstances = null;
+			}
+			/// <summary>
+			/// Get the related instance of the given type, if available.
+			/// </summary>
+			public ObjectTypeInstance TypedInstance(ObjectType type)
+			{
+				ObjectTypeInstance instance = myInstance;
+				if (myType == type)
+				{
+					return instance;
+				}
+				if (!myInitialized)
+				{
+					myInitialized = true;
+					EntityTypeInstance entityInstance;
+					EntityTypeSubtypeInstance subtypeInstance;
+					if (null != (entityInstance = instance as EntityTypeInstance))
+					{
+						mySupertypeInstance = entityInstance;
+						mySupertypeType = entityInstance.ObjectType;
+						mySubtypeInstances = entityInstance.EntityTypeSubtypeInstanceCollection;
+					}
+					else if (null != (subtypeInstance = instance as EntityTypeSubtypeInstance))
+					{
+						mySupertypeInstance = entityInstance = subtypeInstance.SupertypeInstance;
+						mySupertypeType = entityInstance.ObjectType;
+						mySubtypeInstances = entityInstance.EntityTypeSubtypeInstanceCollection;
+					}
+					if (mySubtypeInstances != null &&
+						mySubtypeInstances.Count == 0)
+					{
+						mySubtypeInstances = null;
+					}
+				}
+				if (mySubtypeInstances != null)
+				{
+					if (mySupertypeType == type)
+					{
+						return mySupertypeInstance;
+					}
+					foreach (EntityTypeSubtypeInstance subtypeInstance in mySubtypeInstances)
+					{
+						if (subtypeInstance.EntityTypeSubtype == type)
+						{
+							return subtypeInstance;
+						}
+					}
+				}
+				return null;
+			}
+			/// <summary>
+			/// Test if two instances represent the same instance, including different types
+			/// of the same instance.
+			/// </summary>
+			public static bool RepresentsSameInstance(ObjectTypeInstance instance1, ObjectTypeInstance instance2)
+			{
+				return NormalizeInstance(instance1) == NormalizeInstance(instance2);
+			}
+			private static ObjectTypeInstance NormalizeInstance(ObjectTypeInstance instance)
+			{
+				EntityTypeSubtypeInstance subtypeInstance;
+				return (null != (subtypeInstance = instance as EntityTypeSubtypeInstance)) ?
+					subtypeInstance.SupertypeInstance :
+					instance;
+			}
+		}
+		#endregion // InstanceTyper struct
 		/// <summary>
 		/// Rule helper for validating the current <see cref="ObjectTypeInstance"/>
 		/// </summary>
@@ -4027,8 +4069,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (null != (objectType = this.ObjectType))
 				{
 					LinkedElementCollection<Role> playedRoles = objectType.PlayedRoleCollection;
-					LinkedElementCollection<EntityTypeSubtypeInstance> subtypeInstances = null;
-					bool retrievedSubtypeInstances = false;
+					InstanceTyper instanceTyper = new InstanceTyper(this);
 					int playedRoleCount = playedRoles.Count;
 					LinkedElementCollection<PopulationMandatoryError> errors = this.PopulationMandatoryErrorCollection;
 					if (playedRoleCount == 0)
@@ -4039,8 +4080,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						ObjectTypeInstance identifyingInstance = null;
 						bool retrievedIdentifyingInstance = false;
-						ObjectTypeInstance matchSupertypeInstance = null;
-						bool retrievedMatchSupertypeInstance = false;
 						for (int i = 0; i < playedRoleCount; ++i)
 						{
 							Role currentRole = playedRoles[i];
@@ -4089,7 +4128,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												for (int j = errorCount - 1; j >= 0; --j)
 												{
 													PopulationMandatoryError error = oppositeErrors[j];
-													if (error.ObjectTypeInstance == identifyingInstance)
+													if (InstanceTyper.RepresentsSameInstance(error.ObjectTypeInstance, identifyingInstance))
 													{
 														error.Delete();
 													}
@@ -4135,16 +4174,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								if (constraint != null && constraint.Modality == ConstraintModality.Alethic)
 								{
 									bool hasError = false;
+									ObjectTypeInstance typedInstance = null;
 									if (!impliedRolePopulation)
 									{
-										if (currentRoleInstances == null)
-										{
-											currentRoleInstances = currentRole.ObjectTypeInstanceCollection;
-										}
 										LinkedElementCollection<Role> constraintRoles = constraint.RoleCollection;
+										ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(constraintRoles, false);
+										while (compatibleTypes.Length > 1)
+										{
+											compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes, false);
+										}
+										if (compatibleTypes.Length == 0)
+										{
+											// Don't show population errors if there are compatible type problems
+											constraint.PopulationMandatoryErrorCollection.Clear();
+											continue;
+										}
+										ObjectType trackedInstanceType = compatibleTypes[0];
+										typedInstance = this;
+										if (trackedInstanceType != objectType)
+										{
+											if (null == (typedInstance = instanceTyper.TypedInstance(trackedInstanceType)))
+											{
+												errors.Clear();
+												continue;
+											}
+										}
 										int constraintRoleCount = constraintRoles.Count;
 										int j = 0;
-										if (!objectType.IsImplicitBooleanValue)
+										if (!trackedInstanceType.IsImplicitBooleanValue)
 										{
 											for (; j < constraintRoleCount; ++j)
 											{
@@ -4152,22 +4209,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												SupertypeMetaRole supertypeRole = constraintRole as SupertypeMetaRole;
 												if (supertypeRole != null && ((SubtypeFact)supertypeRole.FactType).ProvidesPreferredIdentifier)
 												{
-													bool hasMatchingSubtypeInstance = false;
-													foreach (EntityTypeSubtypeInstance subtypeInstance in supertypeRole.OppositeRole.Role.RolePlayer.EntityTypeSubtypeInstanceCollection)
-													{
-														if (!retrievedMatchSupertypeInstance)
-														{
-															retrievedMatchSupertypeInstance = true;
-															EntityTypeSubtypeInstance thisAsSubtypeInstance = this as EntityTypeSubtypeInstance;
-															matchSupertypeInstance = (null != thisAsSubtypeInstance) ? subtypeInstance.SupertypeInstance : this;
-														}
-														if (matchSupertypeInstance == subtypeInstance.SupertypeInstance)
-														{
-															hasMatchingSubtypeInstance = true;
-															break;
-														}
-													}
-													if (hasMatchingSubtypeInstance)
+													if (null != (instanceTyper.TypedInstance(supertypeRole.OppositeRole.Role.RolePlayer)))
 													{
 														break;
 													}
@@ -4176,56 +4218,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												{
 													ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances;
 													ObjectTypeInstance findInstance;
+													ObjectType roleType;
 													if (currentRole == constraintRole)
 													{
+														if (currentRoleInstances == null)
+														{
+															currentRoleInstances = currentRole.ObjectTypeInstanceCollection;
+														}
 														roleInstances = currentRoleInstances;
-														findInstance = this;
+														roleType = objectType;
 													}
 													else
 													{
 														roleInstances = constraintRole.ObjectTypeInstanceCollection;
-														ObjectType roleType = constraintRole.RolePlayer;
-														if (roleType == objectType)
-														{
-															findInstance = this;
-														}
-														else
-														{
-															findInstance = null;
-															if (!retrievedSubtypeInstances)
-															{
-																retrievedSubtypeInstances = true;
-																EntityTypeInstance entityInstance;
-																EntityTypeSubtypeInstance subtypeInstance;
-																if (null != (entityInstance = this as EntityTypeInstance))
-																{
-																	subtypeInstances = entityInstance.EntityTypeSubtypeInstanceCollection;
-																}
-																else if (null != (subtypeInstance = this as EntityTypeSubtypeInstance))
-																{
-																	subtypeInstances = subtypeInstance.SupertypeInstance.EntityTypeSubtypeInstanceCollection;
-																}
-																if (subtypeInstances != null &&
-																	subtypeInstances.Count == 0)
-																{
-																	subtypeInstances = null;
-																}
-															}
-															if (subtypeInstances != null)
-															{
-																foreach (EntityTypeSubtypeInstance subtypeInstance in subtypeInstances)
-																{
-																	if (subtypeInstance.EntityTypeSubtype == roleType)
-																	{
-																		findInstance = subtypeInstance;
-																		break;
-																	}
-																}
-															}
-														}
+														roleType = constraintRole.RolePlayer;
 													}
-													//= (currentRole == constraintRole) ? currentRoleInstances : constraintRole.ObjectTypeInstanceCollection;
-													if (findInstance != null &&
+													if (null != (findInstance = ((trackedInstanceType == roleType) ? typedInstance : instanceTyper.TypedInstance(roleType))) &&
 														roleInstances.Contains(findInstance))
 													{
 														break;
@@ -4237,20 +4245,43 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 									if (hasError)
 									{
-										// Make sure we have an error
-										int errorCount = errors.Count;
-										int k = 0;
-										for (; k < errorCount; ++k)
+										bool createError = true;
+										if (typedInstance == this)
 										{
-											if (errors[k].MandatoryConstraint == constraint)
+											// Make sure we have an error
+											foreach (PopulationMandatoryError error in errors)
 											{
-												break;
+												if (error.MandatoryConstraint == constraint)
+												{
+													createError = false;
+													break;
+												}
 											}
 										}
-										if (k == errorCount)
+										else
+										{
+											// Make sure there is no error on this instance
+											foreach (PopulationMandatoryError error in errors)
+											{
+												if (error.MandatoryConstraint == constraint)
+												{
+													error.Delete();
+													break;
+												}
+											}
+											foreach (PopulationMandatoryError error in typedInstance.PopulationMandatoryErrorCollection)
+											{
+												if (error.MandatoryConstraint == constraint)
+												{
+													createError = false;
+													break;
+												}
+											}
+										}
+										if (createError)
 										{
 											PopulationMandatoryError error = new PopulationMandatoryError(Partition);
-											error.ObjectTypeInstance = this;
+											error.ObjectTypeInstance = typedInstance;
 											error.MandatoryConstraint = constraint;
 											error.Model = constraint.ResolvedModel;
 											error.GenerateErrorText();
@@ -4263,13 +4294,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									else
 									{
 										// Make sure we have no error for this constraint
-										int errorCount = errors.Count;
-										for (int k = 0; k < errorCount; ++k)
+										foreach (PopulationMandatoryError error in errors)
 										{
-											if (errors[k].MandatoryConstraint == constraint)
+											if (error.MandatoryConstraint == constraint)
 											{
-												errors[k].Delete();
+												error.Delete();
 												break;
+											}
+										}
+										if (typedInstance != null &&
+											typedInstance != this)
+										{
+											foreach (PopulationMandatoryError error in typedInstance.PopulationMandatoryErrorCollection)
+											{
+												if (error.MandatoryConstraint == constraint)
+												{
+													error.Delete();
+													break;
+												}
 											}
 										}
 									}
@@ -4345,7 +4387,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						for (int i = populationErrorCount - 1; i >= 0; --i)
 						{
 							PopulationMandatoryError error = populationErrors[i];
-							if (error.ObjectTypeInstance == objectTypeInstance)
+							if (InstanceTyper.RepresentsSameInstance(error.ObjectTypeInstance, objectTypeInstance))
 							{
 								error.Delete();
 							}
@@ -4357,8 +4399,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Validator callback for PopulationMandatoryError. Runs after the much cheaper <see cref="DelayValidateRemovePopulationMandatoryError"/>
 		/// </summary>
+		/// <remarks>Protected so that this can be triggered from subtypes.</remarks>
 		[DelayValidatePriority(4)]
-		private static void DelayValidateRolePopulationMandatoryError(ModelElement element)
+		protected static void DelayValidateRolePopulationMandatoryError(ModelElement element)
 		{
 			Role role = (Role)element;
 			if (!role.IsDeleted)
@@ -4376,10 +4419,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								int instanceCount = 0;
 								ObjectTypeInstance[] instances = null;
-								bool[] seenInstances = null;
+								ObjectType instancesOfType = null;
+								BitTracker seenInstances = default(BitTracker);
 								MandatoryConstraint constraint;
-								IComparer<ObjectTypeInstance> comparer = HashCodeComparer<ObjectTypeInstance>.Instance;
-								ReadOnlyLinkedElementCollection<ObjectTypeInstance> thisRoleObjectTypeInstances = null;
+								IComparer<ObjectTypeInstance> comparer = ModelElementIdComparer<ObjectTypeInstance>.Instance;
 								SubtypeMetaRole subtypeRole;
 								bool impliedRolePopulation = (null != (subtypeRole = role as SubtypeMetaRole)) && ((SubtypeFact)subtypeRole.FactType).ProvidesPreferredIdentifier;
 								foreach (ConstraintRoleSequence sequence in role.ConstraintRoleSequenceCollection)
@@ -4390,36 +4433,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										if (impliedRolePopulation)
 										{
 											constraint.PopulationMandatoryErrorCollection.Clear();
-											break;
+											continue;
 										}
+										LinkedElementCollection<Role> constraintRoles = sequence.RoleCollection;
+										ObjectType[] compatibleTypes = ObjectType.GetNearestCompatibleTypes(constraintRoles, false);
+										while (compatibleTypes.Length > 1)
+										{
+											compatibleTypes = ObjectType.GetNearestCompatibleTypes(compatibleTypes, false);
+										}
+										if (compatibleTypes.Length == 0)
+										{
+											// Don't show population errors if there are compatible type problems
+											constraint.PopulationMandatoryErrorCollection.Clear();
+											continue;
+										}
+										ObjectType trackedInstanceType = compatibleTypes[0];
 										int seenInstanceCount = 0;
 										int constraintRoleCount = 0;
-										if (!rolePlayer.IsImplicitBooleanValue)
+										if (!trackedInstanceType.IsImplicitBooleanValue)
 										{
 											// Get repeated stuff once
-											if (instances == null)
+											if (instancesOfType != trackedInstanceType)
 											{
-												instances = rolePlayer.ObjectTypeInstanceCollection.ToArray();
-												instanceCount = instances.Length;
-												if (instanceCount == 0)
+												instancesOfType = trackedInstanceType;
+												LinkedElementCollection<ObjectTypeInstance> instancesCollection = trackedInstanceType.ObjectTypeInstanceCollection;
+												if (0 == (instanceCount = instancesCollection.Count))
 												{
-													break;
+													instances = null;
+													continue;
 												}
+												instances = instancesCollection.ToArray();
 												Array.Sort<ObjectTypeInstance>(instances, comparer);
-												seenInstances = new bool[instanceCount];
-												thisRoleObjectTypeInstances = role.ObjectTypeInstanceCollection;
+												seenInstances = new BitTracker(instanceCount);
+											}
+											else if (instances == null)
+											{
+												continue;
 											}
 											else
 											{
-												Array.Clear(seenInstances, 0, instanceCount);
+												seenInstances.Reset();
 											}
 
-											// Intersect each role with the instances on the current role player.
-											// Note that a disjunctive mandatory constraint with incompatible roles
-											// will clearly not intersect, but is still a population error. We do
-											// not make role compatibility a prerequisite for checking population
-											// mandatory errors.
-											LinkedElementCollection<Role> constraintRoles = sequence.RoleCollection;
+											// Intersect each role with the instances on the compatible role player.
+											// Note that we do not report population mandatory errors on constraints with
+											// incompatible roles.
 											constraintRoleCount = constraintRoles.Count;
 											for (int i = 0; i < constraintRoleCount && seenInstanceCount < instanceCount; ++i)
 											{
@@ -4429,8 +4487,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												{
 													foreach (EntityTypeSubtypeInstance subtypeInstance in supertypeRole.OppositeRole.Role.RolePlayer.EntityTypeSubtypeInstanceCollection)
 													{
-														int index = Array.BinarySearch<ObjectTypeInstance>(instances, subtypeInstance.SupertypeInstance, comparer);
-														if (index >= 0 && !seenInstances[index])
+														InstanceTyper instanceTyper = new InstanceTyper(subtypeInstance);
+														ObjectTypeInstance findInstance;
+														int index;
+														if (null != (findInstance = instanceTyper.TypedInstance(trackedInstanceType)) &&
+															0 <= (index = Array.BinarySearch<ObjectTypeInstance>(instances, findInstance, comparer)) &&
+															!seenInstances[index])
 														{
 															++seenInstanceCount;
 															seenInstances[index] = true;
@@ -4443,12 +4505,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 												}
 												else
 												{
-													ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances = (currentRole == role) ? thisRoleObjectTypeInstances : currentRole.ObjectTypeInstanceCollection;
+													ReadOnlyLinkedElementCollection<ObjectTypeInstance> roleInstances;
+													ObjectType differentRolePlayer;
+													roleInstances = currentRole.ObjectTypeInstanceCollection;
+													if (trackedInstanceType == (differentRolePlayer = currentRole.RolePlayer))
+													{
+														differentRolePlayer = null;
+													}
 													int roleInstanceCount = roleInstances.Count;
 													for (int j = 0; j < roleInstanceCount; ++j)
 													{
-														int index = Array.BinarySearch<ObjectTypeInstance>(instances, roleInstances[j], comparer);
-														if (index >= 0 && !seenInstances[index])
+														ObjectTypeInstance findInstance = roleInstances[j];
+														if (differentRolePlayer != null)
+														{
+															findInstance = new InstanceTyper(findInstance).TypedInstance(trackedInstanceType);
+														}
+														int index;
+														if (findInstance != null &&
+															0 <= (index = Array.BinarySearch<ObjectTypeInstance>(instances, findInstance, comparer)) &&
+															!seenInstances[index])
 														{
 															++seenInstanceCount;
 															seenInstances[index] = true;
@@ -4468,23 +4543,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										int errorCount = errors.Count;
 										if (seenInstanceCount == instanceCount)
 										{
-											if (constraintRoleCount == 1)
-											{
-												errors.Clear();
-											}
-											else
-											{
-												// Because we check this without first enforcing role compatibility, we should not
-												// clear the errors that are not involved with the current role player
-												for (int i = errorCount - 1; i >= 0; --i)
-												{
-													PopulationMandatoryError error = errors[i];
-													if (error.ObjectTypeInstance.ObjectType == rolePlayer)
-													{
-														error.Delete();
-													}
-												}
-											}
+											errors.Clear();
 										}
 										else
 										{
@@ -4492,8 +4551,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											for (int i = errorCount - 1; i >= 0; --i)
 											{
 												PopulationMandatoryError error = errors[i];
-												int index = Array.BinarySearch<ObjectTypeInstance>(instances, error.ObjectTypeInstance, comparer);
-												if (index >= 0)
+												ObjectTypeInstance previousErrorInstance = error.ObjectTypeInstance;
+												int index;
+												if (previousErrorInstance.ObjectType != trackedInstanceType)
+												{
+													// We only report errors on the nearest shared compatible type.
+													// Clear any errors that are not involved with this type.
+													error.Delete();
+												}
+												else if (0 <= (index = Array.BinarySearch<ObjectTypeInstance>(instances, previousErrorInstance, comparer)))
 												{
 													if (seenInstances[index])
 													{
@@ -4551,6 +4617,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									int errorCount = oppositeErrors.Count;
 									for (int j = errorCount - 1; j >= 0; --j)
 									{
+										// This is a single role uniqueness. There is no need to resolve the supertype
+										// for the constraint or check subtypes.
 										PopulationMandatoryError error = oppositeErrors[j];
 										if (rolePlayerInstances.Contains(error.ObjectTypeInstance))
 										{
@@ -5327,7 +5395,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (subtypeInstanceCount != 0)
 					{
 						EntityTypeInstance[] supertypeInstances = null;
-						bool[] instanceMatches = null;
+						BitTracker instanceMatches = default(BitTracker);
 						IComparer<EntityTypeInstance> comparer = null;
 						ObjectType.WalkSupertypes(
 							subtype,
@@ -5347,12 +5415,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									if (supertypeInstances == null)
 									{
 										supertypeInstances = new EntityTypeInstance[subtypeInstanceCount];
-										instanceMatches = new bool[subtypeInstanceCount];
+										instanceMatches = new BitTracker(subtypeInstanceCount);
 										for (int i = 0; i < subtypeInstanceCount; ++i)
 										{
 											supertypeInstances[i] = subtypeInstances[i].SupertypeInstance;
 										}
-										Array.Sort<EntityTypeInstance>(supertypeInstances, comparer = HashCodeComparer<EntityTypeInstance>.Instance);
+										Array.Sort<EntityTypeInstance>(supertypeInstances, comparer = ModelElementIdComparer<EntityTypeInstance>.Instance);
 									}
 									int matched = 0;
 									foreach (EntityTypeSubtypeInstance intermediateInstance in supertype.EntityTypeSubtypeInstanceCollection)
@@ -5382,7 +5450,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 									else
 									{
-										Array.Clear(instanceMatches, 0, subtypeInstanceCount); // prepare for next pass
+										instanceMatches.Reset();
 									}
 								}
 								// Skip in all cases. If we added, then rules will trigger additional adds for other
@@ -5699,6 +5767,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return newSubtypeInstance;
 			}
 			return null;
+		}
+		/// <summary>
+		/// Get an instance of the requested type that is related to the provided
+		/// instance 
+		/// </summary>
+		/// <param name="instance">The instance to verify.</param>
+		/// <param name="relatedType">The type of the related instance.</param>
+		/// <returns>The same instance, or a related instance of the given type.</returns>
+		public static ObjectTypeInstance GetTypedInstance(ObjectTypeInstance instance, ObjectType relatedType)
+		{
+			if (relatedType != null &&
+				instance.ObjectType != relatedType)
+			{
+				EntityTypeInstance entityTypeInstance;
+				EntityTypeSubtypeInstance subtypeInstance;
+				if (null == (entityTypeInstance = instance as EntityTypeInstance))
+				{
+					if (null != (subtypeInstance = instance as EntityTypeSubtypeInstance))
+					{
+						entityTypeInstance = subtypeInstance.SupertypeInstance;
+						if (entityTypeInstance.ObjectType == relatedType)
+						{
+							return entityTypeInstance;
+						}
+					}
+				}
+				if (null != entityTypeInstance)
+				{
+					return GetSubtypeInstance(entityTypeInstance, relatedType, true, true);
+				}
+			}
+			return instance;
 		}
 		#endregion // Helper Methods
 	}

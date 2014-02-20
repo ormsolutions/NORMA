@@ -85,7 +85,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// </summary>
 				public NewElementTracker()
 				{
-					myElements = new Dictionary<ModelElement, bool>(HashCodeComparer<ModelElement>.Instance);
+					myElements = new Dictionary<ModelElement, bool>(ModelElementIdComparer<ModelElement>.Instance);
 					myBlockAllElements = true;
 				}
 				#endregion // Constructor

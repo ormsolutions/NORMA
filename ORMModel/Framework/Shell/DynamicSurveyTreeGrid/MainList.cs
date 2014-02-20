@@ -170,6 +170,16 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					return myContextElement;
 				}
 			}
+			/// <summary>
+			/// Get the node at this index.
+			/// </summary>
+			public SampleDataElementNode this[int index]
+			{
+				get
+				{
+					return myNodes[index];
+				}
+			}
 			#endregion //root branch and survey properties
 			#region sort list methods
 			#region IComparer<SampleDataElementNode> Members
@@ -1048,7 +1058,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			/// <summary>
-			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementDeleted(object,bool)"/>
+			/// Forwarded from <see cref="INotifySurveyElementChanged.ElementDeleted"/>
 			/// </summary>
 			public void NodeDeleted(SampleDataElementNode node)
 			{

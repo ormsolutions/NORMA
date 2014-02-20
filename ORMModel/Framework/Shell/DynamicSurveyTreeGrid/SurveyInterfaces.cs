@@ -491,6 +491,66 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		bool UseSurveyNodeReferenceAnswer(Type questionType, ISurveyDynamicValues dynamicValues, int answer);
 	}
 	#endregion // ISurveyNodeReference interface
+	#region ISurveyNodeReferenceDeletion interface
+	/// <summary>
+	/// When a survey node is removed from a tree the elements
+	/// referencing that node will by default also be removed.
+	/// To block this default behavior, which can be desirable
+	/// if an element is being deleted from display in the tree
+	/// but not from the model itself, an element can implement
+	/// this interface. This will tell the tree to delete the
+	/// element from the tree, but to maintain other reference
+	/// nodes in the tree that reference and display the element.
+	/// </summary>
+	/// <remarks>Implementing this interface on a referenced
+	/// survey node provides the default behavior for all references
+	/// to that element. The survey node references can also implement
+	/// the <see cref="ISurveyNodeReferenceTargetDeletion"/> interface
+	/// to override the default on the referenced element itself.</remarks>
+	public interface ISurveyNodeReferenceDeletion
+	{
+		/// <summary>
+		/// Determine if a reference to a node should be deleted
+		/// when the node itself is removed from the survey tree.
+		/// </summary>
+		/// <param name="reference">An element reference.</param>
+		/// <returns><see langword="true"/> to keep the reference, false
+		/// to delete the reference. The default implementation assumes
+		/// that all references to a node are deleted when the node is
+		/// deleted from its primary location.</returns>
+		bool PreserveSurveyNodeReference(ISurveyNodeReference reference);
+	}
+	#endregion // ISurveyNodeReferenceDeletion interface
+	#region ISurveyNodeReferenceTargetDeletion interface
+	/// <summary>
+	/// Let an object that implements the <see cref="ISurveyNodeReference"/>
+	/// interface directly decide whether the reference should be deleted when
+	/// the target object is deleted.
+	/// </summary>
+	/// <remarks>This provides a finer-grained version of the <see cref="ISurveyNodeReferenceDeletion"/>
+	/// interface, which is implemented on the referenced element and provides
+	/// the default settings for all references to that item. However, the survey
+	/// system is fully extensible, so the referenced object may not know about the
+	/// desired behavior for a single reference. The default interface is provided
+	/// to ease the implementation by only requiring a reference to implement this interface
+	/// in cases where the default behavior is incorrect.</remarks>
+	public interface ISurveyNodeReferenceTargetDeletion
+	{
+		/// <summary>
+		/// Determine if a reference to a node should be deleted when
+		/// the node itself is removed from the survey tree. This interface
+		/// is implemented on the referencing element, not the target, to
+		/// provide fine-grained control over this decision. The assumption
+		/// is made that this object also implements the <see cref="ISurveyNodeReference"/>
+		/// interface.
+		/// </summary>
+		/// <returns><see langword="true"/> to keep the reference, false
+		/// to delete the reference. The default implementation assumes
+		/// that all references to a node are deleted when the node is
+		/// deleted from its primary location.</returns>
+		bool PreserveAsSurveyNodeReference();
+	}
+	#endregion // ISurveyNodeReferenceTargetDeletion interface
 	#region ISurveyFloatingNode interface
 	/// <summary>
 	/// Enable survey questions to be applied to an element that does
@@ -717,15 +777,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// </summary>
 		/// <param name="element">The object that was removed from the node provider</param>
 		void ElementDeleted(object element);
-		/// <summary>
-		/// Called when an element is removed from the container's node provider
-		/// </summary>
-		/// <param name="element">The object that was removed from the node provider</param>
-		/// <param name="preserveReferences">If true, then the element is deleted from its
-		/// primary location, but references to the element are preserved. This allows an
-		/// element to be effectively hidden from its primary display location but still
-		/// displayed in the alternate locations.</param>
-		void ElementDeleted(object element, bool preserveReferences);
 		/// <summary>
 		/// Called if element reference is removed from the container's node provider.
 		/// If the element has a custom expansion specified with <see cref="ISurveyNode.SurveyNodeExpansionKey"/>

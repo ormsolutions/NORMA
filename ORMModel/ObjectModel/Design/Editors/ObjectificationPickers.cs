@@ -59,7 +59,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			int count = candidates.Count;
 			if (count > 0)
 			{
-				IComparer<ObjectType> comparer = HashCodeComparer<ObjectType>.Instance;
+				IComparer<ObjectType> comparer = ModelElementIdComparer<ObjectType>.Instance;
 				LinkedElementCollection<RoleBase> roles = instance.RoleCollection;
 				ObjectType[] rolePlayers = new ObjectType[roles.Count];
 				for (int i = 0; i < rolePlayers.Length; ++i)
@@ -132,7 +132,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			int count = candidates.Count;
 			if (count > 0)
 			{
-				IComparer<FactType> comparer = HashCodeComparer<FactType>.Instance;
+				IComparer<FactType> comparer = ModelElementIdComparer<FactType>.Instance;
 				LinkedElementCollection<Role> playedRoles = instance.PlayedRoleCollection;
 				FactType[] playedFacts = new FactType[playedRoles.Count];
 				for (int i = 0; i < playedFacts.Length; ++i)

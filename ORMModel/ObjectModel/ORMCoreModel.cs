@@ -1152,7 +1152,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ExclusiveOrConstraintCoupler coupler = element as ExclusiveOrConstraintCoupler;
 				ExclusionConstraint exclusion = coupler.ExclusionConstraint;
 				MandatoryConstraint mandatory = coupler.MandatoryConstraint;
-				eventNotify.ElementDeleted(exclusion, true);
+				eventNotify.ElementDeleted(exclusion);
 				eventNotify.ElementChanged(exclusion, SurveyGlyphQuestionTypes); // Modifies references to the hidden exclusion
 				eventNotify.ElementRenamed(mandatory);
 				eventNotify.ElementChanged(mandatory, SurveyGlyphQuestionTypes);

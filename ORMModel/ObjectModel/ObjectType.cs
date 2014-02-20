@@ -4738,7 +4738,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					yield return duplicateName;
 				}
 
-				//UNDONE: Eventually this shouldn't be verbalizing
+				// Note that this does not pick up mandatory and uniqueness errors for the
+				// population, which are not in the verbalized or primary display for an
+				// object type instance. These are verbalized in other contexts (with the
+				// associated fact types and roles). If this is changed, Role.GetIndirectModelErrorOwnerLinkRoles
+				// will need to add a path to the played object type to correctly display
+				// these redirected errors.
 				foreach (IModelErrorOwner objectTypeInstance in this.ObjectTypeInstanceCollection)
 				{
 					foreach (ModelErrorUsage objectTypeInstanceError in objectTypeInstance.GetErrorCollection(startFilter))

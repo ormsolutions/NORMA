@@ -602,116 +602,291 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			ElementReferenceChanged(element, referenceReason, contextElement, questionTypes);
 		}
 		/// <summary>
-		/// Implements <see cref="INotifySurveyElementChanged.ElementDeleted(object, bool)"/>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementDeleted"/>
 		/// </summary>
-		protected void ElementDeleted(object element, bool preserveReferences)
+		protected void ElementDeleted(object element)
 		{
-			NodeLocation value;
-			if (myNodeDictionary.TryGetValue(element, out value))
+			Stack<MainList> removedLists = null;
+			NodeLocation location;
+			if (myNodeDictionary.TryGetValue(element, out location))
 			{
-				// Remove items from the primary display location
-				ISurveyNodeReference reference = element as ISurveyNodeReference;
-				bool trackedReference = false;
-				if (reference != null && 0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+				ElementDeleted(location, ref removedLists);
+				if (removedLists != null)
 				{
-					trackedReference = true;
+					EmptyRemovedLists(removedLists);
 				}
-				MainList notifyList;
-				if (null != (notifyList = value.MainList))
+			}
+		}
+		private void ElementDeleted(NodeLocation location, ref Stack<MainList> removedLists)
+		{
+			SampleDataElementNode elementNode = location.ElementNode;
+			object element = elementNode.Element;
+			Dictionary<object, NodeLocation> nodeDictionary = myNodeDictionary;
+			Dictionary<object, LinkedNode<SurveyNodeReference>> referenceDictionary = myReferenceDictionary;
+			Dictionary<object, MainList> listDictionary = myMainListDictionary;
+			
+			// Remove items from the primary display location
+			ISurveyNodeReference reference = element as ISurveyNodeReference;
+			bool trackedReference = reference != null && 0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance);
+
+			ISurveyNodeReferenceDeletion defaultElementDeletion;
+			LinkedNode<SurveyNodeReference> linkNode;
+			LinkedNode<SurveyNodeReference> headLinkNode;
+			LinkedNode<SurveyNodeReference> startHeadLinkNode;
+			MainList notifyList;
+			if (null != (notifyList = location.MainList))
+			{
+				object listContext = notifyList.ContextElement;
+				if (reference != null && !trackedReference)
 				{
-					if (reference != null && !trackedReference)
+					// Delete the node as a reference using the context element provided by the list
+					ElementReferenceDeleted(reference.ReferencedElement, reference.SurveyNodeReferenceReason, listContext, ref removedLists);
+					return;
+				}
+				
+				// If the list is in the process of being removed, then it will no longer be
+				// keyed and there is nothing to notify.
+				if (listDictionary.ContainsKey(listContext ?? TopLevelExpansionKey))
+				{
+					// Delete the node from the list with notifications to the display.
+					notifyList.NodeDeleted(elementNode);
+				}
+			}
+			else if (reference != null && !trackedReference)
+			{
+				// A non-tracked reference with not list is in a partially deleted state, there
+				// is nothing more to do.
+				return;
+			}
+
+			if (trackedReference)
+			{
+				// If this is a tracked reference then we need to get it out
+				// of the reference tracking dictionary. This is similar to
+				// ElementReferenceDeleted, except that there are no notifications
+				// and the element context is ignored.
+				object referencedElement = reference.ReferencedElement;
+				if (referenceDictionary.TryGetValue(referencedElement, out startHeadLinkNode))
+				{
+					linkNode = headLinkNode = startHeadLinkNode;
+					object referenceReason = reference.SurveyNodeReferenceReason;
+					while (linkNode != null)
 					{
-						// Delete the node as a reference
-						ElementReferenceDeleted(reference.ReferencedElement, reference.SurveyNodeReferenceReason, notifyList.ContextElement);
+						SurveyNodeReference link = linkNode.Value;
+						if (referenceReason == null ? referenceReason == link.ReferenceReason : referenceReason.Equals(link.ReferenceReason))
+						{
+							linkNode.Detach(ref headLinkNode);
+							NodeLocation referenceLocation;
+							bool referencedNodeIsFloating = nodeDictionary.TryGetValue(referencedElement, out referenceLocation) && referenceLocation.MainList == null;
+							if (headLinkNode == null)
+							{
+								referenceDictionary.Remove(referencedElement);
+								if (referencedNodeIsFloating)
+								{
+									// Nothing is using a floating referenced element, remove it.
+									ElementDeleted(referenceLocation, ref removedLists);
+								}
+							}
+							else
+							{
+								if (startHeadLinkNode != headLinkNode)
+								{
+									referenceDictionary[referencedElement] = headLinkNode;
+								}
+								if (referencedNodeIsFloating)
+								{
+									// See if any of the remaining references are actually keeping the floating
+									// node alive. If not, delete it.
+									linkNode = headLinkNode;
+									defaultElementDeletion = referencedElement as ISurveyNodeReferenceDeletion;
+									while (linkNode != null)
+									{
+										bool preserveExpansion;
+										if (ReferencePreservesElement(defaultElementDeletion, linkNode.Value, out preserveExpansion))
+										{
+											break;
+										}
+										linkNode = linkNode.Next;
+									}
+									if (linkNode == null)
+									{
+										// Nothing is preserving the floating reference, remove the element.
+										ElementDeleted(referenceLocation, ref removedLists);
+									}
+								}
+							}
+							break;
+						}
+						linkNode = linkNode.Next;
+					}
+				}
+			}
+
+			// Remove items from all secondary display locations
+			bool elementStillReferenced = false;
+			bool elementExpansionStillReferenced = false;
+			if ((reference == null || trackedReference) &&
+				referenceDictionary.TryGetValue(element, out startHeadLinkNode))
+			{
+				defaultElementDeletion = element as ISurveyNodeReferenceDeletion;
+				linkNode = headLinkNode = startHeadLinkNode;
+				while (linkNode != null)
+				{
+					SurveyNodeReference link = linkNode.Value;
+					SampleDataElementNode node = link.Node;
+
+					// Test if the reference should still exist even if the element has lost its
+					// primary location in the tree.
+					bool preserveCurrentExpansion;
+					if (ReferencePreservesElement(defaultElementDeletion, link, out preserveCurrentExpansion))
+					{
+						elementStillReferenced = true;
+						elementExpansionStillReferenced = elementExpansionStillReferenced || preserveCurrentExpansion;
+
+						// Nothing more to do, move on to the next item.
+						linkNode = linkNode.Next;
 					}
 					else
 					{
-						// Delete the node directly
-						notifyList.NodeDeleted(value.ElementNode);
-
-						if (trackedReference)
+						// Notify that the item has been removed from a list, assuming the list has been expanded in the tree.
+						if (listDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
 						{
-							// If this is a tracked reference then we still need to
-							// get it out of the reference tracking dictionary. This is
-							// very similar to ElementReferenceDeleted, except that we
-							// there are no notifications and the element context is ignored.
-							LinkedNode<SurveyNodeReference> headLinkNode;
-							object referencedElement = reference.ReferencedElement;
-							if (myReferenceDictionary.TryGetValue(referencedElement, out headLinkNode))
-							{
-								// UNDONE: PENDING Does this need to recurse to handle references to references?
-								LinkedNode<SurveyNodeReference> linkNode = headLinkNode;
-								LinkedNode<SurveyNodeReference> startHeadLinkNode = headLinkNode;
-								object referenceReason = reference.SurveyNodeReferenceReason;
-								while (linkNode != null)
-								{
-									SurveyNodeReference link = linkNode.Value;
-									if (referenceReason == null ? referenceReason == link.ReferenceReason : referenceReason.Equals(link.ReferenceReason))
-									{
-										linkNode.Detach(ref headLinkNode);
-										break;
-									}
-									linkNode = linkNode.Next;
-								}
-								if (headLinkNode == null)
-								{
-									myReferenceDictionary.Remove(referencedElement);
-								}
-								else if (startHeadLinkNode != headLinkNode)
-								{
-									myReferenceDictionary[referencedElement] = headLinkNode;
-								}
-							}
+							notifyList.NodeDeleted(node);
 						}
 
+						// Pull this item out of the reference list
+						LinkedNode<SurveyNodeReference> nextNode = linkNode.Next;
+						linkNode.Detach(ref headLinkNode);
+						linkNode = nextNode;
+
+						// If the removed reference can itself be referenced, then we need to recursively remove
+						// all direct and indirect references. Note that ReferencePreservesElement already recursively
+						// checks that no other references keep this object alive at this point.
+						object referenceElement = node.Element;
+						reference = referenceElement as ISurveyNodeReference;
+						NodeLocation referenceLocation;
+						if (null != reference &&
+							0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance) &&
+							nodeDictionary.TryGetValue(referenceElement, out referenceLocation))
+						{
+							ElementDeleted(referenceLocation, ref removedLists);
+						}
 					}
 				}
-
-				if (preserveReferences)
+				if (elementStillReferenced)
 				{
-					// We have all of the information from inclusion of the element in
-					// a list, we just need a different node type.
-					myNodeDictionary[element] = new NodeLocation(value.Survey, value.ElementNode);
+					if (startHeadLinkNode != headLinkNode)
+					{
+						referenceDictionary[element] = headLinkNode;
+					}
 				}
 				else
 				{
-					// Remove items from all secondary display locations
-					LinkedNode<SurveyNodeReference> linkNode;
-					if (myReferenceDictionary.TryGetValue(element, out linkNode))
+					referenceDictionary.Remove(element);
+				}
+			}
+
+			if (elementStillReferenced)
+			{
+				// We have all of the information from inclusion of the element in
+				// a list, we just need a different node type because the primary location
+				// has been removed.
+				nodeDictionary[element] = new NodeLocation(location.Survey, elementNode);
+			}
+			else
+			{
+				// Remove the tracking entry for this element
+				nodeDictionary.Remove(element);
+			}
+
+			// Remove tracking for an expansion of this element
+			if (!elementExpansionStillReferenced &&
+				listDictionary.TryGetValue(element, out notifyList))
+			{
+				listDictionary.Remove(element);
+				(removedLists ?? (removedLists = new Stack<MainList>())).Push(notifyList);
+			}
+		}
+		/// <summary>
+		/// Helper for ElementDeleted and ElementReferenceDeleted to delete nodes from
+		/// lists whose key elements have been deleted.
+		/// </summary>
+		private void EmptyRemovedLists(Stack<MainList> removedLists)
+		{
+			Dictionary<object, NodeLocation> nodeDictionary = myNodeDictionary;
+			while (removedLists.Count != 0)
+			{
+				MainList removedList = removedLists.Pop();
+				int count = ((IBranch)removedList).VisibleItemCount;
+				if (count != 0)
+				{
+					Survey survey = removedList.QuestionList;
+					object contextElement = removedList.ContextElement;
+					for (int i = 0; i < count; ++i)
 					{
-						while (linkNode != null)
+						SampleDataElementNode node = removedList[i];
+						object element = node.Element;
+						ISurveyNodeReference reference;
+						if (null != (reference = element as ISurveyNodeReference) &&
+							0 == (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
 						{
-							SurveyNodeReference link = linkNode.Value;
-							if (myMainListDictionary.TryGetValue(link.ContextElement ?? TopLevelExpansionKey, out notifyList))
-							{
-								notifyList.NodeDeleted(linkNode.Value.Node);
-							}
-							linkNode = linkNode.Next;
+							ElementReferenceDeleted(reference.ReferencedElement, reference.SurveyNodeReferenceReason, contextElement, ref removedLists);
 						}
-						myReferenceDictionary.Remove(element);
-					}
-
-					// Remove the tracking entry for this element
-					myNodeDictionary.Remove(element);
-
-					// Remove tracking for an expansion of this element
-					if (myMainListDictionary.ContainsKey(element))
-					{
-						myMainListDictionary.Remove(element);
+						else if (nodeDictionary.ContainsKey(element)) // Make sure this hasn't been deleted since the list was removed.
+						{
+							ElementDeleted(new NodeLocation(survey, removedList[i]), ref removedLists);
+						}
 					}
 				}
 			}
 		}
-		void INotifySurveyElementChanged.ElementDeleted(object element, bool preserveReferences)
-		{
-			ElementDeleted(element, preserveReferences);
-		}
 		/// <summary>
-		/// Implements <see cref="INotifySurveyElementChanged.ElementDeleted(object)"/>
+		/// Helper method to determine if a reference to an element preserves the element.
 		/// </summary>
-		protected void ElementDeleted(object element)
+		private bool ReferencePreservesElement(ISurveyNodeReferenceDeletion defaultElementDeletion, SurveyNodeReference nodeReference, out bool preserveExpansion)
 		{
-			ElementDeleted(element, false);
+			bool preserveReference = false;
+			preserveExpansion = false;
+			ISurveyNodeReferenceTargetDeletion customElementDeletion;
+			object referenceElement = nodeReference.Node.Element;
+			ISurveyNodeReference reference;
+			if (null != (reference = referenceElement as ISurveyNodeReference))
+			{
+				SurveyNodeReferenceOptions options = reference.SurveyNodeReferenceOptions;
+				if ((null != (customElementDeletion = referenceElement as ISurveyNodeReferenceTargetDeletion) ?
+						customElementDeletion.PreserveAsSurveyNodeReference() :
+						((null != defaultElementDeletion) ?
+							defaultElementDeletion.PreserveSurveyNodeReference(reference) :
+							false)))
+				{
+					preserveReference = true;
+				}
+				else if (0 != (options & SurveyNodeReferenceOptions.TrackReferenceInstance))
+				{
+					// If there is a reference to this node that preserves it then treat it as preserved.
+					bool localPreserveExpansion;
+					LinkedNode<SurveyNodeReference> refsToRef;
+					if (myReferenceDictionary.TryGetValue(referenceElement, out refsToRef))
+					{
+						defaultElementDeletion = referenceElement as ISurveyNodeReferenceDeletion;
+						while (refsToRef != null)
+						{
+							if (ReferencePreservesElement(defaultElementDeletion, refsToRef.Value, out localPreserveExpansion))
+							{
+								preserveReference = true;
+								break;
+							}
+							refsToRef = refsToRef.Next;
+						}
+					}
+				}
+				if (preserveReference &
+					0 != (options & SurveyNodeReferenceOptions.InlineExpansion))
+				{
+					preserveExpansion = true;
+				}
+			}
+			return preserveExpansion;
 		}
 		void INotifySurveyElementChanged.ElementDeleted(object element)
 		{
@@ -721,6 +896,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// Implements <see cref="INotifySurveyElementChanged.ElementReferenceDeleted(Object,Object,Object)"/>
 		/// </summary>
 		protected void ElementReferenceDeleted(object element, object referenceReason, object contextElement)
+		{
+			Stack<MainList> removedLists = null;
+			ElementReferenceDeleted(element, referenceReason, contextElement, ref removedLists);
+			if (removedLists != null)
+			{
+				EmptyRemovedLists(removedLists);
+			}
+		}
+		private void ElementReferenceDeleted(object element, object referenceReason, object contextElement, ref Stack<MainList> removedLists)
 		{
 			LinkedNode<SurveyNodeReference> headLinkNode;
 			if (myReferenceDictionary.TryGetValue(element, out headLinkNode))
@@ -740,27 +924,55 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							notifyList.NodeDeleted(link.Node);
 						}
 						linkNode.Detach(ref headLinkNode);
+						// Note that elements that are not floating nodes can be downgraded from
+						// an anchored node to a floating node based on the survey information associated
+						// with the original (deleted) node for the element. There is no requirement for the
+						// element to implement ISurveyFloatingNode.
+						// Verify that no one actually included this in a list, then remove it
+						NodeLocation location;
+						Dictionary<object, NodeLocation> nodeDictionary = myNodeDictionary;
+						bool nodeIsFloating = nodeDictionary.TryGetValue(element, out location) && location.MainList == null;
+						if (headLinkNode == null)
+						{
+							myReferenceDictionary.Remove(element);
+							if (nodeIsFloating)
+							{
+								// Note that a reference to a reference will point to a tracked reference,
+								// which is handled in ElementDeleted, not here, so we just defer.
+								ElementDeleted(location, ref removedLists);
+							}
+						}
+						else
+						{
+							if (startHeadLinkNode != headLinkNode)
+							{
+								myReferenceDictionary[element] = headLinkNode;
+							}
+							if (nodeIsFloating)
+							{
+								// See if any of the remaining references are actually keeping the floating
+								// node alive. If not, delete it.
+								linkNode = headLinkNode;
+								ISurveyNodeReferenceDeletion defaultElementDeletion = element as ISurveyNodeReferenceDeletion;
+								while (linkNode != null)
+								{
+									bool preserveExpansion;
+									if (ReferencePreservesElement(defaultElementDeletion, linkNode.Value, out preserveExpansion))
+									{
+										break;
+									}
+									linkNode = linkNode.Next;
+								}
+								if (linkNode == null)
+								{
+									// Nothing is preserving the floating reference, remove the element.
+									ElementDeleted(location, ref removedLists);
+								}
+							}
+						}
 						break;
 					}
 					linkNode = linkNode.Next;
-				}
-				if (headLinkNode == null)
-				{
-					myReferenceDictionary.Remove(element);
-					if (element is ISurveyFloatingNode)
-					{
-						// Verify that no one actually included this in a list, then remove it
-						NodeLocation location;
-						if (myNodeDictionary.TryGetValue(element, out location) &&
-							location.MainList == null)
-						{
-							myNodeDictionary.Remove(element);
-						}
-					}
-				}
-				else if (startHeadLinkNode != headLinkNode)
-				{
-					myReferenceDictionary[element] = headLinkNode;
 				}
 			}
 		}

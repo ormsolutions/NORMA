@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -373,152 +374,6 @@ namespace ORMSolutions.ORMArchitect.Framework
 	}
 	#endregion // RuntimeFieldHandleComparer class
 
-	#region HashCodeComparer class
-	/// <summary>
-	/// <see cref="Object.GetHashCode">HashCode</see>-based <see cref="Comparer{T}"/> implementation.
-	/// </summary>
-	/// <remarks>
-	/// Since equality tests in this class are based on the <see cref="Object.GetHashCode">HashCode</see>
-	/// alone, two instances of type <typeparamref name="T"/> will be considered equal if they have the same
-	/// <see cref="Object.GetHashCode">HashCode</see>.
-	/// </remarks>
-	[Serializable]
-	public sealed class HashCodeComparer<T> : Comparer<T>, IEqualityComparer<T>, IEqualityComparer, IEquatable<HashCodeComparer<T>>, ISerializable
-	{
-		private HashCodeComparer() : base()
-		{
-		}
-		/// <summary>
-		/// The singleton instance of <see cref="HashCodeComparer{T}"/>.
-		/// </summary>
-		public static readonly HashCodeComparer<T> Instance = new HashCodeComparer<T>();
-
-		#region Serialization support
-		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-		void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			if (info == null)
-			{
-				throw new ArgumentNullException("info");
-			}
-			info.SetType(typeof(SerializationHelper));
-		}
-		[Serializable]
-		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-		private sealed class SerializationHelper : IObjectReference
-		{
-			private SerializationHelper()
-				: base()
-			{
-			}
-			public object GetRealObject(StreamingContext context)
-			{
-				return Instance;
-			}
-		}
-		#endregion // Serialization support
-
-		/// <summary>
-		/// Use the <see cref="Instance"/> field to retrieve the singleton instance of
-		/// <see cref="HashCodeComparer{T}"/>.
-		/// </summary>
-		/// <remarks>
-		/// This is here mainly to hide the <see cref="Comparer{T}.Default"/> property
-		/// so that it is not used by mistake.
-		/// </remarks>
-		[EditorBrowsable(EditorBrowsableState.Never)]
-		public static new Comparer<T> Default
-		{
-			get
-			{
-				return Instance;
-			}
-		}
-
-		/// <summary>See <see cref="Comparer{T}.Compare"/>.</summary>
-		public sealed override int Compare(T x, T y)
-		{
-			if (x == null)
-			{
-				return (y == null) ? 0 : -1;
-			}
-			else if (y == null)
-			{
-				return 1;
-			}
-			else
-			{
-				return x.GetHashCode().CompareTo(y.GetHashCode());
-			}
-		}
-		/// <summary>See <see cref="IEqualityComparer{T}.Equals"/>.</summary>
-		public bool Equals(T x, T y)
-		{
-			if (x == null)
-			{
-				return (y == null);
-			}
-			else if (y == null)
-			{
-				return false;
-			}
-			else
-			{
-				return x.GetHashCode() == y.GetHashCode();
-			}
-		}
-		/// <summary>See <see cref="IEqualityComparer.Equals"/>.</summary>
-		bool IEqualityComparer.Equals(object x, object y)
-		{
-			if (x == y)
-			{
-				return true;
-			}
-			else if (x == null || y == null)
-			{
-				return false;
-			}
-			else
-			{
-				return ((T)x).GetHashCode() == ((T)y).GetHashCode();
-			}
-		}
-		/// <summary>See <see cref="IEqualityComparer{T}.GetHashCode"/>.</summary>
-		public int GetHashCode(T obj)
-		{
-			if (obj == null)
-			{
-				throw new ArgumentNullException("obj");
-			}
-			return obj.GetHashCode();
-		}
-		/// <summary>See <see cref="IEqualityComparer.GetHashCode"/>.</summary>
-		int IEqualityComparer.GetHashCode(Object obj)
-		{
-			if (obj == null)
-			{
-				throw new ArgumentNullException("obj");
-			}
-			return ((T)obj).GetHashCode();
-		}
-		/// <summary>See <see cref="Object.GetHashCode"/>.</summary>
-		public sealed override int GetHashCode()
-		{
-			return 0;
-		}
-		/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
-		public sealed override bool Equals(object obj)
-		{
-			return this == obj;
-		}
-		/// <summary>See <see cref="IEquatable{T}.Equals"/>.</summary>
-		public bool Equals(HashCodeComparer<T> other)
-		{
-			return this == other;
-		}
-	}
-	#endregion // HashCodeComparer class
-
 	#region NamedElementComparer class
 	/// <summary>
 	/// <c>Name</c>-based <see cref="Comparer{TModelElement}"/> implementation for <see cref="ModelElement"/> instances.
@@ -661,4 +516,127 @@ namespace ORMSolutions.ORMArchitect.Framework
 		}
 	}
 	#endregion // NamedElementComparer class
+
+	#region ModelElementIdComparer class
+	/// <summary>
+	/// <c>Id</c>-based <see cref="Comparer{TModelElement}"/> implementation for <see cref="ModelElement"/> instances.
+	/// </summary>
+	/// <remarks>
+	/// Compare model elements based on their element ids.
+	/// </remarks>
+	[Serializable]
+	public sealed class ModelElementIdComparer<TModelElement> : Comparer<TModelElement>, IEqualityComparer<TModelElement>, IEqualityComparer, IEquatable<ModelElementIdComparer<TModelElement>>
+		where TModelElement : ModelElement
+	{
+		private ModelElementIdComparer()
+			: base()
+		{
+		}
+		/// <summary>
+		/// The singleton instance of <see cref="ModelElementIdComparer{T}"/>.
+		/// </summary>
+		public static readonly ModelElementIdComparer<TModelElement> Instance = new ModelElementIdComparer<TModelElement>();
+
+		/// <summary>
+		/// Use the <see cref="Instance"/> field to retrieve the singleton instance of <see cref="ModelElementIdComparer{T}"/>.
+		/// </summary>
+		/// <remarks>
+		/// This is here mainly to hide the <see cref="Comparer{T}.Default"/> property so that it is not used by mistake.
+		/// </remarks>
+		[EditorBrowsable(EditorBrowsableState.Never)]
+		public static new Comparer<TModelElement> Default
+		{
+			get
+			{
+				return Instance;
+			}
+		}
+
+		/// <summary>See <see cref="Comparer{TModelElement}.Compare"/>.</summary>
+		public sealed override int Compare(TModelElement x, TModelElement y)
+		{
+			if (x == y)
+			{
+				return 0;
+			}
+			else if (x == null)
+			{
+				return -1;
+			}
+			else if (y == null)
+			{
+				return 1;
+			}
+			else
+			{
+				return x.Id.CompareTo(y.Id);
+			}
+		}
+		/// <summary>See <see cref="IEqualityComparer{TModelElement}.Equals"/>.</summary>
+		public bool Equals(TModelElement x, TModelElement y)
+		{
+			if (x == y)
+			{
+				return true;
+			}
+			else if (x == null || y == null)
+			{
+				return false;
+			}
+			else
+			{
+				return x.Id.Equals(y.Id);
+			}
+		}
+		/// <summary>See <see cref="IEqualityComparer.Equals"/>.</summary>
+		bool IEqualityComparer.Equals(object x, object y)
+		{
+			if (x == y)
+			{
+				return true;
+			}
+			else if (x == null || y == null)
+			{
+				return false;
+			}
+			else
+			{
+				return ((TModelElement)x).Id.Equals((TModelElement)y);
+			}
+		}
+		/// <summary>See <see cref="IEqualityComparer{TModelElement}.GetHashCode"/>.</summary>
+		public int GetHashCode(TModelElement obj)
+		{
+			if (obj == null)
+			{
+				throw new ArgumentNullException("obj");
+			}
+			return obj.Id.GetHashCode();
+		}
+		/// <summary>See <see cref="IEqualityComparer.GetHashCode"/>.</summary>
+		int IEqualityComparer.GetHashCode(object obj)
+		{
+			if (obj == null)
+			{
+				throw new ArgumentNullException("obj");
+			}
+			return ((TModelElement)obj).Id.GetHashCode();
+		}
+		/// <summary>See <see cref="Object.GetHashCode"/>.</summary>
+		public sealed override int GetHashCode()
+		{
+			return 0;
+		}
+		/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
+		public sealed override bool Equals(object obj)
+		{
+			return this == obj;
+		}
+		/// <summary>See <see cref="IEquatable{TModelElement}.Equals"/>.</summary>
+		public bool Equals(ModelElementIdComparer<TModelElement> other)
+		{
+			return this == other;
+		}
+	}
+	#endregion // ModelElementIdComparer class
 }
