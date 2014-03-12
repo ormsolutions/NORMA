@@ -886,7 +886,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					preserveExpansion = true;
 				}
 			}
-			return preserveExpansion;
+			return preserveReference;
 		}
 		void INotifySurveyElementChanged.ElementDeleted(object element)
 		{
