@@ -1999,7 +1999,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						{
 							if (selection != null)
 							{
-								FactSetConstraint constraintLink = FactSetConstraint.GetLink((UniquenessConstraint)constraintElement, factType ?? factShape.AssociatedFactType);
+								UniquenessConstraint uc = (UniquenessConstraint)constraintElement;
+								FactSetConstraint constraintLink = FactSetConstraint.GetLink(uc, factType ?? (factType = factShape.AssociatedFactType));
+								Objectification objectification;
+								if (constraintLink == null &&
+									null != (objectification = factType.ImpliedByObjectification))
+								{
+									constraintLink = FactSetConstraint.GetLink(uc, objectification.NestedFactType);
+								}
 								if (testSubField == null)
 								{
 									testSubField = new ConstraintSubField(constraintLink);
@@ -5780,7 +5787,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public DiagramItem GetDiagramItem(UniquenessConstraint constraint)
 		{
 			Debug.Assert(constraint.IsInternal);
-			return new DiagramItem(this, InternalConstraintShapeField, new ConstraintSubField(FactSetConstraint.GetLink(constraint, AssociatedFactType)));
+			FactType factType = AssociatedFactType;
+			FactSetConstraint constraintLink;
+			if (null == (constraintLink = FactSetConstraint.GetLink(constraint, factType)))
+			{
+				Objectification objectification;
+				if (null != (objectification = factType.ImpliedByObjectification))
+				{
+					constraintLink = FactSetConstraint.GetLink(constraint, factType);
+				}
+			}
+			return new DiagramItem(this, InternalConstraintShapeField, new ConstraintSubField(constraintLink));
 		}
 		/// <summary>
 		/// Get a diagram item for a role on the associated fact.
