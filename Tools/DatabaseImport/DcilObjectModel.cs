@@ -123,6 +123,10 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 				case "System.Data.SqlClient":
 					provider = new SqlServer2005DcilSchemaProvider(connection);
 					break;
+				case "Oracle.DataAccess.Client":
+				case "System.Data.OracleClient":
+					provider = new OracleDcilSchemaProvider(connection);
+					break;
 			}
 			if (provider == null) throw new NotSupportedException("The specified invariant name is not supported.");
 			return provider;
