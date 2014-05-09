@@ -449,23 +449,41 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			{
 				if (tabPage != null)
 				{
-					InlineTabRenameTextBox renamingTextBox = myRenamingTextBox;
+					InlineTabRenameTextBox renamingTextBox;
 					
-					if (renamingTextBox != null)
+					if (null != (renamingTextBox = myRenamingTextBox) &&
+						renamingTextBox.RenamingTabPage == tabPage)
 					{
-						if (renamingTextBox.RenamingTabPage == tabPage)
+						// If we already have an InlineTabRenameTextBox for this tab page, do nothing
+						return;
+					}
+					new InlineTabRenameTextBox(this, tabPage);
+					base.Invalidate(false);
+				}
+			}
+			private InlineTabRenameTextBox RenamingTextBox
+			{
+				get
+				{
+					return myRenamingTextBox;
+				}
+				set
+				{
+					InlineTabRenameTextBox current = myRenamingTextBox;
+					myRenamingTextBox = value;
+					if (current != null)
+					{
+						// If we already have an InlineTabRenameTextBox for a different tab page, save the changes and close it
+						current.Close(true);
+						if (value == null)
 						{
-							// If we already have an InlineTabRenameTextBox for this tab page, do nothing
-							return;
-						}
-						else
-						{
-							// If we already have an InlineTabRenameTextBox for a different tab page, save the changes and close it
-							renamingTextBox.Close(true);
+							DocView.ActiveInPlaceEditWindow = null;
 						}
 					}
-					myRenamingTextBox = new InlineTabRenameTextBox(this, tabPage);
-					base.Invalidate(false);
+					if (value != null)
+					{
+						DocView.ActiveInPlaceEditWindow = value;
+					}
 				}
 			}
 			#endregion // RenameTab method
@@ -701,6 +719,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				public InlineTabRenameTextBox(MultiDiagramDocViewControl docViewControl, DiagramTabPage renamingTabPage)
 				{
 					myDocViewControl = docViewControl;
+					docViewControl.RenamingTextBox = null; // Close anything existing prior to initialization
 					RenamingTabPage = renamingTabPage;
 					base.Parent = docViewControl.Parent;
 					base.Visible = false;
@@ -711,13 +730,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					base.TextAlign = HorizontalAlignment.Center;
 					base.BringToFront();
 					base.Focus();
+					docViewControl.RenamingTextBox = this; // Associate the existing tab
 				}
 
 				protected sealed override void Dispose(bool disposing)
 				{
 					if (disposing)
 					{
-						myDocViewControl.myRenamingTextBox = null;
+						myDocViewControl.RenamingTextBox = null;
 						base.Parent = null;
 					}
 					base.Dispose(disposing);
@@ -732,8 +752,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 						if (!mySavedChanges && saveChanges && base.Modified)
 						{
 							RenamingTabPage.Text = base.Text;
-							mySavedChanges = true;
 						}
+						// Always mark changes as saved so that we respect the saveChanges
+						// parameter from the first Close call. Additional Close calls are
+						// possible in response to other events.
+						mySavedChanges = true;
 						if (base.Focused)
 						{
 							// Give focus back to the DocViewControl, which will give it back to the active designer
@@ -760,7 +783,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 						return base.ProcessDialogKey(keyData);
 					}
 				}
-
 				protected sealed override Padding DefaultMargin
 				{
 					get

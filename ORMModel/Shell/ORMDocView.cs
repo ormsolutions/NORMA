@@ -503,7 +503,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		private void ContextMenuPageOrderClick(object sender, EventArgs e)
 		{
-			base.ReorderDiagrams();
+			base.ReorderDiagrams(ContextMenuStrip.SelectedDiagram);
 		}
 		#endregion // Context Menu
 

@@ -335,8 +335,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		#endregion // DiagramBranch class
 		private static Size LastFormSize;
 		private Diagram[] myDiagramOrder;
+		private int myInitialSelectionIndex;
 		private ImageList myImages;
-		private DiagramOrderDialog(IList<Diagram> startingOrder, ImageList images)
+		private DiagramOrderDialog(IList<Diagram> startingOrder, Diagram selectedDiagram, ImageList images)
 		{
 			int diagramCount = startingOrder.Count;
 			Diagram[] order = startingOrder as Diagram[];
@@ -346,6 +347,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				startingOrder.CopyTo(order, 0);
 			}
 			myDiagramOrder = order;
+			myInitialSelectionIndex = (selectedDiagram != null) ? Array.IndexOf<Diagram>(order, selectedDiagram) : -1;
 			myImages = images;
 			InitializeComponent();
 			DiagramsList.ImageList = images;
@@ -357,10 +359,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// <param name="serviceProvider">A <see cref="IServiceProvider"/> used to parent the dialog</param>
 		/// <param name="docData">The owning <see cref="ModelingDocData"/> of the diagrams being reordered</param>
 		/// <param name="diagrams">A list of <see cref="Diagram"/> elements to reorder</param>
+		/// <param name="selectedDiagram">A <see cref="Diagram"/> to select when the dialog is initially displayed.</param>
 		/// <param name="images">The diagram images to display. Images are keyed off the Guid of the diagram type (format "N")</param>
-		public static void ShowDialog(IServiceProvider serviceProvider, ModelingDocData docData, IList<Diagram> diagrams, ImageList images)
+		public static void ShowDialog(IServiceProvider serviceProvider, ModelingDocData docData, IList<Diagram> diagrams, Diagram selectedDiagram, ImageList images)
 		{
-			DiagramOrderDialog orderDialog = new DiagramOrderDialog(diagrams, images);
+			DiagramOrderDialog orderDialog = new DiagramOrderDialog(diagrams, selectedDiagram, images);
 			if (orderDialog.ShowDialog(Utility.GetDialogOwnerWindow(serviceProvider)) == DialogResult.OK)
 			{
 				DiagramDisplay.UpdateDiagramDisplayOrder(docData.Store, orderDialog.myDiagramOrder);
@@ -376,6 +379,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			tree.Root = new DiagramBranch(this);
 			VirtualTreeControl treeControl = DiagramsList;
 			treeControl.Tree = tree;
+			int selectIndex;
+			if (-1 != (selectIndex = myInitialSelectionIndex))
+			{
+				treeControl.CurrentIndex = selectIndex;
+			}
 			treeControl.Select();
 		}
 		private int[] SelectedIndices

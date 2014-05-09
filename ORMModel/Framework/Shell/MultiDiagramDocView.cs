@@ -355,7 +355,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// <summary>
 		/// Reorder the diagram tab pages
 		/// </summary>
-		public void ReorderDiagrams()
+		public void ReorderDiagrams(Diagram selectedDiagram)
 		{
 			MultiDiagramDocViewControl docViewControl;
 			TabControl.TabPageCollection pages;
@@ -368,7 +368,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				{
 					diagrams[i] = ((DiagramTabPage)pages[i]).Diagram;
 				}
-				DiagramOrderDialog.ShowDialog(ServiceProvider, DocData, diagrams, myDocViewControl.ImageList);
+				DiagramOrderDialog.ShowDialog(ServiceProvider, DocData, diagrams, selectedDiagram, myDocViewControl.ImageList);
 			}
 		}
 		/// <summary>
