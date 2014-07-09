@@ -20,7 +20,7 @@ Microsoft Visual Studio SDK
 	Download (Visual Studio 2010): http://www.microsoft.com/en-us/download/details.aspx?id=2680
 	Download (Visual Studio 2012): http://www.microsoft.com/en-us/download/details.aspx?id=30668
 	Download (Visual Studio 2013): http://www.microsoft.com/en-us/download/details.aspx?id=40758
-IMPORTANT: You will need to establish the Visual Studio experimental hive before building NORMA by running Visual Studio once in this environment. Use the link provided by the VS SDK, or run 'devenv.exe /RootSuffix Exp' from a Visual Studio command prompt.
+IMPORTANT: You will need to establish the Visual Studio experimental hive before building NORMA by running Visual Studio once in this environment. Use the link provided by the VS SDK, or run 'devenv.exe /RootSuffix Exp' from a Visual Studio command prompt. For Visual Studio 2008, make sure you use either the provided shortcut or add /RANU (run as normal user) to the command line. After running FirstTimeBuildVS2008.bat you should use 'devenv /rootsuffix Exp' instead of 'devenv /rootsuffix Exp /RANU'.
 
 
 Microsoft Visual Studio Modeling and Visualization Tools (DSL Tools SDK), installs after the primary SDK
@@ -75,12 +75,13 @@ These values correspond to Visual Studio 20xx where v8.0=2005, v9.0=2008, v10.0=
 See the comments in SetupEnvironment.bat for additional details on how the options are used.
 
 Notes on building and debugging with VS2008 through VS2013:
-The project files (.csproj, etc) are multitargeted to work correctly in Visual Studio 2005 and higher. However, the solution files (.sln) have slightly different formats in each VS version. If you open a VS2005 solution file in VS2008 then you will be prompted to upgrade. *.VS2008.sln files are provided as companions to all *.sln files for use in VS2008, and you will find corresponding .sln files for each successive version of VisualStudio. However, the *.VS2008.sln files are not sufficient for successfully building in VS2008.
+The project files (.csproj, etc) are multitargeted to work correctly in Visual Studio 2005 and higher. However, the solution files (.sln) have slightly different formats in each VS version. If you open a VS2005 solution file in VS2008 then you will be prompted to upgrade. *.VS2008.sln files are provided as companions to all *.sln files for use in VS2008, and you will find corresponding .sln files for each successive version of VisualStudio. However, the *.VS2008.sln files are not sufficient for successfully building in VS2008 (etc).
 
-You must set the TargetVisualStudioVersion to the correct version (listed above) before opening a NORMA project file from any of the Visual Studio IDE environments. The easiest way to do this is to (after the initial batch files mentioned above have completed successfully) is with the following steps. You may want to put these steps into an easily accessible batch file. The example given is for Visual Studio 2008, but 2010, 2012, and 2013 work similarly.
-1) Open a Visual Studio 2008 Command Prompt
-2) SET TargetVisualStudioVersion=v9.0
-3) Navigate to your NORMA root code directory
+You must set the TargetVisualStudioVersion to the correct version (listed above) before opening a NORMA project file from any of the Visual Studio IDE environments. There is also a registry that needs to be set so that the ToolsVersion setting the project files match the target environment. The easiest way to do this (after the initial batch files mentioned above have completed successfully) is with the following steps. You may want to put these steps into an easily accessible batch file. The example given is for Visual Studio 2008, but 2010, 2012, and 2013 work similarly.
+
+1) Open a Visual Studio 2008 Command Prompt (as an Administrator)
+2) Navigate to your NORMA root code directory
+3) Execute the VS2008.bat batch file in the command prompt. Each of these batch files (matching the VS20xx environment you're opening) do two things. First, it sets the TargetVisualStudioVersion variable to the appropriate value. Second, it updates the registry to copy the contents of the tools version matching your system to the tools version 12.34. All of the NORMA .csproj files use ToolsVersion="12.34" (a fake number), and modifying the contents of the corresponding registry key allows the same .csproj file to be used for all of the visual studio versions. 
 4) devenv ORMPackage.VS2008.sln
 
 To build from the command line for VS2008:
