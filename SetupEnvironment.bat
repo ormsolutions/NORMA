@@ -99,6 +99,8 @@ IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortPr
 IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2005)
 IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2005)
 IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=8.2.0.0)
+IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=2.0)
+IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=2.0.0.0)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKLM)
 GOTO:EOF
 
@@ -112,12 +114,14 @@ IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortPr
 IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2008)
 IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2008)
 IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=9.0.0.0)
+IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=3.5)
+IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.v3.5)
+IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=3.5.0.0)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKLM)
 GOTO:EOF
 
 :_SetupVersionVars_v10.0
 IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v4.0)
-IF NOT DEFINED TargetFrameworkVersionSuffix (SET TargetFrameworkVersionSuffix=.v4.0)
 IF NOT DEFINED TargetVisualStudioMajorMinorVersion (SET TargetVisualStudioMajorMinorVersion=10.0)
 IF NOT DEFINED TargetVisualStudioAssemblyVersion (SET TargetVisualStudioAssemblyVersion=10.0.0.0)
 IF NOT DEFINED TargetVisualStudioFrameworkAssemblyVersion (SET TargetVisualStudioFrameworkAssemblyVersion=4.0.0.0)
@@ -126,6 +130,9 @@ IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortPr
 IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2010)
 IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2010)
 IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=10.0.0.0)
+IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=4.0)
+IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.v4.0)
+IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=4.0.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0)
@@ -133,7 +140,6 @@ GOTO:EOF
 
 :_SetupVersionVars_v11.0
 IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v4.5)
-IF NOT DEFINED TargetFrameworkVersionSuffix (SET TargetFrameworkVersionSuffix=.v4.0)
 IF NOT DEFINED TargetVisualStudioMajorMinorVersion (SET TargetVisualStudioMajorMinorVersion=11.0)
 IF NOT DEFINED TargetVisualStudioAssemblyVersion (SET TargetVisualStudioAssemblyVersion=11.0.0.0)
 IF NOT DEFINED TargetVisualStudioFrameworkAssemblyVersion (SET TargetVisualStudioFrameworkAssemblyVersion=4.5.0.0)
@@ -142,6 +148,9 @@ IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortPr
 IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2012)
 IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2012)
 IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=11.0.0.0)
+IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=4.0)
+IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.v4.0)
+IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=4.0.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0)
@@ -149,7 +158,6 @@ GOTO:EOF
 
 :_SetupVersionVars_v12.0
 IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v4.5)
-IF NOT DEFINED TargetFrameworkVersionSuffix (SET TargetFrameworkVersionSuffix=.v4.0)
 IF NOT DEFINED TargetVisualStudioMajorMinorVersion (SET TargetVisualStudioMajorMinorVersion=12.0)
 IF NOT DEFINED TargetVisualStudioAssemblyVersion (SET TargetVisualStudioAssemblyVersion=12.0.0.0)
 IF NOT DEFINED TargetVisualStudioFrameworkAssemblyVersion (SET TargetVisualStudioFrameworkAssemblyVersion=4.5.0.0)
@@ -158,6 +166,9 @@ IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortPr
 IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2013)
 IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2013)
 IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=12.0.0.0)
+IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=12.0)
+IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.v12.0)
+IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=12.0.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0)

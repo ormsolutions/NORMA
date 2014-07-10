@@ -3,20 +3,21 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
-#if NET_4_0
-[assembly: AssemblyTitle("Neumont.Build.v4.0.dll")]
-#else
 [assembly: AssemblyTitle("Neumont.Build.dll")]
-#endif
 [assembly: AssemblyProduct("Neumont Build System")]
 [assembly: AssemblyDescription("Neumont Build System - Main DLL")]
-
-[assembly: Dependency("Microsoft.Build.Framework,", LoadHint.Always)]
-#if NET_4_0
-[assembly: Dependency("Microsoft.Build.Utilities.v4.0,", LoadHint.Always)]
-[assembly: Dependency("Microsoft.Build.Tasks.v4.0,", LoadHint.Always)]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.0.0")]
+[assembly: AssemblyVersion(
+#if TOOLS_2_0
+"2.0.0.0"
+#elif TOOLS_3_5
+"3.5.0.0"
+#elif TOOLS_4_0
+"4.0.0.0"
+#elif TOOLS_12_0
+"12.0.0.0"
 #else
-[assembly: Dependency("Microsoft.Build.Utilities,", LoadHint.Always)]
-[assembly: Dependency("Microsoft.Build.Tasks,", LoadHint.Always)]
+NEW_TOOLS_VERSION
 #endif
-[assembly: Dependency("System.Xml,", LoadHint.Always)]
+)]

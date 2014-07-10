@@ -41,7 +41,14 @@ namespace Neumont.Build.Tasks
 		/// <summary>See <see cref="ToolTask.GenerateFullPathToTool"/>.</summary>
 		protected override string GenerateFullPathToTool()
 		{
-			return ToolLocationHelper.GetPathToDotNetFrameworkFile(this.ToolName, TargetDotNetFrameworkVersion.VersionLatest);
+			// Be careful with location ngen doesn't install everywhere
+			TargetDotNetFrameworkVersion useVersion;
+#if NET_4_0
+			useVersion = TargetDotNetFrameworkVersion.Version40;
+#else
+			useVersion = TargetDotNetFrameworkVersion.Version20;
+#endif
+			return ToolLocationHelper.GetPathToDotNetFrameworkFile(this.ToolName, useVersion);
 		}
 		/// <summary>See <see cref="ToolTask.ToolName"/>.</summary>
 		protected override string ToolName

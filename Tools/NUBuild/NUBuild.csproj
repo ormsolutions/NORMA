@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Neumont.Build</RootNamespace>
-    <AssemblyName>Neumont.Build</AssemblyName>
+    <AssemblyName>Neumont.Build$(ProjectToolsAssemblySuffix)</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <BaseAddress>1413349376</BaseAddress>
@@ -30,15 +30,15 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <NoWarn>1607</NoWarn>
-    <DocumentationFile>bin\Neumont.Build.xml</DocumentationFile>
+    <DocumentationFile>bin\Neumont.Build$(ProjectToolsAssemblySuffix).xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Tasks$(TargetFrameworkVersionSuffix)" />
-    <Reference Include="Microsoft.Build.Utilities$(TargetFrameworkVersionSuffix)" />
+    <Reference Include="Microsoft.Build.Framework, Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Build.Tasks$(ProjectToolsAssemblySuffix), Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Build.Utilities$(ProjectToolsAssemblySuffix), Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -47,9 +47,9 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\Version.cs">
+    <!--<Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
-    </Compile>
+    </Compile>-->
     <None Include="..\..\ORMPackage.snk">
       <Link>Properties\ORMPackage.snk</Link>
     </None>
@@ -70,7 +70,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(MSBuildProjectDirectory)\..\..\VersionGenerator.exe"</PreBuildEvent>
+    <!-- <PreBuildEvent>"$(MSBuildProjectDirectory)\..\..\VersionGenerator.exe"</PreBuildEvent> -->
     <PostBuildEvent>"$(MSBuildProjectDirectory)\Install.bat"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -43,6 +43,7 @@
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">8.2.0.0</TargetDslToolsAssemblyVersion>
 				<GeneratedDslFileSuffix Condition=" '$GeneratedDslFileSuffix)' == '' "></GeneratedDslFileSuffix>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">2.0</ProjectToolsVersion>
+				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">2.0.0.0</ProjectToolsAssemblyVersion>
 			</PropertyGroup>
 		</When>
 		<When Condition=" '$(TargetVisualStudioVersion)' == 'v9.0' ">
@@ -59,12 +60,13 @@
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">9.0.0.0</TargetDslToolsAssemblyVersion>
 				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' "></GeneratedDslFileSuffix>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">3.5</ProjectToolsVersion>
+				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.v3.5</ProjectToolsAssemblySuffix>
+				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">3.5.0.0</ProjectToolsAssemblyVersion>
 			</PropertyGroup>
 		</When>
 		<When Condition=" '$(TargetVisualStudioVersion)' == 'v10.0' ">
 			<PropertyGroup>
 				<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.0</TargetFrameworkVersion>
-				<TargetFrameworkVersionSuffix Condition=" '$(TargetFrameworkVersionSuffix)' == '' ">.v4.0</TargetFrameworkVersionSuffix>
 				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">10.0.0.0</TargetVisualStudioAssemblyVersion>
 				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.10.0</TargetVisualStudioAssemblySuffix>
 				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">4.0.0.0</TargetVisualStudioFrameworkAssemblyVersion>
@@ -76,6 +78,8 @@
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">10.0.0.0</TargetDslToolsAssemblyVersion>
 				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.10.0</TargetDslToolsVersionSuffix>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">4.0</ProjectToolsVersion>
+				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.v4.0</ProjectToolsAssemblySuffix>
+				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">4.0.0.0</ProjectToolsAssemblyVersion>
 				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' ">.VS2010</GeneratedDslFileSuffix>
 				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
 			</PropertyGroup>
@@ -83,7 +87,6 @@
 		<When Condition=" '$(TargetVisualStudioVersion)' == 'v11.0' ">
 			<PropertyGroup>
 				<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.5</TargetFrameworkVersion>
-				<TargetFrameworkVersionSuffix Condition=" '$(TargetFrameworkVersionSuffix)' == '' ">.v4.0</TargetFrameworkVersionSuffix>
 				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">11.0.0.0</TargetVisualStudioAssemblyVersion>
 				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.11.0</TargetVisualStudioAssemblySuffix>
 				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">4.5.0.0</TargetVisualStudioFrameworkAssemblyVersion>
@@ -95,6 +98,8 @@
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">11.0.0.0</TargetDslToolsAssemblyVersion>
 				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.11.0</TargetDslToolsVersionSuffix>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">4.0</ProjectToolsVersion>
+				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.v4.0</ProjectToolsAssemblySuffix>
+				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">4.0.0.0</ProjectToolsAssemblyVersion>
 				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' ">.VS2010</GeneratedDslFileSuffix>
 				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
 			</PropertyGroup>
@@ -102,7 +107,6 @@
 		<When Condition=" '$(TargetVisualStudioVersion)' == 'v12.0' ">
 			<PropertyGroup>
 				<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.5</TargetFrameworkVersion>
-				<TargetFrameworkVersionSuffix Condition=" '$(TargetFrameworkVersionSuffix)' == '' ">.v4.0</TargetFrameworkVersionSuffix>
 				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">12.0.0.0</TargetVisualStudioAssemblyVersion>
 				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.12.0</TargetVisualStudioAssemblySuffix>
 				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">4.5.0.0</TargetVisualStudioFrameworkAssemblyVersion>
@@ -114,6 +118,8 @@
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">12.0.0.0</TargetDslToolsAssemblyVersion>
 				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.12.0</TargetDslToolsVersionSuffix>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">12.0</ProjectToolsVersion>
+				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.v12.0</ProjectToolsAssemblySuffix>
+				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">12.0.0.0</ProjectToolsAssemblyVersion>
 				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' ">.VS2010</GeneratedDslFileSuffix>
 				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
 			</PropertyGroup>
@@ -181,8 +187,32 @@
 		</When>
 	</Choose>
 
+  <!-- Set up conditional compilation constants for tools version. -->
+  <Choose>
+    <When Condition=" '$(ProjectToolsVersion)' == '2.0' ">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);TOOLS_2_0</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(ProjectToolsVersion)' == '3.5' ">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);TOOLS_3_5</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(ProjectToolsVersion)' == '4.0' ">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);TOOLS_4_0</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(ProjectToolsVersion)' == '12.0' ">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);TOOLS_12_0</DefineConstants>
+      </PropertyGroup>
+    </When>
+  </Choose>
 
-	<!-- This is here because the MSBuild schema requires at least one Target or Import to be present. -->
+
+  <!-- This is here because the MSBuild schema requires at least one Target or Import to be present. -->
 	<Target Name="_Neumont_Build_VisualStudio_Multitargeting_DummyTarget" Condition="'false'"/>
 	
 

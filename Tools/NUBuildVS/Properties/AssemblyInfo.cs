@@ -7,5 +7,18 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Neumont Build System")]
 [assembly: AssemblyDescription("Neumont Build System - Visual Studio Targets DLL")]
 
-[assembly: Dependency("Microsoft.Build.Framework,", LoadHint.Always)]
-[assembly: Dependency("Microsoft.Build.Utilities,", LoadHint.Always)]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyInformationalVersion("1.0.0.0")]
+[assembly: AssemblyVersion(
+#if TOOLS_2_0
+"2.0.0.0"
+#elif TOOLS_3_5
+"3.5.0.0"
+#elif TOOLS_4_0
+"4.0.0.0"
+#elif TOOLS_12_0
+"12.0.0.0"
+#else
+NEW_TOOLS_VERSION
+#endif
+)]

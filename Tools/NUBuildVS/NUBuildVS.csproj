@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Neumont.Build.VisualStudio</RootNamespace>
-    <AssemblyName>Neumont.Build.VisualStudio</AssemblyName>
+    <AssemblyName>Neumont.Build.VisualStudio$(ProjectToolsAssemblySuffix)</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <BaseAddress>1414397952</BaseAddress>
@@ -32,8 +32,8 @@
     <DocumentationFile>bin\Neumont.Build.VisualStudio.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities$(TargetFrameworkVersionSuffix)" />
+    <Reference Include="Microsoft.Build.Framework, Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Build.Utilities$(ProjectToolsAssemblySuffix), Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -41,9 +41,9 @@
     <Compile Include="..\..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\Version.cs">
+    <!-- <Compile Include="..\..\Version.cs">
       <Link>Properties\Version.cs</Link>
-    </Compile>
+    </Compile> -->
     <None Include="..\..\ORMPackage.snk">
       <Link>Properties\ORMPackage.snk</Link>
     </None>
@@ -57,7 +57,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(MSBuildProjectDirectory)\..\..\VersionGenerator.exe"</PreBuildEvent>
+    <!-- <PreBuildEvent>"$(MSBuildProjectDirectory)\..\..\VersionGenerator.exe"</PreBuildEvent> -->
     <PostBuildEvent>"$(MSBuildProjectDirectory)\Install.bat"</PostBuildEvent>
   </PropertyGroup>
 </Project>

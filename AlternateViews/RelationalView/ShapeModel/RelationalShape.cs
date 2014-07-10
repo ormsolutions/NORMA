@@ -77,8 +77,8 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		{
 			foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(table))
 			{
-				TableShape shape = pel as TableShape;
-				if (pel != null)
+				TableShape shape;
+				if (null != (shape = pel as TableShape))
 				{
 					Dictionary<object, object> context = objectType.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
 					object tablePositionsObject;

@@ -20,7 +20,7 @@
 
 	<PropertyGroup>
 		 <!-- The name of the assembly that contains the NUBuild tasks. -->
-		<NUBuildTasksAssemblyName>Neumont.Build, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildTasksAssemblyName>
+		<NUBuildTasksAssemblyName>Neumont.Build$(ProjectToolsAssemblySuffix), Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildTasksAssemblyName>
 	</PropertyGroup>
 	
 	<UsingTask TaskName="Gacutil" AssemblyName="$(NUBuildTasksAssemblyName)"/>

@@ -20,7 +20,7 @@
 
 	<PropertyGroup>
 		 <!-- The name of the assembly that contains the NUBuildVS tasks. -->
-		<NUBuildVSTasksAssemblyName>Neumont.Build.VisualStudio, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildVSTasksAssemblyName>
+		<NUBuildVSTasksAssemblyName>Neumont.Build.VisualStudio$(ProjectToolsAssemblySuffix), Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildVSTasksAssemblyName>
 	</PropertyGroup>
 	
 	<UsingTask TaskName="VsSdkLocator" AssemblyName="$(NUBuildVSTasksAssemblyName)"/>
