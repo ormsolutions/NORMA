@@ -1066,7 +1066,7 @@
 						<plx:callThis name="ResolvedPreferredIdentifier" type="property"/>
 					</plx:initialize>
 				</plx:local>
-				<plx:local name="identifyingObjectType" dataTypeName="ObjectType">
+				<plx:local name="identifyingEntityType" dataTypeName="ObjectType">
 					<plx:initialize>
 						<plx:inlineStatement dataTypeName="LinkedElementCollection">
 							<plx:passTypeParam dataTypeName="Role"/>
@@ -1090,6 +1090,53 @@
 								</plx:left>
 								<plx:right>
 									<plx:nullKeyword/>
+								</plx:right>
+							</plx:conditionalOperator>
+						</plx:inlineStatement>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="identifyingValueType" dataTypeName="ObjectType">
+					<plx:initialize>
+						<plx:inlineStatement dataTypeName="ObjectType">
+							<plx:conditionalOperator>
+								<plx:condition>
+									<plx:binaryOperator type="identityInequality">
+										<plx:left>
+											<plx:callThis name="DataType" type="property"/>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:left>
+									<plx:thisKeyword/>
+								</plx:left>
+								<plx:right>
+									<plx:inlineStatement dataTypeName="ObjectType">
+										<plx:conditionalOperator>
+											<plx:condition>
+												<plx:binaryOperator type="identityInequality">
+													<plx:left>
+														<plx:nameRef name="identifyingEntityType"/>
+													</plx:left>
+													<plx:right>
+														<plx:nullKeyword/>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:condition>
+											<plx:left>
+												<plx:callInstance name="GetValueTypeForPreferredConstraint">
+													<plx:callObject>
+														<plx:nameRef name="identifyingEntityType"/>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:nullKeyword/>
+											</plx:right>
+										</plx:conditionalOperator>
+									</plx:inlineStatement>
 								</plx:right>
 							</plx:conditionalOperator>
 						</plx:inlineStatement>
@@ -5727,6 +5774,7 @@
 			<xsl:with-param name="ReplacementContents" select="cvg:SnippetReplacements/child::*"/>
 			<xsl:with-param name="SnippetTypeVariable" select="$SnippetTypeVariable"/>
 			<xsl:with-param name="InjectPreliminaryBodyContents" select="exsl:node-set($snippetConditionsFragment)/child::*"/>
+			<xsl:with-param name="CheckForInvalidSnippet" select="cvg:Snippet[@ref='null']"/>
 		</xsl:call-template>
 	</xsl:template>
 
@@ -5751,10 +5799,19 @@
 			</xsl:variable>
 			<xsl:variable name="condition" select="exsl:node-set($conditionFragment)/child::*"/>
 			<xsl:variable name="conditionalBranchContents">
-				<xsl:call-template name="SetSnippetVariable">
-					<xsl:with-param name="SnippetType" select="@ref"/>
-					<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
-				</xsl:call-template>
+				<xsl:choose>
+					<xsl:when test="@ref='null'">
+						<xsl:call-template name="SetSnippetVariableInvalid">
+							<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="SetSnippetVariable">
+							<xsl:with-param name="SnippetType" select="@ref"/>
+							<xsl:with-param name="VariableName" select="$SnippetTypeVariable"/>
+						</xsl:call-template>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:variable>
 			<xsl:choose>
 				<xsl:when test="$condition">
@@ -6067,6 +6124,7 @@
 		<xsl:param name="ConditionalMatch" select="@conditionalMatch"/>
 		<xsl:param name="InjectPreliminaryBodyContents"/>
 		<xsl:param name="InjectSnippetFormatArgument"/>
+		<xsl:param name="CheckForInvalidSnippet" select="false()"/>
 		<xsl:variable name="useVariablePrefixFragment">
 			<xsl:choose>
 				<xsl:when test="$VariablePrefix">
@@ -6147,6 +6205,42 @@
 			</xsl:choose>
 		</xsl:if>
 
+		<xsl:if test="$CheckForInvalidSnippet">
+			<xsl:if test="$TopLevel">
+				<xsl:message terminate="yes">Empty snippets not supported for top-level verbalization.</xsl:message>
+			</xsl:if>
+			<plx:branch>
+				<plx:condition>
+					<plx:binaryOperator type="equality">
+						<plx:left>
+							<plx:nameRef name="{$SnippetTypeVariable}"/>
+						</plx:left>
+						<plx:right>
+							<plx:cast dataTypeName="{$VerbalizationTextSnippetType}">
+								<!-- UNDONE: Hack, PLiX needs to put parentheses around the negative value for a cast -->
+								<plx:binaryOperator type="subtract">
+									<plx:left>
+										<plx:value data="0" type="i4"/>
+									</plx:left>
+									<plx:right>
+										<plx:value data="1" type="i4"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:cast>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:condition>
+				<plx:assign>
+					<plx:left>
+						<plx:nameRef name="{$useVariablePrefix}{$VariableDecorator}"/>
+					</plx:left>
+					<plx:right>
+						<plx:string/>
+					</plx:right>
+				</plx:assign>
+			</plx:branch>
+			<xsl:text disable-output-escaping="yes"><![CDATA[<plx:fallbackBranch>]]></xsl:text>
+		</xsl:if>
 		<xsl:if test="not(self::cvg:ConditionalSnippet and not($ReplacementContents))">
 			<plx:local name="{$useVariablePrefix}{$FormatVariablePart}{$VariableDecorator}" dataTypeName=".string">
 				<plx:initialize>
@@ -6269,6 +6363,9 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
+		<xsl:if test="$CheckForInvalidSnippet">
+			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:fallbackBranch>]]></xsl:text>
+		</xsl:if>
 		<xsl:if test="$condition">
 			<xsl:text disable-output-escaping="yes"><![CDATA[</plx:branch>]]></xsl:text>
 		</xsl:if>
@@ -6293,7 +6390,67 @@
 			<plx:right>
 				<plx:callInstance name="ToString">
 					<plx:callObject>
-						<plx:callThis name="DataType" type="property"/>
+						<plx:nameRef name="dataType"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:PortableDataTypeLength" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="''"/>
+		<xsl:variable name="useVariablePrefixFragment">
+			<xsl:choose>
+				<xsl:when test="$VariablePrefix">
+					<xsl:value-of select="$VariablePrefix"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>factText</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{string($useVariablePrefixFragment)}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="Length" type="property">
+							<plx:callObject>
+								<plx:nameRef name="dataTypeUse"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<xsl:template match="cvg:PortableDataTypeScale" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="''"/>
+		<xsl:variable name="useVariablePrefixFragment">
+			<xsl:choose>
+				<xsl:when test="$VariablePrefix">
+					<xsl:value-of select="$VariablePrefix"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>factText</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{string($useVariablePrefixFragment)}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:callInstance name="Scale" type="property">
+							<plx:callObject>
+								<plx:nameRef name="dataTypeUse"/>
+							</plx:callObject>
+						</plx:callInstance>
 					</plx:callObject>
 				</plx:callInstance>
 			</plx:right>
@@ -6705,7 +6862,7 @@
 			<plx:right>
 				<plx:callInstance name="ReferenceModeDecoratedString" type="property">
 					<plx:callObject>
-						<plx:nameRef name="identifyingObjectType"/>
+						<plx:nameRef name="identifyingEntityType"/>
 					</plx:callObject>
 				</plx:callInstance>
 			</plx:right>
@@ -8898,7 +9055,7 @@
 						<plx:left>
 							<plx:binaryOperator type="identityInequality">
 								<plx:left>
-									<plx:nameRef name="identifyingObjectType"/>
+									<plx:nameRef name="identifyingEntityType"/>
 								</plx:left>
 								<plx:right>
 									<plx:nullKeyword/>
@@ -8906,11 +9063,14 @@
 							</plx:binaryOperator>
 						</plx:left>
 						<plx:right>
-							<plx:callInstance name="HasReferenceMode" type="property">
-								<plx:callObject>
-									<plx:nameRef name="identifyingObjectType"/>
-								</plx:callObject>
-							</plx:callInstance>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:nameRef name="identifyingValueType"/>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>
@@ -8947,7 +9107,7 @@
 						<plx:left>
 							<plx:binaryOperator type="identityInequality">
 								<plx:left>
-									<plx:callThis name="DataType" type="property"/>
+									<plx:nameRef name="identifyingValueType"/>
 								</plx:left>
 								<plx:right>
 									<plx:nullKeyword/>
@@ -8961,6 +9121,88 @@
 								</plx:left>
 								<plx:right>
 									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='HasPortableDataTypeLengthAndScale'">
+					<plx:binaryOperator type="booleanAnd">
+						<plx:left>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callInstance type="property" name="ScaleName">
+										<plx:callObject>
+											<plx:nameRef name="dataType"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="inequality">
+								<plx:left>
+									<plx:callInstance type="property" name="Scale">
+										<plx:callObject>
+											<plx:nameRef name="dataTypeUse"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:value data="0" type="i4"/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='HasPortableDataTypeLength'">
+					<plx:binaryOperator type="booleanAnd">
+						<plx:left>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:callInstance type="property" name="LengthName">
+										<plx:callObject>
+											<plx:nameRef name="dataType"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:left>
+								<plx:right>
+									<plx:nullKeyword/>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:left>
+						<plx:right>
+							<plx:binaryOperator type="booleanOr">
+								<plx:left>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:callInstance type="property" name="ScaleName">
+												<plx:callObject>
+													<plx:nameRef name="dataType"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:left>
+								<plx:right>
+									<plx:binaryOperator type="inequality">
+										<plx:left>
+											<plx:callInstance type="property" name="Length">
+												<plx:callObject>
+													<plx:nameRef name="dataTypeUse"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:value data="0" type="i4"/>
+										</plx:right>
+									</plx:binaryOperator>
 								</plx:right>
 							</plx:binaryOperator>
 						</plx:right>
@@ -10016,6 +10258,26 @@
 							</plx:callInstance>
 						</plx:right>
 					</plx:assign>
+				</xsl:when>
+				<xsl:when test="$blockContext='DataType'">
+					<plx:local name="dataTypeUse" dataTypeName="ValueTypeHasDataType">
+						<plx:initialize>
+							<plx:callInstance name="GetDataTypeLink">
+								<plx:callObject>
+									<plx:nameRef name="identifyingValueType"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:local name="dataType" dataTypeName="DataType">
+						<plx:initialize>
+							<plx:callInstance name="DataType" type="property">
+								<plx:callObject>
+									<plx:nameRef name="dataTypeUse"/>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:message terminate="yes">
@@ -13571,6 +13833,28 @@
 			</plx:left>
 			<plx:right>
 				<plx:callStatic name="{$SnippetType}" dataTypeName="{$VerbalizationTextSnippetType}" type="field"/>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
+	<!-- Assign an invalid snippet type (value of -1) to a variable. -->
+	<xsl:template name="SetSnippetVariableInvalid">
+		<xsl:param name="VariableName"/>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{$VariableName}"/>
+			</plx:left>
+			<plx:right>
+				<plx:cast dataTypeName="{$VerbalizationTextSnippetType}">
+					<!-- UNDONE: Hack, PLiX needs to put parentheses around the negative value for a cast -->
+					<plx:binaryOperator type="subtract">
+						<plx:left>
+							<plx:value data="0" type="i4"/>
+						</plx:left>
+						<plx:right>
+							<plx:value data="1" type="i4"/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:cast>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>

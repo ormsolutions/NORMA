@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 	Natural Object-Role Modeling Architect for Visual Studio
 
@@ -28,6 +28,11 @@
 		<ClrAttribute Name="DslModeling::ExtendsDomainModel">
 			<Parameters>
 				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/"/>
+			</Parameters>
+		</ClrAttribute>
+		<ClrAttribute Name="ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey">
+			<Parameters>
+				<AttributeParameter Value="&quot;EBUijB4kWlDqXH0Yp3PaqWatQeKallOxhBGNGHYtfj1YB4sw1pvkOzF63ZKP6iE0fVQZOnWjaPtDczUvT2M5Mg==&quot;"/>
 			</Parameters>
 		</ClrAttribute>
 	</Attributes>

@@ -32,6 +32,7 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 	/// DomainModel BarkerERShapeDomainModel
 	/// (Preliminary) Graphical View of Barker ER Model
 	/// </summary>
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("i4ZTtbpPyWFsaqPS3D+eD1ZioxOaKSSyJzcfRhC/HeZ/MeJOFcJNuJrnq9Yz1W6GNaNRXHdcn0z+qZqU+6gaCw==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DependsOnDomainModel(typeof(global::Microsoft.VisualStudio.Modeling.CoreDomainModel))]

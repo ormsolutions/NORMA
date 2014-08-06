@@ -2551,13 +2551,13 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		}
 				
 		#endregion
-		#region Static methods to access Columns of a Domain
+		#region Static methods to access columns of a Domain
 		/// <summary>
-		/// Gets a list of Columns.
+		/// Gets a list of columns.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<Column> GetColumns(Domain element)
+		public static DslModeling::LinkedElementCollection<Column> Getcolumns(Domain element)
 		{
 			return new DslModeling::LinkedElementCollection<Column>(element, DomainDomainRoleId);
 		}
@@ -2576,7 +2576,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Columns", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "columns", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain/Domain.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("8049efc1-7e4f-4965-82e7-d0b376424c57")]
 		public virtual Domain Domain
 		{
@@ -2640,7 +2640,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain> GetLinksToColumns ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain domainInstance )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain> GetLinksTocolumns ( global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Domain domainInstance )
 		{
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain>(domainInstance, global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ColumnHasDomain.DomainDomainRoleId);
 		}

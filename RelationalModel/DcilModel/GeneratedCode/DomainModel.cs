@@ -30,6 +30,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 	/// DomainModel ConceptualDatabaseDomainModel
 	/// Relational Database View of ORM Model
 	/// </summary>
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("V+3w5M0/Zq9u3RCjBLeNYLfoOEaU4e3Luv0uZIUamgKbIS/5akIHASioe0DHETIPP2ha0deNsScFHDvvEPuSJQ==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

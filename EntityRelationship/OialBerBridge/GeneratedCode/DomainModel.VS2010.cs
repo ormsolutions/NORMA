@@ -31,6 +31,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 	/// DomainModel ORMAbstractionToBarkerERBridgeDomainModel
 	/// (Preliminary) Bridge ORM Abstraction Model and Barker ER Model
 	/// </summary>
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("D1oej6ZM4ZoY2JZPcK9z84hXehpWRXV7xYIRSIrvI1649jEGfwJpQRVSCbSkxh8M/XEEo3Yvl/XznJjkYHdF3w==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

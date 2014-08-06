@@ -1336,7 +1336,7 @@ Format: **each {0} is by definition {1}</statement>
     <statement>Description: Used to compare the two values in a value comparison constraint with a 'greater than or equal' operator.
 Format: {0} is greater than or equal to {1}
 						</statement>
-    <unformattedSnippet>{0} is greather than or equal to {1}</unformattedSnippet>
+    <unformattedSnippet>{0} is greater than or equal to {1}</unformattedSnippet>
     <contains />
     <containedIn>
       <snippet name="ConditionalMultiLine" />
@@ -2656,10 +2656,31 @@ Format: {1} is {0} who</statement>
       <constraint name="FrequencyConstraint" />
     </usedBy>
   </snippet>
-  <snippet name="PortableDataTypeVerbalization" replacementCount="1">
-    <statement>Description: Verbalizes an object's portable data type. Format: Portable data type: {0}</statement>
-    <unformattedSnippet>Portable data type: {0}</unformattedSnippet>
+  <snippet name="PortableDataTypeLength" replacementCount="1">
+    <statement>Description: Verbalizes the length of a portable data type. Format: ({0})</statement>
+    <unformattedSnippet> ({0})</unformattedSnippet>
     <contains />
+    <containedIn>
+      <snippet name="PortableDataTypeVerbalization" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="PortableDataTypeLengthAndScale" replacementCount="2">
+    <statement>Description: Verbalizes the length (used here as precision) and scale of a portable data type. Format: ({0},{1})</statement>
+    <unformattedSnippet> ({0}, {1})</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="PortableDataTypeVerbalization" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="PortableDataTypeVerbalization" replacementCount="2">
+    <statement>Description: Verbalizes an object's portable data type, plus a suffix showing optional data type properties. Format: Data Type: {0}{1}</statement>
+    <unformattedSnippet>Data Type: {0}{1}</unformattedSnippet>
+    <contains>
+      <snippet name="PortableDataTypeLength" />
+      <snippet name="PortableDataTypeLengthAndScale" />
+    </contains>
     <containedIn />
     <usedBy />
   </snippet>
@@ -2770,9 +2791,9 @@ Format:	{0}({1})</statement>
     <statement>Description: Specify a space-separated list of snippet names to specify list snippets that
 would allow lead role collapsing based on the RolePathCollapsibleLeadDirective, but do not actually support this construct.
 This allows a final override to block the collapsing behavior for specific snippets. This is checked for the
-(Negated)[And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] snippets.
+(Negated)[Chained|And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] and the ChainedList*Restrction* snippets.
 Format: AndTailListOpen OrTailListOpen</statement>
-    <unformattedSnippet>AndTailListOpen OrTailListOpen</unformattedSnippet>
+    <unformattedSnippet>AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />

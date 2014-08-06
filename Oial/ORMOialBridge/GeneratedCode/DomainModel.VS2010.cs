@@ -31,6 +31,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 	/// DomainModel ORMToORMAbstractionBridgeDomainModel
 	/// Bridge ORM and attribute-centric ORM Abstraction Model
 	/// </summary>
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("OPZ910MBYU/4qHhaA3s5lWOKi1SvItLMdIY6rIvK0CcxYISz3wsIjDN402GjXbfRQY634c/VBHUe414MoZLypQ==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -445,11 +446,11 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainEnumeration: MappingDepth
-	/// Specify whether a mapping is shallow (absorbs just the <see
-	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> only) or deep
-	/// (absorbs the <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/>
-	/// and the opposite <see
-	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType">role player</see>.
+	/// Specify whether a mapping is shallow (absorbs just the &lt;see
+	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; only) or deep
+	/// (absorbs the &lt;see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt;
+	/// and the opposite &lt;see
+	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"&gt;role player&lt;/see&gt;.
 	/// </summary>
 	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<MappingDepth, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
 	[global::System.Serializable()]
@@ -458,20 +459,20 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 	{
 		/// <summary>
 		/// Shallow
-		/// Only the <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/>
-		/// referenced is mapped to the destination <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
+		/// Only the &lt;see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt;
+		/// referenced is mapped to the destination &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/&gt;.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingDepth/Shallow.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		Shallow = 0,
 		/// <summary>
 		/// Deep
-		/// The <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> referenced
-		/// is mapped to the destination <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>, and the <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> playing the
-		/// opposite role is absorbed into the destination <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
+		/// The &lt;see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; referenced
+		/// is mapped to the destination &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/&gt;, and the &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/&gt; playing the
+		/// opposite role is absorbed into the destination &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/&gt;.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingDepth/Deep.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		Deep = 1,
@@ -481,9 +482,9 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainEnumeration: MappingUniquenessPattern
-	/// Specifies the uniqueness pattern present on the <see
-	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> at the time the
-	/// <see cref="FactTypeMapsTowardsRole"/> relationship was last updated.
+	/// Specifies the uniqueness pattern present on the &lt;see
+	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; at the time the
+	/// &lt;see cref="FactTypeMapsTowardsRole"/&gt; relationship was last updated.
 	/// </summary>
 	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<MappingUniquenessPattern, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
 	[global::System.Serializable()]
@@ -498,36 +499,36 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		None = 0,
 		/// <summary>
 		/// OneToMany
-		/// The mapping is based on a one-to-many <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> with a <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint"/> on the
-		/// <see cref="FactTypeMapsTowardsRole.TowardsRole"/>.
+		/// The mapping is based on a one-to-many &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; with a &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint"/&gt; on the
+		/// &lt;see cref="FactTypeMapsTowardsRole.TowardsRole"/&gt;.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToMany.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		OneToMany = 1,
 		/// <summary>
 		/// ManyToOne
-		/// The mapping is based on a many-to-one <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> with a <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint"/> on the
-		/// role opposite <see cref="FactTypeMapsTowardsRole.TowardsRole"/>. Note that this
-		/// value is included for completeness and will not appear in actual <see
-		/// cref="FactTypeMapsTowardsRole"/> instances.
+		/// The mapping is based on a many-to-one &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; with a &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint"/&gt; on the
+		/// role opposite &lt;see cref="FactTypeMapsTowardsRole.TowardsRole"/&gt;. Note that this
+		/// value is included for completeness and will not appear in actual &lt;see
+		/// cref="FactTypeMapsTowardsRole"/&gt; instances.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern/ManyToOne.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		ManyToOne = 2,
 		/// <summary>
 		/// OneToOne
-		/// The mapping is based on a one-to-one <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/>.
+		/// The mapping is based on a one-to-one &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt;.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern/OneToOne.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		OneToOne = 3,
 		/// <summary>
 		/// Subtype
-		/// The mapping is based on a <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact"/> with the <see
-		/// cref="FactTypeMapsTowardsRole.TowardsRole"/> acting as the superttype.
+		/// The mapping is based on a &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact"/&gt; with the &lt;see
+		/// cref="FactTypeMapsTowardsRole.TowardsRole"/&gt; acting as the superttype.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingUniquenessPattern/Subtype.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		Subtype = 4,
@@ -537,9 +538,9 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	/// <summary>
 	/// DomainEnumeration: MappingMandatoryPattern
-	/// Specifies the mandatory pattern present on the <see
-	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> at the time the
-	/// <see cref="FactTypeMapsTowardsRole"/> relationship was last updated. Indicated
+	/// Specifies the mandatory pattern present on the &lt;see
+	/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; at the time the
+	/// &lt;see cref="FactTypeMapsTowardsRole"/&gt; relationship was last updated. Indicated
 	/// mandatory relationships include single-role implied mandatory constraints.
 	/// </summary>
 	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<MappingMandatoryPattern, global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel>))]
@@ -555,29 +556,29 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		None = 0,
 		/// <summary>
 		/// NotMandatory
-		/// The <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> has no
+		/// The &lt;see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; has no
 		/// mandatory roles.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern/NotMandatory.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		NotMandatory = 1,
 		/// <summary>
 		/// TowardsRoleMandatory
-		/// The <see cref="FactTypeMapsTowardsRole.TowardsRole"/> of the <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> is mandatory.
+		/// The &lt;see cref="FactTypeMapsTowardsRole.TowardsRole"/&gt; of the &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; is mandatory.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern/TowardsRoleMandatory.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		TowardsRoleMandatory = 2,
 		/// <summary>
 		/// OppositeRoleMandatory
-		/// The role opposite <see cref="FactTypeMapsTowardsRole.TowardsRole"/> of the <see
-		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> is mandatory.
+		/// The role opposite &lt;see cref="FactTypeMapsTowardsRole.TowardsRole"/&gt; of the &lt;see
+		/// cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; is mandatory.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern/OppositeRoleMandatory.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 		OppositeRoleMandatory = 3,
 		/// <summary>
 		/// BothRolesMandatory
-		/// Both the <see cref="FactTypeMapsTowardsRole.TowardsRole"/> and opposite role of
-		/// the <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/> are
+		/// Both the &lt;see cref="FactTypeMapsTowardsRole.TowardsRole"/&gt; and opposite role of
+		/// the &lt;see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/&gt; are
 		/// mandatory.
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.MappingMandatoryPattern/BothRolesMandatory.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]

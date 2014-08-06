@@ -32,6 +32,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// more compact views on the ORM model.
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("JgEOTMtyz3VB++JK1BdK8Dhfq6EyATDzxSOsQCdGdzJIVQadpRZ1Q0mqGRIOoG0TJPidv6+tFlX7XftFeJna0g==")]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALDomainModel.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

@@ -23,10 +23,13 @@
 //#define DEBUG_EXTENSIONSTRIPPER_TRANSFORM
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.IO;
 using System.Globalization;
 using System.Reflection;
 using System.Xml;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 using Microsoft.VisualStudio.Modeling;
@@ -219,6 +222,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 
 				if (extensionType.IsSubclassOf(typeof(DomainModel)))
 				{
+					NORMAExtensionLoadKeyAttribute.VerifyAssembly(extensionType);
 					return extensionType;
 				}
 			}
@@ -411,6 +415,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		private string[] myAutoLoadExtensions;
 		private IDictionary<Guid, string> myExtensionIdToExtensionNameMap;
 		private readonly IDictionary<Guid, Type> myStandardDomainModelsMap;
+		private IDictionary<string, Exception> myUnloadableExtensionErrors;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -421,6 +426,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		public ExtensionLoader(IList<ExtensionModelData> extensionModels)
 		{
 			Dictionary<string, ExtensionModelBinding> availableExtensions = new Dictionary<string, ExtensionModelBinding>();
+			Dictionary<string, Exception> unloadableExtensions = null;
 			string[] autoLoadExtensions = null;
 			IDictionary<Guid, string> extensionIdToExtensionNameMap = null;
 			if (extensionModels != null)
@@ -429,11 +435,29 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				int autoLoadCount = 0;
 				foreach (ExtensionModelData extensionData in extensionModels)
 				{
-					Type domainModelType;
+					Type domainModelType = null;
 					ExtensionModelBinding extensionType;
 					string extensionNamespace;
 					ExtensionModelOptions options;
-					if (null != (domainModelType = extensionData.ResolveExtensionDomainModel()) &&
+					try
+					{
+						domainModelType = extensionData.ResolveExtensionDomainModel();
+					}
+					catch (Exception ex)
+					{
+						if (ex is NORMAExtensionLoadException ||
+							ex is TypeInitializationException ||
+							ex is TypeLoadException)
+						{
+							(unloadableExtensions ?? (unloadableExtensions = new Dictionary<string, Exception>()))[extensionData.NamespaceUri] = ex;
+						}
+						else
+						{
+							throw;
+						}
+					}
+					
+					if (null != domainModelType &&
 						(extensionType = new ExtensionModelBinding(
 							extensionNamespace = extensionData.NamespaceUri,
 							domainModelType,
@@ -469,6 +493,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			myAvailableExtensions = availableExtensions;
 			myAutoLoadExtensions = autoLoadExtensions ?? new string[0];
 			myExtensionIdToExtensionNameMap = extensionIdToExtensionNameMap ?? new Dictionary<Guid, string>();
+			myUnloadableExtensionErrors = unloadableExtensions;
 
 			// Add standard models
 			// Any model change here that has toolbox information requires a corresponding change in ORMPackage.GetToolboxProviderInfoMap
@@ -551,6 +576,24 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			{
 				return myAvailableExtensions;
 			}
+		}
+		/// <summary>
+		/// Retrieve a dictionary of errors, keyed by the extension namespace,
+		/// for extensions that could not be found or did not pass initial load validation.
+		/// </summary>
+		public IDictionary<string, Exception> UnloadableExtensionErrors
+		{
+			get
+			{
+				return myUnloadableExtensionErrors;
+			}
+		}
+		/// <summary>
+		/// Load failures have been reported, clear them so they aren't reported again.
+		/// </summary>
+		public void ClearUnloadedExtensionErrors()
+		{
+			myUnloadableExtensionErrors = null;
 		}
 		#endregion // Accessors
 		#region Methods
@@ -1252,4 +1295,124 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		#endregion // Accessor Properties
 	}
 	#endregion // NORMAExtensionCompatibilityAttribute class
+	#region NORMAExtensionLoadKeyAttribute class
+	/// <summary>
+	/// Create an attribute to place on a NORMA-loaded extension domain model class.
+	/// The value of the attribute is a digital signature of the assembly, which is
+	/// verified against the currently assembly information.
+	/// Extensions should call the <see cref="NORMAExtensionCompatibilityAttribute.VerifyCompatibility"/>
+	/// method from the class construct of each extension <see cref="DomainModel"/>.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+	public sealed class NORMAExtensionLoadKeyAttribute : Attribute
+	{
+		#region Fields and Constructor
+		private static RSACryptoServiceProvider myCryptoProvider = null;
+		private static SHA1CryptoServiceProvider myHashProvider = null;
+		private static Regex myStripNumbersRegex = null;
+		private readonly string mySignature;
+		/// <summary>
+		/// Create a new extension attribute. The type of check
+		/// to make is set through the named properties.
+		/// </summary>
+		public NORMAExtensionLoadKeyAttribute(string signatureString)
+		{
+			mySignature = signatureString;
+		}
+		#endregion // Fields and Constructor
+		#region Accessor properties
+		/// <summary>
+		/// Return the encoded signature for this attribute.
+		/// </summary>
+		public string Signature
+		{
+			get
+			{
+				return mySignature;
+			}
+		}
+		#endregion // Accessor properties
+		#region Helper Methods
+		/// <summary>
+		/// Get the crypto provider with the public key for the extension loader hash.
+		/// </summary>
+		private static RSACryptoServiceProvider CryptoProvider
+		{
+			get
+			{
+				RSACryptoServiceProvider provider = myCryptoProvider;
+				if (null == provider)
+				{
+					provider = new RSACryptoServiceProvider(512);
+					provider.FromXmlString("<RSAKeyValue><Modulus>nFEPOUeH/FM8nb2LJCxI7w3mrfagnW6hwVD0nBnWIS47n/ZiMk3Rd+SXE0qreQPF3PsIAdd/w5yM+t7XfW1Wjw==</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>");
+					System.Threading.Interlocked.CompareExchange<RSACryptoServiceProvider>(ref myCryptoProvider, provider, null);
+					provider = myCryptoProvider;
+				}
+				return provider;
+			}
+		}
+		/// <summary>
+		/// Get the has provider for validating the load signature
+		/// </summary>
+		private static SHA1CryptoServiceProvider HashProvider
+		{
+			get
+			{
+				SHA1CryptoServiceProvider provider = myHashProvider;
+				if (null == provider)
+				{
+					System.Threading.Interlocked.CompareExchange<SHA1CryptoServiceProvider>(ref myHashProvider, new SHA1CryptoServiceProvider(), null);
+					provider = myHashProvider;
+				}
+				return provider;
+			}
+		}
+		/// <summary>
+		/// Get the crypto provider with the public key for the extension loader hash.
+		/// </summary>
+		private static Regex StripNumbersRegex
+		{
+			get
+			{
+				Regex regex = myStripNumbersRegex;
+				if (null == regex)
+				{
+					System.Threading.Interlocked.CompareExchange<Regex>(ref myStripNumbersRegex, new Regex(@"\p{Nd}+", RegexOptions.Compiled), null);
+					regex = myStripNumbersRegex;
+				}
+				return regex;
+			}
+		}
+		/// <summary>
+		/// Look for a <see cref="NORMAExtensionLoadKeyAttribute"/> on the
+		/// domain model type
+		/// </summary>
+		/// <param name="domainModelType"></param>
+		public static void VerifyAssembly(Type domainModelType)
+		{
+			object[] attributes = domainModelType.GetCustomAttributes(typeof(NORMAExtensionLoadKeyAttribute), false);
+			if (attributes != null &&
+				attributes.Length == 1)
+			{
+				AssemblyName assemblyName = new AssemblyName(domainModelType.Assembly.FullName);
+				assemblyName.Name = StripNumbersRegex.Replace(assemblyName.Name, "");
+				if (CryptoProvider.VerifyData(Encoding.UTF8.GetBytes(assemblyName.FullName), HashProvider, Convert.FromBase64String(((NORMAExtensionLoadKeyAttribute)attributes[0]).Signature)))
+				{
+					return;
+				}
+			}
+			throw new NORMAExtensionLoadException(string.Format(CultureInfo.CurrentCulture, ResourceStrings.LoadExceptionInvalidLoadKey, domainModelType.FullName));
+		}
+		#endregion // Helper Methods
+		#region Base Overrides
+		/// <summary>
+		/// The default attribute has no signature.
+		/// </summary>
+		public override bool IsDefaultAttribute()
+		{
+			return !string.IsNullOrEmpty(mySignature);
+		}
+		#endregion // Base Overrides
+	}
+	#endregion // NORMAExtensionLoadKeyAttribute class
 }

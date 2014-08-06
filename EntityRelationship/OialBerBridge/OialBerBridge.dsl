@@ -50,6 +50,11 @@
 				<AttributeParameter Value="&quot;1F394F03-8A41-48BC-BDED-2268E131B4A3&quot;/*ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
+		<ClrAttribute Name="ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey">
+			<Parameters>
+				<AttributeParameter Value="&quot;D1oej6ZM4ZoY2JZPcK9z84hXehpWRXV7xYIRSIrvI1649jEGfwJpQRVSCbSkxh8M/XEEo3Yvl/XznJjkYHdF3w==&quot;"/>
+			</Parameters>
+		</ClrAttribute>
 	</Attributes>
 
 	<Classes>

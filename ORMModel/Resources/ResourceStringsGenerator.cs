@@ -964,6 +964,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "LoadException.IncompatibleAssembly");
 			}
 		}
+		/// <summary>Exception text used when a NORMA extension fails because of a missing or invalid load key.</summary>
+		public static string LoadExceptionInvalidLoadKey
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "LoadException.InvalidLoadKey");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to parse invalid range text for a cardinality constraint.</summary>
 		public static string ModelExceptionCardinalityConstraintInvalidRangeText
 		{
@@ -4049,6 +4057,22 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.ElementNotInModelBrowser.Message");
+			}
+		}
+		/// <summary>The message displayed if initial extension verification fails to resolve and verify the type for an extension.</summary>
+		public static string ExtensionLoadFailureMessage
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.ExtensionLoadFailure.Message");
+			}
+		}
+		/// <summary>Format each line. These are concatenated and attached to the end of the MessageBox.ExtensionLoadFailure.Message. Replacements: {0}=extension namespace,{1}=error message</summary>
+		public static string ExtensionLoadFailureMessageLine
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "MessageBox.ExtensionLoadFailure.Message.Line");
 			}
 		}
 		/// <summary>The message for the auto-fix implied internal uniqueness constraint message box.</summary>

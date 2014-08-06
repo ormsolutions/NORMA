@@ -433,6 +433,39 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				try
 				{
 					ExtensionLoader extensionLoader = ORMDesignerPackage.ExtensionLoader;
+					IDictionary<string, Exception> loadFailures;
+					if (null != (loadFailures = extensionLoader.UnloadableExtensionErrors))
+					{
+						extensionLoader.ClearUnloadedExtensionErrors();
+						int failCount = loadFailures.Count;
+						string[] failLines = new string[failCount];
+						int i = 0;
+						foreach (KeyValuePair<string, Exception> pair in loadFailures)
+						{
+							Exception ex = pair.Value;
+							// The inner exception gives better messages for type load failures, use it if it is available
+							Exception inner = ex.InnerException;
+							if (inner != null)
+							{
+								ex = inner;
+							}
+							failLines[i] = string.Format(
+								CultureInfo.CurrentCulture,
+								ResourceStrings.ExtensionLoadFailureMessageLine,
+								pair.Key,
+								ex.Message);
+						}
+						VsShellUtilities.ShowMessageBox(
+							ServiceProvider,
+							string.Format(
+								CultureInfo.CurrentCulture,
+								ResourceStrings.ExtensionLoadFailureMessage,
+								string.Join(null, failLines)),
+							ResourceStrings.PackageOfficialName,
+							OLEMSGICON.OLEMSGICON_INFO,
+							OLEMSGBUTTON.OLEMSGBUTTON_OK,
+							OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+					}
 					Dictionary<string, ExtensionModelBinding> documentExtensions = null;
 					using (XmlReader reader = XmlReader.Create(stream, readerSettings))
 					{

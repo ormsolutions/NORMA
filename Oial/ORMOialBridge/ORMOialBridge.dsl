@@ -36,6 +36,11 @@
 				<AttributeParameter Value="&quot;F7BC82F4-83D1-408C-BA42-607E90B23BEA&quot;/*ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
+		<ClrAttribute Name="ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey">
+			<Parameters>
+				<AttributeParameter Value="&quot;OPZ910MBYU/4qHhaA3s5lWOKi1SvItLMdIY6rIvK0CcxYISz3wsIjDN402GjXbfRQY634c/VBHUe414MoZLypQ==&quot;"/>
+			</Parameters>
+		</ClrAttribute>
 	</Attributes>
 
 	<Classes>

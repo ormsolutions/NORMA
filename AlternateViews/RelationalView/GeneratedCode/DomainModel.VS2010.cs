@@ -32,6 +32,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 	/// DomainModel RelationalShapeDomainModel
 	/// Graphical View of Relational Model (slow and temporary)
 	/// </summary>
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("M5Q7WqBV09V6lEMrpyOEqjpGOd30Z6mkE/o0LsvpGelLViQWQ9DENbgXSxXD6EF4lCw/Bv062+YpplhKqzpRhQ==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel), "ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DependsOnDomainModel(typeof(global::Microsoft.VisualStudio.Modeling.CoreDomainModel))]

@@ -112,14 +112,23 @@
 			<Snippet ref="ReferenceModeVerbalization" conditionalMatch="HasReferenceMode">
 				<ReferenceMode/>
 			</Snippet>
+			<Snippet ref="PortableDataTypeVerbalization" conditionalMatch="HasPortableDataType" conditionalBlockContext="DataType">
+				<PortableDataType/>
+				<ConditionalSnippet>
+					<Snippet ref="PortableDataTypeLengthAndScale" conditionalMatch="HasPortableDataTypeLengthAndScale"/>
+					<Snippet ref="PortableDataTypeLength" conditionalMatch="HasPortableDataTypeLength"/>
+					<Snippet ref="null"/>
+					<SnippetReplacements>
+						<PortableDataTypeLength/>
+						<PortableDataTypeScale/>
+					</SnippetReplacements>
+				</ConditionalSnippet>
+			</Snippet>
 			<Snippet ref="IndependentVerbalization" conditionalMatch="IsIndependent">
 				<Snippet ref="ObjectType">
 					<ContextName isObjectType="true"/>
 					<ContextId/>
 				</Snippet>
-			</Snippet>
-			<Snippet ref="PortableDataTypeVerbalization" conditionalMatch="HasPortableDataType">
-				<PortableDataType/>
 			</Snippet>
 			<ConditionalSnippet conditionalMatch="HasStoredDerivationRule">
 				<Snippet conditionalMatch="DerivationRuleIsPartial" ref="PartialStoredSubtypeDescription"/>

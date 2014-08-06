@@ -170,6 +170,7 @@
 	<ResourceString name="InterpretFactEditorLineTransactionName" model="Diagram" resourceName="InterpretFactEditorLine.TransactionName"/>
 	<ResourceString name="ModelBrowserWindowTitle" model="Diagram" resourceName="ORMModelBrowser.WindowTitle"/>
 	<ResourceString name="LoadExceptionIncompatibleAssembly" model="Model" resourceName="LoadException.IncompatibleAssembly"/>
+	<ResourceString name="LoadExceptionInvalidLoadKey" model="Model" resourceName="LoadException.InvalidLoadKey"/>
 	<ResourceString name="ModelExceptionCardinalityConstraintInvalidRangeText" model="Model" resourceName="ModelException.CardinalityConstraint.InvalidRangeText"/>
 	<ResourceString name="ModelExceptionUnaryRoleCardinalityConstraintUnaryOnly" model="Model" resourceName="ModelException.UnaryRoleCardinalityConstraint.UnaryOnly"/>
 	<ResourceString name="ModelExceptionModelErrorCategoryInvalid" model="Model" resourceName="ModelException.ModelErrorCategory.TypeNotDerivedFromModelErrorCategory"/>
@@ -556,6 +557,8 @@
 	<ResourceString name="CopyMergeExtensionRequiredMessage" model="Diagram" resourceName="MessageBox.CopyMergeExtensionRequired.Message"/>
 	<ResourceString name="CopyMergeExtensionRequiredMessageJoinSeparator" model="Diagram" resourceName="MessageBox.CopyMergeExtensionRequired.Message.JoinSeparator"/>
 	<ResourceString name="ElementNotInModelBrowserMessage" model="Diagram" resourceName="MessageBox.ElementNotInModelBrowser.Message"/>
+	<ResourceString name="ExtensionLoadFailureMessage" model="Diagram" resourceName="MessageBox.ExtensionLoadFailure.Message"/>
+	<ResourceString name="ExtensionLoadFailureMessageLine" model="Diagram" resourceName="MessageBox.ExtensionLoadFailure.Message.Line"/>
 	<ResourceString name="ImpliedInternalConstraintFixMessage" model="Diagram" resourceName="MessageBox.ImpliedInternalUniquenessConstraint.Message"/>
 	<ResourceString name="FinalShapeDeletionMessage" model="Diagram" resourceName="MessageBox.FinalShapeDeletion.Message"/>
 	<ResourceString name="FileFormatUpgradeMessage" model="Diagram" resourceName="MessageBox.FileFormatUpgrade.Message"/>

@@ -881,8 +881,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'PluralExistenceImplicationOperator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Verbalizes an existence condition for a multiple items and a consequent.  Format: there are {0} such that {1}</remark>
 		PluralExistenceImplicationOperator,
-		/// <summary>The 'PortableDataTypeVerbalization' format string snippet. Contains 1 replacement field.</summary>
-		/// <remark>Description: Verbalizes an object's portable data type. Format: Portable data type: {0}</remark>
+		/// <summary>The 'PortableDataTypeLength' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: Verbalizes the length of a portable data type. Format: ({0})</remark>
+		PortableDataTypeLength,
+		/// <summary>The 'PortableDataTypeLengthAndScale' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes the length (used here as precision) and scale of a portable data type. Format: ({0},{1})</remark>
+		PortableDataTypeLengthAndScale,
+		/// <summary>The 'PortableDataTypeVerbalization' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: Verbalizes an object's portable data type, plus a suffix showing optional data type properties. Format: Data Type: {0}{1}</remark>
 		PortableDataTypeVerbalization,
 		/// <summary>The 'PredicatePart' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Format string to decorate predicate text in between replacement fields. Must contain a {{0}}. Replacement field {0} is the FactType name, and {1} is the guid id for the element.</remark>
@@ -1284,7 +1290,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
-				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is greater than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
@@ -1419,7 +1425,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">there are </span>{0} <span class=""quantifier"">such that</span><br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
+				@" <span class=""listSeparator"">(</span><span class=""instance"">{0}</span><span class=""listSeparator"">)</span>",
+				@" <span class=""listSeparator"">(</span><span class=""instance"">{0}</span><span class=""listSeparator"">, </span><span class=""instance"">{1}</span><span class=""listSeparator"">)</span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">Data Type:</span> {0}{1}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"{1}<span class=""logicalOperator"">=</span>{0}",
 				@"<span class=""quantifier"">given</span> {0} ",
@@ -1638,7 +1646,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
-				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is greater than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
@@ -1773,7 +1781,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">there are </span>{0} <span class=""quantifier"">such that</span><br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
+				@" <span class=""listSeparator"">(</span><span class=""instance"">{0}</span><span class=""listSeparator"">)</span>",
+				@" <span class=""listSeparator"">(</span><span class=""instance"">{0}</span><span class=""listSeparator"">, </span><span class=""instance"">{1}</span><span class=""listSeparator"">)</span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">Data Type:</span> {0}{1}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"{1}<span class=""logicalOperator"">=</span>{0}",
 				@"<span class=""quantifier"">given</span> {0} ",
@@ -1992,7 +2002,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
-				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is greater than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
@@ -2127,7 +2137,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">there are </span>{0} <span class=""quantifier"">such that</span><br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
+				@" <span class=""listSeparator"">(</span><span class=""instance"">{0}</span><span class=""listSeparator"">)</span>",
+				@" <span class=""listSeparator"">(</span><span class=""instance"">{0}</span><span class=""listSeparator"">, </span><span class=""instance"">{1}</span><span class=""listSeparator"">)</span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">Data Type:</span> {0}{1}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"{1}<span class=""logicalOperator"">=</span>{0}",
 				@"<span class=""quantifier"">given</span> {0} ",
@@ -2346,7 +2358,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent""><span class=""quantifier"">instances of this subtype are stored immediately after they are derived</span></span>",
 				@"<span class=""quantifier"">*Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
 				@"<span class=""quantifier"">**Each</span> {0} <span class=""quantifier"">is by definition</span> {1}",
-				@"{0}<span class=""quantifier""> is greather than or equal to </span>{1}",
+				@"{0}<span class=""quantifier""> is greater than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is greater than </span>{1}",
 				@"<span class=""quantifier"">all or none of the following hold:</span> {0}",
 				@"<span class=""quantifier"">at most one of the following holds:</span> {0}",
@@ -2481,7 +2493,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"{1} <span class=""quantifier"">is</span> {0} <span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">who</span>",
 				@"<span class=""quantifier"">there are </span>{0} <span class=""quantifier"">such that</span><br/><span class=""smallIndent"">{1}</span>",
-				@"<span class=""smallIndent""><span class=""quantifier"">Portable data type:</span> {0}</span>",
+				@" <span class=""listSeparator"">(</span><span class=""instance"">{0}</span><span class=""listSeparator"">)</span>",
+				@" <span class=""listSeparator"">(</span><span class=""instance"">{0}</span><span class=""listSeparator"">, </span><span class=""instance"">{1}</span><span class=""listSeparator"">)</span>",
+				@"<span class=""smallIndent""><span class=""quantifier"">Data Type:</span> {0}{1}</span>",
 				@"<a class=""predicateText"" href=""elementid:{1}"">{{0}}</a>",
 				@"{1}<span class=""logicalOperator"">=</span>{0}",
 				@"<span class=""quantifier"">given</span> {0} ",
@@ -3315,7 +3329,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			const bool isDeontic = false;
 			StringBuilder sbTemp = null;
 			UniquenessConstraint preferredIdentifier = this.ResolvedPreferredIdentifier;
-			ObjectType identifyingObjectType = preferredIdentifier != null ? preferredIdentifier.PreferredIdentifierFor : null;
+			ObjectType identifyingEntityType = preferredIdentifier != null ? preferredIdentifier.PreferredIdentifierFor : null;
+			ObjectType identifyingValueType = this.DataType != null ? this : identifyingEntityType != null ? identifyingEntityType.GetValueTypeForPreferredConstraint() : null;
 			LinkedElementCollection<Role> preferredIdentifierRoles = preferredIdentifier != null ? preferredIdentifier.RoleCollection : null;
 			SubtypeDerivationRule derivationRule;
 			RolePathVerbalizer pathVerbalizer;
@@ -3519,33 +3534,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				snippet5Replace1 = sbTemp.ToString();
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat5, snippet5Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
-			if (identifyingObjectType != null && identifyingObjectType.HasReferenceMode)
+			if (identifyingEntityType != null && identifyingValueType != null)
 			{
 				writer.WriteLine();
 				string snippetFormat6 = snippets.GetSnippet(CoreVerbalizationSnippetType.ReferenceModeVerbalization, isDeontic, isNegative);
 				string snippet6Replace1 = null;
-				snippet6Replace1 = identifyingObjectType.ReferenceModeDecoratedString;
+				snippet6Replace1 = identifyingEntityType.ReferenceModeDecoratedString;
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat6, snippet6Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			}
+			if (identifyingValueType != null && this.DataTypeNotSpecifiedError == null)
+			{
+				ValueTypeHasDataType dataTypeUse = identifyingValueType.GetDataTypeLink();
+				DataType dataType = dataTypeUse.DataType;
+				writer.WriteLine();
+				string snippetFormat7 = snippets.GetSnippet(CoreVerbalizationSnippetType.PortableDataTypeVerbalization, isDeontic, isNegative);
+				string snippet7Replace1 = null;
+				snippet7Replace1 = dataType.ToString();
+				string snippet7Replace2 = null;
+				CoreVerbalizationSnippetType snippet7ReplaceSnippetType2 = 0;
+				if (dataType.ScaleName != null && dataTypeUse.Scale != 0)
+				{
+					snippet7ReplaceSnippetType2 = CoreVerbalizationSnippetType.PortableDataTypeLengthAndScale;
+				}
+				else if (dataType.LengthName != null && (dataType.ScaleName == null || dataTypeUse.Length != 0))
+				{
+					snippet7ReplaceSnippetType2 = CoreVerbalizationSnippetType.PortableDataTypeLength;
+				}
+				else
+				{
+					snippet7ReplaceSnippetType2 = (CoreVerbalizationSnippetType)(0 - 1);
+				}
+				if (snippet7ReplaceSnippetType2 == (CoreVerbalizationSnippetType)(0 - 1))
+				{
+					snippet7Replace2 = "";
+				}
+				else
+				{
+					string snippet7ReplaceFormat2 = snippets.GetSnippet(snippet7ReplaceSnippetType2, isDeontic, isNegative);
+					string snippet7Replace2Replace1 = null;
+					snippet7Replace2Replace1 = dataTypeUse.Length.ToString();
+					string snippet7Replace2Replace2 = null;
+					snippet7Replace2Replace2 = dataTypeUse.Scale.ToString();
+					snippet7Replace2 = string.Format(writer.FormatProvider, snippet7ReplaceFormat2, snippet7Replace2Replace1, snippet7Replace2Replace2);
+				}
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat7, snippet7Replace1, snippet7Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			if (this.IsIndependent)
 			{
 				writer.WriteLine();
-				string snippetFormat7 = snippets.GetSnippet(CoreVerbalizationSnippetType.IndependentVerbalization, isDeontic, isNegative);
-				string snippet7Replace1 = null;
-				string snippet7ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
-				string snippet7Replace1Replace1 = null;
-				snippet7Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this, verbalizationContext.VerbalizationOptions);
-				string snippet7Replace1Replace2 = null;
-				snippet7Replace1Replace2 = this.Id.ToString("D");
-				snippet7Replace1 = string.Format(writer.FormatProvider, snippet7ReplaceFormat1, snippet7Replace1Replace1, snippet7Replace1Replace2);
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat7, snippet7Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
-			}
-			if (this.DataType != null && this.DataTypeNotSpecifiedError == null)
-			{
-				writer.WriteLine();
-				string snippetFormat8 = snippets.GetSnippet(CoreVerbalizationSnippetType.PortableDataTypeVerbalization, isDeontic, isNegative);
+				string snippetFormat8 = snippets.GetSnippet(CoreVerbalizationSnippetType.IndependentVerbalization, isDeontic, isNegative);
 				string snippet8Replace1 = null;
-				snippet8Replace1 = this.DataType.ToString();
+				string snippet8ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+				string snippet8Replace1Replace1 = null;
+				snippet8Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this, verbalizationContext.VerbalizationOptions);
+				string snippet8Replace1Replace2 = null;
+				snippet8Replace1Replace2 = this.Id.ToString("D");
+				snippet8Replace1 = string.Format(writer.FormatProvider, snippet8ReplaceFormat1, snippet8Replace1Replace1, snippet8Replace1Replace2);
 				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat8, snippet8Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
 			}
 			if (derivationRule != null && derivationRule.DerivationStorage == DerivationStorage.Stored)

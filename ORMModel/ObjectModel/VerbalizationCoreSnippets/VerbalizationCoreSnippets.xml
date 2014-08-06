@@ -17,7 +17,9 @@ You must not remove this notice, or any other, from this software.
 	<Language xml:lang="en-US">
 		<Snippets name="_default" description="Built-in verbalization snippets">
 			<Snippet type="IndependentVerbalization"><![CDATA[<span class="smallIndent">{0} <span class="quantifier">is independent (it may have instances that play no other roles)</span></span>]]></Snippet>
-			<Snippet type="PortableDataTypeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Portable data type:</span> {0}</span>]]></Snippet>
+			<Snippet type="PortableDataTypeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Data Type:</span> {0}{1}</span>]]></Snippet>
+			<Snippet type="PortableDataTypeLengthAndScale"><![CDATA[ <span class="listSeparator">(</span><span class="instance">{0}</span><span class="listSeparator">, </span><span class="instance">{1}</span><span class="listSeparator">)</span>]]></Snippet>
+			<Snippet type="PortableDataTypeLength"><![CDATA[ <span class="listSeparator">(</span><span class="instance">{0}</span><span class="listSeparator">)</span>]]></Snippet>
 			<Snippet type="ReferenceModeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Reference Mode:</span> <span class="referenceMode">{0}</span></span>]]></Snippet>
 			<Snippet type="ReferenceSchemeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Reference Scheme:</span> {0}</span>]]></Snippet>
 			<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[<span class="smallIndent">{0} <span class="quantifier">objectifies</span> <span class="listSeparator">“</span>{1}<span class="listSeparator">”</span></span>]]></Snippet>
@@ -304,7 +306,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="LessThanValueComparator"><![CDATA[{0}<span class="quantifier"> is less than </span>{1}]]></Snippet>
 			<Snippet type="LessThanOrEqualValueComparator"><![CDATA[{0}<span class="quantifier"> is less than or equal to </span>{1}]]></Snippet>
 			<Snippet type="GreaterThanValueComparator"><![CDATA[{0}<span class="quantifier"> is greater than </span>{1}]]></Snippet>
-			<Snippet type="GreaterThanOrEqualValueComparator"><![CDATA[{0}<span class="quantifier"> is greather than or equal to </span>{1}]]></Snippet>
+			<Snippet type="GreaterThanOrEqualValueComparator"><![CDATA[{0}<span class="quantifier"> is greater than or equal to </span>{1}]]></Snippet>
 			<Snippet type="EqualValueComparator"><![CDATA[{0}<span class="quantifier"> is equal to </span>{1}]]></Snippet>
 			<Snippet type="NotEqualValueComparator"><![CDATA[{0}<span class="quantifier"> is not equal to </span>{1}]]></Snippet>
 

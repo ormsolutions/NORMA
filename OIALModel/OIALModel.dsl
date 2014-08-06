@@ -31,6 +31,11 @@
 				<AttributeParameter Value="&quot;3EAE649F-E654-4D04-8289-C25D2C0322D8&quot;/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
+		<ClrAttribute Name="ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey">
+			<Parameters>
+				<AttributeParameter Value="&quot;JgEOTMtyz3VB++JK1BdK8Dhfq6EyATDzxSOsQCdGdzJIVQadpRZ1Q0mqGRIOoG0TJPidv6+tFlX7XftFeJna0g==&quot;"/>
+			</Parameters>
+		</ClrAttribute>
 	</Attributes>
 	
 	<Classes>

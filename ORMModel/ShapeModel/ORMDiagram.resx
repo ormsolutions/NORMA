@@ -571,7 +571,15 @@
     <value xml:space="preserve">The selected item is not represented in the ORM Model Browser.</value>
     <comment xml:space="preserve">The message displayed if a selected item cannot be located in the model browser.</comment>
   </data>
-  <data name="MessageBox.RevertExtensions.Message">
+	<data name="MessageBox.ExtensionLoadFailure.Message">
+		<value xml:space="preserve">One or more registered extensions could not be resolved and will be unavailable.{0}</value>
+		<comment xml:space="preserve">The message displayed if initial extension verification fails to resolve and verify the type for an extension.</comment>
+	</data>
+	<data name="MessageBox.ExtensionLoadFailure.Message.Line">
+		<value xml:space="preserve">&#xd;&#xa; —'{0}' message: &quot;{1}&quot;</value>
+		<comment xml:space="preserve">Format each line. These are concatenated and attached to the end of the MessageBox.ExtensionLoadFailure.Message. Replacements: {0}=extension namespace,{1}=error message</comment>
+	</data>
+	<data name="MessageBox.RevertExtensions.Message">
     <value xml:space="preserve">Restoring previous model state, loading new extensions failed with exception:&#xd;&#xa;</value>
     <comment xml:space="preserve">The header for the message displayed if a set of extensions fails to correctly reload.</comment>
   </data>

@@ -26,6 +26,14 @@
 	ProductName="Natural Object-Role Modeling Architect for Visual Studio"
 	MajorVersion="1" MinorVersion="0" Build="0" Revision="0">
 
+	<Attributes>
+		<ClrAttribute Name="ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey">
+			<Parameters>
+				<AttributeParameter Value="&quot;V+3w5M0/Zq9u3RCjBLeNYLfoOEaU4e3Luv0uZIUamgKbIS/5akIHASioe0DHETIPP2ha0deNsScFHDvvEPuSJQ==&quot;"/>
+			</Parameters>
+		</ClrAttribute>
+	</Attributes>
+
 	<Classes>
 		<DomainClass Id="35796255-F8FB-4D5E-A2CE-B3D48911EBEB" Namespace="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase" Name="ConceptualDatabaseModelElement" InheritanceModifier="Abstract" Description="Base class for ConceptualData &lt;see cref='DslModeling::ModelElement'/>s.">
 			<Attributes>

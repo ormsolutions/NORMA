@@ -52,7 +52,17 @@
 				</xs:enumeration>
 				<xs:enumeration value="PortableDataTypeVerbalization">
 					<xs:annotation>
-						<xs:documentation>Description: Verbalizes an object's portable data type. Format: Portable data type: {0}</xs:documentation>
+						<xs:documentation>Description: Verbalizes an object's portable data type, plus a suffix showing optional data type properties. Format: Data Type: {0}{1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="PortableDataTypeLengthAndScale">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes the length (used here as precision) and scale of a portable data type. Format: ({0},{1})</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="PortableDataTypeLength">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes the length of a portable data type. Format: ({0})</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="IndependentVerbalization">

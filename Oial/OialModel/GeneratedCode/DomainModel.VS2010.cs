@@ -31,6 +31,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 	/// DomainModel AbstractionDomainModel
 	/// Intermediate Attribute-centric View of ORM Model
 	/// </summary>
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("BHrWfIvZuqiu8p3DyWS4SXbXII/btuG+AZKDfkrckD+6rUOs8IG28aZBGkIWynP3Vq2VBj6cf/Lf7rXzrgGctg==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel), "ORMSolutions.ORMArchitect.ORMAbstraction.GeneratedCode.AbstractionDomainModelResx")]
 	[global::System.CLSCompliant(true)]

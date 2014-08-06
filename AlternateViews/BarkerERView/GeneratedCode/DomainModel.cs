@@ -33,6 +33,7 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("77C1024F-D688-4AEE-AF16-29C2E791A9E7"/*ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("C52FB9A5-6BF4-4267-8716-71D74C7AA89C"/*ORMSolutions.ORMArchitect.Core.ShapeModel*/)]
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("i4ZTtbpPyWFsaqPS3D+eD1ZioxOaKSSyJzcfRhC/HeZ/MeJOFcJNuJrnq9Yz1W6GNaNRXHdcn0z+qZqU+6gaCw==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel), "ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("2e6c7361-69ae-411a-bb82-09f844e6ba95")]

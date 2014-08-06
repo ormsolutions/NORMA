@@ -31,6 +31,7 @@ namespace Neumont.Tools.ORM.OIALModel
 	/// Extension rules and elements used to perform dynamic object absorption. Used by
 	/// more compact views on the ORM model.
 	/// </summary>
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("JgEOTMtyz3VB++JK1BdK8Dhfq6EyATDzxSOsQCdGdzJIVQadpRZ1Q0mqGRIOoG0TJPidv6+tFlX7XftFeJna0g==")]
 	[DslDesign::DisplayNameResource("Neumont.Tools.ORM.OIALModel.OIALDomainModel.DisplayName", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("Neumont.Tools.ORM.OIALModel.OIALDomainModel.Description", typeof(global::Neumont.Tools.ORM.OIALModel.OIALDomainModel), "Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

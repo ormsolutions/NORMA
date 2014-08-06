@@ -35,6 +35,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("B2CAED8E-4155-4317-9405-55006FDE280E"/*ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("1F394F03-8A41-48BC-BDED-2268E131B4A3"/*ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/)]
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("D1oej6ZM4ZoY2JZPcK9z84hXehpWRXV7xYIRSIrvI1649jEGfwJpQRVSCbSkxh8M/XEEo3Yvl/XznJjkYHdF3w==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

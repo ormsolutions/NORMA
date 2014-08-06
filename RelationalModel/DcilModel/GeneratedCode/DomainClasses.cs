@@ -29,9 +29,10 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainClass ConceptualDatabaseModelElement
-	/// Base class for ConceptualData <see cref='DslModeling::ModelElement'/>s.
+	/// Base class for ConceptualData &lt;see cref='DslModeling::ModelElement'/&gt;s.
 	/// </summary>
 	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ConceptualDatabaseModelElement, Design.ConceptualDatabaseElementTypeDescriptor<ConceptualDatabaseModelElement>>))]
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("V+3w5M0/Zq9u3RCjBLeNYLfoOEaU4e3Luv0uZIUamgKbIS/5akIHASioe0DHETIPP2ha0deNsScFHDvvEPuSJQ==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
@@ -2261,7 +2262,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	/// <summary>
 	/// DomainClass ReferenceConstraint
-	/// A reference to a <see cref='UniquenessConstraint'/> in another table. Equivalent
+	/// A reference to a &lt;see cref='UniquenessConstraint'/&gt; in another table. Equivalent
 	/// to a 'FOREIGN KEY' in the SQL Standard.
 	/// </summary>
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]

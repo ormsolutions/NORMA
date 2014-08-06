@@ -31,6 +31,11 @@
 				<AttributeParameter Value="&quot;005CBD56-3BA5-4947-9F46-5608BD563CED&quot;/*ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel*/"/>
 			</Parameters>
 		</ClrAttribute>
+		<ClrAttribute Name="ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey">
+			<Parameters>
+				<AttributeParameter Value="&quot;M5Q7WqBV09V6lEMrpyOEqjpGOd30Z6mkE/o0LsvpGelLViQWQ9DENbgXSxXD6EF4lCw/Bv062+YpplhKqzpRhQ==&quot;"/>
+			</Parameters>
+		</ClrAttribute>
 	</Attributes>
 
 	<Shapes>

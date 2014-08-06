@@ -31,6 +31,7 @@ namespace ORMSolutions.ORMArchitect.ExtensionExample
 	/// The extension created for testing purposes
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("EBUijB4kWlDqXH0Yp3PaqWatQeKallOxhBGNGHYtfj1YB4sw1pvkOzF63ZKP6iE0fVQZOnWjaPtDczUvT2M5Mg==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel), "ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

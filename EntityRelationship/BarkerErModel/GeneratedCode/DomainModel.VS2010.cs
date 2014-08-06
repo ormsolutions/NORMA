@@ -31,6 +31,7 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 	/// DomainModel BarkerDomainModel
 	/// Barker Entity Relationship View of ORM Model
 	/// </summary>
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("DO35d/c+tgNaqE/jwh83XEIP+GaD3yLA0xXnjjb6wp7X9x+STxsRxGhuyZVYH4GKm7ZrCegZ0bTvLgB9ioHUHg==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel), "ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

@@ -32,6 +32,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 	/// Add custom properties to ORM model elements
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("aRp0/MYwmwu6PqJjyX0Hsm/EtGwapK+37VEoJa9fvMf9hRTZoS9n6+SLjukNjzI6TW6sOEmS4jSnfKKG8bXhSg==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 	[DslModeling::DomainObjectId("b1430d25-af34-47e3-bfff-561deef0a2b1")]
