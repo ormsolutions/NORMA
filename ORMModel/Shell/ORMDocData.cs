@@ -454,6 +454,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								ResourceStrings.ExtensionLoadFailureMessageLine,
 								pair.Key,
 								ex.Message);
+							++i;
 						}
 						VsShellUtilities.ShowMessageBox(
 							ServiceProvider,
