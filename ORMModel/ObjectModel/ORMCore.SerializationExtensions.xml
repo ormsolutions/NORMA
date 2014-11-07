@@ -332,6 +332,24 @@
 			<se:Embed RelationshipName="ValueTypeHasValueConstraint" RoleName="ValueConstraint"/>
 		</se:Container>
 		<se:Link Name="Role" RelationshipName="ObjectTypePlaysRole" RoleName="PlayedRole">
+			<se:ConditionalName Name="" WriteStyle="NotWritten">
+				<plx:binaryOperator type="identityInequality">
+					<plx:left>
+						<plx:callInstance name="AlternateId" type="property">
+							<plx:callObject>
+								<plx:callInstance name="Partition" type="property">
+									<plx:callObject>
+										<plx:nameRef name="elementLink" type="parameter"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:left>
+					<plx:right>
+						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:ConditionalName>
 			<se:ConditionalName Name="SubtypeMetaRole">
 				<plx:binaryOperator type="typeEquality">
 					<plx:left>

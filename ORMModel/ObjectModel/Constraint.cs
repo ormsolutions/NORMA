@@ -1459,6 +1459,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					return;
 				}
+				IHasAlternateOwner toAlternateOwner;
+				object constraintOwner = (null == (toAlternateOwner = setConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner;
 				int validationCount = validations.Count;
 				ConstraintModality modality = setConstraint.Modality;
 				for (int iValidation = 0; iValidation < validationCount; ++iValidation)
@@ -1493,7 +1495,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											IConstraint eligibleConstraint = eligibleSequence.Constraint;
 											if (eligibleConstraint.ConstraintStorageStyle == ConstraintStorageStyle.SetConstraint &&
 												(modalityChange || validationInfo.TestModality(eligibleConstraint.Modality, modality)) &&
-												Array.IndexOf<ConstraintType>(validationInfo.ConstraintTypesInPotentialConflict, constraintType) != -1)
+												Array.IndexOf<ConstraintType>(validationInfo.ConstraintTypesInPotentialConflict, constraintType) != -1 &&
+												constraintOwner == ((null == (toAlternateOwner = eligibleConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner))
 											{
 												// The delayed validation mechanism automatically takes care of any duplicate requests
 												FrameworkDomainModel.DelayValidateElement(eligibleSequence, DelayValidateSetConstraintSubsetPattern);
@@ -1504,6 +1507,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							break;
 						default:
+							if (modalityChange)
+							{
+								// must also be validated.
+								IList<Role> roles = setConstraint.RoleCollection;
+								int roleCount = roles.Count;
+								for (int i = 0; i < roleCount; ++i)
+								{
+									Role selectedRole = roles[i];
+									LinkedElementCollection<ConstraintRoleSequence> sequences = selectedRole.ConstraintRoleSequenceCollection;
+									int sequenceCount = sequences.Count;
+									for (int j = 0; j < sequenceCount; ++j)
+									{
+										ConstraintRoleSequence eligibleSequence = sequences[j];
+										IConstraint eligibleConstraint;
+										if (eligibleSequence != setConstraint &&
+											-1 != Array.IndexOf<ConstraintType>(validationInfo.ConstraintTypesInPotentialConflict, (eligibleConstraint = eligibleSequence.Constraint).ConstraintType))
+										{
+											if (validationInfo.DomainRoleToError.HasValue) {
+												DelayValidateConstraintPatternError(setConstraint);
+											}
+											if (validationInfo.IntersectingDomainRoleToError.HasValue &&
+												constraintOwner == ((null == (toAlternateOwner = eligibleConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner))
+											{
+												DelayValidateConstraintPatternError(eligibleConstraint);
+											}
+										}
+
+									}
+								}
+							}
 							// Isn't a SetConstraint, move on
 							break;
 					}
@@ -1563,7 +1596,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							IConstraint intersectingConstraint = intersectingSequence.Constraint;
 							if (validationInfo.TestModality(modality, intersectingConstraint.Modality) &&
-								(validationInfo.ConstraintTypesInPotentialConflict as IList<ConstraintType>).Contains(intersectingConstraint.ConstraintType))
+								-1 != Array.IndexOf(validationInfo.ConstraintTypesInPotentialConflict, intersectingConstraint.ConstraintType))
 							{
 								SetConstraint intersectingSetConstraint = (SetConstraint)intersectingSequence;
 								LinkedElementCollection<Role> intersectingRoles = intersectingSetConstraint.RoleCollection;
@@ -4715,7 +4748,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (intersectingConstraint != setComparisonConstraint &&
 							constraintOwner == ((null == (toAlternateOwner = intersectingConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner) &&
 							validationInfo.TestModality(currentModality, intersectingConstraint.Modality) &&
-							(validationInfo.ConstraintTypesInPotentialConflict as IList<ConstraintType>).Contains(intersectingConstraint.ConstraintType))
+							-1 != Array.IndexOf<ConstraintType>(validationInfo.ConstraintTypesInPotentialConflict, intersectingConstraint.ConstraintType))
 						{
 							if (constraintsToCheck == null)
 							{
@@ -4936,6 +4969,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					object constraintOwner = (null == (toAlternateOwner = setComparisonConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner;
 					int validationCount = validations.Count;
 					ConstraintModality constraintModality = setComparisonConstraint.Modality;
+					LinkedElementCollection<SetComparisonConstraintRoleSequence> comparisonConstraintSequences = null;
+					int comparisonConstraintSequencesCount = 0;
 					for (int iValidation = 0; iValidation < validationCount; ++iValidation)
 					{
 						IntersectingConstraintValidation validationInfo = validations[iValidation];
@@ -4962,8 +4997,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								break;
 							case IntersectingConstraintPattern.SetComparisonConstraintSuperset:
-								LinkedElementCollection<SetComparisonConstraintRoleSequence> comparisonConstraintSequences = setComparisonConstraint.RoleSequenceCollection;
-								int comparisonConstraintSequencesCount = comparisonConstraintSequences.Count;
+								if (comparisonConstraintSequences == null)
+								{
+									comparisonConstraintSequences = setComparisonConstraint.RoleSequenceCollection;
+									comparisonConstraintSequencesCount = comparisonConstraintSequences.Count;
+								}
 								for (int i = 0; i < comparisonConstraintSequencesCount; ++i)
 								{
 									SetComparisonConstraintRoleSequence comparisonConstraintSequence = comparisonConstraintSequences[i];
@@ -4985,10 +5023,52 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 											if (eligibleConstraint != setComparisonConstraint &&
 												constraintOwner == ((null == (toAlternateOwner = eligibleConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner) &&
 												(modalityChange || validationInfo.TestModality(constraintModality, eligibleConstraint.Modality)) &&
-												(validationInfo.ConstraintTypesInPotentialConflict as IList<ConstraintType>).Contains(eligibleConstraint.ConstraintType) &&
+												-1 != Array.IndexOf<ConstraintType>(validationInfo.ConstraintTypesInPotentialConflict, eligibleConstraint.ConstraintType) &&
 												!matchCallback(eligibleConstraint))
 											{
 												return;
+											}
+										}
+									}
+								}
+								break;
+							default:
+								if (modalityChange)
+								{
+									if (comparisonConstraintSequences == null)
+									{
+										comparisonConstraintSequences = setComparisonConstraint.RoleSequenceCollection;
+										comparisonConstraintSequencesCount = comparisonConstraintSequences.Count;
+									}
+									for (int i = 0; i < comparisonConstraintSequencesCount; ++i)
+									{
+										SetComparisonConstraintRoleSequence comparisonConstraintSequence = comparisonConstraintSequences[i];
+										LinkedElementCollection<Role> sequenceRoles = comparisonConstraintSequence.RoleCollection;
+										int sequenceRoleCount = sequenceRoles.Count;
+										for (int j = 0; j < sequenceRoleCount; ++j)
+										{
+											Role selectedRole = sequenceRoles[j];
+											LinkedElementCollection<ConstraintRoleSequence> sequences = selectedRole.ConstraintRoleSequenceCollection;
+											int sequenceCount = sequences.Count;
+											for (int k = 0; k < sequenceCount; ++k)
+											{
+												ConstraintRoleSequence eligibleSequence = sequences[k];
+												IConstraint eligibleConstraint = eligibleSequence.Constraint;
+												if (eligibleConstraint != setComparisonConstraint &&
+													-1 != Array.IndexOf<ConstraintType>(validationInfo.ConstraintTypesInPotentialConflict, eligibleConstraint.ConstraintType))
+												{
+													if (validationInfo.DomainRoleToError.HasValue &&
+														!matchCallback(setComparisonConstraint))
+													{
+														return;
+													}
+													if (validationInfo.IntersectingDomainRoleToError.HasValue &&
+														constraintOwner == ((null == (toAlternateOwner = eligibleConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner) &&
+														!matchCallback(eligibleConstraint))
+													{
+														return;
+													}
+												}
 											}
 										}
 									}
@@ -11771,7 +11851,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Implication
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SubsetImpliedByMandatory,
-					IntersectingConstraintPatternOptions.None,
+					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger,
 					null,
 					SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Subset),
@@ -11787,7 +11867,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Bad ORM
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SubsetContradictsMandatory,
-					IntersectingConstraintPatternOptions.None,
+					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger,
 					MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.MandatoryConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: This should be a many relationship
 					SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.SubsetConstraintDomainRoleId,
 					ConstraintType.Subset),
@@ -11986,7 +12066,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Implication
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SubsetImpliedByMandatory,
-					IntersectingConstraintPatternOptions.None,
+					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
 					SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId,
 					null,
 					ConstraintType.SimpleMandatory),
@@ -11994,7 +12074,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Bad ORM
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SubsetContradictsMandatory,
-					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
+					IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
 					SubsetConstraintHasNotWellModeledSubsetAndMandatoryError.SubsetConstraintDomainRoleId,
 					MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.MandatoryConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: This should be a many relationship
 					ConstraintType.SimpleMandatory),

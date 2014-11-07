@@ -380,9 +380,9 @@ namespace ORMSolutions.ORMArchitect.Framework
 	#endregion // AutomatedElementFilterService class
 	#region ICreateSignalTransactionItems
 	/// <summary>
-	/// Some model changes are used solely trigger other behavior within
+	/// Some model changes are used solely to trigger other behavior within
 	/// a transaction. However, the system does not distinguish between
-	/// these changes an normal changes. If a signal occurs without a normal
+	/// these changes and normal changes. If a signal occurs without a normal
 	/// change, then a transaction may appear to be meaningful to the user
 	/// by displaying in the undo/redo stack even when no significant changes
 	/// have occurred. A domain model class can implement this interface to
@@ -400,7 +400,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// </summary>
 		/// <returns>Enumeration of domain property id/callback function pairs.
 		/// If a callback function is not provided, then all changes of this
-		/// type can be ignored. Otherwise, the return true from the registered
+		/// type can be ignored. Otherwise, return true from the registered
 		/// predicate to support a change.</returns>
 		IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> GetSignalPropertyChanges();
 	}

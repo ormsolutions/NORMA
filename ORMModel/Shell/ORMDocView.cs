@@ -685,6 +685,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		protected override void OnSelectionChanged(EventArgs e)
 		{
+			if (Store == null)
+			{
+				// This gets occasional calls during shutdown, especially if VS
+				// has been sitting for a while. Do a sanity check before proceeding.
+				return;
+			}
 			base.OnSelectionChanged(e);
 			CommandManager.UpdateCommandStatus();
 		}

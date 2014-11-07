@@ -1619,7 +1619,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (roleId == ObjectTypePlaysRole.PlayedRoleDomainRoleId)
 			{
 				string name = "Role";
-				if (DomainRoleInfo.GetRolePlayer(elementLink, ObjectTypePlaysRole.PlayedRoleDomainRoleId) is SubtypeMetaRole)
+				CustomSerializedElementWriteStyle writeStyle = CustomSerializedElementWriteStyle.Element;
+				if (elementLink.Partition.AlternateId != null)
+				{
+					name = "";
+					writeStyle = CustomSerializedElementWriteStyle.NotWritten;
+				}
+				else if (DomainRoleInfo.GetRolePlayer(elementLink, ObjectTypePlaysRole.PlayedRoleDomainRoleId) is SubtypeMetaRole)
 				{
 					name = "SubtypeMetaRole";
 				}
@@ -1627,7 +1633,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					name = "SupertypeMetaRole";
 				}
-				return new CustomSerializedElementInfo(null, name, null, CustomSerializedElementWriteStyle.Element, null);
+				return new CustomSerializedElementInfo(null, name, null, writeStyle, null);
 			}
 			if (roleId == EntityTypeHasPreferredIdentifier.PreferredIdentifierDomainRoleId)
 			{

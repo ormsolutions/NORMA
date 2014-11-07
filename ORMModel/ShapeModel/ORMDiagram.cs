@@ -380,6 +380,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					Dictionary<object, object> topLevelContextInfo = null;
 					object placementKey;
+					bool tightenPlacementKey = false;
 					switch (placementOption)
 					{
 						case ORMPlacementOption.AllowMultipleShapes:
@@ -387,6 +388,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							break;
 						case ORMPlacementOption.CreateNewShape:
 							placementKey = MultiShapeUtility.ForceMultipleShapes;
+							tightenPlacementKey = true;
 							break;
 						default:
 							placementKey = null;
@@ -443,6 +445,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					if (shapeElement != null)
 					{
+						if (tightenPlacementKey)
+						{
+							// We only want to force create the top level element, not its child elements.
+							topLevelContextInfo.Remove(placementKey);
+							topLevelContextInfo.Add(placementKey = MultiShapeUtility.AllowMultipleShapes, null);
+						}
 						// Perform preliminary fixup
 						if (null != beforeStandardFixupCallback)
 						{
@@ -450,7 +458,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						if (factType != null)
 						{
-							FixupFactType(crossStoreCopy ? (FactType)element : factType, (FactTypeShape)shapeElement, false);
+							FixupFactType(crossStoreCopy ? (FactType)element : factType, shapeElement as FactTypeShape, false);
 						}
 						else if (objectType != null)
 						{
@@ -527,6 +535,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					Dictionary<object, object> topLevelContextInfo = null;
 					object placementKey;
+					bool tightenPlacementKey = false;
 					switch (placementOption)
 					{
 						case ORMPlacementOption.AllowMultipleShapes:
@@ -534,6 +543,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							break;
 						case ORMPlacementOption.CreateNewShape:
 							placementKey = MultiShapeUtility.ForceMultipleShapes;
+							tightenPlacementKey = true;
 							break;
 						default:
 							placementKey = null;
@@ -550,6 +560,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 					if (shapeElement != null && fixupShapeCallback != null)
 					{
+						if (tightenPlacementKey)
+						{
+							// We only want to force create the top level element, not its child elements.
+							topLevelContextInfo.Remove(placementKey);
+							topLevelContextInfo.Add(placementKey = MultiShapeUtility.AllowMultipleShapes, null);
+						}
 						fixupShapeCallback(elementToPlace, shapeElement);
 					}
 					if (placementKey != null)
@@ -585,12 +601,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		private void FixupFactType(FactType factType, FactTypeShape factTypeShape, bool childShapesMerged)
 		{
+			if (factTypeShape == null)
+			{
+				return;
+			}
 			bool duplicateShape = false;
 			Objectification objectification = factType.Objectification;
 			ObjectType nestingType = (objectification != null) ? objectification.NestingType : null;
 			bool lookForNonDisplayedRelatedTypes = false;
 			bool haveNonDisplayedRelatedTypes = false;
-			if (childShapesMerged && factTypeShape != null && IsMergingExternalStore)
+			if (childShapesMerged && IsMergingExternalStore)
 			{
 				// Override this setting if we're merging from an external store, which
 				// can produce a merge of a shape that does not have all of the elements
@@ -631,6 +651,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					}
 				}
 			}
+
+			// Make sure the role name shape visibility is correct. Visibility
+			// settings do not survive a merge operation, so we need to check
+			// this explicitly regardless of merge state.
+			factTypeShape.UpdateRoleNameDisplay();
+			
+			// Handle other shapes related to roles.
 			LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
 			int roleCount = roleCollection.Count;
 			int? unaryRoleIndex = FactType.GetUnaryRoleIndex(roleCollection);
@@ -668,49 +695,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					FixupRelatedLinks(DomainRoleInfo.GetElementLinks<ElementLink>(role, FactSetComparisonConstraint.FactTypeDomainRoleId));
 				}
 
-				// Make sure the role name shape visibility is correct. Visibility
-				// settings do not survive a merge operation, so we need to check
-				// this explicitly regardless of merge state.
-				factTypeShape.UpdateRoleNameDisplay();
-
 				// Get the role value constraint and the link to it.
 				RoleHasValueConstraint valueConstraintLink = RoleHasValueConstraint.GetLinkToValueConstraint(role);
 				UnaryRoleCardinalityConstraint unaryRoleCardinality = (unaryRole == role) ? unaryRole.Cardinality : null;
 				if (!childShapesMerged)
 				{
-					// Pick up the role shape
-					//check if we have a specific shape or need to use the model element
-					if (factTypeShape == null)
-					{
-						FixUpLocalDiagram(factType, role);
-					}
-					else
-					{
-						FixUpLocalDiagram(factTypeShape as ShapeElement, role);
-					}
-
 					if (valueConstraintLink != null)
 					{
-						if (factTypeShape == null)
-						{
-							FixUpLocalDiagram(factType, valueConstraintLink.ValueConstraint);
-						}
-						else
-						{
-							FixUpLocalDiagram(factTypeShape as ShapeElement, valueConstraintLink.ValueConstraint);
-						}
+						FixUpLocalDiagram(factTypeShape as ShapeElement, valueConstraintLink.ValueConstraint);
 					}
 
 					if (unaryRoleCardinality != null)
 					{
-						if (factTypeShape == null)
-						{
-							FixUpLocalDiagram(factType, unaryRoleCardinality);
-						}
-						else
-						{
-							FixUpLocalDiagram(factTypeShape as ShapeElement, unaryRoleCardinality);
-						}
+						FixUpLocalDiagram(factTypeShape as ShapeElement, unaryRoleCardinality);
 					}
 				}
 				// Role player links are not part of the merge hierarchy, add them for both
@@ -725,14 +722,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
 				if (orders.Count != 0)
 				{
-					if (factTypeShape == null)
-					{
-						FixUpLocalDiagram(factType, orders[0]);
-					}
-					else
-					{
-						FixUpLocalDiagram(factTypeShape as ShapeElement, orders[0]);
-					}
+					FixUpLocalDiagram(factTypeShape as ShapeElement, orders[0]);
 				}
 			}
 			if (!duplicateShape)
@@ -743,27 +733,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				if (!childShapesMerged)
 				{
-					ObjectifiedFactTypeNameShape nameShape;
 					ValueConstraint valueConstraint = nestingType.FindValueConstraint(false);
 					ObjectTypeCardinalityConstraint cardinalityConstraint = nestingType.Cardinality;
-					if (factTypeShape == null)
-					{
-						foreach (ShapeElement newShape in FixUpLocalDiagram(factType, nestingType))
-						{
-							if (null != (nameShape = newShape as ObjectifiedFactTypeNameShape))
-							{
-								if (valueConstraint != null)
-								{
-									FixUpLocalDiagram(nameShape, valueConstraint);
-								}
-								if (cardinalityConstraint != null)
-								{
-									FixUpLocalDiagram(nameShape, cardinalityConstraint);
-								}
-							}
-						}
-					}
-					else if (factTypeShape.DisplayAsObjectType)
+					if (factTypeShape.DisplayAsObjectType)
 					{
 						if (valueConstraint != null)
 						{
@@ -774,16 +746,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							FixUpLocalDiagram(factTypeShape, cardinalityConstraint);
 						}
 					}
-					else if (null != (nameShape = FixUpLocalDiagram(factTypeShape as ShapeElement, nestingType) as ObjectifiedFactTypeNameShape))
+					else
 					{
-						if (valueConstraint != null)
-						{
-							FixUpLocalDiagram(nameShape, valueConstraint);
-						}
-						if (cardinalityConstraint != null)
-						{
-							FixUpLocalDiagram(nameShape, cardinalityConstraint);
-						}
+						// If this creates an objectified fact type name shape it will fix up
+						// its own children.
+						FixUpLocalDiagram(factTypeShape as ShapeElement, nestingType);
 					}
 				}
 				if (!duplicateShape || haveNonDisplayedRelatedTypes)
@@ -794,6 +761,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		private void FixupObjectType(ObjectType objectType, ObjectTypeShape objectTypeShape, bool childShapesMerged)
 		{
+			if (objectTypeShape == null)
+			{
+				return;
+			}
 			bool duplicateShape = false;
 			bool lookForNonDisplayedRelatedTypes = false;
 			bool haveNonDisplayedRelatedTypes = false;
@@ -828,7 +799,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				FixupObjectTypeLinks(objectType, haveNonDisplayedRelatedTypes);
 			}
-			if (!childShapesMerged || (objectTypeShape != null && IsMergingExternalStore))
+			if (!childShapesMerged || IsMergingExternalStore)
 			{
 				// If the shape comes from the local store the source shape should always be
 				// in sync. However, if the shape comes from an external store, then it may not
@@ -837,26 +808,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ObjectTypeCardinalityConstraint cardinalityConstraint;
 				if (null != (valueConstraint = objectType.FindValueConstraint(false)))
 				{
-					//check if we have a specific shape or need to use the model element
-					if (objectTypeShape == null)
-					{
-						FixUpLocalDiagram(objectType, valueConstraint);
-					}
-					else
-					{
-						FixUpLocalDiagram(objectTypeShape as ShapeElement, valueConstraint);
-					}
+					FixUpLocalDiagram(objectTypeShape as ShapeElement, valueConstraint);
 				}
 				if (null != (cardinalityConstraint = objectType.Cardinality))
 				{
-					if (objectTypeShape == null)
-					{
-						FixUpLocalDiagram(objectType, cardinalityConstraint);
-					}
-					else
-					{
-						FixUpLocalDiagram(objectTypeShape as ShapeElement, cardinalityConstraint);
-					}
+					FixUpLocalDiagram(objectTypeShape as ShapeElement, cardinalityConstraint);
 				}
 			}
 		}
