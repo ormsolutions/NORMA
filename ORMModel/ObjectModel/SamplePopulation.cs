@@ -3600,7 +3600,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				valueNonTextFormat = null;
 			}
 			string listSeparator = null;
-			string retVal = (parentObjectType == null) ? "" : RecurseObjectTypeInstanceValue(objectInstance, parentObjectType, ignoreObjectification, false, null, null, ref listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat, false);
+			string retVal = (parentObjectType == null) ? "" : RecurseObjectTypeInstanceValue(objectInstance, parentObjectType, ignoreObjectification, false, null, null, ref listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat, false, null);
 			retVal = (outputText != null) ? outputText.ToString() : retVal;
 			return (retVal == null) ? "" : retVal.Trim();
 		}
@@ -3627,12 +3627,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				valueNonTextFormat = null;
 			}
 			string listSeparator = null;
-			string retVal = (parentFactType == null) ? "" : RecurseObjectTypeInstanceValue(null, null, false, false, factInstance, parentFactType, ref listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat, false);
+			string retVal = (parentFactType == null) ? "" : RecurseObjectTypeInstanceValue(null, null, false, false, factInstance, parentFactType, ref listSeparator, ref outputText, formatProvider, valueTextFormat, valueNonTextFormat, false, null);
 			retVal = (outputText != null) ? outputText.ToString() : retVal;
 			return (retVal == null) ? "" : retVal.Trim();
 		}
 
-		private static string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectInstance, ObjectType parentObjectType, bool ignoreObjectification, bool nestedLeadValue, FactTypeInstance factInstance, FactType parentFactType, ref string listSeparator, ref StringBuilder outputText, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat, bool outerGrouping)
+		private static string RecurseObjectTypeInstanceValue(ObjectTypeInstance objectInstance, ObjectType parentObjectType, bool ignoreObjectification, bool nestedLeadValue, FactTypeInstance factInstance, FactType parentFactType, ref string listSeparator, ref StringBuilder outputText, IFormatProvider formatProvider, string valueTextFormat, string valueNonTextFormat, bool outerGrouping, Predicate<ObjectType> stackCheck)
 		{
 			string blankValueText = nestedLeadValue ? " " : "";
 			DataType dataType;
@@ -3668,12 +3668,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				return valueText;
 			}
+			else if (parentObjectType != null && objectInstance == null && stackCheck != null && stackCheck(parentObjectType))
+			{
+				if (outputText != null)
+				{
+					outputText.Append(blankValueText);
+					return null;
+				}
+				return blankValueText;
+			}
 			else
 			{
 				IList<Role> roles = null;
 				int roleCount = 0;
 				FactType objectifiedFactType = null;
 				EntityTypeInstance entityInstance = null;
+				Predicate<ObjectType> recurseStackCheck = null;
 				if (parentFactType != null)
 				{
 					// Just do the FactType tuple, without any identifier parts
@@ -3712,7 +3722,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								formatProvider,
 								valueTextFormat,
 								valueNonTextFormat,
-								outerGrouping);
+								outerGrouping,
+								stackCheck);
 						}
 						else if (preferredFor != null && preferredFor != parentObjectType)
 						{
@@ -3739,7 +3750,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								formatProvider,
 								valueTextFormat,
 								valueNonTextFormat,
-								false);
+								false,
+								recurseStackCheck ?? (recurseStackCheck = CreateRecursiveIdentifierStackCheck(preferredFor, stackCheck)));
 							outputText.Append(listSeparator ?? (listSeparator = GetListSeparator(formatProvider)));
 							RecurseObjectTypeInstanceValue(
 								null,
@@ -3753,7 +3765,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								formatProvider,
 								valueTextFormat,
 								valueNonTextFormat,
-								true);
+								true,
+								stackCheck);
 							if (!outerGrouping)
 							{
 								outputText.Append(")");
@@ -3776,7 +3789,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							formatProvider,
 							valueTextFormat,
 							valueNonTextFormat,
-							outerGrouping);
+							outerGrouping,
+							recurseStackCheck ?? (recurseStackCheck = CreateRecursiveIdentifierStackCheck(preferredFor, stackCheck)));
 					}
 					entityInstance = objectInstance as EntityTypeInstance;
 					if (identifier != null)
@@ -3826,9 +3840,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							roleInstance = factInstance.FindRoleInstance(role);
 						}
+						ObjectType rolePlayer = role.RolePlayer;
 						string retVal = RecurseObjectTypeInstanceValue(
 							(roleInstance != null) ? roleInstance.ObjectTypeInstance : null,
-							role.RolePlayer,
+							rolePlayer,
 							false,
 							nestedLeadValue,
 							null,
@@ -3838,7 +3853,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							formatProvider,
 							valueTextFormat,
 							valueNonTextFormat,
-							false);
+							false,
+							recurseStackCheck ?? (recurseStackCheck = CreateRecursiveIdentifierStackCheck(rolePlayer, stackCheck)));
 						if (objectifiedFactType == null)
 						{
 							return retVal;
@@ -3906,9 +3922,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									}
 								}
 							}
+							ObjectType rolePlayer = role.RolePlayer;
 							RecurseObjectTypeInstanceValue(
 								(matchInstance != null) ? matchInstance.ObjectTypeInstance : null,
-								role.RolePlayer,
+								rolePlayer,
 								false,
 								i == 0 && !outerGrouping,
 								null,
@@ -3918,7 +3935,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								formatProvider,
 								valueTextFormat,
 								valueNonTextFormat,
-								false);
+								false,
+								recurseStackCheck ?? (recurseStackCheck = CreateRecursiveIdentifierStackCheck(rolePlayer, stackCheck)));
 						}
 						if (!outerGrouping)
 						{
@@ -3941,7 +3959,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						formatProvider,
 						valueTextFormat,
 						valueNonTextFormat,
-						true);
+						true,
+						stackCheck);
 					if (!outerGrouping)
 					{
 						outputText.Append(")");
@@ -3949,6 +3968,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				return null;
 			}
+		}
+		/// <summary>
+		/// Helper to create a delegate to determine if an identifier is recursively defined. If we have
+		/// a recursive identifier then we do not continue past an empty instance.
+		/// </summary>
+		/// <param name="rolePlayer">The current role player.</param>
+		/// <param name="contextStackCheck">A context delegate from higher up in the object tree.</param>
+		/// <returns>New stack check.</returns>
+		private static Predicate<ObjectType> CreateRecursiveIdentifierStackCheck(ObjectType rolePlayer, Predicate<ObjectType> contextStackCheck)
+		{
+			return rolePlayer == null ?
+				contextStackCheck :
+				delegate(ObjectType recursiveRolePlayer)
+				{
+					return rolePlayer == recursiveRolePlayer || (contextStackCheck != null && contextStackCheck(recursiveRolePlayer));
+				};
 		}
 		private static string GetListSeparator(IFormatProvider formatProvider)
 		{

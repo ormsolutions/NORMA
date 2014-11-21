@@ -3133,7 +3133,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			public static string DeriveColumnName(Role role, bool ignoreObjectification)
 			{
 				StringBuilder outputText = null;
-				string retVal = (role == null || role.RolePlayer == null) ? ResourceStrings.ModelSamplePopulationEditorNullSelection : RecurseColumnIdentifier(role, null, ignoreObjectification, null, ref outputText);
+				string retVal = (role == null || role.RolePlayer == null) ? ResourceStrings.ModelSamplePopulationEditorNullSelection : RecurseColumnIdentifier(role, null, ignoreObjectification, null, null, ref outputText);
 				return (outputText != null) ? outputText.ToString() : retVal;
 			}
 			public static string DeriveColumnName(ObjectType objectType)
@@ -3143,7 +3143,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			public static string DeriveColumnName(ObjectType objectType, bool ignoreObjectification)
 			{
 				StringBuilder outputText = null;
-				string retVal = (objectType == null) ? ResourceStrings.ModelSamplePopulationEditorNullSelection : RecurseColumnIdentifier(null, objectType, ignoreObjectification, null, ref outputText);
+				string retVal = (objectType == null) ? ResourceStrings.ModelSamplePopulationEditorNullSelection : RecurseColumnIdentifier(null, objectType, ignoreObjectification, null, null, ref outputText);
 				return (outputText != null) ? outputText.ToString() : retVal;
 			}
 			protected static string GetRolePlayerTypeName(Role role, bool useRoleName)
@@ -3158,7 +3158,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return retVal;
 			}
 			// UNDONE: This whole method needs to be localized
-			private static string RecurseColumnIdentifier(Role role, ObjectType rolePlayer, bool ignoreObjectification, string listSeparator, ref StringBuilder outputText)
+			private static string RecurseColumnIdentifier(Role role, ObjectType rolePlayer, bool ignoreObjectification, string listSeparator, Predicate<ObjectType> stackCheck, ref StringBuilder outputText)
 			{
 				if (rolePlayer == null)
 				{
@@ -3169,14 +3169,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (outputText != null)
 					{
 						outputText.Append(" ");
+						return null;
 					}
 					return " ";
+				}
+				if (stackCheck != null && stackCheck(rolePlayer))
+				{
+					if (outputText != null)
+					{
+						outputText.Append(rolePlayer.Name);
+						outputText.Append(ResourceStrings.ReadingShapeEllipsis);
+						return null;
+					}
+					return rolePlayer.Name + ResourceStrings.ReadingShapeEllipsis;
 				}
 				string roleName = (role != null) ? role.Name : "";
 				string derivedName = (roleName.Length != 0) ? roleName : rolePlayer.Name;
 				UniquenessConstraint identifier = null;
 				ObjectType supertypeRolePlayer = null;
 				bool isValueType = rolePlayer.IsValueType;
+				Predicate<ObjectType> nextStackCheck = isValueType ? stackCheck : null; // The value type won't recurse over its preferred identifier.
 				FactType nestedFactType = (ignoreObjectification || isValueType) ? null : rolePlayer.NestedFactType;
 				bool useIdentifiedReferenceMode = false;
 				if (isValueType)
@@ -3221,11 +3233,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				outputText.Append(derivedName);
 				outputText.Append("(");
+
 				bool identifierWritten = false;
 				if (supertypeRolePlayer != null &&
 					supertypeRolePlayer != rolePlayer)
 				{
-					RecurseColumnIdentifier(null, supertypeRolePlayer, false, listSeparator, ref outputText);
+					RecurseColumnIdentifier(null, supertypeRolePlayer, false, listSeparator, nextStackCheck ?? (nextStackCheck = CreateColumnIdentifierStackCheck(rolePlayer, stackCheck)), ref outputText);
 					identifierWritten = true;
 				}
 				else
@@ -3262,7 +3275,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								{
 									outputText.Append(listSeparator);
 								}
-								RecurseColumnIdentifier(identifierRole, null, false, listSeparator, ref outputText);
+								RecurseColumnIdentifier(identifierRole, null, false, listSeparator, nextStackCheck ?? (nextStackCheck = CreateColumnIdentifierStackCheck(rolePlayer, stackCheck)), ref outputText);
 							}
 						}
 						identifierWritten = true;
@@ -3287,11 +3300,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							outputText.Append(listSeparator);
 						}
-						RecurseColumnIdentifier(factRole, null, false, listSeparator, ref outputText);
+						RecurseColumnIdentifier(factRole, null, false, listSeparator, nextStackCheck ?? (nextStackCheck = CreateColumnIdentifierStackCheck(rolePlayer, stackCheck)), ref outputText);
 					}
 				}
 				outputText.Append(")");
 				return null;
+			}
+			/// <summary>
+			/// Helper to create a delegate to determine if a role player is recursively defined.
+			/// </summary>
+			/// <param name="rolePlayer">The current role player.</param>
+			/// <param name="contextStackCheck">A context delegate from higher up in the object tree.</param>
+			/// <returns>New stack check.</returns>
+			private static Predicate<ObjectType> CreateColumnIdentifierStackCheck(ObjectType rolePlayer, Predicate<ObjectType> contextStackCheck)
+			{
+				return delegate(ObjectType recursiveRolePlayer)
+				{
+					return rolePlayer == recursiveRolePlayer || (contextStackCheck != null && contextStackCheck(recursiveRolePlayer));
+				};
 			}
 			/// <summary>
 			/// Determine if the specified instance is empty. A <see cref="ValueTypeInstance"/>

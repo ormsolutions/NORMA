@@ -9,9 +9,9 @@ IF "%ProgramFiles(X86)%"=="" (
 )
 
 if '%1'=='' (
-set rootPath=%~dp0
+CALL:SETVAR "rootPath" "%~dp0"
 ) else (
-set rootPath=%~dp1
+CALL:SETVAR "rootPath" "%~dp1"
 )
 if '%2'=='' (
 set outDir=bin\Debug\
@@ -19,9 +19,9 @@ set outDir=bin\Debug\
 set outDir=%~2
 )
 if '%3'=='' (
-set envPath=%ResolvedProgramFiles%\Microsoft Visual Studio 8\
+CALL:SETVAR "envPath" "%ResolvedProgramFiles%\Microsoft Visual Studio 8\"
 ) else (
-set envPath=%~dp3
+CALL:SETVAR "envPath" "%~dp3"
 )
 if '%4'=='' (
 set VSProduct=VS2005
@@ -88,4 +88,8 @@ IF DEFINED PROCESSOR_ARCHITEW6432 (
 ) ELSE (
 	SET WOWRegistryAdjust=\Wow6432Node
 )
+GOTO:EOF
+
+:SETVAR
+SET %~1=%~2
 GOTO:EOF
