@@ -980,7 +980,9 @@ namespace ORMSolutions.ORMArchitect.Framework
 		protected bool RemoveElement(ModelElement element, string alternateElementName, DuplicateNameAction duplicateAction)
 		{
 			string elementName = alternateElementName;
-			if (string.IsNullOrEmpty(elementName))
+			// Use null here. An empty name is natural during a rename (DSL initial properties are empty, not null), but there
+			// will be no corresponding entry to remove.
+			if (elementName == null)
 			{
 				elementName = DomainClassInfo.GetName(element);
 			}
@@ -1538,12 +1540,12 @@ namespace ORMSolutions.ORMArchitect.Framework
 				DictionaryType = dictionaryType;
 			}
 		}
-		private static Dictionary<ModelElement, LinkAndDictionaryType> myDetachedLinksWithRemoteDictionary;
+		private static Dictionary<ModelElement, LinkedNode<LinkAndDictionaryType>> myDetachedLinksWithRemoteDictionary;
 		private static Dictionary<ModelElement, INamedElementDictionaryLink> myDetachedRemoteDictionaryConnectorLinks;
 		private static void ElementEventsEndedEvent(object sender, ElementEventsEndedEventArgs e)
 		{
 			Dictionary<ModelElement, DetachedElementRecord> changes = myDetachedElementRecords;
-			Dictionary<ModelElement, LinkAndDictionaryType> detachedRemotePrimaryLinks = myDetachedLinksWithRemoteDictionary;
+			Dictionary<ModelElement, LinkedNode<LinkAndDictionaryType>> detachedRemotePrimaryLinks = myDetachedLinksWithRemoteDictionary;
 			Dictionary<ModelElement, INamedElementDictionaryLink> detachedRemoteConnectorLinks = myDetachedRemoteDictionaryConnectorLinks;
 
 			// Toss unused tracked changes when events are finished
@@ -1554,84 +1556,106 @@ namespace ORMSolutions.ORMArchitect.Framework
 			if (detachedRemotePrimaryLinks != null &&
 				detachedRemoteConnectorLinks != null)
 			{
-				foreach (KeyValuePair<ModelElement, LinkAndDictionaryType> primaryLinkPair in detachedRemotePrimaryLinks)
+				foreach (KeyValuePair<ModelElement, LinkedNode<LinkAndDictionaryType>> primaryLinkPair in detachedRemotePrimaryLinks)
 				{
 					ModelElement primaryParent = primaryLinkPair.Key;
-					LinkAndDictionaryType linkAndType = primaryLinkPair.Value;
-					INamedElementDictionaryLink primaryLink = linkAndType.Link;
-					Type dictionaryType = linkAndType.DictionaryType;
-
-					// Go up the deleted chain as far as we can
-					ModelElement resolvedParent = primaryParent;
+					LinkedNode<LinkAndDictionaryType> linkAndTypeNode = primaryLinkPair.Value;
 					INamedElementDictionary resolvedDictionary = null;
-					INamedElementDictionaryOwner dictionaryOwner;
-					for (; ; )
+					Type previousDictionaryType = null;
+					while (linkAndTypeNode != null)
 					{
-						INamedElementDictionaryLink deletedConnectingLink;
-						if (detachedRemoteConnectorLinks.TryGetValue(resolvedParent, out deletedConnectingLink))
+						LinkAndDictionaryType linkAndType = linkAndTypeNode.Value;
+						Type dictionaryType = linkAndType.DictionaryType;
+						if (dictionaryType == previousDictionaryType)
 						{
-							resolvedParent = (ModelElement)deletedConnectingLink.ParentRolePlayer;
-							if (null != (dictionaryOwner = resolvedParent as INamedElementDictionaryOwner) &&
-								null != (resolvedDictionary = dictionaryOwner.FindNamedElementDictionary(dictionaryType)))
+							if (resolvedDictionary == null)
 							{
-								break;
+								continue;
 							}
-							resolvedParent = (ModelElement)deletedConnectingLink.ParentRolePlayer;
-							if (!(resolvedParent is INamedElementDictionaryRemoteChild))
-							{
-								resolvedParent = null; // The next loop won't resolve, so don't bother.
-								break;
-							}
-							continue;
-						}
-						else if (null != (dictionaryOwner = resolvedParent as INamedElementDictionaryOwner))
-						{
-							// Check current parent for a dictionary before going into the loop below.
-							resolvedDictionary = dictionaryOwner.FindNamedElementDictionary(dictionaryType);
-						}
-						break;
-					}
-
-					if (null == resolvedDictionary &&
-						null != resolvedParent)
-					{
-						// We got as far up the parent stack as we could get using
-						// cached detached objects. We can now assume that the remainder
-						// of the links are still in the model. Use the available information
-						// on the named element dictionary interfaces to find the dictionary.
-						INamedElementDictionaryRemoteChild remoteChildInfo;
-						Guid parentRoleId;
-						DomainRoleInfo parentRoleInfo;
-						DomainDataDirectory dataDirectory = resolvedParent.Store.DomainDataDirectory;
-						while (null != resolvedParent &&
-							!resolvedParent.IsDeleted &&
-							null != (remoteChildInfo = resolvedParent as INamedElementDictionaryRemoteChild) &&
-							(parentRoleId = remoteChildInfo.NamedElementDictionaryParentRole) != Guid.Empty &&
-							null != (parentRoleInfo = dataDirectory.FindDomainRole(parentRoleId)) &&
-							parentRoleInfo.IsOne &&
-							null != (resolvedParent = parentRoleInfo.GetLinkedElement(resolvedParent)))
-						{
-							if (null != (dictionaryOwner = resolvedParent as INamedElementDictionaryOwner) &&
-								null != (resolvedDictionary = dictionaryOwner.FindNamedElementDictionary(dictionaryType)))
-							{
-								resolvedParent = null;
-							}
-						}
-					}
-					if (null != resolvedDictionary)
-					{
-						ModelElement namedChild = (ModelElement)primaryLink.ChildRolePlayer;
-						DetachedElementRecord changeRecord;
-						if (changes != null &&
-							changes.TryGetValue(namedChild, out changeRecord))
-						{
-							changeRecord.AddDictionary(resolvedDictionary);
-							changes[namedChild] = changeRecord;
 						}
 						else
 						{
-							resolvedDictionary.RemoveElement(namedChild, null, DuplicateNameAction.RetrieveDuplicateCollection);
+							// The dictionary types are usually the same, do some basic optimization
+							// so we only retrieve the dictionary one time.
+							previousDictionaryType = dictionaryType;
+							resolvedDictionary = null;
 						}
+
+						if (resolvedDictionary == null)
+						{
+							// Go up the deleted chain as far as we can
+							ModelElement resolvedParent = primaryParent;
+							INamedElementDictionaryOwner dictionaryOwner;
+							for (; ; )
+							{
+								INamedElementDictionaryLink deletedConnectingLink;
+								if (detachedRemoteConnectorLinks.TryGetValue(resolvedParent, out deletedConnectingLink))
+								{
+									resolvedParent = (ModelElement)deletedConnectingLink.ParentRolePlayer;
+									if (null != (dictionaryOwner = resolvedParent as INamedElementDictionaryOwner) &&
+										null != (resolvedDictionary = dictionaryOwner.FindNamedElementDictionary(dictionaryType)))
+									{
+										break;
+									}
+									resolvedParent = (ModelElement)deletedConnectingLink.ParentRolePlayer;
+									if (!(resolvedParent is INamedElementDictionaryRemoteChild))
+									{
+										resolvedParent = null; // The next loop won't resolve, so don't bother.
+										break;
+									}
+									continue;
+								}
+								else if (null != (dictionaryOwner = resolvedParent as INamedElementDictionaryOwner))
+								{
+									// Check current parent for a dictionary before going into the loop below.
+									resolvedDictionary = dictionaryOwner.FindNamedElementDictionary(dictionaryType);
+								}
+								break;
+							}
+
+							if (null == resolvedDictionary &&
+								null != resolvedParent)
+							{
+								// We got as far up the parent stack as we could get using
+								// cached detached objects. We can now assume that the remainder
+								// of the links are still in the model. Use the available information
+								// on the named element dictionary interfaces to find the dictionary.
+								INamedElementDictionaryRemoteChild remoteChildInfo;
+								Guid parentRoleId;
+								DomainRoleInfo parentRoleInfo;
+								DomainDataDirectory dataDirectory = resolvedParent.Store.DomainDataDirectory;
+								while (null != resolvedParent &&
+									!resolvedParent.IsDeleted &&
+									null != (remoteChildInfo = resolvedParent as INamedElementDictionaryRemoteChild) &&
+									(parentRoleId = remoteChildInfo.NamedElementDictionaryParentRole) != Guid.Empty &&
+									null != (parentRoleInfo = dataDirectory.FindDomainRole(parentRoleId)) &&
+									parentRoleInfo.IsOne &&
+									null != (resolvedParent = parentRoleInfo.GetLinkedElement(resolvedParent)))
+								{
+									if (null != (dictionaryOwner = resolvedParent as INamedElementDictionaryOwner) &&
+										null != (resolvedDictionary = dictionaryOwner.FindNamedElementDictionary(dictionaryType)))
+									{
+										resolvedParent = null;
+									}
+								}
+							}
+						}
+						if (null != resolvedDictionary)
+						{
+							ModelElement namedChild = (ModelElement)linkAndType.Link.ChildRolePlayer;
+							DetachedElementRecord changeRecord;
+							if (changes != null &&
+								changes.TryGetValue(namedChild, out changeRecord))
+							{
+								changeRecord.AddDictionary(resolvedDictionary);
+								changes[namedChild] = changeRecord;
+							}
+							else
+							{
+								resolvedDictionary.RemoveElement(namedChild, null, DuplicateNameAction.RetrieveDuplicateCollection);
+							}
+						}
+						linkAndTypeNode = linkAndTypeNode.Next;
 					}
 				}
 			}
@@ -1793,12 +1817,19 @@ namespace ORMSolutions.ORMArchitect.Framework
 							// Cache the link keyed off the parent element. We also cache remote
 							// connectors for events, which cache of the child element. The child
 							// element in those cases matches the primary element here.
-							Dictionary<ModelElement, LinkAndDictionaryType> remoteLinks = myDetachedLinksWithRemoteDictionary;
+							Dictionary<ModelElement, LinkedNode<LinkAndDictionaryType>> remoteLinks = myDetachedLinksWithRemoteDictionary;
 							if (remoteLinks == null)
 							{
-								myDetachedLinksWithRemoteDictionary = remoteLinks = new Dictionary<ModelElement, LinkAndDictionaryType>();
+								myDetachedLinksWithRemoteDictionary = remoteLinks = new Dictionary<ModelElement, LinkedNode<LinkAndDictionaryType>>();
 							}
-							remoteLinks[(ModelElement)parent] = new LinkAndDictionaryType(link, remoteType);
+							ModelElement linkKey = (ModelElement)parent;
+							LinkedNode<LinkAndDictionaryType> newNode = new LinkedNode<LinkAndDictionaryType>(new LinkAndDictionaryType(link, remoteType));
+							LinkedNode<LinkAndDictionaryType> prevNode;
+							if (remoteLinks.TryGetValue(linkKey, out prevNode))
+							{
+								newNode.SetNext(prevNode, ref newNode);
+							}
+							remoteLinks[linkKey] = newNode;
 						}
 					}
 				}
