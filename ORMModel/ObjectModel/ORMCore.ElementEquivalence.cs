@@ -1780,7 +1780,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									break;
 								}
 							}
-							if (i == roleCount)
+							if (i == roleCount &&
+								LeadRolePath.VerifyJoinPathMatch(this, testOtherSetConstraint, foreignStore, elementTracker))
 							{
 								// We have a match
 								if (testOtherSetConstraint.Modality == matchConstraintModality)
@@ -1884,11 +1885,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 				// Now find matching sequences for each role
 				bool matchSequenceOrder = 0 != (constraint.RoleSequenceStyles & RoleSequenceStyles.OrderedRoleSequences);
-				otherMatchingRoles = allOtherMatchingRoles[0]; // Match the first sequence first
-				roleCount = otherMatchingRoles.Length;
-				Role firstMatchingRole = otherMatchingRoles[0];
+				Role firstMatchingRole = allOtherMatchingRoles[0][0];
 				foreach (ConstraintRoleSequence sequence in firstMatchingRole.ConstraintRoleSequenceCollection)
 				{
+					roleCount = (otherMatchingRoles = allOtherMatchingRoles[0]).Length; // Match the first sequence first
 					SetComparisonConstraintRoleSequence testOtherSequence;
 					SetComparisonConstraint testOtherConstraint;
 					LinkedElementCollection<SetComparisonConstraintRoleSequence> testOtherSequences;
@@ -1976,20 +1976,36 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 							if (trailingSequenceIndex == sequenceCount)
 							{
-								// We have a full constraint match on all sequences.
-								if (testOtherConstraint.Modality == matchConstraintModality)
+								// Sequence roles all match up. Make sure that the join paths are
+								// also a match before declaring success. It is possible to have constraints
+								// over the same roles with different join paths. Note that an overabundance
+								// of caution here will simply result in constraints over the same roles, which
+								// will result in validation errors displayed to the user.
+								i = 0;
+								for (; i < sequenceCount; ++i)
 								{
-									otherSetComparisonConstraint = testOtherConstraint;
-									otherSetComparisonSequences = testOtherSequences;
-									break; // We won't find a better match
+									if (!LeadRolePath.VerifyJoinPathMatch(sequences[matchedOtherSequences[i] - 1], testOtherSequences[i], foreignStore, elementTracker))
+									{
+										break;
+									}
 								}
-								else if (otherSetComparisonConstraintMismatchedModality == null)
+								if (i == sequenceCount)
 								{
-									otherSetComparisonConstraintMismatchedModality = testOtherConstraint;
-									otherSetComparisonSequencesMismatchedModality = testOtherSequences;
-									matchedOtherSequencesMismatchedModality = matchedOtherSequences;
-									matchedOtherSequences = null;
-									// Do not break, try to find a full modality match
+									// We have a full constraint match on all sequences.
+									if (testOtherConstraint.Modality == matchConstraintModality)
+									{
+										otherSetComparisonConstraint = testOtherConstraint;
+										otherSetComparisonSequences = testOtherSequences;
+										break; // We won't find a better match
+									}
+									else if (otherSetComparisonConstraintMismatchedModality == null)
+									{
+										otherSetComparisonConstraintMismatchedModality = testOtherConstraint;
+										otherSetComparisonSequencesMismatchedModality = testOtherSequences;
+										matchedOtherSequencesMismatchedModality = matchedOtherSequences;
+										matchedOtherSequences = null;
+										// Do not break, try to find a full modality match
+									}
 								}
 							}
 						}
@@ -2381,6 +2397,76 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return null;
 		}
 		/// <summary>
+		/// Helper function to verify matching paths during import.
+		/// </summary>
+		/// <param name="paths">The paths to check against.</param>
+		/// <param name="otherPaths">The paths to search.</param>
+		/// <param name="foreignStore">The store being copied from.</param>
+		/// <param name="elementTracker">The element tracker determining which elements are imported.</param>
+		/// <returns><see langword="true"/> if all paths have a match.</returns>
+		private static bool VerifyMatchingPaths(IList<LeadRolePath> paths, IList<LeadRolePath> otherPaths, Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			int pathCount = paths.Count;
+			if (pathCount == 0)
+			{
+				return otherPaths.Count == 0;
+			}
+			else if (otherPaths.Count != pathCount)
+			{
+				return false;
+			}
+			if (pathCount != 1)
+			{
+				// Copy to writable collection so we can remove when processed.
+				LeadRolePath[] otherPathsArray = new LeadRolePath[pathCount];
+				otherPaths.CopyTo(otherPathsArray, 0);
+				otherPaths = otherPathsArray;
+			}
+			Dictionary<ModelElement, ModelElement> matchedPathElements = new Dictionary<ModelElement, ModelElement>();
+			for (int i = 0; i < pathCount; ++i)
+			{
+				LeadRolePath matchingPath;
+				if (null != (matchingPath = paths[i].GetMatchingPath(otherPaths, matchedPathElements, foreignStore, elementTracker)))
+				{
+					if (pathCount != 1)
+					{
+						otherPaths.Remove(matchingPath);
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+		/// <summary>
+		/// Helper to determine if join paths match for role sequences.
+		/// </summary>
+		/// <param name="roleSequence">The role sequence from the current store.</param>
+		/// <param name="otherRoleSequence">The role sequence from the foreign store.</param>
+		/// <param name="foreignStore">The store being copied from.</param>
+		/// <param name="elementTracker">The element tracker determining which elements are imported.</param>
+		/// <returns><see langword="true"/> if the join paths are equivalent.</returns>
+		public static bool VerifyJoinPathMatch(ConstraintRoleSequence roleSequence, ConstraintRoleSequence otherRoleSequence, Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			ConstraintRoleSequenceJoinPath sequenceJoinPath;
+			if (null != (sequenceJoinPath = roleSequence.JoinPath))
+			{
+				ConstraintRoleSequenceJoinPath otherSequenceJoinPath;
+				if (null == (otherSequenceJoinPath = otherRoleSequence.JoinPath) ||
+					!LeadRolePath.VerifyMatchingPaths(sequenceJoinPath.LeadRolePathCollection, otherSequenceJoinPath.LeadRolePathCollection, foreignStore, elementTracker))
+				{
+					return false;
+				}
+			}
+			else if (otherRoleSequence.JoinPath != null)
+			{
+				return false;
+			}
+			return true;
+		}
+		/// <summary>
 		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
 		/// Match paths by roots, pathed roles, and conditional calculations.
 		/// </summary>
@@ -2627,7 +2713,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				PathedRole otherPathedRole = otherPathedRoles[i];
 				if (pathedRole.PathedRolePurpose != otherPathedRole.PathedRolePurpose ||
 					pathedRole.IsNegated != otherPathedRole.IsNegated ||
-					null == CopyMergeUtility.GetEquivalentElement(pathedRole.Role, foreignStore, elementTracker))
+					otherPathedRole.Role != CopyMergeUtility.GetEquivalentElement(pathedRole.Role, foreignStore, elementTracker))
 				{
 					return false;
 				}
