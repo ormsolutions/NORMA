@@ -202,7 +202,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								otherObjectType = null;
 							}
 						}
-						if (otherObjectType.IsValueType != isValueType) 
+						if (otherObjectType != null && otherObjectType.IsValueType != isValueType) 
 						{
 							otherObjectType = null;
 						}
