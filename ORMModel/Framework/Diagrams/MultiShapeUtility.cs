@@ -535,12 +535,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 
 			NodeShape sourceShape;
 			IReconfigureableLink reconfigurableLink;
-			if (walker != null)
+			Transaction currentTransaction;
+			if (walker != null &&
+				null != (currentTransaction = sourceElement.Store.TransactionManager.CurrentTransaction))
 			{
 				if (sourceRoleInfo != null &&
 					sourceRoleInfo.Id == PresentationViewsSubject.SubjectDomainRoleId)
 				{
-					contextDictionary = sourceElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo;
+					contextDictionary = currentTransaction.TopLevelTransaction.Context.ContextInfo;
 					if (contextDictionary.TryGetValue(subjectsKey = DeletingSubjectsKey, out subjectsDictionaryObject))
 					{
 						deletingSubjectsDictionary = (Dictionary<ModelElement, object>)subjectsDictionaryObject;
@@ -556,7 +558,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagrams
 					null != (sourceShape = sourceElement as NodeShape) &&
 					null != (reconfigurableLink = (targetRelationship as LinkConnectsToNode).Link as IReconfigureableLink) &&
 					null != (primaryShape = ResolvePrimaryShape(sourceShape)) &&
-					(!sourceElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.TryGetValue(DeletingSubjectsKey, out subjectsDictionaryObject) ||
+					(!currentTransaction.TopLevelTransaction.Context.ContextInfo.TryGetValue(DeletingSubjectsKey, out subjectsDictionaryObject) ||
 					(null != (subject = primaryShape.ModelElement) &&
 					!((Dictionary<ModelElement, object>)subjectsDictionaryObject).ContainsKey(subject))))
 				{
