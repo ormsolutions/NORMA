@@ -100,6 +100,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <value>The place priority.</value>
 		HierarchyContextPlacementPriority HierarchyContextPlacementPriority { get;}
+		/// <summary>
+		/// Return <see langword="true"/> if hierarchy navigation to this element is disabled.
+		/// </summary>
+		bool HierarchyDisabled { get;}
 	}
 	/// <summary>
 	/// Implement this interface on an <see cref="ElementLink"/> connected to elements that

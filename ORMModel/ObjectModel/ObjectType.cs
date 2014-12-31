@@ -5099,6 +5099,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ResolvedModel;
 			}
 		}
+		bool IHierarchyContextEnabled.HierarchyDisabled
+		{
+			get
+			{
+				return HierarchyDisabled;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyDisabled"/>
+		/// </summary>
+		protected static bool HierarchyDisabled
+		{
+			get
+			{
+				return false;
+			}
+		}
 		#endregion // IHierarchyContextEnabled Implementation
 		#region IVerbalizeCustomChildren Implementation
 		/// <summary>

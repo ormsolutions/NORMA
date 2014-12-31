@@ -1772,6 +1772,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return ContinueWalkingHierarchyContext;
 			}
 		}
+		bool IHierarchyContextEnabled.HierarchyDisabled
+		{
+			get
+			{
+				return HierarchyDisabled;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyDisabled"/>
+		/// </summary>
+		protected static bool HierarchyDisabled
+		{
+			get
+			{
+				return false;
+			}
+		}
 		#endregion
 	}
 	#endregion // SetConstraint class
@@ -3384,6 +3401,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			get
 			{
 				return ContinueWalkingHierarchyContext;
+			}
+		}
+		bool IHierarchyContextEnabled.HierarchyDisabled
+		{
+			get
+			{
+				return HierarchyDisabled;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyDisabled"/>
+		/// </summary>
+		protected static bool HierarchyDisabled
+		{
+			get
+			{
+				return false;
 			}
 		}
 		#endregion

@@ -5501,7 +5501,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // FactTypeDerivationRule class
 	#region QueryBase class
-	partial class QueryBase
+	partial class QueryBase : IHierarchyContextEnabled
 	{
 		/// <summary>
 		/// Each query type has a different path to the <see cref="ORMModel"/>
@@ -5552,6 +5552,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // Rule Methods
+		#region IHierarchyContextEnabled Implementation
+		bool IHierarchyContextEnabled.HierarchyDisabled
+		{
+			get
+			{
+				return HierarchyDisabled;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyDisabled"/>
+		/// </summary>
+		protected static new bool HierarchyDisabled
+		{
+			get
+			{
+				return true;
+			}
+		}
+		#endregion // IHierarchyContextEnabled Implementation
 	}
 	#endregion // QueryBase class
 	#region Subquery class

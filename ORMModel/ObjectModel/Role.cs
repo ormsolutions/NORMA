@@ -1731,6 +1731,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get { return ContinueWalkingHierarchyContext; }
 		}
+		bool IHierarchyContextEnabled.HierarchyDisabled
+		{
+			get
+			{
+				return HierarchyDisabled;
+			}
+		}
+		/// <summary>
+		/// Implements <see cref="IHierarchyContextEnabled.HierarchyDisabled"/>
+		/// </summary>
+		protected bool HierarchyDisabled
+		{
+			get
+			{
+				return FactType is QueryBase;
+			}
+		}
 		#endregion
 	}
 	partial class RoleBase : IModelErrorDisplayContext

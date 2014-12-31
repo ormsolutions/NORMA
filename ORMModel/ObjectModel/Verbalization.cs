@@ -5805,14 +5805,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="pathContext">The path context for this node.</param>
 			/// <param name="parentNode">The parent <see cref="VerbalizationPlanNode"/> for the new node.</param>
 			/// <param name="rootNode">A reference to the root node of the chain.</param>
+			/// <param name="pendingRequiredVariableKeys">Current required variable keys. Scope before value constraint.</param>
 			/// <returns>New <see cref="VerbalizationPlanNode"/></returns>
-			public static VerbalizationPlanNode AddValueConstraintNode(ValueConstraint valueConstraint, object pathContext, VerbalizationPlanNode parentNode, ref VerbalizationPlanNode rootNode)
+			public static VerbalizationPlanNode AddValueConstraintNode(ValueConstraint valueConstraint, object pathContext, VerbalizationPlanNode parentNode, ref VerbalizationPlanNode rootNode, ref LinkedNode<object> pendingRequiredVariableKeys)
 			{
 				if (parentNode == null)
 				{
 					parentNode = AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, pathContext, null, ref rootNode);
+					if (pendingRequiredVariableKeys != null)
+					{
+						parentNode.RequireContextVariables(pendingRequiredVariableKeys);
+						pendingRequiredVariableKeys = null;
+					}
 				}
-				return new ValueConstraintNode(pathContext, parentNode, valueConstraint);
+				ValueConstraintNode newNode = new ValueConstraintNode(pathContext, parentNode, valueConstraint);
+				if (pendingRequiredVariableKeys != null)
+				{
+					newNode.RequireContextVariables(pendingRequiredVariableKeys);
+					pendingRequiredVariableKeys = null;
+				}
+				return newNode;
 			}
 			/// <summary>
 			/// Create and attach a new calculated condition node.
@@ -5823,14 +5835,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="pathContext">The path context for this node.</param>
 			/// <param name="parentNode">The parent <see cref="VerbalizationPlanNode"/> for the new node.</param>
 			/// <param name="rootNode">A reference to the root node of the chain.</param>
+			/// <param name="pendingRequiredVariableKeys">Pending required variable keys.</param>
 			/// <returns>New <see cref="VerbalizationPlanNode"/></returns>
-			public static VerbalizationPlanNode AddCalculatedConditionNode(CalculatedPathValue calculatedCondition, bool restrictsSingleFactType, object pathContext, VerbalizationPlanNode parentNode, ref VerbalizationPlanNode rootNode)
+			public static VerbalizationPlanNode AddCalculatedConditionNode(CalculatedPathValue calculatedCondition, bool restrictsSingleFactType, object pathContext, VerbalizationPlanNode parentNode, ref VerbalizationPlanNode rootNode, ref LinkedNode<object> pendingRequiredVariableKeys)
 			{
 				if (parentNode == null)
 				{
 					parentNode = AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, pathContext, null, ref rootNode);
+					if (pendingRequiredVariableKeys != null)
+					{
+						parentNode.RequireContextVariables(pendingRequiredVariableKeys);
+						pendingRequiredVariableKeys = null;
+					}
 				}
-				return new CalculatedConditionNode(pathContext, parentNode, calculatedCondition, restrictsSingleFactType);
+				CalculatedConditionNode newNode = new CalculatedConditionNode(pathContext, parentNode, calculatedCondition, restrictsSingleFactType);
+				if (pendingRequiredVariableKeys != null)
+				{
+					newNode.RequireContextVariables(pendingRequiredVariableKeys);
+					pendingRequiredVariableKeys = null;
+				}
+				return newNode;
 			}
 			/// <summary>
 			/// Create and attach a new projection calculation node.
@@ -5891,14 +5915,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <param name="pathContext">The path context for this node.</param>
 			/// <param name="parentNode">The parent <see cref="VerbalizationPlanNode"/> for the new node.</param>
 			/// <param name="rootNode">A reference to the root node of the chain.</param>
+			/// <param name="pendingRequiredVariableKeys">Current required variable keys. Scope before variable equivalence.</param>
 			/// <returns>New <see cref="VerbalizationPlanNode"/></returns>
-			public static VerbalizationPlanNode AddVariableEquivalenceNode(IList<object> equivalentVariableKeys, object pathContext, VerbalizationPlanNode parentNode, ref VerbalizationPlanNode rootNode)
+			public static VerbalizationPlanNode AddVariableEquivalenceNode(IList<object> equivalentVariableKeys, object pathContext, VerbalizationPlanNode parentNode, ref VerbalizationPlanNode rootNode, ref LinkedNode<object> pendingRequiredVariableKeys)
 			{
 				if (parentNode == null)
 				{
 					parentNode = AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, pathContext, null, ref rootNode);
+					if (pendingRequiredVariableKeys != null)
+					{
+						parentNode.RequireContextVariables(pendingRequiredVariableKeys);
+						pendingRequiredVariableKeys = null;
+					}
 				}
-				return new VariableEquivalenceNode(pathContext, parentNode, equivalentVariableKeys);
+				VariableEquivalenceNode newNode = new VariableEquivalenceNode(pathContext, parentNode, equivalentVariableKeys);
+				if (pendingRequiredVariableKeys != null)
+				{
+					parentNode.RequireContextVariables(pendingRequiredVariableKeys);
+					pendingRequiredVariableKeys = null;
+				}
+				return newNode;
 			}
 			/// <summary>
 			/// Create and attach a new chained root variable node.
@@ -6530,9 +6566,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
-			private sealed class ValueConstraintNode : VerbalizationPlanNode
+			private sealed class ValueConstraintNode : RequireContextVariableNode
 			{
 				private readonly ValueConstraint myValueConstraint;
+				private bool myRenderedRequiredContextVariable;
 				public ValueConstraintNode(object pathContext, VerbalizationPlanNode parentNode, ValueConstraint valueConstraint)
 					: base(pathContext, parentNode)
 				{
@@ -6559,16 +6596,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						return myValueConstraint;
 					}
 				}
+				public override bool RenderedRequiredContextVariable
+				{
+					get
+					{
+						return myRenderedRequiredContextVariable;
+					}
+					set
+					{
+						myRenderedRequiredContextVariable = value;
+					}
+				}
 			}
-			private sealed class CalculatedConditionNode : VerbalizationPlanNode
+			private sealed class CalculatedConditionNode : RequireContextVariableNode
 			{
 				private readonly CalculatedPathValue myCondition;
-				private readonly bool myRestrictsSingleFactType;
+				private const int RestrictsSingleFactTypeBit = 0x1;
+				private const int RenderedRequiredContextVariablesBit = 0x2;
+				private int myFlags;
 				public CalculatedConditionNode(object pathContext, VerbalizationPlanNode parentNode, CalculatedPathValue condition, bool restrictsSingleFactType)
 					: base(pathContext, parentNode)
 				{
 					myCondition = condition;
-					myRestrictsSingleFactType = restrictsSingleFactType;
+					myFlags = restrictsSingleFactType ? RestrictsSingleFactTypeBit : 0; 
 				}
 				public override VerbalizationPlanNodeType NodeType
 				{
@@ -6587,7 +6637,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						// A calculated condition node that restricts a single fact type
 						// is verbalized immediately after the fact type instance.
-						return myRestrictsSingleFactType;
+						return 0 != (myFlags & RestrictsSingleFactTypeBit);
+					}
+				}
+				public override bool RenderedRequiredContextVariable
+				{
+					get
+					{
+						return 0 != (myFlags & RenderedRequiredContextVariablesBit);
+					}
+					set
+					{
+						if (value)
+						{
+							myFlags |= RenderedRequiredContextVariablesBit;
+						}
+						else
+						{
+							myFlags &= ~RenderedRequiredContextVariablesBit;
+						}
 					}
 				}
 			}
@@ -6782,9 +6850,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
-			private sealed class VariableEquivalenceNode : VerbalizationPlanNode
+			private sealed class VariableEquivalenceNode : RequireContextVariableNode
 			{
 				private readonly IList<object> myEquivalentVariableKeys;
+				private bool myRenderedRequiredContextVariable;
 				public VariableEquivalenceNode(object pathContext, VerbalizationPlanNode parentNode, IList<object> equivalentVariableKeys)
 					: base(pathContext, parentNode)
 				{
@@ -6802,6 +6871,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					get
 					{
 						return myEquivalentVariableKeys;
+					}
+				}
+				public override bool RenderedRequiredContextVariable
+				{
+					get
+					{
+						return myRenderedRequiredContextVariable;
+					}
+					set
+					{
+						myRenderedRequiredContextVariable = value;
 					}
 				}
 			}
@@ -7099,17 +7179,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							equivalentVariableKeysByPath.TryGetValue(filteredPath, out equivalentVariables);
 						}
-						if (equivalentVariables != null)
+						bool pushedForEquivalentVariables;
+						if (pushedForEquivalentVariables = (equivalentVariables != null))
 						{
 							PushSplit(outerContext, VerbalizationPlanBranchType.AndSplit, ref pendingRequiredVariableKeys);
 						}
-						InitializeRolePath(pathContext, pathOwner, filteredPath, keyDecorator, ref pendingRequiredVariableKeys);
-						if (equivalentVariables != null)
+						InitializeRolePath(pathContext, pathOwner, filteredPath, keyDecorator, ref pendingRequiredVariableKeys, ref equivalentVariables);
+						if (pushedForEquivalentVariables)
 						{
-							int equivalentVariableSetCount = equivalentVariables.Count;
-							for (int j = 0; j < equivalentVariableSetCount; ++j)
+							if (equivalentVariables != null)
 							{
-								VerbalizationPlanNode.AddVariableEquivalenceNode(equivalentVariables[j], outerContext, myCurrentBranchNode, ref myRootPlanNode);
+								int equivalentVariableSetCount = equivalentVariables.Count;
+								for (int j = 0; j < equivalentVariableSetCount; ++j)
+								{
+									VerbalizationPlanNode.AddVariableEquivalenceNode(equivalentVariables[j], outerContext, myCurrentBranchNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
+								}
 							}
 							PopSplit(VerbalizationPlanBranchType.AndSplit);
 						}
@@ -7121,7 +7205,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		private void InitializeRolePath(object initialPathContext, RolePathOwner pathOwner, LeadRolePath leadRolePath, VariableKeyDecorator keyDecorator, ref LinkedNode<object> requiredVariableKeys)
+		private void InitializeRolePath(object initialPathContext, RolePathOwner pathOwner, LeadRolePath leadRolePath, VariableKeyDecorator keyDecorator, ref LinkedNode<object> requiredVariableKeys, ref IList<IList<object>> equivalentVariableSets)
 		{
 			LinkedElementCollection<CalculatedPathValue> pathConditions = leadRolePath.CalculatedConditionCollection;
 			int pathConditionCount = pathConditions.Count;
@@ -7152,6 +7236,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			PathedRole pendingForSameFactType = null;
 			InlineSubqueryRole pendingForSameFactTypeQueryRoleKey = null;
 			LinkedNode<object> pendingRequiredVariableKeys = requiredVariableKeys;
+			IList<IList<object>> pendingEquivalentVariableSets = equivalentVariableSets;
 			// A list (acting like a stack) to get the full history of the parent pathed roles.
 			List<ReadOnlyCollection<PathedRole>> contextPathedRoles = null;
 			List<RolePathObjectTypeRoot> contextPathRoots = null;
@@ -7293,7 +7378,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										PathConditionRoleValueConstraint valueConstraint = processPathedRole.ValueConstraint;
 										if (valueConstraint != null)
 										{
-											VerbalizationPlanNode.AddValueConstraintNode(valueConstraint, pathContext, contextChainNode, ref myRootPlanNode);
+											VerbalizationPlanNode.AddValueConstraintNode(valueConstraint, pathContext, contextChainNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
 										}
 									}
 
@@ -7373,7 +7458,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 													// Although this is a single fact type, it occurs as part of a split
 													// after the fact type has been defined, so the fact type is not immediately
 													// before this one and we can't set the restrictsSingleFactType parameter to true.
-													VerbalizationPlanNode.AddCalculatedConditionNode(calculation, false, pathContext, contextChainNode, ref myRootPlanNode);
+													VerbalizationPlanNode.AddCalculatedConditionNode(calculation, false, pathContext, contextChainNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
 												}
 											}
 										}
@@ -7459,6 +7544,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (unwinding)
 						{
 							contextPathRoots.RemoveAt(contextPathRoots.Count - 1);
+							if (pendingRequiredVariableKeys != null)
+							{
+								LinkedNode<object> variableKeyIterator = pendingRequiredVariableKeys;
+								RolePathCache cache = EnsureRolePathCache();
+								while (variableKeyIterator != null)
+								{
+									RolePlayerVariableUse pendingUse;
+									if (useMap.TryGetValue(variableKeyIterator.Value, out pendingUse))
+									{
+										ScopeVariable(pendingUse.PrimaryRolePlayerVariable, true);
+									}
+									variableKeyIterator = variableKeyIterator.Next;
+								}
+								ChainNewlyCalculatableConditions(pathConditions, ref processedPathConditions, ref pendingRequiredVariableKeys);
+							}
+							if (pendingEquivalentVariableSets != null)
+							{
+								ChainNewlySatisfiedVariableEquivalentNodes(ref pendingEquivalentVariableSets, ref pendingRequiredVariableKeys);
+							}
 							while (pendingRequiredVariableKeys != null)
 							{
 								myCurrentBranchNode = VerbalizationPlanNode.AddVariableExistenceNode(pendingRequiredVariableKeys.Value, pathContext, myCurrentBranchNode, ref myRootPlanNode).ParentNode;
@@ -7498,10 +7602,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								pendingForSameFactType = null;
 								pendingPathedRoles = null;
 							}
+							bool variableAlreadyScoped = false;
 							if (currentPath != leadRolePath) // Handled earlier, see notes above
 							{
 								pathNode = new RolePathNode(currentPathRoot, pathContext);
-								RegisterRolePlayerUse(currentPathRoot.RootObjectType, null, pathNode, pathNode);
+								RegisterRolePlayerUse(currentPathRoot.RootObjectType, null, pathNode, pathNode, out variableAlreadyScoped);
 							}
 
 							if (currentPathRoot.IsNegated)
@@ -7521,9 +7626,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							ValueConstraint valueConstraint;
 							if (null != (valueConstraint = currentPathRoot.ValueConstraint))
 							{
-								myCurrentBranchNode = VerbalizationPlanNode.AddValueConstraintNode(valueConstraint, pathContext, myCurrentBranchNode, ref myRootPlanNode).ParentNode;
+								myCurrentBranchNode = VerbalizationPlanNode.AddValueConstraintNode(valueConstraint, pathContext, myCurrentBranchNode, ref myRootPlanNode, ref pendingRequiredVariableKeys).ParentNode;
 							}
-							else
+							else if (!variableAlreadyScoped)
 							{
 								if (pendingRequiredVariableKeys == null)
 								{
@@ -7556,6 +7661,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				});
 
+			equivalentVariableSets = pendingEquivalentVariableSets;
+			if (null != equivalentVariableSets)
+			{
+				// Equivalent variables are treat the same as additional path conditions. These are used if one variable
+				// is projected on multiple roles, which is handled by keeping the variables separate and then equating them.
+				// This produces the same result as an 'equals' function, but does not have a corresponding 'equals' in the tree.
+				ChainNewlySatisfiedVariableEquivalentNodes(ref equivalentVariableSets, ref pendingRequiredVariableKeys);
+			}
+
 			// Chain unprocessed condition nodes at the end
 			if (pathConditionCount != 0)
 			{
@@ -7574,7 +7688,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								contextChainNode = VerbalizationPlanNode.AddBranchNode(VerbalizationPlanBranchType.Chain, VerbalizationPlanBranchRenderingStyle.OperatorSeparated, initialPathContext, contextChainNode, ref myRootPlanNode);
 							}
 						}
-						VerbalizationPlanNode.AddCalculatedConditionNode(pathConditions[i], false, initialPathContext, contextChainNode, ref myRootPlanNode);
+						VerbalizationPlanNode.AddCalculatedConditionNode(pathConditions[i], false, initialPathContext, contextChainNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
 					}
 				}
 			}
@@ -8489,7 +8603,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						addedFactTypeEntry = true;
 						contextChainNode = EnsureChainNodeForFactTypeConditions(pathContext, factType, factTypeEntry, ref pendingRequiredVariableKeys);
 					}
-					VerbalizationPlanNode.AddValueConstraintNode(valueConstraint, pathContext, contextChainNode, ref myRootPlanNode);
+					VerbalizationPlanNode.AddValueConstraintNode(valueConstraint, pathContext, contextChainNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
 				}
 			}
 			
@@ -8535,7 +8649,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								contextChainNode = EnsureChainNodeForFactTypeConditions(pathContext, factType, factTypeEntry, ref pendingRequiredVariableKeys);
 							}
 							processedConditions[i] = true;
-							VerbalizationPlanNode.AddCalculatedConditionNode(calculation, true, pathContext, contextChainNode, ref myRootPlanNode);
+							VerbalizationPlanNode.AddCalculatedConditionNode(calculation, true, pathContext, contextChainNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
 						}
 					}
 				}
@@ -8787,7 +8901,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						PushSplit(pathContext, VerbalizationPlanBranchType.AndSplit, ref pendingRequiredVariableKeys);
 						contextConditionNode = myCurrentBranchNode;
 					}
-					VerbalizationPlanNode.AddValueConstraintNode(valueConstraint, pathContext, contextConditionNode, ref myRootPlanNode);
+					VerbalizationPlanNode.AddValueConstraintNode(valueConstraint, pathContext, contextConditionNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
 				}
 			}
 
@@ -8835,7 +8949,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								contextConditionNode = myCurrentBranchNode;
 							}
 							processedConditions[i] = true;
-							VerbalizationPlanNode.AddCalculatedConditionNode(calculation, false, pathContext, contextConditionNode, ref myRootPlanNode);
+							VerbalizationPlanNode.AddCalculatedConditionNode(calculation, false, pathContext, contextConditionNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
 						}
 					}
 				}
@@ -9214,6 +9328,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Used to track which conditions have been processed.</param>
 		private void ChainNewlyCalculatableConditions(LinkedElementCollection<CalculatedPathValue> pathConditions, ref BitTracker processedConditions)
 		{
+			LinkedNode<object> pendingRequiredVariableKeys = null;
+			ChainNewlyCalculatableConditions(pathConditions, ref processedConditions, ref pendingRequiredVariableKeys);
+		}
+		/// <summary>
+		/// Add conditions that can now be calculated for newly scoped variables.
+		/// </summary>
+		/// <param name="pathConditions">Conditions for the path currently being processed. If there
+		/// are newly scoped variables and all variables required for a condition are satisfied, then
+		/// chain the calculations onto the current node.</param>
+		/// <param name="processedConditions">A <see cref="BitTracker"/> with one bit for each of the <paramref name="pathConditions"/>.
+		/// <param name="pendingRequiredVariableKeys">Pending variables to add with the first chained condition.</param>
+		/// Used to track which conditions have been processed.</param>
+		private void ChainNewlyCalculatableConditions(LinkedElementCollection<CalculatedPathValue> pathConditions, ref BitTracker processedConditions, ref LinkedNode<object> pendingRequiredVariableKeys)
+		{
 			// If we introduced any scoped variables that are used in a function that is not
 			// already used as a path condition and the parent node does not consider variables
 			// scoped here to also be scoped outside this context, then we need to either state
@@ -9239,6 +9367,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (conditionCount != 0)
 				{
 					RolePathCache rolePathCache = default(RolePathCache);
+					int currentUsePhase = 0;
 					Dictionary<object, RolePlayerVariableUse> useMap = null;
 					for (int i = 0; i < conditionCount; ++i)
 					{
@@ -9254,19 +9383,94 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										{
 											useMap = myUseToVariableMap;
 											rolePathCache = EnsureRolePathCache();
+											currentUsePhase = CurrentQuantificationUsePhase;
 										}
 										RolePlayerVariableUse variableUse;
-										if (useMap.TryGetValue(rolePathCache.GetCorrelationRoot(testPathNode), out variableUse) &&
-											!variableUse.PrimaryRolePlayerVariable.IsDescopedDuringPathCreation)
+										if (useMap.TryGetValue(CorrelationRootToContextBoundKey(rolePathCache.GetCorrelationRoot(testPathNode), pathContext), out variableUse))
 										{
-											return true;
+											RolePlayerVariable usedVariable = variableUse.PrimaryRolePlayerVariable;
+											if (usedVariable.HasBeenUsed(currentUsePhase, false) && !usedVariable.IsDescopedDuringPathCreation)
+											{
+												return true;
+											}
 										}
 										return false;
 									}).GetValueOrDefault(false))
 							{
 								processedConditions[i] = true;
-								VerbalizationPlanNode.AddCalculatedConditionNode(calculation, false, pathContext, chainNode, ref myRootPlanNode);
+								VerbalizationPlanNode.AddCalculatedConditionNode(calculation, false, pathContext, chainNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
 							}
+						}
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Add equivalence nodes that can now be calculated for newly scoped variables.
+		/// </summary>
+		/// <param name="equivalentVariableSets">Equivalent variable sets, represented by lists of variable keys.
+		/// <param name="pendingRequiredVariableKeys">Pending required variable keys.</param>
+		/// This will be cleared if it is emptied.</param>
+		private void ChainNewlySatisfiedVariableEquivalentNodes(ref IList<IList<object>> equivalentVariableSets, ref LinkedNode<object> pendingRequiredVariableKeys)
+		{
+			VerbalizationPlanNode chainNode = myCurrentBranchNode;
+			if (chainNode == null)
+			{
+				return;
+			}
+			switch (chainNode.BranchType)
+			{
+				case VerbalizationPlanBranchType.Chain:
+				case VerbalizationPlanBranchType.NegatedChain:
+				case VerbalizationPlanBranchType.AndSplit:
+					break;
+				default:
+					return;
+			}
+			object pathContext = chainNode.PathContext;
+			int setCount = equivalentVariableSets.Count;
+			// We might need to remove from the list, but we don't want to run
+			// it backwards, so track what we have removed.
+			BitTracker removedTracker = new BitTracker(setCount);
+			int removedCount = 0;
+			for (int i = 0; i < setCount; ++i)
+			{
+				IList<object> keys = equivalentVariableSets[i];
+				int currentUsePhase = CurrentQuantificationUsePhase;
+				Dictionary<object, RolePlayerVariableUse> useMap = myUseToVariableMap;
+				RolePlayerVariableUse variableUse;
+				int j = 0;
+				int keyCount = keys.Count;
+				for (; j < keyCount; ++j)
+				{
+					RolePlayerVariable usedVariable;
+					if (!useMap.TryGetValue(keys[j], out variableUse) ||
+						!(usedVariable = variableUse.PrimaryRolePlayerVariable).HasBeenUsed(currentUsePhase, false) ||
+						usedVariable.IsDescopedDuringPathCreation)
+					{
+						break;
+					}
+				}
+				if (j == keyCount)
+				{
+					removedTracker[i] = true;
+					++removedCount;
+					VerbalizationPlanNode.AddVariableEquivalenceNode(keys, pathContext, myCurrentBranchNode, ref myRootPlanNode, ref pendingRequiredVariableKeys);
+				}
+			}
+			if (removedCount != 0)
+			{
+				if (removedCount == setCount)
+				{
+					equivalentVariableSets = null;
+				}
+				else
+				{
+					for (int i = setCount - 1; i >= 0; --i)
+					{
+						if (removedTracker[i])
+						{
+							equivalentVariableSets.RemoveAt(i);
 						}
 					}
 				}
@@ -9471,11 +9675,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>New or existing variable</returns>
 		private RolePlayerVariable RegisterRolePlayerUse(ObjectType rolePlayer, RolePlayerVariable joinToVariable, object usedFor, RolePathNode correlateWithNode)
 		{
+			bool variableAlreadyScoped;
+			return RegisterRolePlayerUse(rolePlayer, joinToVariable, usedFor, correlateWithNode, out variableAlreadyScoped);
+		}
+		/// <summary>
+		/// Register a use of an object type before verbalization. All uses
+		/// must be registered to ensure correct subscripting.
+		/// </summary>
+		/// <param name="rolePlayer">The object type to use. If this is null, then the variable
+		/// is tracked as a missing role player.</param>
+		/// <param name="joinToVariable">An existing variable to join to. Directly joined variables
+		/// of compatible but different types get priority over correlated variables.</param>
+		/// <param name="usedFor">The object use. If this is <see langword="null"/>, then
+		/// this is a fully existential use of the role player.</param>
+		/// <param name="correlateWithNode">The <see cref="RolePathNode"/> to correlate this variable
+		/// with. The list of correlated variables is stored with the normalized root correlation
+		/// variable. This may be the same instance as <paramref name="usedFor"/> and should not
+		/// be pre-normalized before this call.</param>
+		/// <param name="variableAlreadyScoped">The returned variable was in used and scoped before this call.</param>
+		/// <returns>New or existing variable</returns>
+		private RolePlayerVariable RegisterRolePlayerUse(ObjectType rolePlayer, RolePlayerVariable joinToVariable, object usedFor, RolePathNode correlateWithNode, out bool variableAlreadyScoped)
+		{
 			Dictionary<object, RolePlayerVariableUse> useMap = myUseToVariableMap;
 			RolePlayerVariable existingVariable = null;
 			bool addNewVariableToCorrelationRoot = false;
 			RolePlayerVariableUse correlationRootVariableUse = default(RolePlayerVariableUse);
 			object correlateWith = null;
+			variableAlreadyScoped = false;
 			if (!correlateWithNode.IsEmpty &&
 				null != (correlateWith = EnsureRolePathCache().GetCorrelationRoot(correlateWithNode)))
 			{
@@ -9665,9 +9891,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					// Track use phase during registration to see if the root variable is
 					// referenced by the path.
-					UseVariable(existingVariable, myLatestUsePhase, false);
+					if (!UseVariable(existingVariable, myLatestUsePhase, false))
+					{
+						variableAlreadyScoped = true;
+					}
 					// Determine if this variable is reentering scope
-					ScopeVariable(existingVariable, false);
+					if (ScopeVariable(existingVariable, false))
+					{
+						// Overrides the phase setting
+						variableAlreadyScoped = false;
+					}
 					return existingVariable;
 				}
 				else
@@ -9799,7 +10032,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="variable">The variable to put into scope</param>
 		/// <param name="newVariable">True if the variable is newly created.</param>
-		private void ScopeVariable(RolePlayerVariable variable, bool newVariable)
+		/// <returns><see langword="true"/> if scoping changes.</returns>
+		private bool ScopeVariable(RolePlayerVariable variable, bool newVariable)
 		{
 			VerbalizationPlanNode currentBranchNode;
 			if ((newVariable || variable.IsDescopedDuringPathCreation) &&
@@ -9813,7 +10047,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					newlyScoped.SetNext(existingNewlyScoped, ref newlyScoped);
 				}
 				currentBranchNode.FirstNewlyScopeVariableNode = newlyScoped;
+				return true;
 			}
+			return false;
 		}
 		private void PropagateNewVariableScopingUp(VerbalizationPlanNode branchNode)
 		{
@@ -10298,7 +10534,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						variable.MinimizeHeadSubscripting = true;
 					}
 				}
-				firstUse = UseVariable(variable, CurrentQuantificationUsePhase, false);
+				int currentUsePhase = CurrentQuantificationUsePhase;
+				// Don't call UseVariable until after we've checked variable partnering as this can have the
+				// side effect of 'using' a variable by partnering it with a used variable of the same type.
+				bool unused = !variable.HasBeenUsed(currentUsePhase, false);
 				Dictionary<RolePlayerVariable, LinkedNode<RolePlayerVariable>> customCorrelations;
 				LinkedNode<RolePlayerVariable> customCorrelationNode;
 
@@ -10308,7 +10547,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					// If we haven't already been paired with a custom correlation
 					// then pair up now.
-					RolePlayerVariable partnerWithVariable = GetUnpairedPartnerVariable(variable, firstUse, customCorrelationNode);
+					RolePlayerVariable partnerWithVariable = GetUnpairedPartnerVariable(variable, unused, customCorrelationNode);
 					while (partnerWithVariable != null)
 					{
 						GetPartneredSubscriptedRolePlayerName(variable, ref partnerWithVariable, false);
@@ -10324,6 +10563,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
+
+				// Use the variable after partnering is complete.
+				firstUse = UseVariable(variable, currentUsePhase, false);
 				if (retVal == null)
 				{
 					retVal = GetSubscriptedRolePlayerName(variable);

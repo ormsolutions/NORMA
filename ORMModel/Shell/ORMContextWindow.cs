@@ -258,7 +258,14 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					!element.IsDeleted &&
 					null != (hierarchyElement = element as IHierarchyContextEnabled))
 				{
-					break;
+					if (hierarchyElement.HierarchyDisabled)
+					{
+						hierarchyElement = null;
+					}
+					else
+					{
+						break;
+					}
 				}
 			}
 			DrawDiagram(refresh, element, hierarchyElement);
@@ -425,7 +432,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return;
 			}
 			IHierarchyContextEnabled contextableElement = EditorUtility.ResolveContextInstance(element, false) as IHierarchyContextEnabled;
-			if (contextableElement == null)
+			if (contextableElement == null || contextableElement.HierarchyDisabled)
 			{
 				return;
 			}
