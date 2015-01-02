@@ -9692,7 +9692,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// with. The list of correlated variables is stored with the normalized root correlation
 		/// variable. This may be the same instance as <paramref name="usedFor"/> and should not
 		/// be pre-normalized before this call.</param>
-		/// <param name="variableAlreadyScoped">The returned variable was in used and scoped before this call.</param>
+		/// <param name="variableAlreadyScoped">The returned variable was in use and scoped before this call.</param>
 		/// <returns>New or existing variable</returns>
 		private RolePlayerVariable RegisterRolePlayerUse(ObjectType rolePlayer, RolePlayerVariable joinToVariable, object usedFor, RolePathNode correlateWithNode, out bool variableAlreadyScoped)
 		{
@@ -9702,6 +9702,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RolePlayerVariableUse correlationRootVariableUse = default(RolePlayerVariableUse);
 			object correlateWith = null;
 			variableAlreadyScoped = false;
+			bool lockVariableAlreadyScoped = false;
 			if (!correlateWithNode.IsEmpty &&
 				null != (correlateWith = EnsureRolePathCache().GetCorrelationRoot(correlateWithNode)))
 			{
@@ -9809,7 +9810,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// Note that if joinToVariable is set here, then it comes from an external
 					// correlation. Otherwise, the join would have the same correlation root
 					// as the current pathed role.
-					RegisterRolePlayerUse(correlationRootRolePlayer, joinToVariable, correlateWithKey, RolePathNode.Empty);
+					RegisterRolePlayerUse(correlationRootRolePlayer, joinToVariable, correlateWithKey, RolePathNode.Empty, out variableAlreadyScoped);
+					lockVariableAlreadyScoped = true;
 					correlationRootVariableUse = useMap[correlateWithKey];
 					if (correlationRootRolePlayer == rolePlayer)
 					{
@@ -9891,7 +9893,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					// Track use phase during registration to see if the root variable is
 					// referenced by the path.
-					if (!UseVariable(existingVariable, myLatestUsePhase, false))
+					if (!UseVariable(existingVariable, myLatestUsePhase, false) && !lockVariableAlreadyScoped)
 					{
 						variableAlreadyScoped = true;
 					}
