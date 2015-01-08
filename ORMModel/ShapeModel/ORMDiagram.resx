@@ -333,18 +333,20 @@
   </data>
   <data name="ExternalConstraintConnectAction.SetComparisonConstraint.Instructions">
     <value xml:space="preserve">To select role sequences to populate the constraint:
--Click a role to add it to the active role sequence
--Control-Click a role to remove it from the active role sequence
+-Click a role or subtype line to add it to the active role sequence
+-Control-Click a role or subtype line to remove it from the active role sequence
 -Double-Click a role to commit the active role sequence and begin a new role sequence
--Click the diagram background or press Escape to finish</value>
+-Click the diagram background or press Escape to cancel an uncommitted role sequence
+
+If a subtype is constrained use single-click to add and double-click to commit.</value>
     <comment xml:space="preserve">The text shown to explain how to hook up an external constraint to its associated roles.</comment>
   </data>
   <data name="ExternalConstraintConnectAction.SetConstraint.Instructions">
     <value xml:space="preserve">To select role sequences to populate the constraint:
--Click a role to add it to the constraint
--Control-Click a role to remove it from the constaint
--Double-Click a role to commit
--Click the diagram background or press Escape to finish</value>
+-Click a role or subtype line to add it to the constraint
+-Control-Click a role or subtype line to remove it from the constaint
+-Double-Click a role or subtype line to commit
+-Click the diagram background or press Escape to cancel</value>
     <comment xml:space="preserve">The text shown to explain how to hook up an external constraint to its associated roles.</comment>
   </data>
   <data name="ExternalConstraintConnectAction.TransactionName">

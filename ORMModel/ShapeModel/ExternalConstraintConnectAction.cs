@@ -95,11 +95,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (sourceShapeElement is ExternalConstraintShape)
 				{
 					bool isFactTypeShape;
-					if ((isFactTypeShape = targetShapeElement is FactTypeShape) || targetShapeElement is SubtypeLink)
+					SubtypeLink subtypeLink = null;
+					if ((isFactTypeShape = targetShapeElement is FactTypeShape) || null != (subtypeLink = targetShapeElement as SubtypeLink))
 					{
 						ExternalConstraintConnectAction action = (sourceShapeElement.Diagram as ORMDiagram).ExternalConstraintConnectAction;
 						retVal = action != null &&
-							((action.mySubtypeConnection && !action.mySubtypeAnchoredSubset) || isFactTypeShape || action.myAllowSubtypeConnection);
+							((action.mySubtypeConnection && !action.mySubtypeAnchoredSubset) ||
+							isFactTypeShape ||
+							action.myAllowSubtypeConnection ||
+							// Allow a double-click commit on the anchor supertype for a subset constraint
+							(action.mySubtypeAnchoredSubset && subtypeLink != null && subtypeLink.AssociatedSubtypeFact.SupertypeRole == action.SelectedRoleCollection[0]));
 					}
 					else
 					{

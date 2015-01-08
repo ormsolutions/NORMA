@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA December 2013 CTP Readme</title>
+<title>NORMA January 2015 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	.toggle{font-size:larger;cursor:pointer;font-family: monospace; color:rgb(97, 133, 160); display:inline; padding-right:.15em;}
@@ -35,9 +35,9 @@ function toggleDisp(sign,bodyId) {
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA December 2013 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA January 2015 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The December 2013 release adds support for Visual Studio 2013, implements value comparison and cardinality constraints, adds validation checks for duplicate fact type reading signatures, adds new menu items for managing validation errors, and changes relational mapping defaults for entity types identified with an autocounter data type. See detailed change notes below for specifics.<br/><br/>
+The January 2015 is primarily a bug fix release. Support has also been added for import from an Oracle database. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2><span class="toggle" onclick="toggleDisp(this,'contents')">-</span>Contents</h2>
 <div id="contents">
@@ -70,9 +70,42 @@ The December 2013 release adds support for Visual Studio 2013, implements value 
 </div>-->
 
 <hr/>
-<h2><span class="toggle" onclick="toggleDisp(this,'dec2013')">-</span>December 2013 CTP Changes</h2>
-<div id="dec2013">
-<div>The December 2013 CTP release includes all modifications through changeset 1540. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<h2><span class="toggle" onclick="toggleDisp(this,'jan2015')">-</span>January 2015 CTP Changes</h2>
+<div id="jan2015">
+<div>The January 2015 CTP release includes all modifications through changeset 1558. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<ul>
+<li>Feature Changes:
+<ol>
+<li>Added database import support for Oracle using the ODAC drivers (thanks to Jose Carlus).</li>
+<li>Data type verbalization now shows the scale/length/precision of a data type if these values are set.</li>
+<li>Allow the sample population editor to display recursive identifiers. Note that this will still crash other parts of the system (like relational generation), but can at least be viewed conceptually. The use of a surrogate identifier is recommended in this case.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Sample population mandatory errors display incorrectly for compatible but not equal role players. Errors should be displayed against the nearest supertype, not the subtype.</li>
+<li>Sample population uniqueness errors do not need to display on the object type shape. Display on the fact type shape is sufficient.</li>
+<li>Double clicking a role with an active error activates that error and the first error listed for the fact type, which might differ. The result is highly unpredictable.</li>
+<li>F2 does not activate the object name name field of a fact type shape displayed as an object type.</li>
+<li>Drawing code for displayed one-to-one link fact types continually asserts.</li>
+<li>Pressing delete while renaming in a diagram tab deletes the current selection on the diagram.</li>
+<li>The diagram reorder dialog (part of the Diagram Management extension) should initially select the current diagram.</li>
+<li>Dragging fact type shapes off the model browser creates multiple identical role name and value constraint name shapes.</li>
+<li>Modality needs to be considered when validating the intersection of single column subset constraints and simple mandatory constraints (fix targeted to subset constraints).</li>
+<li>Cross-model drag of a fact type with multiple readings on a single order fails to cleanly undo. Drag/Undo/Repeat drag fails the second drag.</li>
+<li>Cross-model drag crashes for unary objectifications with matching object type names but non-matching fact type signatures.</li>
+<li>Redo diagram deletion where the diagram contains multiple shapes for a single item crashes hard.</li>
+<li>Double-click of a subtype line connected to a subset constraint cancels the constraint edit. Double click should common on the constrained subtype.</li>
+</ol>
+</li>
+</ul>
+<hr/>
+</div>
+<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
+<div style="display:none;" id="oldChanges">
+<h3><span class="toggle" onclick="toggleDisp(this,'dec2013')">+</span>December 2013 CTP Changes</h3>
+<div style="display:none;" id="dec2013">
+<div>The December 2013 CTP release includes all modifications through changeset 1540.</div>
 <ul>
 <li><a href="#ReadingSignatures 2013-12">Duplicate Reading Signature Validation</a>&nbsp;</li>
 <li><a href="#ValueComparisonConstraint 2013-12">Value Comparison Constraints</a>&nbsp;</li>
@@ -111,8 +144,6 @@ The December 2013 release adds support for Visual Studio 2013, implements value 
 </ul>
 <hr/>
 </div>
-<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
-<div style="display:none;" id="oldChanges">
 <h3><span class="toggle" onclick="toggleDisp(this,'may2013')">+</span>May 2013 CTP Changes</h3>
 <div style="display:none;" id="may2013">
 <div>The May 2013 CTP release includes all modifications through changeset 1518.</div>
