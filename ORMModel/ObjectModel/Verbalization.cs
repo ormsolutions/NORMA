@@ -7984,7 +7984,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						// Continue with another reading starting with the lead role of the
 						// preceding fact type.
-						if (localContextLeadVariable == GetRolePlayerVariableUse(new RolePathNode(factTypeEntry, pathContext)).Value.PrimaryRolePlayerVariable)
+						RolePlayerVariableUse? entryVariableUse;
+						if (localContextLeadVariable == ((entryVariableUse = GetRolePlayerVariableUse(new RolePathNode(factTypeEntry, pathContext))).HasValue ? entryVariableUse.Value.PrimaryRolePlayerVariable : null))
 						{
 							// Optimization of next branch to test the entry variable without invoking the delegate
 							reading = factType.GetMatchingReading(readingOrders, null, entryRoleBase, null, null, MatchingReadingOptions.NoFrontText | MatchingReadingOptions.LeadRolesNotHyphenBound);
@@ -8810,7 +8811,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					RolePlayerVariable newVariable = useMap[queryRoleKey].PrimaryRolePlayerVariable;
 					RolePlayerVariableUse correlatedUse = useMap[new RolePathNode(factTypeEntry, pathContext)];
 					object correlationRoot = correlatedUse.CorrelationRoot;
-					foreach (RolePlayerVariable variable in (correlationRoot != null ? useMap[correlationRoot] : correlatedUse).GetCorrelatedVariables(true))
+					RolePlayerVariableUse rootCorrelatedUse;
+					foreach (RolePlayerVariable variable in (correlationRoot != null ? (useMap.TryGetValue(correlationRoot, out rootCorrelatedUse) ? rootCorrelatedUse : correlatedUse) : correlatedUse).GetCorrelatedVariables(true))
 					{
 						CustomCorrelateVariables(variable, newVariable);
 					}
@@ -11557,10 +11559,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						int usePhase = CurrentQuantificationUsePhase;
 						object pathContext = node.PathContext;
 						RolePlayerVariableUse? resolvedChildVariableUse;
-						if (testChildIndex >= childPathedRoles.Count || // Indicates a pure existential, we're here because the entry role can possibly be partnered.
-							((resolvedChildVariableUse = GetRolePlayerVariableUse(new RolePathNode(childPathedRoles[testChildIndex], pathContext))).HasValue && !resolvedChildVariableUse.Value.PrimaryRolePlayerVariable.HasBeenUsed(usePhase, true)))
+						RolePlayerVariableUse? entryVariableUse;
+						if ((testChildIndex >= childPathedRoles.Count || // Indicates a pure existential, we're here because the entry role can possibly be partnered.
+							((resolvedChildVariableUse = GetRolePlayerVariableUse(new RolePathNode(childPathedRoles[testChildIndex], pathContext))).HasValue && !resolvedChildVariableUse.Value.PrimaryRolePlayerVariable.HasBeenUsed(usePhase, true))) &&
+							(entryVariableUse = GetRolePlayerVariableUse(new RolePathNode(entryPathedRole, pathContext))).HasValue)
 						{
-							RolePlayerVariableUse variableUse = GetRolePlayerVariableUse(new RolePathNode(entryPathedRole, pathContext)).Value;
+							RolePlayerVariableUse variableUse = entryVariableUse.Value;
 							RolePlayerVariable primaryVariable = variableUse.PrimaryRolePlayerVariable;
 							object correlateWithKey = CorrelationRootToContextBoundKey(variableUse.CorrelationRoot, pathContext);
 							if (null == GetUnpairedPartnerVariable(
@@ -11625,6 +11629,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else
 			{
 				object correlationRoot = variableUse.CorrelationRoot;
+				RolePlayerVariableUse? rootVariableUse;
 				if (correlationRoot == null)
 				{
 					if (variableUse.CorrelatedVariablesHead != null)
@@ -11632,9 +11637,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						partnerCorrelatedVariables = variableUse.GetCorrelatedVariables(false); // No reason to test the primary variable
 					}
 				}
-				else
+				else if ((rootVariableUse = GetRolePlayerVariableUse(CorrelationRootToContextBoundKey(correlationRoot, pathContext))).HasValue)
 				{
-					partnerCorrelatedVariables = GetRolePlayerVariableUse(CorrelationRootToContextBoundKey(correlationRoot, pathContext)).Value.GetCorrelatedVariables(true);
+					partnerCorrelatedVariables = rootVariableUse.Value.GetCorrelatedVariables(true);
 				}
 				if (partnerCorrelatedVariables != null)
 				{
@@ -11775,6 +11780,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return true;
 				}
 				object correlationRoot;
+				RolePlayerVariableUse? rootVariableUse;
 				if (variableUse.CorrelatedVariablesHead != null)
 				{
 					foreach (RolePlayerVariable testVariable in variableUse.GetCorrelatedVariables(false))
@@ -11785,9 +11791,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 				}
-				else if (null != (correlationRoot = variableUse.CorrelationRoot))
+				else if (null != (correlationRoot = variableUse.CorrelationRoot) &&
+					(rootVariableUse = GetRolePlayerVariableUse(CorrelationRootToContextBoundKey(correlationRoot, pathContext))).HasValue)
 				{
-					foreach (RolePlayerVariable testVariable in GetRolePlayerVariableUse(CorrelationRootToContextBoundKey(correlationRoot, pathContext)).Value.GetCorrelatedVariables(true))
+					foreach (RolePlayerVariable testVariable in rootVariableUse.Value.GetCorrelatedVariables(true))
 					{
 						if (testVariable == variable)
 						{
@@ -11976,12 +11983,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return true;
 			}
 			object correlationRootKey = CorrelationRootToContextBoundKey(variableUse.CorrelationRoot, pathContext);
-			foreach (RolePlayerVariable correlatedVariable in (correlationRootKey != null) ? GetRolePlayerVariableUse(correlationRootKey).Value.GetCorrelatedVariables(true) : variableUse.GetCorrelatedVariables(false))
+			RolePlayerVariableUse? rootVariableUse;
+			IEnumerable<RolePlayerVariable> variableIter;
+			if (null != (variableIter = (correlationRootKey != null) ?
+				((rootVariableUse = GetRolePlayerVariableUse(correlationRootKey)).HasValue ? rootVariableUse.Value.GetCorrelatedVariables(true): null) :
+				variableUse.GetCorrelatedVariables(false)))
 			{
-				if (correlatedVariable != primaryVariable &&
-					correlatedVariable.HasBeenUsed(quantificationUsePhase, true))
+				foreach (RolePlayerVariable correlatedVariable in variableIter)
 				{
-					return true;
+					if (correlatedVariable != primaryVariable &&
+						correlatedVariable.HasBeenUsed(quantificationUsePhase, true))
+					{
+						return true;
+					}
 				}
 			}
 			Dictionary<RolePlayerVariable, LinkedNode<RolePlayerVariable>> customCorrelations;
