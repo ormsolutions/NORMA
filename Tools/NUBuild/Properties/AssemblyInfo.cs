@@ -17,6 +17,8 @@ using System.Runtime.InteropServices;
 "4.0.0.0"
 #elif TOOLS_12_0
 "12.0.0.0"
+#elif TOOLS_14_0
+"14.0.0.0"
 #else
 NEW_TOOLS_VERSION
 #endif

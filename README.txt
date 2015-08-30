@@ -20,18 +20,20 @@ Microsoft Visual Studio SDK
 	Download (Visual Studio 2010): http://www.microsoft.com/en-us/download/details.aspx?id=2680
 	Download (Visual Studio 2012): http://www.microsoft.com/en-us/download/details.aspx?id=30668
 	Download (Visual Studio 2013): http://www.microsoft.com/en-us/download/details.aspx?id=40758
+	Visual Studio 2015 installs the SDK with the normal VS setup. Choose a custom setup and select 'Visual Studio Extensibility'
 IMPORTANT: You will need to establish the Visual Studio experimental hive before building NORMA by running Visual Studio once in this environment. Use the link provided by the VS SDK, or run 'devenv.exe /RootSuffix Exp' from a Visual Studio command prompt. For Visual Studio 2008, make sure you use either the provided shortcut or add /RANU (run as normal user) to the command line. After running FirstTimeBuildVS2008.bat you should use 'devenv /rootsuffix Exp' instead of 'devenv /rootsuffix Exp /RANU'.
 
 
 Microsoft Visual Studio Modeling and Visualization Tools (DSL Tools SDK), installs after the primary SDK
 	Download (Visual Studio 2010): http://www.microsoft.com/en-us/download/details.aspx?id=23025
-	Download (Visual Studio 2012): Modeling http://www.microsoft.com/en-us/download/details.aspx?id=30680
+	Download (Visual Studio 2012): http://www.microsoft.com/en-us/download/details.aspx?id=30680
 	Download (Visual Studio 2013): http://www.microsoft.com/en-us/download/details.aspx?id=40754
+	Download (Visual Studio 2015): http://www.microsoft.com/en-us/download/details.aspx?id=48148
 
 
 Additional components used by other portions of this software include:
 
-Windows Installer XML (WiX) toolset (v3.8, tested successfully through 1114.0)
+Windows Installer XML (WiX) toolset (v3.10, tested successfully through v3.10.0.2026)
 	Homepage: http://wix.sourceforge.net
 
 NUnit (v2.4.7 or later)
@@ -69,15 +71,16 @@ SET TargetVisualStudioVersion=v9.0
 SET TargetVisualStudioVersion=v10.0
 SET TargetVisualStudioVersion=v11.0
 SET TargetVisualStudioVersion=v12.0
+SET TargetVisualStudioVersion=v14.0
 
-These values correspond to Visual Studio 20xx where v8.0=2005, v9.0=2008, v10.0=2010, v11.0=2012, v12.0=2013.
+These values correspond to Visual Studio 20xx where v8.0=2005, v9.0=2008, v10.0=2010, v11.0=2012, v12.0=2013, v14.0=2015.
 
 See the comments in SetupEnvironment.bat for additional details on how the options are used.
 
-Notes on building and debugging with VS2008 through VS2013:
+Notes on building and debugging with VS2008 through VS2015:
 The project files (.csproj, etc) are multitargeted to work correctly in Visual Studio 2005 and higher. However, the solution files (.sln) have slightly different formats in each VS version. If you open a VS2005 solution file in VS2008 then you will be prompted to upgrade. *.VS2008.sln files are provided as companions to all *.sln files for use in VS2008, and you will find corresponding .sln files for each successive version of VisualStudio. However, the *.VS2008.sln files are not sufficient for successfully building in VS2008 (etc).
 
-You must set the TargetVisualStudioVersion to the correct version (listed above) before opening a NORMA project file from any of the Visual Studio IDE environments. There is also a registry that needs to be set so that the ToolsVersion setting the project files match the target environment. The easiest way to do this (after the initial batch files mentioned above have completed successfully) is with the following steps. You may want to put these steps into an easily accessible batch file. The example given is for Visual Studio 2008, but 2010, 2012, and 2013 work similarly.
+You must set the TargetVisualStudioVersion to the correct version (listed above) before opening a NORMA project file from any of the Visual Studio IDE environments. There is also a registry that needs to be set so that the ToolsVersion setting the project files match the target environment. The easiest way to do this (after the initial batch files mentioned above have completed successfully) is with the following steps. You may want to put these steps into an easily accessible batch file. The example given is for Visual Studio 2008, but 2010, 2012, 2013, and 2015 work similarly.
 
 1) Open a Visual Studio 2008 Command Prompt (as an Administrator)
 2) Navigate to your NORMA root code directory
@@ -105,4 +108,13 @@ Notes on building and debugging with VS2013:
 The general directions are the same as for the VS2008 approach (open a Visual Studio 2013 Command Prompt, navigate to the NORMA directory, set TargetVisualStudioVersion=v12.0, and use the *VS2013* solutions and batch files).
 
 The installation process on VS2013 is not as easy as on VS2010, which simply required extension files to be copied into place. You will likely to need run devenv /setup for VS2013 regardless of what you do with the Visual Studio installations. See additional readme information in the VSIXInstall/VS2013 directory.
+
+If NORMA is not functioning after the first dev build (the first clue will be in the file new dialog, which will simply say 'ORMModel' instead of 'Object-Role Modeling File') then you will need to reset the VSIX installation following the directions from the readme in the VSIXInstall/VS2013 directory. This should be required only after the first build, or in situations indicated in the readme.
+
+Notes on building and debugging with VS2015:
+The general directions are the same as for the VS2008 approach (open a Visual Studio 2015 Command Prompt, navigate to the NORMA directory, set TargetVisualStudioVersion=v14.0, and use the *VS2015* solutions and batch files).
+
+The installation process on VS2015 is not as easy as on VS2010, which simply required extension files to be copied into place. You will likely to need run devenv /setup for VS2015 regardless of what you do with the Visual Studio installations. See additional readme information in the VSIXInstall/VS2015 directory.
+
+If NORMA is not functioning after the first dev build (the first clue will be in the file new dialog, which will simply say 'ORMModel' instead of 'Object-Role Modeling File') then you will need to reset the VSIX installation following the directions from the readme in the VSIXInstall/VS2015 directory. This should be required only after the first build, or in situations indicated in the readme.
 

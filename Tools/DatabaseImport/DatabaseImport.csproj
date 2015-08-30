@@ -58,16 +58,16 @@
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v9.0' Or '$(TargetVisualStudioVersion)' == 'v10.0' Or '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' " Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v9.0' Or '$(TargetVisualStudioVersion)' == 'v10.0' Or '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' Or '$(TargetVisualStudioVersion)' == 'v14.0' " Include="Microsoft.VisualStudio.Shell.Interop.9.0, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v10.0' Or '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' " Include="Microsoft.VisualStudio.Shell.Interop.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v10.0' Or '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' Or '$(TargetVisualStudioVersion)' == 'v14.0' " Include="Microsoft.VisualStudio.Shell.Interop.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' " Include="Microsoft.VisualStudio.Shell.Interop.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' Or '$(TargetVisualStudioVersion)' == 'v14.0' " Include="Microsoft.VisualStudio.Shell.Interop.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v12.0' " Include="Microsoft.VisualStudio.Shell.Interop.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v12.0' Or '$(TargetVisualStudioVersion)' == 'v14.0' " Include="Microsoft.VisualStudio.Shell.Interop.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">

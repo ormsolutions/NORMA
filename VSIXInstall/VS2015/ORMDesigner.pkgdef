@@ -1,0 +1,194 @@
+Windows Registry Editor Version 5.00
+
+[$RootKey$\Packages\{efddc549-1646-4451-8a51-e5a5e94d647c}]
+@="ORM Solutions Natural Object-Role Modeling Architect Package"
+"InprocServer32"="%windir%\\system32\\mscoree.dll"
+"Class"="ORMSolutions.ORMArchitect.Core.Shell.ORMDesignerPackage"
+"Assembly"="ORMSolutions.ORMArchitect.Core.VS2015, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}]
+"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\Extensions]
+"orm"=dword:00000032
+[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}]
+"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\Extensions]
+"xml"=dword:00000010
+[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}]
+@="ORMDesignerEditorFactory"
+"DisplayName"="#108"
+"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"EditorTrustLevel"=dword:00000001
+[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\LogicalViews]
+[$RootKey$\Editors\{ee99a954-82c4-4098-a2bd-5c75e3d138a7}]
+@="ORMFactEditorEditorFactory"
+"DisplayName"="#109"
+"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"EditorTrustLevel"=dword:00000001
+[$RootKey$\Editors\{ee99a954-82c4-4098-a2bd-5c75e3d138a7}\LogicalViews]
+[$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\LogicalViews]
+"{7651a702-06e5-11d1-8ebd-00a0c90f26ea}"=""
+[$RootKey$\Languages\Language Services\ORM Fact Editor]
+@="{c50cd300-9d1e-4ab0-b494-73fa23d14d2b}"
+"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"LangResID"=dword:0000006D
+"Support CF_HTML"=dword:00000001
+"EnableAdvancedMembersOption"=dword:00000000
+"ShowCompletion"=dword:00000001
+"EnableCommenting"=dword:00000000
+"ShowDropdownBarOption"=dword:00000000
+"RequestStockColors"=dword:00000000
+"QuickInfo"=dword:00000001
+"EnableLineNumbersOption"=dword:00000000
+"ShowSmartIndent"=dword:00000000
+"CodeSense"=dword:00000001
+"EnableAsyncCompletion"=dword:00000001
+"ShowMatchingBrace"=dword:00000001
+[$RootKey$\Packages\{efddc549-1646-4451-8a51-e5a5e94d647c}]
+"ID"=dword:00000096
+"MinEdition"="Standard"
+"ProductVersion"="1.0"
+"ProductName"="Natural Object-Role Modeling Architect for Visual Studio"
+"CompanyName"="ORM Solutions, LLC"
+[$RootKey$\Menus]
+"{efddc549-1646-4451-8a51-e5a5e94d647c}"=", 1000, 1"
+[$RootKey$\ToolsOptionsPages\ORM Designer]
+@="#105"
+"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+[$RootKey$\ToolsOptionsPages\ORM Designer\General]
+@="#106"
+"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Page"="{b4abd9fd-ce79-4b26-8d36-f345cb53b525}"
+[$RootKey$\Services\{c50cd300-9d1e-4ab0-b494-73fa23d14d2b}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORM Fact Editor"
+[$RootKey$\Services\{c5aa80f8-f730-4809-aab1-8d925e36f9f5}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="OrmDesignerFontAndColorProvider"
+[$RootKey$\ToolWindows\{63b6f84d-df09-4e65-86ea-6bc1b856837b}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.FactEditorToolWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{2b93a7cc-1f28-4347-8a22-644fb7b92090}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.ORMContextWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{fc6d8343-48d1-4294-915f-01b6350e0e12}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.ORMDescriptionToolWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{19a5c15d-14d4-4a88-9891-a3294077be56}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.ORMDiagramSpyWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{dd2334c3-afdb-4fc5-9e8a-17d19a8cc97a}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.ORMModelBrowserToolWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{a7c9e14e-9eee-4d79-a7f4-9e9d1a567498}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.ORMNotesToolWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{1e45d5b8-890a-4ed5-ae1a-80be221398d2}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.ORMReadingEditorToolWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{c2415d9f-dba8-49bc-8bf2-008f24f10559}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.ORMReferenceModeEditorToolWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{051209c1-250b-45a7-b7b1-8afb50bec9b7}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.ORMSamplePopulationToolWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{c9aa5e71-9193-46c9-971a-cb6365aca338}]
+@="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"Name"="ORMSolutions.ORMArchitect.Core.Shell.ORMVerbalizationToolWindow"
+"Orientation"="Right"
+"Style"="Tabbed"
+"Window"="{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+"DontForceCreate"=dword:00000001
+[$RootKey$\ToolWindows\{63b6f84d-df09-4e65-86ea-6bc1b856837b}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\ToolWindows\{2b93a7cc-1f28-4347-8a22-644fb7b92090}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\ToolWindows\{fc6d8343-48d1-4294-915f-01b6350e0e12}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\ToolWindows\{19a5c15d-14d4-4a88-9891-a3294077be56}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\ToolWindows\{dd2334c3-afdb-4fc5-9e8a-17d19a8cc97a}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\ToolWindows\{a7c9e14e-9eee-4d79-a7f4-9e9d1a567498}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\ToolWindows\{1e45d5b8-890a-4ed5-ae1a-80be221398d2}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\ToolWindows\{c2415d9f-dba8-49bc-8bf2-008f24f10559}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\ToolWindows\{051209c1-250b-45a7-b7b1-8afb50bec9b7}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\ToolWindows\{c9aa5e71-9193-46c9-971a-cb6365aca338}\Visibility]
+"{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}"=dword:00000000
+[$RootKey$\Packages\{efddc549-1646-4451-8a51-e5a5e94d647c}]
+[$RootKey$\Packages\{efddc549-1646-4451-8a51-e5a5e94d647c}\Toolbox]
+"Default Items"=dword:00000001
+"Formats"="Microsoft.VisualStudio.Modeling.ElementGroupPrototype"
+"NeedsCallbackAfterReset"=dword:00000001
+
+[$RootKey$\InstalledProducts\Natural ORM Architect]
+"Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
+"UseRegNameAsSplashName"=dword:00000001
+"UseInterface"=dword:00000001
+[$RootKey$\FontAndColors\Orm Designer]
+"Category"="{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"
+"Package"="{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}"
+[$RootKey$\FontAndColors\Orm Verbalizer]
+"Category"="{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"
+"Package"="{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}"
+[$RootKey$\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}]
+@="ORM Designer"
+"Editor"="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"
+"Extension"="orm"
+"LogicalView"="7651A702-06E5-11D1-8EBD-00A0C90F26EA"
+"Namespace"="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
+[$RootKey$\ShellFileAssociations\.orm]
+@="ormfile"
+[$RootKey$\FontAndColors\Orm Designer]
+"Category"="{663DE24F-8E3A-4C0F-A307-53053ED6C59B}"
+"Package"="{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}"
+[$RootKey$\FontAndColors\Orm Verbalizer]
+"Category"="{663DE24F-5A08-4490-80E7-EA332DFFE7F0}"
+"Package"="{C5AA80F8-F730-4809-AAB1-8D925E36F9F5}"
+[$RootKey$\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}]
+@="ORM Designer"
+"Editor"="EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B"
+"Extension"="orm"
+"LogicalView"="7651A702-06E5-11D1-8EBD-00A0C90F26EA"
+"Namespace"="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
+[$RootKey$\ShellFileAssociations\.orm]
+@="ormfile"

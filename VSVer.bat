@@ -91,6 +91,13 @@ GOTO:EOF
 CALL:SETVAR "TargetVisualStudioVersion" "v12.0"
 GOTO:EOF
 
+:_VER_2015
+:_VER_14.0
+:_VER_v14.0
+:_VER_14
+CALL:SETVAR "TargetVisualStudioVersion" "v14.0"
+GOTO:EOF
+
 :_TOOLS_v8.0
 CALL:SETVAR "UseToolsVersion" "2.0"
 GOTO:EOF
@@ -106,4 +113,8 @@ GOTO:EOF
 
 :_TOOLS_v12.0
 CALL:SETVAR "UseToolsVersion" "12.0"
+GOTO:EOF
+
+:_TOOLS_v14.0
+CALL:SETVAR "UseToolsVersion" "14.0"
 GOTO:EOF

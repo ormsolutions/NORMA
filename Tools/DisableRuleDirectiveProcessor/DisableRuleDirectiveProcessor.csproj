@@ -31,7 +31,7 @@
     <Reference Include="Microsoft.VisualStudio.TextTemplating$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' " Include="Microsoft.VisualStudio.TextTemplating.Interfaces.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' Or '$(TargetVisualStudioVersion)' == 'v14.0' " Include="Microsoft.VisualStudio.TextTemplating.Interfaces.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />

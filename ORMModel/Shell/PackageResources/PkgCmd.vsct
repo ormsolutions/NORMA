@@ -1151,7 +1151,7 @@
 			<IDSymbol value="0x010D" name="menuIdZoomCommands"/>
 			<IDSymbol value="0x010E" name="menuIdDisableErrorList"/>
 			<IDSymbol value="0x010F" name="menuIdEnableErrorList"/>
-			<IDSymbol value="0x010G" name="menuIdSelectInGroup"/>
+			<IDSymbol value="0x0110" name="menuIdSelectInGroup"/>
 
 			<!-- Groups (0x10__) -->
 			<IDSymbol value="0x0FFF" name="groupIdDebugCommands"/>

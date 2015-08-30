@@ -20,6 +20,7 @@
 	<String Id="ProductNameVS2010">Natural ORM Architect for Visual Studio 2010</String>
 	<String Id="ProductNameVS2012">Natural ORM Architect for Visual Studio 2012</String>
 	<String Id="ProductNameVS2013">Natural ORM Architect for Visual Studio 2013</String>
+	<String Id="ProductNameVS2015">Natural ORM Architect for Visual Studio 2015</String>
 	<String Id="PackageCommentsPrefix">This installer database contains the logic and data required to install&#x20;</String>
 	<String Id="PackageCommentsSuffix">.</String>
 
@@ -52,6 +53,7 @@
 	<String Id="VisualStudio2010Required">This setup requires Microsoft Visual Studio 2010. Please install Microsoft Visual Studio 2010 and run this setup again.</String>
 	<String Id="VisualStudio2012Required">This setup requires Microsoft Visual Studio 2012. Please install Microsoft Visual Studio 2012 and run this setup again.</String>
 	<String Id="VisualStudio2013Required">This setup requires Microsoft Visual Studio 2013. Please install Microsoft Visual Studio 2013 and run this setup again.</String>
+	<String Id="VisualStudio2015Required">This setup requires Microsoft Visual Studio 2015. Please install Microsoft Visual Studio 2015 and run this setup again.</String>
 	<String Id="DSLToolsRequired">This setup requires Microsoft Domain Specific Language Tools. Please install Microsoft Domain Specific Language Tools and run this setup again.</String>
 	<String Id="PLiXRequired">This setup requires Programming Language in XML for Visual Studio. Please install Programming Language in XML for Visual Studio (available from https://sourceforge.net/projects/plix) and run this setup again.</String>
 	<String Id="ExistingVersionInstalled">Unable to install because an existing version of this product is already installed. You must uninstall this version before installing the product.</String>

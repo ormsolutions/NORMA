@@ -16,6 +16,7 @@ IF "%ProgramFiles(X86)%"=="" (
 ::  v10.0 = Visual Studio 2010 (Code Name "Rosario")
 ::  v11.0 = Visual Studio 2012
 ::  v12.0 = Visual Studio 2013
+::  v14.0 = Visual Studio 2015
 IF NOT DEFINED TargetVisualStudioVersion (SET TargetVisualStudioVersion=v8.0)
 
 :: Remove the value "Exp" on the next line if you want installations to be performed
@@ -169,6 +170,24 @@ IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=
 IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=12.0)
 IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.v12.0)
 IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=12.0.0.0)
+IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
+IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
+IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0)
+GOTO:EOF
+
+:_SetupVersionVars_v14.0
+IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v4.6)
+IF NOT DEFINED TargetVisualStudioMajorMinorVersion (SET TargetVisualStudioMajorMinorVersion=14.0)
+IF NOT DEFINED TargetVisualStudioAssemblyVersion (SET TargetVisualStudioAssemblyVersion=14.0.0.0)
+IF NOT DEFINED TargetVisualStudioFrameworkAssemblyVersion (SET TargetVisualStudioFrameworkAssemblyVersion=4.6.0.0)
+IF NOT DEFINED TargetVisualStudioLongProductYear (SET TargetVisualStudioLongProductYear=2015)
+IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortProductYear=15)
+IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2015)
+IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2015)
+IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=14.0.0.0)
+IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=14.0)
+IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.Core)
+IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=14.0.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0)

@@ -89,6 +89,18 @@
 		<?define CSharpPackageKeyThroughLanguageService?>
 		<?define FixedCSharpPackageGuid="{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}"?>
 		<?define ModelingProjectSupport=1 ?>
+	<?elseif $(var.VSVer) = v14.0?>
+		<?define PackageGuidStart="B7105D09-0000-4448"?>
+		<?define RootSuffixVersion="14.0"?>
+		<?define LinqSupport=1 ?>
+		<?define HelpFileTargetCollection="MS.VSIPCC.v140"?>
+		<!--<?define VSIXInstall?>-->
+		<?define VSRegistryPackageOnly?>
+		<?define NewORMFileViaNewFileItems?>
+		<?define DoDevenvSetup?>
+		<?define CSharpPackageKeyThroughLanguageService?>
+		<?define FixedCSharpPackageGuid="{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}"?>
+		<?define ModelingProjectSupport=1 ?>
 	<?endif?>
 	<?define PackageCode="$(var.PackageGuidStart)-$(var.VersionGuidSuffix)"?>
 	<!-- ProductCode should be changed for each MAJOR version. Specifically, the first and second hexits of the last section of the GUID should match the two digits of the major version.-->
