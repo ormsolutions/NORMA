@@ -74,7 +74,6 @@
 		<?define VSRegistryPackageOnly?>
 		<?define NewORMFileViaNewFileItems?>
 		<?define DoDevenvSetup?>
-		<?define CSharpPackageKeyThroughLanguageService?>
 		<?define FixedCSharpPackageGuid="{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}"?>
 		<?define ModelingProjectSupport=1 ?>
 	<?elseif $(var.VSVer) = v12.0?>
@@ -86,7 +85,6 @@
 		<?define VSRegistryPackageOnly?>
 		<?define NewORMFileViaNewFileItems?>
 		<?define DoDevenvSetup?>
-		<?define CSharpPackageKeyThroughLanguageService?>
 		<?define FixedCSharpPackageGuid="{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}"?>
 		<?define ModelingProjectSupport=1 ?>
 	<?elseif $(var.VSVer) = v14.0?>
@@ -98,7 +96,6 @@
 		<?define VSRegistryPackageOnly?>
 		<?define NewORMFileViaNewFileItems?>
 		<?define DoDevenvSetup?>
-		<?define CSharpPackageKeyThroughLanguageService?>
 		<?define FixedCSharpPackageGuid="{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}"?>
 		<?define ModelingProjectSupport=1 ?>
 	<?endif?>

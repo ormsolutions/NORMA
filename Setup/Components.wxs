@@ -159,6 +159,8 @@
 							<Component Id="NORMADBImportComponent" Guid="0B49C0D1-EB3A-4E6E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<File Id="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll" ShortName="DBImport.dll" Name="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll" Source="..\Tools\DatabaseImport\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"
 									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll" ProcessorArchitecture="msil" AssemblyApplication="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
+								<File Id="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).pdb" ShortName="DBImport.pdb" Name="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).pdb" Source="..\Tools\DatabaseImport\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).pdb"
+									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.DatabaseImport$(var.VSExt).dll"/>
 							</Component>
 							<Component Id="ORMCustomToolVBasicComponent" Guid="0B8DF8D8-7418-47F3-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 								<CreateFolder/>
