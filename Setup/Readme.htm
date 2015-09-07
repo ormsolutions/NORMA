@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA January 2015 CTP Readme</title>
+<title>NORMA September 2015 CTP Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	.toggle{font-size:larger;cursor:pointer;font-family: monospace; color:rgb(97, 133, 160); display:inline; padding-right:.15em;}
@@ -35,9 +35,9 @@ function toggleDisp(sign,bodyId) {
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA January 2015 CTP Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA September 2015 CTP Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The January 2015 is primarily a bug fix release. Support has also been added for import from an Oracle database. See detailed change notes below for specifics.<br/><br/>
+The September 2015 release adds support for Visual Studio 2015. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2><span class="toggle" onclick="toggleDisp(this,'contents')">-</span>Contents</h2>
 <div id="contents">
@@ -70,9 +70,29 @@ The January 2015 is primarily a bug fix release. Support has also been added for
 </div>-->
 
 <hr/>
-<h2><span class="toggle" onclick="toggleDisp(this,'jan2015')">-</span>January 2015 CTP Changes</h2>
-<div id="jan2015">
-<div>The January 2015 CTP release includes all modifications through changeset 1559. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a> (be patient with this link, the page contains a full changeset history).</div>
+<h2><span class="toggle" onclick="toggleDisp(this,'sep2015')">-</span>September 2015 CTP Changes</h2>
+<div id="sep2015">
+<div>The September 2015 CTP release includes all modifications through changeset 1563. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a>.</div>
+<ul>
+<li>Feature Changes:
+<ol>
+<li>Added support for Visual Studio 2015.</li>
+<li>Modified setup behavior to not use devenv /setup. NORMA now installs as a Visual Studio extension for version at or above VS2010. Setup will be much faster, but some slowdowns are expected when launching Visual Studio the first time after installation.</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Removed all dependencies on Office icons, which are not available after VS2013 and displayed inconsistently in earlier releases. Development builds will now complete for VS2013 and VS2015 on machines without earlier Visual Studio installations.</li>
+</ol>
+</li>
+</ul>
+<hr/>
+</div>
+<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
+<div style="display:none;" id="oldChanges">
+<h3><span class="toggle" onclick="toggleDisp(this,'jan2015')">+</span>January 2015 CTP Changes</h3>
+<div style="display:none" id="jan2015">
+<div>The January 2015 CTP release includes all modifications through changeset 1559.</div>
 <ul>
 <li>Feature Changes:
 <ol>
@@ -101,8 +121,6 @@ The January 2015 is primarily a bug fix release. Support has also been added for
 </ul>
 <hr/>
 </div>
-<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
-<div style="display:none;" id="oldChanges">
 <h3><span class="toggle" onclick="toggleDisp(this,'dec2013')">+</span>December 2013 CTP Changes</h3>
 <div style="display:none;" id="dec2013">
 <div>The December 2013 CTP release includes all modifications through changeset 1540.</div>
@@ -584,8 +602,9 @@ The October 2008 release includes two major functionality additions plus a numbe
 <hr />
 <h3><a id="Setup">Installing NORMA</a></h3>
 <ol>
-<li>Updating NORMA to the latest version requires Setup.bat to be run from the downloaded .zip file, which should be chosen based on whether you want to install for Visual Studio 2010, Visual Studio 2008, or Visual Studio 2005. NORMA does not share installation files between these two products, so you must choose your target when you download the installation package.</li>
-<li>Any previous NORMA versions and any dependencies will be automatically uninstalled and reinstalled by the Setup.bat file. Make sure Visual Studio is not running during the installation pocess. Please be patient with the uninstall, which takes roughly the same amount of time as the install. Killing installation processes (the setup command prompt, msiexec, devenv) can leave you with a system that requires manual intervention to restore.</li>
+<li>Updating NORMA to the latest version requires Setup.bat to be run from the downloaded .zip file, which should be chosen based on your Visual Studio version (2015, 2013, 2012, 2010, 2008, 2005). NORMA does not share installation files between versions, so you must choose your target when you download the installation package.</li>
+<li>Any previous NORMA versions for the selected Visual Studio target will be automatically uninstalled and reinstalled by the Setup.bat file. Make sure Visual Studio is not running during the installation pocess. Please be patient with the uninstall, which takes roughly the same amount of time as the install. Killing installation processes (the setup command prompt, msiexec, devenv) can leave you with a system that requires manual intervention to restore.</li>
+<li>Full Visual Studio studio configuration on version 2010 and higher will not be completed until after Visual Studio has restarted. Some slowdown should be expected on Visual Studio launch, the first time the 'File/New' dialog is opened, and the first time an .orm file is opened.</li>
 <li>First extract the files from the .zip file first unless you open them with the standard 'Compressed (zipped) Folders' viewer, in which case you can usually run Setup.bat without pre-expanding the zip file. Vista is likely to recommend expansion even with the standard viewer.</li>
 <li><a id="#Setup 2008-10" class="new" title="October 2008 CTP: SetupVistaOrLater.bat elevates install permissions on Vista, Windows7, and later operating systems.">2008-10</a>&nbsp;
 The setup process must be run with admistrative permissions on Vista, Windows7, and later operating systems. You can either right-click the Setup.bat file and choose 'Run as Administrator', or you can run SetupVistaOrLater.bat instead of Setup.bat and agree to the security warnings. [Note that SetupVistaOrLater.bat relies on a system where a .js extension is treated as an executable scripting file. Some other products (especially some from Adobe) may override this default system setting. If SetupVistaOrLater.bat does not appear to do anything, then explicitly run Setup.bat as an administrator.]</li>

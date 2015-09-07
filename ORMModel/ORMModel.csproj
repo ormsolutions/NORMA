@@ -663,6 +663,7 @@
     <None Include="Resources\Toolbox.ModelNoteConnector.Bitmap.Id.bmp" />
     <Content Include="ObjectModel\VerbalizationReportGenerator.xslt" />
     <Content Include="ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xml" />
+    <None Include="Resources\Commands.ImageStrip.png" />
     <Content Include="Resources\ResourceStringsGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ResourceStringsGenerator.cs</LastGenOutput>

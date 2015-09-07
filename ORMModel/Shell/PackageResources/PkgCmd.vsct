@@ -336,7 +336,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdMoveRoleSequenceUp" priority="0x0060" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
-				<Icon guid="guidOfficeIcon" id="msotcidUpArrow2"/>
+				<Icon guid="guidCommandIcons" id="bmpIdUpArrow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -345,7 +345,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdMoveRoleSequenceDown" priority="0x0070" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdConstraintEditContext"/>
-				<Icon guid="guidOfficeIcon" id="msotcidDownArrow2"/>
+				<Icon guid="guidCommandIcons" id="bmpIdDownArrow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -534,7 +534,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorDeleteReading" priority="0x0730" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextAddDelete"/>
-				<Icon guid="guidOfficeIcon" id="msotcidDelete"/>
+				<Icon guid="guidCommandIcons" id="bmpIdDelete"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -543,7 +543,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorPromoteReading" priority="0x0740" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextReadingPromoteDemote"/>
-				<Icon guid="guidOfficeIcon" id="msotcidUpArrow2"/>
+				<Icon guid="guidCommandIcons" id="bmpIdUpArrow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -552,7 +552,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorDemoteReading" priority="0x0750" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextReadingPromoteDemote"/>
-				<Icon guid="guidOfficeIcon" id="msotcidDownArrow2"/>
+				<Icon guid="guidCommandIcons" id="bmpIdDownArrow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -561,7 +561,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorPromoteReadingOrder" priority="0x0760" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextOrderPromoteDemote"/>
-				<Icon guid="guidOfficeIcon" id="msotcidUpArrow2"/>
+				<Icon guid="guidCommandIcons" id="bmpIdUpArrow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -570,7 +570,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdReadingEditorDemoteReadingOrder" priority="0x0770" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdReadingEditorContextOrderPromoteDemote"/>
-				<Icon guid="guidOfficeIcon" id="msotcidDownArrow2"/>
+				<Icon guid="guidCommandIcons" id="bmpIdDownArrow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -692,7 +692,7 @@
 
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdCopyImage" priority="0x0200" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdModelCommands"/>
-				<Icon guid="guidOfficeIcon" id="msotcidCamera"/>
+				<Icon guid="guidCommandIcons" id="bmpIdCamera"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -726,7 +726,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdInsertRoleAfter" priority="0x030" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdRoleCommands"/>
-				<Icon guid="guidOfficeIcon" id="msotcidShapeRightArrow"/>
+				<Icon guid="guidCommandIcons" id="bmpIdRightArrow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -735,7 +735,7 @@
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdInsertRoleBefore" priority="0x040" type="Button">
 				<Parent guid="guidORMDesignerCommandSet" id="groupIdRoleCommands"/>
-				<Icon guid="guidOfficeIcon" id="msotcidShapeLeftArrow"/>
+				<Icon guid="guidCommandIcons" id="bmpIdLeftArrow"/>
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
@@ -986,6 +986,7 @@
 		<Bitmaps>
 			<Bitmap guid="guidORMVerbalizationToolbarImages" href="../../Resources/VerbalizationToolbarImages.png" usedList="bmpIdShowNegativeVerbalization, bmpIdShowPositiveVerbalization, bmpIdVerbalizationHyperlinkToDiagramSpy"/>
 			<Bitmap guid="guidORMToolWindowIcons" href="../../Resources/ToolWindowIcons.png" usedList="bmpIdToolWindowVerbalizationBrowser, bmpIdToolWindowReadingEditor, bmpIdToolWindowReferenceModeEditor, bmpIdToolWindowFactEditor, bmpIdToolWindowModelBrowser, bmpIdToolWindowNotesEditor, bmpIdToolWindowPopulationEditor, bmpIdToolWindowContextWindow, bmpIdToolWindowDescriptionEditor, bmpIdToolWindowDiagramSpy"/>
+			<Bitmap guid="guidCommandIcons" href="../../Resources/Commands.ImageStrip.png" usedList="bmpIdDelete, bmpIdCamera, bmpIdUpArrow, bmpIdDownArrow, bmpIdLeftArrow, bmpIdRightArrow"/>
 		</Bitmaps>
 
 	</Commands>
@@ -1308,14 +1309,13 @@
 			<IDSymbol value="Extern" name="cmdidPropertiesWindow"/>
 		</GuidSymbol>
 		<GuidSymbol name="CMDSETID_StandardCommandSet2K" value="Extern"/>
-		<GuidSymbol name="guidOfficeIcon" value="Extern">
-			<IDSymbol value="Extern" name="msotcidNoIcon"/>
-			<IDSymbol value="Extern" name="msotcidDelete"/>
-			<IDSymbol value="Extern" name="msotcidUpArrow2"/>
-			<IDSymbol value="Extern" name="msotcidDownArrow2"/>
-			<IDSymbol value="Extern" name="msotcidShapeLeftArrow"/>
-			<IDSymbol value="Extern" name="msotcidShapeRightArrow"/>
-			<IDSymbol value="Extern" name="msotcidCamera"/>
+		<GuidSymbol name="guidCommandIcons" value="{E590BC32-4910-429C-BFA7-24EB2FD63E0D}">
+			<IDSymbol value="0x0001" name="bmpIdDelete"/>
+			<IDSymbol value="0x0002" name="bmpIdCamera"/>
+			<IDSymbol value="0x0003" name="bmpIdUpArrow"/>
+			<IDSymbol value="0x0004" name="bmpIdDownArrow"/>
+			<IDSymbol value="0x0005" name="bmpIdLeftArrow"/>
+			<IDSymbol value="0x0006" name="bmpIdRightArrow"/>
 		</GuidSymbol>
 	</Symbols>
 </CommandTable>
