@@ -13,9 +13,9 @@
     <InstalledByMsi>true</InstalledByMsi>
     <SupportedProducts>
       <VisualStudio Version="14.0">
-        <Edition>Ultimate</Edition>
-        <Edition>Premium</Edition>
+        <Edition>Enterprise</Edition>
         <Edition>Pro</Edition>
+        <Edition>Community</Edition>
       </VisualStudio>
     </SupportedProducts>
     <SupportedFrameworkRuntimeEdition MinVersion="4.6" MaxVersion="4.6" />

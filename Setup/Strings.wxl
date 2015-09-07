@@ -65,6 +65,7 @@
 	<!-- HACK: DevEnvSetupCustomAction runs as a commit custom action, which makes it hard to show UI for it. -->
 	<!-- Instead, we hijack the ProgressTextRollbackCleanup string, since it is the last string normally shown before the custom action executes. -->
 	<String Id="ProgressTextRollbackCleanup">Running Visual Studio "/Setup" command. This may take several minutes...</String>
+	<String Id="ProgressTextRollbackCleanupVSIX">Running Visual Studio "/UpdateConfiguration" command.</String>
 
 	<String Id="ProgressTextExportTempHxDs">MSHelp2: Exporting temporary HxDs</String>
 	<String Id="ProgressTextRollbackHelpTransaction">MSHelp2: Rolling back transaction</String>

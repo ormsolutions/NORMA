@@ -135,7 +135,11 @@
 		</AdvertiseExecuteSequence>
 
 		<CustomAction Id="ArpInstallLocationCustomAction" Property="ARPINSTALLLOCATION" Value="[$(var.DefaultShortProductDir)]"/>
+		<?ifdef VSIXInstall?>
+		<CustomAction Id="DevEnvSetupCustomAction" Property="VSENVIRONMENTPATH" ExeCommand="$(var.RootSuffixCmd)/updateconfiguration" Return="ignore" Impersonate="no" Execute="commit"/>
+		<?else?>
 		<CustomAction Id="DevEnvSetupCustomAction" Property="VSENVIRONMENTPATH" ExeCommand="$(var.RootSuffixCmd)/Setup" Return="ignore" Impersonate="no" Execute="commit"/>
+		<?endif?>
 		<InstallExecuteSequence>
 			<RemoveExistingProducts Before="ArpInstallLocationCustomAction"/>
 			<Custom Before="InstallInitialize" Action="ArpInstallLocationCustomAction"/>

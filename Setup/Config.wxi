@@ -70,9 +70,10 @@
 		<?define RootSuffixVersion="11.0"?>
 		<?define LinqSupport=1 ?>
 		<?define HelpFileTargetCollection="MS.VSIPCC.v110"?>
-		<!--<?define VSIXInstall?>-->
+		<?define VSIXInstall?>
 		<?define VSRegistryPackageOnly?>
 		<?define NewORMFileViaNewFileItems?>
+		<!-- DoDevenvSetup modified by VSIXInstall, runs /updateconfiguration instead -->
 		<?define DoDevenvSetup?>
 		<?define FixedCSharpPackageGuid="{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}"?>
 		<?define ModelingProjectSupport=1 ?>
@@ -81,9 +82,10 @@
 		<?define RootSuffixVersion="12.0"?>
 		<?define LinqSupport=1 ?>
 		<?define HelpFileTargetCollection="MS.VSIPCC.v120"?>
-		<!--<?define VSIXInstall?>-->
+		<?define VSIXInstall?>
 		<?define VSRegistryPackageOnly?>
 		<?define NewORMFileViaNewFileItems?>
+		<!-- DoDevenvSetup modified by VSIXInstall, runs /updateconfiguration instead -->
 		<?define DoDevenvSetup?>
 		<?define FixedCSharpPackageGuid="{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}"?>
 		<?define ModelingProjectSupport=1 ?>
@@ -92,9 +94,10 @@
 		<?define RootSuffixVersion="14.0"?>
 		<?define LinqSupport=1 ?>
 		<?define HelpFileTargetCollection="MS.VSIPCC.v140"?>
-		<!--<?define VSIXInstall?>-->
+		<?define VSIXInstall?>
 		<?define VSRegistryPackageOnly?>
 		<?define NewORMFileViaNewFileItems?>
+		<!-- DoDevenvSetup modified by VSIXInstall, runs /updateconfiguration instead -->
 		<?define DoDevenvSetup?>
 		<?define FixedCSharpPackageGuid="{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}"?>
 		<?define ModelingProjectSupport=1 ?>

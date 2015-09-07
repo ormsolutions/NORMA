@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <?include ..\Config.wxi?>
   <Fragment>
     <UI Id="WixUI_ErrorProgressText">
       <!-- action text -->
@@ -70,7 +71,11 @@
       <ProgressText Action="MsiPublishAssemblies" Template="!(loc.ProgressTextMsiPublishAssembliesTemplate)">!(loc.ProgressTextMsiPublishAssemblies)</ProgressText>
       <ProgressText Action="MsiUnpublishAssemblies" Template="!(loc.ProgressTextMsiUnpublishAssembliesTemplate)">!(loc.ProgressTextMsiUnpublishAssemblies)</ProgressText>
       <ProgressText Action="Rollback" Template="!(loc.ProgressTextRollbackTemplate)">!(loc.ProgressTextRollback)</ProgressText>
-      <ProgressText Action="RollbackCleanup" Template="!(loc.ProgressTextRollbackCleanupTemplate)">!(loc.ProgressTextRollbackCleanup)</ProgressText>
+      <?ifdef VSIXInstall?>
+        <ProgressText Action="RollbackCleanup" Template="!(loc.ProgressTextRollbackCleanupTemplate)">!(loc.ProgressTextRollbackCleanupVSIX)</ProgressText>
+      <?else?>
+        <ProgressText Action="RollbackCleanup" Template="!(loc.ProgressTextRollbackCleanupTemplate)">!(loc.ProgressTextRollbackCleanup)</ProgressText>
+      <?endif?>
       <ProgressText Action="UnmoveFiles" Template="!(loc.ProgressTextUnmoveFilesTemplate)">!(loc.ProgressTextUnmoveFiles)</ProgressText>
       <ProgressText Action="UnpublishProduct">!(loc.ProgressTextUnpublishProduct)</ProgressText>
       <!-- error text -->
