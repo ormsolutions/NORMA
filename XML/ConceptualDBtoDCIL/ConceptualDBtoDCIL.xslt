@@ -890,7 +890,6 @@
 								<xsl:with-param name="requestedName" select="$dataTypeName"/>
 							</xsl:call-template>
 							<xsl:copy-of select="exsl:node-set($predefinedDataType)"/>
-							<dcl:predefinedDataType/>
 							<dcl:checkConstraint>
 								<xsl:call-template name="AddNameAttributes">
 									<xsl:with-param name="requestedName" select="$modelValueConstraint/@Name"/>

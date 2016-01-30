@@ -55,9 +55,9 @@
 
 	<PropertyGroup>
 		<!-- If we are building for Visual Studio 9.0, use VSCT v3.5, otherwise use VSCT v2.0. -->
-		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v14.0'">10.0.0.0</VsctAssemblyVersion>
-		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v12.0'">10.0.0.0</VsctAssemblyVersion>
-		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v11.0'">10.0.0.0</VsctAssemblyVersion>
+		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v14.0'">14.0.0.0</VsctAssemblyVersion>
+		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v12.0'">12.0.0.0</VsctAssemblyVersion>
+		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v11.0'">11.0.0.0</VsctAssemblyVersion>
 		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v10.0'">10.0.0.0</VsctAssemblyVersion>
 		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v9.0'">3.5.0.0</VsctAssemblyVersion>
 		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'==''">2.0.0.0</VsctAssemblyVersion>
