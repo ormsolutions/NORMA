@@ -16,7 +16,7 @@
 		<arg:CopyrightLine>* You must not remove this notice, or any other, from this software.       *</arg:CopyrightLine>
 		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
 	</arg:Copyright>
-	<arg:Model class="ORMCoreDomainModel" afterRulesEnabled="EnableCustomRuleNotifications">
+	<arg:Model class="ORMCoreDomainModel" afterRulesEnabled="EnableCustomRuleNotifications" blockAlternatePartitions="true">
 		<arg:RuleContainer class="CalculatedPathValue">
 			<arg:RolePlayerChangeRule methodName="FunctionChangedRule">
 				<arg:RuleOn targetType="CalculatedPathValueIsCalculatedWithFunction"/>

@@ -591,6 +591,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.FunctionChangedRule");
 				CalculatedPathValue.FunctionChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.FunctionChangedRule");
@@ -617,6 +621,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.FunctionDeletedRule");
 				CalculatedPathValue.FunctionDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.FunctionDeletedRule");
@@ -643,6 +651,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToCalculatedValueRule");
 				CalculatedPathValue.InputBoundToCalculatedValueRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToCalculatedValueRule");
@@ -669,6 +681,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToConstantRule");
 				CalculatedPathValue.InputBoundToConstantRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToConstantRule");
@@ -695,6 +711,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToPathedRoleRule");
 				CalculatedPathValue.InputBoundToPathedRoleRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToPathedRoleRule");
@@ -721,6 +741,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToPathRootRule");
 				CalculatedPathValue.InputBoundToPathRootRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CalculatedPathValue.InputBoundToPathRootRule");
@@ -752,6 +776,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityChangedRule");
 				CardinalityConstraint.CardinalityChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityChangedRule");
@@ -778,6 +806,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeAddedRule");
 				CardinalityConstraint.CardinalityRangeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeAddedRule");
@@ -804,6 +836,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeChangedRule");
 				CardinalityConstraint.CardinalityRangeChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeChangedRule");
@@ -830,6 +866,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeDeletedRule");
 				CardinalityConstraint.CardinalityRangeDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.CardinalityRangeDeletedRule");
@@ -856,6 +896,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.ObjectTypeCardinalityAddedRule");
 				CardinalityConstraint.ObjectTypeCardinalityAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.ObjectTypeCardinalityAddedRule");
@@ -882,6 +926,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.UnaryRoleCardinalityAddedRule");
 				CardinalityConstraint.UnaryRoleCardinalityAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.CardinalityConstraint.UnaryRoleCardinalityAddedRule");
@@ -913,6 +961,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.AutomaticJoinPathChangeRule");
 				ConstraintRoleSequence.AutomaticJoinPathChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.AutomaticJoinPathChangeRule");
@@ -939,6 +991,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.BlockRolePlayerChangeRule");
 				ConstraintRoleSequence.BlockRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.BlockRolePlayerChangeRule");
@@ -965,6 +1021,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRolePositionChangedRule");
 				ConstraintRoleSequence.ConstraintRolePositionChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRolePositionChangedRule");
@@ -991,6 +1051,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueAddedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueAddedRule");
@@ -1017,6 +1081,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueDeletedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromCalculatedValueDeletedRule");
@@ -1043,6 +1111,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantAddedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromConstantAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantAddedRule");
@@ -1069,6 +1141,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantDeletedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromConstantDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromConstantDeletedRule");
@@ -1095,6 +1171,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleAddedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleAddedRule");
@@ -1121,6 +1201,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleRolePlayerChangedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleRolePlayerChangedRule");
@@ -1147,6 +1231,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleDeletedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathedRoleDeletedRule");
@@ -1173,6 +1261,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathRootAddedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromPathRootAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathRootAddedRule");
@@ -1199,6 +1291,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathRootRolePlayerChangedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromPathRootRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathRootRolePlayerChangedRule");
@@ -1225,6 +1321,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathRootDeletedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectedFromPathRootDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectedFromPathRootDeletedRule");
@@ -1251,6 +1351,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectionDeletedRule");
 				ConstraintRoleSequence.ConstraintRoleProjectionDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleProjectionDeletedRule");
@@ -1277,6 +1381,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleSequenceHasRoleAddedRule");
 				ConstraintRoleSequence.ConstraintRoleSequenceHasRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleSequenceHasRoleAddedRule");
@@ -1303,6 +1411,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleSequenceHasRoleDeletedRule");
 				ConstraintRoleSequence.ConstraintRoleSequenceHasRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -1329,6 +1441,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.JoinPathAddedRule");
 				ConstraintRoleSequence.JoinPathAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.JoinPathAddedRule");
@@ -1355,6 +1471,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.JoinPathDeletedRule");
 				ConstraintRoleSequence.JoinPathDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.JoinPathDeletedRule");
@@ -1381,6 +1501,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ModalityChangeRule");
 				ConstraintRoleSequence.ModalityChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ModalityChangeRule");
@@ -1407,6 +1531,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ObjectificationAddedRule");
 				ConstraintRoleSequence.ObjectificationAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ObjectificationAddedRule");
@@ -1433,6 +1561,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ObjectificationDeletedRule");
 				ConstraintRoleSequence.ObjectificationDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.ObjectificationDeletedRule");
@@ -1459,6 +1591,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RoleAddedRule");
 				ConstraintRoleSequence.RoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RoleAddedRule");
@@ -1485,6 +1621,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RoleDeletedRule");
 				ConstraintRoleSequence.RoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RoleDeletedRule");
@@ -1511,6 +1651,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RolePlayerAddedRule");
 				ConstraintRoleSequence.RolePlayerAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RolePlayerAddedRule");
@@ -1537,6 +1681,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RolePlayerDeletedRule");
 				ConstraintRoleSequence.RolePlayerDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RolePlayerDeletedRule");
@@ -1563,6 +1711,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RolePlayerRolePlayerChangedRule");
 				ConstraintRoleSequence.RolePlayerRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.RolePlayerRolePlayerChangedRule");
@@ -1589,6 +1741,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonRoleSequenceDeletingRule");
 				ConstraintRoleSequence.SetComparisonRoleSequenceDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonRoleSequenceDeletingRule");
@@ -1615,6 +1771,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonRoleSequencePositionChangedRule");
 				ConstraintRoleSequence.SetComparisonRoleSequencePositionChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetComparisonRoleSequencePositionChangedRule");
@@ -1641,6 +1801,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetConstraintDeletingRule");
 				ConstraintRoleSequence.SetConstraintDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequence.SetConstraintDeletingRule");
@@ -1672,6 +1836,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleAddedRule");
 				ConstraintRoleSequenceJoinPath.ConstraintRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleAddedRule");
@@ -1698,6 +1866,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleDeletedRule");
 				ConstraintRoleSequenceJoinPath.ConstraintRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleDeletedRule");
@@ -1724,6 +1896,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleProjectionOnCalculatedPathValueAddedRule");
 				ConstraintRoleSequenceJoinPath.ConstraintRoleProjectionOnCalculatedPathValueAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleProjectionOnCalculatedPathValueAddedRule");
@@ -1750,6 +1926,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleProjectionOnCalculatedPathValueDeletedRule");
 				ConstraintRoleSequenceJoinPath.ConstraintRoleProjectionOnCalculatedPathValueDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleProjectionOnCalculatedPathValueDeletedRule");
@@ -1776,6 +1956,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleProjectionOnCalculatedPathValueRolePlayerChangedRule");
 				ConstraintRoleSequenceJoinPath.ConstraintRoleProjectionOnCalculatedPathValueRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ConstraintRoleProjectionOnCalculatedPathValueRolePlayerChangedRule");
@@ -1802,6 +1986,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.LeadRolePathDeletedRule");
 				ConstraintRoleSequenceJoinPath.LeadRolePathDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.LeadRolePathDeletedRule");
@@ -1828,6 +2016,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.LeadRolePathRolePlayerChangedRule");
 				ConstraintRoleSequenceJoinPath.LeadRolePathRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.LeadRolePathRolePlayerChangedRule");
@@ -1854,6 +2046,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ProjectionAddedRule");
 				ConstraintRoleSequenceJoinPath.ProjectionAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ProjectionAddedRule");
@@ -1880,6 +2076,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ProjectionDeletedRule");
 				ConstraintRoleSequenceJoinPath.ProjectionDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ProjectionDeletedRule");
@@ -1906,6 +2106,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ProjectionRolePlayerChangedRule");
 				ConstraintRoleSequenceJoinPath.ProjectionRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.ProjectionRolePlayerChangedRule");
@@ -1932,6 +2136,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RolePlayerAddedRule");
 				ConstraintRoleSequenceJoinPath.RolePlayerAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RolePlayerAddedRule");
@@ -1958,6 +2166,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RolePlayerDeletedRule");
 				ConstraintRoleSequenceJoinPath.RolePlayerDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RolePlayerDeletedRule");
@@ -1984,6 +2196,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RolePlayerRolePlayerChangedRule");
 				ConstraintRoleSequenceJoinPath.RolePlayerRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RolePlayerRolePlayerChangedRule");
@@ -2010,6 +2226,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RoleProjectionAddedRule");
 				ConstraintRoleSequenceJoinPath.RoleProjectionAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RoleProjectionAddedRule");
@@ -2036,6 +2256,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RoleProjectionDeletedRule");
 				ConstraintRoleSequenceJoinPath.RoleProjectionDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RoleProjectionDeletedRule");
@@ -2062,6 +2286,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RoleProjectionRolePlayerChangedRule");
 				ConstraintRoleSequenceJoinPath.RoleProjectionRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceJoinPath.RoleProjectionRolePlayerChangedRule");
@@ -2093,6 +2321,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintUtility.ConstraintRoleSequenceHasRoleDeletedRule");
 				ConstraintUtility.ConstraintRoleSequenceHasRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintUtility.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -2124,6 +2356,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote.DerivationNoteChangedRule");
 				DerivationNote.DerivationNoteChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivationNote.DerivationNoteChangedRule");
@@ -2155,6 +2391,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.DerivedRoleProjectionDeletedRule");
 				DerivedRoleProjection.DerivedRoleProjectionDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.DerivedRoleProjectionDeletedRule");
@@ -2181,6 +2421,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromCalculatedValueAddedRule");
 				DerivedRoleProjection.ProjectedFromCalculatedValueAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromCalculatedValueAddedRule");
@@ -2207,6 +2451,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromCalculatedValueDeletedRule");
 				DerivedRoleProjection.ProjectedFromCalculatedValueDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromCalculatedValueDeletedRule");
@@ -2233,6 +2481,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromConstantAddedRule");
 				DerivedRoleProjection.ProjectedFromConstantAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromConstantAddedRule");
@@ -2259,6 +2511,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromConstantDeletedRule");
 				DerivedRoleProjection.ProjectedFromConstantDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromConstantDeletedRule");
@@ -2285,6 +2541,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathedRoleAddedRule");
 				DerivedRoleProjection.ProjectedFromPathedRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathedRoleAddedRule");
@@ -2311,6 +2571,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathedRoleDeletedRule");
 				DerivedRoleProjection.ProjectedFromPathedRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathedRoleDeletedRule");
@@ -2337,6 +2601,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathedRoleRolePlayerChangedRule");
 				DerivedRoleProjection.ProjectedFromPathedRoleRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathedRoleRolePlayerChangedRule");
@@ -2363,6 +2631,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathRootAddedRule");
 				DerivedRoleProjection.ProjectedFromPathRootAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathRootAddedRule");
@@ -2389,6 +2661,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathRootDeletedRule");
 				DerivedRoleProjection.ProjectedFromPathRootDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathRootDeletedRule");
@@ -2415,6 +2691,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathRootRolePlayerChangedRule");
 				DerivedRoleProjection.ProjectedFromPathRootRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DerivedRoleProjection.ProjectedFromPathRootRolePlayerChangedRule");
@@ -2446,6 +2726,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.ImpliedObjectificationChangedRule");
 				DuplicateReadingSignatureError.ImpliedObjectificationChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.ImpliedObjectificationChangedRule");
@@ -2472,6 +2756,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.DuplicateReadingAddedRule");
 				DuplicateReadingSignatureError.DuplicateReadingAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.DuplicateReadingAddedRule");
@@ -2498,6 +2786,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.DuplicateReadingDeletedRule");
 				DuplicateReadingSignatureError.DuplicateReadingDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.DuplicateReadingSignatureError.DuplicateReadingDeletedRule");
@@ -2529,6 +2821,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.ModalityChangeRule");
 				EntityTypeHasPreferredIdentifier.ModalityChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.ModalityChangeRule");
@@ -2555,6 +2851,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule");
 				EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedRule");
@@ -2581,6 +2881,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedClosureRule");
 				EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedClosureRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierAddedClosureRule");
@@ -2607,6 +2911,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierRolePlayerChangedRule");
 				EntityTypeHasPreferredIdentifier.PreferredIdentifierRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierRolePlayerChangedRule");
@@ -2633,6 +2941,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierRolePlayerChangedClosureRule");
 				EntityTypeHasPreferredIdentifier.PreferredIdentifierRolePlayerChangedClosureRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.PreferredIdentifierRolePlayerChangedClosureRule");
@@ -2659,6 +2971,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule");
 				EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierConstraintRoleAddRule");
@@ -2687,6 +3003,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierDeletingRule");
 				EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierDeletingRule");
@@ -2713,6 +3033,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule");
 				EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationAddRule");
@@ -2739,6 +3063,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule");
 				EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierObjectificationRolePlayerChangeRule");
@@ -2765,6 +3093,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRoleAddRule");
 				EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRoleAddRule");
@@ -2791,6 +3123,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRolePlayerChangeRule");
 				EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeHasPreferredIdentifier.TestRemovePreferredIdentifierRolePlayerChangeRule");
@@ -2822,6 +3158,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.EntityTypeInstanceAddedRule");
 				EntityTypeInstance.EntityTypeInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.EntityTypeInstanceAddedRule");
@@ -2848,6 +3188,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.EntityTypeInstanceDeletingRule");
 				EntityTypeInstance.EntityTypeInstanceDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.EntityTypeInstanceDeletingRule");
@@ -2874,6 +3218,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.EntityTypeRoleInstanceAddedRule");
 				EntityTypeInstance.EntityTypeRoleInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.EntityTypeRoleInstanceAddedRule");
@@ -2900,6 +3248,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.EntityTypeRoleInstanceDeletedRule");
 				EntityTypeInstance.EntityTypeRoleInstanceDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.EntityTypeRoleInstanceDeletedRule");
@@ -2926,6 +3278,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.ObjectificationAddedRule");
 				EntityTypeInstance.ObjectificationAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.ObjectificationAddedRule");
@@ -2952,6 +3308,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.ObjectificationDeletedRule");
 				EntityTypeInstance.ObjectificationDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.ObjectificationDeletedRule");
@@ -2978,6 +3338,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.ObjectificationRolePlayerChangedRule");
 				EntityTypeInstance.ObjectificationRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.ObjectificationRolePlayerChangedRule");
@@ -3004,6 +3368,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierAddedRule");
 				EntityTypeInstance.PreferredIdentifierAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierAddedRule");
@@ -3030,6 +3398,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierDeletedRule");
 				EntityTypeInstance.PreferredIdentifierDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierDeletedRule");
@@ -3056,6 +3428,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierRoleAddedRule");
 				EntityTypeInstance.PreferredIdentifierRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierRoleAddedRule");
@@ -3082,6 +3458,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierRoleDeletedRule");
 				EntityTypeInstance.PreferredIdentifierRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierRoleDeletedRule");
@@ -3108,6 +3488,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierRolePlayerChangedRule");
 				EntityTypeInstance.PreferredIdentifierRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.PreferredIdentifierRolePlayerChangedRule");
@@ -3134,6 +3518,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.RoleInstanceHasPopulationUniquenessErrorDeletedRule");
 				EntityTypeInstance.RoleInstanceHasPopulationUniquenessErrorDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.EntityTypeInstance.RoleInstanceHasPopulationUniquenessErrorDeletedRule");
@@ -3165,6 +3553,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.CouplerAddRule");
 				ExclusiveOrConstraintCoupler.CouplerAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.CouplerAddRule");
@@ -3191,6 +3583,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.CouplerDeleteRule");
 				ExclusiveOrConstraintCoupler.CouplerDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.CouplerDeleteRule");
@@ -3217,6 +3613,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraintChangeRule");
 				ExclusiveOrConstraintCoupler.ExclusionConstraintChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.ExclusionConstraintChangeRule");
@@ -3243,6 +3643,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraintChangeRule");
 				ExclusiveOrConstraintCoupler.MandatoryConstraintChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.MandatoryConstraintChangeRule");
@@ -3269,6 +3673,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RoleAddRule");
 				ExclusiveOrConstraintCoupler.RoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RoleAddRule");
@@ -3298,6 +3706,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RoleDeletingRule");
 				this.RoleDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RoleDeletingRule");
@@ -3324,6 +3736,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RolePositionChangeRule");
 				ExclusiveOrConstraintCoupler.RolePositionChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RolePositionChangeRule");
@@ -3350,6 +3766,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RoleSequenceAddRule");
 				ExclusiveOrConstraintCoupler.RoleSequenceAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RoleSequenceAddRule");
@@ -3376,6 +3796,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RoleSequencePositionChangeRule");
 				ExclusiveOrConstraintCoupler.RoleSequencePositionChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.RoleSequencePositionChangeRule");
@@ -3407,6 +3831,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingChangedRule");
 				ElementGrouping.GroupingChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingChangedRule");
@@ -3433,6 +3861,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingTypeAddedRule");
 				ElementGrouping.GroupingTypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingTypeAddedRule");
@@ -3459,6 +3891,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingTypeDeletedRule");
 				ElementGrouping.GroupingTypeDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingTypeDeletedRule");
@@ -3485,6 +3921,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingExclusionAddedRule");
 				ElementGrouping.GroupingExclusionAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingExclusionAddedRule");
@@ -3511,6 +3951,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingExclusionDeletedRule");
 				ElementGrouping.GroupingExclusionDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.GroupingExclusionDeletedRule");
@@ -3537,6 +3981,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.StandardNamedElementNameChangedRule");
 				ElementGrouping.StandardNamedElementNameChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.StandardNamedElementNameChangedRule");
@@ -3563,6 +4011,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.FactTypeNameChangedRule");
 				ElementGrouping.FactTypeNameChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.FactTypeNameChangedRule");
@@ -3589,6 +4041,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.ModelNoteTextChangedRule");
 				ElementGrouping.ModelNoteTextChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGrouping.ModelNoteTextChangedRule");
@@ -3620,6 +4076,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSet.DuplicateGroupingNameGroupingDeletedRule");
 				ElementGroupingSet.DuplicateGroupingNameGroupingDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSet.DuplicateGroupingNameGroupingDeletedRule");
@@ -3646,6 +4106,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSet.GroupingDeletedRule");
 				ElementGroupingSet.GroupingDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSet.GroupingDeletedRule");
@@ -3672,6 +4136,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSet.GroupingSetAddedRule");
 				ElementGroupingSet.GroupingSetAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ElementGroupingSet.GroupingSetAddedRule");
@@ -3703,6 +4171,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.BlockRoleMigrationRule");
 				FactType.BlockRoleMigrationRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.BlockRoleMigrationRule");
@@ -3729,6 +4201,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DerivationRuleAddedRule");
 				FactType.DerivationRuleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DerivationRuleAddedRule");
@@ -3755,6 +4231,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DerivationRuleAddedClosureRule");
 				FactType.DerivationRuleAddedClosureRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DerivationRuleAddedClosureRule");
@@ -3781,6 +4261,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DerivationRuleChangedRule");
 				FactType.DerivationRuleChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DerivationRuleChangedRule");
@@ -3807,6 +4291,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DerivationRuleDeletedRule");
 				FactType.DerivationRuleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.DerivationRuleDeletedRule");
@@ -3833,6 +4321,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeAddedRule");
 				FactType.FactTypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeAddedRule");
@@ -3859,6 +4351,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasReadingOrderAddRule");
 				FactType.FactTypeHasReadingOrderAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasReadingOrderAddRule");
@@ -3885,6 +4381,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasReadingOrderDeleteRule");
 				FactType.FactTypeHasReadingOrderDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasReadingOrderDeleteRule");
@@ -3911,6 +4411,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasRoleAddRule");
 				FactType.FactTypeHasRoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasRoleAddRule");
@@ -3937,6 +4441,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasRoleDeleteRule");
 				FactType.FactTypeHasRoleDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasRoleDeleteRule");
@@ -3963,6 +4471,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasRoleOrderChangedRule");
 				FactType.FactTypeHasRoleOrderChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeHasRoleOrderChangedRule");
@@ -3989,6 +4501,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeNameChangeRule");
 				FactType.FactTypeNameChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.FactTypeNameChangeRule");
@@ -4015,6 +4531,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalConstraintAddRule");
 				FactType.InternalConstraintAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalConstraintAddRule");
@@ -4041,6 +4561,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalConstraintDeleteRule");
 				FactType.InternalConstraintDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalConstraintDeleteRule");
@@ -4067,6 +4591,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalConstraintCollectionHasConstraintAddedRule");
 				FactType.InternalConstraintCollectionHasConstraintAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalConstraintCollectionHasConstraintAddedRule");
@@ -4093,6 +4621,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalConstraintCollectionHasConstraintDeleteRule");
 				FactType.InternalConstraintCollectionHasConstraintDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalConstraintCollectionHasConstraintDeleteRule");
@@ -4119,6 +4651,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalUniquenessConstraintChangeRule");
 				FactType.InternalUniquenessConstraintChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.InternalUniquenessConstraintChangeRule");
@@ -4145,6 +4681,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterAddedRule");
 				FactType.QueryParameterAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterAddedRule");
@@ -4171,6 +4711,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterChangedRule");
 				FactType.QueryParameterChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterChangedRule");
@@ -4197,6 +4741,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterDeletedRule");
 				FactType.QueryParameterDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterDeletedRule");
@@ -4223,6 +4771,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterOrderChangedRule");
 				FactType.QueryParameterOrderChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterOrderChangedRule");
@@ -4249,6 +4801,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterTypeAddedRule");
 				FactType.QueryParameterTypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterTypeAddedRule");
@@ -4275,6 +4831,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterTypeDeletedRule");
 				FactType.QueryParameterTypeDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterTypeDeletedRule");
@@ -4301,6 +4861,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterTypeRolePlayerChangedRule");
 				FactType.QueryParameterTypeRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.QueryParameterTypeRolePlayerChangedRule");
@@ -4327,6 +4891,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ReadingOrderHasReadingAddRule");
 				FactType.ReadingOrderHasReadingAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ReadingOrderHasReadingAddRule");
@@ -4353,6 +4921,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ReadingOrderHasReadingDeleteRule");
 				FactType.ReadingOrderHasReadingDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ReadingOrderHasReadingDeleteRule");
@@ -4379,6 +4951,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.RoleNameChangedRule");
 				FactType.RoleNameChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.RoleNameChangedRule");
@@ -4405,6 +4981,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectificationAddedRule");
 				FactType.ValidateFactTypeNameForObjectificationAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectificationAddedRule");
@@ -4431,6 +5011,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectificationAddedClosureRule");
 				FactType.ValidateFactTypeNameForObjectificationAddedClosureRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectificationAddedClosureRule");
@@ -4457,6 +5041,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectificationDeleteRule");
 				FactType.ValidateFactTypeNameForObjectificationDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectificationDeleteRule");
@@ -4483,6 +5071,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectificationRolePlayerChangeRule");
 				FactType.ValidateFactTypeNameForObjectificationRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectificationRolePlayerChangeRule");
@@ -4509,6 +5101,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectTypeNameChangeRule");
 				FactType.ValidateFactTypeNameForObjectTypeNameChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForObjectTypeNameChangeRule");
@@ -4535,6 +5131,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForReadingChangeRule");
 				FactType.ValidateFactTypeNameForReadingChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForReadingChangeRule");
@@ -4561,6 +5161,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForReadingOrderReorderRule");
 				FactType.ValidateFactTypeNameForReadingOrderReorderRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForReadingOrderReorderRule");
@@ -4587,6 +5191,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForReadingReorderRule");
 				FactType.ValidateFactTypeNameForReadingReorderRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForReadingReorderRule");
@@ -4613,6 +5221,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForRolePlayerAddedRule");
 				FactType.ValidateFactTypeNameForRolePlayerAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForRolePlayerAddedRule");
@@ -4639,6 +5251,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForRolePlayerDeleteRule");
 				FactType.ValidateFactTypeNameForRolePlayerDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForRolePlayerDeleteRule");
@@ -4665,6 +5281,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForRolePlayerRolePlayerChangeRule");
 				FactType.ValidateFactTypeNameForRolePlayerRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.ValidateFactTypeNameForRolePlayerRolePlayerChangeRule");
@@ -4698,6 +5318,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
+					if (e.ModelElement.Partition.AlternateId != null)
+					{
+						return;
+					}
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleAddedRule");
 					UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleAddedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleAddedRule");
@@ -4724,6 +5348,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
+					if (e.ModelElement.Partition.AlternateId != null)
+					{
+						return;
+					}
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleDeletedRule");
 					UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleDeletedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -4750,6 +5378,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
+					if (e.ModelElement.Partition.AlternateId != null)
+					{
+						return;
+					}
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.FactTypeHasRoleAddedRule");
 					UnaryBinarizationUtility.FactTypeHasRoleAddedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.FactTypeHasRoleAddedRule");
@@ -4776,6 +5408,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 				{
+					if (e.ModelElement.Partition.AlternateId != null)
+					{
+						return;
+					}
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.FactTypeHasRoleDeletingRule");
 					UnaryBinarizationUtility.FactTypeHasRoleDeletingRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.FactTypeHasRoleDeletingRule");
@@ -4802,6 +5438,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 				{
+					if (e.ModelElement.Partition.AlternateId != null)
+					{
+						return;
+					}
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.FactTypeNameChangedRule");
 					UnaryBinarizationUtility.FactTypeNameChangedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.FactTypeNameChangedRule");
@@ -4828,6 +5468,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 				{
+					if (e.ModelElement.Partition.AlternateId != null)
+					{
+						return;
+					}
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleAddedRule");
 					UnaryBinarizationUtility.ObjectTypePlaysRoleAddedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleAddedRule");
@@ -4854,6 +5498,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 				{
+					if (e.ModelElement.Partition.AlternateId != null)
+					{
+						return;
+					}
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleDeletedRule");
 					UnaryBinarizationUtility.ObjectTypePlaysRoleDeletedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleDeletedRule");
@@ -4880,6 +5528,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 				{
+					if (e.ElementLink.Partition.AlternateId != null)
+					{
+						return;
+					}
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleRolePlayerChangedRule");
 					UnaryBinarizationUtility.ObjectTypePlaysRoleRolePlayerChangedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.ObjectTypePlaysRoleRolePlayerChangedRule");
@@ -4906,6 +5558,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				[System.Diagnostics.DebuggerStepThrough()]
 				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 				{
+					if (e.ModelElement.Partition.AlternateId != null)
+					{
+						return;
+					}
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.RoleNameChangedRule");
 					UnaryBinarizationUtility.RoleNameChangedRule(e);
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.UnaryBinarizationUtility.RoleNameChangedRule");
@@ -4938,6 +5594,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DeprecateFactTypeDerivationExpression");
 				FactTypeDerivationExpression.DeprecateFactTypeDerivationExpression(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationExpression.DeprecateFactTypeDerivationExpression");
@@ -4969,6 +5629,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationNoteDeletedRule");
 				FactTypeDerivationRule.DerivationNoteDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.DerivationNoteDeletedRule");
@@ -4995,6 +5659,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.FactTypeDerivationRuleChangedRule");
 				FactTypeDerivationRule.FactTypeDerivationRuleChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.FactTypeDerivationRuleChangedRule");
@@ -5021,6 +5689,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.LeadRolePathAddedRule");
 				FactTypeDerivationRule.LeadRolePathAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.LeadRolePathAddedRule");
@@ -5047,6 +5719,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.LeadRolePathRolePlayerChangedRule");
 				FactTypeDerivationRule.LeadRolePathRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.LeadRolePathRolePlayerChangedRule");
@@ -5073,6 +5749,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.SubqueryAddedRule");
 				FactTypeDerivationRule.SubqueryAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.SubqueryAddedRule");
@@ -5099,6 +5779,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.SubqueryRolePlayerChangedRule");
 				FactTypeDerivationRule.SubqueryRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeDerivationRule.SubqueryRolePlayerChangedRule");
@@ -5130,6 +5814,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeInstanceAddedRule");
 				FactTypeInstance.FactTypeInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeInstanceAddedRule");
@@ -5156,6 +5844,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleAddedRule");
 				FactTypeInstance.FactTypeRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleAddedRule");
@@ -5182,6 +5874,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleDeletedRule");
 				FactTypeInstance.FactTypeRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleDeletedRule");
@@ -5208,6 +5904,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleInstanceAddedRule");
 				FactTypeInstance.FactTypeRoleInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleInstanceAddedRule");
@@ -5234,6 +5934,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeNameChangedRule");
 				FactTypeInstance.FactTypeNameChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeNameChangedRule");
@@ -5260,6 +5964,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleInstanceDeletedRule");
 				FactTypeInstance.FactTypeRoleInstanceDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleInstanceDeletedRule");
@@ -5286,6 +5994,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeInstanceHasRoleInstanceRolePlayerChangedRule");
 				FactTypeInstance.FactTypeInstanceHasRoleInstanceRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeInstanceHasRoleInstanceRolePlayerChangedRule");
@@ -5312,6 +6024,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleInstanceRolePlayerChangedRule");
 				FactTypeInstance.FactTypeRoleInstanceRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.FactTypeRoleInstanceRolePlayerChangedRule");
@@ -5338,6 +6054,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.ImpliedBooleanRolePlayerDeletedRule");
 				FactTypeInstance.ImpliedBooleanRolePlayerDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.ImpliedBooleanRolePlayerDeletedRule");
@@ -5364,6 +6084,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.ObjectTypeInstanceNameChangedRule");
 				FactTypeInstance.ObjectTypeInstanceNameChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FactTypeInstance.ObjectTypeInstanceNameChangedRule");
@@ -5395,6 +6119,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint.FrequencyConstraintMinMaxRule");
 				FrequencyConstraint.FrequencyConstraintMinMaxRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint.FrequencyConstraintMinMaxRule");
@@ -5426,6 +6154,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Function.FunctionAddedRule");
 				Function.FunctionAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Function.FunctionAddedRule");
@@ -5457,6 +6189,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint.MandatoryConstraintChangeRule");
 				MandatoryConstraint.MandatoryConstraintChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint.MandatoryConstraintChangeRule");
@@ -5488,6 +6224,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError.SynchronizeErrorTextForModelRule");
 				ModelError.SynchronizeErrorTextForModelRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError.SynchronizeErrorTextForModelRule");
@@ -5514,6 +6254,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError.SynchronizeErrorTextForOwnerRule");
 				ModelError.SynchronizeErrorTextForOwnerRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ModelError.SynchronizeErrorTextForOwnerRule");
@@ -5545,6 +6289,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NameAlias.AliasAddedClosureRule");
 				NameAlias.AliasAddedClosureRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NameAlias.AliasAddedClosureRule");
@@ -5579,6 +6327,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator.SynchronizedRefinementsPropertyChangedRule");
 				this.SynchronizedRefinementsPropertyChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator.SynchronizedRefinementsPropertyChangedRule");
@@ -5610,6 +6362,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Note.NoteChangeRule");
 				Note.NoteChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Note.NoteChangeRule");
@@ -5641,6 +6397,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.FactTypeDerivationRuleAddedRule");
 				Objectification.FactTypeDerivationRuleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.FactTypeDerivationRuleAddedRule");
@@ -5667,6 +6427,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.FactTypeDerivationRuleChangedRule");
 				Objectification.FactTypeDerivationRuleChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.FactTypeDerivationRuleChangedRule");
@@ -5693,6 +6457,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.FactTypeDerivationRuleDeletedRule");
 				Objectification.FactTypeDerivationRuleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.FactTypeDerivationRuleDeletedRule");
@@ -5719,6 +6487,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedFactTypeAddedRule");
 				Objectification.ImpliedFactTypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedFactTypeAddedRule");
@@ -5745,6 +6517,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleAddedRule");
 				Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleAddedRule");
@@ -5771,6 +6547,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule");
 				Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationConstraintRoleSequenceHasRoleDeletingRule");
@@ -5797,6 +6577,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationFactTypeHasRoleAddedRule");
 				Objectification.ImpliedObjectificationFactTypeHasRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationFactTypeHasRoleAddedRule");
@@ -5823,6 +6607,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationFactTypeHasRoleDeletingRule");
 				Objectification.ImpliedObjectificationFactTypeHasRoleDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationFactTypeHasRoleDeletingRule");
@@ -5849,6 +6637,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationIsImpliedChangedRule");
 				Objectification.ImpliedObjectificationIsImpliedChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationIsImpliedChangedRule");
@@ -5875,6 +6667,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationObjectifyingTypeIsIndependentChangedRule");
 				Objectification.ImpliedObjectificationObjectifyingTypeIsIndependentChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationObjectifyingTypeIsIndependentChangedRule");
@@ -5901,6 +6697,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationObjectifyingTypePlaysRoleAddedRule");
 				Objectification.ImpliedObjectificationObjectifyingTypePlaysRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationObjectifyingTypePlaysRoleAddedRule");
@@ -5927,6 +6727,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationUniquenessConstraintChangedRule");
 				Objectification.ImpliedObjectificationUniquenessConstraintChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ImpliedObjectificationUniquenessConstraintChangedRule");
@@ -5953,6 +6757,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.InternalConstraintChangedRule");
 				Objectification.InternalConstraintChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.InternalConstraintChangedRule");
@@ -5979,6 +6787,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ObjectificationAddedRule");
 				Objectification.ObjectificationAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ObjectificationAddedRule");
@@ -6005,6 +6817,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ObjectificationAddedClosureRule");
 				Objectification.ObjectificationAddedClosureRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ObjectificationAddedClosureRule");
@@ -6031,6 +6847,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ObjectificationDeletingRule");
 				Objectification.ObjectificationDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ObjectificationDeletingRule");
@@ -6057,6 +6877,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ObjectificationRolePlayerChangedRule");
 				Objectification.ObjectificationRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.ObjectificationRolePlayerChangedRule");
@@ -6083,6 +6907,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.PreferredIdentifierDeletingRule");
 				Objectification.PreferredIdentifierDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.PreferredIdentifierDeletingRule");
@@ -6109,6 +6937,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.PreferredIdentifierRolePlayerChangedRule");
 				Objectification.PreferredIdentifierRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.PreferredIdentifierRolePlayerChangedRule");
@@ -6139,6 +6971,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RoleAddedRule");
 				Objectification.RoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RoleAddedRule");
@@ -6170,6 +7006,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RoleDeletingRule");
 				this.RoleDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RoleDeletingRule");
@@ -6196,6 +7036,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RolePlayerAddedRule");
 				Objectification.RolePlayerAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RolePlayerAddedRule");
@@ -6222,6 +7066,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RolePlayerDeletingRule");
 				Objectification.RolePlayerDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RolePlayerDeletingRule");
@@ -6248,6 +7096,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RolePlayerRolePlayerChangedRule");
 				Objectification.RolePlayerRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.RolePlayerRolePlayerChangedRule");
@@ -6274,6 +7126,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.UniquenessConstraintAddedRule");
 				Objectification.UniquenessConstraintAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.UniquenessConstraintAddedRule");
@@ -6300,6 +7156,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.UniquenessConstraintDeletingRule");
 				Objectification.UniquenessConstraintDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Objectification.UniquenessConstraintDeletingRule");
@@ -6331,6 +7191,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectificationInstanceAddedRule");
 				ObjectificationInstance.ObjectificationInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectificationInstanceAddedRule");
@@ -6357,6 +7221,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectificationInstanceDeletingRule");
 				ObjectificationInstance.ObjectificationInstanceDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectificationInstanceDeletingRule");
@@ -6383,6 +7251,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectificationInstanceRolePlayerChangedRule");
 				ObjectificationInstance.ObjectificationInstanceRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.ObjectificationInstanceRolePlayerChangedRule");
@@ -6412,6 +7284,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.RoleInstanceRolePlayerChangedRule");
 				this.RoleInstanceRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectificationInstance.RoleInstanceRolePlayerChangedRule");
@@ -6457,6 +7333,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.CheckForIncompatibleRelationshipAddRule");
 				ObjectType.CheckForIncompatibleRelationshipAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.CheckForIncompatibleRelationshipAddRule");
@@ -6497,6 +7377,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.CheckForIncompatibleRelationshipRolePlayerChangeRule");
 				ObjectType.CheckForIncompatibleRelationshipRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.CheckForIncompatibleRelationshipRolePlayerChangeRule");
@@ -6523,6 +7407,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.CheckIsIndependentRolePlayerChangeRule");
 				ObjectType.CheckIsIndependentRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.CheckIsIndependentRolePlayerChangeRule");
@@ -6549,6 +7437,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ConstraintRoleAddedRule");
 				ObjectType.ConstraintRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ConstraintRoleAddedRule");
@@ -6575,6 +7467,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ConstraintRoleDeletingRule");
 				ObjectType.ConstraintRoleDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ConstraintRoleDeletingRule");
@@ -6601,6 +7497,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ExclusionModalityChangeRule");
 				ObjectType.ExclusionModalityChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ExclusionModalityChangeRule");
@@ -6627,6 +7527,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ExclusionSequenceAddedRule");
 				ObjectType.ExclusionSequenceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ExclusionSequenceAddedRule");
@@ -6653,6 +7557,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleAddedRule");
 				ObjectType.FactTypeDerivationRuleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleAddedRule");
@@ -6679,6 +7587,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleChangedRule");
 				ObjectType.FactTypeDerivationRuleChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleChangedRule");
@@ -6705,6 +7617,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleDeletedRule");
 				ObjectType.FactTypeDerivationRuleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.FactTypeDerivationRuleDeletedRule");
@@ -6731,6 +7647,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.MandatoryModalityChangeRule");
 				ObjectType.MandatoryModalityChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.MandatoryModalityChangeRule");
@@ -6757,6 +7677,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ObjectTypeAddedRule");
 				ObjectType.ObjectTypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ObjectTypeAddedRule");
@@ -6783,6 +7707,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ObjectTypeChangeRule");
 				ObjectType.ObjectTypeChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ObjectTypeChangeRule");
@@ -6809,6 +7737,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ObjectTypeDeletingRule");
 				ObjectType.ObjectTypeDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.ObjectTypeDeletingRule");
@@ -6838,6 +7770,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.SubtypeFactChangeRule");
 				this.SubtypeFactChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.SubtypeFactChangeRule");
@@ -6864,6 +7800,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.SupertypeAddedRule");
 				ObjectType.SupertypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.SupertypeAddedRule");
@@ -6890,6 +7830,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.SupertypeDeleteRule");
 				ObjectType.SupertypeDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.SupertypeDeleteRule");
@@ -6916,6 +7860,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.SupertypeDeletingRule");
 				ObjectType.SupertypeDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.SupertypeDeletingRule");
@@ -6942,6 +7890,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.UnspecifiedDataTypeAddRule");
 				ObjectType.UnspecifiedDataTypeAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.UnspecifiedDataTypeAddRule");
@@ -6968,6 +7920,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.UnspecifiedDataTypeRolePlayerChangeRule");
 				ObjectType.UnspecifiedDataTypeRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.UnspecifiedDataTypeRolePlayerChangeRule");
@@ -6994,6 +7950,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyReferenceSchemeAddRule");
 				ObjectType.VerifyReferenceSchemeAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyReferenceSchemeAddRule");
@@ -7020,6 +7980,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyReferenceSchemeDeleteRule");
 				ObjectType.VerifyReferenceSchemeDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyReferenceSchemeDeleteRule");
@@ -7046,6 +8010,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyReferenceSchemeRolePlayerChangeRule");
 				ObjectType.VerifyReferenceSchemeRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyReferenceSchemeRolePlayerChangeRule");
@@ -7072,6 +8040,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeAddRule");
 				ObjectType.VerifyValueTypeHasDataTypeAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeAddRule");
@@ -7098,6 +8070,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeDeleteRule");
 				ObjectType.VerifyValueTypeHasDataTypeDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeDeleteRule");
@@ -7129,6 +8105,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ConstraintRoleSequenceHasRoleAddedRule");
 				ObjectTypeInstance.ConstraintRoleSequenceHasRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ConstraintRoleSequenceHasRoleAddedRule");
@@ -7155,6 +8135,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ConstraintRoleSequenceHasRoleDeletedRule");
 				ObjectTypeInstance.ConstraintRoleSequenceHasRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -7181,6 +8165,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceRolePlayerChangedRule");
 				ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeInstanceHasRoleInstanceRolePlayerChangedRule");
@@ -7207,6 +8195,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSupertypeInstanceAddedRule");
 				ObjectTypeInstance.EntityTypeSupertypeInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSupertypeInstanceAddedRule");
@@ -7236,6 +8228,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSubtypeInstanceDeletingRule");
 				this.EntityTypeSubtypeInstanceDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSubtypeInstanceDeletingRule");
@@ -7262,6 +8258,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSubtypeInstanceAddedRule");
 				ObjectTypeInstance.EntityTypeSubtypeInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSubtypeInstanceAddedRule");
@@ -7288,6 +8288,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSupertypeInstanceDeletedRule");
 				ObjectTypeInstance.EntityTypeSupertypeInstanceDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSupertypeInstanceDeletedRule");
@@ -7314,6 +8318,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSupertypeInstanceRolePlayerChangedRule");
 				ObjectTypeInstance.EntityTypeSupertypeInstanceRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.EntityTypeSupertypeInstanceRolePlayerChangedRule");
@@ -7340,6 +8348,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.FactTypeInstanceNameChangedRule");
 				ObjectTypeInstance.FactTypeInstanceNameChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.FactTypeInstanceNameChangedRule");
@@ -7366,6 +8378,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.FactTypeNameChangedRule");
 				ObjectTypeInstance.FactTypeNameChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.FactTypeNameChangedRule");
@@ -7392,6 +8408,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.MandatoryConstraintChangedRule");
 				ObjectTypeInstance.MandatoryConstraintChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.MandatoryConstraintChangedRule");
@@ -7418,6 +8438,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationAddedRule");
 				ObjectTypeInstance.ObjectificationAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationAddedRule");
@@ -7444,6 +8468,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationDeletedRule");
 				ObjectTypeInstance.ObjectificationDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationDeletedRule");
@@ -7470,6 +8498,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationInstanceAddedRule");
 				ObjectTypeInstance.ObjectificationInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationInstanceAddedRule");
@@ -7496,6 +8528,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationInstanceDeletedRule");
 				ObjectTypeInstance.ObjectificationInstanceDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationInstanceDeletedRule");
@@ -7522,6 +8558,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationInstanceRolePlayerChangeRule");
 				ObjectTypeInstance.ObjectificationInstanceRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationInstanceRolePlayerChangeRule");
@@ -7548,6 +8588,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationRolePlayerChangeRule");
 				ObjectTypeInstance.ObjectificationRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectificationRolePlayerChangeRule");
@@ -7574,6 +8618,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectTypeInstanceAddedRule");
 				ObjectTypeInstance.ObjectTypeInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectTypeInstanceAddedRule");
@@ -7600,6 +8648,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectTypeInstanceRolePlayerChangedRule");
 				ObjectTypeInstance.ObjectTypeInstanceRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.ObjectTypeInstanceRolePlayerChangedRule");
@@ -7626,6 +8678,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RoleInstanceAddedRule");
 				ObjectTypeInstance.RoleInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RoleInstanceAddedRule");
@@ -7652,6 +8708,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RoleInstanceDeletedRule");
 				ObjectTypeInstance.RoleInstanceDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RoleInstanceDeletedRule");
@@ -7678,6 +8738,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RoleInstanceRolePlayerChangedRule");
 				ObjectTypeInstance.RoleInstanceRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RoleInstanceRolePlayerChangedRule");
@@ -7704,6 +8768,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RolePlayerAddedRule");
 				ObjectTypeInstance.RolePlayerAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RolePlayerAddedRule");
@@ -7730,6 +8798,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RolePlayerDeletedRule");
 				ObjectTypeInstance.RolePlayerDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RolePlayerDeletedRule");
@@ -7756,6 +8828,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RolePlayerRolePlayerChangedRule");
 				ObjectTypeInstance.RolePlayerRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.RolePlayerRolePlayerChangedRule");
@@ -7782,6 +8858,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.PreferredSupertypeChangedRule");
 				ObjectTypeInstance.PreferredSupertypeChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeInstance.PreferredSupertypeChangedRule");
@@ -7819,6 +8899,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateConstraintNameConstraintDeletedRule");
 				ORMModel.DuplicateConstraintNameConstraintDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateConstraintNameConstraintDeletedRule");
@@ -7845,6 +8929,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateObjectTypeNameObjectTypeDeletedRule");
 				ORMModel.DuplicateObjectTypeNameObjectTypeDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateObjectTypeNameObjectTypeDeletedRule");
@@ -7871,6 +8959,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateRecognizedPhraseDeletedRule");
 				ORMModel.DuplicateRecognizedPhraseDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateRecognizedPhraseDeletedRule");
@@ -7897,6 +8989,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateFunctionNameDeletedRule");
 				ORMModel.DuplicateFunctionNameDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateFunctionNameDeletedRule");
@@ -7923,6 +9019,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateReadingSignatureDeletedRule");
 				ORMModel.DuplicateReadingSignatureDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel.DuplicateReadingSignatureDeletedRule");
@@ -7954,6 +9054,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryBase.QueryAddedRule");
 				QueryBase.QueryAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryBase.QueryAddedRule");
@@ -7980,6 +9084,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryBase.QueryDerivationRuleDeletedRule");
 				QueryBase.QueryDerivationRuleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryBase.QueryDerivationRuleDeletedRule");
@@ -8011,6 +9119,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.BoundToPathedRoleAddedRule");
 				QueryParameterBinding.BoundToPathedRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.BoundToPathedRoleAddedRule");
@@ -8037,6 +9149,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.BoundToPathedRoleDeletedRule");
 				QueryParameterBinding.BoundToPathedRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.BoundToPathedRoleDeletedRule");
@@ -8063,6 +9179,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.BoundToPathRootAddedRule");
 				QueryParameterBinding.BoundToPathRootAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.BoundToPathRootAddedRule");
@@ -8089,6 +9209,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.BoundToPathRootDeletedRule");
 				QueryParameterBinding.BoundToPathRootDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.QueryParameterBinding.BoundToPathRootDeletedRule");
@@ -8120,6 +9244,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.ReadingOrderHasRoleDeletedRule");
 				Reading.ReadingOrderHasRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.ReadingOrderHasRoleDeletedRule");
@@ -8146,6 +9274,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.ReadingPropertiesChangedRule");
 				Reading.ReadingPropertiesChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.ReadingPropertiesChangedRule");
@@ -8172,6 +9304,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.ReadingSignatureChangedRule");
 				Reading.ReadingSignatureChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Reading.ReadingSignatureChangedRule");
@@ -8203,6 +9339,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhrase.RecognizedPhraseHasAbbreviationDeletedRule");
 				RecognizedPhrase.RecognizedPhraseHasAbbreviationDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhrase.RecognizedPhraseHasAbbreviationDeletedRule");
@@ -8234,6 +9374,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder.EnforceNoEmptyReadingOrderDeleteRule");
 				ReadingOrder.EnforceNoEmptyReadingOrderDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder.EnforceNoEmptyReadingOrderDeleteRule");
@@ -8260,6 +9404,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder.EnforceNoEmptyReadingOrderRolePlayerChangeRule");
 				ReadingOrder.EnforceNoEmptyReadingOrderRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder.EnforceNoEmptyReadingOrderRolePlayerChangeRule");
@@ -8286,6 +9434,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder.FactTypeHasRoleAddedRule");
 				ReadingOrder.FactTypeHasRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder.FactTypeHasRoleAddedRule");
@@ -8312,6 +9464,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder.ReadingOrderHasRoleDeletingRule");
 				ReadingOrder.ReadingOrderHasRoleDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder.ReadingOrderHasRoleDeletingRule");
@@ -8343,6 +9499,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode.CustomReferenceModeChangeRule");
 				ReferenceMode.CustomReferenceModeChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode.CustomReferenceModeChangeRule");
@@ -8369,6 +9529,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode.ReferenceModeAddedRule");
 				ReferenceMode.ReferenceModeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode.ReferenceModeAddedRule");
@@ -8395,6 +9559,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode.ReferenceModeKindChangeRule");
 				ReferenceMode.ReferenceModeKindChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceMode.ReferenceModeKindChangeRule");
@@ -8426,6 +9594,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindDeletingRule");
 				ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindDeletingRule");
@@ -8452,6 +9624,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindRolePlayerChangeRule");
 				ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind.ReferenceModeHasReferenceModeKindRolePlayerChangeRule");
@@ -8483,6 +9659,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraint.RingConstraintTypeChangeRule");
 				RingConstraint.RingConstraintTypeChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraint.RingConstraintTypeChangeRule");
@@ -8514,6 +9694,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.ConstraintRoleSequenceHasRoleAddedRule");
 				Role.ConstraintRoleSequenceHasRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.ConstraintRoleSequenceHasRoleAddedRule");
@@ -8540,6 +9724,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.ConstraintRoleSequenceHasRoleDeletedRule");
 				Role.ConstraintRoleSequenceHasRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.ConstraintRoleSequenceHasRoleDeletedRule");
@@ -8566,6 +9754,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleChangeRule");
 				Role.RoleChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleChangeRule");
@@ -8592,6 +9784,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceAddedRule");
 				Role.RoleInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceAddedRule");
@@ -8618,6 +9814,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceDeletedRule");
 				Role.RoleInstanceDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceDeletedRule");
@@ -8644,6 +9844,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceRolePlayerChangedRule");
 				Role.RoleInstanceRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RoleInstanceRolePlayerChangedRule");
@@ -8670,6 +9874,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RolePlayerRequiredAddRule");
 				Role.RolePlayerRequiredAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RolePlayerRequiredAddRule");
@@ -8696,6 +9904,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RolePlayerRequiredDeleteRule");
 				Role.RolePlayerRequiredDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RolePlayerRequiredDeleteRule");
@@ -8722,6 +9934,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RolePlayerRequiredForNewRoleAddRule");
 				Role.RolePlayerRequiredForNewRoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.RolePlayerRequiredForNewRoleAddRule");
@@ -8748,6 +9964,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.UpdatedRolePlayerRequiredErrorsDeleteRule");
 				Role.UpdatedRolePlayerRequiredErrorsDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.UpdatedRolePlayerRequiredErrorsDeleteRule");
@@ -8774,6 +9994,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.UniquenessConstraintChangedRule");
 				Role.UniquenessConstraintChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Role.UniquenessConstraintChangedRule");
@@ -8805,6 +10029,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.PathedRoleDeletedRule");
 				RolePath.PathedRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.PathedRoleDeletedRule");
@@ -8831,6 +10059,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.PathedRoleRolePlayerChangedRule");
 				RolePath.PathedRoleRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.PathedRoleRolePlayerChangedRule");
@@ -8857,6 +10089,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.RootObjectTypeDeletedRule");
 				RolePath.RootObjectTypeDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.RootObjectTypeDeletedRule");
@@ -8883,6 +10119,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.SubPathDeletedRule");
 				RolePath.SubPathDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.SubPathDeletedRule");
@@ -8909,6 +10149,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.SubPathRolePlayerChangedRule");
 				RolePath.SubPathRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePath.SubPathRolePlayerChangedRule");
@@ -8940,6 +10184,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAddedRule");
 				RolePathOwner.CalculationAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAddedRule");
@@ -8966,6 +10214,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAggregationContextPathedRoleAddedRule");
 				RolePathOwner.CalculationAggregationContextPathedRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAggregationContextPathedRoleAddedRule");
@@ -8992,6 +10244,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAggregationContextPathedRoleDeletedRule");
 				RolePathOwner.CalculationAggregationContextPathedRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAggregationContextPathedRoleDeletedRule");
@@ -9018,6 +10274,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAggregationContextPathRootAddedRule");
 				RolePathOwner.CalculationAggregationContextPathRootAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAggregationContextPathRootAddedRule");
@@ -9044,6 +10304,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAggregationContextPathRootDeletedRule");
 				RolePathOwner.CalculationAggregationContextPathRootDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAggregationContextPathRootDeletedRule");
@@ -9070,6 +10334,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAsConditionAddedRule");
 				RolePathOwner.CalculationAsConditionAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAsConditionAddedRule");
@@ -9096,6 +10364,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAsConditionDeletedRule");
 				RolePathOwner.CalculationAsConditionDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationAsConditionDeletedRule");
@@ -9122,6 +10394,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationChangedRule");
 				RolePathOwner.CalculationChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationChangedRule");
@@ -9148,6 +10424,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationFunctionAddedRule");
 				RolePathOwner.CalculationFunctionAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationFunctionAddedRule");
@@ -9174,6 +10454,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationFunctionDeletedRule");
 				RolePathOwner.CalculationFunctionDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationFunctionDeletedRule");
@@ -9200,6 +10484,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationFunctionRolePlayerChangedRule");
 				RolePathOwner.CalculationFunctionRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationFunctionRolePlayerChangedRule");
@@ -9226,6 +10514,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputAddedRule");
 				RolePathOwner.CalculationInputAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputAddedRule");
@@ -9252,6 +10544,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputDeletedRule");
 				RolePathOwner.CalculationInputDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputDeletedRule");
@@ -9278,6 +10574,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToCalculatedValueAddedRule");
 				RolePathOwner.CalculationInputBindingToCalculatedValueAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToCalculatedValueAddedRule");
@@ -9304,6 +10604,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToCalculatedValueDeletedRule");
 				RolePathOwner.CalculationInputBindingToCalculatedValueDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToCalculatedValueDeletedRule");
@@ -9330,6 +10634,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToCalculatedValueRolePlayerChangeRule");
 				RolePathOwner.CalculationInputBindingToCalculatedValueRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToCalculatedValueRolePlayerChangeRule");
@@ -9356,6 +10664,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToConstantAddedRule");
 				RolePathOwner.CalculationInputBindingToConstantAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToConstantAddedRule");
@@ -9382,6 +10694,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToConstantDeletedRule");
 				RolePathOwner.CalculationInputBindingToConstantDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToConstantDeletedRule");
@@ -9408,6 +10724,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToConstantRolePlayerChangedRule");
 				RolePathOwner.CalculationInputBindingToConstantRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToConstantRolePlayerChangedRule");
@@ -9434,6 +10754,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathedRoleAddedRule");
 				RolePathOwner.CalculationInputBindingToPathedRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathedRoleAddedRule");
@@ -9460,6 +10784,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathedRoleDeletedRule");
 				RolePathOwner.CalculationInputBindingToPathedRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathedRoleDeletedRule");
@@ -9486,6 +10814,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathedRoleRolePlayerChangedRule");
 				RolePathOwner.CalculationInputBindingToPathedRoleRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathedRoleRolePlayerChangedRule");
@@ -9512,6 +10844,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathRootAddedRule");
 				RolePathOwner.CalculationInputBindingToPathRootAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathRootAddedRule");
@@ -9538,6 +10874,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathRootDeletedRule");
 				RolePathOwner.CalculationInputBindingToPathRootDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathRootDeletedRule");
@@ -9564,6 +10904,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathRootRolePlayerChangedRule");
 				RolePathOwner.CalculationInputBindingToPathRootRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputBindingToPathRootRolePlayerChangedRule");
@@ -9590,6 +10934,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputTargetsParameterAddedRule");
 				RolePathOwner.CalculationInputTargetsParameterAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputTargetsParameterAddedRule");
@@ -9616,6 +10964,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputTargetsParameterDeletedRule");
 				RolePathOwner.CalculationInputTargetsParameterDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputTargetsParameterDeletedRule");
@@ -9642,6 +10994,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputTargetsParameterRolePlayerChangedRule");
 				RolePathOwner.CalculationInputTargetsParameterRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.CalculationInputTargetsParameterRolePlayerChangedRule");
@@ -9668,6 +11024,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.DataTypeUseAddedRule");
 				RolePathOwner.DataTypeUseAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.DataTypeUseAddedRule");
@@ -9694,6 +11054,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.DataTypeUseDeletedRule");
 				RolePathOwner.DataTypeUseDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.DataTypeUseDeletedRule");
@@ -9720,6 +11084,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.DataTypeUseFacetChangedRule");
 				RolePathOwner.DataTypeUseFacetChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.DataTypeUseFacetChangedRule");
@@ -9746,6 +11114,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.DataTypeUseRolePlayerChangedRule");
 				RolePathOwner.DataTypeUseRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.DataTypeUseRolePlayerChangedRule");
@@ -9772,6 +11144,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.LeadRolePathAddedRule");
 				RolePathOwner.LeadRolePathAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.LeadRolePathAddedRule");
@@ -9798,6 +11174,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.LeadRolePathDeletedRule");
 				RolePathOwner.LeadRolePathDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.LeadRolePathDeletedRule");
@@ -9824,6 +11204,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.LeadRolePathRolePlayerChangedRule");
 				RolePathOwner.LeadRolePathRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.LeadRolePathRolePlayerChangedRule");
@@ -9850,6 +11234,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.ObjectUnifierAddedRule");
 				RolePathOwner.ObjectUnifierAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.ObjectUnifierAddedRule");
@@ -9876,6 +11264,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.ObjectUnifierDeletedRule");
 				RolePathOwner.ObjectUnifierDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.ObjectUnifierDeletedRule");
@@ -9902,6 +11294,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleAddedRule");
 				RolePathOwner.PathedRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleAddedRule");
@@ -9928,6 +11324,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleChangedRule");
 				RolePathOwner.PathedRoleChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleChangedRule");
@@ -9954,6 +11354,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleDeletedRule");
 				RolePathOwner.PathedRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleDeletedRule");
@@ -9980,6 +11384,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleRolePlayerChangedRule");
 				RolePathOwner.PathedRoleRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleRolePlayerChangedRule");
@@ -10006,6 +11414,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleUnificationAddedRule");
 				RolePathOwner.PathedRoleUnificationAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleUnificationAddedRule");
@@ -10032,6 +11444,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleUnificationDeletedRule");
 				RolePathOwner.PathedRoleUnificationDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleUnificationDeletedRule");
@@ -10058,6 +11474,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleUnificationRolePlayerChangedRule");
 				RolePathOwner.PathedRoleUnificationRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.PathedRoleUnificationRolePlayerChangedRule");
@@ -10084,6 +11504,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathChangedRule");
 				RolePathOwner.RolePathChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathChangedRule");
@@ -10110,6 +11534,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathOwnerAddedRule");
 				RolePathOwner.RolePathOwnerAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathOwnerAddedRule");
@@ -10136,6 +11564,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathRootUnificationAddedRule");
 				RolePathOwner.RolePathRootUnificationAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathRootUnificationAddedRule");
@@ -10162,6 +11594,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathRootUnificationDeletedRule");
 				RolePathOwner.RolePathRootUnificationDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathRootUnificationDeletedRule");
@@ -10188,6 +11624,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathRootUnificationRolePlayerChangedRule");
 				RolePathOwner.RolePathRootUnificationRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePathRootUnificationRolePlayerChangedRule");
@@ -10214,6 +11654,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePlayerAddedRule");
 				RolePathOwner.RolePlayerAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePlayerAddedRule");
@@ -10240,6 +11684,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePlayerDeletedRule");
 				RolePathOwner.RolePlayerDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePlayerDeletedRule");
@@ -10266,6 +11714,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePlayerRolePlayerChangedRule");
 				RolePathOwner.RolePlayerRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RolePlayerRolePlayerChangedRule");
@@ -10292,6 +11744,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RootObjectTypeAddedRule");
 				RolePathOwner.RootObjectTypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RootObjectTypeAddedRule");
@@ -10318,6 +11774,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RootObjectTypeDeletedRule");
 				RolePathOwner.RootObjectTypeDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RootObjectTypeDeletedRule");
@@ -10344,6 +11804,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RootObjectTypeRolePlayerChangedRule");
 				RolePathOwner.RootObjectTypeRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.RootObjectTypeRolePlayerChangedRule");
@@ -10370,6 +11834,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SimpleMandatoryConstraintAddedRule");
 				RolePathOwner.SimpleMandatoryConstraintAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SimpleMandatoryConstraintAddedRule");
@@ -10396,6 +11864,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SimpleMandatoryConstraintChangedRule");
 				RolePathOwner.SimpleMandatoryConstraintChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SimpleMandatoryConstraintChangedRule");
@@ -10422,6 +11894,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SimpleMandatoryConstraintDeletedRule");
 				RolePathOwner.SimpleMandatoryConstraintDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SimpleMandatoryConstraintDeletedRule");
@@ -10448,6 +11924,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubPathAddedRule");
 				RolePathOwner.SubPathAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubPathAddedRule");
@@ -10474,6 +11954,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubPathDeletedRule");
 				RolePathOwner.SubPathDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubPathDeletedRule");
@@ -10500,6 +11984,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubPathRolePlayerChangedRule");
 				RolePathOwner.SubPathRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubPathRolePlayerChangedRule");
@@ -10526,6 +12014,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryDeletedRule");
 				RolePathOwner.SubqueryDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryDeletedRule");
@@ -10557,6 +12049,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.DerivedRoleProjectionOnCalculatedPathValueAddedRule");
 				RoleProjectedDerivationRule.DerivedRoleProjectionOnCalculatedPathValueAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.DerivedRoleProjectionOnCalculatedPathValueAddedRule");
@@ -10583,6 +12079,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.DerivedRoleProjectionOnCalculatedPathValueDeletedRule");
 				RoleProjectedDerivationRule.DerivedRoleProjectionOnCalculatedPathValueDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.DerivedRoleProjectionOnCalculatedPathValueDeletedRule");
@@ -10609,6 +12109,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.DerivedRoleProjectionOnCalculatedPathValueRolePlayerChangedRule");
 				RoleProjectedDerivationRule.DerivedRoleProjectionOnCalculatedPathValueRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.DerivedRoleProjectionOnCalculatedPathValueRolePlayerChangedRule");
@@ -10635,6 +12139,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.FactTypeRoleAddedRule");
 				RoleProjectedDerivationRule.FactTypeRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.FactTypeRoleAddedRule");
@@ -10661,6 +12169,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.FactTypeRoleDeletedRule");
 				RoleProjectedDerivationRule.FactTypeRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.FactTypeRoleDeletedRule");
@@ -10687,6 +12199,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.LeadRolePathDeletedRule");
 				RoleProjectedDerivationRule.LeadRolePathDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.LeadRolePathDeletedRule");
@@ -10713,6 +12229,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.LeadRolePathRolePlayerChangedRule");
 				RoleProjectedDerivationRule.LeadRolePathRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.LeadRolePathRolePlayerChangedRule");
@@ -10739,6 +12259,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RolePlayerAddedRule");
 				RoleProjectedDerivationRule.RolePlayerAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RolePlayerAddedRule");
@@ -10765,6 +12289,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RolePlayerDeletedRule");
 				RoleProjectedDerivationRule.RolePlayerDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RolePlayerDeletedRule");
@@ -10791,6 +12319,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RolePlayerRolePlayerChangedRule");
 				RoleProjectedDerivationRule.RolePlayerRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RolePlayerRolePlayerChangedRule");
@@ -10817,6 +12349,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RoleProjectionAddedRule");
 				RoleProjectedDerivationRule.RoleProjectionAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RoleProjectionAddedRule");
@@ -10843,6 +12379,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RoleProjectionDeletedRule");
 				RoleProjectedDerivationRule.RoleProjectionDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RoleProjectionDeletedRule");
@@ -10869,6 +12409,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RoleProjectionRolePlayerChangedRule");
 				RoleProjectedDerivationRule.RoleProjectionRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RoleProjectedDerivationRule.RoleProjectionRolePlayerChangedRule");
@@ -10908,6 +12452,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ConstraintHasRoleSequenceAddedRule");
 				SetComparisonConstraint.ConstraintHasRoleSequenceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ConstraintHasRoleSequenceAddedRule");
@@ -10942,6 +12490,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ConstraintRoleSequenceHasRoleAddedRule");
 				SetComparisonConstraint.ConstraintRoleSequenceHasRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ConstraintRoleSequenceHasRoleAddedRule");
@@ -10968,6 +12520,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceCardinalityForConstraintAddRule");
 				SetComparisonConstraint.EnforceRoleSequenceCardinalityForConstraintAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceCardinalityForConstraintAddRule");
@@ -10994,6 +12550,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceCardinalityForSequenceAddRule");
 				SetComparisonConstraint.EnforceRoleSequenceCardinalityForSequenceAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceCardinalityForSequenceAddRule");
@@ -11020,6 +12580,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceCardinalityForSequenceDeleteRule");
 				SetComparisonConstraint.EnforceRoleSequenceCardinalityForSequenceDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceCardinalityForSequenceDeleteRule");
@@ -11046,6 +12610,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRoleAddRule");
 				SetComparisonConstraint.EnforceRoleSequenceValidityForRoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRoleAddRule");
@@ -11072,6 +12640,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRoleDeleteRule");
 				SetComparisonConstraint.EnforceRoleSequenceValidityForRoleDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRoleDeleteRule");
@@ -11098,6 +12670,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRoleReorderRule");
 				SetComparisonConstraint.EnforceRoleSequenceValidityForRoleReorderRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRoleReorderRule");
@@ -11124,6 +12700,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerAddRule");
 				SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerAddRule");
@@ -11150,6 +12730,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerDeleteRule");
 				SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerDeleteRule");
@@ -11176,6 +12760,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule");
 				SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule");
@@ -11202,6 +12790,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ExternalRoleConstraintDeletedRule");
 				SetComparisonConstraint.ExternalRoleConstraintDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ExternalRoleConstraintDeletedRule");
@@ -11228,6 +12820,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.FactTypeAddedRule");
 				SetComparisonConstraint.FactTypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.FactTypeAddedRule");
@@ -11254,6 +12850,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.FactTypeRoleAddedClosureRule");
 				SetComparisonConstraint.FactTypeRoleAddedClosureRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.FactTypeRoleAddedClosureRule");
@@ -11280,6 +12880,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.FactSetComparisonConstraintAddedRule");
 				SetComparisonConstraint.FactSetComparisonConstraintAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.FactSetComparisonConstraintAddedRule");
@@ -11306,6 +12910,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.SetComparisonConstraintRoleSequenceDeletedRule");
 				SetComparisonConstraint.SetComparisonConstraintRoleSequenceDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.SetComparisonConstraintRoleSequenceDeletedRule");
@@ -11332,6 +12940,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.SetComparisonConstraintRoleSequencePositionChangeRule");
 				SetComparisonConstraint.SetComparisonConstraintRoleSequencePositionChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.SetComparisonConstraintRoleSequencePositionChangeRule");
@@ -11358,6 +12970,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ContradictionErrorComponentDeletedRule");
 				SetComparisonConstraint.ContradictionErrorComponentDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ContradictionErrorComponentDeletedRule");
@@ -11384,6 +13000,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ExclusionContradictsMandatoryErrorExclusionComponentDeletedRule");
 				SetComparisonConstraint.ExclusionContradictsMandatoryErrorExclusionComponentDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ExclusionContradictsMandatoryErrorExclusionComponentDeletedRule");
@@ -11410,6 +13030,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ExclusionContradictsMandatoryErrorMandatoryComponentDeletedRule");
 				SetComparisonConstraint.ExclusionContradictsMandatoryErrorMandatoryComponentDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.ExclusionContradictsMandatoryErrorMandatoryComponentDeletedRule");
@@ -11441,6 +13065,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.ConstraintAddedRule");
 				SetConstraint.ConstraintAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.ConstraintAddedRule");
@@ -11475,6 +13103,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.ConstraintRoleSequenceHasRoleAddedRule");
 				SetConstraint.ConstraintRoleSequenceHasRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.ConstraintRoleSequenceHasRoleAddedRule");
@@ -11501,6 +13133,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRoleAddRule");
 				SetConstraint.EnforceRoleSequenceValidityForRoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRoleAddRule");
@@ -11527,6 +13163,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRoleDeleteRule");
 				SetConstraint.EnforceRoleSequenceValidityForRoleDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRoleDeleteRule");
@@ -11553,6 +13193,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRolePlayerAddRule");
 				SetConstraint.EnforceRoleSequenceValidityForRolePlayerAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRolePlayerAddRule");
@@ -11579,6 +13223,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRolePlayerDeleteRule");
 				SetConstraint.EnforceRoleSequenceValidityForRolePlayerDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRolePlayerDeleteRule");
@@ -11605,6 +13253,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule");
 				SetConstraint.EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.EnforceRoleSequenceValidityForRolePlayerRolePlayerChangeRule");
@@ -11631,6 +13283,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.FactSetConstraintAddedRule");
 				SetConstraint.FactSetConstraintAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.FactSetConstraintAddedRule");
@@ -11657,6 +13313,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.FactSetConstraintDeletedRule");
 				SetConstraint.FactSetConstraintDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.FactSetConstraintDeletedRule");
@@ -11683,6 +13343,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.FactTypeAddedRule");
 				SetConstraint.FactTypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.FactTypeAddedRule");
@@ -11709,6 +13373,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.FactTypeRoleAddedClosureRule");
 				SetConstraint.FactTypeRoleAddedClosureRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.FactTypeRoleAddedClosureRule");
@@ -11735,6 +13403,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.ModalityChangeRule");
 				SetConstraint.ModalityChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.ModalityChangeRule");
@@ -11761,6 +13433,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.SetConstraintRoleSequenceHasRoleAddedRule");
 				SetConstraint.SetConstraintRoleSequenceHasRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.SetConstraintRoleSequenceHasRoleAddedRule");
@@ -11787,6 +13463,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.SetConstraintRoleSequenceHasRoleDeletingRule");
 				SetConstraint.SetConstraintRoleSequenceHasRoleDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint.SetConstraintRoleSequenceHasRoleDeletingRule");
@@ -11818,6 +13498,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputDeletedRule");
 				SubqueryParameterInput.InputDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputDeletedRule");
@@ -11844,6 +13528,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromCalculatedValueAddedRule");
 				SubqueryParameterInput.InputFromCalculatedValueAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromCalculatedValueAddedRule");
@@ -11870,6 +13558,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromCalculatedValueDeletedRule");
 				SubqueryParameterInput.InputFromCalculatedValueDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromCalculatedValueDeletedRule");
@@ -11896,6 +13588,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromConstantAddedRule");
 				SubqueryParameterInput.InputFromConstantAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromConstantAddedRule");
@@ -11922,6 +13618,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromConstantDeletedRule");
 				SubqueryParameterInput.InputFromConstantDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromConstantDeletedRule");
@@ -11948,6 +13648,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromPathedRoleAddedRule");
 				SubqueryParameterInput.InputFromPathedRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromPathedRoleAddedRule");
@@ -11974,6 +13678,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromPathedRoleDeletedRule");
 				SubqueryParameterInput.InputFromPathedRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromPathedRoleDeletedRule");
@@ -12000,6 +13708,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromPathRootAddedRule");
 				SubqueryParameterInput.InputFromPathRootAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromPathRootAddedRule");
@@ -12026,6 +13738,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromPathRootDeletedRule");
 				SubqueryParameterInput.InputFromPathRootDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubqueryParameterInput.InputFromPathRootDeletedRule");
@@ -12057,6 +13773,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationExpression.DeprecateSubtypeDerivationExpression");
 				SubtypeDerivationExpression.DeprecateSubtypeDerivationExpression(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationExpression.DeprecateSubtypeDerivationExpression");
@@ -12088,6 +13808,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.DerivationNoteDeletedRule");
 				SubtypeDerivationRule.DerivationNoteDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.DerivationNoteDeletedRule");
@@ -12114,6 +13838,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.LeadRolePathAddedRule");
 				SubtypeDerivationRule.LeadRolePathAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.LeadRolePathAddedRule");
@@ -12140,6 +13868,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.LeadRolePathRolePlayerChangedRule");
 				SubtypeDerivationRule.LeadRolePathRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.LeadRolePathRolePlayerChangedRule");
@@ -12166,6 +13898,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.SubqueryAddedRule");
 				SubtypeDerivationRule.SubqueryAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.SubqueryAddedRule");
@@ -12192,6 +13928,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.SubqueryRolePlayerChangedRule");
 				SubtypeDerivationRule.SubqueryRolePlayerChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule.SubqueryRolePlayerChangedRule");
@@ -12223,6 +13963,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.DeleteSubtypeWhenRolePlayerDeletedRule");
 				SubtypeFact.DeleteSubtypeWhenRolePlayerDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.DeleteSubtypeWhenRolePlayerDeletedRule");
@@ -12249,6 +13993,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.EnsureConsistentDataTypesAddRule");
 				SubtypeFact.EnsureConsistentDataTypesAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.EnsureConsistentDataTypesAddRule");
@@ -12275,6 +14023,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.EnsureConsistentDataTypesDeleteRule");
 				SubtypeFact.EnsureConsistentDataTypesDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.EnsureConsistentDataTypesDeleteRule");
@@ -12301,6 +14053,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.EnsureConsistentRolePlayerTypesAddRule");
 				SubtypeFact.EnsureConsistentRolePlayerTypesAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.EnsureConsistentRolePlayerTypesAddRule");
@@ -12327,6 +14083,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.InitializeSubtypeAddRule");
 				SubtypeFact.InitializeSubtypeAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.InitializeSubtypeAddRule");
@@ -12353,6 +14113,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintChangeRule");
 				SubtypeFact.LimitSubtypeConstraintChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintChangeRule");
@@ -12379,6 +14143,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintRolesAddRule");
 				SubtypeFact.LimitSubtypeConstraintRolesAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintRolesAddRule");
@@ -12405,6 +14173,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintRolesDeleteRule");
 				SubtypeFact.LimitSubtypeConstraintRolesDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintRolesDeleteRule");
@@ -12431,6 +14203,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintsAddRule");
 				SubtypeFact.LimitSubtypeConstraintsAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintsAddRule");
@@ -12457,6 +14233,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintsDeleteRule");
 				SubtypeFact.LimitSubtypeConstraintsDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeConstraintsDeleteRule");
@@ -12483,6 +14263,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeRolesAddRule");
 				SubtypeFact.LimitSubtypeRolesAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeRolesAddRule");
@@ -12509,6 +14293,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeRolesDeleteRule");
 				SubtypeFact.LimitSubtypeRolesDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeRolesDeleteRule");
@@ -12535,6 +14323,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceAddRule");
 				SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceAddRule");
@@ -12561,6 +14353,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs e)
 			{
+				if (e.SourceElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceReorderRule");
 				SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceReorderRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.SourceElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact.LimitSubtypeSetComparisonConstraintSequenceReorderRule");
@@ -12592,6 +14388,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneConstraintAddRule");
 				UniquenessConstraint.NMinusOneConstraintAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneConstraintAddRule");
@@ -12618,6 +14418,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneConstraintRoleAddRule");
 				UniquenessConstraint.NMinusOneConstraintRoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneConstraintRoleAddRule");
@@ -12644,6 +14448,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneConstraintRoleDeleteRule");
 				UniquenessConstraint.NMinusOneConstraintRoleDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneConstraintRoleDeleteRule");
@@ -12670,6 +14478,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeDerivationRuleAddedRule");
 				UniquenessConstraint.NMinusOneFactTypeDerivationRuleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeDerivationRuleAddedRule");
@@ -12696,6 +14508,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeDerivationRuleChangedRule");
 				UniquenessConstraint.NMinusOneFactTypeDerivationRuleChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeDerivationRuleChangedRule");
@@ -12722,6 +14538,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeDerivationRuleDeletedRule");
 				UniquenessConstraint.NMinusOneFactTypeDerivationRuleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeDerivationRuleDeletedRule");
@@ -12748,6 +14568,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeRoleAddRule");
 				UniquenessConstraint.NMinusOneFactTypeRoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeRoleAddRule");
@@ -12774,6 +14598,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeRoleDeleteRule");
 				UniquenessConstraint.NMinusOneFactTypeRoleDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.NMinusOneFactTypeRoleDeleteRule");
@@ -12800,6 +14628,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.UniquenessConstraintChangeRule");
 				UniquenessConstraint.UniquenessConstraintChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.UniquenessConstraint.UniquenessConstraintChangeRule");
@@ -12831,6 +14663,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ComparedRoleAddedRule");
 				ValueComparisonConstraint.ComparedRoleAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ComparedRoleAddedRule");
@@ -12857,6 +14693,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ComparedRoleDeletedRule");
 				ValueComparisonConstraint.ComparedRoleDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ComparedRoleDeletedRule");
@@ -12883,6 +14723,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ComparisonOperatorChangedRule");
 				ValueComparisonConstraint.ComparisonOperatorChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ComparisonOperatorChangedRule");
@@ -12909,6 +14753,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ObjectTypeNameChangedRule");
 				ValueComparisonConstraint.ObjectTypeNameChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint.ObjectTypeNameChangedRule");
@@ -12940,6 +14788,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.DataTypeChangeRule");
 				ValueConstraint.DataTypeChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.DataTypeChangeRule");
@@ -12966,6 +14818,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.DataTypeDeletingRule");
 				ValueConstraint.DataTypeDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.DataTypeDeletingRule");
@@ -12992,6 +14848,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.DataTypeRolePlayerChangeRule");
 				ValueConstraint.DataTypeRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.DataTypeRolePlayerChangeRule");
@@ -13018,6 +14878,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ObjectTypeRoleAdded");
 				ValueConstraint.ObjectTypeRoleAdded(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ObjectTypeRoleAdded");
@@ -13044,6 +14908,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PathConditionRoleValueConstraintAddedRule");
 				ValueConstraint.PathConditionRoleValueConstraintAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PathConditionRoleValueConstraintAddedRule");
@@ -13070,6 +14938,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PathConditionRootValueConstraintAddedRule");
 				ValueConstraint.PathConditionRootValueConstraintAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PathConditionRootValueConstraintAddedRule");
@@ -13096,6 +14968,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PreferredIdentifierDeletingRule");
 				ValueConstraint.PreferredIdentifierDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PreferredIdentifierDeletingRule");
@@ -13122,6 +14998,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PreferredIdentifierRolePlayerChangeRule");
 				ValueConstraint.PreferredIdentifierRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PreferredIdentifierRolePlayerChangeRule");
@@ -13148,6 +15028,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PreferredIdentifierRoleAddRule");
 				ValueConstraint.PreferredIdentifierRoleAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.PreferredIdentifierRoleAddRule");
@@ -13174,6 +15058,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.RolePlayerDeletingRule");
 				ValueConstraint.RolePlayerDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.RolePlayerDeletingRule");
@@ -13200,6 +15088,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.RolePlayerRolePlayerChangeRule");
 				ValueConstraint.RolePlayerRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.RolePlayerRolePlayerChangeRule");
@@ -13226,6 +15118,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.RoleValueConstraintAddedRule");
 				ValueConstraint.RoleValueConstraintAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.RoleValueConstraintAddedRule");
@@ -13252,6 +15148,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ValueConstraintAddRule");
 				ValueConstraint.ValueConstraintAddRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ValueConstraintAddRule");
@@ -13278,6 +15178,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ValueConstraintChangeRule");
 				ValueConstraint.ValueConstraintChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ValueConstraintChangeRule");
@@ -13304,6 +15208,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ValueRangeAddedRule");
 				ValueConstraint.ValueRangeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ValueRangeAddedRule");
@@ -13330,6 +15238,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ValueRangeChangeRule");
 				ValueConstraint.ValueRangeChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint.ValueRangeChangeRule");
@@ -13361,6 +15273,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeAddedRule");
 				ValueTypeInstance.ValueTypeHasDataTypeAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeAddedRule");
@@ -13387,6 +15303,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeDeletedRule");
 				ValueTypeInstance.ValueTypeHasDataTypeDeletedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeDeletedRule");
@@ -13413,6 +15333,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
 			{
+				if (e.ElementLink.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeRolePlayerChangeRule");
 				ValueTypeInstance.ValueTypeHasDataTypeRolePlayerChangeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeHasDataTypeRolePlayerChangeRule");
@@ -13439,6 +15363,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeInstanceValueChangedRule");
 				ValueTypeInstance.ValueTypeInstanceValueChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeInstanceValueChangedRule");
@@ -13465,6 +15393,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeHasValueTypeInstanceAddedRule");
 				ValueTypeInstance.ValueTypeHasValueTypeInstanceAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeInstance.ValueTypeHasValueTypeInstanceAddedRule");
@@ -13501,6 +15433,10 @@ namespace ORMSolutions.ORMArchitect.Framework
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NamedElementDictionary.ElementLinkAddedRule");
 				NamedElementDictionary.ElementLinkAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NamedElementDictionary.ElementLinkAddedRule");
@@ -13527,6 +15463,10 @@ namespace ORMSolutions.ORMArchitect.Framework
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NamedElementDictionary.ElementLinkDeletingRule");
 				NamedElementDictionary.ElementLinkDeletingRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NamedElementDictionary.ElementLinkDeletingRule");
@@ -13553,6 +15493,10 @@ namespace ORMSolutions.ORMArchitect.Framework
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
+				if (e.ModelElement.Partition.AlternateId != null)
+				{
+					return;
+				}
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NamedElementDictionary.NamedElementChangedRule");
 				NamedElementDictionary.NamedElementChangedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.NamedElementDictionary.NamedElementChangedRule");

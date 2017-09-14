@@ -43,8 +43,16 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element name="Model" type="ModelType" maxOccurs="unbounded"/>
+			
 		</xs:sequence>
 	</xs:complexType>
+	<xs:attributeGroup name="alternatePartitions">
+		<xs:attribute name="blockAlternatePartitions" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Block all interation of this rule (including logging) with elements from partitions with a non-null AlternateId. This can be overridden on contained elements.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
 	<xs:complexType name="ModelType">
 		<xs:annotation>
 			<xs:documentation>The meta model to generate rules for.</xs:documentation>
@@ -77,6 +85,7 @@
 				<xs:documentation>A custom static callback function implemented as a static method in the domain model that takes a Store parameter. Designed to enable custom rule-sharing patterns to be established.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attributeGroup ref="alternatePartitions"/>
 	</xs:complexType>
 	<xs:element name="ReflectedType" type="ReflectedTypeType"/>
 	<xs:element name="Rule" type="RuleType" substitutionGroup="ReflectedType"/>
@@ -125,7 +134,8 @@
 			<xs:extension base="ReflectedTypeType">
 				<xs:sequence>
 					<xs:element ref="AutoRule" maxOccurs="unbounded"/>
-				</xs:sequence>				
+				</xs:sequence>
+				<xs:attributeGroup ref="alternatePartitions"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -311,6 +321,7 @@
 							</xs:union>
 						</xs:simpleType>
 					</xs:attribute>
+					<xs:attributeGroup ref="alternatePartitions"/>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>

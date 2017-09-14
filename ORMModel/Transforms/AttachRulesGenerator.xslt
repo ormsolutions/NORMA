@@ -16,7 +16,9 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX"
 	xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator"
+	xmlns:loc="urn:local"
 	xmlns:exsl="http://exslt.org/common"
+	exclude-result-prefixes="loc"
 	extension-element-prefixes="exsl">
 	<!-- Indenting is useful for debugging the transform, but a waste of memory at generation time -->
 	<xsl:output method="xml" encoding="utf-8" indent="no"/>
@@ -43,6 +45,7 @@
 		</xsl:variable>
 		<xsl:variable name="namespaceName" select="string($namespaceNameTemp)"/>
 		<xsl:variable name="allRuleContainers" select="arg:RuleContainer"/>
+		<xsl:variable name="modelBlockAlternatePartitions" select="@blockAlternatePartitions='true' or @blockAlternatePartitions='1'"/>
 		<xsl:variable name="allReflectedRuleTypesFragment">
 			<xsl:copy-of select="arg:Rule"/>
 			<!-- Merge all of the auto rules in with the normal rules for type resolution and enabled/disabled processing -->
@@ -442,7 +445,9 @@
 				<xsl:call-template name="GenerateInitiallyDisabledRuleClass"/>
 			</xsl:for-each>
 			<xsl:for-each select="$allRuleContainers[not(@namespace) or @namespace=$namespaceName]">
-				<xsl:call-template name="GenerateRuleContainerClass"/>
+				<xsl:call-template name="GenerateRuleContainerClass">
+					<xsl:with-param name="modelBlockAlternatePartitions" select="$modelBlockAlternatePartitions"/>
+				</xsl:call-template>
 			</xsl:for-each>
 		</plx:namespace>
 		<!-- Disable rules for namespaces in other classes -->
@@ -496,7 +501,9 @@
 				<xsl:variable name="foreignNamespace" select="string(@namespace)"/>
 				<plx:namespace name="{$foreignNamespace}">
 					<xsl:for-each select="$foreignAutoRules[@namespace=$foreignNamespace]">
-						<xsl:call-template name="GenerateRuleContainerClass"/>
+						<xsl:call-template name="GenerateRuleContainerClass">
+							<xsl:with-param name="modelBlockAlternatePartitions" select="$modelBlockAlternatePartitions"/>
+						</xsl:call-template>
 					</xsl:for-each>
 				</plx:namespace>
 			</xsl:for-each>
@@ -650,6 +657,8 @@
 		<xsl:param name="remainingName" select="normalize-space(translate(@class, '+.', '  '))"/>
 		<xsl:param name="firstPart" select="true()"/>
 		<xsl:param name="originalClass" select="translate($remainingName,' ','.')"/>
+		<xsl:param name="modelBlockAlternatePartitions" select="false()"/>
+		<xsl:param name="containerBlockAlternatePartitions" select="($modelBlockAlternatePartitions and not(@blockAlternatePartitions='false' or @blockAlternatePartitions='0')) or (@blockAlternatePartitions='true' or @blockAlternatePartitions='1')"/>
 		<xsl:variable name="publicPart" select="substring-before($remainingName, ' ')"/>
 		<plx:class name="{$remainingName}" visibility="deferToPartial" partial="true">
 			<xsl:if test="$publicPart">
@@ -687,6 +696,7 @@
 						<xsl:with-param name="remainingName" select="substring($remainingName, string-length($publicPart)+2)"/>
 						<xsl:with-param name="firstPart" select="false()"/>
 						<xsl:with-param name="originalClass" select="$originalClass"/>
+						<xsl:with-param name="containerBlockAlternatePartitions" select="$containerBlockAlternatePartitions"/>
 					</xsl:call-template>
 				</xsl:when>
 				<xsl:otherwise>
@@ -982,6 +992,29 @@
 								</plx:leadingInfo>
 								<plx:attribute dataTypeName="DebuggerStepThrough" dataTypeQualifier="System.Diagnostics"/>
 								<plx:param name="e" dataTypeName="{$methodInfo/@ruleEventArgsType}" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
+								<xsl:if test="$methodInfo/loc:element and (($containerBlockAlternatePartitions and not(@blockAlternatePartitions='false' or @blockAlternatePartitions='0')) or (@blockAlternatePartitions='true' or @blockAlternatePartitions='1'))">
+									<plx:branch>
+										<plx:condition>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:callInstance type="property" name="AlternateId">
+														<plx:callObject>
+															<plx:callInstance type="property" name="Partition">
+																<plx:callObject>
+																	<xsl:copy-of select="$methodInfo/loc:element/child::*"/>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:callObject>
+													</plx:callInstance>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:return/>
+									</plx:branch>
+								</xsl:if>
 								<xsl:variable name="classFullNameString">
 									<plx:string>
 										<xsl:attribute name="data">
@@ -1009,7 +1042,7 @@
 								</xsl:variable>
 								<plx:callStatic name="TraceRuleStart" dataTypeName="TraceUtility" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework.Diagnostics">
 									<plx:passParam>
-										<xsl:copy-of select="$methodInfo/child::*"/>
+										<xsl:copy-of select="$methodInfo/loc:store/child::*"/>
 									</plx:passParam>
 									<plx:passParam>
 										<xsl:copy-of select="$classFullNameString"/>
@@ -1033,7 +1066,7 @@
 								</xsl:choose>
 								<plx:callStatic name="TraceRuleEnd" dataTypeName="TraceUtility" dataTypeQualifier="ORMSolutions.ORMArchitect.Framework.Diagnostics">
 									<plx:passParam>
-										<xsl:copy-of select="$methodInfo/child::*"/>
+										<xsl:copy-of select="$methodInfo/loc:store/child::*"/>
 									</plx:passParam>
 									<plx:passParam>
 										<xsl:copy-of select="$classFullNameString"/>
@@ -1048,132 +1081,194 @@
 	</xsl:template>
 	<xsl:template match="arg:AddRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="ElementAdded" ruleEventArgsType="ElementAddedEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="ModelElement" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<xsl:variable name="elementFragment">
+				<plx:callInstance name="ModelElement" type="property">
+					<plx:callObject>
+						<plx:nameRef name="e" type="parameter"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</xsl:variable>
+			<loc:element>
+				<xsl:copy-of select="$elementFragment"/>
+			</loc:element>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<xsl:copy-of select="$elementFragment"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 	<xsl:template match="arg:ChangeRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="ElementPropertyChanged" ruleEventArgsType="ElementPropertyChangedEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="ModelElement" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<xsl:variable name="elementFragment">
+				<plx:callInstance name="ModelElement" type="property">
+					<plx:callObject>
+						<plx:nameRef name="e" type="parameter"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</xsl:variable>
+			<loc:element>
+				<xsl:copy-of select="$elementFragment"/>
+			</loc:element>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<xsl:copy-of select="$elementFragment"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 	<xsl:template match="arg:DeleteRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="ElementDeleted" ruleEventArgsType="ElementDeletedEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="ModelElement" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<xsl:variable name="elementFragment">
+				<plx:callInstance name="ModelElement" type="property">
+					<plx:callObject>
+						<plx:nameRef name="e" type="parameter"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</xsl:variable>
+			<loc:element>
+				<xsl:copy-of select="$elementFragment"/>
+			</loc:element>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<xsl:copy-of select="$elementFragment"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 	<xsl:template match="arg:DeletingRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="ElementDeleting" ruleEventArgsType="ElementDeletingEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="ModelElement" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<xsl:variable name="elementFragment">
+				<plx:callInstance name="ModelElement" type="property">
+					<plx:callObject>
+						<plx:nameRef name="e" type="parameter"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</xsl:variable>
+			<loc:element>
+				<xsl:copy-of select="$elementFragment"/>
+			</loc:element>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<xsl:copy-of select="$elementFragment"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 	<xsl:template match="arg:MoveRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="ElementMoved" ruleEventArgsType="ElementMovedEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="ModelElement" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<xsl:variable name="elementFragment">
+				<plx:callInstance name="ModelElement" type="property">
+					<plx:callObject>
+						<plx:nameRef name="e" type="parameter"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</xsl:variable>
+			<loc:element>
+				<xsl:copy-of select="$elementFragment"/>
+			</loc:element>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<xsl:copy-of select="$elementFragment"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 	<xsl:template match="arg:RolePlayerChangeRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="RolePlayerChanged" ruleEventArgsType="RolePlayerChangedEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="ElementLink" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<xsl:variable name="elementFragment">
+				<plx:callInstance name="ElementLink" type="property">
+					<plx:callObject>
+						<plx:nameRef name="e" type="parameter"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</xsl:variable>
+			<loc:element>
+				<xsl:copy-of select="$elementFragment"/>
+			</loc:element>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<xsl:copy-of select="$elementFragment"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 	<xsl:template match="arg:RolePlayerPositionChangeRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="RolePlayerPositionChanged" ruleEventArgsType="RolePlayerOrderChangedEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="SourceElement" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<xsl:variable name="elementFragment">
+				<plx:callInstance name="SourceElement" type="property">
+					<plx:callObject>
+						<plx:nameRef name="e" type="parameter"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</xsl:variable>
+			<loc:element>
+				<xsl:copy-of select="$elementFragment"/>
+			</loc:element>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<xsl:copy-of select="$elementFragment"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 	<xsl:template match="arg:TransactionBeginningRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="TransactionBeginning" ruleEventArgsType="TransactionBeginningEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="Transaction" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<plx:callInstance name="Transaction" type="property">
+							<plx:callObject>
+								<plx:nameRef name="e" type="parameter"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 	<xsl:template match="arg:TransactionCommittingRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="TransactionCommitting" ruleEventArgsType="TransactionCommitEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="Transaction" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<plx:callInstance name="Transaction" type="property">
+							<plx:callObject>
+								<plx:nameRef name="e" type="parameter"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 	<xsl:template match="arg:TransactionRollingBackRule" mode="RuleMethodInfo">
 		<names ruleType="{local-name()}" ruleMethodName="TransactionRollingBack" ruleEventArgsType="TransactionRollbackEventArgs">
-			<plx:callInstance name="Store" type="property">
-				<plx:callObject>
-					<plx:callInstance name="Transaction" type="property">
-						<plx:callObject>
-							<plx:nameRef name="e" type="parameter"/>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:callObject>
-			</plx:callInstance>
+			<loc:store>
+				<plx:callInstance name="Store" type="property">
+					<plx:callObject>
+						<plx:callInstance name="Transaction" type="property">
+							<plx:callObject>
+								<plx:nameRef name="e" type="parameter"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:callObject>
+				</plx:callInstance>
+			</loc:store>
 		</names>
 	</xsl:template>
 </xsl:stylesheet>
