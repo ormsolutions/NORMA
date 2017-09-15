@@ -2377,6 +2377,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			Dictionary<BoundEntryRole, EvaluateCopyClosure> primaryBehaviors = myPrimaryBehaviors;
 			Dictionary<Guid, AvailableClosureBehaviors> availableBehaviorsDictionary = myAvailableBehaviors;
 			Type nearType = element.GetType();
+			Partition elementPartition = element.Partition;
 			DomainClassInfo domainClass = element.GetDomainClass();
 			foreach (DomainRoleInfo roleInfo in domainClass.AllDomainRolesPlayed)
 			{
@@ -2398,6 +2399,10 @@ namespace ORMSolutions.ORMArchitect.Framework
 
 					foreach (ElementLink elementLink in roleInfo.GetElementLinks(element))
 					{
+						if (elementLink.Partition != elementPartition)
+						{
+							continue;
+						}
 						ModelElement oppositeRolePlayer = null;
 						Type farType = needExitRoleType ? (oppositeRolePlayer = (oppositeRoleInfo ?? (oppositeRoleInfo = roleInfo.OppositeDomainRole)).GetRolePlayer(elementLink)).GetType() : null;
 
