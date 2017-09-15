@@ -1416,9 +1416,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSupertypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
-			return (startingType != null) ? WalkSupertypes(startingType, startingType, 0, false, visitor) == ObjectTypeVisitorResult.Continue : false;
+			return (startingType != null) ? WalkSupertypes(startingType, startingType, 0, false, startingType.Partition, visitor) == ObjectTypeVisitorResult.Continue : false;
 		}
-		private static ObjectTypeVisitorResult WalkSupertypes(ObjectType startingType, ObjectType currentType, int depth, bool isPrimary, ObjectTypeVisitor visitor)
+		private static ObjectTypeVisitorResult WalkSupertypes(ObjectType startingType, ObjectType currentType, int depth, bool isPrimary, Partition contextPartition, ObjectTypeVisitor visitor)
 		{
 			if (depth != 0 && startingType == currentType)
 			{
@@ -1445,9 +1445,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					SubtypeFact subtypeFact;
 					ObjectType supertype;
 					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
-						null != (supertype = subtypeFact.Supertype))
+						null != (supertype = subtypeFact.Supertype) &&
+						subtypeFact.Partition == contextPartition &&
+						supertype.Partition == contextPartition)
 					{
-						switch (WalkSupertypes(startingType, supertype, depth, subtypeFact.ProvidesPreferredIdentifier && !subtypeFact.IsDeleting, visitor))
+						switch (WalkSupertypes(startingType, supertype, depth, subtypeFact.ProvidesPreferredIdentifier && !subtypeFact.IsDeleting, contextPartition, visitor))
 						{
 							case ObjectTypeVisitorResult.Stop:
 								return ObjectTypeVisitorResult.Stop;
@@ -1475,9 +1477,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSubtypes(ObjectType startingType, ObjectTypeVisitor visitor)
 		{
-			return (startingType != null) ? WalkSubtypes(startingType, startingType, 0, false, visitor) == ObjectTypeVisitorResult.Continue : false;
+			return (startingType != null) ? WalkSubtypes(startingType, startingType, 0, false, startingType.Partition, visitor) == ObjectTypeVisitorResult.Continue : false;
 		}
-		private static ObjectTypeVisitorResult WalkSubtypes(ObjectType startingType, ObjectType currentType, int depth, bool isPrimary, ObjectTypeVisitor visitor)
+		private static ObjectTypeVisitorResult WalkSubtypes(ObjectType startingType, ObjectType currentType, int depth, bool isPrimary, Partition contextPartition, ObjectTypeVisitor visitor)
 		{
 			if (depth != 0 && startingType == currentType)
 			{
@@ -1504,9 +1506,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					SubtypeFact subtypeFact;
 					ObjectType subtype;
 					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
-						null != (subtype = subtypeFact.Subtype))
+						null != (subtype = subtypeFact.Subtype) &&
+						subtypeFact.Partition == contextPartition &&
+						subtype.Partition == contextPartition)
 					{
-						switch (WalkSubtypes(startingType, subtype, depth, subtypeFact.ProvidesPreferredIdentifier && !subtypeFact.IsDeleting, visitor))
+						switch (WalkSubtypes(startingType, subtype, depth, subtypeFact.ProvidesPreferredIdentifier && !subtypeFact.IsDeleting, contextPartition, visitor))
 						{
 							case ObjectTypeVisitorResult.Stop:
 								return ObjectTypeVisitorResult.Stop;
@@ -1534,9 +1538,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSupertypeRelationships(ObjectType startingType, SubtypeFactVisitor visitor)
 		{
-			return (startingType != null) ? WalkSupertypeRelationships(startingType, startingType, 0, visitor) == ObjectTypeVisitorResult.Continue : false;
+			return (startingType != null) ? WalkSupertypeRelationships(startingType, startingType, 0, startingType.Partition, visitor) == ObjectTypeVisitorResult.Continue : false;
 		}
-		private static ObjectTypeVisitorResult WalkSupertypeRelationships(ObjectType startingType, ObjectType currentType, int depth, SubtypeFactVisitor visitor)
+		private static ObjectTypeVisitorResult WalkSupertypeRelationships(ObjectType startingType, ObjectType currentType, int depth, Partition contextPartition, SubtypeFactVisitor visitor)
 		{
 			if (depth != 0 && startingType == currentType)
 			{
@@ -1553,7 +1557,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					SubtypeFact subtypeFact;
 					ObjectType supertype;
 					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
-						null != (supertype = subtypeFact.Supertype))
+						null != (supertype = subtypeFact.Supertype) &&
+						subtypeFact.Partition == contextPartition &&
+						supertype.Partition == contextPartition)
 					{
 						result = visitor(subtypeFact, supertype, depth);
 						switch (result)
@@ -1566,7 +1572,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							case ObjectTypeVisitorResult.Stop:
 								return result;
 						}
-						switch (WalkSupertypeRelationships(startingType, supertype, depth + 1, visitor))
+						switch (WalkSupertypeRelationships(startingType, supertype, depth + 1, contextPartition, visitor))
 						{
 							case ObjectTypeVisitorResult.Stop:
 								return ObjectTypeVisitorResult.Stop;
@@ -1594,9 +1600,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <returns>true if the iteration completes, false if it is stopped by a positive response</returns>
 		public static bool WalkSubtypeRelationships(ObjectType startingType, SubtypeFactVisitor visitor)
 		{
-			return (startingType != null) ? WalkSubtypeRelationships(startingType, startingType, 0, visitor) == ObjectTypeVisitorResult.Continue : false;
+			return (startingType != null) ? WalkSubtypeRelationships(startingType, startingType, 0, startingType.Partition, visitor) == ObjectTypeVisitorResult.Continue : false;
 		}
-		private static ObjectTypeVisitorResult WalkSubtypeRelationships(ObjectType startingType, ObjectType currentType, int depth, SubtypeFactVisitor visitor)
+		private static ObjectTypeVisitorResult WalkSubtypeRelationships(ObjectType startingType, ObjectType currentType, int depth, Partition contextPartition, SubtypeFactVisitor visitor)
 		{
 			if (depth != 0 && startingType == currentType)
 			{
@@ -1613,7 +1619,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					SubtypeFact subtypeFact;
 					ObjectType subtype;
 					if (null != (subtypeFact = role.FactType as SubtypeFact) &&
-						null != (subtype = subtypeFact.Subtype))
+						null != (subtype = subtypeFact.Subtype) &&
+						subtypeFact.Partition == contextPartition &&
+						subtype.Partition == contextPartition)
 					{
 						result = visitor(subtypeFact, subtype, depth);
 						switch (result)
@@ -1626,7 +1634,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							case ObjectTypeVisitorResult.Stop:
 								return result;
 						}
-						switch (WalkSubtypeRelationships(startingType, subtype, depth + 1, visitor))
+						switch (WalkSubtypeRelationships(startingType, subtype, depth + 1, contextPartition, visitor))
 						{
 							case ObjectTypeVisitorResult.Stop:
 								return ObjectTypeVisitorResult.Stop;
@@ -1826,6 +1834,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ObjectType firstObjectType = null;
 			Dictionary<ObjectType, NearestCompatibleTypeNode> typeNodes = null;
 			Dictionary<ExclusionConstraint, int> passedExclusions = null;
+			Partition contextPartition = null;
 			foreach (ObjectType currentObjectType in objectTypeCollection)
 			{
 				// Increment first so we can use with the LastVisitedDuring field. Otherwise,
@@ -1834,8 +1843,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (firstObjectType == null)
 				{
 					firstObjectType = currentObjectType;
+					contextPartition = currentObjectType.Partition;
 				}
-				else if (firstObjectType != currentObjectType && currentObjectType != null)
+				else if (firstObjectType != currentObjectType && currentObjectType != null && currentObjectType.Partition == contextPartition)
 				{
 					if (expectedVisitCount == 0)
 					{
@@ -1845,13 +1855,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							passedExclusions = new Dictionary<ExclusionConstraint, int>();
 						}
-						WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, firstObjectType, 1);
+						WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, firstObjectType, 1, contextPartition);
 						// Exclusion checking cannot fail on the first visit index
 						expectedVisitCount = 1;
 					}
 
 					// Process the current element
-					if (!WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, currentObjectType, currentRoleIndex))
+					if (!WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, currentObjectType, currentRoleIndex, contextPartition))
 					{
 						// Exclusion checking failed, get out.
 						return EmptyArray;
@@ -1923,7 +1933,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Helper method for GetNearestCompatibleTypes
 		/// </summary>
-		private static bool WalkSupertypesForNearestCompatibleTypes(Dictionary<ObjectType, NearestCompatibleTypeNode> typeNodes, Dictionary<ExclusionConstraint, int> passedExclusions, ObjectType currentType, int currentVisitIndex)
+		private static bool WalkSupertypesForNearestCompatibleTypes(Dictionary<ObjectType, NearestCompatibleTypeNode> typeNodes, Dictionary<ExclusionConstraint, int> passedExclusions, ObjectType currentType, int currentVisitIndex, Partition contextPartition)
 		{
 			NearestCompatibleTypeNode currentNode;
 			if (typeNodes.TryGetValue(currentType, out currentNode))
@@ -1936,7 +1946,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				LinkedList<ObjectType> currentChildren = currentNode.ChildNodes;
 				foreach (Role role in currentType.PlayedRoleCollection)
 				{
-					if (role is SubtypeMetaRole)
+					if (role is SubtypeMetaRole && role.Partition == contextPartition)
 					{
 						SupertypeMetaRole supertypeRole = ((SubtypeFact)role.FactType).SupertypeRole;
 						if (passedExclusions != null)
@@ -1977,7 +1987,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							currentNode.ChildNodes = currentChildren = new LinkedList<ObjectType>();
 						}
 						currentChildren.AddLast(new LinkedListNode<ObjectType>(childType));
-						if (!WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, childType, currentVisitIndex))
+						if (!WalkSupertypesForNearestCompatibleTypes(typeNodes, passedExclusions, childType, currentVisitIndex, contextPartition))
 						{
 							return false;
 						}
