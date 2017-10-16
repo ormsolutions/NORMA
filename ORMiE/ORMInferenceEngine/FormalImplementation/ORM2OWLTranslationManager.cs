@@ -492,6 +492,13 @@ namespace unibz.ORMInferenceEngine
 				//InferredEquivalentPredicates equivalentPredicates = infModel.getInferredEquivalentPredicates();
 				//CreateInferredEquivalentPredicates(inferredConstraints, equivalentPredicates);
 
+				//FAKE ZONE
+				CreateInferredExclusiveTypes(inferredConstraints, "Type1", "Type2");
+				CreateInferredExclusiveSet(inferredConstraints, "Set1", "Set2");
+				CreateInferredMandatory(inferredConstraints, "Fake-Mandatory");
+				CreateInferredUniqueness(inferredConstraints, "Fake-Uniqueness");
+
+				/*
 				foreach (Inferred inferredConstraint in infModel.getInferredConstraints())
 				{
 					InferredExclusiveTypes exclusiveType;
@@ -515,6 +522,7 @@ namespace unibz.ORMInferenceEngine
 						CreateInferredUniqueness(inferredConstraints, unique.getUniqueRoleName());
 					}
 				}
+				*/
 			}
 
 		}
