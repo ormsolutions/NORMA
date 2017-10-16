@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <!--  This is the file that defines the actual layout and type of the commands.
+        It is divided in different sections (e.g. command definition, command
+        placement, ...), with each defining a specific set of properties.
+        See the comment before each section for more details about how to
+        use it. -->
+
+  <!--  The VSCT compiler (the tool that translates this file into the binary 
+        format that VisualStudio will consume) has the ability to run a preprocessor 
+        on the vsct file; this preprocessor is (usually) the C++ preprocessor, so 
+        it is possible to define includes and macros with the same syntax used 
+        in C++ files. Using this ability of the compiler here, we include some files 
+        defining some of the constants that we will use inside the file. -->
+
+  <!--This is the file that defines the IDs for all the commands exposed by VisualStudio. -->
+  <Extern href="stdidcmd.h"/>
+
+  <!--This header contains the command ids for the menus provided by the shell. -->
+  <Extern href="vsshlids.h"/>
+
+
+  <!--The Commands section is where we the commands, menus and menu groups are defined.
+      This section uses a Guid to identify the package that provides the command defined inside it. -->
+  <Commands package="guidORMInferenceEnginePkg">
+    <!-- Inside this section we have different sub-sections: one for the menus, another  
+    for the menu groups, one for the buttons (the actual commands), one for the combos 
+    and the last one for the bitmaps used. Each element is identified by a command id that  
+    is a unique pair of guid and numeric identifier; the guid part of the identifier is usually  
+    called "command set" and is used to group different command inside a logically related  
+    group; your package should define its own command set in order to avoid collisions  
+    with command ids defined by other packages. -->
+
+    
+    <!-- In this section you can define new menu groups. A menu group is a container for 
+         other menus or buttons (commands); from a visual point of view you can see the 
+         group as the part of a menu contained between two lines. The parent of a group 
+         must be a menu. -->
+    <Menus>
+      <Menu guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceToolbarID"
+            priority="0x0000" type="ToolWindowToolbar">
+        <Parent guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceToolbarID" />
+        <Strings>
+          <ButtonText>ORM Inference Engine Window Toolbar</ButtonText>
+          <CommandName>ORM Inference Engine Window Toolbar</CommandName>
+        </Strings>
+      </Menu>
+
+      <Menu guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceDummyMenuID"
+            priority="0x0000" type="Context">
+        <Parent guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceDummyMenuID" />
+        <Strings>
+          <ButtonText>ORM Inference Engine Commands</ButtonText>
+          <CommandName>ORM Inference Engine Commands</CommandName>
+        </Strings>
+      </Menu>
+    </Menus>
+    <Groups>
+
+      <Group guid="guidORMInferenceEnginePackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+      </Group>
+
+      <Group guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceToolbarGroupID"
+             priority="0x0000">
+        <Parent guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceToolbarID"/>
+      </Group>
+
+      <Group guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceDummyGroupID"
+             priority="0x0000">
+        <Parent guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceDummyMenuID"/>
+      </Group>
+    </Groups>
+    
+    <!--Buttons section. -->
+    <!--This section defines the elements the user can interact with, like a menu command or a button 
+        or combo box in a toolbar. -->
+    <Buttons>
+      <!--To define a menu group you have to specify its ID, the parent menu and its display priority. 
+          Some commands are not defined as shared, so they use our package CLSID as the command set GUID. 
+          Also, by specifying blank for the FLAGS, the command is default visible and enabled. Other valid 
+          values for FLAGS are the following: DEFAULTDISABLED, DEFAULTINVISIBLE, DYNAMICVISIBILITY, TEXTCHANGES 
+          
+          These values for FLAGS can be or'ed together, e.g. "DEFAULTINVISIBLE | DYNAMICVISIBILITY" 
+          If you do not want an image next to your command, set the image to "guidOfficeIcon:msotcidNoIcon" -->
+
+      <Button guid="guidORMInferenceEnginePackageCmdSet" id="cmdidORMInferenceEngineStart" priority="0x0100" type="Button">
+        <Parent guid="guidORMInferenceEnginePackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <CommandName>cmdidORMInferenceEngineStart</CommandName>
+          <ButtonText>Run ORM2 Inference Engine</ButtonText>
+        </Strings>
+      </Button>
+
+
+      <Button guid="guidORMInferenceEnginePackageCmdSet" id="cmdidORMInferenceExplorer" priority="0x0100" type="Button">
+        <Parent guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceDummyGroupID"/>
+        <Icon guid="guidImages" id="bmpPic2" />
+        <Strings>
+          <CommandName>cmdidORMInferenceExplorer</CommandName>
+          <ButtonText>ORM Inference Engine Window</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidORMInferenceEnginePackageCmdSet"
+              id="cmdidORMInferenceEngineStart" priority="0x0100"
+              type="Button">
+        <Parent guid="guidORMInferenceEnginePackageCmdSet" id="ORMInferenceToolbarGroupID"/>
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <CommandName>cmdidORMInferenceEngineStart</CommandName>
+          <ButtonText>Run ORM Inference Engine</ButtonText>
+        </Strings>
+      </Button>
+      
+    </Buttons>
+   
+    <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
+    <Bitmaps>
+      <!--  The bitmap id is defined in a way that is a little bit different from the others: 
+            the declaration starts with a guid for the bitmap strip, then there is the resource id of the 
+            bitmap strip containing the bitmaps and then there are the numeric ids of the elements used 
+            inside a button definition. An important aspect of this declaration is that the element id 
+            must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
+      <Bitmap guid="guidImages" href="Resources\Images_32bit.bmp" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows"/>
+
+    </Bitmaps>
+ 
+  </Commands>
+
+
+  <CommandPlacements>
+    <CommandPlacement guid="guidORMInferenceEnginePackageCmdSet" id="cmdidORMInferenceExplorer" priority="0x2000">
+      <Parent guid="guidORMDesignerCommandSet" id="groupIdORMToolWindows"/>
+    </CommandPlacement>
+  </CommandPlacements>
+
+
+  <Symbols>
+    <!-- This is the package guid. -->
+    <GuidSymbol name="guidORMInferenceEnginePkg" value="{76d8e8ce-b44d-46b9-a37c-4e3094288830}" />
+    
+    <!-- This is the guid used to group the menu commands together -->
+    <GuidSymbol name="guidORMInferenceEnginePackageCmdSet" value="{e211e66a-60cc-4ae4-8a1f-c17ac5b1aa69}">
+
+      <IDSymbol name="MyMenuGroup" value="0x1020" />
+      <IDSymbol name="cmdidORMInferenceEngineStart" value="0x0100" />
+      <IDSymbol name="cmdidORMInferenceExplorer" value="0x0101" />
+      <IDSymbol name="ORMInferenceToolbarID" value="0x1000" />
+      <IDSymbol name="ORMInferenceToolbarGroupID" value="0x1001" />
+      <IDSymbol name="ORMInferenceDummyMenuID" value="0x1002" />
+      <IDSymbol name="ORMInferenceDummyGroupID" value="0x1003" />
+
+    </GuidSymbol>
+    
+    <GuidSymbol name="guidORMDesignerCommandSet" value="{7C51C000-1EAD-4B39-89B5-42BC9F49EA24}">
+      <IDSymbol value="0x1006" name="groupIdORMToolWindows"/>
+    </GuidSymbol>
+    
+    <GuidSymbol name="guidImages" value="{53de5a2c-649a-4d66-9ec5-d06e2075df1f}" >
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+    </GuidSymbol>
+  </Symbols>
+
+</CommandTable>

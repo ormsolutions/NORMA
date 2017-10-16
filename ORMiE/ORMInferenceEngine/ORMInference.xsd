@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema
+	targetNamespace="http://unibz.edu/NORMA/2013-05/ORMInference"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:inf="http://unibz.edu/NORMA/2013-05/ORMInference"
+	elementFormDefault="qualified"
+	attributeFormDefault="unqualified">
+
+</xs:schema>
