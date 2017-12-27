@@ -5665,7 +5665,7 @@
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.GroupingElementRelationshipTypeDescriptionProvider)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;GroupingElementRelationship, Design.GroupingElementRelationshipTypeDescriptor&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

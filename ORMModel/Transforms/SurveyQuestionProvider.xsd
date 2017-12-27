@@ -102,6 +102,17 @@
 			<xs:element ref="displayDataMap" minOccurs="0"/>
 			<xs:element ref="commandProviderMap" minOccurs="0"/>
 			<xs:element ref="emptyHeaderMap" minOccurs="0"/>
+			<xs:element name="redirectAnswersTo" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="strict" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>A custom expression. Use the data and contextElement arguments to find another object that implements IAnswerIndirectSurveyQuestion (or IAnswerIndirectSurveyDynamicQuestion) instead of use the data object to answer the question. If multiple statements are provided, the last is used as the redirection expression.</xs:documentation>
+							</xs:annotation>
+						</xs:any>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="questionType" type="xs:string" use="required">
 			<xs:annotation>
@@ -121,6 +132,11 @@
 		<xs:attribute name="questionPriority" type="xs:integer" default="0">
 			<xs:annotation>
 				<xs:documentation>Set the question priority relative to other questions. This affects the header display order in the survey tree. The default value is 0, lower numbers (including negative) are placed higher in the list.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="sortNotApplicableFirst" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>For grouped and sorted elements, place any elements that do not have information for this group before elements with categorization in this group. By default, uncategorized elements are placed after recognized elements.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

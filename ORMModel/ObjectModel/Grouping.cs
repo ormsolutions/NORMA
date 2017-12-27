@@ -58,6 +58,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		Blocked,
 	}
 	#endregion // GroupingTypeElementSupportLevel enum
+	#region GroupingTypeSupportRequestReason
+	/// <summary>
+	/// Provide context information regarding the reason for a request to an implementation of
+	/// <see cref="M:ElementGroupingType.GetElementSupportLevel"/> to determine the appropriate
+	/// action to take.
+	/// </summary>
+	public enum GroupingTypeSupportRequestReason
+	{
+		/// <summary>
+		/// The change is automatically triggered and does not directly correspond to a user action.
+		/// </summary>
+		Automatic,
+		/// <summary>
+		/// The user added a group type. This will only be sent if the added group type matches
+		/// the group type providing the support level.
+		/// </summary>
+		UserAddedGroupType,
+		/// <summary>
+		/// The user has requested that the element be added to the group.
+		/// </summary>
+		UserAddedElement,
+		/// <summary>
+		/// The user has requested that the element be deleted from the group.
+		/// </summary>
+		UserDeletedElement,
+	}
+	#endregion // GroupingTypeSupportRequestReason
 	#region GroupingTypeFeatures enum
 	/// <summary>
 	/// Specify features for advance element grouping
@@ -81,6 +108,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// or more elements.
 		/// </summary>
 		AutomaticMembers = 2,
+		/// <summary>
+		/// If set, a grouped element not explicitly classified as automatic by any grouping
+		/// type (meaning that no calls to <see cref="M:ElementGroupingType.GetElementSupportLevel"/>
+		/// return <see cref="F:GroupingTypeElementSupportLevel.Automatic"/>) and the group with this
+		/// flag set returns <see cref="F:GroupingTypeElementSupportLevel.NotApplicable"/> will be
+		/// automatically removed from the group when the element is validated. This is useful for
+		/// groups where some elements are explicitly added and the explicit elements are then
+		/// enhanced with automatic elements.
+		/// </summary>
+		RemoveNotApplicable = 4,
 	}
 	#endregion // GroupTypeFeatures enum
 	#region GroupingMembershipType enum
@@ -139,8 +176,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Determine the level of support by this group type for a requested element
 		/// </summary>
 		/// <param name="element">The <see cref="ModelElement"/> to test.</param>
+		/// <param name="requestReason">The reason for the request. This allows a group type that
+		/// supports both automatic elements and elements added explicitly by the user. For example,
+		/// an explicit add of an element that is automatically included in a group would result in
+		/// an Allowed support level instead of Automatic. Similarly, deleting an allowed element may
+		/// result in a switch to automatic status.</param>
 		/// <returns></returns>
-		public abstract GroupingTypeElementSupportLevel GetElementSupportLevel(ModelElement element);
+		public virtual GroupingTypeElementSupportLevel GetElementSupportLevel(ModelElement element, GroupingTypeSupportRequestReason requestReason)
+		{
+#pragma warning disable 612,618
+			return GetElementSupportLevel(element);
+#pragma warning restore 612,618
+		}
+		/// <summary>
+		/// Determine the level of support by this group type for a requested element.
+		/// </summary>
+		/// <param name="element">The <see cref="ModelElement"/> to test.</param>
+		/// <returns></returns>
+		/// <remarks>This override is included for backwards compatibility. Users should implement the other override.
+		/// The other override will be marked as abstract once this is removed.</remarks>
+		[Obsolete("User override with the requestReason parameter")]
+		public virtual GroupingTypeElementSupportLevel GetElementSupportLevel(ModelElement element)
+		{
+			return GroupingTypeElementSupportLevel.NotApplicable;
+		}
 		/// <summary>
 		/// Set the feature support level for this type of group
 		/// </summary>
@@ -241,7 +300,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected new void ValidateErrors(INotifyElementAdded notifyAdded)
 		{
 			// Calls added here need corresponding delayed calls in DelayValidateErrors
-			ValidateGroupElements(notifyAdded);
+			ValidateGroupElements(notifyAdded, null);
 		}
 		void IModelErrorOwner.ValidateErrors(INotifyElementAdded notifyAdded)
 		{
@@ -319,7 +378,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					if (0 != (groupingType.SupportedFeatures & GroupingTypeFeatures.AutomaticMembers))
 					{
-						if (GroupingTypeElementSupportLevel.Automatic == groupingType.GetElementSupportLevel(element))
+						if (GroupingTypeElementSupportLevel.Automatic == groupingType.GetElementSupportLevel(element, GroupingTypeSupportRequestReason.UserDeletedElement))
 						{
 							new GroupingElementExclusion(grouping, element);
 							break;
@@ -354,8 +413,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			GroupingElementInclusion inclusion;
 			GroupingElementExclusion exclusion;
-			ElementGroupingMembershipContradictionError contradiction;
-			switch (GetExistingMembershipType(element, out inclusion, out exclusion, out contradiction))
+			GroupingMembershipContradictionErrorIsForElement contradictionLink;
+			switch (GetExistingMembershipType(element, out inclusion, out exclusion, out contradictionLink))
 			{
 				case GroupingMembershipType.Inclusion:
 					inclusion.Delete();
@@ -363,7 +422,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					{
 						if (0 != (groupingType.SupportedFeatures & GroupingTypeFeatures.AutomaticMembers))
 						{
-							if (GroupingTypeElementSupportLevel.Automatic == groupingType.GetElementSupportLevel(element))
+							if (GroupingTypeElementSupportLevel.Automatic == groupingType.GetElementSupportLevel(element, GroupingTypeSupportRequestReason.UserDeletedElement))
 							{
 								new GroupingElementExclusion(this, element);
 								break;
@@ -391,14 +450,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			GroupingElementInclusion inclusion;
 			GroupingElementExclusion exclusion;
-			ElementGroupingMembershipContradictionError contradiction;
-			GroupingMembershipType existingLinkType = GetExistingMembershipType(element, out inclusion, out exclusion, out contradiction);
+			GroupingMembershipContradictionErrorIsForElement contradictionLink;
+			GroupingMembershipType existingLinkType = GetExistingMembershipType(element, out inclusion, out exclusion, out contradictionLink);
 			GroupingMembershipType requiredLinkType = GroupingMembershipType.None; // Interpret none as allowed but not their
 			bool notApplicable;
 			bool allowed;
 			bool automatic;
 			bool blocked;
-			GetElementSupportLevels(GroupingTypeCollection, element, out notApplicable, out allowed, out automatic, out blocked);
+			bool removeNotApplicable;
+			GetElementSupportLevels(GroupingTypeCollection, element, false, null, out notApplicable, out allowed, out automatic, out blocked, out removeNotApplicable);
 			if (blocked)
 			{
 				requiredLinkType = automatic ? GroupingMembershipType.Contradiction : (GroupingMembershipType)(-1); // -1 = extra value indicating 'not allowed'
@@ -408,7 +468,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				switch (TypeCompliance)
 				{
 					case GroupingMembershipTypeCompliance.NotExcluded:
-						requiredLinkType = automatic ? GroupingMembershipType.Inclusion : GroupingMembershipType.None;
+						requiredLinkType = automatic ? GroupingMembershipType.Inclusion : (removeNotApplicable ? (GroupingMembershipType)(-1) : GroupingMembershipType.None);
 						break;
 					case GroupingMembershipTypeCompliance.PartiallyApproved:
 						requiredLinkType = automatic ?
@@ -436,7 +496,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							exclusion.Delete();
 							break;
 						case GroupingMembershipType.Contradiction:
-							contradiction.Delete();
+							contradictionLink.GroupingMembershipContradictionErrorRelationship.MembershipContradictionError.Delete();
 							break;
 					}
 					break;
@@ -450,7 +510,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							break;
 						case GroupingMembershipType.Contradiction:
 							// Remove the error, add the element
-							contradiction.Delete();
+							contradictionLink.GroupingMembershipContradictionErrorRelationship.MembershipContradictionError.Delete();
 							createInclusion = true;
 							break;
 					}
@@ -467,7 +527,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							createInclusion = true;
 							break;
 						case GroupingMembershipType.Contradiction:
-							contradiction.Delete();
+							contradictionLink.GroupingMembershipContradictionErrorRelationship.MembershipContradictionError.Delete();
 							createInclusion = true;
 							break;
 					}
@@ -486,7 +546,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								exclusion.Delete();
 								break;
 						}
-						contradiction = new ElementGroupingMembershipContradictionError(this, element);
+						ElementGroupingMembershipContradictionError contradiction = new ElementGroupingMembershipContradictionError(this, element);
 						contradiction.Model = GroupingSet.Model;
 						contradiction.GenerateErrorText();
 						if (notifyAdded != null)
@@ -557,7 +617,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void GroupingTypeAddedRule(ElementAddedEventArgs e)
 		{
-			FrameworkDomainModel.DelayValidateElement(((ElementGroupingIsOfElementGroupingType)e.ModelElement).Grouping, DelayValidateGroupElements);
+			FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateGroupElementsForNewGroupType);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ElementGroupingIsOfElementGroupingType)
@@ -650,13 +710,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (!element.IsDeleted)
 			{
-				((ElementGrouping)element).ValidateGroupElements(null);
+				((ElementGrouping)element).ValidateGroupElements(null, null);
+			}
+		}
+		private static void DelayValidateGroupElementsForNewGroupType(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				ElementGroupingIsOfElementGroupingType link = (ElementGroupingIsOfElementGroupingType)element;
+				link.Grouping.ValidateGroupElements(null, link.GroupingType);
 			}
 		}
 		/// <summary>
 		/// Validate that all contents of the group satisfy the current grouping types and group settings
 		/// </summary>
-		private void ValidateGroupElements(INotifyElementAdded notifyAdded)
+		private void ValidateGroupElements(INotifyElementAdded notifyAdded, ElementGroupingType newGroupingType)
 		{
 			GroupingMembershipTypeCompliance typeCompliance = TypeCompliance;
 			LinkedElementCollection<ElementGroupingType> types = GroupingTypeCollection;
@@ -682,6 +750,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			bool allowed;
 			bool blocked;
 			bool automatic;
+			bool removeNotApplicable;
 			GroupingElementInclusion elementInclusionLink;
 			ModelElement testElement;
 			ElementGroupingMembershipContradictionError contradictionError;
@@ -692,7 +761,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				elementInclusionLink = elementInclusionLinks[i];
 				testElement = elementInclusionLink.IncludedElement;
-				GetElementSupportLevels(types, testElement, out notApplicable, out allowed, out automatic, out blocked);
+				GetElementSupportLevels(types, testElement, false, newGroupingType, out notApplicable, out allowed, out automatic, out blocked, out removeNotApplicable);
 				if (blocked && automatic)
 				{
 					// Error situation, remove the element and add a contradiction error
@@ -711,10 +780,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					switch (typeCompliance)
 					{
 						case GroupingMembershipTypeCompliance.NotExcluded:
-							deleteElement = blocked;
+							deleteElement = blocked || removeNotApplicable;
 							break;
 						case GroupingMembershipTypeCompliance.PartiallyApproved:
-							deleteElement = blocked || !allowed;
+							deleteElement = blocked || !allowed || removeNotApplicable;
 							break;
 						case GroupingMembershipTypeCompliance.FullyApproved:
 							deleteElement = blocked || !allowed || notApplicable;
@@ -735,7 +804,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				GroupingElementExclusion elementExclusionLink = elementExclusionLinks[i];
 				testElement = elementExclusionLink.ExcludedElement;
-				GetElementSupportLevels(types, testElement, out notApplicable, out allowed, out automatic, out blocked);
+				GetElementSupportLevels(types, testElement, false, null, out notApplicable, out allowed, out automatic, out blocked, out removeNotApplicable);
 				if (blocked && automatic)
 				{
 					// Error situation, remove the element and add a contradiction error
@@ -763,17 +832,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				contradictionError = contradictionsError[i];
 				testElement = contradictionError.Element;
-				GetElementSupportLevels(types, testElement, out notApplicable, out allowed, out automatic, out blocked);
+				GetElementSupportLevels(types, testElement, false, null, out notApplicable, out allowed, out automatic, out blocked, out removeNotApplicable);
 				if (!(blocked && automatic)) // Blocked and automatic indicates the error situation still exists
 				{
 					bool deleteElement = false;
 					switch (typeCompliance)
 					{
 						case GroupingMembershipTypeCompliance.NotExcluded:
-							deleteElement = blocked;
+							deleteElement = blocked || removeNotApplicable;
 							break;
 						case GroupingMembershipTypeCompliance.PartiallyApproved:
-							deleteElement = blocked || !allowed;
+							deleteElement = blocked || !allowed || removeNotApplicable;
 							break;
 						case GroupingMembershipTypeCompliance.FullyApproved:
 							deleteElement = blocked || !allowed || notApplicable;
@@ -815,7 +884,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool blocked = false;
 				foreach (ElementGroupingType groupingType in grouping.GroupingTypeCollection)
 				{
-					switch (groupingType.GetElementSupportLevel(referencedElement))
+					switch (groupingType.GetElementSupportLevel(referencedElement, GroupingTypeSupportRequestReason.Automatic))
 					{
 						case GroupingTypeElementSupportLevel.Automatic:
 							automatic = true;
@@ -850,11 +919,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Test whether an element can be added to this <see cref="ElementGrouping"/>
 		/// </summary>
 		/// <param name="element">The element to test</param>
+		/// <param name="isAddInquiry">Set to true if this is testing if an adding the element to the group is allowed.</param>
 		/// <param name="groupingTypes">The <see cref="ElementGroupingType"/> collection to test.
 		/// Assumed to be <see cref="GroupingTypeCollection"/> if not provided. Used as an optimization
 		/// for multiple calls.</param>
 		/// <returns><see cref="GroupingMembershipInclusion"/></returns>
-		public GroupingMembershipInclusion GetElementInclusion(ModelElement element, IList<ElementGroupingType> groupingTypes)
+		public GroupingMembershipInclusion GetElementInclusion(ModelElement element, bool isAddInquiry, IList<ElementGroupingType> groupingTypes)
 		{
 			GroupingMembershipInclusion retVal = GroupingMembershipInclusion.AddAllowed;
 			switch (GetMembershipType(element))
@@ -882,8 +952,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					bool allowed;
 					bool automatic;
 					bool blocked;
+					bool removeNotApplicable;
 					bool canAdd = true;
-					GetElementSupportLevels(groupingTypes ?? GroupingTypeCollection, element, out notApplicable, out allowed, out automatic, out blocked);
+					GetElementSupportLevels(groupingTypes ?? GroupingTypeCollection, element, isAddInquiry, null, out notApplicable, out allowed, out automatic, out blocked, out removeNotApplicable);
 					if (blocked && !automatic)
 					{
 						canAdd = false;
@@ -893,7 +964,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						switch (TypeCompliance)
 						{
 							case GroupingMembershipTypeCompliance.NotExcluded:
-								canAdd = allowed || notApplicable || !blocked;
+								canAdd = allowed || (notApplicable && !removeNotApplicable) || !blocked;
 								break;
 							case GroupingMembershipTypeCompliance.PartiallyApproved:
 								canAdd = allowed;
@@ -911,12 +982,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return retVal;
 		}
-		private GroupingMembershipType GetExistingMembershipType(ModelElement testElement, out GroupingElementInclusion inclusion, out GroupingElementExclusion exclusion, out ElementGroupingMembershipContradictionError contradiction)
+		private GroupingMembershipType GetExistingMembershipType(ModelElement testElement, out GroupingElementInclusion inclusion, out GroupingElementExclusion exclusion, out GroupingMembershipContradictionErrorIsForElement contradictionLink)
 		{
 			GroupingElementRelationship elementRel;
 			inclusion = null;
 			exclusion = null;
-			contradiction = null;
+			contradictionLink = null;
 			if (null != (elementRel = GroupingElementRelationship.GetLink(this, testElement)))
 			{
 				if (null != (inclusion = elementRel as GroupingElementInclusion))
@@ -929,11 +1000,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return GroupingMembershipType.Exclusion;
 				}
 			}
-			foreach (ElementGroupingHasMembershipContradictionError errorLink in GroupingMembershipContradictionErrorIsForElement.GetMembershipContradictionErrorCollection(testElement))
+			foreach (GroupingMembershipContradictionErrorIsForElement errorLink in GroupingMembershipContradictionErrorIsForElement.GetLinksToMembershipContradictionErrorCollection(testElement))
 			{
-				if (errorLink.Grouping == this)
+				//GroupingMembershipContradictionErrorIsForElement errorElementLink = GroupingMembershipContradictionErrorIsForElement.GetLinksToMembershipContradictionErrorCollection(testElement);
+				//errorElementLink.GroupingMembershipContradictionErrorRelationship.Grouping
+				if (errorLink.GroupingMembershipContradictionErrorRelationship.Grouping == this)
 				{
-					contradiction = errorLink.MembershipContradictionError;
+					contradictionLink = errorLink;
 					return GroupingMembershipType.Contradiction;
 				}
 			}
@@ -943,7 +1016,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Determine if an element is referenced by an <see cref="ElementGrouping"/>
 		/// </summary>
 		/// <param name="element">The element to test</param>
-		/// <returns>The <see cref="GroupingMembershipType"/> indicating the </returns>
+		/// <returns>The <see cref="GroupingMembershipType"/> indicating the type of group membership.</returns>
 		public GroupingMembershipType GetMembershipType(ModelElement element)
 		{
 			GroupingElementRelationship groupingLink;
@@ -960,40 +1033,71 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return GroupingMembershipType.None;
 		}
-		private static void GetElementSupportLevels(IList<ElementGroupingType> types, ModelElement testElement, out bool notApplicable, out bool allowed, out bool automatic, out bool blocked)
+		/// <summary>
+		/// Determine if an element is referenced by an <see cref="ElementGrouping"/> and return
+		/// the current link object for that reference.
+		/// </summary>
+		/// <param name="element">The element to test</param>
+		/// <param name="link">The link object for the membership type. This will be <see langword="null"/> if the element
+		/// is not included, a <see cref="GroupingElementInclusion"/> for <see cref="GroupingMembershipType.Inclusion"/>,
+		/// a <see cref="GroupingElementExclusion"/> for <see cref="GroupingMembershipType.Exclusion"/>,
+		/// or a <see cref="GroupingMembershipContradictionErrorIsForElement"/> for <see cref="GroupingMembershipType.Contradiction"/>.
+		/// </param>
+		/// <returns>The <see cref="GroupingMembershipType"/> indicating the type of group membership.</returns>
+		public GroupingMembershipType GetMembershipType(ModelElement element, out ElementLink link)
+		{
+			link = null;
+			GroupingElementInclusion inclusion;
+			GroupingElementExclusion exclusion;
+			GroupingMembershipContradictionErrorIsForElement errorLink;
+			GroupingMembershipType membershipType = GetExistingMembershipType(element, out inclusion, out exclusion, out errorLink);
+			switch (membershipType)
+			{
+				case GroupingMembershipType.Inclusion:
+					link = inclusion;
+					break;
+				case GroupingMembershipType.Exclusion:
+					link = exclusion;
+					break;
+				case GroupingMembershipType.Contradiction:
+					link = errorLink;
+					break;
+			}
+			return membershipType;
+		}
+		private static void GetElementSupportLevels(IList<ElementGroupingType> types, ModelElement testElement, bool isAddEnquiry, ElementGroupingType newGroupingType, out bool notApplicable, out bool allowed, out bool automatic, out bool blocked, out bool removeNotApplicable)
 		{
 			int typeCount = types.Count;
 			notApplicable = typeCount == 0;
 			blocked = false;
 			automatic = false;
 			allowed = false;
+			bool removableNotApplicable = false;
 			for (int j = 0; j < typeCount; ++j)
 			{
-				switch (types[j].GetElementSupportLevel(testElement))
+				ElementGroupingType groupingType = types[j];
+				switch (groupingType.GetElementSupportLevel(testElement, groupingType == newGroupingType ? GroupingTypeSupportRequestReason.UserAddedGroupType : (isAddEnquiry ? GroupingTypeSupportRequestReason.UserAddedElement : GroupingTypeSupportRequestReason.Automatic)))
 				{
 					case GroupingTypeElementSupportLevel.NotApplicable:
 						notApplicable = true;
+						if ((groupingType.SupportedFeatures & GroupingTypeFeatures.RemoveNotApplicable) != 0)
+						{
+							removableNotApplicable = true;
+						}
 						break;
 					case GroupingTypeElementSupportLevel.Automatic:
 						automatic = true;
-						if (blocked)
-						{
-							break;
-						}
 						break;
 					case GroupingTypeElementSupportLevel.Allowed:
 						allowed = true;
 						break;
 					case GroupingTypeElementSupportLevel.Blocked:
 						blocked = true;
-						if (automatic)
-						{
-							break;
-						}
 						break;
 				}
 			}
 			allowed = allowed || automatic; // Automatic implies allowed
+			removeNotApplicable = removableNotApplicable && !automatic;
 		}
 		#endregion // Delay Validation methods
 	}

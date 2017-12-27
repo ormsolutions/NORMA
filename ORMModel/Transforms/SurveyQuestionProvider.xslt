@@ -447,10 +447,18 @@
 				<plx:param name="data" dataTypeName=".object"/>
 				<plx:param name="contextElement" dataTypeName=".object"/>
 				<plx:returns dataTypeName=".i4"/>
+				<xsl:variable name="redirection" select="qp:redirectAnswersTo/child::*"/>
+				<xsl:variable name="redirectionCount" select="count($redirection)"/>
 				<xsl:variable name="interfaceTypeSnippet">
 					<xsl:choose>
+						<xsl:when test="$dynamic and $redirection">
+							<xsl:text>IAnswerIndirectSurveyDynamicQuestion</xsl:text>
+						</xsl:when>
 						<xsl:when test="$dynamic">
 							<xsl:text>IAnswerSurveyDynamicQuestion</xsl:text>
+						</xsl:when>
+						<xsl:when test="$redirection">
+							<xsl:text>IAnswerIndirectSurveyQuestion</xsl:text>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:text>IAnswerSurveyQuestion</xsl:text>
@@ -458,12 +466,22 @@
 					</xsl:choose>
 				</xsl:variable>
 				<xsl:variable name="interfaceType" select="string($interfaceTypeSnippet)"/>
+				<xsl:if test="$redirectionCount>1">
+					<xsl:copy-of select="$redirection[position()&lt;$redirectionCount]"/>
+				</xsl:if>
 				<plx:local name="typedData" dataTypeName="{$interfaceType}">
 					<plx:passTypeParam dataTypeName="{@questionType}"/>
 					<plx:initialize>
 						<plx:cast dataTypeName="{$interfaceType}" type="testCast">
 							<plx:passTypeParam dataTypeName="{@questionType}"/>
-							<plx:nameRef name="data" type="parameter"/>
+							<xsl:choose>
+								<xsl:when test="$redirection">
+									<xsl:copy-of select="$redirection[$redirectionCount]"/>
+								</xsl:when>
+								<xsl:otherwise>
+									<plx:nameRef name="data" type="parameter"/>
+								</xsl:otherwise>
+							</xsl:choose>
 						</plx:cast>
 					</plx:initialize>
 				</plx:local>
@@ -486,6 +504,11 @@
 							<xsl:if test="$dynamic">
 								<plx:passParam>
 									<plx:callThis name="myDynamicValues" type="field"/>
+								</plx:passParam>
+							</xsl:if>
+							<xsl:if test="$redirection">
+								<plx:passParam>
+									<plx:nameRef name="data" type="parameter"/>
 								</plx:passParam>
 							</xsl:if>
 							<plx:passParam>
@@ -926,6 +949,11 @@
 							<xsl:if test="qp:emptyHeaderMap[@defaultVisible='true' or @defaultVisible=1 or qp:map]">
 								<qp:dummy>
 									<xsl:text>EmptyGroups</xsl:text>
+								</qp:dummy>
+							</xsl:if>
+							<xsl:if test="@sortNotApplicableFirst='true' or @sortNotApplicableFirst='1'">
+								<qp:dummy>
+									<xsl:text>SortNotApplicableElementsFirst</xsl:text>
 								</qp:dummy>
 							</xsl:if>
 						</xsl:variable>

@@ -55,7 +55,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 
 					// UNDONE: AnswerOrder
 					//AnswerOrder = new int[Question.CategoryCount];
-					NeutralOnTop = false;
+					NeutralOnTop = (question.UISupport & SurveyQuestionUISupport.SortNotApplicableElementsFirst) != 0;
 				}
 			}
 			#endregion //survey question display struct
@@ -131,7 +131,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					ListGrouper grouper = myRootGrouper;
 					if (grouper == null || recreate)
 					{
-						myRootGrouper = grouper = new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1, myCurrentDisplays[0].NeutralOnTop, true);
+						myRootGrouper = grouper = new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1, true);
 					}
 					return grouper;
 				}
@@ -1001,29 +1001,33 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				}
 				if (!displayChangeOnly && questionTypes.Length != 0)
 				{
-					node.Update(questionTypes, myContextElement, mySurvey);
-					myNodes[index] = node;
-					object element = node.Element;
-					ISurveyNodeReference reference;
-					if (null == (reference = element as ISurveyNodeReference) ||
-						0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
-					{
-						mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, node);
-					}
-					if (nodeReference != null)
-					{
-						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
-						nodeReference.Value = new SurveyNodeReference(node, myContextElement);
-					}
+					UpdateNode(index, nodeReference, node.UpdateAnswers(mySurveyTree, myContextElement, mySurvey, questionTypes), true, false);
+					//node.Update(questionTypes, myContextElement, mySurvey);
+					//myNodes[index] = node;
+					//object element = node.Element;
+					//ISurveyNodeReference reference;
+					//if (null == (reference = element as ISurveyNodeReference) ||
+					//	0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
+					//{
+					//	mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, node);
+					//}
+					//if (nodeReference != null)
+					//{
+					//	Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
+					//	nodeReference.Value = new SurveyNodeReference(node, myContextElement);
+					//}
 				}
-				BranchModificationEventHandler modificationEvents = myModificationEvents;
-				if (myRootGrouper != null)
+				else
 				{
-					myRootGrouper.ElementChangedAt(index, VirtualTreeDisplayDataChanges.Image, modificationEvents);
-				}
-				else if (modificationEvents != null)
-				{
-					modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Image, this, index, 0, 1)));
+					BranchModificationEventHandler modificationEvents = myModificationEvents;
+					if (myRootGrouper != null)
+					{
+						myRootGrouper.ElementChangedAt(index, VirtualTreeDisplayDataChanges.Image, modificationEvents);
+					}
+					else if (modificationEvents != null)
+					{
+						modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Image, this, index, 0, 1)));
+					}
 				}
 			}
 			/// <summary>
@@ -1263,7 +1267,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						nodes[nodeIndex] = replacementNode;
 						if (rootGrouper != null)
 						{
-							rootGrouper.ElementModifiedAt(nodeIndex, nodeIndex, displayChanged, modificationEvents);
+							rootGrouper.ElementModifiedAt(nodeIndex, nodeIndex, replacementNode.NodeData, displayChanged, modificationEvents);
 						}
 						else if (displayChanged && modificationEvents != null)
 						{
@@ -1298,7 +1302,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						nodes.Insert(inverseToIndex, replacementNode);
 						if (rootGrouper != null)
 						{
-							rootGrouper.ElementModifiedAt(nodeIndex, inverseToIndex, displayChanged, modificationEvents);
+							rootGrouper.ElementModifiedAt(nodeIndex, inverseToIndex, replacementNode.NodeData, displayChanged, modificationEvents);
 						}
 						else if (modificationEvents != null)
 						{

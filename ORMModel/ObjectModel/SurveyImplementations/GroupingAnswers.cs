@@ -131,7 +131,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						{
 							continue;
 						}
-						if (GroupingMembershipInclusion.AddAllowed == GetElementInclusion(normalizedElement, types ?? (types = GroupingTypeCollection)))
+						if (GroupingMembershipInclusion.AddAllowed == GetElementInclusion(normalizedElement, true, types ?? (types = GroupingTypeCollection)))
 						{
 							args.Effect = DragDropEffects.Copy;
 							return;
@@ -147,7 +147,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							// UNDONE: NestedGrouping
 							if (null != normalizedElement && !(normalizedElement is ElementGrouping) && !(normalizedElement is ElementGroupingType))
 							{
-								if (GroupingMembershipInclusion.AddAllowed == GetElementInclusion(normalizedElement, types ?? (types = GroupingTypeCollection)))
+								if (GroupingMembershipInclusion.AddAllowed == GetElementInclusion(normalizedElement, true, types ?? (types = GroupingTypeCollection)))
 								{
 									GroupingElementExclusion exclusion = GroupingElementExclusion.GetLink(this, normalizedElement);
 									if (exclusion != null)

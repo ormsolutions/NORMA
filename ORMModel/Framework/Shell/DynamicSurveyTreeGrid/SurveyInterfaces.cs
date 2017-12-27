@@ -69,6 +69,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// will return true for at least one value.
 		/// </summary>
 		EmptyGroups = 0x20,
+		/// <summary>
+		/// If sorting or grouping are supported for the group, should items that
+		/// do not provide an answer for this group be placed before the answering
+		/// elements or group headers?
+		/// </summary>
+		SortNotApplicableElementsFirst = 0x40,
 	}
 	#endregion // SurveyQuestionUISupport enum
 	#region SurveyDynamicColor enum
@@ -322,6 +328,25 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		int AskQuestion(object contextElement);
 	}
 	#endregion // IAnswerSurveyQuestion<T> interface
+	#region IAnswerIndirectSurveyQuestion<T> interface
+	/// <summary>
+	/// Implement this interface to answer a question by
+	/// providing a value from an enum. This allows an object
+	/// other than the data object to answer survey questions.
+	/// </summary>
+	/// <typeparam name="TAnswerEnum">an enum representing the potential answers to this question</typeparam>
+	public interface IAnswerIndirectSurveyQuestion<TAnswerEnum>
+		where TAnswerEnum : struct, IFormattable, IComparable
+	{
+		/// <summary>
+		/// Called by survey tree to get the answer for an enum question
+		/// </summary>
+		/// <param name="data">The data object to base the answer on.</param>
+		/// <param name="contextElement">The context element for this instance.</param>
+		/// <returns>int representing the answer to the enum question, or -1 for a 'not applicable' answer.</returns>
+		int AskQuestion(object data, object contextElement);
+	}
+	#endregion // IAnswerIndirectSurveyQuestion<T> interface
 	#region IAnswerSurveyDynamicQuestion<T> interface
 	/// <summary>
 	/// Implement this interface to answer a question for
@@ -340,6 +365,26 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		int AskQuestion(TAnswerValues answerValues, object contextElement);
 	}
 	#endregion // IAnswerSurveyDynamicQuestion<T> interface
+	#region IAnswerIndirectSurveyDynamicQuestion<T> interface
+	/// <summary>
+	/// Implement this interface to answer a question for
+	/// a dynamic question. This allows an object other than
+	/// the data object to answer dynamic survey questions.
+	/// </summary>
+	/// <typeparam name="TAnswerValues">an enum representing the potential answers to this question</typeparam>
+	public interface IAnswerIndirectSurveyDynamicQuestion<TAnswerValues>
+		where TAnswerValues : class, ISurveyDynamicValues
+	{
+		/// <summary>
+		/// Called by survey tree to get the answer for a dynamic value
+		/// </summary>
+		/// <param name="answerValues">The set of dynamic answers.</param>
+		/// <param name="data">The data object to base the answer on.</param>
+		/// <param name="contextElement">The context element for this instance.</param>
+		/// <returns>int representing the answer to the enum question, or -1 for a 'not applicable' answer.</returns>
+		int AskQuestion(TAnswerValues answerValues, object data, object contextElement);
+	}
+	#endregion // IAnswerIndirectSurveyDynamicQuestion<T> interface
 	#region ISurveyDynamicValues interface
 	/// <summary>
 	/// Represent a set of dynamic values to be used in place of

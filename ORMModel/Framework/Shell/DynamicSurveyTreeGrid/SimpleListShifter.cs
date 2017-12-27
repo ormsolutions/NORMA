@@ -50,7 +50,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						Debug.Assert(baseBranch != null && (count == 0 || (firstItemIndex >= 0 && firstItemIndex < fullItemCount)));
 						if (firstItemIndex + count > fullItemCount)
 						{
-							// UNDONE: I'm not sure why this is here, so I'm not pullling it
+							// UNDONE: I'm not sure why this is here, so I'm not pulling it
 							count = fullItemCount - firstItemIndex;
 						}
 						myBaseBranch = baseBranch;

@@ -309,7 +309,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										for (int i = 0; i < groupingCount; ++i)
 										{
 											ElementGrouping grouping = groupings[i];
-											if (GroupingMembershipInclusion.AddAllowed == grouping.GetElementInclusion(element, null))
+											if (GroupingMembershipInclusion.AddAllowed == grouping.GetElementInclusion(element, true, null))
 											{
 												cachedGroupings[allowedGroupingCount] = grouping;
 												++allowedGroupingCount;
@@ -657,7 +657,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				IList<ElementGroupingType> groupingTypes = grouping.GroupingTypeCollection;
 				using (Transaction t = currentNode.Store.TransactionManager.BeginTransaction(ResourceStrings.ElementGroupingAddElementTransactionName))
 				{
-					if (grouping.GetElementInclusion(currentNode, groupingTypes) == GroupingMembershipInclusion.AddAllowed)
+					if (grouping.GetElementInclusion(currentNode, true, groupingTypes) == GroupingMembershipInclusion.AddAllowed)
 					{
 						GroupingElementExclusion exclusion = GroupingElementExclusion.GetLink(grouping, currentNode);
 						if (exclusion != null)

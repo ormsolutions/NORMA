@@ -3290,17 +3290,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return this.CanMergeSetConstraint(rootElement, elementGroupPrototype);
 				}
 				
+				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.DomainClassId)) 
+				{
+					return true;
+				}
+				
 				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.DomainClassId)) 
 				{
 					return true;
 				}
 				
 				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote.DomainClassId)) 
-				{
-					return true;
-				}
-				
-				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.DomainClassId)) 
 				{
 					return true;
 				}
@@ -3343,30 +3343,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint2 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint;
-			if (sourceSetComparisonConstraint2 != null)
-			{
-				// Create link for path ModelHasSetComparisonConstraint.SetComparisonConstraintCollection
-				this.SetComparisonConstraintCollection.Add(sourceSetComparisonConstraint2);
-
-				return;
-			}
-				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote sourceModelNote3 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote;
-			if (sourceModelNote3 != null)
-			{
-				// Create link for path ModelHasModelNote.NoteCollection
-				this.NoteCollection.Add(sourceModelNote3);
-
-				return;
-			}
-				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType sourceObjectType4 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
-			if (sourceObjectType4 != null)
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType sourceObjectType2 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
+			if (sourceObjectType2 != null)
 			{
 				
 				// Call custom method implemented in partial class
-				this.MergeRelateObjectType(sourceObjectType4, elementGroup);
+				this.MergeRelateObjectType(sourceObjectType2, elementGroup);
+				return;
+			}
+				
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint3 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint;
+			if (sourceSetComparisonConstraint3 != null)
+			{
+				// Create link for path ModelHasSetComparisonConstraint.SetComparisonConstraintCollection
+				this.SetComparisonConstraintCollection.Add(sourceSetComparisonConstraint3);
+
+				return;
+			}
+				
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote sourceModelNote4 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote;
+			if (sourceModelNote4 != null)
+			{
+				// Create link for path ModelHasModelNote.NoteCollection
+				this.NoteCollection.Add(sourceModelNote4);
+
 				return;
 			}
 				
@@ -3415,12 +3415,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint2 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint;
-			if (sourceSetComparisonConstraint2 != null)
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType sourceObjectType2 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
+			if (sourceObjectType2 != null)
+			{
+				
+				// Call custom method implemented in partial class
+				this.MergeDisconnectObjectType(sourceObjectType2);
+				return;
+			}
+				
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint3 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint;
+			if (sourceSetComparisonConstraint3 != null)
 			{
 				// Delete link for path ModelHasSetComparisonConstraint.SetComparisonConstraintCollection
 				
-				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.GetLinks((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)this, sourceSetComparisonConstraint2))
+				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.GetLinks((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)this, sourceSetComparisonConstraint3))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
 					link.Delete(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
@@ -3429,26 +3438,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote sourceModelNote3 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote;
-			if (sourceModelNote3 != null)
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote sourceModelNote4 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote;
+			if (sourceModelNote4 != null)
 			{
 				// Delete link for path ModelHasModelNote.NoteCollection
 				
-				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote.GetLinks((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)this, sourceModelNote3))
+				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote.GetLinks((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)this, sourceModelNote4))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
 					link.Delete(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote.NoteDomainRoleId);
 				}
 
-				return;
-			}
-				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType sourceObjectType4 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
-			if (sourceObjectType4 != null)
-			{
-				
-				// Call custom method implemented in partial class
-				this.MergeDisconnectObjectType(sourceObjectType4);
 				return;
 			}
 				

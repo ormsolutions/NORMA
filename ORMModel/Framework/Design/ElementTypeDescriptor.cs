@@ -75,7 +75,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		/// </summary>
 		public override string GetClassName()
 		{
-			return this.ModelElement.GetDomainClass().DisplayName;
+			TModelElement element = this.ModelElement;
+			return element.Store != null ? element.GetDomainClass().DisplayName : string.Empty;
 		}
 		#endregion // GetClassName method
 
@@ -178,7 +179,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		{
 			PropertyDescriptorCollection propertyDescriptors = new PropertyDescriptorCollection(null);
 			TModelElement requestor = this.ModelElement;
-			if (!requestor.IsDeleted && !requestor.IsDeleting)
+			if (requestor.Store != null && !requestor.IsDeleted && !requestor.IsDeleting)
 			{
 				// Get the property descriptors for our DomainProperties.
 				foreach (DomainPropertyInfo domainPropertyInfo in requestor.GetDomainClass().AllDomainProperties)
