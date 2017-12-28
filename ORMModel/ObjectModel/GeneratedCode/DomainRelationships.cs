@@ -42308,7 +42308,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingElementRelationship
 	/// </summary>
-	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Design.GroupingElementRelationshipTypeDescriptionProvider))]
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<GroupingElementRelationship, Design.GroupingElementRelationshipTypeDescriptor>))]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingElementRelationship.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.GroupingElementRelationship.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 	[global::System.CLSCompliant(true)]
