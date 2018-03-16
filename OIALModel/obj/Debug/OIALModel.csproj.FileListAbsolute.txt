@@ -1,0 +1,9 @@
+C:\Users\Francesco\Documents\dev\NORMA\OIALModel\bin\Debug\Neumont.Tools.ORM.OIALModel.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\OIALModel\bin\Debug\Neumont.Tools.ORM.OIALModel.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\OIALModel\obj\Debug\Neumont.Tools.ORM.OIALModel.GeneratedCode.DomainModelResx.VS2010.resources
+C:\Users\Francesco\Documents\dev\NORMA\OIALModel\obj\Debug\OIALModel.csproj.GenerateResource.Cache
+C:\Users\Francesco\Documents\dev\NORMA\OIALModel\obj\Debug\Neumont.Tools.ORM.OIALModel.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\OIALModel\obj\Debug\Neumont.Tools.ORM.OIALModel.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\OIALModel\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\OIALModel\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.xml
+C:\Users\Francesco\Documents\dev\NORMA\OIALModel\obj\Debug\OIALModel.csprojResolveAssemblyReference.cache

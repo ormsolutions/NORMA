@@ -1,0 +1,11 @@
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\bin\Debug\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.VS2015.xml
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\bin\Debug\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\bin\Debug\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\obj\Debug\OialDcilBridge.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\obj\Debug\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel.resources
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\obj\Debug\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx.VS2010.resources
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\obj\Debug\OialDcilBridge.csproj.GenerateResource.Cache
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\obj\Debug\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\obj\Debug\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\RelationalModel\OialDcilBridge\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.xml

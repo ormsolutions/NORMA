@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Neumont.Build.VisualStudio.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Neumont.Build.Tasks.VsSdkLocator">
+            <summary>
+            Obtains installation information and locations for the specified version of the Visual Studio SDK.
+            </summary>
+        </member>
+        <member name="M:Neumont.Build.Tasks.VsSdkLocator.Execute">
+            <summary>See <see cref="M:Microsoft.Build.Utilities.Task.Execute"/>.</summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.VsSdkLocator.RequestedVersion">
+            <summary>
+            The version of the Visual Studio SDK for which information should be obtained.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.VsSdkLocator.InstallationDirectory">
+            <summary>
+            The directory into which the specified version of the Visual Studio SDK is installed.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.VsSdkLocator.ToolsDirectory">
+            <summary>
+            The tools directory for the specified version of the Visual Studio SDK.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.VsSdkLocator.IncludesDirectory">
+            <summary>
+            The include files directory for the specified version of the Visual Studio SDK.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.VsSdkLocator.RedistributablesDirectory">
+            <summary>
+            The redistributables directory for the specified version of the Visual Studio SDK.
+            </summary>
+        </member>
+    </members>
+</doc>

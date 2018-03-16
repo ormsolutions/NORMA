@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<arg:Rules xmlns:arg="http://schemas.neumont.edu/ORM/SDK/AttachRulesGenerator" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+	<arg:Copyright name="Copyright Notice">
+		<arg:CopyrightLine>/**************************************************************************\</arg:CopyrightLine>
+		<arg:CopyrightLine>* Free University Bozen-Bolzano                                            *</arg:CopyrightLine>
+		<arg:CopyrightLine>\**************************************************************************/</arg:CopyrightLine>
+	</arg:Copyright>
+	<arg:Model class="ORMInferenceEngineDomainModel" sealed="true">
+    <!--
+    <arg:RuleContainer class="Hierarchy">
+      <!- -Dropping a new entity type - ->
+			
+      <arg:AddRule methodName="ObjectTypeAddedRule">
+				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+      
+      <!- -Let's try now with events, not rules 
+      <!- -Removing an entity type - ->
+			<arg:DeleteRule methodName="ObjectTypeDeletedRule">
+				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
+      <!- -Dropping a new fact type - IGNORE - ->
+      <!- -Catching Set Super Type Transaction - ->
+      <arg:AddRule methodName="FactTypeAddedRule">
+        <arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+      </arg:AddRule>
+      <!- -Removing a fact type - ->
+      <!- -Catching Delete Super Type Transaction - ->
+      <arg:DeleteRule methodName="FactTypeDeletedRule">
+        <arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+      </arg:DeleteRule>
+      <!- -Deleted rule for RoleHasRolePlayerRequiredError - will work when new fact types are completely added
+                                                          - also will fire when not-complete fact type is deleted - ->
+      <arg:DeleteRule methodName="RolePlayerRequiredErrorDeletedRule">
+        <arg:RuleOn targetType="RoleHasRolePlayerRequiredError" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+      </arg:DeleteRule>
+      <!- -Deleted rule for SetComparisonConstraintHasTooFewRoleSequencesError - will work when new SetComparisonConstraints are completely added
+                                                          - also will fire when not-complete constraint is deleted - ->
+      <arg:DeleteRule methodName="SetComparisonTooFewRoleSequencesErrorDeletedRule">
+        <arg:RuleOn targetType="SetComparisonConstraintHasTooFewRoleSequencesError" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+      </arg:DeleteRule>
+      <!- -Catching setting a SetComparisonConstraint - to be checked inside whether SetComparisonConstraint has Error - ->
+      <arg:AddRule methodName="AttachSetComparisonConstraintAddRule">
+        <arg:RuleOn targetType="FactSetComparisonConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+      </arg:AddRule>
+      <!- -Deleted rule for SetComparisonConstraint- ->
+      <arg:DeleteRule methodName="SetComparisonConstraintDeletedRule">
+        <arg:RuleOn targetType="ModelHasSetComparisonConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+      </arg:DeleteRule>
+      <!- -Catching setting a SetConstraint - to be checked inside whether SetConstraint has Error - ->
+      <arg:AddRule methodName="AttachSetConstraintAddRule">
+        <arg:RuleOn targetType="FactSetConstraint" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+      </arg:AddRule>
+      <!- -Catching setting a SetConstraint and SetComparisonConstraint - to be checked inside whether it has Error - ->
+      <arg:AddRule methodName="ConstraintRoleSequenceHasRoleAddRule">
+        <arg:RuleOn targetType="ConstraintRoleSequenceHasRole" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+      </arg:AddRule>
+      <!- -Deleted rule for SetConstraintHasTooFewRoleSequencesError - will work when new SetConstraints are completely added
+                                                          - also will fire when not-complete constraint is deleted - ->
+      <arg:DeleteRule methodName="SetTooFewRoleSequencesErrorDeletedRule">
+        <arg:RuleOn targetType="SetConstraintHasTooFewRoleSequencesError" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+      </arg:DeleteRule>
+    </arg:RuleContainer>
+    <arg:RuleContainer class="UnsatisfiableDomain">
+			<arg:AddRule methodName="FactTypeAddedRule">
+				<arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="FactTypeDeletedRule">
+				<arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:AddRule methodName="ObjectTypeAddedRule">
+				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ObjectTypeDeletedRule">
+				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
+		</arg:RuleContainer>
+    <arg:RuleContainer class="InferenceResult">
+			<arg:AddRule methodName="ObjectTypeAddedRule">
+				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ObjectTypeDeletedRule">
+				<arg:RuleOn targetType="ModelHasObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
+		</arg:RuleContainer>
+    -->
+    <arg:RuleContainer class="InferredSubtypeFact">
+			<arg:AddRule methodName="InitializeInferredSubtypeFact" alwaysOn="true">
+				<arg:RuleOn targetType="SubtypeFactIsInferred">
+				</arg:RuleOn>
+			</arg:AddRule>
+		</arg:RuleContainer>
+	</arg:Model>
+</arg:Rules>

@@ -1,0 +1,2127 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ORMSolutions.ORMArchitect.ORMAbstraction.VS2015</name>
+    </assembly>
+    <members>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel">
+            <summary>
+            DomainClass AbstractionModel
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.DomainClassId">
+            <summary>
+            AbstractionModel domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.NameDomainPropertyId">
+            <summary>
+            Name domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.namePropertyStorage">
+            <summary>
+            Storage for Name
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.Name">
+            <summary>
+            Gets or sets the value of Name domain property.
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.Name
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.NamePropertyHandler">
+            <summary>
+            Value handler for the AbstractionModel.Name domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.NamePropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the AbstractionModel.Name domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.NamePropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the AbstractionModel.Name domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.NamePropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.NamePropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel,System.String)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ConceptTypeCollection">
+            <summary>
+            Gets a list of ConceptTypeCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.Model
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.InformationTypeFormatCollection">
+            <summary>
+            Gets a list of InformationTypeFormatCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.Model
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.CanMerge(Microsoft.VisualStudio.Modeling.ProtoElementBase,Microsoft.VisualStudio.Modeling.ElementGroupPrototype)">
+            <summary>
+            Returns a value indicating whether the source element represented by the
+            specified root ProtoElement can be added to this element.
+            </summary>
+            <param name="rootElement">
+            The root ProtoElement representing a source element.  This can be null, 
+            in which case the ElementGroupPrototype does not contain an ProtoElements
+            and the code should inspect the ElementGroupPrototype context information.
+            </param>
+            <param name="elementGroupPrototype">The ElementGroupPrototype that contains the root ProtoElement.</param>
+            <returns>true if the source element represented by the ProtoElement can be added to this target element.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.MergeRelate(Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.ElementGroup)">
+            <summary>
+            Called by the Merge process to create a relationship between 
+            this target element and the specified source element. 
+            Typically, a parent-child relationship is established
+            between the target element (the parent) and the source element 
+            (the child), but any relationship can be established.
+            </summary>
+            <param name="sourceElement">The element that is to be related to this model element.</param>
+            <param name="elementGroup">The group of source ModelElements that have been rehydrated into the target store.</param>
+            <remarks>
+            This method is overriden to create the relationship between the target element and the specified source element.
+            The base method does nothing.
+            </remarks>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.MergeDisconnect(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Performs operation opposite to MergeRelate - i.e. disconnects a given
+            element from the current one (removes links created by MergeRelate).
+            </summary>
+            <param name="sourceElement">Element to be unmerged/disconnected.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedChildElementInfo">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#CustomSerializedChildRoleComparer">
+            <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#MapChildElement(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel.ShouldSerialize">
+            <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType">
+            <summary>
+            DomainClass ConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.DomainClassId">
+            <summary>
+            ConceptType domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.NameDomainPropertyId">
+            <summary>
+            Name domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.namePropertyStorage">
+            <summary>
+            Storage for Name
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.Name">
+            <summary>
+            Gets or sets the value of Name domain property.
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.Name
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.NamePropertyHandler">
+            <summary>
+            Value handler for the ConceptType.Name domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.NamePropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the ConceptType.Name domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.NamePropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the ConceptType.Name domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.NamePropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.NamePropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,System.String)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.Model">
+            <summary>
+            Gets or sets Model.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptType
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.UniquenessCollection">
+            <summary>
+            Gets a list of UniquenessCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.ConceptType
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.InformationTypeFormatCollection">
+            <summary>
+            Gets a list of InformationTypeFormatCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.ConceptType
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ReferencedConceptTypeCollection">
+            <summary>
+            Gets a list of ReferencedConceptTypeCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptType
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.RelatedConceptTypeCollection">
+            <summary>
+            Gets a list of RelatedConceptTypeCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatingConceptType
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.AssimilatedConceptTypeCollection">
+            <summary>
+            Gets a list of AssimilatedConceptTypeCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatorConceptType
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.AssimilatorConceptTypeCollection">
+            <summary>
+            Gets a list of AssimilatorConceptTypeCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatedConceptType
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedChildElementInfo">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#CustomSerializedChildRoleComparer">
+            <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#MapChildElement(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType.ShouldSerialize">
+            <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat">
+            <summary>
+            DomainClass InformationTypeFormat
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.DomainClassId">
+            <summary>
+            InformationTypeFormat domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.NameDomainPropertyId">
+            <summary>
+            Name domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.namePropertyStorage">
+            <summary>
+            Storage for Name
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.Name">
+            <summary>
+            Gets or sets the value of Name domain property.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.Name
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.NamePropertyHandler">
+            <summary>
+            Value handler for the InformationTypeFormat.Name domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.NamePropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the InformationTypeFormat.Name domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.NamePropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the InformationTypeFormat.Name domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.NamePropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.NamePropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat,System.String)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.Model">
+            <summary>
+            Gets or sets Model.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormat
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.ConceptTypeCollection">
+            <summary>
+            Gets a list of ConceptTypeCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.InformationTypeFormat
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.GetCustomSerializedChildElementInfo">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.CustomSerializedChildRoleComparer">
+            <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.MapChildElement(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat.ShouldSerialize">
+            <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness">
+            <summary>
+            DomainClass Uniqueness
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.DomainClassId">
+            <summary>
+            Uniqueness domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.NameDomainPropertyId">
+            <summary>
+            Name domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.namePropertyStorage">
+            <summary>
+            Storage for Name
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.Name">
+            <summary>
+            Gets or sets the value of Name domain property.
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.Name
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.NamePropertyHandler">
+            <summary>
+            Value handler for the Uniqueness.Name domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.NamePropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the Uniqueness.Name domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.NamePropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the Uniqueness.Name domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.NamePropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.NamePropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness,System.String)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.IsPreferredDomainPropertyId">
+            <summary>
+            IsPreferred domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.isPreferredPropertyStorage">
+            <summary>
+            Storage for IsPreferred
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.IsPreferred">
+            <summary>
+            Gets or sets the value of IsPreferred domain property.
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.IsPreferred
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.IsPreferredPropertyHandler">
+            <summary>
+            Value handler for the Uniqueness.IsPreferred domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.IsPreferredPropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the Uniqueness.IsPreferred domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.IsPreferredPropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the Uniqueness.IsPreferred domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.IsPreferredPropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.IsPreferredPropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness,System.Boolean)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ConceptType">
+            <summary>
+            Gets or sets ConceptType.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.Uniqueness
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ConceptTypeChildCollection">
+            <summary>
+            Gets a list of ConceptTypeChildCollection.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.Uniqueness
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedChildElementInfo">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#CustomSerializedChildRoleComparer">
+            <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#MapChildElement(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness.ShouldSerialize">
+            <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel">
+            <summary>
+            DomainModel AbstractionDomainModel
+            Intermediate Attribute-centric View of ORM Model
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.DomainModelId">
+            <summary>
+            AbstractionDomainModel domain model Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.#ctor(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="store">Store containing the domain model.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.GetGeneratedDomainModelTypes">
+            <summary>
+            Gets the list of generated domain model types (classes, rules, relationships).
+            </summary>
+            <returns>List of types.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.GetGeneratedDomainProperties">
+            <summary>
+            Gets the list of generated domain properties.
+            </summary>
+            <returns>List of property data.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.GetGeneratedDomainRoles">
+            <summary>
+            Gets the list of generated domain roles.
+            </summary>
+            <returns>List of role data.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.CreateElement(Microsoft.VisualStudio.Modeling.Partition,System.Type,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Creates an element of specified type.
+            </summary>
+            <param name="partition">Partition where element is to be created.</param>
+            <param name="elementType">Element type which belongs to this domain model.</param>
+            <param name="propertyAssignments">New element property assignments.</param>
+            <returns>Created element.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.CreateElementLink(Microsoft.VisualStudio.Modeling.Partition,System.Type,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Creates an element link of specified type.
+            </summary>
+            <param name="partition">Partition where element is to be created.</param>
+            <param name="elementLinkType">Element link type which belongs to this domain model.</param>
+            <param name="roleAssignments">List of relationship role assignments for the new link.</param>
+            <param name="propertyAssignments">New element property assignments.</param>
+            <returns>Created element link.</returns>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.ResourceBaseName">
+            <summary>
+            The base name of this model's resources.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.ResourceManager">
+            <summary>
+            Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.SingletonResourceManager">
+            <summary>
+            Gets the Singleton ResourceManager for this domain model.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.copyClosure">
+            <summary>
+            CopyClosure cache
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.removeClosure">
+            <summary>
+            DeleteClosure cache
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.GetClosureFilter(Microsoft.VisualStudio.Modeling.ClosureType,System.Collections.Generic.ICollection{Microsoft.VisualStudio.Modeling.ModelElement})">
+            <summary>
+            Returns an IElementVisitorFilter that corresponds to the ClosureType.
+            </summary>
+            <param name="type">closure type</param>
+            <param name="rootElements">collection of root elements</param>
+            <returns>IElementVisitorFilter or null</returns>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.CopyClosure">
+            <summary>
+            CopyClosure cache
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.DeleteClosure">
+            <summary>
+            DeleteClosure cache
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.GetCustomDomainModelTypes">
+            <summary>Generated code to attach <see cref="T:Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="T:Microsoft.VisualStudio.Modeling.Store"/>.</summary>
+            <seealso cref="M:Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.XmlNamespace">
+            <summary>The default XmlNamespace associated with the 'AbstractionDomainModel' extension model</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.DefaultElementPrefix">
+            <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.GetCustomElementNamespaces">
+            <summary>Implements ICustomSerializedDomainModel.GetCustomElementNamespaces</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.ShouldSerializeDomainClass(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.DomainClassInfo)">
+            <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.GetRootElementClasses">
+            <summary>Implements ICustomSerializedDomainModel.GetRootElementClasses</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.ShouldSerializeRootElement(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>Implements ICustomSerializedDomainModel.ShouldSerializeRootElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.GetRootRelationshipContainers">
+            <summary>Implements ICustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.MapRootElement(System.String,System.String)">
+            <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel.MapClassName(System.String,System.String)">
+            <summary>Implements ICustomSerializedDomainModel.MapClassName</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDeleteClosure">
+            <summary>
+            Remove closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDeleteClosure.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDeleteClosureBase">
+            <summary>
+            Base class for remove closure visitor filter
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDeleteClosureBase.domainRoles">
+            <summary>
+            DomainRoles
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDeleteClosureBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDeleteClosureBase.ShouldVisitRelationship(Microsoft.VisualStudio.Modeling.ElementWalker,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.DomainRelationshipInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>
+            Called to ask the filter if a particular relationship from a source element should be included in the traversal
+            </summary>
+            <param name="walker">ElementWalker that is traversing the model</param>
+            <param name="sourceElement">Model Element playing the source role</param>
+            <param name="sourceRoleInfo">DomainRoleInfo of the role that the source element is playing in the relationship</param>
+            <param name="domainRelationshipInfo">DomainRelationshipInfo for the ElementLink in question</param>
+            <param name="targetRelationship">Relationship in question</param>
+            <returns>Yes if the relationship should be traversed</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDeleteClosureBase.ShouldVisitRolePlayer(Microsoft.VisualStudio.Modeling.ElementWalker,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.ElementLink,Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Called to ask the filter if a particular role player should be Visited during traversal
+            </summary>
+            <param name="walker">ElementWalker that is traversing the model</param>
+            <param name="sourceElement">Model Element playing the source role</param>
+            <param name="elementLink">Element Link that forms the relationship to the role player in question</param>
+            <param name="targetDomainRole">DomainRoleInfo of the target role</param>
+            <param name="targetRolePlayer">Model Element that plays the target role in the relationship</param>
+            <returns></returns>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDeleteClosureBase.DomainRoles">
+            <summary>
+            DomainRoles
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionCopyClosure">
+            <summary>
+            Copy closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionCopyClosure.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionCopyClosureBase">
+            <summary>
+            Base class for copy closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionCopyClosureBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType">
+            <summary>
+            DomainRelationship AbstractionModelHasConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.DomainClassId">
+            <summary>
+            AbstractionModelHasConceptType domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.#ctor(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Constructor
+            Creates a AbstractionModelHasConceptType link in the same Partition as the given AbstractionModel
+            </summary>
+            <param name="source">AbstractionModel to use as the source of the relationship.</param>
+            <param name="target">ConceptType to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ModelDomainRoleId">
+            <summary>
+            Model domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.Model">
+            <summary>
+            DomainRole Model
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.Model
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.GetModel(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets Model.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.SetModel(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Sets Model.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptTypeDomainRoleId">
+            <summary>
+            ConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptType">
+            <summary>
+            DomainRole ConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.ConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.GetConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Gets a list of ConceptTypeCollection.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.GetLinksToConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Get the list of AbstractionModelHasConceptType links to a AbstractionModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.GetLinkToModel(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the AbstractionModelHasConceptType link to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get any AbstractionModelHasConceptType links between a given AbstractionModel and a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType.GetLink(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the one AbstractionModelHasConceptType link between a given AbstractionModeland a ConceptType.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat">
+            <summary>
+            DomainRelationship AbstractionModelHasInformationTypeFormat
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.DomainClassId">
+            <summary>
+            AbstractionModelHasInformationTypeFormat domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.#ctor(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel,ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Constructor
+            Creates a AbstractionModelHasInformationTypeFormat link in the same Partition as the given AbstractionModel
+            </summary>
+            <param name="source">AbstractionModel to use as the source of the relationship.</param>
+            <param name="target">InformationTypeFormat to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.ModelDomainRoleId">
+            <summary>
+            Model domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.Model">
+            <summary>
+            DomainRole Model
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.Model
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetModel(ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Gets Model.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.SetModel(ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat,ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Sets Model.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormatDomainRoleId">
+            <summary>
+            InformationTypeFormat domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormat">
+            <summary>
+            DomainRole InformationTypeFormat
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.InformationTypeFormat
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetInformationTypeFormatCollection(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Gets a list of InformationTypeFormatCollection.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetLinksToInformationTypeFormatCollection(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Get the list of AbstractionModelHasInformationTypeFormat links to a AbstractionModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetLinkToModel(ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Get the AbstractionModelHasInformationTypeFormat link to a InformationTypeFormat.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel,ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Get any AbstractionModelHasInformationTypeFormat links between a given AbstractionModel and a InformationTypeFormat.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasInformationTypeFormat.GetLink(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel,ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Get the one AbstractionModelHasInformationTypeFormat link between a given AbstractionModeland a InformationTypeFormat.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness">
+            <summary>
+            DomainRelationship ConceptTypeHasUniqueness
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.DomainClassId">
+            <summary>
+            ConceptTypeHasUniqueness domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.#ctor(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)">
+            <summary>
+            Constructor
+            Creates a ConceptTypeHasUniqueness link in the same Partition as the given ConceptType
+            </summary>
+            <param name="source">ConceptType to use as the source of the relationship.</param>
+            <param name="target">Uniqueness to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.ConceptTypeDomainRoleId">
+            <summary>
+            ConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.ConceptType">
+            <summary>
+            DomainRole ConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.ConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.GetConceptType(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)">
+            <summary>
+            Gets ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.SetConceptType(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Sets ConceptType.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.UniquenessDomainRoleId">
+            <summary>
+            Uniqueness domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.Uniqueness">
+            <summary>
+            DomainRole Uniqueness
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.Uniqueness
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.GetUniquenessCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of UniquenessCollection.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.GetLinksToUniquenessCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of ConceptTypeHasUniqueness links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.GetLinkToConceptType(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)">
+            <summary>
+            Get the ConceptTypeHasUniqueness link to a Uniqueness.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)">
+            <summary>
+            Get any ConceptTypeHasUniqueness links between a given ConceptType and a Uniqueness.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasUniqueness.GetLink(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)">
+            <summary>
+            Get the one ConceptTypeHasUniqueness link between a given ConceptTypeand a Uniqueness.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild">
+            <summary>
+            DomainRelationship ConceptTypeChild
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.DomainClassId">
+            <summary>
+            ConceptTypeChild domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="partition">The Partition instance containing this ElementLink</param>
+            <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+            <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.ParentDomainRoleId">
+            <summary>
+            Parent domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Parent">
+            <summary>
+            DomainRole Parent
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Parent
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.GetParent(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Gets a list of Parent.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.TargetDomainRoleId">
+            <summary>
+            Target domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Target">
+            <summary>
+            DomainRole Target
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Target
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.GetTargetCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of TargetCollection.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.IsMandatoryDomainPropertyId">
+            <summary>
+            IsMandatory domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.isMandatoryPropertyStorage">
+            <summary>
+            Storage for IsMandatory
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.IsMandatory">
+            <summary>
+            Gets or sets the value of IsMandatory domain property.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.IsMandatory
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.IsMandatoryPropertyHandler">
+            <summary>
+            Value handler for the ConceptTypeChild.IsMandatory domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.IsMandatoryPropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the ConceptTypeChild.IsMandatory domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.IsMandatoryPropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the ConceptTypeChild.IsMandatory domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.IsMandatoryPropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.IsMandatoryPropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild,System.Boolean)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.NameDomainPropertyId">
+            <summary>
+            Name domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.namePropertyStorage">
+            <summary>
+            Storage for Name
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Name">
+            <summary>
+            Gets or sets the value of Name domain property.
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Name
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.NamePropertyHandler">
+            <summary>
+            Value handler for the ConceptTypeChild.Name domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.NamePropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the ConceptTypeChild.Name domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.NamePropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the ConceptTypeChild.Name domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.NamePropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.NamePropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild,System.String)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.GetLinksToTargetCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of ConceptTypeChild links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.GetLinksToParent(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Get the list of ConceptTypeChild links to a ModelElement.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Get any ConceptTypeChild links between a given ConceptType and a ModelElement.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.GetCustomSerializedChildElementInfo">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.CustomSerializedChildRoleComparer">
+            <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.MapChildElement(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.ShouldSerialize">
+            <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation">
+            <summary>
+            DomainRelationship ConceptTypeHasChildAsPartOfAssociation
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.DomainClassId">
+            <summary>
+            ConceptTypeHasChildAsPartOfAssociation domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.#ctor(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Constructor
+            Creates a ConceptTypeHasChildAsPartOfAssociation link in the same Partition as the given ConceptType
+            </summary>
+            <param name="source">ConceptType to use as the source of the relationship.</param>
+            <param name="target">ConceptTypeChild to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.ParentDomainRoleId">
+            <summary>
+            Parent domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.Parent">
+            <summary>
+            DomainRole Parent
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.Parent
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.GetParent(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Gets Parent.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.SetParent(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Sets Parent.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.TargetDomainRoleId">
+            <summary>
+            Target domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.Target">
+            <summary>
+            DomainRole Target
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.Target
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.GetTargetCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of TargetCollection.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.GetLinksToTargetCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of ConceptTypeHasChildAsPartOfAssociation links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.GetLinkToParent(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get the ConceptTypeHasChildAsPartOfAssociation link to a ConceptTypeChild.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get any ConceptTypeHasChildAsPartOfAssociation links between a given ConceptType and a ConceptTypeChild.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeHasChildAsPartOfAssociation.GetLink(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get the one ConceptTypeHasChildAsPartOfAssociation link between a given ConceptTypeand a ConceptTypeChild.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType">
+            <summary>
+            DomainRelationship InformationType
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.InformationType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.DomainClassId">
+            <summary>
+            InformationType domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.#ctor(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Constructor
+            Creates a InformationType link in the same Partition as the given ConceptType
+            </summary>
+            <param name="source">ConceptType to use as the source of the relationship.</param>
+            <param name="target">InformationTypeFormat to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.ConceptTypeDomainRoleId">
+            <summary>
+            ConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.ConceptType">
+            <summary>
+            DomainRole ConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.ConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.GetConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Gets a list of ConceptTypeCollection.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.Parent">
+            <summary>
+            Gets the element playing ConceptType domain role.
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Parent
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.InformationTypeFormatDomainRoleId">
+            <summary>
+            InformationTypeFormat domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.InformationTypeFormat">
+            <summary>
+            DomainRole InformationTypeFormat
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.InformationTypeFormat
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.GetInformationTypeFormatCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of InformationTypeFormatCollection.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.Target">
+            <summary>
+            Gets the element playing InformationTypeFormat domain role.
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Target
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.GetLinksToInformationTypeFormatCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of InformationType links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.GetLinksToConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Get the list of InformationType links to a InformationTypeFormat.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.InformationTypeFormat)">
+            <summary>
+            Get any InformationType links between a given ConceptType and a InformationTypeFormat.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.InformationType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType">
+            <summary>
+            DomainRelationship ConceptTypeReferencesConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.DomainClassId">
+            <summary>
+            ConceptTypeReferencesConceptType domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="partition">The Partition instance containing this ElementLink</param>
+            <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+            <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptTypeDomainRoleId">
+            <summary>
+            ReferencingConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptType">
+            <summary>
+            DomainRole ReferencingConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.GetReferencingConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of ReferencingConceptTypeCollection.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.Parent">
+            <summary>
+            Gets the element playing ReferencingConceptType domain role.
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Parent
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencedConceptTypeDomainRoleId">
+            <summary>
+            ReferencedConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencedConceptType">
+            <summary>
+            DomainRole ReferencedConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencedConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.GetReferencedConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of ReferencedConceptTypeCollection.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.Target">
+            <summary>
+            Gets the element playing ReferencedConceptType domain role.
+            Description for ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild.Target
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.OppositeNameDomainPropertyId">
+            <summary>
+            OppositeName domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.oppositeNamePropertyStorage">
+            <summary>
+            Storage for OppositeName
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.OppositeName">
+            <summary>
+            Gets or sets the value of OppositeName domain property.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.OppositeName
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.OppositeNamePropertyHandler">
+            <summary>
+            Value handler for the ConceptTypeReferencesConceptType.OppositeName domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.OppositeNamePropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the ConceptTypeReferencesConceptType.OppositeName domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.OppositeNamePropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the ConceptTypeReferencesConceptType.OppositeName domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.OppositeNamePropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.OppositeNamePropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType,System.String)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.GetLinksToReferencedConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of ConceptTypeReferencesConceptType links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.GetLinksToReferencingConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of ConceptTypeReferencesConceptType links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get any ConceptTypeReferencesConceptType links between a given ConceptType and a ConceptType.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType">
+            <summary>
+            DomainRelationship ConceptTypeRelatesToConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.DomainClassId">
+            <summary>
+            ConceptTypeRelatesToConceptType domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.#ctor(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Constructor
+            Creates a ConceptTypeRelatesToConceptType link in the same Partition as the given ConceptType
+            </summary>
+            <param name="source">ConceptType to use as the source of the relationship.</param>
+            <param name="target">ConceptType to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId">
+            <summary>
+            RelatingConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatingConceptType">
+            <summary>
+            DomainRole RelatingConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatingConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.GetRelatingConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of RelatingConceptTypeCollection.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.ReferencingConceptType">
+            <summary>
+            Gets the element playing RelatingConceptType domain role.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatedConceptTypeDomainRoleId">
+            <summary>
+            RelatedConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatedConceptType">
+            <summary>
+            DomainRole RelatedConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.RelatedConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.GetRelatedConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of RelatedConceptTypeCollection.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.ReferencedConceptType">
+            <summary>
+            Gets the element playing RelatedConceptType domain role.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencedConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.GetLinksToRelatedConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of ConceptTypeRelatesToConceptType links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.GetLinksToRelatingConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of ConceptTypeRelatesToConceptType links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get any ConceptTypeRelatesToConceptType links between a given ConceptType and a ConceptType.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeRelatesToConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType">
+            <summary>
+            DomainRelationship ConceptTypeAssimilatesConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.DomainClassId">
+            <summary>
+            ConceptTypeAssimilatesConceptType domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.#ctor(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Constructor
+            Creates a ConceptTypeAssimilatesConceptType link in the same Partition as the given ConceptType
+            </summary>
+            <param name="source">ConceptType to use as the source of the relationship.</param>
+            <param name="target">ConceptType to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId">
+            <summary>
+            AssimilatorConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatorConceptType">
+            <summary>
+            DomainRole AssimilatorConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatorConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.GetAssimilatorConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of AssimilatorConceptTypeCollection.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.ReferencingConceptType">
+            <summary>
+            Gets the element playing AssimilatorConceptType domain role.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencingConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatedConceptTypeDomainRoleId">
+            <summary>
+            AssimilatedConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatedConceptType">
+            <summary>
+            DomainRole AssimilatedConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.AssimilatedConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.GetAssimilatedConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of AssimilatedConceptTypeCollection.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.ReferencedConceptType">
+            <summary>
+            Gets the element playing AssimilatedConceptType domain role.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeReferencesConceptType.ReferencedConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.RefersToSubtypeDomainPropertyId">
+            <summary>
+            RefersToSubtype domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.refersToSubtypePropertyStorage">
+            <summary>
+            Storage for RefersToSubtype
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.RefersToSubtype">
+            <summary>
+            Gets or sets the value of RefersToSubtype domain property.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.RefersToSubtype
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.RefersToSubtypePropertyHandler">
+            <summary>
+            Value handler for the ConceptTypeAssimilatesConceptType.RefersToSubtype domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.RefersToSubtypePropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the ConceptTypeAssimilatesConceptType.RefersToSubtype domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.RefersToSubtypePropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the ConceptTypeAssimilatesConceptType.RefersToSubtype domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.RefersToSubtypePropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.RefersToSubtypePropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType,System.Boolean)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForTargetDomainPropertyId">
+            <summary>
+            IsPreferredForTarget domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.isPreferredForTargetPropertyStorage">
+            <summary>
+            Storage for IsPreferredForTarget
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForTarget">
+            <summary>
+            Gets or sets the value of IsPreferredForTarget domain property.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForTarget
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForTargetPropertyHandler">
+            <summary>
+            Value handler for the ConceptTypeAssimilatesConceptType.IsPreferredForTarget domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForTargetPropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the ConceptTypeAssimilatesConceptType.IsPreferredForTarget domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForTargetPropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the ConceptTypeAssimilatesConceptType.IsPreferredForTarget domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForTargetPropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForTargetPropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType,System.Boolean)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForParentDomainPropertyId">
+            <summary>
+            IsPreferredForParent domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.isPreferredForParentPropertyStorage">
+            <summary>
+            Storage for IsPreferredForParent
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForParent">
+            <summary>
+            Gets or sets the value of IsPreferredForParent domain property.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForParent
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForParentPropertyHandler">
+            <summary>
+            Value handler for the ConceptTypeAssimilatesConceptType.IsPreferredForParent domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForParentPropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the ConceptTypeAssimilatesConceptType.IsPreferredForParent domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForParentPropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the ConceptTypeAssimilatesConceptType.IsPreferredForParent domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForParentPropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.IsPreferredForParentPropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType,System.Boolean)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of ConceptTypeAssimilatesConceptType links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of ConceptTypeAssimilatesConceptType links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get any ConceptTypeAssimilatesConceptType links between a given ConceptType and a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.GetLink(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the one ConceptTypeAssimilatesConceptType link between a given ConceptTypeand a ConceptType.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeAssimilatesConceptType.ORMSolutions#ORMArchitect#Framework#Shell#ICustomSerializedElement#MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild">
+            <summary>
+            DomainRelationship UniquenessIncludesConceptTypeChild
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.DomainClassId">
+            <summary>
+            UniquenessIncludesConceptTypeChild domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.#ctor(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Constructor
+            Creates a UniquenessIncludesConceptTypeChild link in the same Partition as the given Uniqueness
+            </summary>
+            <param name="source">Uniqueness to use as the source of the relationship.</param>
+            <param name="target">ConceptTypeChild to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.UniquenessDomainRoleId">
+            <summary>
+            Uniqueness domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.Uniqueness">
+            <summary>
+            DomainRole Uniqueness
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.Uniqueness
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.GetUniquenessCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Gets a list of UniquenessCollection.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.ConceptTypeChildDomainRoleId">
+            <summary>
+            ConceptTypeChild domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.ConceptTypeChild">
+            <summary>
+            DomainRole ConceptTypeChild
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.ConceptTypeChild
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.GetConceptTypeChildCollection(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)">
+            <summary>
+            Gets a list of ConceptTypeChildCollection.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.GetLinksToConceptTypeChildCollection(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness)">
+            <summary>
+            Get the list of UniquenessIncludesConceptTypeChild links to a Uniqueness.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.GetLinksToUniquenessCollection(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get the list of UniquenessIncludesConceptTypeChild links to a ConceptTypeChild.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.GetLinks(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get any UniquenessIncludesConceptTypeChild links between a given Uniqueness and a ConceptTypeChild.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstraction.UniquenessIncludesConceptTypeChild.GetLink(ORMSolutions.ORMArchitect.ORMAbstraction.Uniqueness,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get the one UniquenessIncludesConceptTypeChild link between a given Uniquenessand a ConceptTypeChild.
+            </summary>
+        </member>
+    </members>
+</doc>

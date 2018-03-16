@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Neumont.Build.Core</name>
+    </assembly>
+    <members>
+        <member name="T:Neumont.Build.Tasks.ResourceMergeTargetResolver">
+            <summary>
+            Resolves the <c>MergeTarget</c> metadata value for the items specified for <see cref="P:Neumont.Build.Tasks.ResourceMergeTargetResolver.MergeResources"/>.
+            </summary>
+        </member>
+        <member name="M:Neumont.Build.Tasks.ResourceMergeTargetResolver.Execute">
+            <summary>See <see cref="M:Microsoft.Build.Utilities.Task.Execute"/>.</summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.ResourceMergeTargetResolver.MergeResources">
+            <summary>
+            The resources to be merged for which the <c>MergeTarget</c> metadata value should be resolved.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.ResourceMergeTargetResolver.ManifestResources">
+            <summary>
+            The manifest resource (.resources) files.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.ResourceMergeTargetResolver.MergeResourcesWithResolvedTargets">
+            <summary>
+            The resources to be merged for which the <c>MergeTarget</c> metadata value has been resolved.
+            </summary>
+        </member>
+        <member name="T:Neumont.Build.Tasks.ResourceMerger">
+            <summary>
+            Merges one or more resources into a manifest resource (<c>.resources</c>) file.
+            </summary>
+        </member>
+        <member name="M:Neumont.Build.Tasks.ResourceMerger.Execute">
+            <summary>See <see cref="M:Microsoft.Build.Utilities.Task.Execute"/>.</summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.ResourceMerger.MergeResources">
+            <summary>
+            The resources to be merged into <see cref="P:Neumont.Build.Tasks.ResourceMerger.TargetManifestResource"/>.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.ResourceMerger.TargetManifestResource">
+            <summary>
+            The manifest resource (<c>.resources</c>) file into which the <see cref="P:Neumont.Build.Tasks.ResourceMerger.MergeResources"/> should be merged.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.ResourceMerger.OutputResource">
+            <summary>
+            The manifest resource (<c>.resources</c>) file into which the <see cref="P:Neumont.Build.Tasks.ResourceMerger.MergeResources"/> have been merged.
+            </summary>
+        </member>
+        <member name="T:Neumont.Build.Tasks.CopyWithPreprocessing">
+            <summary>
+            Preprocesses certain file types after copying them.
+            </summary>
+        </member>
+        <member name="M:Neumont.Build.Tasks.CopyWithPreprocessing.Execute">
+            <summary>See <see cref="M:Microsoft.Build.Tasks.Copy.Execute"/>.</summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.CopyWithPreprocessing.DisableAllPreprocessing">
+            <summary>
+            If <see langword="true"/>, no preprocessing is performed.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.CopyWithPreprocessing.XmlFileExtensionsToPreprocess">
+            <summary>
+            The extensions of the file types which should be preprocessed as XML files.
+            </summary>
+        </member>
+        <member name="T:Neumont.Build.Tasks.Ngen">
+            <summary>
+            Wrapper <see cref="T:Microsoft.Build.Utilities.ToolTask"/> for <c>ngen.exe</c>.
+            </summary>
+        </member>
+        <member name="M:Neumont.Build.Tasks.Ngen.GenerateFullPathToTool">
+            <summary>See <see cref="M:Microsoft.Build.Utilities.ToolTask.GenerateFullPathToTool"/>.</summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.Ngen.ToolName">
+            <summary>See <see cref="P:Microsoft.Build.Utilities.ToolTask.ToolName"/>.</summary>
+        </member>
+        <member name="M:Neumont.Build.Tasks.Ngen.GenerateCommandLineCommands">
+            <summary>See <see cref="M:Microsoft.Build.Utilities.ToolTask.GenerateCommandLineCommands"/>.</summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.Ngen.NoDependencies">
+            <summary>
+            Corresponds to the <c>/NoDependencies</c> parameter.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.Ngen.Uninstall">
+            <summary>
+            <see langword="true"/> corresponds to <c>uninstall</c>.
+            <see langword="false"/> corresponds to <c>install</c>.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.Ngen.AssemblyName">
+            <summary>
+            Corresponds to <c>assemblyName</c>.
+            </summary>
+        </member>
+        <member name="T:Neumont.Build.Tasks.Gacutil">
+            <summary>
+            Wrapper <see cref="T:Microsoft.Build.Utilities.ToolTask"/> for <c>gacutil.exe</c>.
+            </summary>
+        </member>
+        <member name="M:Neumont.Build.Tasks.Gacutil.GenerateFullPathToTool">
+            <summary>See <see cref="M:Microsoft.Build.Utilities.ToolTask.GenerateFullPathToTool"/>.</summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.Gacutil.ToolName">
+            <summary>See <see cref="P:Microsoft.Build.Utilities.ToolTask.ToolName"/>.</summary>
+        </member>
+        <member name="M:Neumont.Build.Tasks.Gacutil.GenerateCommandLineCommands">
+            <summary>See <see cref="M:Microsoft.Build.Utilities.ToolTask.GenerateCommandLineCommands"/>.</summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.Gacutil.Force">
+            <summary>
+            Corresponds to the <c>/f</c> parameter.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.Gacutil.Uninstall">
+            <summary>
+            <see langword="true"/> corresponds to <c>/u</c>.
+            <see langword="false"/> corresponds to <c>/i</c>.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.Gacutil.Assembly">
+            <summary>
+            If <see cref="P:Neumont.Build.Tasks.Gacutil.Uninstall"/> is <see langword="true"/>, corresponds to <c>assemblyName</c>,
+            otherwise corresponds to <c>assemblyPath</c>.
+            </summary>
+        </member>
+        <member name="T:Neumont.Build.Tasks.RegexCompiler">
+            <summary>
+            Compiles one or more regular expressions into a stand-alone <see cref="T:System.Reflection.Assembly"/>.
+            </summary>
+        </member>
+        <member name="M:Neumont.Build.Tasks.RegexCompiler.Execute">
+            <summary>See <see cref="M:Microsoft.Build.Utilities.Task.Execute"/>.</summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.RegexCompiler.AlwaysCompileRegexInSeparateDomain">
+            <summary>
+            Indicates whether regular expressions should always be compiled in a separate <see cref="T:System.AppDomain"/> that can be unloaded
+            after compilation has completed.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.RegexCompiler.AssemblyName">
+            <summary>
+            The name (in <see cref="P:Neumont.Build.Tasks.RegexCompiler.AssemblyName"/> format) of the <see cref="T:System.Reflection.Assembly"/> to which the regular expressions should be compiled.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.RegexCompiler.IntermediateOutputPath">
+            <summary>
+            The path to which intermediate output files should be saved.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.RegexCompiler.RegexCompilationInfoFiles">
+            <summary>
+            The regular expression compilation information files containing the regular expressions to compile.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.RegexCompiler.OutputAssembly">
+            <summary>
+            The full path to the compiled <see cref="T:System.Reflection.Assembly"/>.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.RegexCompiler.KeyContainer">
+            <summary>
+            Gets or sets the name of the cryptographic key container.
+            </summary>
+        </member>
+        <member name="P:Neumont.Build.Tasks.RegexCompiler.KeyFile">
+            <summary>
+            Gets or sets the file name containing the cryptographic key.
+            </summary>
+        </member>
+    </members>
+</doc>

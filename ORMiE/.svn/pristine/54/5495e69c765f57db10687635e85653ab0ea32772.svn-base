@@ -1,0 +1,75 @@
+﻿using System;
+using Microsoft.VisualStudio.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using System.Collections.Generic;
+using org.unibz.ucmf.askAPI;
+
+namespace unibz.ORMInferenceEngine
+{
+	partial class ORM2OWLTranslationManager
+	{
+
+		private HashSet<ObjectType> alreadyProcessedEquivalentTypes = new HashSet<ObjectType>();
+
+		void CreateInferredEquivalentTypes(InferredConstraints container, InferredEquivalentEntityTypes equiTypes)
+		{
+			ORMModel model = container.Model;
+			Store store = model.Store;
+			Partition hierarchyPartition = Partition.FindByAlternateId(store, typeof(Hierarchy));
+
+			if (hierarchyPartition == null)
+			{
+				hierarchyPartition = new Partition(store);
+				hierarchyPartition.AlternateId = typeof(Hierarchy);
+			}
+
+			InferredHierarchy inferredHierarchyContainer = InferredHierarchyIsForORMModel.GetInferredHierarchy(model);
+			if (inferredHierarchyContainer == null)
+			{
+				inferredHierarchyContainer = new InferredHierarchy(hierarchyPartition);
+				inferredHierarchyContainer.Model = model;
+			}
+			else
+			{
+				inferredHierarchyContainer.EquivalentTopObjectTypeCollection.Clear();
+			}
+
+
+			//ALGORITMO
+			//Per ogni type esistente nel model
+			//se ci sono equivalenti con equiType.getAllTypesEquivalentTo(type)
+			//allora type diventa padre di tutti i figli
+			//altrimenti lo inserisco come topelement
+
+			//svuoto alreadyProcessed
+			alreadyProcessedEquivalentTypes.Clear();
+
+			foreach (ObjectType type in model.ObjectTypeCollection)
+			{
+				//prendo la lista dei figli di type in formato stringa
+				java.util.ArrayList listEquivToType = equiTypes.getAllTypesEquivalentTo(type.Name);
+				//se questa lista è diversa da null e il type non e' gia stato processato, allora ci sono degli equivalenti
+				if (listEquivToType != null /*&& alreadyProcessedEquivalentTypes.Contains(type)==false*/)
+				{
+					//setto type
+					EquivalentTopLevelObjectType top = new EquivalentTopLevelObjectType(inferredHierarchyContainer, type);
+
+					//per ciascun figlio
+					foreach (String son in listEquivToType)
+					{
+						ObjectType subObjectType = findObjectTypeByName(model, son);
+						new EquivalentObjectTypeContainment(top, subObjectType);
+
+					}
+
+				}
+				else
+				{
+					//e' inutile far vedere tra gli equivalenti chi non ha figli
+					//EquivalentTopLevelObjectType top = new EquivalentTopLevelObjectType(inferredHierarchyContainer, type);
+				}
+
+			}
+		}
+	}
+}

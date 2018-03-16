@@ -9,6 +9,7 @@ C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\EnvDTE
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\EnvDTE90.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.Core.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.Localedata.dll
+C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.Util.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.Runtime.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.14.0.dll
@@ -24,9 +25,9 @@ C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\Micros
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\Microsoft.VisualStudio.TextManager.Interop.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\ORMtoOWLlib.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\stdole.dll
-C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.Util.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.Text.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.Security.dll
+C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.XML.API.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.Runtime.JNI.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.Management.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\Microsoft.VisualStudio.ComponentModelHost.dll
@@ -44,7 +45,6 @@ C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\Micros
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\Microsoft.VisualStudio.Package.LanguageService.14.0.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\Microsoft.MSXML.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\Microsoft.VisualStudio.Shell.Interop.11.0.dll
-C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.XML.API.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.SwingAWT.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.XML.Bind.dll
 C:\Users\Francesco\Documents\dev\NORMA\ORMiE\ORMInferenceEngine\bin\Debug\IKVM.OpenJDK.Jdbc.dll

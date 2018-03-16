@@ -1,0 +1,564 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ORMSolutions.ORMArchitect.ORMCustomTool.VS2015</name>
+    </assembly>
+    <members>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMExtensionManager">
+            <summary>
+            Extensions are additional named requirements for a given document format.
+            The extensions are treated as required content within a document format.
+            UNDONE: In the longer run, individual generators will be asked to ensure that
+            a given set of extensions are present in a returned document. For now, we
+            are not treating the document retrieved from the ORM designer as a true generator,
+            so we're just hacking this in.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMExtensionManager.GetLoadedExtensions(System.IServiceProvider)">
+            <summary>
+            Return a sorted array of loaded extensions
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMExtensionManager.EnsureExtensions(EnvDTE.ProjectItem,System.IServiceProvider,System.Collections.Generic.ICollection{System.String})">
+            <summary>
+            Ensure that the current project item has the required extensions loaded.
+            This is only called after verifying that the current project item does
+            not satisfy the requirements.
+            </summary>
+            <param name="projectItem">The <see cref="T:EnvDTE.ProjectItem"/> to modify</param>
+            <param name="serviceProvider">The <see cref="T:System.IServiceProvider"/> for document tracking.</param>
+            <param name="extensions">An <see cref="T:ICollection{System.String}"/> of additional required extensions</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMCustomToolExtender">
+            <summary>
+            The interface for the Extender object. It implements one property ORMGeneratorSettings:
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMCustomToolExtender.ORMGeneratorSettings">
+            <summary>
+            ORMGenerator Settings. Placeholder property to launch the property descriptor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.Extender">
+            <summary>
+            This is the Extender Object itself.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.Extender.ORMGeneratorSettings">
+            <summary>
+            Notes property stores its value in the Solution.Globals object and hence 
+            is persisted with the solution.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.Extender.#ctor">
+            <summary>
+            Constructor does nothing. All initialization work is done in Init.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.Extender.Init(System.Int32,EnvDTE.IExtenderSite)">
+            <summary>
+            Initializes the members of the SolnExtender class.
+            </summary>
+            <param name="ExtenderCookie">Cookie value that identifies the Extender to its Site.</param>
+            <param name="ExtenderSite">Site object for the Extender.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.Extender.Finalize">
+            <summary>
+            Tells the Site object we are going away.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.Extender.NotifyDeleteCookie">
+            <summary>
+            Helper method to prevent the debugger from breaking when a common
+            exception is thrown deleting the cookie.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider">
+            <summary>
+            Extender Provider object. This is the "class factory" for the Extender and is registered
+            under the CATID for document objects (C#,VB, and J# documents)it is extending.
+            See SolutionExtender.reg for the registration entries.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider.#ctor">
+            <summary>
+            Constructor does nothing special.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider.CanExtend(System.String,System.String,System.Object)">
+            <summary>
+            Implementation of IExtenderProvider::CanExtend.
+            </summary>
+            <param name="ExtenderCATID">CATID of the object being extended.</param>
+            <param name="ExtenderName">Name of the Extension.</param>
+            <param name="ExtendeeObject">Object being extended.</param>
+            <returns>true if can provide an extender for Extendee Object, false otherwise.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider.GetExtender(System.String,System.String,System.Object,EnvDTE.IExtenderSite,System.Int32)">
+            <summary>
+            Implementation of IExtenderProvider::GetExtender.
+            </summary>
+            <param name="ExtenderCATID">CATID of the object being extended.</param>
+            <param name="ExtenderName">Name of the Extension.</param>
+            <param name="ExtendeeObject">Object being extended.</param>
+            <param name="ExtenderSite">Site object for the Extender.</param>
+            <param name="Cookie">Cookie value that identifies the Extender to its Site.</param>
+            <returns>A newly created Extender object.</returns>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider.ORMCustomToolExtension">
+            <summary>
+            The Extension name for this Extender.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.OutputFormatBranch.NextModifier">
+            <summary>
+            Manage a singly linked list of format modifiers.
+            The modifier should always be added to the head node
+            to maintain an order modifier priority.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.OutputFormatBranch.SelectedGeneratorOfficialNames">
+            <summary>
+            Get a space-separated list of the selected generator
+            followed by the official names of all selected modifiers.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.OutputFormatBranch.IsModifier">
+            <summary>
+            Does this branch represent a format modifier.
+            A format modifier has exactly one generator.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.OutputFormatBranch.UpdateDependencyUseCounts(ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator,System.Boolean)">
+            <summary>
+            Update dependency counts for branches of required formats
+            </summary>
+            <param name="generator">The generator to add or remove dependencies for</param>
+            <param name="addOrRemove">true to add a dependency, false to remove</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.OutputFormatBranch.IsDependency">
+            <summary>
+            Determine if the current branch is required by other branches
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.RowStyle.Generator">
+            <summary>
+            The row corresponds to a primary generator
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.RowStyle.Modifier">
+            <summary>
+            The row corresponds to a modifier
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.CanRemoveGenerator(System.Int32)">
+            <summary>
+            Test if a generator for an item can be removed
+            </summary>
+            <param name="generatorIndex">The row to test.</param>
+            <returns>true if the generator can be removed without removing a format required by another generator</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.CanRemoveGenerator(ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.OutputFormatBranch)">
+            <summary>
+            Test if a generator for an item can be removed
+            </summary>
+            <param name="branch">The branch to test.</param>
+            <returns>true if the generator can be removed without removing a format required by another generator</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.RemoveGenerator(ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.MainBranch.OutputFormatBranch)">
+            <summary>
+            Remove the generator for this branch. Note that there is
+            no checking here as to whether or not the generator is required
+            in other places. Most uses will first call CanRemoveGenerator, but
+            switching generators for a format will want to remove this blindly
+            then toggle on the other format provider.
+            </summary>
+            <param name="formatBranch">The branch to remove from the generation process</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.BranchPartitionSection">
+            <summary>
+            A single partition section
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.BranchPartitionSection.#ctor(System.Int32,System.Int32,System.String)">
+            <summary>
+            Create a new partition section
+            </summary>
+            <param name="start">The starting index in the inner branch</param>
+            <param name="count">The number of items in the inner branch to include in this branch.</param>
+            <param name="header">A header string for this group of items. It the header is not null, then this item will expand to a branch and have a length of 1.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.BranchPartitionSection.Start">
+            <summary>
+            The starting index in the inner branch
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.BranchPartitionSection.Count">
+            <summary>
+            The number of items to use in this branch
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.BranchPartitionSection.Header">
+            <summary>
+            A header for this section of items
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.BranchPartition.#ctor(Microsoft.VisualStudio.VirtualTreeGrid.IBranch,System.Int32[],ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.BranchPartitionSection[])">
+            <summary>
+            Partition a static IBranch instance
+            </summary>
+            <param name="innerBranch">The branch to partition</param>
+            <param name="indexer">An array of indices to reorder the items in the branch (optional)</param>
+            <param name="sections">One or more PartitionSection structures indicating how the branch should be split up. If indexer is specified, then the Start and Count properties of the partition should be relative to the indexer, not the starting branch.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.BranchPartition.TranslateRow(System.Int32,ORMSolutions.ORMArchitect.ORMCustomTool.ORMGeneratorSelectionControl.BranchPartitionSection@)">
+            <summary>
+            Translate an incoming row to a row on the inner branch
+            </summary>
+            <param name="row">The incoming row for this branch</param>
+            <param name="section">The corresponding partion section</param>
+            <returns>A translated row, or -1 for a section header.</returns>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool">
+            <summary>
+            <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"/> coordinates generation activities between various <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/>s, and
+            interfaces with Visual Studio and other tools.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool._serviceProvider">
+            <summary>
+            A wrapper object to provide unified managed and unmanaged IServiceProvider implementations
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool._customToolServiceProvider">
+            <summary>
+            The service provider handed us by the shell during IObjectWithSite.SetSite. This
+            service provider lets us retrieve the EnvDTE.ProjectItem and CodeDomProvider objects and very little else.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool._dteServiceProvider">
+            <summary>
+            The full VS DTE service provider. We retrieve this on demand only
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.#ctor">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"/>.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.GetItemGroup(Microsoft.Build.Construction.ProjectRootElement,System.String)">
+            <summary>
+            Retrieve an item group for the specified project and item
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.GetTextLinesForDocument(System.String,System.Boolean@)">
+            <summary>
+            Get the IVsTextLines from the DocData for the current document.
+            </summary>
+            <param name="fullPath">The full file path to the document</param>
+            <param name="reloadRequired">If this returns true, then the text lines for the
+            document are different than the text lines for the displayed document view. The
+            textlines should be reloaded to force the view to update</param>
+            <returns>IVsTextLines, or null</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.GetService``1">
+            <summary>
+            Returns a service instance of type <typeparamref name="T"/>, or <see langword="null"/> if no service instance of
+            type <typeparamref name="T"/> is available.
+            </summary>
+            <typeparam name="T">The type of the service instance being requested.</typeparam>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.ReportType">
+            <summary>
+            The types of reports to write during generation
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.ReportType.Comment">
+            <summary>
+            Write a comment line
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.ReportType.Error">
+            <summary>
+            Write an error report
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.ReportType.Warning">
+            <summary>
+            Write a warning report
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.WriteReportItem">
+            <summary>
+            A callback delegate for writing report contents during generation
+            </summary>
+            <param name="message">The message to write</param>
+            <param name="type">The type of the report</param>
+            <param name="ex">Exception information, used with an error report</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.ItemPropertiesImpl.GetItemProperty(System.String)">
+            <summary>
+            Implements <see cref="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGeneratorItemProperties.GetItemProperty(System.String)"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.ItemPropertiesImpl.GetProjectProperty(System.String)">
+            <summary>
+            Implements <see cref="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGeneratorItemProperties.GetProjectProperty(System.String)"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.ItemPropertiesImpl.EnsureProjectReference(System.String,System.String)">
+            <summary>
+            Implements <see cref="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGeneratorItemProperties.EnsureProjectReference(System.String,System.String)"/>
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.BoundBuildItem">
+            <summary>
+            Helper structure for GenerateCode to
+            track build items.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.BoundBuildItem.#ctor(Microsoft.Build.Construction.ProjectItemElement,ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator,System.Int32)">
+            <summary>
+            Create a new <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.BoundBuildItem"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.BoundBuildItem.IsNextFormatStep(System.Int32)">
+            <summary>
+            Does the provided format step represent the
+            next sequence in the format process?
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.BoundBuildItem.BuildItem">
+            <summary>
+            The <see cref="T:Microsoft.Build.Construction.ProjectItemElement"/> that corresponds to
+            the generated file.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.BoundBuildItem.ORMGenerator">
+            <summary>
+            The <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/> used to generate this step
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool.BoundBuildItem.FormatStep">
+            <summary>
+            The format step. This is a lightly encoded number, with
+            a bitwise-inverse negative number indicating the final step.
+            So, {"Foo", -1} indicates that the format had a single
+            step only, while {"Foo", 0} indicates that there will be
+            a following {"Foo", ~n} to finalize the format. A stream
+            with a none-final step should only be sent to the next
+            step in the sequence.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomToolUtility">
+            <summary>
+            Miscellaneous extension methods matching older methods
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomToolUtility.GetDocumentExtension``1(EnvDTE.Document,System.String,System.String,System.IServiceProvider)">
+            <summary>
+            Get an extension property directly from <see cref="M:EnvDTE.Document.Object"/>
+            with a direct query to <see cref="T:EnvDTE.IExtensibleObject"/> as a backup.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="document">The document.</param>
+            <param name="extensionName">The name of the extension.</param>
+            <param name="documentPath">The document path (fallback if document is partially constructed).</param>
+            <param name="serviceProvider">The <see cref="T:System.IServiceProvider"/> (for document search)</param>
+            <returns>Extension object of given type.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomToolUtility.GetEvaluatedMetadata(Microsoft.Build.Construction.ProjectItemElement,System.String)">
+            <summary>
+            Replacement for BuildItem method
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomToolUtility.GetMetadata(Microsoft.Build.Construction.ProjectItemElement,System.String)">
+            <summary>
+            Replacement for BuildItem method
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomToolUtility.SetMetadata(Microsoft.Build.Construction.ProjectItemElement,System.String,System.String)">
+            <summary>
+            Replacement for BuildItem method
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomToolUtility.GetItemInclude(Microsoft.Build.Construction.ProjectItemElement)">
+            <summary>
+            Replacement for BuildItem.FinalItemSpec property
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator">
+            <summary>
+            Implementations of this interface generate a specific output format based on requested input formats.
+            </summary>
+            <remarks>
+            TODO: Document how to register IORMGenerator implementations via the registry.
+            If anyone is currently looking for this information, take a look in the "ORMGenerators.cs" file.
+            </remarks>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.OfficialName">
+            <summary>
+            The non-localized official name of this <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/>.
+            </summary>
+            <remarks>
+            This name must match the name of the <see cref="T:Microsoft.Win32.RegistryKey"/> in which this
+            <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/> is registered.
+            </remarks>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.DisplayName">
+            <summary>
+            The localized name of this <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/> for display in the user interface.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.DisplayDescription">
+            <summary>
+            The localized description of this <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/> for display in the user interface.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.GeneratesSupportFile">
+            <summary>
+            Return true if the file generated by this format is only necessary as
+            a dependency. A dependency file is turned off automatically when it is
+            no longer needed.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.GeneratesOnce">
+            <summary>
+            Return true if file generated by this format should be generated once
+            and not regenerated as the model changes.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.ProvidesOutputFormat">
+            <summary>
+            The official name of the output format provided by this <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/>.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.RequiresInputFormats">
+            <summary>
+            The official name(s) of the output format(s) required by this <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/> as input.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.RequiresCompanionFormats">
+            <summary>
+            The official name(s) of the output format(s) that need to be generated along
+            with this generator. Companion formats differ from input formats in that
+            companions are not used as input. Generators for two output formats may
+            reference each other without causing a cycle. The output format may not
+            be one of the companion formats.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.FormatModifierPriority">
+            <summary>
+            If <see cref="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.ProvidesOutputFormat"/> is part of the set of
+            <see cref="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.RequiresInputFormats"/> then this generator is used
+            to modify a previously generated instance of the same format.
+            If more than one intra-format modifier is registered, then
+            this property is used to determine the execution order. Lower
+            numbers execute first, and 0 is the default priority.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.IsFormatModifier">
+            <summary>
+            True if the generator modifies a format instead of initially
+            creating it.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.GetRequiredExtensionsForInputFormat(System.String)">
+            <summary>
+            Get required extensions for an associated input format. The extensions ensure that the input formats
+            meet additional content requirements not expressible based solely on file format.
+            </summary>
+            <param name="inputFormat">The official name of the required input format, retrieved from <see cref="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.RequiresInputFormats"/>.</param>
+            <returns>An enumerable of required extensions. The extensions must be enabled by the generator chosen to produce the given input format.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.GetOutputFileDefaultName(System.String)">
+            <summary>
+            Returns the default name of the file generated for a specific source file name.
+            </summary>
+            <param name="sourceFileName">A <see cref="T:System.String"/> containing the name (without file extension) of the source ORM file.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.AddGeneratedFileItem(Microsoft.Build.Construction.ProjectItemGroupElement,System.String,System.String)">
+            <summary>
+            Adds a <see cref="T:Microsoft.Build.Construction.ProjectItemElement"/> for the generated file to <paramref name="itemGroup"/>.
+            </summary>
+            <param name="itemGroup">The <see cref="T:Microsoft.Build.Construction.ProjectItemGroupElement"/> to which the <see cref="T:Microsoft.Build.Construction.ProjectItemElement"/> for the generated file should be added.</param>
+            <param name="sourceFileName">The name of the source ORM file. This will usually be used as the value for the &lt;DependentUpon&gt; item metadata.</param>
+            <param name="outputFileName">The name of the generated file. This will usually be used as the value for the Include attribute of the <see cref="T:Microsoft.Build.Construction.ProjectItemElement"/> for the generated file.</param>
+            <returns>The <see cref="T:Microsoft.Build.Construction.ProjectItemElement"/> for the generated file.</returns>
+            <remarks>
+            If this <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/> generates compilable output that is useful at design time, the &lt;DesignTime&gt;
+            item metadata should be set to the value "True" (without the quotes).
+            </remarks>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.GenerateOutput(Microsoft.Build.Construction.ProjectItemElement,System.IO.Stream,System.Collections.Generic.IDictionary{System.String,System.IO.Stream},System.String,ORMSolutions.ORMArchitect.ORMCustomTool.IORMGeneratorItemProperties)">
+            <summary>
+            Generates the output for <paramref name="itemElement"/> to <paramref name="outputStream"/>, using the read-only <see cref="T:System.IO.Stream"/>s
+            contained in <paramref name="inputFormatStreams"/> as input.
+            </summary>
+            <param name="itemElement">The <see cref="T:Microsoft.Build.Construction.ProjectItemElement"/> for which output is to be generated.</param>
+            <param name="outputStream">The <see cref="T:System.IO.Stream"/> to which output is to be generated.</param>
+            <param name="inputFormatStreams">A read-only <see cref="T:System.Collections.Generic.IDictionary`2"/> containing pairs of official output format names and read-only <see cref="T:System.IO.Stream"/>s containing the output in that format.</param>
+            <param name="defaultNamespace">A <see cref="T:System.String"/> containing the default namespace that should be used in the generated output, as appropriate.</param>
+            <param name="itemProperties">An implementation of <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGeneratorItemProperties"/> to allow retrieval of additional properties</param>
+            <remarks>
+            <para><paramref name="inputFormatStreams"/> is guaranteed to contain the output <see cref="T:System.IO.Stream"/>s for
+            the "ORM" format and any formats returned by this <see cref="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator"/>'s implementation of
+            <see cref="P:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGenerator.RequiresInputFormats"/>.</para>
+            <para>Implementations of this method are responsible for resetting the <see cref="P:System.IO.Stream.Position"/> of any
+            <see cref="T:System.IO.Stream"/> obtained from <paramref name="inputFormatStreams"/> to the beginning of that <see cref="T:System.IO.Stream"/>
+            if they directly or indirectly alter that <see cref="P:System.IO.Stream.Position"/>. This does not apply to <paramref name="outputStream"/>.
+            See below for an example of how to reset the position of a <see cref="T:System.IO.Stream"/> in C#.</para>
+            <para><example>Stream oialStream = inputFormatStreams[ORMOutputFormat.OIAL];
+            ...
+            oialStream.Seek(0, SeekOrigin.Begin);</example></para>
+            </remarks>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGeneratorItemProperties">
+            <summary>
+            An interface used for generators to retrieve additional properties about the orm item
+            being generated and its containing project.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGeneratorItemProperties.GetItemProperty(System.String)">
+            <summary>
+            Retrieve a named property from the project item that is the
+            initial input to the generation process.
+            </summary>
+            <param name="propertyName">The name of a property</param>
+            <returns>Property value or empty string</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGeneratorItemProperties.GetProjectProperty(System.String)">
+            <summary>
+            Retrieve a named property from the project item that is the
+            initial input to the generation process.
+            </summary>
+            <param name="propertyName">The name of a property</param>
+            <returns>Property value or empty string</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMCustomTool.IORMGeneratorItemProperties.EnsureProjectReference(System.String,System.String)">
+            <summary>
+            Ensure that the containing project contains a reference to the specified assembly
+            </summary>
+            <param name="referencedNamespace">The root namespace for the assembly</param>
+            <param name="assemblyName">The assembly name</param>
+            <returns>True if the item is added or exists</returns>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,10 @@
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\bin\Debug\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.VS2015.xml
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\bin\Debug\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\bin\Debug\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\obj\Debug\ORMOialBridge.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\obj\Debug\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.DomainModelResx.VS2010.resources
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\obj\Debug\ORMOialBridge.csproj.GenerateResource.Cache
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\obj\Debug\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\obj\Debug\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\Oial\ORMOialBridge\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.xml

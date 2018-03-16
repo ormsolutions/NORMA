@@ -1,0 +1,1 @@
+C:\Users\Francesco\Documents\dev\NORMA\ORM2CommandLineTest\obj\Debug\TestDriverEngine.csprojResolveAssemblyReference.cache

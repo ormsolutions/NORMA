@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+  <Identifier Id="76d8e8ce-b44d-46b9-a37c-4e3094288830_projectid">
+    <Name>ORM2 Inference Add-in</Name>
+    <Author>Dmitry Solomakhin</Author>
+    <Version>1.5</Version>
+    <Description xml:space="preserve">ORM2 Inference Add-in for NORMA</Description>
+    <Locale>1033</Locale>
+    <InstalledByMsi>false</InstalledByMsi>
+    <SupportedProducts>
+      <VisualStudio Version="10.0">
+        <Edition>Pro</Edition>
+      </VisualStudio>
+    </SupportedProducts>
+    <SupportedFrameworkRuntimeEdition MinVersion="4.0" MaxVersion="4.0" />
+  </Identifier>
+  <References>
+    <Reference Id="Microsoft.VisualStudio.MPF" MinVersion="10.0">
+      <Name>Visual Studio MPF</Name>
+    </Reference>
+  </References>
+  <Content>
+    <VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
+    <CustomExtension Type="JAR Executable">ORM2OWLTranslator.jar</CustomExtension>
+    <CustomExtension Type="Inference DLLs">FaCTPlusPlusJNI.dll</CustomExtension>
+    <CustomExtension Type="Inference DLLs">FaCTPlusPlusJNI.jnilib</CustomExtension>
+    <CustomExtension Type="Inference DLLs">FaCTPlusPlusJNI.so</CustomExtension>
+    <CustomExtension Type="XSLT file">NORMAConverter.xslt</CustomExtension>
+    <CustomExtension Type="XSLT file">NORMAConverter_novalue.xslt</CustomExtension>
+  </Content>
+</Vsix>

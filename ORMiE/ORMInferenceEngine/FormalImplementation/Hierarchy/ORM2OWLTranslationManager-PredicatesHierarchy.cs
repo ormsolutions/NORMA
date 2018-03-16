@@ -1,0 +1,71 @@
+﻿using System;
+using Microsoft.VisualStudio.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using org.semanticweb.owlapi.model;
+using org.semanticweb.owlapi.reasoner;
+using uk.ac.manchester.cs.jfact;
+using System.Collections.Generic;
+using org.unibz.ucmf.askAPI;
+using System.Collections;
+
+namespace unibz.ORMInferenceEngine
+{
+	partial class ORM2OWLTranslationManager
+	{
+		private HashSet<string> alreadyProcessedFactTypes = new HashSet<string>();
+
+		void CreateInferredPredicatesHierarchy(InferredConstraints container, InferredHierarchyPredicates hierarchyPreds)
+		{
+			ORMModel model = container.Model;
+			Store store = model.Store;
+			Partition hierarchyPartition = Partition.FindByAlternateId(store, typeof(Hierarchy));
+
+			if (hierarchyPartition == null)
+			{
+				hierarchyPartition = new Partition(store);
+				hierarchyPartition.AlternateId = typeof(Hierarchy);
+			}
+
+			InferredHierarchy hierarchyContainer = InferredHierarchyIsForORMModel.GetInferredHierarchy(model);
+			if (hierarchyContainer == null)
+			{
+				hierarchyContainer = new InferredHierarchy(hierarchyPartition);
+				hierarchyContainer.Model = model;
+			}
+			else
+			{
+				hierarchyContainer.TopFactTypeCollection.Clear();
+			}
+
+			alreadyProcessedFactTypes.Clear();
+
+			java.util.ArrayList fathers = hierarchyPreds.getFathers();
+
+			//For each father
+			foreach (String father in fathers)
+			{
+
+				//Get the ObjectType of the father
+				FactType factType = findFactTypeByName(model, cleanPredicateNameForORM(father));
+				//se il facttype e' diverso da null e il factTypeName non e' gia' stato processato ed e' una radice
+				if(factType !=null && alreadyProcessedFactTypes.Contains(factType.Name)==false && father.Contains("1, 2"))
+				{
+
+					//lo aggiungo a quelli processati
+					alreadyProcessedFactTypes.Add(factType.Name);
+
+					//Get him to the top level
+					TopLevelFactType topLevelFactType = new TopLevelFactType(hierarchyContainer, factType);
+					if (hierarchyPreds.getSons(father).size() > 0)
+					{
+						foreach (String son in hierarchyPreds.getSons(father))
+						{
+							FactType subFactType = findFactTypeByName(model, cleanPredicateNameForORM(son));
+							new FactTypeContainment(topLevelFactType, subFactType);
+						}
+					}
+				}
+			}
+		}
+	}
+}

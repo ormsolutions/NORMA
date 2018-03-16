@@ -1,0 +1,13 @@
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\bin\Debug\ORMSolutions.ORMArchitect.Views.BarkerERView.VS2015.xml
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\bin\Debug\ORMSolutions.ORMArchitect.Views.BarkerERView.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\bin\Debug\ORMSolutions.ORMArchitect.Views.BarkerERView.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\obj\Debug\BarkerERView.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\obj\Debug\ORMSolutions.ORMArchitect.Views.BarkerERView.GeneratedCode.DomainModelResx.VS2010.resources
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\obj\Debug\ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.resources
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\obj\Debug\BarkerERView.csproj.GenerateResource.Cache
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\obj\Debug\ORMSolutions.ORMArchitect.Views.BarkerERView.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\obj\Debug\ORMSolutions.ORMArchitect.Views.BarkerERView.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.xml
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\BarkerERView\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.14.0.xml

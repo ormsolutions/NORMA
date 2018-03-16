@@ -1,0 +1,1326 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ORMSolutions.ORMArchitect.Views.BarkerERView.VS2015</name>
+    </assembly>
+    <members>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment">
+            <summary>
+            A custom compartment element used to customize how individual compartment items are drawn.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.PrimaryIdentifierString">
+            <summary>
+            The string that denotes a primary identifier.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.MandatoryString">
+            <summary>
+            The string that denotes a mandatory attribute.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.OptionalString">
+            <summary>
+            The string that denotes a optional attribute.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.DefaultStringFormat">
+            <summary>
+            The <see cref="T:System.Drawing.StringFormat"/> used to write text for the attribute and entity name.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.CommaString">
+            <summary>
+            Specifies a comma string for use with delimiting constraints.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.ColonString">
+            <summary>
+            Specifies a colon string for delimiting a constraint list with the column name.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.BarkerEntityExtraWidth">
+            <summary>
+            Specifies the offset used for measuring a string in updating the size of this
+            <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment"/> based on the entity name.
+            </summary>	
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.AttributeExtraWidth">
+            <summary>
+            Specifies the offset used for measuring a string in updating the size of this
+            <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment"/> based on the attribute names.
+            </summary>	
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment" /> class.	
+            </summary>
+            <param name="partition"></param>
+            <param name="propertyAssignments"></param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment" /> class.
+            </summary>
+            <param name="store">The <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> which will contain this
+            <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment" />.</param>
+            <param name="propertyAssignments">An array of <see cref="T:Microsoft.VisualStudio.Modeling.PropertyAssignment"/> that
+            works with </param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.InitializeResources(Microsoft.VisualStudio.Modeling.Diagrams.StyleSet)">
+            <summary>
+            Initialize a font for formatting the mandatory attribute contents.
+            </summary>
+            <param name="classStyleSet">The <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.StyleSet"/> being initialized.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.GetItemDrawInfo(Microsoft.VisualStudio.Modeling.Diagrams.ListField,System.Int32,Microsoft.VisualStudio.Modeling.Diagrams.ItemDrawInfo)">
+            <summary>
+            Gets the drawing information for a particular element in the compartment.
+            </summary>
+            <param name="listField">The <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> of this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment"/> which
+            paints the items in this compartment.</param>
+            <param name="row">The index of the array of items whose item drawing information is of interest.</param>
+            <param name="itemDrawInfo">A previously initialized <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ItemDrawInfo"/> object whose properties will be modified.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.InitializeShapeFields(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField})">
+            <summary>
+            Overridden to allow a read-only <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ListField"/> to be added
+            to the collection of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects.
+            </summary>
+            <param name="shapeFields">A list of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects
+            which belong to the current shape.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.GetDesktopWindow">
+            <summary>
+            Gets a handle to the desktop window.
+            </summary>
+            <returns>A <see cref="T:System.IntPtr"/> that points to the desktop window.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.#cctor">
+            <summary>
+            Initializes the default <see cref="T:System.Drawing.StringFormat"/> associated with this 
+            <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment"/>.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.UpdateSize">
+            <summary>
+            Updates the size of this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment"/> and
+            its associated <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/> to size according to the widest column or
+            table name.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.InvalidateOrUpdateSize">
+            <summary>
+            Change the size of the shape if the size has changed,
+            or force invalidation if the size has not changed.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.OnDoubleClick(Microsoft.VisualStudio.Modeling.Diagrams.DiagramPointEventArgs)">
+            <summary>
+            Disallows expanding and collapsing of the compartment.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.OnKeyDown(Microsoft.VisualStudio.Modeling.Diagrams.DiagramKeyEventArgs)">
+            <summary>
+            Disallows collapsing of the compartment with a left key
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.CanExpandAndCollapse">
+            <summary>
+            Disallows expanding and collapsing of the compartment. Unfortunately,
+            noone seems to respect this, or we wouldn't need to OnDoubleClick and OnKeyDown
+            overrides.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment.CanSelect">
+            <summary>
+            Disallows selection of the compartment.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartmentDescription">
+            <summary>
+            A custom element list compartment description from which a <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment"/> is created.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartmentDescription.#ctor(System.String,System.String,System.Drawing.Color,System.Boolean,System.Drawing.Color,System.Boolean,Microsoft.VisualStudio.Modeling.Diagrams.FontSettings,Microsoft.VisualStudio.Modeling.Diagrams.FontSettings,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartmentDescription" /> class.
+            </summary>
+            <param name="name">The name of the element.</param>
+            <param name="title">The title of the element.</param>
+            <param name="titleFill">The <see cref="T:System.Drawing.Color"/> that fills the title.</param>
+            <param name="allowCustomTitleFillColor">Specifies whether a title's fill color can be customized.</param>
+            <param name="compartmentFill">The <see cref="T:System.Drawing.Color"/> that fills the compartment.</param>
+            <param name="allowCustomCompartmentFillColor">Specifies whether a compartment's fill color can be customized.</param>
+            <param name="titleFontSettings">The <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.FontSettings"/> used for
+            the title.</param>
+            <param name="itemFontSettings">The <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.FontSettings"/> used for
+            the items in the compartment.</param>
+            <param name="isDefaultCollapsed">Specifies whether the compartment will be collapsed by default.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartmentDescription.CreateCompartment(Microsoft.VisualStudio.Modeling.Partition)">
+            <summary>
+            Creates a new <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AttributeElementListCompartment"/>.
+            </summary>
+            <param name="partition">The current <see cref="T:Microsoft.VisualStudio.Modeling.Partition"/> of the diagram.</param>
+            <returns>AttributeElementListCompartment</returns>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape">
+            <summary>
+            DomainClass BarkerEntityShape
+            Description for ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.myCompartmentDescriptions">
+            <summary>
+            Holds the <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.CompartmentDescription"/>s for this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/>.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.GetCompartmentDescriptions">
+            <summary>
+            Gets the <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.CompartmentDescription"/>s which will create the compartments in this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/>.
+            </summary>
+            <returns>CompartmentDescription[]</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.CanExpandAndCollapse">
+            <summary>
+            Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/> can be expanded or collapsed.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.HasShadow">
+            <summary>
+            Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/> has a shadow.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.InitializeShapeFields(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField})">
+            <summary>
+            Overridden to allow a read-only <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.TextField"/> to be added
+            to the collection of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects.
+            </summary>
+            <param name="shapeFields">A list of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects
+            which belong to the current shape.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.ResizableSides">
+            <summary>
+            Gets the resizable sides on this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/>.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.OrderedElementList`2">
+            <summary>
+            A sorted replacement for the unsorted element list provided
+            by generated code. The goal of the class is to provide a replacement
+            for the <see cref="P:Microsoft.VisualStudio.Modeling.Diagrams.ElementListCompartmentMapping.ElementListGetter"/>
+            set by the generated framework code.
+            </summary>
+            <typeparam name="T">The type of element in the underlying list</typeparam>
+            <typeparam name="S">The type of the associated <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ElementListCompartment"/>. This
+            type is used only to distinguish different uses of the same <typeparamref name="T"/></typeparam>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.OrderedElementList`2.#ctor(System.Collections.IList)">
+            <summary>
+            Private constructor, provides initial sort order
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.OrderedElementList`2.IsInitialized">
+            <summary>
+            Determine if the typed instance has been initialized
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.OrderedElementList`2.Initialize(Microsoft.VisualStudio.Modeling.Diagrams.ElementListGetter,System.Comparison{`0})">
+            <summary>
+            Initial static information for this element
+            </summary>
+            <param name="unorderedGetter">The original value of the <see cref="P:Microsoft.VisualStudio.Modeling.Diagrams.ElementListCompartmentMapping.ElementListGetter"/>
+            property being modified.</param>
+            <param name="comparison">The comparison routine used to order the items.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.OrderedElementList`2.OnElementReorder(`0,System.Int32@,System.Int32@)">
+            <summary>
+            The sort order for the specified element has potentially
+            changed. See where it fits in the new list.
+            </summary>
+            <param name="element">The modified element</param>
+            <param name="oldIndex">The old position. Set only if the position is modified.</param>
+            <param name="newIndex">The new position. Set only if the position is modified.</param>
+            <returns><see langword="true"/> if the position has changed.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.OrderedElementList`2.ElementListGetter(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Use as a replacement for the <see cref="P:Microsoft.VisualStudio.Modeling.Diagrams.ElementListCompartmentMapping.ElementListGetter"/>
+            passed to the <see cref="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.OrderedElementList`2.Initialize(Microsoft.VisualStudio.Modeling.Diagrams.ElementListGetter,System.Comparison{`0})"/> method
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.GetCompartmentMappings(System.Type)">
+            <summary>
+            Provide an ordered list for displaying attributes
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.SharedPresentationTypeKey">
+            <summary>
+            Allow 'select on diagram' to work with other relational shape models
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.ManageEventHandlers(Microsoft.VisualStudio.Modeling.Store,ORMSolutions.ORMArchitect.Framework.ModelingEventManager,ORMSolutions.ORMArchitect.Framework.EventHandlerAction)">
+            <summary>
+            Manages <see cref="T:System.EventHandler`1"/>s in the <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> for <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/>s.
+            </summary>
+            <param name="store">The <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> for which the <see cref="T:System.EventHandler`1"/>s should be managed.</param>
+            <param name="eventManager">The <see cref="T:ORMSolutions.ORMArchitect.Framework.ModelingEventManager"/> used to manage the <see cref="T:System.EventHandler`1"/>s.</param>
+            <param name="action">The <see cref="T:ORMSolutions.ORMArchitect.Framework.EventHandlerAction"/> that should be taken for the <see cref="T:System.EventHandler`1"/>s.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.AttributeRenamedEvent(System.Object,Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Reorder compartment items when a attribute is renamed.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.BarkerEntityTextField">
+            <summary>
+            A custom <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.TextField"/> that disallows selection and focus of the element.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.BarkerEntityTextField.GetSelectable(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement)">
+            <summary>
+            Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.BarkerEntityTextField" /> is selectable.
+            </summary>
+            <param name="parentShape">parentShape</param>
+            <returns><see langword="false" />.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.BarkerEntityTextField.GetFocusable(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement)">
+            <summary>
+            Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.BarkerEntityTextField" /> is focusable.
+            </summary>
+            <param name="parentShape">parentShape</param>
+            <returns><see langword="false" />.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.BarkerEntityTextField.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.BarkerEntityTextField" /> class.	
+            </summary>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector">
+            <summary>
+            DomainClass AssociationConnector
+            Description for
+            ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.ClassStyleSet">
+            <summary>
+            Per-class style set for this shape.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.ShapeFields">
+            <summary>
+            Per-class ShapeFields for this shape.
+            </summary>
+        </member>
+        <member name="E:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.DecoratorsInitialized">
+            <summary>
+            Event fired when decorator initialization is complete for this shape type.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.Decorators">
+            <summary>
+            List containing decorators used by this type.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.FindAssociationConnectorDecorator(System.String)">
+            <summary>
+            Finds a decorator associated with AssociationConnector.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.InitializeResources(Microsoft.VisualStudio.Modeling.Diagrams.StyleSet)">
+            <summary>
+            Initializes style set resources for this shape type
+            </summary>
+            <param name="classStyleSet">The style set for this shape class</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.DomainClassId">
+            <summary>
+            AssociationConnector domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.CanSelect">
+            <summary>
+            Overridden to disallow selection of this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector"/>.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.CanManuallyRoute">
+            <summary>
+            Overridden to disallow manual routing of this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector"/>.
+            </summary>
+            <remarks>
+            If this returns <see langword="true"/> while the <see cref="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.CanSelect"/>
+            property returns <see langword="false"/>, the application will crash while trying to manually route the connector.
+            </remarks>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.CanMoveAnchorPoints">
+            <summary>
+            Stop the user from manually moving link end points
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.HasToolTip">
+            <summary>
+            Turn on tooltips to show column relationships
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.GetToolTipText(Microsoft.VisualStudio.Modeling.Diagrams.DiagramItem)">
+            <summary>
+            Indicate the source/target columns for the foreign key connector
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.ConfiguringAsChildOf(Microsoft.VisualStudio.Modeling.Diagrams.NodeShape,System.Boolean)">
+            <summary>
+            Implements <see cref="M:ORMSolutions.ORMArchitect.Framework.Diagrams.IConfigureAsChildShape.ConfiguringAsChildOf(Microsoft.VisualStudio.Modeling.Diagrams.NodeShape,System.Boolean)"/>
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.ShapeGeometry">
+            <summary>
+            Associate the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.EntityRelationshipShapeGeometry"/> shape geometry with this connector shape.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.Reconfigure(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement)">
+            <summary>
+            Implements <see cref="M:ORMSolutions.ORMArchitect.Framework.Diagrams.IReconfigureableLink.Reconfigure(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement)"/>
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.EntityRelationshipShapeGeometry.ShapeGeometry">
+            <summary>
+            Singleton EntityRelationshipShapeGeometry instance
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.EntityRelationshipShapeGeometry.#ctor">
+            <summary>
+            Protected default constructor. The class should be used
+            as a singleton instead of being publicly constructed.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.EntityRelationshipShapeGeometry.DoPaintGeometry(Microsoft.VisualStudio.Modeling.Diagrams.DiagramPaintEventArgs,Microsoft.VisualStudio.Modeling.Diagrams.IGeometryHost)">
+            <summary>
+            Paint the solid crowsfoot on the end of an optional line
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector.EntityRelationshipShapeGeometry.GetPath(Microsoft.VisualStudio.Modeling.Diagrams.IGeometryHost)">
+            <summary>
+            Return a path modified to include any ER multiplicity decorators
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase">
+            <summary>
+            Double-derived base class for DomainClass BarkerERDiagram
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.ClassStyleSet">
+            <summary>
+            Per-class style set for this shape.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.ShapeFields">
+            <summary>
+            Per-class ShapeFields for this shape
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.TargetToolboxItemFilterAttributes">
+            <summary>
+            Toolbox item filter attributes for this diagram.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.ShouldAutoPlaceChildShapes">
+            <summary>
+            Indicate that child shapes should added through view fixup should be placed automatically.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.subscribedCompartmentItemsEvents">
+            <summary>
+            Whether compartment items change events are subscribed to.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.SubscribeCompartmentItemsEvents">
+            <summary>
+            Subscribe to events fired when compartment items changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.UnsubscribeCompartmentItemsEvents">
+            <summary>
+            Unsubscribe to events fired when compartment items changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.CompartmentItemAdded(System.Object,Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            Event for element added.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.CompartmentItemDeleted(System.Object,Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs)">
+            <summary>
+            Event for element deleted.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.CompartmentItemPropertyChanged(System.Object,Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Event for element property changed.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.CompartmentItemRolePlayerChanged(System.Object,Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs)">
+            <summary>
+            Event for role-player changed.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.CompartmentItemRolePlayerOrderChanged(System.Object,Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs)">
+            <summary>
+            Event for role-player order changed.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.ShouldAddShapeForElement(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Called during view fixup to ask the parent whether a shape should be created for the given child element.
+            </summary>
+            <remarks>
+            Always return true, since we assume there is only one diagram per model file for DSL scenarios.
+            </remarks>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.IsConnectorMappedToLink(Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape)">
+            <summary>
+            Most connectors are mapped to element links, but there can be exceptions. This method tell if a connector should be
+            mapped to an element link.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.CreateChildShape(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Creates a new shape for the given model element as part of view fixup
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.InitializeShapeFields(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField})">
+            <summary>
+            Initialize shape decorator mappings.  This is done here rather than in individual shapes because decorator maps
+            are defined per diagram type rather than per shape type.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.BarkerEntityShapeDecoratorMap">
+            <summary>
+            Class containing decorator path traversal methods for BarkerEntityShape.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.BarkerEntityShapeDecoratorMap.OnDecoratorsInitialized(System.Object,System.EventArgs)">
+            <summary>
+            Event handler called when decorator initialization is complete for BarkerEntityShape.  Adds decorator mappings for this shape or connector.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.Dispose(System.Boolean)">
+            <summary>
+            Dispose of connect actions.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.DomainClassId">
+            <summary>
+            BarkerERDiagram domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagramBase.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram">
+            <summary>
+            DomainClass BarkerERDiagram
+            Description for ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
+            </summary>
+            <summary>
+            Represents the framework for the Barker ER view of the ORM Diagram.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromEntityTypeRuleClass.ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
+            /// <summary>
+            /// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType)
+            /// </summary>
+            private static void ConceptTypeDetachingFromEntityTypeRule(ElementDeletingEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromObjectTypeRuleClass.ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
+            /// <summary>
+            /// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
+            /// </summary>
+            private static void ConceptTypeDetachingFromObjectTypeRule(ElementDeletingEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayAttributePropertyChangedRuleClass.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
+            /// <summary>
+            /// ChangeRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)
+            /// </summary>
+            private static void DisplayAttributePropertyChangedRule(ElementPropertyChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayEntityTypePropertyChangedRuleClass.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
+            /// <summary>
+            /// ChangeRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)
+            /// </summary>
+            private static void DisplayEntityTypePropertyChangedRule(ElementPropertyChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.NameChangedRuleClass.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
+            /// <summary>
+            /// ChangeRule: typeof(BarkerERDiagram)
+            /// </summary>
+            private static void NameChangedRule(ElementPropertyChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.BinaryAssociationAddedRuleClass.ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram
+            /// <summary>
+            /// AddRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+            /// </summary>
+            private static void BinaryAssociationAddedRule(ElementAddedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DiagramInitializer">
+            <summary>
+            Perform custom initialization for newly loaded or freshly created diagram.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.CreateChildShape(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Customize childshape create to set an initial location for a <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.FixUpDiagramSelection(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement)">
+            <summary>
+            Stop all auto shape selection on transaction commit except when
+            the item is being dropped.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.NameChangedRule(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            ChangeRule: typeof(BarkerERDiagram)
+            Disallows changing the name of the Barker ER Diagram
+            Changes the name of the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram"/> to
+            its default name if changed by a user.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayAttributePropertyChangedRule(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            ChangeRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)
+            Update Barker entity size when <see cref="P:ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute.IsMandatory"/> or <see cref="P:ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute.Name"/> changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.DisplayEntityTypePropertyChangedRule(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            ChangeRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)
+            Update table size when <see cref="P:ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType.Name"/> changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.BinaryAssociationAddedRule(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            AddRule: typeof(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModelContainsBinaryAssociation), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+            Add a <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector"/> to the diagram
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.OnChildConfigured(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,System.Boolean,System.Boolean)">
+            <summary>
+            Stop the DSLTools framework from placing a shape that has a non-empty location
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.OnChildConfiguring(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,System.Boolean)">
+            <summary>
+            Correctly connect a <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.AssociationConnector"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ManageEventHandlers(Microsoft.VisualStudio.Modeling.Store,ORMSolutions.ORMArchitect.Framework.ModelingEventManager,ORMSolutions.ORMArchitect.Framework.EventHandlerAction)">
+            <summary>
+            Manages <see cref="T:System.EventHandler`1"/>s in the <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> for <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram"/>s.
+            </summary>
+            <param name="store">The <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> for which the <see cref="T:System.EventHandler`1"/>s should be managed.</param>
+            <param name="eventManager">The <see cref="T:ORMSolutions.ORMArchitect.Framework.ModelingEventManager"/> used to manage the <see cref="T:System.EventHandler`1"/>s.</param>
+            <param name="action">The <see cref="T:ORMSolutions.ORMArchitect.Framework.EventHandlerAction"/> that should be taken for the <see cref="T:System.EventHandler`1"/>s.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.BarkerEntityPositionDictionaryKey">
+            <summary>
+            A key that references a dictionary of table positions in the current transaction context.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromObjectTypeRule(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs)">
+            <summary>
+            DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
+            Cache the position of the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/> corresponding to the object type being deleted
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ConceptTypeDetachingFromEntityTypeRule(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs)">
+            <summary>
+            DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType)
+            Cache the position of the <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape"/> corresponding to the object type being deleted
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.RememberBarkerEntityShapeLocations(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType,ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)">
+            <summary>
+            Cache the location of any entity shape associated with the provided <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> and <see cref="T:ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType"/>
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.GetCustomSerializedChildElementInfo">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.CustomSerializedChildRoleComparer">
+            <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.MapChildElement(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ShouldSerialize">
+            <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.BarkerEntityShapeElementName">
+            <summary>
+            The local name of a BarkerEntityShape element.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.ObjectTypeRefAttributeName">
+            <summary>
+            The local name of an ObjectTypeRef attribute.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.LocationAttributeName">
+            <summary>
+            The local name of a Location attribute.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.IdAttributeName">
+            <summary>
+            The local name of an Id attribute.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.SubjectRefAttributeName">
+            <summary>
+            The local name of a SubjectRef attribute
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.BarkerERDiagramElementName">
+            <summary>
+            The local name of a BarkerERDiagram element.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.System#Xml#Serialization#IXmlSerializable#GetSchema">
+            <summary>
+            Gets the <see cref="T:System.Xml.Schema.XmlSchema"/> that the custom serialization should conform to.
+            </summary>
+            <returns><see langword="null" />.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.System#Xml#Serialization#IXmlSerializable#ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Processes the XML that this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram"/> has
+            written.
+            </summary>
+            <param name="reader">A <see cref="T:System.Xml.XmlReader"/> that will read the XML associated with the
+            serialization of this object.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram.System#Xml#Serialization#IXmlSerializable#WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Serializes this <see cref="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERDiagram"/>.
+            </summary>
+            <param name="writer">A <see cref="T:System.Xml.XmlWriter"/> that will write the custom serialization contents.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.FixUpDiagramBase">
+            <summary>
+            Double derived implementation for the rule that initiates view fixup when an element that has an associated shape is added to the model.
+            This now enables the DSL author to everride the SkipFixUp() method 
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.FixUpDiagram">
+            <summary>
+            Rule that initiates view fixup when an element that has an associated shape is added to the model. 
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemAddRule">
+            <summary>
+            Rule to update compartments when an item is added to the list
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemAddRule.ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            Called when an element is added. 
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemAddRule.UpdateCompartments(System.Collections.IEnumerable,System.Type,System.String,System.Boolean)">
+            <summary>
+            Updates the compartments for the shapes associated to the given list of model elements
+            </summary>
+            <param name="elements">List of model elements</param>
+            <param name="shapeType">The type of shape that needs updating</param>
+            <param name="compartmentName">The name of the compartment to update</param>
+            <param name="repaintOnly">If true, the method will only invalidate the shape for a repaint, without re-initializing the shape.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemDeleteRule">
+            <summary>
+            Rule to update compartments when an items is removed from the list
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemDeleteRule.ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs)">
+            <summary>
+            Called when an element is deleted
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemChangeRule">
+            <summary>
+            Rule to update compartments when the property on an item being displayed changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemChangeRule.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Called when an element is changed
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerChangeRule">
+            <summary>
+            Rule to update compartments when a roleplayer change happens
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerChangeRule.RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs)">
+            <summary>
+            Called when the roleplayer on a link changes.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerPositionChangeRule">
+            <summary>
+            Rule to update compartments when the order of items in the list changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.CompartmentItemRolePlayerPositionChangeRule.RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs)">
+            <summary>
+            Called when the order of a roleplayer in a relationship changes
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel">
+            <summary>
+            DomainModel BarkerERShapeDomainModel
+            (Preliminary) Graphical View of Barker ER Model
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.DomainModelId">
+            <summary>
+            BarkerERShapeDomainModel domain model Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.#ctor(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="store">Store containing the domain model.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.GetGeneratedDomainModelTypes">
+            <summary>
+            Gets the list of generated domain model types (classes, rules, relationships).
+            </summary>
+            <returns>List of types.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.GetGeneratedDomainProperties">
+            <summary>
+            Gets the list of generated domain properties.
+            </summary>
+            <returns>List of property data.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.CreateElement(Microsoft.VisualStudio.Modeling.Partition,System.Type,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Creates an element of specified type.
+            </summary>
+            <param name="partition">Partition where element is to be created.</param>
+            <param name="elementType">Element type which belongs to this domain model.</param>
+            <param name="propertyAssignments">New element property assignments.</param>
+            <returns>Created element.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.CreateElementLink(Microsoft.VisualStudio.Modeling.Partition,System.Type,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Creates an element link of specified type.
+            </summary>
+            <param name="partition">Partition where element is to be created.</param>
+            <param name="elementLinkType">Element link type which belongs to this domain model.</param>
+            <param name="roleAssignments">List of relationship role assignments for the new link.</param>
+            <param name="propertyAssignments">New element property assignments.</param>
+            <returns>Created element link.</returns>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.ResourceBaseName">
+            <summary>
+            The base name of this model's resources.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.ResourceManager">
+            <summary>
+            Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.SingletonResourceManager">
+            <summary>
+            Gets the Singleton ResourceManager for this domain model.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.copyClosure">
+            <summary>
+            CopyClosure cache
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.removeClosure">
+            <summary>
+            DeleteClosure cache
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.GetClosureFilter(Microsoft.VisualStudio.Modeling.ClosureType,System.Collections.Generic.ICollection{Microsoft.VisualStudio.Modeling.ModelElement})">
+            <summary>
+            Returns an IElementVisitorFilter that corresponds to the ClosureType.
+            </summary>
+            <param name="type">closure type</param>
+            <param name="rootElements">collection of root elements</param>
+            <returns>IElementVisitorFilter or null</returns>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.CopyClosure">
+            <summary>
+            CopyClosure cache
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.DeleteClosure">
+            <summary>
+            DeleteClosure cache
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.EnableDiagramRules(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Enables rules in this domain model related to diagram fixup for the given store.
+            If diagram data will be loaded into the store, this method should be called first to ensure
+            that the diagram behaves properly.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.DisableDiagramRules(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Disables rules in this domain model related to diagram fixup for the given store.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.GetCustomDomainModelTypes">
+            <summary>Generated code to attach <see cref="T:Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="T:Microsoft.VisualStudio.Modeling.Store"/>.</summary>
+            <seealso cref="M:Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.GetSignalPropertyChanges">
+            <summary>
+            Implements <see cref="M:ORMSolutions.ORMArchitect.Framework.IRegisterSignalChanges.GetSignalPropertyChanges"/>
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.XmlNamespace">
+            <summary>The default XmlNamespace associated with the 'BarkerERShapeDomainModel' extension model</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.DefaultElementPrefix">
+            <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.GetCustomElementNamespaces">
+            <summary>Implements ICustomSerializedDomainModel.GetCustomElementNamespaces</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.ShouldSerializeDomainClass(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.DomainClassInfo)">
+            <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.GetRootElementClasses">
+            <summary>Implements ICustomSerializedDomainModel.GetRootElementClasses</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.ShouldSerializeRootElement(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>Implements ICustomSerializedDomainModel.ShouldSerializeRootElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.GetRootRelationshipContainers">
+            <summary>Implements ICustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.MapRootElement(System.String,System.String)">
+            <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel.MapClassName(System.String,System.String)">
+            <summary>Implements ICustomSerializedDomainModel.MapClassName</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDeleteClosure">
+            <summary>
+            Remove closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDeleteClosure.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDeleteClosureBase">
+            <summary>
+            Base class for remove closure visitor filter
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDeleteClosureBase.domainRoles">
+            <summary>
+            DomainRoles
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDeleteClosureBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDeleteClosureBase.ShouldVisitRelationship(Microsoft.VisualStudio.Modeling.ElementWalker,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.DomainRelationshipInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>
+            Called to ask the filter if a particular relationship from a source element should be included in the traversal
+            </summary>
+            <param name="walker">ElementWalker that is traversing the model</param>
+            <param name="sourceElement">Model Element playing the source role</param>
+            <param name="sourceRoleInfo">DomainRoleInfo of the role that the source element is playing in the relationship</param>
+            <param name="domainRelationshipInfo">DomainRelationshipInfo for the ElementLink in question</param>
+            <param name="targetRelationship">Relationship in question</param>
+            <returns>Yes if the relationship should be traversed</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDeleteClosureBase.ShouldVisitRolePlayer(Microsoft.VisualStudio.Modeling.ElementWalker,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.ElementLink,Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Called to ask the filter if a particular role player should be Visited during traversal
+            </summary>
+            <param name="walker">ElementWalker that is traversing the model</param>
+            <param name="sourceElement">Model Element playing the source role</param>
+            <param name="elementLink">Element Link that forms the relationship to the role player in question</param>
+            <param name="targetDomainRole">DomainRoleInfo of the target role</param>
+            <param name="targetRolePlayer">Model Element that plays the target role in the relationship</param>
+            <returns></returns>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDeleteClosureBase.DomainRoles">
+            <summary>
+            DomainRoles
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeCopyClosure">
+            <summary>
+            Copy closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeCopyClosure.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeCopyClosureBase">
+            <summary>
+            Base class for copy closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeCopyClosureBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase">
+            <summary>
+            Double-derived base class for DomainClass BarkerEntityShape
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.ClassStyleSet">
+            <summary>
+            Per-class style set for this shape.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.ShapeFields">
+            <summary>
+            Per-class ShapeFields for this shape.
+            </summary>
+        </member>
+        <member name="E:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.DecoratorsInitialized">
+            <summary>
+            Event fired when decorator initialization is complete for this shape type.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.Decorators">
+            <summary>
+            List containing decorators used by this type.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.FindBarkerEntityShapeDecorator(System.String)">
+            <summary>
+            Finds a decorator associated with BarkerEntityShape.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.OnInitialize">
+            <summary>
+            Shape instance initialization.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.DefaultSize">
+            <summary>
+            Default size for this shape.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.InitializeResources(Microsoft.VisualStudio.Modeling.Diagrams.StyleSet)">
+            <summary>
+            Initializes style set resources for this shape type
+            </summary>
+            <param name="classStyleSet">The style set for this shape class</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.HasBackgroundGradient">
+            <summary>
+            Indicates whether this shape displays a background gradient.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.BackgroundGradientMode">
+            <summary>
+            Indicates the direction of the gradient.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.ShapeGeometry">
+            <summary>
+            Specifies the geometry used by this shape
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.InitializeShapeFields(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField})">
+            <summary>
+            Initialize the collection of shape fields associated with this shape type.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.InitializeDecorators(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField},System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.Decorator})">
+            <summary>
+            Initialize the collection of decorators associated with this shape type.  This method also
+            creates shape fields for outer decorators, because these are not part of the shape fields collection
+            associated with the shape, so they must be created here rather than in InitializeShapeFields.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.OnBoundsFixup(Microsoft.VisualStudio.Modeling.Diagrams.BoundsFixupState,System.Int32,System.Boolean)">
+            <summary>
+            Ensure outer decorators are placed appropriately.  This is called during view fixup,
+            after the shape has been associated with the model element.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.GetCompartmentDescriptions">
+            <summary>
+            Gets an array of CompartmentDescription for all compartments shown on this shape
+            (including compartments defined on base shapes).
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.GetCompartmentMappings(System.Type)">
+            <summary>
+            Gets an array of CompartmentMappings for all compartments displayed on this shape
+            (including compartment maps defined on base shapes). 
+            </summary>
+            <param name="melType">The type of the DomainClass that this shape is mapped to</param>
+            <returns></returns>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.DomainClassId">
+            <summary>
+            BarkerEntityShape domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.UpdateCounterDomainPropertyId">
+            <summary>
+            UpdateCounter domain property Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.UpdateCounter">
+            <summary>
+            Gets or sets the value of UpdateCounter domain property.
+            Description for
+            ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShape.Update Counter
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.UpdateCounterPropertyHandler">
+            <summary>
+            Value handler for the BarkerEntityShape.UpdateCounter domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.UpdateCounterPropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the BarkerEntityShape.UpdateCounter domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.UpdateCounterPropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the BarkerEntityShape.UpdateCounter domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.UpdateCounterPropertyHandler.GetValue(ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.UpdateCounterPropertyHandler.SetValue(ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase,System.Int64)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.InvalidateRequired">
+            <summary>
+            Call to automatically invalidate the shape during events.
+            Invalidates during the original event sequence as well as undo and redo.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerEntityShapeBase.InvalidateRequired(System.Boolean)">
+            <summary>
+            Call to automatically invalidate the shape during events.
+            Invalidates during the original event sequence as well as undo and redo.
+            </summary>
+            <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelper">
+            <summary>
+            Helper class used to create and initialize toolbox items for this DSL.
+            </summary>
+            <remarks>
+            Double-derived class to allow easier code customization.
+            </remarks>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelper.#ctor(System.IServiceProvider)">
+            <summary>
+            Constructs a new BarkerERShapeToolboxHelper.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase">
+            <summary>
+            Helper class used to create and initialize toolbox items for this DSL.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase.ToolboxFilterString">
+            <summary>
+            Toolbox item filter string used to identify BarkerERShape toolbox items.  
+            </summary>
+            <remarks>
+            See the MSDN documentation for the ToolboxItemFilterAttribute class for more information on toolbox
+            item filters.
+            </remarks>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase.#ctor(System.IServiceProvider)">
+            <summary>
+            Constructs a new BarkerERShapeToolboxHelperBase.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase.ServiceProvider">
+            <summary>
+            Serivce provider used to access services from the hosting environment.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase.DefaultToolboxTabName">
+            <summary>
+            Returns the display name of the tab that should be opened by default when the editor is opened.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase.DefaultToolboxTabToolboxItemsCount">
+            <summary>
+            Returns the toolbox items count in the default tool box tab.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase.CreateToolboxItems">
+            <summary>
+            Returns a list of custom toolbox items to be added dynamically
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase.CreateElementToolPrototype(Microsoft.VisualStudio.Modeling.Store,System.Guid)">
+            <summary>
+            Creates an ElementGroupPrototype for the element tool corresponding to the given domain class id.
+            Default behavior is to create a prototype containing an instance of the domain class.
+            Derived classes may override this to add additional information to the prototype.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeToolboxHelperBase.GetToolboxItem(System.String,Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Returns instance of ModelingToolboxItem based on specified name.
+            This method must be called from within a Transaction. Failure to do so will result in an exception
+            </summary>
+            <param name="itemId">unique name of desired ToolboxItem</param>
+            <param name="store">Store to perform the operation against</param>
+            <returns>An instance of ModelingToolboxItem if the itemId can be resolved, null otherwise</returns>
+        </member>
+    </members>
+</doc>

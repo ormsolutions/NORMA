@@ -1,0 +1,8 @@
+C:\Users\Francesco\Documents\dev\NORMA\Tools\NUBuildVS\bin\Neumont.Build.VisualStudio.xml
+C:\Users\Francesco\Documents\dev\NORMA\Tools\NUBuildVS\bin\Neumont.Build.VisualStudio.Core.dll
+C:\Users\Francesco\Documents\dev\NORMA\Tools\NUBuildVS\bin\Neumont.Build.VisualStudio.Core.pdb
+C:\Users\Francesco\Documents\dev\NORMA\Tools\NUBuildVS\bin\Microsoft.Build.Framework.dll
+C:\Users\Francesco\Documents\dev\NORMA\Tools\NUBuildVS\bin\Microsoft.Build.Utilities.Core.dll
+C:\Users\Francesco\Documents\dev\NORMA\Tools\NUBuildVS\obj\NUBuildVS\NUBuildVS.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\dev\NORMA\Tools\NUBuildVS\obj\NUBuildVS\Neumont.Build.VisualStudio.Core.dll
+C:\Users\Francesco\Documents\dev\NORMA\Tools\NUBuildVS\obj\NUBuildVS\Neumont.Build.VisualStudio.Core.pdb

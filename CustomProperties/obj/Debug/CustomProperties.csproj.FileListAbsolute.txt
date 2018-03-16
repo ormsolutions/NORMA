@@ -1,0 +1,14 @@
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\bin\Debug\ORMSolutions.ORMArchitect.CustomProperties.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\bin\Debug\ORMSolutions.ORMArchitect.CustomProperties.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesManager.resources
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\ORMSolutions.ORMArchitect.CustomProperties.DefinitionEditor.resources
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\ORMSolutions.ORMArchitect.CustomProperties.EditCustomEnumOrDescription.resources
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx.VS2010.resources
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\ORMSolutions.ORMArchitect.CustomProperties.GroupEditor.resources
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\ORMSolutions.ORMArchitect.CustomProperties.CustomPropertyProvidersResources.resources
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\CustomProperties.csproj.GenerateResource.Cache
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\ORMSolutions.ORMArchitect.CustomProperties.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\ORMSolutions.ORMArchitect.CustomProperties.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.xml
+C:\Users\Francesco\Documents\dev\NORMA\CustomProperties\obj\Debug\CustomProperties.csprojResolveAssemblyReference.cache

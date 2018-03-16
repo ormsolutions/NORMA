@@ -1,0 +1,54 @@
+﻿using System;
+using Microsoft.VisualStudio.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using System.Collections.Generic;
+using org.unibz.ucmf.askAPI;
+
+namespace unibz.ORMInferenceEngine
+{
+	partial class ORM2OWLTranslationManager
+	{
+
+		private HashSet<ObjectType> alreadyProcessedEquivalentTypes = new HashSet<ObjectType>();
+
+		void CreateInferredEquivalentTypesOld(InferredConstraints container, InferredEquivalentEntityTypes equiTypes)
+		{
+			Partition outputPartition = container.Partition;
+			ORMModel model = container.Model;
+
+			alreadyProcessedEquivalentTypes.Clear();
+
+			foreach (ObjectType type in model.ObjectTypeCollection)
+			{
+				//prendo la lista dei figli di type in formato stringa
+				java.util.ArrayList listEquivToType = equiTypes.getAllTypesEquivalentTo(type.Name);
+				//se questa lista è diversa da null e il type non e' gia stato processato, allora ci sono degli equivalenti
+				if (listEquivToType != null && alreadyProcessedEquivalentTypes.Contains(type)==false)
+				{
+					
+					//setto type
+					//EquivalentTopLevelObjectType top = new EquivalentTopLevelObjectType(inferredHierarchyContainer, type);
+
+					//per ciascun figlio
+					foreach (String son in listEquivToType)
+					{
+						ObjectType subObjectType = findObjectTypeByName(model, son);
+						alreadyProcessedEquivalentTypes.Add(subObjectType);
+						//new EquivalentObjectTypeContainment(top, subObjectType);
+
+						SetComparisonConstraint eq = new InferredEqualityConstraint(outputPartition);
+						eq.Name = "Equivalent Types: " + type + " \u22CD " + son;
+
+					}
+
+				}
+				else
+				{
+					//e' inutile far vedere tra gli equivalenti chi non ha figli
+					//EquivalentTopLevelObjectType top = new EquivalentTopLevelObjectType(inferredHierarchyContainer, type);
+				}
+
+			}
+		}
+	}
+}

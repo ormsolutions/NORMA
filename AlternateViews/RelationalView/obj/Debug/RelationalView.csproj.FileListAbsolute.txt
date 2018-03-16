@@ -1,0 +1,13 @@
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\bin\Debug\ORMSolutions.ORMArchitect.Views.RelationalView.VS2015.xml
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\bin\Debug\ORMSolutions.ORMArchitect.Views.RelationalView.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\bin\Debug\ORMSolutions.ORMArchitect.Views.RelationalView.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\obj\Debug\RelationalView.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\obj\Debug\ORMSolutions.ORMArchitect.Views.RelationalView.GeneratedCode.DomainModelResx.VS2010.resources
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\obj\Debug\ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.resources
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\obj\Debug\RelationalView.csproj.GenerateResource.Cache
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\obj\Debug\ORMSolutions.ORMArchitect.Views.RelationalView.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\obj\Debug\ORMSolutions.ORMArchitect.Views.RelationalView.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.xml
+C:\Users\Francesco\Documents\dev\NORMA\AlternateViews\RelationalView\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.14.0.xml

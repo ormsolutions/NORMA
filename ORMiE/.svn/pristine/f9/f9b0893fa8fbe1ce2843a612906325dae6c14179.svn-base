@@ -1,0 +1,49 @@
+﻿using System;
+using ORMSolutions.ORMArchitect.Framework.Design;
+using System.ComponentModel;
+
+namespace unibz.ORMInferenceEngine
+{
+	[TypeConverter(typeof(EnumConverter<SurveyRootElementType, Hierarchy>))]
+	public enum SurveyRootElementType
+	{
+		/// <summary>
+		/// Display as a top level object type.
+		/// </summary>
+		TopLevelObjectType,
+		/// <summary>
+		/// Display as a equivalent top level object type.
+		/// </summary>
+		EquivalentTopLevelObjectType,
+		/// <summary>
+		/// Display as a top level fact type.
+		/// </summary>
+		TopLevelFactType,
+		/// <summary>
+		/// Display as a disjoint top level fact type.
+		/// </summary>
+		DisjointTopLevelFactType,
+		/// <summary>
+		/// Display as a disjoint top level object type.
+		/// </summary>
+		DisjointTopLevelObjectType,
+		/// <summary>
+		/// Display as a exhaustive top level object type.
+		/// </summary>
+		ExhaustiveTopLevelObjectType,
+		/// <summary>
+		/// Display as a equivalent top level fact type.
+		/// </summary>
+		EquivalentTopLevelFactType,
+		/// <summary>
+		/// Display Inferred Constraint as a top level group element
+		/// </summary>
+		InferredConstraint,
+		/// <summary>
+		/// Display Unsatisfiable Object Type as a top level group element
+		/// </summary>
+		UnsatisfiableElement,
+
+
+	}
+}

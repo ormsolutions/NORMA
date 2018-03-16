@@ -1,0 +1,873 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+using Microsoft.VisualStudio.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+
+using org.unibz.ucmf.tellAPI.constraints;
+using org.unibz.ucmf.tellAPI.signatures;
+using org.unibz.ucmf.askAPI;
+
+using ConstraintType = ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintType;
+using org.unibz.ucmf.tellAPI.derivationRules;
+
+namespace unibz.ORMInferenceEngine
+{
+	partial class ORM2OWLTranslationManager
+	{
+
+
+		/// <summary>
+		/// Helper method to return the roles for a constraint if the constraint has
+		/// no structural errors, no join path (temporary), and does not constraint any
+		/// ignored fact types or object types.
+		/// </summary>
+		/// <param name="constraint"><see cref="SetConstraint"/> to verify.</param>
+		/// <param name="ignoredFactTypesAndObjectTypes">Dictionary of elements (fact types and object types) that are ignored.</param>
+		/// <returns></returns>
+		private static LinkedElementCollection<Role> ReturnRolesIfValidConstraint(SetConstraint constraint, IDictionary<ORMModelElement, bool> ignoredFactTypesAndObjectTypes)
+		{
+			if (constraint.TooFewRoleSequencesError != null || constraint.TooManyRoleSequencesError != null || constraint.CompatibleRolePlayerTypeError != null ||
+				constraint.JoinPath != null || constraint.JoinPathRequiredError != null) // UNDONE: Handle reasoning over join paths
+			{
+				return null;
+			}
+			LinkedElementCollection<Role> roles = constraint.RoleCollection;
+			foreach (Role role in roles)
+			{
+				ObjectType rolePlayer;
+				if (null != (rolePlayer = role.RolePlayer) && ignoredFactTypesAndObjectTypes.ContainsKey(rolePlayer) || ignoredFactTypesAndObjectTypes.ContainsKey(role.FactType))
+				{
+					return null;
+				}
+			}
+			return roles;
+		}
+		/// <summary>
+		/// Helper function to determine if all fact types in a collection are subtype facts and recognized
+		/// </summary>
+		private static bool AreAllFactTypesAreRecognizedSubtypes(LinkedElementCollection<FactType> factTypes, IDictionary<ORMModelElement, bool> recognizedFactTypes)
+		{
+			foreach (FactType factType in factTypes)
+			{
+				if (!(factType is SubtypeFact && recognizedFactTypes.ContainsKey(factType)))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		//Mapping ORMModel FactType - Framework FactType
+		Dictionary<FactType, org.unibz.ucmf.tellAPI.declarations.FactType> factTypeMap = new Dictionary<FactType, org.unibz.ucmf.tellAPI.declarations.FactType>();
+		//Mapping ORMModel ORMEntityType - Framework ObjectType
+		Dictionary<ObjectType, ORMEntityType> objectTypeMap = new Dictionary<ObjectType, ORMEntityType>();
+
+
+		public void translateToOWL(ORMModel model)
+		{
+			if (null != model)
+			{
+
+				//Create the ORM Model by custom API
+				org.unibz.ucmf.ORMModel ormModel = new org.unibz.ucmf.ORMModel();
+
+				Partition ormPartition = model.Partition;
+				Dictionary<FactType, ObjectType> refModeFactTypes = new Dictionary<FactType, ObjectType>();
+				Dictionary<ObjectType, int> refModeValueTypes = new Dictionary<ObjectType, int>();
+				Dictionary<ORMModelElement, bool> ignoredElements = new Dictionary<ORMModelElement, bool>();
+
+
+				foreach (EntityTypeHasPreferredIdentifier pidLink in ormPartition.ElementDirectory.FindElements<EntityTypeHasPreferredIdentifier>())
+				{
+					LinkedElementCollection<Role> pidRoles = pidLink.PreferredIdentifier.RoleCollection;
+					ObjectType rolePlayer;
+					Role role;
+					if (pidRoles.Count == 1 &&
+						null != (rolePlayer = (role = pidRoles[0]).RolePlayer) &&
+						rolePlayer.DataType != null) // Value type
+					{
+						// This is a reference mode pattern. Most of the fact types and value types will be
+						// ignored, but we don't know for sure.
+						refModeFactTypes[role.FactType] = rolePlayer;
+						int useCount;
+						refModeValueTypes[rolePlayer] = refModeValueTypes.TryGetValue(rolePlayer, out useCount) ? (useCount + 1) : 1;
+						ignoredElements[rolePlayer] = true; // Assume ignored, pull out later if false so we're not modifying a collection currently being iterated.
+					}
+				}
+
+				// Look at the value types. If the count is the role collection count then it is used only as a reference mode value type
+				foreach (KeyValuePair<ObjectType, int> kvp in refModeValueTypes)
+				{
+					if (kvp.Value != kvp.Key.PlayedRoleCollection.Count && ignoredElements.ContainsKey(kvp.Key))
+					{
+						ignoredElements.Remove(kvp.Key);
+					}
+				}
+
+				// Go through the reference mode fact types and make sure we can eliminate those fact types (if the value types are eliminated)
+				foreach (KeyValuePair<FactType, ObjectType> kvp in refModeFactTypes)
+				{
+					if (ignoredElements.ContainsKey(kvp.Value))
+					{
+						ignoredElements[kvp.Key] = true;
+					}
+				}
+
+				LinkedElementCollection<FactType> modelFactTypes = model.FactTypeCollection;
+				Dictionary<IConstraint, bool> supertypeConstraints = null;
+
+				// Find other eliminated elements
+				foreach (FactType factType in modelFactTypes)
+				{
+					
+					if (ignoredElements.ContainsKey(factType))
+					{
+						continue;
+					}
+					SubtypeFact subtypeFact = null;
+					FactType referenceModeFactType;
+						if (factType.ImpliedByObjectification != null ||
+							(null != (subtypeFact = factType as SubtypeFact)
+								&& (subtypeFact.ProvidesPreferredIdentifier ||
+								(null != (referenceModeFactType = subtypeFact.Subtype.ReferenceModeFactType) && ignoredElements.ContainsKey(referenceModeFactType))))) // Treat a secondary subtype as a normal fact type instead of a 1-1 if the reference scheme is ignored
+						{
+							ignoredElements[factType] = true;
+							if (subtypeFact != null)
+							{
+								// The fact type is eliminated for a preferred identifier path, but we need the
+								// relationship in the model. Non-preferred paths are treated as one-to-one relationships
+								// by leaving the fact type in the model.
+								SupertypeMetaRole supertypeRole = subtypeFact.SupertypeRole;
+								ormModel.addConstraint(new SubtypeOf(new ORMEntityType(subtypeFact.Subtype.Name), new ORMEntityType(supertypeRole.RolePlayer.Name)));
+
+								// Supertype role has attached constraints. Collect the supertype constraints that might be considered for
+								// mapping (we don't currently handle some constructs) and test later if we should map them as subtype constraints
+								// by verifying that all of the constrained roles are on subtype facts that we are mapping as subtypes instead of
+								// one-to-one fact types.
+								foreach (ConstraintRoleSequence constraintSequence in supertypeRole.ConstraintRoleSequenceCollection)
+								{
+									IConstraint constraint = constraintSequence.Constraint;
+									switch (constraintSequence.Constraint.ConstraintType)
+									{
+										case ConstraintType.DisjunctiveMandatory:
+										case ConstraintType.Subset:
+										case ConstraintType.Exclusion:
+											(supertypeConstraints ?? (supertypeConstraints = new Dictionary<IConstraint, bool>()))[constraint] = true;
+											break;
+									}
+								}
+							}
+						}
+						else
+						{
+							//Entity types creation
+							java.util.ArrayList list = new java.util.ArrayList();
+							foreach (RoleBase r in factType.RoleCollection)
+							{
+								ObjectType rolePlayer = r.Role.RolePlayer;
+								if (rolePlayer != null)
+								{
+									if (!rolePlayer.IsImplicitBooleanValue)
+									{
+										//For each role extract the entity type name
+										ORMEntityType ormObj = new ORMEntityType(r.Role.RolePlayer.Name);
+										list.add(ormObj);
+										//lo aggiungo alla struttura dati
+										if (!objectTypeMap.ContainsKey(rolePlayer))
+										{
+											objectTypeMap.Add(rolePlayer, ormObj);
+										}
+
+									}
+									else
+									{
+										ignoredElements[rolePlayer] = true;
+									}
+								}
+
+							}
+							if (list.size() > 0)
+							{
+								org.unibz.ucmf.tellAPI.declarations.FactType f = new org.unibz.ucmf.tellAPI.declarations.FactType(factType.Name, list);
+								ormModel.addConstraint(f);
+
+								//metter una struttura dizionario: k=facttype.name v=facttype creato sopra
+								if (!factTypeMap.ContainsKey(factType))
+								{
+									factTypeMap.Add(factType, f);
+
+								}
+							}
+
+
+						
+
+					}
+				}
+
+				if (supertypeConstraints != null)
+				{
+					foreach (IConstraint constraint in supertypeConstraints.Keys)
+					{
+						switch (constraint.ConstraintType)
+						{
+							case ConstraintType.DisjunctiveMandatory:
+								MandatoryConstraint mandatoryConstraint = (MandatoryConstraint)constraint;
+								if (AreAllFactTypesAreRecognizedSubtypes(mandatoryConstraint.FactTypeCollection, ignoredElements))
+								{
+									ObjectType supertype = null;
+									java.util.Set sonsList = new java.util.HashSet();
+									foreach (Role role in mandatoryConstraint.RoleCollection)
+									{
+										if (supertype == null)
+										{
+											supertype = role.RolePlayer;
+										}
+										else if (role.RolePlayer != supertype)
+										{
+											sonsList = null; // We only handle direct children
+											break;
+										}
+										ORMEntityType son = new ORMEntityType(role.OppositeRole.Role.RolePlayer.Name);
+										sonsList.add(son);
+
+										//aggiungo alla objectMap ogni elemento di sonsList
+										if(!objectTypeMap.ContainsKey(role.OppositeRole.Role.RolePlayer))
+										{
+											objectTypeMap.Add(role.OppositeRole.Role.RolePlayer, son);
+										}
+										
+									}
+									if (sonsList != null)
+									{
+										ormModel.addConstraint(new org.unibz.ucmf.tellAPI.constraints.ExhaustiveTypes(sonsList, new org.unibz.ucmf.tellAPI.signatures.ORMEntityType(supertype.Name)));
+									}
+								}
+								break;
+							//
+							//THIS CODE IS NOT ABLE TO DETECT THE SUBSET CONSTRAINT
+							//
+							case ConstraintType.Subset:
+								SubsetConstraint subsetConstraint = (SubsetConstraint)constraint;
+								if (AreAllFactTypesAreRecognizedSubtypes(subsetConstraint.FactTypeCollection, ignoredElements) &&
+									!(null != subsetConstraint.ArityMismatchError ||
+										null != subsetConstraint.TooFewRoleSequencesError ||
+										null != subsetConstraint.TooManyRoleSequencesError ||
+										subsetConstraint.CompatibleRolePlayerTypeErrorCollection.Count > 0))
+								{
+									LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = subsetConstraint.RoleSequenceCollection;
+									LinkedElementCollection<Role> roles1 = roleSequences[0].RoleCollection;
+									LinkedElementCollection<Role> roles2 = roleSequences[1].RoleCollection;
+									java.util.ArrayList firstListOrmRole = new java.util.ArrayList();
+									java.util.ArrayList secondListOrmRole = new java.util.ArrayList();
+									for (int i = 0, roleCount = roles1.Count; i < roleCount; ++i)
+									{
+										FactType factType = roles1[i].FactType;
+										firstListOrmRole.add(new org.unibz.ucmf.tellAPI.signatures.ORMRole((factType.Name + factType.Id), i));
+										factType = roles2[i].FactType;
+										secondListOrmRole.add(new org.unibz.ucmf.tellAPI.signatures.ORMRole((factType.Name + factType.Id), i));
+									}
+
+									//ormModel.addConstraint(new org.unibz.ucmf.tellAPI.constraints.SubsetOf(firstListOrmRole, secondListOrmRole));
+								}
+								break;
+							//
+							//THIS CODE IS NOT ABLE TO DETECT THE EXCLUSION CONSTRAINT
+							//
+							case ConstraintType.Exclusion:
+								ExclusionConstraint exclusionConstraint = (ExclusionConstraint)constraint;
+								if (AreAllFactTypesAreRecognizedSubtypes(exclusionConstraint.FactTypeCollection, ignoredElements) &&
+									!(null != exclusionConstraint.ArityMismatchError ||
+										null != exclusionConstraint.TooFewRoleSequencesError ||
+										null != exclusionConstraint.TooManyRoleSequencesError ||
+										exclusionConstraint.CompatibleRolePlayerTypeErrorCollection.Count > 0))
+								{
+									LinkedElementCollection<SetComparisonConstraintRoleSequence> roleSequences = exclusionConstraint.RoleSequenceCollection;
+									LinkedElementCollection<Role> roles1 = roleSequences[0].RoleCollection;
+									LinkedElementCollection<Role> roles2 = roleSequences[1].RoleCollection;
+									java.util.ArrayList firstListOrmRole = new java.util.ArrayList();
+									java.util.ArrayList secondListOrmRole = new java.util.ArrayList();
+									for (int i = 0, roleCount = roles1.Count; i < roleCount; ++i)
+									{
+										FactType factType = roles1[i].FactType;
+										firstListOrmRole.add(new org.unibz.ucmf.tellAPI.signatures.ORMRole((factType.Name + factType.Id), i));
+										factType = roles2[i].FactType;
+										secondListOrmRole.add(new org.unibz.ucmf.tellAPI.signatures.ORMRole((factType.Name + factType.Id), i));
+									}
+
+									//It seems to be working only for types and not for predicates
+									//ormModel.addConstraint(new tellAPI.constraints.Exclusive(firstListOrmRole, secondListOrmRole));
+								}
+
+								break;
+						}
+					}
+				}
+
+				//FIX SUBSET
+				foreach (var sc_constraint in model.SetComparisonConstraintCollection)
+				{
+					if (typeof(SubsetConstraint) == sc_constraint.GetType()) // if it's a RSETsub constraint
+					{
+						// If this constraint is a wrong constraint, i.e. has some problems with it, is not fully specified, 
+						// is not correctly specified, then we just skip it. 
+						// TO REVISE: Maybe we should show some warning message? 
+						if (null != sc_constraint.ArityMismatchError || null != sc_constraint.TooFewRoleSequencesError
+							|| null != sc_constraint.TooManyRoleSequencesError || sc_constraint.CompatibleRolePlayerTypeErrorCollection.Count > 0)
+							continue;
+
+
+						java.util.ArrayList rolesSup = new java.util.ArrayList();
+						java.util.ArrayList rolesSub = new java.util.ArrayList();
+
+						// RSETsub may be only between two role sequences
+						if (sc_constraint.RoleSequenceCollection.Count == 2)
+						{
+							Role[] roles1 = sc_constraint.RoleSequenceCollection.ToArray()[0].RoleCollection.ToArray();
+							Role[] roles2 = sc_constraint.RoleSequenceCollection.ToArray()[1].RoleCollection.ToArray();
+
+							int rolesNumber = roles1.Length;
+							for (int i = 0; i < rolesNumber; i++)
+							{
+								FactType factType = roles1[i].FactType;
+								rolesSub.add(new org.unibz.ucmf.tellAPI.signatures.ORMRole(factType.Name, i + 1));
+								factType = roles2[i].FactType;
+								rolesSup.add(new org.unibz.ucmf.tellAPI.signatures.ORMRole(factType.Name, i + 1));
+
+							}
+
+							ormModel.addConstraint(new org.unibz.ucmf.tellAPI.constraints.SubsetOf(rolesSub, rolesSup));
+						}
+					}
+				}
+
+				//FIX EXCLUSIVETYPES and EXCLUSIVESET
+				foreach (SetComparisonConstraint elem in model.SetComparisonConstraintCollection)
+				{
+					if (typeof(ExclusionConstraint) == elem.GetType())
+					{
+						if (elem.FactTypeCollection[0].GetType() == typeof(SubtypeFact))
+						{
+							java.util.ArrayList setExclusiveTypes = new java.util.ArrayList();
+							foreach (Object o in elem.FactTypeCollection)
+							{
+								if (o.GetType() == typeof(SubtypeFact))
+								{
+									SubtypeFact subtypefact = (SubtypeFact)o;
+									String subTypeName = subtypefact.Subtype.Name;
+									String superTypeName = subtypefact.Supertype.Name;
+									org.unibz.ucmf.tellAPI.signatures.ORMEntityType type = new org.unibz.ucmf.tellAPI.signatures.ORMEntityType(subTypeName);
+									setExclusiveTypes.add(type);
+								}
+							}
+							org.unibz.ucmf.tellAPI.constraints.ExclusiveTypes exclusiveTypes = new org.unibz.ucmf.tellAPI.constraints.ExclusiveTypes(setExclusiveTypes);
+							ormModel.addConstraint(exclusiveTypes);
+						}
+
+						if (elem.FactTypeCollection[0].GetType() == typeof(FactType))
+						{
+							java.util.ArrayList set = new java.util.ArrayList();
+
+							foreach (FactType fact in elem.FactTypeCollection)
+							{
+								java.util.ArrayList factTypeRoles = new java.util.ArrayList();
+
+								foreach (Role role in fact.RoleCollection)
+								{
+									org.unibz.ucmf.tellAPI.signatures.ORMRole theRole = new org.unibz.ucmf.tellAPI.signatures.ORMRole(fact.Name, roleIndex(role));
+									factTypeRoles.add(theRole);
+								}
+								set.add(factTypeRoles);
+							}
+							ExclusivePredicates exclusive = new ExclusivePredicates(set);
+							ormModel.addConstraint(exclusive);
+						}
+					}
+				}
+
+
+
+				foreach (SetConstraint constraint in model.SetConstraintCollection)
+				{
+					LinkedElementCollection<Role> roles;
+					Role role;
+					ObjectType rolePlayer;
+					FactType factType;
+					switch (((IConstraint)constraint).ConstraintType)
+					{
+						//case ConstraintType.ImpliedMandatory:
+						case ConstraintType.SimpleMandatory:
+							roles = ReturnRolesIfValidConstraint(constraint, ignoredElements);
+							if (roles != null &&
+								roles.Count == 1 && // Verify for implied constraint case
+								null != (rolePlayer = (role = roles[0]).RolePlayer) &&
+								!ignoredElements.ContainsKey(factType = role.FactType))
+							{
+								java.util.ArrayList mandlist = new java.util.ArrayList();
+								ORMRole prova = new ORMRole(factType.Name, roleIndex(roles[0]));
+								mandlist.add(new ORMRole(factType.Name, roleIndex(roles[0])));
+								ormModel.addConstraint(new Mandatory(new ORMEntityType(rolePlayer.Name), mandlist));
+							}
+							break;
+						case ConstraintType.InternalUniqueness:
+							roles = ReturnRolesIfValidConstraint(constraint, ignoredElements);
+							//simple uniqueness
+							if (roles != null && roles.Count == 1)
+							{
+								role = roles[0];
+								factType = role.FactType;
+								java.util.ArrayList uniqlist = new java.util.ArrayList();
+								String f = factType.Name;
+								uniqlist.add(new ORMRole(factType.Name, roleIndex(roles[0])));
+								ormModel.addConstraint(new org.unibz.ucmf.tellAPI.constraints.Unique(uniqlist));
+							}
+							//multi uniqueness
+							else if(roles != null)
+							{
+								java.util.ArrayList uniqlist = new java.util.ArrayList();
+								
+								foreach (Role r in roles)
+								{
+									factType = r.FactType;
+									uniqlist.add(new ORMRole(factType.Name, roleIndex(r)));
+								}
+								ormModel.addConstraint(new org.unibz.ucmf.tellAPI.constraints.Unique(uniqlist));
+							}
+							break;
+					}
+
+				}
+
+				//Add all derivation rules to the ormModel
+				SubtypeDerivationRulesToOWL(model, ormModel);
+
+				//Let's set the inferred constraints container for the layout
+				InferredConstraints inferredConstraints = GetCleanInferredConstraints(model);
+
+				//OWL Generation (and also dlrTree generation)
+				ormModel.generateOWL();
+
+				//Write ontology to disk
+				ormModel.saveOntologyOnFile("C://Users//Francesco//Desktop//onto.owl");
+
+				//Ask inferred knowledge
+				BMReasoner ask = new BMReasoner(ormModel);
+				ask.getUnsatClasses();
+				ask.getExclusiveTypes();
+				ask.getEquivalentTypes();
+				ask.getEntityTypesHierarchy();
+			    ask.getEquivalentPredicates();
+				ask.getPredicatesHierarchy();
+				ask.getExclusiveSet();
+				ask.getInferredSimpleUnique();
+				ask.getInferredSimpleMandatory();
+				ask.getExhaustiveTypes();
+				
+				
+
+				//All the inferred knowledge is in ask.getInferredModel which is an InferredModel Object
+				InferredModel infModel = ask.getInferredModel();
+
+				//Select the EMPTYSET
+				InferredEmptySet emptySet = infModel.getEmptySet();
+				CreateInferredEmptySet(inferredConstraints, emptySet);
+
+				//HIERARCHY and EQUIVALENT (Types, Preds, EquivTypes, EquivPreds)
+				InferredHierarchyTypes hierarchyTypes = infModel.getHierarchyTypes();
+				InferredHierarchyPredicates hierarchyPredicates = infModel.getHierarchyPredicates();
+				InferredEquivalentEntityTypes equivalentTypes = infModel.getInferredEquivalentTypes();
+				InferredEquivalentPredicates equivalentPredicates = infModel.getInferredEquivalentPredicates();
+				CreateInferredEntityTypesHierarchy(inferredConstraints, hierarchyTypes);
+				CreateInferredEquivalentTypes(inferredConstraints, equivalentTypes);
+				CreateInferredPredicatesHierarchy(inferredConstraints, hierarchyPredicates);
+				CreateInferredEquivalentPredicates(inferredConstraints, equivalentPredicates);
+
+				InferredExhaustiveTypes exTypes = infModel.getInferredExhaustiveObjectTypes();
+				CreateInferredExhaustiveTypes(inferredConstraints, exTypes);
+				InferredDisjointEntityTypes disjTypes = infModel.getInferredDisjointObjectTypes();
+				CreateInferredDisjointTypes(inferredConstraints, disjTypes);
+				InferredDisjointPredicates disjPreds = infModel.getInferredDisjointPredicates();
+				CreateInferredDisjointPreds(inferredConstraints, disjPreds);
+
+				foreach (Inferred inferredConstraint in infModel.getInferredConstraints())
+				{
+					//InferredExclusiveTypes exclusiveType; //spostare
+					//InferredExclusiveSet exclusiveSet; //spostare
+					InferredSimpleMandatory mandatory;
+					InferredSimpleUnique unique;
+					//InferredExhaustiveTypes covering; //spostare 
+					
+					/*
+					if (null != (exclusiveType = inferredConstraint as InferredExclusiveTypes))
+					{
+						CreateInferredExclusiveTypes(inferredConstraints, exclusiveType.getFirst(), exclusiveType.getSecond());
+					}
+					else if (null != (covering = inferredConstraint as InferredExhaustiveTypes))
+					{
+						CreateInferredExhaustiveTypes(inferredConstraints, covering.getFather(), covering.getSons());
+					}
+					else if (null != (exclusiveSet = inferredConstraint as InferredExclusiveSet))
+					{
+						CreateInferredExclusiveSet(inferredConstraints, exclusiveSet.getFirst(), exclusiveSet.getSecond());
+					}
+					*/
+
+					if (null != (mandatory = inferredConstraint as InferredSimpleMandatory))
+					{
+						CreateInferredMandatory(inferredConstraints, mandatory.getMandatoryRoleName());
+					}
+					else if (null != (unique = inferredConstraint as InferredSimpleUnique))
+					{
+						CreateInferredUniqueness(inferredConstraints, unique.getUniqueRoleName());
+					}
+				}
+
+			}
+
+		}
+
+		private InferredConstraints GetCleanInferredConstraints(ORMModel model)
+		{
+			Store store = model.Store;
+			Partition partition = Partition.FindByAlternateId(store, typeof(InferenceResult));
+			InferredConstraints retVal;
+			if (partition == null)
+			{
+				partition = new Partition(store);
+				partition.AlternateId = typeof(InferenceResult);
+				retVal = new InferredConstraints(partition);
+				retVal.Model = model;
+			}
+			else if (null == (retVal = InferredConstraintsTargetORMModel.GetInferredConstraints(model)))
+			{
+				retVal = new InferredConstraints(partition);
+				retVal.Model = model;
+			}
+			else
+			{
+				retVal.SetConstraintCollection.Clear();
+				retVal.SetComparisonConstraintCollection.Clear();
+				retVal.SubtypeFactCollection.Clear();
+			}
+			return retVal;
+		}
+
+		private static ObjectType findObjectTypeByName(ORMModel model, String name)
+		{
+			//REDO: use map to connect ontology names and GUIDS and then
+			//model.Partition.ElementDirectory.FindElement(GUID)
+			String restoredName = restoreForORM(name);
+			return model.ObjectTypeCollection.Find(o => o.Name.Equals(restoredName));
+		}
+
+		private static FactType findFactTypeByName(ORMModel model, String name)
+		{
+			//REDO: use map to connect ontology names and GUIDS and then
+			//model.Partition.ElementDirectory.FindElement(GUID)
+			String restoredName = restoreForORM(name);
+			return model.FactTypeCollection.Find(f => f.Name.Equals(restoredName));
+		}
+
+		public static String prepareForOWL(String str)
+		{
+			String result = str.Replace("#", "+");
+			result = result.Replace(" ", "_");
+			return result;
+		}
+		public static String restoreForORM(String str)
+		{
+			String result = str.Replace("+", "#");
+			return result;
+		}
+		public static int roleIndex(Role role)
+		{
+			int index = 0;
+			index = role.FactType.OrderedRoleCollection.IndexOf(role);
+			return index + 1;
+		}
+		private int maxFactTypeArity(ORMModel model)
+		{
+			int max = 2;
+			foreach (FactType elem in model.FactTypeCollection)
+			{
+				if (elem.RoleCollection.Count > max)
+					max = elem.RoleCollection.Count;
+			}
+			return max;
+		}
+
+		//Usa la notazione predicate.[n] per il simple mandatory e uniq
+		private string mandOrUniqForORM(string m)
+		{
+			m = m.Replace("-", "");
+			m = m.Replace("{", "[");
+			m = m.Replace("}", "]");
+			return m;
+		}
+
+		#region DERIVATION RULES
+
+		#region Subtype Derivation Rules into OWL
+
+		private void SubtypeDerivationRulesToOWL(ORMModel model, org.unibz.ucmf.ORMModel ormModel)
+		{
+			foreach (ObjectType elem in model.ObjectTypeCollection)
+				if (elem.DerivationRule != null && elem.IsSubtype)
+				{
+					//Store Derivation Rule in a var
+					ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeDerivationRule subtypeDerivationRule = elem.DerivationRule;
+
+					//Set the rule from API
+					org.unibz.ucmf.tellAPI.derivationRules.SubtypeDerivationRule bmRule = new org.unibz.ucmf.tellAPI.derivationRules.SubtypeDerivationRule();
+
+					//Set leftSide
+					ORMEntityType leftSide = new ORMEntityType(elem.Name);
+
+					//Set righside
+					if(subtypeDerivationRule.SingleLeadRolePath!=null)
+					{
+						ORMEntityType rightSide = new ORMEntityType(subtypeDerivationRule.SingleLeadRolePath.RootObjectType.Name);
+
+						//Add the leftSide to the rule
+						bmRule.addLeftSubclass(leftSide);
+
+						//Add the rightSide to the rule
+						bmRule.addRightSuperclass(rightSide);
+
+						//Multi Branch Subtype Derivation Rule
+						CClass gc = TraverseBranches(subtypeDerivationRule.SingleLeadRolePath);
+						bmRule.addGC(gc);
+						ormModel.addConstraint(bmRule);
+					}
+					else
+					{
+						break;
+					}
+					
+
+					
+					
+				}
+		}
+
+		//deve ritornare una CClass
+		private CClass TraverseBranches(RolePath rolepath)
+		{
+			//Multi branch
+			if (rolepath.SubPathCollection.Count > 0)
+			{
+				java.util.ArrayList listOfBranch = new java.util.ArrayList();
+				foreach (RoleSubPath branch in rolepath.SubPathCollection)
+				{
+					//se ha 0 pathedrole allora è un subpath
+					if (branch.PathedRoleCollection.Count == 0)
+					{
+						CClass c =  new CClass(Operator.AND, TraverseBranches(branch));
+						listOfBranch.add(c);
+					}
+
+					//altrimenti è un single branch
+					else
+					{
+						CClass c = new CClass(Operator.AND, CalculateSingleBranch(branch));
+						listOfBranch.add(c);
+
+					}
+				}
+				
+				if (rolepath.SplitCombinationOperator.ToString().Equals("And"))
+				{
+					CClass gc = new CClass(Operator.AND, listOfBranch);
+					return gc;
+				}
+				else if (rolepath.SplitCombinationOperator.ToString().Equals("Or") || rolepath.SplitCombinationOperator.ToString().Equals("Xor"))
+				{
+					CClass gc = new CClass(Operator.OR, listOfBranch);
+					return gc;
+				}
+				return null;
+			}
+
+			//Unique branch
+			else
+			{
+				CClass gc = new CClass(Operator.AND, CalculateSingleBranch(rolepath));
+				return gc;
+			}
+			
+		}
+
+		private java.util.ArrayList CalculateSingleBranch(RolePath subpath)
+		{
+			//Raccolgo tutti i pathedrole
+			System.Collections.ObjectModel.ReadOnlyCollection<PathedRole> pathedRoles = subpath.PathedRoleCollection;
+			//setto variabili
+			java.util.ArrayList listOfCClass = new java.util.ArrayList();
+			FactType currentFactType = null;
+			bool isCurrentFactTypeNegated = false;
+			ObjectType currentIn = null;
+			ObjectType currentOut = null;
+			//per ogni pathedrole
+
+			for (int i = 0; i < pathedRoles.Count; i++)
+			{
+				//se il pathedrole e' un ruolo
+				if (pathedRoles[i].Role.GetType() == typeof(Role))
+				{
+					//set FactType name
+					currentFactType = pathedRoles[i].Role.FactType;
+					//is negated?
+					if (pathedRoles[i].IsNegated)
+					{
+						isCurrentFactTypeNegated = true;
+					}
+					
+					// se in e out sono false, allora setta in a true
+					if (currentIn == null && currentOut == null)
+					{
+						currentIn = pathedRoles[i].Role.RolePlayer;
+					}
+
+					//se in e' true e out e' false, allora vuol dire che il primo ruolo e' stato considerato e quindi settiamo il prossimo a true
+					else if (currentIn != null && currentOut == null)
+					{
+						currentOut = pathedRoles[i].Role.RolePlayer;
+					}
+
+
+					//se entrambi sono true
+					//o è un nuovo factType o è l'i-esimo elemento di un n-ary
+					else if (currentIn != null && currentOut != null)
+					{
+						//se e' un facttype diverso
+						if (pathedRoles[i].Role.FactType != currentFactType)
+						{
+							//commmitto il precedente factType
+							NaryPredicate n = new NaryPredicate(factTypeMap[currentFactType], objectTypeMap[currentIn], objectTypeMap[currentOut]);
+							CClass c = new CClass(n, new CClass(objectTypeMap[currentOut]));
+							if(isCurrentFactTypeNegated)
+							{
+								CClass negated = new CClass(Operator.NOT, c);
+								listOfCClass.add(negated);
+							}
+							listOfCClass.add(c);
+
+							//set the negation  (condition ? first_expression : second_expression; )
+							// classify = (input > 0) ? "positive" : "negative"; TERNARIO
+							isCurrentFactTypeNegated = (pathedRoles[i].IsNegated) ? true : false;
+							
+
+							//resetto in e out
+							currentIn = null;
+							currentOut = null;
+
+							//registro il nuovo In e setto il nome del nuovo factType
+							currentIn = pathedRoles[i].Role.RolePlayer;
+							currentFactType = pathedRoles[i].Role.FactType;
+
+						}
+						//altrimenti e' un ruolo dello stesso factType
+						else
+						{
+							//aggiorna out
+							currentOut = pathedRoles[i].Role.RolePlayer;
+							//IF il pathedRole e' l'ultimo che sto analizzando, allora committo//ultimo
+							if (i + 1 == pathedRoles.Count)
+							{
+								NaryPredicate n = new NaryPredicate(factTypeMap[currentFactType], objectTypeMap[currentIn], objectTypeMap[currentOut]);
+								CClass c = new CClass(n, new CClass(objectTypeMap[currentOut]));
+								listOfCClass.add(c);
+							}
+						}
+					}
+				}
+
+				//altrimenti se e' un object type (da definire meglio, SuperTypeMetaRole)
+				else if (pathedRoles[i].Role.FactType is SubtypeFact)
+				{
+					//concept
+					ObjectType theConcept = null;
+					if (pathedRoles[i].Role.FactType is SubtypeFact)
+					{
+						SubtypeFact subtypeFact = null;
+						subtypeFact = pathedRoles[i].Role.FactType as SubtypeFact;
+						if (subtypeFact != null)
+						{
+							//SupertypeMetaRole supertypeRole = subtypeFact.SupertypeRole;
+							//SubtypeMetaRole subtypeRole = subtypeFact.SubtypeRole;
+							theConcept = subtypeFact.Subtype;
+						}
+					}
+
+
+
+					//COMMIT del precedente ed eventuale fact type
+					if (i >= 2)
+					{
+						//Compongo l'oggetto in questione
+						CClass objectType;
+						if (pathedRoles[i].IsNegated)
+						{
+							objectType = new CClass(Operator.NOT, new CClass(objectTypeMap[theConcept]));
+							//listOfCClass.add(objectType);
+						}
+						else
+						{
+							objectType = new CClass(objectTypeMap[theConcept]);
+							//listOfCClass.add(objectType);
+						}
+
+						NaryPredicate predicate = new NaryPredicate(factTypeMap[currentFactType], objectTypeMap[currentIn], objectTypeMap[currentOut]);
+						CClass cc = new CClass(predicate, objectType);
+						if (isCurrentFactTypeNegated)
+						{
+							CClass negated = new CClass(Operator.NOT, cc);
+							listOfCClass.add(negated);
+						}
+						else
+						{
+							listOfCClass.add(cc);
+						}
+						
+					}
+					else
+					{ 
+						//COMMIT
+						if (pathedRoles[i].IsNegated)
+						{
+							CClass nc = new CClass(Operator.NOT, new CClass(objectTypeMap[theConcept]));
+							listOfCClass.add(nc);
+						}
+						else
+						{
+							CClass c = new CClass(objectTypeMap[theConcept]);
+							listOfCClass.add(c);
+						}
+					}
+
+					//Resetta in e out
+					currentIn = null;
+					currentOut = null;
+
+
+				}
+				else
+				{
+					MessageBox.Show("Questo pathed role e' di tipo: " + pathedRoles[i].Role.GetType());
+				}
+			}
+			//final commmit
+			//CClass theCommit = new CClass(Operator.AND, listOfCClass);
+			//return theCommit;
+			return listOfCClass;
+		}
+
+		#endregion Subtype Derivation Rules into OWL
+
+		#endregion DERIVATION RULES
+
+
+	}
+}

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<qp:surveyQuestionProvider xmlns:qp="http://schemas.neumont.edu/ORM/SDK/SurveyQuestionProvider" xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX" class="ORMInferenceEngineDomainModel">
+	<qp:surveyContextType dataTypeName="Store" dataTypeQualifier="Microsoft.VisualStudio.Modeling"/>
+	<qp:surveyQuestions>
+		<qp:surveyQuestion questionType="SurveyRootElementType" questionPriority="0">
+			<qp:displaySupport displayCategory="Grouping"/>
+			<qp:displaySupport displayCategory="Sorting"/>
+			<qp:displaySupport displayCategory="DisplayData"/>
+			<qp:displayDataMap>
+				<qp:colorMap>
+					<plx:callThis accessor="static" name="GetItemColor"/>
+				</qp:colorMap>
+			</qp:displayDataMap>
+			<qp:commandProviderMap>
+				<qp:commandProvider enumValue="InferredConstraint">
+					<plx:return>
+						<plx:callThis name="FreeFormInferredConstraintsCommands" accessor="static" type="property"/>
+					</plx:return>
+				</qp:commandProvider>
+			</qp:commandProviderMap>
+			<qp:emptyHeaderMap>
+				<qp:map enumValue="InferredConstraint"/>
+				<qp:map enumValue="TopLevelObjectType"/>
+				<qp:map enumValue="EquivalentTopLevelObjectType"/>
+				<qp:map enumValue="EquivalentTopLevelFactType"/>
+				<qp:map enumValue="TopLevelFactType"/>  <!-- NUOVO-->
+			</qp:emptyHeaderMap>
+		</qp:surveyQuestion>
+	</qp:surveyQuestions>
+	<qp:groupings>
+		<qp:grouping>
+			<qp:surveyQuestion ref="SurveyRootElementType"/>
+		</qp:grouping>
+	</qp:groupings>
+</qp:surveyQuestionProvider>
+
+

@@ -1,0 +1,1013 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="unibz.ORMInferenceEngine.ORMInferenceEngineDomainModel.Description" xml:space="preserve">
+    <value>Inference Engine for ORM Model</value>
+    <comment>Description for DslLibrary &apos;ORMInferenceEngine&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.ORMInferenceEngineDomainModel.DisplayName" xml:space="preserve">
+    <value>Inference Engine</value>
+    <comment>DisplayName for DslLibrary &apos;ORMInferenceEngine&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.Hierarchy.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;Hierarchy&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.Hierarchy.DisplayName" xml:space="preserve">
+    <value>Hierarchy</value>
+    <comment>DisplayName for DomainClass &apos;Hierarchy&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomain.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;UnsatisfiableDomain&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomain.DisplayName" xml:space="preserve">
+    <value>Unsatisfiable Domain</value>
+    <comment>DisplayName for DomainClass &apos;UnsatisfiableDomain&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResult.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferenceResult&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResult.DisplayName" xml:space="preserve">
+    <value>Inference Result</value>
+    <comment>DisplayName for DomainClass &apos;InferenceResult&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResult/IsProcessed.Description" xml:space="preserve">
+    <value>Is it already processed?</value>
+    <comment>Description for DomainProperty &apos;IsProcessed&apos; on DomainClass &apos;InferenceResult&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResult/IsProcessed.DisplayName" xml:space="preserve">
+    <value>IsProcessed</value>
+    <comment>DisplayName for DomainProperty &apos;IsProcessed&apos; on DomainClass &apos;InferenceResult&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomain.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredUnsatisfiableDomain&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomain.DisplayName" xml:space="preserve">
+    <value>Inferred Unsatisfiable Domain</value>
+    <comment>DisplayName for DomainClass &apos;InferredUnsatisfiableDomain&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchy.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredHierarchy&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchy.DisplayName" xml:space="preserve">
+    <value>Inferred Hierarchy</value>
+    <comment>DisplayName for DomainClass &apos;InferredHierarchy&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredTopObjectType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredTopObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredTopObjectType.DisplayName" xml:space="preserve">
+    <value>Inferred Top Object Type</value>
+    <comment>DisplayName for DomainClass &apos;InferredTopObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredEquivalentTopObjectType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredEquivalentTopObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredEquivalentTopObjectType.DisplayName" xml:space="preserve">
+    <value>Inferred Equivalent Top Object Type</value>
+    <comment>DisplayName for DomainClass &apos;InferredEquivalentTopObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredTopFactType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredTopFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredTopFactType.DisplayName" xml:space="preserve">
+    <value>Inferred Top Fact Type</value>
+    <comment>DisplayName for DomainClass &apos;InferredTopFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredEquivalentTopFactType.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredEquivalentTopFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredEquivalentTopFactType.DisplayName" xml:space="preserve">
+    <value>Inferred Equivalent Top Object Type</value>
+    <comment>DisplayName for DomainClass &apos;InferredEquivalentTopFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraints.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredConstraints&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraints.DisplayName" xml:space="preserve">
+    <value>Inferred Constraints</value>
+    <comment>DisplayName for DomainClass &apos;InferredConstraints&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredSubsetConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredSubsetConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredSubsetConstraint.DisplayName" xml:space="preserve">
+    <value>Inferred Subset Constraint</value>
+    <comment>DisplayName for DomainClass &apos;InferredSubsetConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredEqualityConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredEqualityConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredEqualityConstraint.DisplayName" xml:space="preserve">
+    <value>Inferred Exclusion Constraint</value>
+    <comment>DisplayName for DomainClass &apos;InferredEqualityConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredExclusionConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredExclusionConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredExclusionConstraint.DisplayName" xml:space="preserve">
+    <value>Inferred Exclusion Constraint</value>
+    <comment>DisplayName for DomainClass &apos;InferredExclusionConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredSubtypeFact.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredSubtypeFact&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredSubtypeFact.DisplayName" xml:space="preserve">
+    <value>Inferred Subtype Fact</value>
+    <comment>DisplayName for DomainClass &apos;InferredSubtypeFact&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredMandatoryConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredMandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>Inferred Mandatory Constraint</value>
+    <comment>DisplayName for DomainClass &apos;InferredMandatoryConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredFrequencyConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredFrequencyConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredFrequencyConstraint.DisplayName" xml:space="preserve">
+    <value>Inferred Frequency Constraint</value>
+    <comment>DisplayName for DomainClass &apos;InferredFrequencyConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUniquenessConstraint.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;InferredUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUniquenessConstraint.DisplayName" xml:space="preserve">
+    <value>Inferred Uniqueness Constraint</value>
+    <comment>DisplayName for DomainClass &apos;InferredUniquenessConstraint&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel</value>
+    <comment>Description for DomainClass &apos;UnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel.DisplayName" xml:space="preserve">
+    <value>Unsatisfiable Domain Is For ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;UnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel/UnsatisfiableDomain.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel.UnsatisfiableDomain</value>
+    <comment>Description for DomainRole &apos;UnsatisfiableDomain&apos; on DomainRelationship &apos;UnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel/UnsatisfiableDomain.DisplayName" xml:space="preserve">
+    <value>Unsatisfiable Domain</value>
+    <comment>DisplayName for DomainRole &apos;UnsatisfiableDomain&apos; on DomainRelationship &apos;UnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel/UnsatisfiableDomain.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;UnsatisfiableDomain&apos; on DomainRelationship &apos;UnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel/ORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel.ORMModel</value>
+    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;UnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel/ORMModel.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;UnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableDomainIsForORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
+    <value>Unsatisfiable Domain</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;UnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel</value>
+    <comment>Description for DomainClass &apos;InferredUnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel.DisplayName" xml:space="preserve">
+    <value>Inferred Unsatisfiable Domain Is For ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;InferredUnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel/InferredUnsatisfiableDomain.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel.InferredUnsatisfiableDomain</value>
+    <comment>Description for DomainRole &apos;InferredUnsatisfiableDomain&apos; on DomainRelationship &apos;InferredUnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel/InferredUnsatisfiableDomain.DisplayName" xml:space="preserve">
+    <value>Inferred Unsatisfiable Domain</value>
+    <comment>DisplayName for DomainRole &apos;InferredUnsatisfiableDomain&apos; on DomainRelationship &apos;InferredUnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel/InferredUnsatisfiableDomain.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredUnsatisfiableDomain&apos; on DomainRelationship &apos;InferredUnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel/ORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel.ORMModel</value>
+    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferredUnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel/ORMModel.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferredUnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredUnsatisfiableDomainIsForORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Unsatisfiable Domain</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferredUnsatisfiableDomainIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableObjectType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.UnsatisfiableObjectType</value>
+    <comment>Description for DomainClass &apos;UnsatisfiableObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableObjectType.DisplayName" xml:space="preserve">
+    <value>Unsatisfiable Object Type</value>
+    <comment>DisplayName for DomainClass &apos;UnsatisfiableObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableObjectType/InferredUnsatisfiableDomain.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.UnsatisfiableObjectType.InferredUnsatisfiableDomain</value>
+    <comment>Description for DomainRole &apos;InferredUnsatisfiableDomain&apos; on DomainRelationship &apos;UnsatisfiableObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableObjectType/InferredUnsatisfiableDomain.DisplayName" xml:space="preserve">
+    <value>Inferred Unsatisfiable Domain</value>
+    <comment>DisplayName for DomainRole &apos;InferredUnsatisfiableDomain&apos; on DomainRelationship &apos;UnsatisfiableObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableObjectType/InferredUnsatisfiableDomain.PropertyDisplayName" xml:space="preserve">
+    <value>Object Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredUnsatisfiableDomain&apos; on DomainRelationship &apos;UnsatisfiableObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableObjectType/ObjectType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.UnsatisfiableObjectType.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;UnsatisfiableObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableObjectType/ObjectType.DisplayName" xml:space="preserve">
+    <value>ObjectType</value>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;UnsatisfiableObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableObjectType/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Unsatisfiable Domain</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;UnsatisfiableObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableFactType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.UnsatisfiableFactType</value>
+    <comment>Description for DomainClass &apos;UnsatisfiableFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableFactType.DisplayName" xml:space="preserve">
+    <value>Unsatisfiable Fact Type</value>
+    <comment>DisplayName for DomainClass &apos;UnsatisfiableFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableFactType/InferredUnsatisfiableDomain.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.UnsatisfiableFactType.InferredUnsatisfiableDomain</value>
+    <comment>Description for DomainRole &apos;InferredUnsatisfiableDomain&apos; on DomainRelationship &apos;UnsatisfiableFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableFactType/InferredUnsatisfiableDomain.DisplayName" xml:space="preserve">
+    <value>Inferred Unsatisfiable Domain</value>
+    <comment>DisplayName for DomainRole &apos;InferredUnsatisfiableDomain&apos; on DomainRelationship &apos;UnsatisfiableFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableFactType/InferredUnsatisfiableDomain.PropertyDisplayName" xml:space="preserve">
+    <value>Fact Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredUnsatisfiableDomain&apos; on DomainRelationship &apos;UnsatisfiableFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableFactType/FactType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.UnsatisfiableFactType.FactType</value>
+    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;UnsatisfiableFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableFactType/FactType.DisplayName" xml:space="preserve">
+    <value>FactType</value>
+    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;UnsatisfiableFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.UnsatisfiableFactType/FactType.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Unsatisfiable Domain</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;UnsatisfiableFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.HierarchyIsForORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.HierarchyIsForORMModel</value>
+    <comment>Description for DomainClass &apos;HierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.HierarchyIsForORMModel.DisplayName" xml:space="preserve">
+    <value>Hierarchy Is For ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;HierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.HierarchyIsForORMModel/Hierarchy.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.HierarchyIsForORMModel.Hierarchy</value>
+    <comment>Description for DomainRole &apos;Hierarchy&apos; on DomainRelationship &apos;HierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.HierarchyIsForORMModel/Hierarchy.DisplayName" xml:space="preserve">
+    <value>Hierarchy</value>
+    <comment>DisplayName for DomainRole &apos;Hierarchy&apos; on DomainRelationship &apos;HierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.HierarchyIsForORMModel/Hierarchy.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Hierarchy&apos; on DomainRelationship &apos;HierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.HierarchyIsForORMModel/ORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.HierarchyIsForORMModel.ORMModel</value>
+    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;HierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.HierarchyIsForORMModel/ORMModel.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;HierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.HierarchyIsForORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
+    <value>Hierarchy</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;HierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel</value>
+    <comment>Description for DomainClass &apos;InferredHierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel.DisplayName" xml:space="preserve">
+    <value>Inferred Hierarchy Is For ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;InferredHierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel/InferredHierarchy.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel.InferredHierarchy</value>
+    <comment>Description for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;InferredHierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel/InferredHierarchy.DisplayName" xml:space="preserve">
+    <value>InferredHierarchy</value>
+    <comment>DisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;InferredHierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel/InferredHierarchy.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;InferredHierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel/ORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel.ORMModel</value>
+    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferredHierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel/ORMModel.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferredHierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredHierarchyIsForORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Hierarchy</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferredHierarchyIsForORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelObjectType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.TopLevelObjectType</value>
+    <comment>Description for DomainClass &apos;TopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelObjectType.DisplayName" xml:space="preserve">
+    <value>Top Level Object Type</value>
+    <comment>DisplayName for DomainClass &apos;TopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelObjectType/InferredHierarchy.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.TopLevelObjectType.InferredHierarchy</value>
+    <comment>Description for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;TopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelObjectType/InferredHierarchy.DisplayName" xml:space="preserve">
+    <value>InferredHierarchy</value>
+    <comment>DisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;TopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelObjectType/InferredHierarchy.PropertyDisplayName" xml:space="preserve">
+    <value>Top Object Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;TopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelObjectType/ObjectType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.TopLevelObjectType.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;TopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelObjectType/ObjectType.DisplayName" xml:space="preserve">
+    <value>ObjectType</value>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;TopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelObjectType/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Hierarchy</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;TopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.ObjectTypeContainment.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.ObjectTypeContainment</value>
+    <comment>Description for DomainClass &apos;ObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.ObjectTypeContainment.DisplayName" xml:space="preserve">
+    <value>Object Type Containment</value>
+    <comment>DisplayName for DomainClass &apos;ObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.ObjectTypeContainment/Parent.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.ObjectTypeContainment.Parent</value>
+    <comment>Description for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.ObjectTypeContainment/Parent.DisplayName" xml:space="preserve">
+    <value>Parent</value>
+    <comment>DisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.ObjectTypeContainment/Parent.PropertyDisplayName" xml:space="preserve">
+    <value>Child Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;ObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.ObjectTypeContainment/Child.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.ObjectTypeContainment.Child</value>
+    <comment>Description for DomainRole &apos;Child&apos; on DomainRelationship &apos;ObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.ObjectTypeContainment/Child.DisplayName" xml:space="preserve">
+    <value>Child</value>
+    <comment>DisplayName for DomainRole &apos;Child&apos; on DomainRelationship &apos;ObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.ObjectTypeContainment/Child.PropertyDisplayName" xml:space="preserve">
+    <value>Parent Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Child&apos; on DomainRelationship &apos;ObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelObjectType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentTopLevelObjectType</value>
+    <comment>Description for DomainClass &apos;EquivalentTopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelObjectType.DisplayName" xml:space="preserve">
+    <value>Equivalent Top Level Object Type</value>
+    <comment>DisplayName for DomainClass &apos;EquivalentTopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelObjectType/InferredHierarchy.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentTopLevelObjectType.InferredHierarchy</value>
+    <comment>Description for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;EquivalentTopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelObjectType/InferredHierarchy.DisplayName" xml:space="preserve">
+    <value>InferredHierarchy</value>
+    <comment>DisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;EquivalentTopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelObjectType/InferredHierarchy.PropertyDisplayName" xml:space="preserve">
+    <value>Equivalent Top Object Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;EquivalentTopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelObjectType/ObjectType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentTopLevelObjectType.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;EquivalentTopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelObjectType/ObjectType.DisplayName" xml:space="preserve">
+    <value>ObjectType</value>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;EquivalentTopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelObjectType/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Hierarchy</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;EquivalentTopLevelObjectType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentObjectTypeContainment.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentObjectTypeContainment</value>
+    <comment>Description for DomainClass &apos;EquivalentObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentObjectTypeContainment.DisplayName" xml:space="preserve">
+    <value>Equivalent Object Type Containment</value>
+    <comment>DisplayName for DomainClass &apos;EquivalentObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentObjectTypeContainment/Parent.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentObjectTypeContainment.Parent</value>
+    <comment>Description for DomainRole &apos;Parent&apos; on DomainRelationship &apos;EquivalentObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentObjectTypeContainment/Parent.DisplayName" xml:space="preserve">
+    <value>Parent</value>
+    <comment>DisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;EquivalentObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentObjectTypeContainment/Parent.PropertyDisplayName" xml:space="preserve">
+    <value>Child Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;EquivalentObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentObjectTypeContainment/Child.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentObjectTypeContainment.Child</value>
+    <comment>Description for DomainRole &apos;Child&apos; on DomainRelationship &apos;EquivalentObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentObjectTypeContainment/Child.DisplayName" xml:space="preserve">
+    <value>Child</value>
+    <comment>DisplayName for DomainRole &apos;Child&apos; on DomainRelationship &apos;EquivalentObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentObjectTypeContainment/Child.PropertyDisplayName" xml:space="preserve">
+    <value>Parent Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Child&apos; on DomainRelationship &apos;EquivalentObjectTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelFactType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.TopLevelFactType</value>
+    <comment>Description for DomainClass &apos;TopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelFactType.DisplayName" xml:space="preserve">
+    <value>Top Level Fact Type</value>
+    <comment>DisplayName for DomainClass &apos;TopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelFactType/InferredHierarchy.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.TopLevelFactType.InferredHierarchy</value>
+    <comment>Description for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;TopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelFactType/InferredHierarchy.DisplayName" xml:space="preserve">
+    <value>InferredHierarchy</value>
+    <comment>DisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;TopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelFactType/InferredHierarchy.PropertyDisplayName" xml:space="preserve">
+    <value>Top Fact Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;TopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelFactType/FactType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.TopLevelFactType.FactType</value>
+    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;TopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelFactType/FactType.DisplayName" xml:space="preserve">
+    <value>FactType</value>
+    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;TopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.TopLevelFactType/FactType.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Hierarchy</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;TopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.FactTypeContainment.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.FactTypeContainment</value>
+    <comment>Description for DomainClass &apos;FactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.FactTypeContainment.DisplayName" xml:space="preserve">
+    <value>Fact Type Containment</value>
+    <comment>DisplayName for DomainClass &apos;FactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.FactTypeContainment/Parent.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.FactTypeContainment.Parent</value>
+    <comment>Description for DomainRole &apos;Parent&apos; on DomainRelationship &apos;FactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.FactTypeContainment/Parent.DisplayName" xml:space="preserve">
+    <value>Parent</value>
+    <comment>DisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;FactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.FactTypeContainment/Parent.PropertyDisplayName" xml:space="preserve">
+    <value>Child Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;FactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.FactTypeContainment/Child.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.FactTypeContainment.Child</value>
+    <comment>Description for DomainRole &apos;Child&apos; on DomainRelationship &apos;FactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.FactTypeContainment/Child.DisplayName" xml:space="preserve">
+    <value>Child</value>
+    <comment>DisplayName for DomainRole &apos;Child&apos; on DomainRelationship &apos;FactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.FactTypeContainment/Child.PropertyDisplayName" xml:space="preserve">
+    <value>Parent Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Child&apos; on DomainRelationship &apos;FactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelFactType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentTopLevelFactType</value>
+    <comment>Description for DomainClass &apos;EquivalentTopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelFactType.DisplayName" xml:space="preserve">
+    <value>Equivalent Top Level Fact Type</value>
+    <comment>DisplayName for DomainClass &apos;EquivalentTopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelFactType/InferredHierarchy.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentTopLevelFactType.InferredHierarchy</value>
+    <comment>Description for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;EquivalentTopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelFactType/InferredHierarchy.DisplayName" xml:space="preserve">
+    <value>InferredHierarchy</value>
+    <comment>DisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;EquivalentTopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelFactType/InferredHierarchy.PropertyDisplayName" xml:space="preserve">
+    <value>Equivalent Top Fact Type Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredHierarchy&apos; on DomainRelationship &apos;EquivalentTopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelFactType/FactType.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentTopLevelFactType.FactType</value>
+    <comment>Description for DomainRole &apos;FactType&apos; on DomainRelationship &apos;EquivalentTopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelFactType/FactType.DisplayName" xml:space="preserve">
+    <value>FactType</value>
+    <comment>DisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;EquivalentTopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentTopLevelFactType/FactType.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Hierarchy</value>
+    <comment>PropertyDisplayName for DomainRole &apos;FactType&apos; on DomainRelationship &apos;EquivalentTopLevelFactType&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentFactTypeContainment.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentFactTypeContainment</value>
+    <comment>Description for DomainClass &apos;EquivalentFactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentFactTypeContainment.DisplayName" xml:space="preserve">
+    <value>Equivalent Fact Type Containment</value>
+    <comment>DisplayName for DomainClass &apos;EquivalentFactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentFactTypeContainment/Parent.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentFactTypeContainment.Parent</value>
+    <comment>Description for DomainRole &apos;Parent&apos; on DomainRelationship &apos;EquivalentFactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentFactTypeContainment/Parent.DisplayName" xml:space="preserve">
+    <value>Parent</value>
+    <comment>DisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;EquivalentFactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentFactTypeContainment/Parent.PropertyDisplayName" xml:space="preserve">
+    <value>Child Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Parent&apos; on DomainRelationship &apos;EquivalentFactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentFactTypeContainment/Child.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.EquivalentFactTypeContainment.Child</value>
+    <comment>Description for DomainRole &apos;Child&apos; on DomainRelationship &apos;EquivalentFactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentFactTypeContainment/Child.DisplayName" xml:space="preserve">
+    <value>Child</value>
+    <comment>DisplayName for DomainRole &apos;Child&apos; on DomainRelationship &apos;EquivalentFactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.EquivalentFactTypeContainment/Child.PropertyDisplayName" xml:space="preserve">
+    <value>Parent Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Child&apos; on DomainRelationship &apos;EquivalentFactTypeContainment&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResultTargetsORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferenceResultTargetsORMModel</value>
+    <comment>Description for DomainClass &apos;InferenceResultTargetsORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResultTargetsORMModel.DisplayName" xml:space="preserve">
+    <value>Inference Result Targets ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;InferenceResultTargetsORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResultTargetsORMModel/InferenceResult.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferenceResultTargetsORMModel.InferenceResult</value>
+    <comment>Description for DomainRole &apos;InferenceResult&apos; on DomainRelationship &apos;InferenceResultTargetsORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResultTargetsORMModel/InferenceResult.DisplayName" xml:space="preserve">
+    <value>InferenceResult</value>
+    <comment>DisplayName for DomainRole &apos;InferenceResult&apos; on DomainRelationship &apos;InferenceResultTargetsORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResultTargetsORMModel/InferenceResult.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferenceResult&apos; on DomainRelationship &apos;InferenceResultTargetsORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResultTargetsORMModel/ORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferenceResultTargetsORMModel.ORMModel</value>
+    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferenceResultTargetsORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResultTargetsORMModel/ORMModel.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferenceResultTargetsORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferenceResultTargetsORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
+    <value>Inference Result</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferenceResultTargetsORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel</value>
+    <comment>Description for DomainClass &apos;InferredConstraintsTargetORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel.DisplayName" xml:space="preserve">
+    <value>Inferred Constraints Target ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;InferredConstraintsTargetORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel/InferredConstraints.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel.InferredConstraints</value>
+    <comment>Description for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;InferredConstraintsTargetORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel/InferredConstraints.DisplayName" xml:space="preserve">
+    <value>InferredConstraints</value>
+    <comment>DisplayName for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;InferredConstraintsTargetORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel/InferredConstraints.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;InferredConstraintsTargetORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel/ORMModel.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel.ORMModel</value>
+    <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferredConstraintsTargetORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel/ORMModel.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferredConstraintsTargetORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.InferredConstraintsTargetORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;InferredConstraintsTargetORMModel&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetConstraintIsInferred.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.SetConstraintIsInferred</value>
+    <comment>Description for DomainClass &apos;SetConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetConstraintIsInferred.DisplayName" xml:space="preserve">
+    <value>Set Constraint Is Inferred</value>
+    <comment>DisplayName for DomainClass &apos;SetConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetConstraintIsInferred/InferredConstraints.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.SetConstraintIsInferred.InferredConstraints</value>
+    <comment>Description for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;SetConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetConstraintIsInferred/InferredConstraints.DisplayName" xml:space="preserve">
+    <value>InferredConstraints</value>
+    <comment>DisplayName for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;SetConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetConstraintIsInferred/InferredConstraints.PropertyDisplayName" xml:space="preserve">
+    <value>Set Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;SetConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetConstraintIsInferred/SetConstraint.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.SetConstraintIsInferred.SetConstraint</value>
+    <comment>Description for DomainRole &apos;SetConstraint&apos; on DomainRelationship &apos;SetConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetConstraintIsInferred/SetConstraint.DisplayName" xml:space="preserve">
+    <value>SetConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SetConstraint&apos; on DomainRelationship &apos;SetConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetConstraintIsInferred/SetConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SetConstraint&apos; on DomainRelationship &apos;SetConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred</value>
+    <comment>Description for DomainClass &apos;SetComparisonConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred.DisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Is Inferred</value>
+    <comment>DisplayName for DomainClass &apos;SetComparisonConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred/InferredConstraints.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred.InferredConstraints</value>
+    <comment>Description for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;SetComparisonConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred/InferredConstraints.DisplayName" xml:space="preserve">
+    <value>InferredConstraints</value>
+    <comment>DisplayName for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;SetComparisonConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred/InferredConstraints.PropertyDisplayName" xml:space="preserve">
+    <value>Set Comparison Constraint Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;SetComparisonConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred/SetComparisonConstraint.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred.SetComparisonConstraint</value>
+    <comment>Description for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred/SetComparisonConstraint.DisplayName" xml:space="preserve">
+    <value>SetConstraint</value>
+    <comment>DisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SetComparisonConstraintIsInferred/SetComparisonConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SetComparisonConstraint&apos; on DomainRelationship &apos;SetComparisonConstraintIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SubtypeFactIsInferred.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.SubtypeFactIsInferred</value>
+    <comment>Description for DomainClass &apos;SubtypeFactIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SubtypeFactIsInferred.DisplayName" xml:space="preserve">
+    <value>Subtype Fact Is Inferred</value>
+    <comment>DisplayName for DomainClass &apos;SubtypeFactIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SubtypeFactIsInferred/InferredConstraints.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.SubtypeFactIsInferred.InferredConstraints</value>
+    <comment>Description for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;SubtypeFactIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SubtypeFactIsInferred/InferredConstraints.DisplayName" xml:space="preserve">
+    <value>InferredConstraints</value>
+    <comment>DisplayName for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;SubtypeFactIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SubtypeFactIsInferred/InferredConstraints.PropertyDisplayName" xml:space="preserve">
+    <value>Subtype Fact Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;InferredConstraints&apos; on DomainRelationship &apos;SubtypeFactIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SubtypeFactIsInferred/SubtypeFact.Description" xml:space="preserve">
+    <value>Description for unibz.ORMInferenceEngine.SubtypeFactIsInferred.SubtypeFact</value>
+    <comment>Description for DomainRole &apos;SubtypeFact&apos; on DomainRelationship &apos;SubtypeFactIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SubtypeFactIsInferred/SubtypeFact.DisplayName" xml:space="preserve">
+    <value>SubtypeFact</value>
+    <comment>DisplayName for DomainRole &apos;SubtypeFact&apos; on DomainRelationship &apos;SubtypeFactIsInferred&apos;</comment>
+  </data>
+  <data name="unibz.ORMInferenceEngine.SubtypeFactIsInferred/SubtypeFact.PropertyDisplayName" xml:space="preserve">
+    <value>Inferred Constraints</value>
+    <comment>PropertyDisplayName for DomainRole &apos;SubtypeFact&apos; on DomainRelationship &apos;SubtypeFactIsInferred&apos;</comment>
+  </data>
+  <data name="UnrecognizedElementType" xml:space="preserve">
+    <value>ElementType {0} is not recognized as a type of domain class which belongs to this domain model.</value>
+    <comment>Incorrect ElementType passed in to Model.CreateElement method</comment>
+  </data>
+  <data name="UnrecognizedElementLinkType" xml:space="preserve">
+    <value>ElementLinkType {0} is not recognized as a type of domain relationship which belongs to this domain model.</value>
+    <comment>Incorrect ElementLinkType passed in to Model.CreateElementLink method</comment>
+  </data>
+  <data name="AmbiguousSchema" xml:space="preserve">
+    <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>
+    <comment>Serialization Warning: AmbiguousSchema</comment>
+  </data>
+  <data name="ExpectingFullFormRelationship" xml:space="preserve">
+    <value>Element &apos;{0}&apos; is treated as the target role-player of a relationship &apos;{1}&apos; instance, which should be serialized in full-form.</value>
+    <comment>Serialization Warning: ExpectingFullFormRelationship</comment>
+  </data>
+  <data name="ExpectingShortFormRelationship" xml:space="preserve">
+    <value>Instances of relationship &apos;{0}&apos; should be serialized in short-form.</value>
+    <comment>Serialization Warning: ExpectingShortFormRelationship</comment>
+  </data>
+  <data name="IgnoredPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;, ignored.</value>
+    <comment>Serialization Warning: IgnoredPropertyValue</comment>
+  </data>
+  <data name="MissingId" xml:space="preserve">
+    <value>Missing &apos;Id&apos; attribute, a new Guid &apos;{0}&apos; is auto-generated.</value>
+    <comment>Serialization Warning: MissingId</comment>
+  </data>
+  <data name="MonikerResolvedToDuplicateLink" xml:space="preserve">
+    <value>Resolving moniker &apos;{0}&apos; causes a duplicate link to be created, so the link and the moniker are ignored.</value>
+    <comment>Serialization Warning: MonikerResolvedToDuplicateLink</comment>
+  </data>
+  <data name="NoSchema" xml:space="preserve">
+    <value>Cannot find a schema that defines target namespace &apos;{0}&apos;, schema validation skipped.</value>
+    <comment>Serialization Warning: NoSchema</comment>
+  </data>
+  <data name="UnexpectedXmlElement" xml:space="preserve">
+    <value>Unexpected XML element &apos;{0}&apos;, ignored.</value>
+    <comment>Serialization Warning: UnexpectedXmlElement</comment>
+  </data>
+  <data name="AmbiguousMoniker" xml:space="preserve">
+    <value>Ambiguous moniker &apos;{0}&apos; encountered. It is used for both &apos;{1}&apos; and &apos;{2}&apos;.</value>
+    <comment>Serialization Error: AmbiguousMoniker</comment>
+  </data>
+  <data name="CannotMonikerizeElement" xml:space="preserve">
+    <value>Instances of DomainClass &apos;{0}&apos; cannot be serialized as a moniker.
+A DomainClass can be serialized as a moniker only if 
+1) it has a defined/inherited DomainProperty marked as IsMonikerKey=true, or 
+2) it is marked/inherited with SerializeId=true.</value>
+    <comment>Serialization Error: CannotMonikerizeElement</comment>
+  </data>
+  <data name="CannotOpenDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotOpenDocument</comment>
+  </data>
+  <data name="CannotSaveDocument" xml:space="preserve">
+    <value>Error encountered, check Error List window for details.</value>
+    <comment>Serialization Error: CannotSaveDocument</comment>
+  </data>
+  <data name="DanglingRelationship" xml:space="preserve">
+    <value>Relationship &apos;{0}&apos; instance is missing target role-player.</value>
+    <comment>Serialization Error: DanglingRelationship</comment>
+  </data>
+  <data name="InvalidPropertyValue" xml:space="preserve">
+    <value>Invalid property value &apos;{0}&apos; for property &apos;{1}&apos; with type &apos;{2}&apos;.</value>
+    <comment>Serialization Error: InvalidPropertyValue</comment>
+  </data>
+  <data name="MissingMoniker" xml:space="preserve">
+    <value>Missing moniker. A moniker is expected in attribute &apos;{0}&apos;.</value>
+    <comment>Serialization Error: MissingMoniker</comment>
+  </data>
+  <data name="MissingTransaction" xml:space="preserve">
+    <value>This must be called within the context of an active transaction.</value>
+    <comment>Serialization Error: MissingTransaction</comment>
+  </data>
+  <data name="UnresolvedMoniker" xml:space="preserve">
+    <value>Cannot resolve moniker &apos;{0}&apos;.</value>
+    <comment>Serialization Error: UnresolvedMoniker</comment>
+  </data>
+  <data name="VersionMismatch" xml:space="preserve">
+    <value>Unsupported version &apos;{0}&apos;, can only support &apos;{1}&apos;.</value>
+    <comment>Serialization Error: VersionMismatch</comment>
+  </data>
+  <data name="CannotCloseExistingDiagramDocument" xml:space="preserve">
+    <value>Diagram file &apos;{0}&apos; cannot be closed.</value>
+    <comment>User cancel closing diagram file. Hence, the DSL model file cannot be opened</comment>
+  </data>
+  <data name="BindingErrorOccurred" xml:space="preserve">
+    <value>Extensions for this designer may not be found as a MEF binding error has occurred. The error that occurred was:
+{0}</value>
+    <comment>MEF binding error occurred - exception message being logged in the error window so the user is aware.</comment>
+  </data>
+  <data name="InvalidSaveRootElementType" xml:space="preserve">
+    <value>&apos;{0}&apos; is not a valid root element type.</value>
+    <comment>Exception message used if an invalid root element type is passed to IDomainModelSerializer.SaveModel / SaveModelAndDiagram</comment>
+  </data>
+  <data name="InvalidSaveDiagramType" xml:space="preserve">
+    <value>&apos;{0}&apos; is not a valid diagram type.</value>
+    <comment>Exception message used if an invalid diagram type is passed to IDomainModelSerializer.SaveModelAndDiagram</comment>
+  </data>
+  <data name="MinimumMultiplicityMissingLink" xml:space="preserve">
+    <value>{0} {1} has no {2}.</value>
+    <comment>Multiplicity underflow validation.</comment>
+  </data>
+  <data name="SaveOperationCancelled" xml:space="preserve">
+    <value>Save operation cancelled.</value>
+    <comment>Message when save is cancelled on validation errors</comment>
+  </data>
+  <data name="SaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors, continue save?</value>
+    <comment>Message when validation errors are found on save</comment>
+  </data>
+  <data name="UnloadableSaveValidationFailed" xml:space="preserve">
+    <value>There were validation errors. Continuing to save may cause the file to become unloadable, do you want to continue?</value>
+    <comment>Message when validation errors are found on save that will cause file to become unloadable</comment>
+  </data>
+</root>
+
+
+<!-- Common Public License Copyright Notice -->
+<!--
+	Natural Object-Role Modeling Architect for Visual Studio
+
+	Copyright © Neumont University. All rights reserved.
+	Copyright © ORM Solutions, LLC. All rights reserved.
+
+	The use and distribution terms for this software are covered by the
+	Common Public License 1.0 (http://opensource.org/licenses/cpl) which
+	can be found in the file CPL.txt at the root of this distribution.
+	By using this software in any fashion, you are agreeing to be bound by
+	the terms of this license.
+
+	You must not remove this notice, or any other, from this software.
+-->

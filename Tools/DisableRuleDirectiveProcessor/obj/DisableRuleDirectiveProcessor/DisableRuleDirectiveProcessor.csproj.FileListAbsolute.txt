@@ -1,0 +1,11 @@
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\bin\Neumont.Tools.Modeling.DisableRuleDirectiveProcessor.dll
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\bin\Neumont.Tools.Modeling.DisableRuleDirectiveProcessor.pdb
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\bin\Microsoft.VisualStudio.TextTemplating.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\bin\Microsoft.VisualStudio.TextTemplating.Interfaces.11.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\bin\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\bin\Microsoft.VisualStudio.TextTemplating.14.0.xml
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\bin\Microsoft.VisualStudio.TextTemplating.Interfaces.11.0.xml
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\bin\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.xml
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\obj\DisableRuleDirectiveProcessor\DisableRuleDirectiveProcessor.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\obj\DisableRuleDirectiveProcessor\Neumont.Tools.Modeling.DisableRuleDirectiveProcessor.dll
+C:\Users\Francesco\Documents\dev\NORMA\Tools\DisableRuleDirectiveProcessor\obj\DisableRuleDirectiveProcessor\Neumont.Tools.Modeling.DisableRuleDirectiveProcessor.pdb

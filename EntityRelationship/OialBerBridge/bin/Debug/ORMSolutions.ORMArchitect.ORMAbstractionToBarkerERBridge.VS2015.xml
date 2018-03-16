@@ -1,0 +1,1165 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.VS2015</name>
+    </assembly>
+    <members>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel">
+            <summary>
+            DomainModel ORMAbstractionToBarkerERBridgeDomainModel
+            (Preliminary) Bridge ORM Abstraction Model and Barker ER Model
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DomainModelId">
+            <summary>
+            ORMAbstractionToBarkerERBridgeDomainModel domain model Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.#ctor(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="store">Store containing the domain model.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GetGeneratedDomainModelTypes">
+            <summary>
+            Gets the list of generated domain model types (classes, rules, relationships).
+            </summary>
+            <returns>List of types.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GetGeneratedDomainProperties">
+            <summary>
+            Gets the list of generated domain properties.
+            </summary>
+            <returns>List of property data.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GetGeneratedDomainRoles">
+            <summary>
+            Gets the list of generated domain roles.
+            </summary>
+            <returns>List of role data.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.CreateElement(Microsoft.VisualStudio.Modeling.Partition,System.Type,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Creates an element of specified type.
+            </summary>
+            <param name="partition">Partition where element is to be created.</param>
+            <param name="elementType">Element type which belongs to this domain model.</param>
+            <param name="propertyAssignments">New element property assignments.</param>
+            <returns>Created element.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.CreateElementLink(Microsoft.VisualStudio.Modeling.Partition,System.Type,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Creates an element link of specified type.
+            </summary>
+            <param name="partition">Partition where element is to be created.</param>
+            <param name="elementLinkType">Element link type which belongs to this domain model.</param>
+            <param name="roleAssignments">List of relationship role assignments for the new link.</param>
+            <param name="propertyAssignments">New element property assignments.</param>
+            <returns>Created element link.</returns>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ResourceBaseName">
+            <summary>
+            The base name of this model's resources.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ResourceManager">
+            <summary>
+            Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.SingletonResourceManager">
+            <summary>
+            Gets the Singleton ResourceManager for this domain model.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.copyClosure">
+            <summary>
+            CopyClosure cache
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.removeClosure">
+            <summary>
+            DeleteClosure cache
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GetClosureFilter(Microsoft.VisualStudio.Modeling.ClosureType,System.Collections.Generic.ICollection{Microsoft.VisualStudio.Modeling.ModelElement})">
+            <summary>
+            Returns an IElementVisitorFilter that corresponds to the ClosureType.
+            </summary>
+            <param name="type">closure type</param>
+            <param name="rootElements">collection of root elements</param>
+            <returns>IElementVisitorFilter or null</returns>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.CopyClosure">
+            <summary>
+            CopyClosure cache
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DeleteClosure">
+            <summary>
+            DeleteClosure cache
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GetCustomDomainModelTypes">
+            <summary>Generated code to attach <see cref="T:Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="T:Microsoft.VisualStudio.Modeling.Store"/>.</summary>
+            <seealso cref="M:Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.AbstractionModelChangedRuleClass.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
+            /// <summary>
+            /// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)
+            /// </summary>
+            private static void AbstractionModelChangedRule(ElementPropertyChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeAddedRuleClass.ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
+            /// <summary>
+            /// AddRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
+            /// </summary>
+            private static void ConceptTypeAddedRule(ElementAddedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeChildChangedRuleClass.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
+            /// <summary>
+            /// ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)
+            /// </summary>
+            private static void ConceptTypeChildChangedRule(ElementPropertyChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeDeletedRuleClass.ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker
+            /// <summary>
+            /// DeleteRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
+            /// </summary>
+            private static void ConceptTypeDeletedRule(ElementDeletedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeChildChangedRule(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeAddedRule(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            AddRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.ConceptTypeDeletedRule(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs)">
+            <summary>
+            DeleteRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModelHasConceptType)
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ModificationTracker.AbstractionModelChangedRule(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            ChangeRule: typeof(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)
+            Update the schema name when the abstraction model name changes
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.XmlNamespace">
+            <summary>The default XmlNamespace associated with the 'ORMAbstractionToBarkerERBridgeDomainModel' extension model</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DefaultElementPrefix">
+            <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GetCustomElementNamespaces">
+            <summary>Implements ICustomSerializedDomainModel.GetCustomElementNamespaces</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ShouldSerializeDomainClass(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.DomainClassInfo)">
+            <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GetRootElementClasses">
+            <summary>Implements ICustomSerializedDomainModel.GetRootElementClasses</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.ShouldSerializeRootElement(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>Implements ICustomSerializedDomainModel.ShouldSerializeRootElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GetRootRelationshipContainers">
+            <summary>Implements ICustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.MapRootElement(System.String,System.String)">
+            <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.MapClassName(System.String,System.String)">
+            <summary>Implements ICustomSerializedDomainModel.MapClassName</summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.CurrentCoreAlgorithmVersion">
+            <summary>
+            The algorithm version written to the file for the core algorithm
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.CurrentNameAlgorithmVersion">
+            <summary>
+            The algorithm version written to the file for the name generation algorithm
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DeserializationFixupListenerCollection">
+            <summary>
+            Implements <see cref="P:ORMSolutions.ORMArchitect.Framework.IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection"/>
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.DeserializationFixupPhaseType">
+            <summary>
+            Implements <see cref="P:ORMSolutions.ORMArchitect.Framework.IDeserializationFixupListenerProvider.DeserializationFixupPhaseType"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GenerateMandatoryConstraints(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)">
+            <summary>
+            Applies Nullable/nonNullable constraints on all attributes for a given entity type.
+            </summary>
+            <param name="entity">The <see cref="T:ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType"/> to set initial constraints for</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.CheckAttributeConstraint(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute,ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)">
+            <summary>
+            CheckAttributeConstraint looks at the the ConceptTypeChildPath for an attribute, setting the attribute to nullable when some point in the path is not mandatory. 
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.CreateBinaryAssociation(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.Framework.INotifyElementAdded,System.Int32@)">
+            <summary>
+            for regular relationships
+            </summary>
+            <param name="relation"></param>
+            <param name="source"></param>
+            <param name="target"></param>
+            <param name="notifyAdded"></param>
+            <param name="associationCounter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.CreateBinaryAssociation(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.Framework.INotifyElementAdded,System.Int32@)">
+            <summary>
+            for many-to-many associations; it is assumed that IsSimpleManyToManyAssociation has been
+            called on the passed-in concept type and returned true
+            </summary>
+            <param name="parentConceptType"></param>
+            <param name="notifyAdded"></param>
+            <param name="associationCounter"></param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GenerateBarkerERModelFixupListener.#ctor">
+            <summary>
+            Create a new fixup listener
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel.GenerateBarkerERModelFixupListener.ProcessElement(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel,Microsoft.VisualStudio.Modeling.Store,ORMSolutions.ORMArchitect.Framework.INotifyElementAdded)">
+            <summary>
+            Verify that an abstraction model has an appropriate Barker ER model and bridge
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeleteClosure">
+            <summary>
+            Remove closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeleteClosure.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeleteClosureBase">
+            <summary>
+            Base class for remove closure visitor filter
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeleteClosureBase.domainRoles">
+            <summary>
+            DomainRoles
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeleteClosureBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeleteClosureBase.ShouldVisitRelationship(Microsoft.VisualStudio.Modeling.ElementWalker,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.DomainRelationshipInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>
+            Called to ask the filter if a particular relationship from a source element should be included in the traversal
+            </summary>
+            <param name="walker">ElementWalker that is traversing the model</param>
+            <param name="sourceElement">Model Element playing the source role</param>
+            <param name="sourceRoleInfo">DomainRoleInfo of the role that the source element is playing in the relationship</param>
+            <param name="domainRelationshipInfo">DomainRelationshipInfo for the ElementLink in question</param>
+            <param name="targetRelationship">Relationship in question</param>
+            <returns>Yes if the relationship should be traversed</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeleteClosureBase.ShouldVisitRolePlayer(Microsoft.VisualStudio.Modeling.ElementWalker,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.ElementLink,Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Called to ask the filter if a particular role player should be Visited during traversal
+            </summary>
+            <param name="walker">ElementWalker that is traversing the model</param>
+            <param name="sourceElement">Model Element playing the source role</param>
+            <param name="elementLink">Element Link that forms the relationship to the role player in question</param>
+            <param name="targetDomainRole">DomainRoleInfo of the target role</param>
+            <param name="targetRolePlayer">Model Element that plays the target role in the relationship</param>
+            <returns></returns>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeleteClosureBase.DomainRoles">
+            <summary>
+            DomainRoles
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeCopyClosure">
+            <summary>
+            Copy closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeCopyClosure.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeCopyClosureBase">
+            <summary>
+            Base class for copy closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeCopyClosureBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.MappingBarkerModel">
+            <summary>
+            DomainClass MappingBarkerModel
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.MappingBarkerModel.DomainClassId">
+            <summary>
+            MappingBarkerModel domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.MappingBarkerModel.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.MappingBarkerModel.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting">
+            <summary>
+            DomainClass BarkerERModelGenerationSetting
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.DomainClassId">
+            <summary>
+            BarkerERModelGenerationSetting domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.CoreAlgorithmVersionDomainPropertyId">
+            <summary>
+            CoreAlgorithmVersion domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.coreAlgorithmVersionPropertyStorage">
+            <summary>
+            Storage for CoreAlgorithmVersion
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.CoreAlgorithmVersion">
+            <summary>
+            Gets or sets the value of CoreAlgorithmVersion domain property.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.CoreAlgorithmVersionPropertyHandler">
+            <summary>
+            Value handler for the BarkerERModelGenerationSetting.CoreAlgorithmVersion domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.CoreAlgorithmVersionPropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the BarkerERModelGenerationSetting.CoreAlgorithmVersion domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.CoreAlgorithmVersionPropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the BarkerERModelGenerationSetting.CoreAlgorithmVersion domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.CoreAlgorithmVersionPropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.CoreAlgorithmVersionPropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting,System.String)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.NameAlgorithmVersionDomainPropertyId">
+            <summary>
+            NameAlgorithmVersion domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.nameAlgorithmVersionPropertyStorage">
+            <summary>
+            Storage for NameAlgorithmVersion
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.NameAlgorithmVersion">
+            <summary>
+            Gets or sets the value of NameAlgorithmVersion domain property.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.Depth
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.NameAlgorithmVersionPropertyHandler">
+            <summary>
+            Value handler for the BarkerERModelGenerationSetting.NameAlgorithmVersion domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.NameAlgorithmVersionPropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the BarkerERModelGenerationSetting.NameAlgorithmVersion domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.NameAlgorithmVersionPropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the BarkerERModelGenerationSetting.NameAlgorithmVersion domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.NameAlgorithmVersionPropertyHandler.GetValue(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.NameAlgorithmVersionPropertyHandler.SetValue(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting,System.String)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.GeneratedBarkerERModel">
+            <summary>
+            Gets or sets GeneratedBarkerERModel.
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSetting
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.GetCustomSerializedChildElementInfo">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.CustomSerializedChildRoleComparer">
+            <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.MapChildElement(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting.ShouldSerialize">
+            <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel">
+            <summary>
+            DomainRelationship BarkerErModelIsForAbstractionModel
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.DomainClassId">
+            <summary>
+            BarkerErModelIsForAbstractionModel domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.#ctor(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel,ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Constructor
+            Creates a BarkerErModelIsForAbstractionModel link in the same Partition as the given BarkerErModel
+            </summary>
+            <param name="source">BarkerErModel to use as the source of the relationship.</param>
+            <param name="target">AbstractionModel to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.BarkerErModelDomainRoleId">
+            <summary>
+            BarkerErModel domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.BarkerErModel">
+            <summary>
+            DomainRole BarkerErModel
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.GetBarkerErModel(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Gets BarkerErModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.SetBarkerErModel(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel,ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)">
+            <summary>
+            Sets BarkerErModel.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.AbstractionModelDomainRoleId">
+            <summary>
+            AbstractionModel domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.AbstractionModel">
+            <summary>
+            DomainRole AbstractionModel
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.GetAbstractionModel(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)">
+            <summary>
+            Gets AbstractionModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.SetAbstractionModel(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel,ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Sets AbstractionModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.GetLinkToAbstractionModel(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)">
+            <summary>
+            Get the BarkerErModelIsForAbstractionModel link to a BarkerErModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.GetLinkToBarkerErModel(ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Get the BarkerErModelIsForAbstractionModel link to a AbstractionModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.GetLinks(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel,ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Get any BarkerErModelIsForAbstractionModel links between a given BarkerErModel and a AbstractionModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerErModelIsForAbstractionModel.GetLink(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel,ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionModel)">
+            <summary>
+            Get the one BarkerErModelIsForAbstractionModel link between a given BarkerErModeland a AbstractionModel.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType">
+            <summary>
+            DomainRelationship EntityTypeIsPrimarilyForConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.DomainClassId">
+            <summary>
+            EntityTypeIsPrimarilyForConceptType domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.#ctor(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Constructor
+            Creates a EntityTypeIsPrimarilyForConceptType link in the same Partition as the given EntityType
+            </summary>
+            <param name="source">EntityType to use as the source of the relationship.</param>
+            <param name="target">ConceptType to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.EntityTypeDomainRoleId">
+            <summary>
+            EntityType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.EntityType">
+            <summary>
+            DomainRole EntityType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.GetEntityType(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets EntityType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.SetEntityType(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType,ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)">
+            <summary>
+            Sets EntityType.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.ConceptTypeDomainRoleId">
+            <summary>
+            ConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.ConceptType">
+            <summary>
+            DomainRole ConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.GetConceptType(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)">
+            <summary>
+            Gets ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.SetConceptType(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Sets ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.GetLinkToConceptType(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType)">
+            <summary>
+            Get the EntityTypeIsPrimarilyForConceptType link to a EntityType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.GetLinkToEntityType(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the EntityTypeIsPrimarilyForConceptType link to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.GetLinks(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get any EntityTypeIsPrimarilyForConceptType links between a given EntityType and a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.EntityTypeIsPrimarilyForConceptType.GetLink(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.EntityType,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the one EntityTypeIsPrimarilyForConceptType link between a given EntityTypeand a ConceptType.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel">
+            <summary>
+            DomainRelationship GenerationSettingTargetsBarkerERModel
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.DomainClassId">
+            <summary>
+            GenerationSettingTargetsBarkerERModel domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.#ctor(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting,ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)">
+            <summary>
+            Constructor
+            Creates a GenerationSettingTargetsBarkerERModel link in the same Partition as the given BarkerERModelGenerationSetting
+            </summary>
+            <param name="source">BarkerERModelGenerationSetting to use as the source of the relationship.</param>
+            <param name="target">BarkerErModel to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSettingDomainRoleId">
+            <summary>
+            GenerationSetting domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSetting">
+            <summary>
+            DomainRole GenerationSetting
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GenerationSetting
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GetGenerationSetting(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)">
+            <summary>
+            Gets GenerationSetting.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.SetGenerationSetting(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel,ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting)">
+            <summary>
+            Sets GenerationSetting.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModelDomainRoleId">
+            <summary>
+            GeneratedBarkerERModel domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModel">
+            <summary>
+            DomainRole GeneratedBarkerERModel
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GeneratedBarkerERModel
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GetGeneratedBarkerERModel(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting)">
+            <summary>
+            Gets GeneratedBarkerERModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.SetGeneratedBarkerERModel(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting,ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)">
+            <summary>
+            Sets GeneratedBarkerERModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GetLinkToGeneratedBarkerERModel(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting)">
+            <summary>
+            Get the GenerationSettingTargetsBarkerERModel link to a BarkerERModelGenerationSetting.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GetLinkToGenerationSetting(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)">
+            <summary>
+            Get the GenerationSettingTargetsBarkerERModel link to a BarkerErModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GetLinks(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting,ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)">
+            <summary>
+            Get any GenerationSettingTargetsBarkerERModel links between a given BarkerERModelGenerationSetting and a BarkerErModel.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.GenerationSettingTargetsBarkerERModel.GetLink(ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BarkerERModelGenerationSetting,ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerErModel)">
+            <summary>
+            Get the one GenerationSettingTargetsBarkerERModel link between a given BarkerERModelGenerationSettingand a BarkerErModel.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild">
+            <summary>
+            DomainRelationship AttributeHasConceptTypeChild
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.DomainClassId">
+            <summary>
+            AttributeHasConceptTypeChild domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.#ctor(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Constructor
+            Creates a AttributeHasConceptTypeChild link in the same Partition as the given Attribute
+            </summary>
+            <param name="source">Attribute to use as the source of the relationship.</param>
+            <param name="target">ConceptTypeChild to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.AttributeDomainRoleId">
+            <summary>
+            Attribute domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.Attribute">
+            <summary>
+            DomainRole Attribute
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.GetAttribute(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Gets a list of Attribute.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.ConceptTypeChildDomainRoleId">
+            <summary>
+            ConceptTypeChild domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.ConceptTypeChild">
+            <summary>
+            DomainRole ConceptTypeChild
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.GetConceptTypeChildPath(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)">
+            <summary>
+            Gets a list of ConceptTypeChildPath.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.GetLinksToConceptTypeChildPath(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute)">
+            <summary>
+            Get the list of AttributeHasConceptTypeChild links to a Attribute.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.GetLinksToAttribute(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get the list of AttributeHasConceptTypeChild links to a ConceptTypeChild.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.AttributeHasConceptTypeChild.GetLinks(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.Attribute,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get any AttributeHasConceptTypeChild links between a given Attribute and a ConceptTypeChild.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild">
+            <summary>
+            DomainRelationship BinaryAssociationHasConceptTypeChild
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.DomainClassId">
+            <summary>
+            BinaryAssociationHasConceptTypeChild domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.#ctor(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Constructor
+            Creates a BinaryAssociationHasConceptTypeChild link in the same Partition as the given BinaryAssociation
+            </summary>
+            <param name="source">BinaryAssociation to use as the source of the relationship.</param>
+            <param name="target">ConceptTypeChild to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.BinaryAssociationDomainRoleId">
+            <summary>
+            BinaryAssociation domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.BinaryAssociation">
+            <summary>
+            DomainRole BinaryAssociation
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.GetBinaryAssociation(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Gets a list of BinaryAssociation.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.ConceptTypeChildDomainRoleId">
+            <summary>
+            ConceptTypeChild domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.ConceptTypeChild">
+            <summary>
+            DomainRole ConceptTypeChild
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.GetConceptTypeChildPath(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation)">
+            <summary>
+            Gets a list of ConceptTypeChildPath.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.GetLinksToConceptTypeChildPath(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation)">
+            <summary>
+            Get the list of BinaryAssociationHasConceptTypeChild links to a BinaryAssociation.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.GetLinksToBinaryAssociation(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get the list of BinaryAssociationHasConceptTypeChild links to a ConceptTypeChild.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptTypeChild.GetLinks(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptTypeChild)">
+            <summary>
+            Get any BinaryAssociationHasConceptTypeChild links between a given BinaryAssociation and a ConceptTypeChild.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType">
+            <summary>
+            DomainRelationship BinaryAssociationHasConceptType
+            Description for
+            ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.DomainClassId">
+            <summary>
+            BinaryAssociationHasConceptType domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.#ctor(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Constructor
+            Creates a BinaryAssociationHasConceptType link in the same Partition as the given BinaryAssociation
+            </summary>
+            <param name="source">BinaryAssociation to use as the source of the relationship.</param>
+            <param name="target">ConceptType to use as the target of the relationship.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new link is to be created.</param>
+            <param name="roleAssignments">List of relationship role assignments.</param>
+            <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.BinaryAssociationDomainRoleId">
+            <summary>
+            BinaryAssociation domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.BinaryAssociation">
+            <summary>
+            DomainRole BinaryAssociation
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.GetBinaryAssociation(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Gets a list of BinaryAssociation.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.ConceptTypeDomainRoleId">
+            <summary>
+            ConceptType domain role Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.ConceptType">
+            <summary>
+            DomainRole ConceptType
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.GetConceptType(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation)">
+            <summary>
+            Gets a list of ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.GetLinksToConceptType(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation)">
+            <summary>
+            Get the list of BinaryAssociationHasConceptType links to a BinaryAssociation.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.GetLinksToBinaryAssociation(ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get the list of BinaryAssociationHasConceptType links to a ConceptType.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.BinaryAssociationHasConceptType.GetLinks(ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BinaryAssociation,ORMSolutions.ORMArchitect.ORMAbstraction.ConceptType)">
+            <summary>
+            Get any BinaryAssociationHasConceptType links between a given BinaryAssociation and a ConceptType.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeserializationFixupPhase">
+            <summary>
+            The public fixup phase for the ORM abstraction bridge model
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeserializationFixupPhase.ValidateCustomizationOptions">
+            <summary>
+            Validate Customization Options
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDeserializationFixupPhase.ValidateElements">
+            <summary>
+            Validate bridge elements after all core ORM validation is complete
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ResourceStrings">
+            <summary>A helper class to insulate the rest of the code from direct resource manipulation.</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ResourceStrings.ResourceManagers">
+            <summary>
+            The abstraction/conceptual database bridge resource.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ResourceStrings.ResourceManagers.ObjectModel">
+            <summary>
+            Generated resource file for the Barker ER model
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ResourceStrings.Placeholder">
+            <summary>DisplayName for DslLibrary 'ORMAbstractionToBarkerERBridge'</summary>
+        </member>
+    </members>
+</doc>

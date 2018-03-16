@@ -1,0 +1,51 @@
+﻿using System;
+using Microsoft.VisualStudio.Modeling;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using org.semanticweb.owlapi.model;
+using org.semanticweb.owlapi.reasoner;
+using uk.ac.manchester.cs.jfact;
+using System.Collections.Generic;
+using org.unibz.ucmf.askAPI;
+using System.Collections;
+
+namespace unibz.ORMInferenceEngine
+{
+	partial class ORM2OWLTranslationManager
+	{
+
+
+
+		void CreateInferredEntityTypesHierarchy2(InferredConstraints container, InferredHierarchyTypes hierarchyTypes)
+		{
+			ORMModel model = container.Model;
+			Store store = model.Store;
+			//Partition hierarchyPartition = Partition.FindByAlternateId(store, typeof(Hierarchy));
+			Partition outputPartition = container.Partition;
+			
+			java.util.ArrayList fathers = hierarchyTypes.getFathers();
+
+			//For each father
+			foreach (String father in fathers)
+			{
+				//Get the ObjectType of the father
+				ObjectType objectType = findObjectTypeByName(model, father);
+				if (hierarchyTypes.getSons(father).size() > 0 && hierarchyTypes.getSons(father)!=null)
+				{
+					foreach (String son in hierarchyTypes.getSons(father))
+					{
+						ObjectType subObjectType = findObjectTypeByName(model, son);
+						InferredSubtypeFact subtypefact = new InferredSubtypeFact(outputPartition);
+                        new SubtypeFactIsInferred(container, subtypefact);
+						subtypefact.Subtype = subObjectType;
+						subtypefact.Supertype = objectType;
+
+
+
+					}
+				}
+			}
+
+
+		}
+	}
+}

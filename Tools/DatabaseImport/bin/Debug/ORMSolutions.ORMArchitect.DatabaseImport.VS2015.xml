@@ -1,0 +1,874 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ORMSolutions.ORMArchitect.DatabaseImport.VS2015</name>
+    </assembly>
+    <members>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema">
+            <summary>
+            Represents a DCIL Document
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.Namespaces">
+            <summary>
+            Namespaces that are associated with the Schema
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.Serialize(ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema,System.IO.MemoryStream)">
+            <summary>
+            Serializes an instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/>
+            </summary>
+            <param name="schema">The <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> to Serialize</param>
+            <param name="stream">The <see cref="T:System.IO.MemoryStream"/> to write to</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.#ctor">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.#ctor(ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider,System.String)">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/>
+            </summary>
+            <param name="dataProvider"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.FromSchemaName(System.String,System.Data.IDbConnection,System.String)">
+            <summary>
+            Returns a <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> object from given schema name
+            </summary>
+            <param name="schemaName">The name of the schema to load</param>
+            <param name="connection">The IDbConnection to use to retrieve the information</param>
+            <param name="dataProviderName">The invariant name of the Data Provider</param>
+            <exception cref="T:System.NotSupportedException"/>
+            <returns><see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.GetAvailableSchemaNames(System.Data.IDbConnection,System.String)">
+            <summary>
+            Retrieves a list of available schema names for the given <see cref="T:System.Data.IDbConnection"/> and Data Provider
+            </summary>
+            <param name="connection">The IDbConnection to use to retrieve the information</param>
+            <param name="dataProviderName">The invariant name of the Data Provider</param>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.GetDcilSchemaProvider(System.Data.IDbConnection,System.String)">
+            <summary>
+            Returns a <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider"/> object from given connection and data provider
+            </summary>
+            <param name="connection">The IDbConnection to use to retrieve the information</param>
+            <param name="dataProviderName">The invariant name of the Data Provider</param>
+            <returns><see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider"/></returns>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.Name">
+            <summary>
+            Gets or Sets the Name of the Schema
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.Tables">
+            <summary>
+            Gets or Sets the list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects that belong to this Schema
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.Procedures">
+            <summary>
+            Gets or Sets the list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects that belong to this Schema
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.ToString">
+            <summary>
+            Returns the name of the Schema
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.GetSchema">
+            <summary>
+            This property is reserved, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Generates an object from its XML representation
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is read</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Converts the object into its XML representation
+            </summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is written</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable">
+            <summary>
+            Represents a DCIL Table element of a DCIL Document
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.#ctor">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.#ctor(ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider,System.String,System.String)">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/>
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.SchemaName">
+            <summary>
+            Gets or Sets the name of the Schema to which the Table belongs to
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.TableName">
+            <summary>
+            Gets or Sets the name of the Table
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.Columns">
+            <summary>
+            Gets the list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects that belong to the Table
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.UniquenessConstraints">
+            <summary>
+            Gets the list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects that belong to the Table
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.ReferenceConstraints">
+            <summary>
+            Gets the list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects that belong to the Table
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.ToString">
+            <summary>
+            Returns the Schema-qualified name of the Table
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.GetSchema">
+            <summary>
+            This property is reserved, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Generates an object from its XML representation
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is read</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Converts the object into its XML representation
+            </summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is written</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn">
+            <summary>
+            Represents a DCIL Column element of a DCIL Document
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn.#ctor">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn.#ctor(System.String,ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType,System.Boolean,System.Boolean)">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/>
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn.Name">
+            <summary>
+            Gets or Sets the name of the Column
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn.IsNullable">
+            <summary>
+            Gets or Sets a value indicating whether or not the Columns allows nulls
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn.IsIdentity">
+            <summary>
+            Gets or Sets a value indicating whether or not the Column has an Identity Specification
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn.ToString">
+            <summary>
+            Returns the name of the Column
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn.GetSchema">
+            <summary>
+            This property is reserved, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Generates an object from its XML representation
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is read</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Converts the object into its XML representation
+            </summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is written</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint">
+            <summary>
+            Represents a DCIL UniquenessConstraint element of a DCIL Document
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.#ctor">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.#ctor(System.String,System.String,System.String,System.String,System.Collections.Specialized.StringCollection,System.Boolean)">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/>
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.IsPrimary">
+            <summary>
+            Gets or Sets a value indicating whether or not the Column has an Identity Specification
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.Name">
+            <summary>
+            Gets or Sets the name of the Uniqueness Constraint
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.Schema">
+            <summary>
+            Gets or Sets the name of the Schema to which the Uniqueness Constraint belongs to
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.ParentTable">
+            <summary>
+            Gets or Sets the name of the Table to which the Uniqueness Constraint belongs to
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.ParentTableSchema">
+            <summary>
+            Gets or Sets the name of the Schema of the parent Table to which the Uniqueness Constraint belongs to
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.Columns">
+            <summary>
+            Gets or Sets a collection of Column names
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.ToString">
+            <summary>
+            Returns the Schema-qualified name of the Uniqueness Constraint
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.GetSchema">
+            <summary>
+            This property is reserved, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Generates an object from its XML representation
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is read</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Converts the object into its XML representation
+            </summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is written</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint">
+            <summary>
+            Represents a DCIL ReferenceConstraint element of a DCIL Document
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.#ctor">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.Collections.Specialized.StringCollection,System.Collections.Specialized.StringCollection)">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/>
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.Schema">
+            <summary>
+            Gets or Sets the name of the Schema to which the Reference Constraint belongs to
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.Name">
+            <summary>
+            Gets or Sets the name of the Reference Constraint
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.SourceTableSchema">
+            <summary>
+            Gets or Sets the Schema of the Source Table of the Reference Constraint
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.SourceTable">
+            <summary>
+            Gets or Sets the Source Table of the Reference Constraint
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.TargetTableSchema">
+            <summary>
+            Gets or Sets the Schema of the Target Table of the Reference Constraint
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.TargetTable">
+            <summary>
+            Gets or Sets the Target Table of the Reference Constraint
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.SourceColumns">
+            <summary>
+            Gets or Sets the collection of Source Columns of the Reference Constraint
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.TargetColumns">
+            <summary>
+            Gets or Sets the collection of Target Columns of the Reference Constraint
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.ToString">
+            <summary>
+            Returns the Schema-qualified name of the Reference Constraint
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.GetSchema">
+            <summary>
+            This property is reserved, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Generates an object from its XML representation
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is read</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Converts the object into its XML representation
+            </summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is written</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType">
+            <summary>
+            Represents a DCIL PredefinedDataType element of a DCIL Document
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType">
+            <summary>
+            Represents a predefined data type as defined in the DILDT Scehma
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.CharacterLargeObject">
+            <summary>
+            Fixed-length character data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Character">
+            <summary>
+            Fixed-length character data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.CharacterVarying">
+            <summary>
+            Variable-length data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.BinaryLargeObject">
+            <summary>
+            Binary data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Numeric">
+            <summary>
+            Fixed precision and scale numeric data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Decimal">
+            <summary>
+            Fixed precision and scale numeric data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.SmallInt">
+            <summary>
+            Integer data from -2^15 through 2^15 - 1
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Integer">
+            <summary>
+            Integer data from -2^31 through 2^31 - 1
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.BigInt">
+            <summary>
+            Integer data from -2^63 through 2^63-1
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Float">
+            <summary>
+            Floating precision number data from -1.79E + 308 through 1.79E + 308
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Real">
+            <summary>
+            Floating precision number data from -3.40E + 38 through 3.40E + 38
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.DoublePrecision">
+            <summary>
+            Double precision number data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Boolean">
+            <summary>
+            Boolean data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Date">
+            <summary>
+            Date data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Time">
+            <summary>
+            Time data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Timestamp">
+            <summary>
+            Date and time data
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType.Interval">
+            <summary>
+            Interval data
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.#ctor">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.#ctor(ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType)">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.#ctor(ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType,System.Int64,System.Int64,System.Int16)">
+            <summary>
+            Instantiates a new instance of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType"/>
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.Type">
+            <summary>
+            Gets or Sets the <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType"/> of the DcilDataType
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.Size">
+            <summary>
+            Gets or Sets the size of the Data Type
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.Scale">
+            <summary>
+            Gets or Sets the scale of the Data Type
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.Precision">
+            <summary>
+            Gets or Sets the precision of the Data Type
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.ConvertToADODataType">
+            <summary>
+            Converts the <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType"/> of the DcilDataType to a <see cref="T:System.Data.DbType"/>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.ToString">
+            <summary>
+            Returns the string representation of the <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType"/> of the DcilDataType
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.GetSchema">
+            <summary>
+            This property is reserved, apply the <see cref="T:System.Xml.Serialization.XmlSchemaProviderAttribute"/> to the class instead
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Generates an object from its XML representation
+            </summary>
+            <param name="reader">The <see cref="T:System.Xml.XmlReader"/> stream from which the object is read</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Converts the object into its XML representation
+            </summary>
+            <param name="writer">The <see cref="T:System.Xml.XmlWriter"/> stream to which the object is written</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure">
+            <summary>
+            Represents a DCIL Procedure element of a DCIL Document
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider">
+            <summary>
+            Provides an implementation of IDcilSchemaProvider for Oracle
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider.#ctor(System.Data.IDbConnection)">
+            <summary>
+            Instantiates a new instance of ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider
+            </summary>
+            <param name="conn">The <see cref="T:System.Data.IDbConnection"/> object for the target Database</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider.GetAvailableSchemaNames">
+            <summary>
+            When implemented in a child class, retrieves a list of available schema names
+            </summary>
+            <returns>List of available schema names</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider.LoadSchema(System.String)">
+            <summary>
+            Loads the specified Oracle Schema into a <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> object
+            </summary>
+            <param name="schemaName">Name of the Schema to load</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider.LoadTables(System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Oracle Schema
+            </summary>
+            <param name="schemaName">Name of the Schema from which to load the Tables</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Oracle Schema</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider.LoadColumns(System.String,System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Oracle Schema and Table
+            </summary>
+            <param name="schemaName">Name of the Oracle Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Columns</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Oracle Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider.ConvertOracleDataType(System.String)">
+            <summary>
+            Converts the given string representation of an Oracle Data Type to its equivalent <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider.LoadIndexes(System.String,System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Oracle Schema and Table
+            </summary>
+            <param name="schemaName">Name of the Oracle Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Indexes</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Oracle Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider.LoadForeignKeys(System.String,System.String)">
+            <summary>
+            When implemented in a child class, loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Oracle Schema and Table
+            </summary>
+            <param name="schemaName">Name of the Oracle Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Indexes</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Oracle Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.OracleDcilSchemaProvider.LoadProcedures(System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Oracle Schema
+            </summary>
+            <param name="schemaName">Name of the Oracle Schema from which to load the Stored Procedures</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Oracle Schema</returns>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.SchemaSelector">
+            <summary>
+            Dialog used to allow users to select the schema the want to use.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SchemaSelector.SelectSchema(System.IServiceProvider,System.Collections.Generic.IList{System.String})">
+            <summary>
+            Static Method used to show the dialog and return the selected result.
+            </summary>		
+            <param name="provider">The Provider to get the service from</param>	
+            <param name="schemaList">The list of schema names to select from</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.DatabaseImport.SchemaSelector.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SchemaSelector.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SchemaSelector.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider">
+            <summary>
+            Represents required methods for DBMS adapters
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider.GetAvailableSchemaNames">
+            <summary>
+            When implemented in a child class, retrieves a list of available schema names
+            </summary>
+            <returns>List of available schema names</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider.LoadSchema(System.String)">
+            <summary>
+            When implemented in a child class, loads the specified Schema into a <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> object
+            </summary>
+            <param name="schemaName">Name of the Schema to load</param>
+            <returns><see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> object</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider.LoadTables(System.String)">
+            <summary>
+            When implemented in a child class, loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Schema
+            </summary>
+            <param name="schemaName">Name of the Schema from which to load the Tables</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Schema</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider.LoadColumns(System.String,System.String)">
+            <summary>
+            When implemented in a child class, loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Schema and Table
+            </summary>
+            <param name="schemaName">Name of the Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Columns</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider.LoadIndexes(System.String,System.String)">
+            <summary>
+            When implemented in a child class, loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Schema and Table
+            </summary>
+            <param name="schemaName">Name of the Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Indexes</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider.LoadForeignKeys(System.String,System.String)">
+            <summary>
+            When implemented in a child class, loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Schema and Table
+            </summary>
+            <param name="schemaName">Name of the Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Indexes</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.IDcilSchemaProvider.LoadProcedures(System.String)">
+            <summary>
+            When implemented in a child class, loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Schema
+            </summary>
+            <param name="schemaName">Name of the Schema from which to laod the Stored Procedures</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Schema</returns>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider">
+            <summary>
+            Provides an implementation of IDcilSchemaProvider for MySQL 5.0
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider.#ctor(System.Data.IDbConnection)">
+            <summary>
+            Instantiates a new instance of ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider
+            </summary>
+            <param name="conn">The <see cref="T:System.Data.IDbConnection"/> object for the target Database</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider.GetAvailableSchemaNames">
+            <summary>
+            When implemented in a child class, retrieves a list of available schema names
+            </summary>
+            <returns>List of available schema names</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider.LoadSchema(System.String)">
+            <summary>
+            Loads the specified MySQL 5.0 Schema into a <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> object
+            </summary>
+            <param name="schemaName">Name of the Schema to load</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider.LoadTables(System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified MySQL 5.0 Schema
+            </summary>
+            <param name="schemaName">Name of the Schema from which to load the Tables</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified MySQL 5.0 Schema</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider.LoadColumns(System.String,System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified MySQL 5.0 Schema and Table
+            </summary>
+            <param name="schemaName">Name of the MySQL 5.0 Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Columns</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified MySQL 5.0 Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider.ConvertMySqlDataType(System.String)">
+            <summary>
+            Converts the given string representation of a SQL Data Type to its equilavent <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider.LoadIndexes(System.String,System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified MySQL 5.0 Schema and Table
+            </summary>
+            <param name="schemaName">Name of the MySQL 5.0 Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Indexes</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified MySQL 5.0 Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider.LoadForeignKeys(System.String,System.String)">
+            <summary>
+            When implemented in a child class, loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified MySQL 5.0 Schema and Table
+            </summary>
+            <param name="schemaName">Name of the MySQL 5.0 Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Indexes</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified MySQL 5.0 Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.MySqlDcilSchemaProvider.LoadProcedures(System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified MySQL 5.0 Schema
+            </summary>
+            <param name="schemaName">Name of the MySQL 5.0 Schema from which to laod the Stored Procedures</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified MySQL 5.0 Schema</returns>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard">
+            <summary>
+            Wizard interface used when loading a DcilREFromDB template
+            </summary>	
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard.BeforeOpeningFile(EnvDTE.ProjectItem)">
+            <summary>
+            Implements <see cref="M:Microsoft.VisualStudio.TemplateWizard.IWizard.BeforeOpeningFile(EnvDTE.ProjectItem)"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard.ProjectFinishedGenerating(EnvDTE.Project)">
+            <summary>
+            Implements <see cref="M:Microsoft.VisualStudio.TemplateWizard.IWizard.ProjectFinishedGenerating(EnvDTE.Project)"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard.ProjectItemFinishedGenerating(EnvDTE.ProjectItem)">
+            <summary>
+            Implements <see cref="M:Microsoft.VisualStudio.TemplateWizard.IWizard.ProjectItemFinishedGenerating(EnvDTE.ProjectItem)"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard.RunFinished">
+            <summary>
+            Implements <see cref="M:Microsoft.VisualStudio.TemplateWizard.IWizard.RunFinished"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard.GetService``1(System.IServiceProvider)">
+            <summary>
+            Method use to get the type of Service specified T from the Provider
+            </summary>		
+            <param name="provider">The Provider to get the service from</param>	
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard.RunStarted(System.Object,System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.VisualStudio.TemplateWizard.WizardRunKind,System.Object[])">
+            <summary>
+            Implements <see cref="M:Microsoft.VisualStudio.TemplateWizard.IWizard.RunStarted(System.Object,System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.VisualStudio.TemplateWizard.WizardRunKind,System.Object[])"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard.ShouldAddProjectItem(System.String)">
+            <summary>
+            Implements <see cref="M:Microsoft.VisualStudio.TemplateWizard.IWizard.ShouldAddProjectItem(System.String)"/>
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportGeneralProjectWizard">
+            <summary>
+            Works around Visual Studio bugs in order to allow <c>.vstemplate</c> files
+            to be used for the "<c>General</c>" <c>ProjectType</c>.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportGeneralProjectWizard.RunStarted(System.Object,System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.VisualStudio.TemplateWizard.WizardRunKind,System.Object[])">
+            <summary>
+            Prevents the pre-Orcas version of <c>Microsoft.VisualStudio.TemplateWizard.Wizard</c> from crashing in <c>OpenNotedItems</c>.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportGeneralProjectWizard.ProjectItemFinishedGenerating(EnvDTE.ProjectItem)">
+            <summary>
+            Ensures that only the file name portion of the new <see cref="T:EnvDTE.ProjectItem"/>'s path is used as the
+            title for the document window.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider">
+            <summary>
+            Provides an implementation of IDcilSchemaProvider for Microsoft SQL Server 2005
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider.#ctor(System.Data.IDbConnection)">
+            <summary>
+            Instantiates a new instance of ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider
+            </summary>
+            <param name="conn">The <see cref="T:System.Data.IDbConnection"/> object for the target Database</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider.GetAvailableSchemaNames">
+            <summary>
+            When implemented in a child class, retrieves a list of available schema names
+            </summary>
+            <returns>List of available schema names</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider.LoadSchema(System.String)">
+            <summary>
+            Loads the specified Microsoft SQL Server 2005 Schema into a <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilSchema"/> object
+            </summary>
+            <param name="schemaName">Name of the Schema to load</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider.LoadTables(System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Microsoft SQL Server 2005 Schema
+            </summary>
+            <param name="schemaName">Name of the Schema from which to load the Tables</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilTable"/> objects for the specified Microsoft SQL Server 2005 Schema</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider.LoadColumns(System.String,System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Microsoft SQL Server 2005 Schema and Table
+            </summary>
+            <param name="schemaName">Name of the Microsoft SQL Server 2005 Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Columns</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilColumn"/> objects for the specified Microsoft SQL Server 2005 Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider.ConvertSQLServerDataType(System.String)">
+            <summary>
+            Converts the given string representation of a SQL Data Type to its equilavent <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilDataType.DCILType"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider.LoadIndexes(System.String,System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Microsoft SQL Server 2005 Schema and Table
+            </summary>
+            <param name="schemaName">Name of the Microsoft SQL Server 2005 Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Indexes</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilUniquenessConstraint"/> objects (representing Uniqueness Constraints) for the specified Microsoft SQL Server 2005 Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider.LoadForeignKeys(System.String,System.String)">
+            <summary>
+            When implemented in a child class, loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Microsoft SQL Server 2005 Schema and Table
+            </summary>
+            <param name="schemaName">Name of the Microsoft SQL Server 2005 Schema for which the given Table resides in</param>
+            <param name="tableName">Name of the Table from which to load the Indexes</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilReferenceConstraint"/> objects (representing Foreign Keys) for the specified Microsoft SQL Server 2005 Schema and Table</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.DatabaseImport.SqlServer2005DcilSchemaProvider.LoadProcedures(System.String)">
+            <summary>
+            Loads a generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Microsoft SQL Server 2005 Schema
+            </summary>
+            <param name="schemaName">Name of the Microsoft SQL Server 2005 Schema from which to laod the Stored Procedures</param>
+            <returns>Generic list of <see cref="T:ORMSolutions.ORMArchitect.DatabaseImport.DcilProcedure"/> objects for the specified Microsoft SQL Server 2005 Schema</returns>
+        </member>
+    </members>
+</doc>

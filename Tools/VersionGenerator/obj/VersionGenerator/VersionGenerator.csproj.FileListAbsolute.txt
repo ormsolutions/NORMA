@@ -1,0 +1,3 @@
+C:\Users\Francesco\Documents\dev\NORMA\Tools\VersionGenerator\obj\VersionGenerator\VersionGenerator.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\dev\NORMA\Tools\VersionGenerator\obj\VersionGenerator\VersionGenerator.exe
+C:\Users\Francesco\Documents\dev\NORMA\VersionGenerator.exe

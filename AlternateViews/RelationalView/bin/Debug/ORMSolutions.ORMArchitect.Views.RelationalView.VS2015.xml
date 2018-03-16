@@ -1,0 +1,1477 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ORMSolutions.ORMArchitect.Views.RelationalView.VS2015</name>
+    </assembly>
+    <members>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment">
+            <summary>
+            A custom compartment element used to customize how individual compartment items are drawn.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.PrimaryKeyString">
+            <summary>
+            The string that denotes a primary key.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.AlternateKeyString">
+            <summary>
+            The string that prepends an alternate key.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.ForeignKeyString">
+            <summary>
+            The string that prepends a foreign key.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.MandatoryFont">
+            <summary>
+            A font used to format the name of mandatory columns.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.DefaultStringFormat">
+            <summary>
+            The <see cref="T:System.Drawing.StringFormat"/> used to write text for the columns and table name.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.CommaString">
+            <summary>
+            Specifies a comma string for use with delimiting constraints.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.ColonString">
+            <summary>
+            Specifies a colon string for delimiting a constraint list with the column name.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.TableExtraWidth">
+            <summary>
+            Specifies the offset used for measuring a string in updating the size of this
+            <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/> based on the table name.
+            </summary>	
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.ColumnExtraWidth">
+            <summary>
+            Specifies the offset used for measuring a string in updating the size of this
+            <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/> based on the column names.
+            </summary>	
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment" /> class.	
+            </summary>
+            <param name="partition"></param>
+            <param name="propertyAssignments"></param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment" /> class.
+            </summary>
+            <param name="store">The <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> which will contain this
+            <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment" />.</param>
+            <param name="propertyAssignments">An array of <see cref="T:Microsoft.VisualStudio.Modeling.PropertyAssignment"/> that
+            works with </param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.InitializeResources(Microsoft.VisualStudio.Modeling.Diagrams.StyleSet)">
+            <summary>
+            Initialize a font for formatting the mandatory column contents.
+            </summary>
+            <param name="classStyleSet">The <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.StyleSet"/> being initialized.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.GetItemDrawInfo(Microsoft.VisualStudio.Modeling.Diagrams.ListField,System.Int32,Microsoft.VisualStudio.Modeling.Diagrams.ItemDrawInfo)">
+            <summary>
+            Gets the drawing information for a particular element in the compartment.
+            </summary>
+            <param name="listField">The <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> of this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/> which
+            paints the items in this compartment.</param>
+            <param name="row">The index of the array of items whose item drawing information is of interest.</param>
+            <param name="itemDrawInfo">A previously initialized <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ItemDrawInfo"/> object whose properties will be modified.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.GetDataType(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)">
+            <summary>
+            Gets the SQL-Server compliant data type for the <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
+            </summary>
+            <param name="valueType">The <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> whose data type is of interest.</param>
+            <returns>The data type, a <see cref="T:System.String"/>.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.GetDataTypeInternal(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType)">
+            <summary>
+            Gets the SQL-Server compliant data type for the <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
+            </summary>
+            <param name="valueType">The <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> whose data type is of interest.</param>
+            <returns>The data type, a <see cref="T:System.String"/>.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.InitializeShapeFields(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField})">
+            <summary>
+            Overridden to allow a read-only <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ListField"/> to be added
+            to the collection of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects.
+            </summary>
+            <param name="shapeFields">A list of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects
+            which belong to the current shape.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.GetDesktopWindow">
+            <summary>
+            Gets a handle to the desktop window.
+            </summary>
+            <returns>A <see cref="T:System.IntPtr"/> that points to the desktop window.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.#cctor">
+            <summary>
+            Initializes the default <see cref="T:System.Drawing.StringFormat"/> associated with this 
+            <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/>.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.UpdateSize">
+            <summary>
+            Updates the size of this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/> and
+            its associated <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/> to size according to the widest column or
+            table name.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.InvalidateOrUpdateSize">
+            <summary>
+            Change the size of the shape if the size has changed,
+            or force invalidation if the size has not changed.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.CollapsedSize">
+            <summary>
+            The default implementation of CollapsedSize requires the
+            header text field, which we remove.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.OnDoubleClick(Microsoft.VisualStudio.Modeling.Diagrams.DiagramPointEventArgs)">
+            <summary>
+            Disallows expanding and collapsing of the compartment.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.OnKeyDown(Microsoft.VisualStudio.Modeling.Diagrams.DiagramKeyEventArgs)">
+            <summary>
+            Disallows collapsing of the compartment with a left key
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.CanExpandAndCollapse">
+            <summary>
+            Disallows expanding and collapsing of the compartment. Unfortunately,
+            noone seems to respect this, or we wouldn't need to OnDoubleClick and OnKeyDown
+            overrides.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.CanSelect">
+            <summary>
+            Disallows selection of the compartment.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.ResolveColumn(Microsoft.VisualStudio.Modeling.Diagrams.DiagramItem)">
+            <summary>
+            Get the <see cref="T:ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column"/> represented by a given <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.DiagramItem"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.OnDragOver(Microsoft.VisualStudio.Modeling.Diagrams.DiagramDragEventArgs)">
+            <summary>
+            Check for column reordering
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.OnDragDrop(Microsoft.VisualStudio.Modeling.Diagrams.DiagramDragEventArgs)">
+            <summary>
+            Reorder columns if a column is dropped on a different column
+            in the same table.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.ColumnDragMouseAction.OnMouseUp(Microsoft.VisualStudio.Modeling.Diagrams.DiagramMouseEventArgs)">
+            <summary>
+            Call back to the source shape to drop the dragged item.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.ColumnDragMouseAction.OnMouseDown(Microsoft.VisualStudio.Modeling.Diagrams.DiagramMouseEventArgs)">
+            <summary>
+            Sanity check. This action may still be active outside the
+            source shape with rapid clicks.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment.ColumnDragMouseAction.GetCursor(System.Windows.Forms.Cursor,Microsoft.VisualStudio.Modeling.Diagrams.DiagramClientView,Microsoft.VisualStudio.Modeling.Diagrams.PointD)">
+            <summary>
+            Display a move cursor while dragging a column
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartmentDescription">
+            <summary>
+            A custom element list compartment description from which a <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/> is created.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartmentDescription.#ctor(System.String,System.String,System.Drawing.Color,System.Boolean,System.Drawing.Color,System.Boolean,Microsoft.VisualStudio.Modeling.Diagrams.FontSettings,Microsoft.VisualStudio.Modeling.Diagrams.FontSettings,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartmentDescription" /> class.
+            </summary>
+            <param name="name">The name of the element.</param>
+            <param name="title">The title of the element.</param>
+            <param name="titleFill">The <see cref="T:System.Drawing.Color"/> that fills the title.</param>
+            <param name="allowCustomTitleFillColor">Specifies whether a title's fill color can be customized.</param>
+            <param name="compartmentFill">The <see cref="T:System.Drawing.Color"/> that fills the compartment.</param>
+            <param name="allowCustomCompartmentFillColor">Specifies whether a compartment's fill color can be customized.</param>
+            <param name="titleFontSettings">The <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.FontSettings"/> used for
+            the title.</param>
+            <param name="itemFontSettings">The <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.FontSettings"/> used for
+            the items in the compartment.</param>
+            <param name="isDefaultCollapsed">Specifies whether the compartment will be collapsed by default.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartmentDescription.CreateCompartment(Microsoft.VisualStudio.Modeling.Partition)">
+            <summary>
+            Creates a new <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/>.
+            </summary>
+            <param name="partition">The current <see cref="T:Microsoft.VisualStudio.Modeling.Partition"/> of the diagram.</param>
+            <returns>ColumnElementListCompartment</returns>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape">
+            <summary>
+            DomainClass TableShape
+            Description for ORMSolutions.ORMArchitect.Views.RelationalView.TableShape
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.myCompartmentDescriptions">
+            <summary>
+            Holds the <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.CompartmentDescription"/>s for this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/>.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.GetCompartmentDescriptions">
+            <summary>
+            Gets the <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.CompartmentDescription"/>s which will create the compartments in this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/>.
+            </summary>
+            <returns>CompartmentDescription[]</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.CanExpandAndCollapse">
+            <summary>
+            Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/> can be expanded or collapsed.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.HasShadow">
+            <summary>
+            Gets whether the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/> has a shadow.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.InitializeShapeFields(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField})">
+            <summary>
+            Overridden to allow a read-only <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.TextField"/> to be added
+            to the collection of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects.
+            </summary>
+            <param name="shapeFields">A list of <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.ShapeField"/> objects
+            which belong to the current shape.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.ResizableSides">
+            <summary>
+            Gets the resizable sides on this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/>.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.SharedPresentationTypeKey">
+            <summary>
+            Allow 'select on diagram' to work with other relational shape models
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.ManageEventHandlers(Microsoft.VisualStudio.Modeling.Store,ORMSolutions.ORMArchitect.Framework.ModelingEventManager,ORMSolutions.ORMArchitect.Framework.EventHandlerAction)">
+            <summary>
+            Manages <see cref="T:System.EventHandler`1"/>s in the <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> for <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/>s.
+            </summary>
+            <param name="store">The <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> for which the <see cref="T:System.EventHandler`1"/>s should be managed.</param>
+            <param name="eventManager">The <see cref="T:ORMSolutions.ORMArchitect.Framework.ModelingEventManager"/> used to manage the <see cref="T:System.EventHandler`1"/>s.</param>
+            <param name="action">The <see cref="T:ORMSolutions.ORMArchitect.Framework.EventHandlerAction"/> that should be taken for the <see cref="T:System.EventHandler`1"/>s.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.TableTextField">
+            <summary>
+            A custom <see cref="T:Microsoft.VisualStudio.Modeling.Diagrams.TextField"/> that disallows selection and focus of the element.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.TableTextField.SetValue(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,System.Object)">
+            <summary>
+            Push an edited value back through the EditName property so that
+            custom name changes are tracked.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.TableTextField.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableTextField" /> class.	
+            </summary>
+            <param name="fieldName">The name of the field.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector">
+            <summary>
+            DomainClass ForeignKeyConnector
+            Description for
+            ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.ClassStyleSet">
+            <summary>
+            Per-class style set for this shape.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.ShapeFields">
+            <summary>
+            Per-class ShapeFields for this shape.
+            </summary>
+        </member>
+        <member name="E:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.DecoratorsInitialized">
+            <summary>
+            Event fired when decorator initialization is complete for this shape type.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.Decorators">
+            <summary>
+            List containing decorators used by this type.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.FindForeignKeyConnectorDecorator(System.String)">
+            <summary>
+            Finds a decorator associated with ForeignKeyConnector.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.InitializeResources(Microsoft.VisualStudio.Modeling.Diagrams.StyleSet)">
+            <summary>
+            Initializes style set resources for this shape type
+            </summary>
+            <param name="classStyleSet">The style set for this shape class</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.InitializeInstanceResources">
+            <summary>
+            Initializes resources associated with this connector instance.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.DomainClassId">
+            <summary>
+            ForeignKeyConnector domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.CanSelect">
+            <summary>
+            Overridden to disallow selection of this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector"/>.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.CanManuallyRoute">
+            <summary>
+            Overridden to disallow manual routing of this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector"/>.
+            </summary>
+            <remarks>
+            If this returns <see langword="true"/> while the <see cref="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.CanSelect"/>
+            property returns <see langword="false"/>, the application will crash while trying to manually route the connector.
+            </remarks>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.CanMoveAnchorPoints">
+            <summary>
+            Stop the user from manually moving link end points
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.HasToolTip">
+            <summary>
+            Turn on tooltips to show column relationships
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.GetToolTipText(Microsoft.VisualStudio.Modeling.Diagrams.DiagramItem)">
+            <summary>
+            Indicate the source/target columns for the foreign key connector
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector.ZOrder">
+            <summary>
+            Amp up the z-order when a connector is highlighted
+            so that covered lines jump to the top and are easily
+            visible.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase">
+            <summary>
+            Double-derived base class for DomainClass RelationalDiagram
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.ClassStyleSet">
+            <summary>
+            Per-class style set for this shape.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.ShapeFields">
+            <summary>
+            Per-class ShapeFields for this shape
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.TargetToolboxItemFilterAttributes">
+            <summary>
+            Toolbox item filter attributes for this diagram.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.ShouldAutoPlaceChildShapes">
+            <summary>
+            Indicate that child shapes should added through view fixup should be placed automatically.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.subscribedCompartmentItemsEvents">
+            <summary>
+            Whether compartment items change events are subscribed to.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.SubscribeCompartmentItemsEvents">
+            <summary>
+            Subscribe to events fired when compartment items changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.UnsubscribeCompartmentItemsEvents">
+            <summary>
+            Unsubscribe to events fired when compartment items changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.CompartmentItemAdded(System.Object,Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            Event for element added.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.CompartmentItemDeleted(System.Object,Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs)">
+            <summary>
+            Event for element deleted.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.CompartmentItemPropertyChanged(System.Object,Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Event for element property changed.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.CompartmentItemRolePlayerChanged(System.Object,Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs)">
+            <summary>
+            Event for role-player changed.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.CompartmentItemRolePlayerOrderChanged(System.Object,Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs)">
+            <summary>
+            Event for role-player order changed.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.ShouldAddShapeForElement(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Called during view fixup to ask the parent whether a shape should be created for the given child element.
+            </summary>
+            <remarks>
+            Always return true, since we assume there is only one diagram per model file for DSL scenarios.
+            </remarks>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.IsConnectorMappedToLink(Microsoft.VisualStudio.Modeling.Diagrams.BinaryLinkShape)">
+            <summary>
+            Most connectors are mapped to element links, but there can be exceptions. This method tell if a connector should be
+            mapped to an element link.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.CreateChildShape(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Creates a new shape for the given model element as part of view fixup
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.InitializeShapeFields(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField})">
+            <summary>
+            Initialize shape decorator mappings.  This is done here rather than in individual shapes because decorator maps
+            are defined per diagram type rather than per shape type.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.TableShapeDecoratorMap">
+            <summary>
+            Class containing decorator path traversal methods for TableShape.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.TableShapeDecoratorMap.OnDecoratorsInitialized(System.Object,System.EventArgs)">
+            <summary>
+            Event handler called when decorator initialization is complete for TableShape.  Adds decorator mappings for this shape or connector.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.Dispose(System.Boolean)">
+            <summary>
+            Dispose of connect actions.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.DomainClassId">
+            <summary>
+            RelationalDiagram domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.DisplayDataTypesDomainPropertyId">
+            <summary>
+            DisplayDataTypes domain property Id.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.displayDataTypesPropertyStorage">
+            <summary>
+            Storage for DisplayDataTypes
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.DisplayDataTypes">
+            <summary>
+            Gets or sets the value of DisplayDataTypes domain property.
+            Specifies whether data types should be shown or not.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.DisplayDataTypesPropertyHandler">
+            <summary>
+            Value handler for the RelationalDiagram.DisplayDataTypes domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.DisplayDataTypesPropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the RelationalDiagram.DisplayDataTypes domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.DisplayDataTypesPropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the RelationalDiagram.DisplayDataTypes domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.DisplayDataTypesPropertyHandler.GetValue(ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase.DisplayDataTypesPropertyHandler.SetValue(ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagramBase,System.Boolean)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram">
+            <summary>
+            DomainClass RelationalDiagram
+            Description for ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
+            </summary>
+            <summary>
+            Represents the framework for the relational schema view of the ORM Diagram.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRuleClass.ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
+            /// <summary>
+            /// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType)
+            /// </summary>
+            private static void ConceptTypeDetachingFromTableRule(ElementDeletingEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRuleClass.ElementDeleting(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
+            /// <summary>
+            /// DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
+            /// </summary>
+            private static void ConceptTypeDetachingFromObjectTypeRule(ElementDeletingEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DataTypeChangedRuleClass.RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
+            /// <summary>
+            /// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
+            /// </summary>
+            private static void DataTypeChangedRule(RolePlayerChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DataTypeFacetChangedRuleClass.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
+            /// <summary>
+            /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
+            /// </summary>
+            private static void DataTypeFacetChangedRule(ElementPropertyChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayColumnPropertyChangedRuleClass.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
+            /// <summary>
+            /// ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column)
+            /// </summary>
+            private static void DisplayColumnPropertyChangedRule(ElementPropertyChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayTablePropertyChangedRuleClass.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
+            /// <summary>
+            /// ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table)
+            /// </summary>
+            private static void DisplayTablePropertyChangedRule(ElementPropertyChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.NameChangedRuleClass.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
+            /// <summary>
+            /// ChangeRule: typeof(RelationalDiagram)
+            /// </summary>
+            private static void NameChangedRule(ElementPropertyChangedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ReferenceConstraintAddedRuleClass.ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            Provide the following method in class: 
+            ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram
+            /// <summary>
+            /// AddRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+            /// </summary>
+            private static void ReferenceConstraintAddedRule(ElementAddedEventArgs e)
+            {
+            }
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DiagramInitializer">
+            <summary>
+            Perform custom initialization for newly loaded or freshly created diagram.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.#ctor(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="store">Store where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.CreateChildShape(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Customize childshape create to set an initial location for a <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.FixUpDiagramSelection(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement)">
+            <summary>
+            Stop all auto shape selection on transaction commit except when
+            the item is being dropped.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.NameChangedRule(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            ChangeRule: typeof(RelationalDiagram)
+            Disallows changing the name of the Relational Diagram
+            Changes the name of the <see cref="T:RelationalDiagram"/> to
+            its default name if changed by a user.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayColumnPropertyChangedRule(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column)
+            Update table size when <see cref="P:ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.IsNullable"/> or <see cref="P:ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Column.Name"/> changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayTablePropertyChangedRule(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            ChangeRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table)
+            Update table size when <see cref="P:ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table.Name"/> changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DataTypeChangedRule(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs)">
+            <summary>
+            RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
+            Update table size when a column datatype is changed.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DataTypeFacetChangedRule(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeHasDataType)
+            Update table size when a column datatype facet is changed
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ReferenceConstraintAddedRule(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            AddRule: typeof(ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ReferenceConstraintTargetsTable), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddConnectionRulePriority;
+            Add a <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector"/> to the diagram
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.OnChildConfigured(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,System.Boolean,System.Boolean)">
+            <summary>
+            Stop the DSLTools framework from placing a shape that has a non-empty location
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.OnChildConfiguring(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,System.Boolean)">
+            <summary>
+            Correctly connect a <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ForeignKeyConnector"/>
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ManageEventHandlers(Microsoft.VisualStudio.Modeling.Store,ORMSolutions.ORMArchitect.Framework.ModelingEventManager,ORMSolutions.ORMArchitect.Framework.EventHandlerAction)">
+            <summary>
+            Manages <see cref="T:System.EventHandler`1"/>s in the <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> for <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram"/>s.
+            </summary>
+            <param name="store">The <see cref="T:Microsoft.VisualStudio.Modeling.Store"/> for which the <see cref="T:System.EventHandler`1"/>s should be managed.</param>
+            <param name="eventManager">The <see cref="T:ORMSolutions.ORMArchitect.Framework.ModelingEventManager"/> used to manage the <see cref="T:System.EventHandler`1"/>s.</param>
+            <param name="action">The <see cref="T:ORMSolutions.ORMArchitect.Framework.EventHandlerAction"/> that should be taken for the <see cref="T:System.EventHandler`1"/>s.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.GetColumnDragMouseAction">
+            <summary>
+            The drag action used by a role box to begin dragging.
+            The default implementation chains to a RoleConnectAction
+            when dragging begins.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ColumnDragMouseAction.ColumnConnectionType">
+            <summary>
+            The ConnectionType used with this ConnectAction. The type
+            is a singleton, holds all of the context-independent logic,
+            and operates directly on shape elements.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ColumnDragMouseAction.ColumnConnectionType.Instance">
+            <summary>
+            The singleton RoleConnectionType instance
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ColumnDragMouseAction.ColumnConnectionType.InstanceArray">
+            <summary>
+            An array of one element containing the singleton RoleConnectionType instance
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ColumnDragMouseAction.ColumnConnectionType.IsOfInterest(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement)">
+            <summary>
+            Called as the pointer is moved over potential targets after a source is selected
+            So should be pretty quick
+            Gets called with a target of null when the cursor leaves the view.
+            Can't find a use for this at present.
+            </summary>
+            <param name="sourceShapeElement">ShapeElement</param>
+            <param name="targetShapeElement">ShapeElement</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ColumnDragMouseAction.ColumnConnectionType.IsValidSourceAndTarget(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement)">
+            <summary>
+            Called as the pointer is moved over potential targets after a source is selected
+            So should be pretty quick
+            </summary>
+            <remarks>
+            The cursor can change dependant on CanCreateConnection when this returns true
+            </remarks>
+            <param name="sourceShapeElement">ShapeElement</param>
+            <param name="targetShapeElement">ShapeElement</param>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ColumnDragMouseAction.ColumnConnectionType.CanCreateConnection(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,System.String@)">
+            <summary>
+            Called after IsValidSourceAndTarget allows the shapes through. Used for
+            more in-depth checking before ConnectionType.CreateConnection is called, and
+            to display warning messages on the design surface.
+            </summary>
+            <param name="sourceShapeElement">The source of the requested connection</param>
+            <param name="targetShapeElement">The target of the requested connection</param>
+            <param name="connectionWarning">A location to write the warning string</param>
+            <returns>true if the connection can proceed</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ColumnDragMouseAction.ColumnConnectionType.CreateConnection(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,Microsoft.VisualStudio.Modeling.Diagrams.PaintFeedbackArgs)">
+            <summary>
+            Create a connection between an ExternalConstraintShape and a FactType. Roles
+            used in the connection are stored with the currently active connect action.
+            </summary>
+            <param name="sourceShapeElement">The source of the requested connection</param>
+            <param name="targetShapeElement">The target of the requested connection</param>
+            <param name="paintFeedbackArgs">PaintFeedbackArgs</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ColumnDragMouseAction.ColumnConnectionType.GetConnectTransactionName(Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement,Microsoft.VisualStudio.Modeling.Diagrams.ShapeElement)">
+            <summary>
+            Provide the transaction name. The name is displayed in the undo and redo lists.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ColumnDragMouseAction.#ctor(Microsoft.VisualStudio.Modeling.Diagrams.Diagram)">
+            <summary>
+            Create a new ColumnDragMouseAction. Should be
+            called once per diagram
+            </summary>
+            <param name="diagram">The owning diagram</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.TablePositionDictionaryKey">
+            <summary>
+            A key that references a dictionary of table positions in the current transaction context.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromObjectTypeRule(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs)">
+            <summary>
+            DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ConceptTypeIsForObjectType)
+            Cache the position of the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/> corresponding to the object type being deleted
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ConceptTypeDetachingFromTableRule(Microsoft.VisualStudio.Modeling.ElementDeletingEventArgs)">
+            <summary>
+            DeletingRule: typeof(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.TableIsPrimarilyForConceptType)
+            Cache the position of the <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShape"/> corresponding to the object type being deleted
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.RememberTableShapeLocations(ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType,ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table)">
+            <summary>
+            Cache the location of any table shape associated with the provided <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/> and <see cref="T:ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Table"/>
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.SupportedCustomSerializedOperations">
+            <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.GetCustomSerializedChildElementInfo">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.CustomSerializedElementInfo">
+            <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.GetCustomSerializedPropertyInfo(Microsoft.VisualStudio.Modeling.DomainPropertyInfo,Microsoft.VisualStudio.Modeling.DomainRoleInfo)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.GetCustomSerializedLinkInfo(Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.CustomSerializedChildRoleComparer">
+            <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.MapChildElement(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.MapAttribute(System.String,System.String)">
+            <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ShouldSerialize">
+            <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.TableShapeElementName">
+            <summary>
+            The local name of a TableShape element.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.ObjectTypeRefAttributeName">
+            <summary>
+            The local name of an ObjectTypeRef attribute.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.LocationAttributeName">
+            <summary>
+            The local name of a Location attribute.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.IdAttributeName">
+            <summary>
+            The local name of an Id attribute.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.SubjectRefAttributeName">
+            <summary>
+            The local name of a SubjectRef attribute
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.RelationalDiagramElementName">
+            <summary>
+            The local name of a RelationalDiagram element.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.DisplayDataTypesAttributeName">
+            <summary>
+            DisplayDataTypes attribute name.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.System#Xml#Serialization#IXmlSerializable#GetSchema">
+            <summary>
+            Gets the <see cref="T:System.Xml.Schema.XmlSchema"/> that the custom serialization should conform to.
+            </summary>
+            <returns><see langword="null" />.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.System#Xml#Serialization#IXmlSerializable#ReadXml(System.Xml.XmlReader)">
+            <summary>
+            Processes the XML that this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram"/> has
+            written.
+            </summary>
+            <param name="reader">A <see cref="T:System.Xml.XmlReader"/> that will read the XML associated with the
+            serialization of this object.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram.System#Xml#Serialization#IXmlSerializable#WriteXml(System.Xml.XmlWriter)">
+            <summary>
+            Serializes this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram"/>.
+            </summary>
+            <param name="writer">A <see cref="T:System.Xml.XmlWriter"/> that will write the custom serialization contents.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.FixUpDiagramBase">
+            <summary>
+            Double derived implementation for the rule that initiates view fixup when an element that has an associated shape is added to the model.
+            This now enables the DSL author to everride the SkipFixUp() method 
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.FixUpDiagram">
+            <summary>
+            Rule that initiates view fixup when an element that has an associated shape is added to the model. 
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemAddRule">
+            <summary>
+            Rule to update compartments when an item is added to the list
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemAddRule.ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs)">
+            <summary>
+            Called when an element is added. 
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemAddRule.UpdateCompartments(System.Collections.IEnumerable,System.Type,System.String,System.Boolean)">
+            <summary>
+            Updates the compartments for the shapes associated to the given list of model elements
+            </summary>
+            <param name="elements">List of model elements</param>
+            <param name="shapeType">The type of shape that needs updating</param>
+            <param name="compartmentName">The name of the compartment to update</param>
+            <param name="repaintOnly">If true, the method will only invalidate the shape for a repaint, without re-initializing the shape.</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemDeleteRule">
+            <summary>
+            Rule to update compartments when an items is removed from the list
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemDeleteRule.ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs)">
+            <summary>
+            Called when an element is deleted
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemChangeRule">
+            <summary>
+            Rule to update compartments when the property on an item being displayed changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemChangeRule.ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs)">
+            <summary>
+            Called when an element is changed
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerChangeRule">
+            <summary>
+            Rule to update compartments when a roleplayer change happens
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerChangeRule.RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs)">
+            <summary>
+            Called when the roleplayer on a link changes.
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerPositionChangeRule">
+            <summary>
+            Rule to update compartments when the order of items in the list changes.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.CompartmentItemRolePlayerPositionChangeRule.RolePlayerPositionChanged(Microsoft.VisualStudio.Modeling.RolePlayerOrderChangedEventArgs)">
+            <summary>
+            Called when the order of a roleplayer in a relationship changes
+            </summary>
+            <param name="e"></param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel">
+            <summary>
+            DomainModel RelationalShapeDomainModel
+            Graphical View of Relational Model (slow and temporary)
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.DomainModelId">
+            <summary>
+            RelationalShapeDomainModel domain model Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.#ctor(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="store">Store containing the domain model.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.GetGeneratedDomainModelTypes">
+            <summary>
+            Gets the list of generated domain model types (classes, rules, relationships).
+            </summary>
+            <returns>List of types.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.GetGeneratedDomainProperties">
+            <summary>
+            Gets the list of generated domain properties.
+            </summary>
+            <returns>List of property data.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.CreateElement(Microsoft.VisualStudio.Modeling.Partition,System.Type,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Creates an element of specified type.
+            </summary>
+            <param name="partition">Partition where element is to be created.</param>
+            <param name="elementType">Element type which belongs to this domain model.</param>
+            <param name="propertyAssignments">New element property assignments.</param>
+            <returns>Created element.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.CreateElementLink(Microsoft.VisualStudio.Modeling.Partition,System.Type,Microsoft.VisualStudio.Modeling.RoleAssignment[],Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Creates an element link of specified type.
+            </summary>
+            <param name="partition">Partition where element is to be created.</param>
+            <param name="elementLinkType">Element link type which belongs to this domain model.</param>
+            <param name="roleAssignments">List of relationship role assignments for the new link.</param>
+            <param name="propertyAssignments">New element property assignments.</param>
+            <returns>Created element link.</returns>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.ResourceBaseName">
+            <summary>
+            The base name of this model's resources.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.ResourceManager">
+            <summary>
+            Gets the DomainModel's ResourceManager. If the ResourceManager does not already exist, then it is created.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.SingletonResourceManager">
+            <summary>
+            Gets the Singleton ResourceManager for this domain model.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.copyClosure">
+            <summary>
+            CopyClosure cache
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.removeClosure">
+            <summary>
+            DeleteClosure cache
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.GetClosureFilter(Microsoft.VisualStudio.Modeling.ClosureType,System.Collections.Generic.ICollection{Microsoft.VisualStudio.Modeling.ModelElement})">
+            <summary>
+            Returns an IElementVisitorFilter that corresponds to the ClosureType.
+            </summary>
+            <param name="type">closure type</param>
+            <param name="rootElements">collection of root elements</param>
+            <returns>IElementVisitorFilter or null</returns>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.CopyClosure">
+            <summary>
+            CopyClosure cache
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.DeleteClosure">
+            <summary>
+            DeleteClosure cache
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.EnableDiagramRules(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Enables rules in this domain model related to diagram fixup for the given store.
+            If diagram data will be loaded into the store, this method should be called first to ensure
+            that the diagram behaves properly.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.DisableDiagramRules(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Disables rules in this domain model related to diagram fixup for the given store.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.GetCustomDomainModelTypes">
+            <summary>Generated code to attach <see cref="T:Microsoft.VisualStudio.Modeling.Rule"/>s to the <see cref="T:Microsoft.VisualStudio.Modeling.Store"/>.</summary>
+            <seealso cref="M:Microsoft.VisualStudio.Modeling.DomainModel.GetCustomDomainModelTypes"/>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.EnableRulesAfterDeserialization(Microsoft.VisualStudio.Modeling.Store)">
+            <summary>Implements IDomainModelEnablesRulesAfterDeserialization.EnableRulesAfterDeserialization</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.GetSignalPropertyChanges">
+            <summary>
+            Implements <see cref="M:ORMSolutions.ORMArchitect.Framework.IRegisterSignalChanges.GetSignalPropertyChanges"/>
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.XmlNamespace">
+            <summary>The default XmlNamespace associated with the 'RelationalShapeDomainModel' extension model</summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.DefaultElementPrefix">
+            <summary>Implements ICustomSerializedDomainModel.DefaultElementPrefix</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.GetCustomElementNamespaces">
+            <summary>Implements ICustomSerializedDomainModel.GetCustomElementNamespaces</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.ShouldSerializeDomainClass(Microsoft.VisualStudio.Modeling.Store,Microsoft.VisualStudio.Modeling.DomainClassInfo)">
+            <summary>Implements ICustomSerializedDomainModel.ShouldSerializeDomainClass</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.GetRootElementClasses">
+            <summary>Implements ICustomSerializedDomainModel.GetRootElementClasses</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.ShouldSerializeRootElement(Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>Implements ICustomSerializedDomainModel.ShouldSerializeRootElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.GetRootRelationshipContainers">
+            <summary>Implements ICustomSerializedDomainModel.GetRootRelationshipContainers</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.MapRootElement(System.String,System.String)">
+            <summary>Implements ICustomSerializedDomainModel.MapRootElement</summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel.MapClassName(System.String,System.String)">
+            <summary>Implements ICustomSerializedDomainModel.MapClassName</summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDeleteClosure">
+            <summary>
+            Remove closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDeleteClosure.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDeleteClosureBase">
+            <summary>
+            Base class for remove closure visitor filter
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDeleteClosureBase.domainRoles">
+            <summary>
+            DomainRoles
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDeleteClosureBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDeleteClosureBase.ShouldVisitRelationship(Microsoft.VisualStudio.Modeling.ElementWalker,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.DomainRelationshipInfo,Microsoft.VisualStudio.Modeling.ElementLink)">
+            <summary>
+            Called to ask the filter if a particular relationship from a source element should be included in the traversal
+            </summary>
+            <param name="walker">ElementWalker that is traversing the model</param>
+            <param name="sourceElement">Model Element playing the source role</param>
+            <param name="sourceRoleInfo">DomainRoleInfo of the role that the source element is playing in the relationship</param>
+            <param name="domainRelationshipInfo">DomainRelationshipInfo for the ElementLink in question</param>
+            <param name="targetRelationship">Relationship in question</param>
+            <returns>Yes if the relationship should be traversed</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDeleteClosureBase.ShouldVisitRolePlayer(Microsoft.VisualStudio.Modeling.ElementWalker,Microsoft.VisualStudio.Modeling.ModelElement,Microsoft.VisualStudio.Modeling.ElementLink,Microsoft.VisualStudio.Modeling.DomainRoleInfo,Microsoft.VisualStudio.Modeling.ModelElement)">
+            <summary>
+            Called to ask the filter if a particular role player should be Visited during traversal
+            </summary>
+            <param name="walker">ElementWalker that is traversing the model</param>
+            <param name="sourceElement">Model Element playing the source role</param>
+            <param name="elementLink">Element Link that forms the relationship to the role player in question</param>
+            <param name="targetDomainRole">DomainRoleInfo of the target role</param>
+            <param name="targetRolePlayer">Model Element that plays the target role in the relationship</param>
+            <returns></returns>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDeleteClosureBase.DomainRoles">
+            <summary>
+            DomainRoles
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeCopyClosure">
+            <summary>
+            Copy closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeCopyClosure.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeCopyClosureBase">
+            <summary>
+            Base class for copy closure visitor filter
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeCopyClosureBase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase">
+            <summary>
+            Double-derived base class for DomainClass TableShape
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.ClassStyleSet">
+            <summary>
+            Per-class style set for this shape.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.ShapeFields">
+            <summary>
+            Per-class ShapeFields for this shape.
+            </summary>
+        </member>
+        <member name="E:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.DecoratorsInitialized">
+            <summary>
+            Event fired when decorator initialization is complete for this shape type.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.Decorators">
+            <summary>
+            List containing decorators used by this type.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.FindTableShapeDecorator(System.String)">
+            <summary>
+            Finds a decorator associated with TableShape.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.OnInitialize">
+            <summary>
+            Shape instance initialization.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.DefaultSize">
+            <summary>
+            Default size for this shape.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.InitializeResources(Microsoft.VisualStudio.Modeling.Diagrams.StyleSet)">
+            <summary>
+            Initializes style set resources for this shape type
+            </summary>
+            <param name="classStyleSet">The style set for this shape class</param>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.HasBackgroundGradient">
+            <summary>
+            Indicates whether this shape displays a background gradient.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.BackgroundGradientMode">
+            <summary>
+            Indicates the direction of the gradient.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.InitializeShapeFields(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField})">
+            <summary>
+            Initialize the collection of shape fields associated with this shape type.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.InitializeDecorators(System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.ShapeField},System.Collections.Generic.IList{Microsoft.VisualStudio.Modeling.Diagrams.Decorator})">
+            <summary>
+            Initialize the collection of decorators associated with this shape type.  This method also
+            creates shape fields for outer decorators, because these are not part of the shape fields collection
+            associated with the shape, so they must be created here rather than in InitializeShapeFields.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.OnBoundsFixup(Microsoft.VisualStudio.Modeling.Diagrams.BoundsFixupState,System.Int32,System.Boolean)">
+            <summary>
+            Ensure outer decorators are placed appropriately.  This is called during view fixup,
+            after the shape has been associated with the model element.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.IsSingleCompartmentHeaderVisible">
+            <summary>
+            Returns a value indicating whether compartment header should be visible if there is only one of them.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.GetCompartmentDescriptions">
+            <summary>
+            Gets an array of CompartmentDescription for all compartments shown on this shape
+            (including compartments defined on base shapes).
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.GetCompartmentMappings(System.Type)">
+            <summary>
+            Gets an array of CompartmentMappings for all compartments displayed on this shape
+            (including compartment maps defined on base shapes). 
+            </summary>
+            <param name="melType">The type of the DomainClass that this shape is mapped to</param>
+            <returns></returns>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.DomainClassId">
+            <summary>
+            TableShape domain class Id.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.#ctor(Microsoft.VisualStudio.Modeling.Partition,Microsoft.VisualStudio.Modeling.PropertyAssignment[])">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="partition">Partition where new element is to be created.</param>
+            <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.UpdateCounterDomainPropertyId">
+            <summary>
+            UpdateCounter domain property Id.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.UpdateCounter">
+            <summary>
+            Gets or sets the value of UpdateCounter domain property.
+            Description for ORMSolutions.ORMArchitect.Views.RelationalView.TableShape.Update
+            Counter
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.UpdateCounterPropertyHandler">
+            <summary>
+            Value handler for the TableShape.UpdateCounter domain property.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.UpdateCounterPropertyHandler.Instance">
+            <summary>
+            Gets the singleton instance of the TableShape.UpdateCounter domain property value handler.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.UpdateCounterPropertyHandler.DomainPropertyId">
+            <summary>
+            Gets the Id of the TableShape.UpdateCounter domain property.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.UpdateCounterPropertyHandler.GetValue(ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase)">
+            <summary>
+            Gets a strongly-typed value of the property on specified element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <returns>Property value.</returns>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.UpdateCounterPropertyHandler.SetValue(ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase,System.Int64)">
+            <summary>
+            Sets property value on an element.
+            </summary>
+            <param name="element">Element which owns the property.</param>
+            <param name="newValue">New property value.</param>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.InvalidateRequired">
+            <summary>
+            Call to automatically invalidate the shape during events.
+            Invalidates during the original event sequence as well as undo and redo.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.TableShapeBase.InvalidateRequired(System.Boolean)">
+            <summary>
+            Call to automatically invalidate the shape during events.
+            Invalidates during the original event sequence as well as undo and redo.
+            </summary>
+            <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelper">
+            <summary>
+            Helper class used to create and initialize toolbox items for this DSL.
+            </summary>
+            <remarks>
+            Double-derived class to allow easier code customization.
+            </remarks>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelper.#ctor(System.IServiceProvider)">
+            <summary>
+            Constructs a new RelationalShapeToolboxHelper.
+            </summary>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelperBase">
+            <summary>
+            Helper class used to create and initialize toolbox items for this DSL.
+            </summary>
+        </member>
+        <member name="F:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelperBase.ToolboxFilterString">
+            <summary>
+            Toolbox item filter string used to identify RelationalShape toolbox items.  
+            </summary>
+            <remarks>
+            See the MSDN documentation for the ToolboxItemFilterAttribute class for more information on toolbox
+            item filters.
+            </remarks>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelperBase.#ctor(System.IServiceProvider)">
+            <summary>
+            Constructs a new RelationalShapeToolboxHelperBase.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelperBase.ServiceProvider">
+            <summary>
+            Serivce provider used to access services from the hosting environment.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelperBase.DefaultToolboxTabName">
+            <summary>
+            Returns the display name of the tab that should be opened by default when the editor is opened.
+            </summary>
+        </member>
+        <member name="P:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelperBase.DefaultToolboxTabToolboxItemsCount">
+            <summary>
+            Returns the toolbox items count in the default tool box tab.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelperBase.CreateToolboxItems">
+            <summary>
+            Returns a list of custom toolbox items to be added dynamically
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelperBase.CreateElementToolPrototype(Microsoft.VisualStudio.Modeling.Store,System.Guid)">
+            <summary>
+            Creates an ElementGroupPrototype for the element tool corresponding to the given domain class id.
+            Default behavior is to create a prototype containing an instance of the domain class.
+            Derived classes may override this to add additional information to the prototype.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeToolboxHelperBase.GetToolboxItem(System.String,Microsoft.VisualStudio.Modeling.Store)">
+            <summary>
+            Returns instance of ModelingToolboxItem based on specified name.
+            This method must be called from within a Transaction. Failure to do so will result in an exception
+            </summary>
+            <param name="itemId">unique name of desired ToolboxItem</param>
+            <param name="store">Store to perform the operation against</param>
+            <returns>An instance of ModelingToolboxItem if the itemId can be resolved, null otherwise</returns>
+        </member>
+        <member name="T:ORMSolutions.ORMArchitect.Views.RelationalView.Design.RelationalDiagramTypeDescriptor">
+            <summary>
+            <see cref="T:Microsoft.VisualStudio.Modeling.Design.ElementTypeDescriptor"/> for <see cref="T:ORMSolutions.ORMArchitect.Core.ObjectModel.FactType"/>s.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.Design.RelationalDiagramTypeDescriptor.#ctor(System.ComponentModel.ICustomTypeDescriptor,ORMSolutions.ORMArchitect.Views.RelationalView.RelationalDiagram)">
+            <summary>
+            Initializes a new instance of <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.Design.RelationalDiagramTypeDescriptor"/>
+            for <paramref name="selectedElement"/>.
+            </summary>
+        </member>
+        <member name="M:ORMSolutions.ORMArchitect.Views.RelationalView.Design.RelationalDiagramTypeDescriptor.GetProperties(System.Attribute[])">
+            <summary>
+            Add schema properties
+            </summary>
+        </member>
+    </members>
+</doc>

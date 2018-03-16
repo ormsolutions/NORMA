@@ -1,0 +1,9 @@
+C:\Users\Francesco\Documents\dev\NORMA\ExtensionExample\bin\Debug\ORMSolutions.ORMArchitect.ExtensionExample.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\ExtensionExample\bin\Debug\ORMSolutions.ORMArchitect.ExtensionExample.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\ExtensionExample\obj\Debug\ExtensionExample.csprojResolveAssemblyReference.cache
+C:\Users\Francesco\Documents\dev\NORMA\ExtensionExample\obj\Debug\ORMSolutions.ORMArchitect.ExtensionExample.GeneratedCode.DomainModelResx.VS2010.resources
+C:\Users\Francesco\Documents\dev\NORMA\ExtensionExample\obj\Debug\ExtensionExample.csproj.GenerateResource.Cache
+C:\Users\Francesco\Documents\dev\NORMA\ExtensionExample\obj\Debug\ORMSolutions.ORMArchitect.ExtensionExample.VS2015.dll
+C:\Users\Francesco\Documents\dev\NORMA\ExtensionExample\obj\Debug\ORMSolutions.ORMArchitect.ExtensionExample.VS2015.pdb
+C:\Users\Francesco\Documents\dev\NORMA\ExtensionExample\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.dll
+C:\Users\Francesco\Documents\dev\NORMA\ExtensionExample\bin\Debug\Microsoft.VisualStudio.Modeling.Sdk.14.0.xml
