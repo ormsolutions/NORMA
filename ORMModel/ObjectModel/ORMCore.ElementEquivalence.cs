@@ -1363,207 +1363,236 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			RolePathOwner pathOwner = PathOwner;
 			RolePathOwner otherPathOwner;
-			if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(pathOwner, foreignStore, elementTracker)))
+			if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(pathOwner, foreignStore, elementTracker)) &&
+				TestMatchSubquery(foreignStore, elementTracker, pathOwner, otherPathOwner))
 			{
-				ReadOnlyLinkedElementCollection<Subquery> otherSubqueries = otherPathOwner.SubqueryCollection;
-				if (otherSubqueries.Count != 0)
+				return true;
+			}
+			foreach (RolePathOwner sharedOwner in SharedWithPathOwnerCollection)
+			{
+				if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(sharedOwner, foreignStore, elementTracker)) &&
+					TestMatchSubquery(foreignStore, elementTracker, pathOwner, otherPathOwner))
 				{
-					RoleProjectedDerivationRule derivationRule;
-					ReadOnlyLinkedElementCollection<LeadRolePath> rolePaths = null;
-					if (null != (derivationRule = this.DerivationRule))
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Helper for <see cref="MapEquivalentElements"/>
+		/// </summary>
+		private bool TestMatchSubquery(Store foreignStore, IEquivalentElementTracker elementTracker, RolePathOwner pathOwner, RolePathOwner otherPathOwner)
+		{
+			ReadOnlyLinkedElementCollection<Subquery> otherSubqueries = otherPathOwner.SubqueryCollection;
+			if (otherSubqueries.Count != 0)
+			{
+				RoleProjectedDerivationRule derivationRule;
+				ReadOnlyLinkedElementCollection<LeadRolePath> rolePaths = null;
+				if (null != (derivationRule = this.DerivationRule))
+				{
+					if ((rolePaths = derivationRule.LeadRolePathCollection).Count == 0)
 					{
-						if ((rolePaths = derivationRule.LeadRolePathCollection).Count == 0)
+						rolePaths = null;
+					}
+				}
+				ReadOnlyLinkedElementCollection<Subquery> allOwnedSubqueries = pathOwner.SubqueryCollection;
+				if (allOwnedSubqueries.Count == 1)
+				{
+					allOwnedSubqueries = null;
+				}
+
+				// Match subqueries on order called and signature.
+				ObjectType[] otherMatchTypes = null; // Match object types for roles and parameters
+				int roleCount = 0;
+				int parameterCount = 0;
+				int iMatch;
+				LinkedElementCollection<RoleBase> roles = null;
+				LinkedElementCollection<QueryParameter> parameters = null;
+				List<Subquery> signatureMatchedOtherSubqueries = null;
+				LinkedElementCollection<RoleBase> otherRoles;
+				LinkedElementCollection<QueryParameter> otherParameters;
+				foreach (Subquery otherQuery in otherPathOwner.SubqueryCollection)
+				{
+					if (allOwnedSubqueries != null)
+					{
+						bool previouslyMatched = false;
+						foreach (Subquery ownedSubquery in allOwnedSubqueries)
 						{
-							rolePaths = null;
+							if (elementTracker.GetEquivalentElement(ownedSubquery) == otherQuery)
+							{
+								// See comments in LeadRolePath.GetUnmappedPaths
+								previouslyMatched = true;
+								break;
+							}
+						}
+						if (previouslyMatched)
+						{
+							continue;
 						}
 					}
-					ReadOnlyLinkedElementCollection<Subquery> allOwnedSubqueries = pathOwner.SubqueryCollection;
-					if (allOwnedSubqueries.Count == 1)
+					if (otherMatchTypes == null)
 					{
-						allOwnedSubqueries = null;
-					}
-
-					// Match subqueries on order called and signature.
-					ObjectType[] otherMatchTypes = null; // Match object types for roles and parameters
-					int roleCount = 0;
-					int parameterCount = 0;
-					int iMatch;
-					LinkedElementCollection<RoleBase> roles = null;
-					LinkedElementCollection<QueryParameter> parameters = null;
-					List<Subquery> signatureMatchedOtherSubqueries = null;
-					LinkedElementCollection<RoleBase> otherRoles;
-					LinkedElementCollection<QueryParameter> otherParameters;
-					foreach (Subquery otherQuery in otherPathOwner.SubqueryCollection)
-					{
-						if (allOwnedSubqueries != null)
+						roles = this.RoleCollection;
+						parameters = this.ParameterCollection;
+						otherMatchTypes = new ObjectType[(roleCount = roles.Count) + (parameterCount = parameters.Count)];
+						iMatch = 0;
+						foreach (RoleBase roleBase in roles)
 						{
-							bool previouslyMatched = false;
-							foreach (Subquery ownedSubquery in allOwnedSubqueries)
+							ObjectType matchType = roleBase.Role.RolePlayer;
+							if (matchType != null)
 							{
-								if (elementTracker.GetEquivalentElement(ownedSubquery) == otherQuery)
+								if (null == (matchType = CopyMergeUtility.GetEquivalentElement(matchType, foreignStore, elementTracker)))
 								{
-									// See comments in LeadRolePath.GetUnmappedPaths
-									previouslyMatched = true;
+									return false;
+								}
+							}
+							otherMatchTypes[iMatch] = matchType;
+							++iMatch;
+						}
+						foreach (QueryParameter parameter in parameters)
+						{
+							ObjectType matchType = parameter.ParameterType;
+							if (matchType != null)
+							{
+								if (null == (matchType = CopyMergeUtility.GetEquivalentElement(matchType, foreignStore, elementTracker)))
+								{
+									return false;
+								}
+							}
+							otherMatchTypes[iMatch] = matchType;
+							++iMatch;
+						}
+					}
+					if ((otherRoles = otherQuery.RoleCollection).Count == roleCount &&
+						(otherParameters = otherQuery.ParameterCollection).Count == parameterCount)
+					{
+						bool haveMatch = true;
+						iMatch = 0;
+						if (roleCount != 0)
+						{
+							foreach (RoleBase otherRole in otherRoles)
+							{
+								if (otherRole.Role.RolePlayer != otherMatchTypes[iMatch])
+								{
+									haveMatch = false;
 									break;
 								}
-							}
-							if (previouslyMatched)
-							{
-								continue;
-							}
-						}
-						if (otherMatchTypes == null)
-						{
-							roles = this.RoleCollection;
-							parameters = this.ParameterCollection;
-							otherMatchTypes = new ObjectType[(roleCount = roles.Count) + (parameterCount = parameters.Count)];
-							iMatch = 0;
-							foreach (RoleBase roleBase in roles)
-							{
-								ObjectType matchType = roleBase.Role.RolePlayer;
-								if (matchType != null)
-								{
-									if (null == (matchType = CopyMergeUtility.GetEquivalentElement(matchType, foreignStore, elementTracker)))
-									{
-										return false;
-									}
-								}
-								otherMatchTypes[iMatch] = matchType;
-								++iMatch;
-							}
-							foreach (QueryParameter parameter in parameters)
-							{
-								ObjectType matchType = parameter.ParameterType;
-								if (matchType != null)
-								{
-									if (null == (matchType = CopyMergeUtility.GetEquivalentElement(matchType, foreignStore, elementTracker)))
-									{
-										return false;
-									}
-								}
-								otherMatchTypes[iMatch] = matchType;
 								++iMatch;
 							}
 						}
-						if ((otherRoles = otherQuery.RoleCollection).Count == roleCount &&
-							(otherParameters = otherQuery.ParameterCollection).Count == parameterCount)
+						if (haveMatch && parameterCount != 0)
 						{
-							bool haveMatch = true;
-							iMatch = 0;
-							if (roleCount != 0)
+							foreach (QueryParameter otherParameter in otherParameters)
 							{
-								foreach (RoleBase otherRole in otherRoles)
+								if (otherParameter.ParameterType != otherMatchTypes[iMatch])
 								{
-									if (otherRole.Role.RolePlayer != otherMatchTypes[iMatch])
-									{
-										haveMatch = false;
-										break;
-									}
-									++iMatch;
+									haveMatch = false;
+									break;
 								}
+								++iMatch;
 							}
-							if (haveMatch && parameterCount != 0)
+						}
+						if (haveMatch)
+						{
+							if (rolePaths == null &&
+								(null == (derivationRule = otherQuery.DerivationRule) ||
+								0 == derivationRule.LeadRolePathCollection.Count))
 							{
-								foreach (QueryParameter otherParameter in otherParameters)
+								// Immediately match a path-free query with the same signature. Otherwise,
+								// match the first other query if no empty ones are found.
+								elementTracker.AddEquivalentElement(this, otherQuery);
+								for (int i = 0; i < roleCount; ++i)
 								{
-									if (otherParameter.ParameterType != otherMatchTypes[iMatch])
-									{
-										haveMatch = false;
-										break;
-									}
-									++iMatch;
+									elementTracker.AddEquivalentElement(roles[i], otherRoles[i]);
 								}
-							}
-							if (haveMatch)
-							{
-								if (rolePaths == null &&
-									(null == (derivationRule = otherQuery.DerivationRule) ||
-									0 == derivationRule.LeadRolePathCollection.Count))
+								for (int i = 0; i < parameterCount; ++i)
 								{
-									// Immediately match a path-free query with the same signature. Otherwise,
-									// match the first other query if no empty ones are found.
-									elementTracker.AddEquivalentElement(this, otherQuery);
+									elementTracker.AddEquivalentElement(parameters[i], otherParameters[i]);
+								}
+								return true;
+							}
+							(signatureMatchedOtherSubqueries ?? (signatureMatchedOtherSubqueries = new List<Subquery>())).Add(otherQuery);
+						}
+					}
+				}
+				if (signatureMatchedOtherSubqueries != null)
+				{
+					if (rolePaths != null)
+					{
+						Dictionary<ModelElement, ModelElement> matchedElements = new Dictionary<ModelElement, ModelElement>();
+						PathMatcher matcher = new PathMatcher(signatureMatchedOtherSubqueries);
+						foreach (LeadRolePath rolePath in rolePaths)
+						{
+							LeadRolePath matchedPath;
+							if (null != (matchedPath = rolePath.GetMatchingPath(matcher.MatchPaths(), matchedElements, foreignStore, elementTracker)))
+							{
+								Subquery otherQuery = matcher.LastProcessedSubquery;
+								elementTracker.AddEquivalentElement(this, otherQuery);
+								if (roleCount != 0)
+								{
+									otherRoles = otherQuery.RoleCollection;
 									for (int i = 0; i < roleCount; ++i)
 									{
 										elementTracker.AddEquivalentElement(roles[i], otherRoles[i]);
 									}
+								}
+								if (parameterCount != 0)
+								{
+									otherParameters = otherQuery.ParameterCollection;
 									for (int i = 0; i < parameterCount; ++i)
 									{
 										elementTracker.AddEquivalentElement(parameters[i], otherParameters[i]);
 									}
-									return true;
 								}
-								(signatureMatchedOtherSubqueries ?? (signatureMatchedOtherSubqueries = new List<Subquery>())).Add(otherQuery);
+								if (!matcher.LastProcessedSubqueryReferencesMatchedPath)
+								{
+									foreach (KeyValuePair<ModelElement, ModelElement> pair in matchedElements)
+									{
+										elementTracker.AddEquivalentElement(pair.Key, pair.Value);
+									}
+								}
+								return true;
 							}
 						}
 					}
-					if (signatureMatchedOtherSubqueries != null)
+					else
 					{
-						if (rolePaths != null)
+						// This subquery has no currently defined paths to match on. We could grab the first subquery
+						// at this point, but we could end up stealing a path from another one with a match, so we first
+						// walk the other unmatched queries to make sure we don't match something that is a better match
+						// for another subquery.
+						if (allOwnedSubqueries != null)
 						{
-							Dictionary<ModelElement, ModelElement> matchedElements = new Dictionary<ModelElement,ModelElement>();
-							PathMatcher matcher = new PathMatcher(signatureMatchedOtherSubqueries);
-							foreach (LeadRolePath rolePath in rolePaths)
+							foreach (Subquery siblingQuery in allOwnedSubqueries)
 							{
-								LeadRolePath matchedPath;
-								if (null != (matchedPath = rolePath.GetMatchingPath(matcher.MatchPaths(), matchedElements, foreignStore, elementTracker)))
+								ReadOnlyLinkedElementCollection<LeadRolePath> siblingRolePaths;
+								RoleProjectedDerivationRule siblingDerivationRule;
+								if (siblingQuery == this ||
+									null != elementTracker.GetEquivalentElement(siblingQuery) ||
+									null == (siblingDerivationRule = siblingQuery.DerivationRule) ||
+									0 == (siblingRolePaths = siblingDerivationRule.LeadRolePathCollection).Count)
 								{
-									Subquery otherQuery = matcher.LastProcessedSubquery;
-									elementTracker.AddEquivalentElement(this, otherQuery);
-									if (roleCount != 0)
+									continue;
+								}
+								// Check signature
+								if ((otherRoles = siblingQuery.RoleCollection).Count == roleCount &&
+									(otherParameters = siblingQuery.ParameterCollection).Count == parameterCount)
+								{
+									bool haveMatch = true;
+									for (int i = 0; i < roleCount; ++i)
 									{
-										otherRoles = otherQuery.RoleCollection;
-										for (int i = 0; i < roleCount; ++i)
+										if (otherRoles[i].Role.RolePlayer != roles[i].Role.RolePlayer)
 										{
-											elementTracker.AddEquivalentElement(roles[i], otherRoles[i]);
+											haveMatch = false;
+											break;
 										}
 									}
-									if (parameterCount != 0)
+									if (haveMatch)
 									{
-										otherParameters = otherQuery.ParameterCollection;
 										for (int i = 0; i < parameterCount; ++i)
 										{
-											elementTracker.AddEquivalentElement(parameters[i], otherParameters[i]);
-										}
-									}
-									if (!matcher.LastProcessedSubqueryReferencesMatchedPath)
-									{
-										foreach (KeyValuePair<ModelElement, ModelElement> pair in matchedElements)
-										{
-											elementTracker.AddEquivalentElement(pair.Key, pair.Value);
-										}
-									}
-									return true;
-								}
-							}
-						}
-						else
-						{
-							// This subquery has no currently defined paths to match on. We could grab the first subquery
-							// at this point, but we could end up stealing a path from another one with a match, so we first
-							// walk the other unmatched queries to make sure we don't match something that is a better match
-							// for another subquery.
-							if (allOwnedSubqueries != null)
-							{
-								foreach (Subquery siblingQuery in allOwnedSubqueries)
-								{
-									ReadOnlyLinkedElementCollection<LeadRolePath> siblingRolePaths;
-									RoleProjectedDerivationRule siblingDerivationRule;
-									if (siblingQuery == this ||
-										null != elementTracker.GetEquivalentElement(siblingQuery) ||
-										null == (siblingDerivationRule = siblingQuery.DerivationRule) ||
-										0 == (siblingRolePaths = siblingDerivationRule.LeadRolePathCollection).Count)
-									{
-										continue;
-									}
-									// Check signature
-									if ((otherRoles = siblingQuery.RoleCollection).Count == roleCount &&
-										(otherParameters = siblingQuery.ParameterCollection).Count == parameterCount)
-									{
-										bool haveMatch = true;
-										for (int i = 0; i < roleCount; ++i)
-										{
-											if (otherRoles[i].Role.RolePlayer != roles[i].Role.RolePlayer)
+											if (otherParameters[i].ParameterType != parameters[i].ParameterType)
 											{
 												haveMatch = false;
 												break;
@@ -1571,58 +1600,47 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 										}
 										if (haveMatch)
 										{
-											for (int i = 0; i < parameterCount; ++i)
+											// See if we can match role paths
+											Dictionary<ModelElement, ModelElement> matchedElements = new Dictionary<ModelElement, ModelElement>();
+											PathMatcher matcher = new PathMatcher(signatureMatchedOtherSubqueries);
+											foreach (LeadRolePath rolePath in siblingRolePaths)
 											{
-												if (otherParameters[i].ParameterType != parameters[i].ParameterType)
+												int matchedIndex;
+												if (null != rolePath.GetMatchingPath(matcher.MatchPaths(), matchedElements, foreignStore, elementTracker) &&
+													-1 != (matchedIndex = signatureMatchedOtherSubqueries.IndexOf(matcher.LastProcessedSubquery)))
 												{
-													haveMatch = false;
+													signatureMatchedOtherSubqueries[matchedIndex] = null;
 													break;
-												}
-											}
-											if (haveMatch)
-											{
-												// See if we can match role paths
-												Dictionary<ModelElement, ModelElement> matchedElements = new Dictionary<ModelElement, ModelElement>();
-												PathMatcher matcher = new PathMatcher(signatureMatchedOtherSubqueries);
-												foreach (LeadRolePath rolePath in siblingRolePaths)
-												{
-													int matchedIndex;
-													if (null != rolePath.GetMatchingPath(matcher.MatchPaths(), matchedElements, foreignStore, elementTracker) &&
-														-1 != (matchedIndex = signatureMatchedOtherSubqueries.IndexOf(matcher.LastProcessedSubquery)))
-													{
-														signatureMatchedOtherSubqueries[matchedIndex] = null;
-														break;
-													}
 												}
 											}
 										}
 									}
 								}
-								int matchedSigCount = signatureMatchedOtherSubqueries.Count;
-								for (int i = 0; i < matchedSigCount; ++i)
+							}
+							int matchedSigCount = signatureMatchedOtherSubqueries.Count;
+							for (int i = 0; i < matchedSigCount; ++i)
+							{
+								Subquery otherQuery;
+								if (null != (otherQuery = signatureMatchedOtherSubqueries[i]))
 								{
-									Subquery otherQuery;
-									if (null != (otherQuery = signatureMatchedOtherSubqueries[i]))
+									elementTracker.AddEquivalentElement(this, otherQuery);
+									if (roleCount != 0)
 									{
-										elementTracker.AddEquivalentElement(this, otherQuery);
-										if (roleCount != 0)
+										otherRoles = otherQuery.RoleCollection;
+										for (int j = 0; j < roleCount; ++j)
 										{
-											otherRoles = otherQuery.RoleCollection;
-											for (int j = 0; j < roleCount; ++j)
-											{
-												elementTracker.AddEquivalentElement(roles[j], otherRoles[j]);
-											}
+											elementTracker.AddEquivalentElement(roles[j], otherRoles[j]);
 										}
-										if (parameterCount != 0)
-										{
-											otherParameters = otherQuery.ParameterCollection;
-											for (int j = 0; j < parameterCount; ++j)
-											{
-												elementTracker.AddEquivalentElement(parameters[j], otherParameters[j]);
-											}
-										}
-										break;
 									}
+									if (parameterCount != 0)
+									{
+										otherParameters = otherQuery.ParameterCollection;
+										for (int j = 0; j < parameterCount; ++j)
+										{
+											elementTracker.AddEquivalentElement(parameters[j], otherParameters[j]);
+										}
+									}
+									return true;
 								}
 							}
 						}
@@ -1631,6 +1649,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return false;
 		}
+
 		/// <summary>
 		/// Small helper struct to test rule matches in select queries and
 		/// determine which of the paths matched.
@@ -2474,18 +2493,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			RolePathOwner pathOwner = PathOwner;
 			RolePathOwner otherPathOwner;
-			if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(pathOwner, foreignStore, elementTracker)))
+			Dictionary<ModelElement, ModelElement> matchedElements = null;
+			bool addEquivalentElements = false;
+
+			if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(pathOwner, foreignStore, elementTracker)) &&
+				null != GetMatchingPath(GetUnmappedOtherPaths(pathOwner, otherPathOwner, elementTracker), matchedElements = new Dictionary<ModelElement, ModelElement>(), foreignStore, elementTracker))
 			{
-				Dictionary<ModelElement, ModelElement> matchedElements = new Dictionary<ModelElement,ModelElement>();
-				if (null != (GetMatchingPath(GetUnmappedOtherPaths(pathOwner, otherPathOwner, elementTracker), matchedElements, foreignStore, elementTracker)))
+				addEquivalentElements = true;
+			}
+
+			if (!addEquivalentElements)
+			{
+				foreach (RolePathOwner sharedOwner in SharedWithPathOwnerCollection)
 				{
-					// Register prematched paths, path roots, pathed roles, unifiers, and calculations
-					foreach (KeyValuePair<ModelElement, ModelElement> pair in matchedElements)
+					if (null != (otherPathOwner = CopyMergeUtility.GetEquivalentElement(sharedOwner, foreignStore, elementTracker)) &&
+						null != GetMatchingPath(GetUnmappedOtherPaths(sharedOwner, otherPathOwner, elementTracker), matchedElements ?? (matchedElements = new Dictionary<ModelElement, ModelElement>()), foreignStore, elementTracker))
 					{
-						elementTracker.AddEquivalentElement(pair.Key, pair.Value);
+						addEquivalentElements = true;
+						break;
 					}
-					return true;
 				}
+			}
+			if (addEquivalentElements)
+			{
+				// Register prematched paths, path roots, pathed roles, unifiers, and calculations
+				foreach (KeyValuePair<ModelElement, ModelElement> pair in matchedElements)
+				{
+					elementTracker.AddEquivalentElement(pair.Key, pair.Value);
+				}
+				return true;
 			}
 			return false;
 		}

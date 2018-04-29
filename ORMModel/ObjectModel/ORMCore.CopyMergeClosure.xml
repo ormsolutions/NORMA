@@ -30,10 +30,18 @@
 			<cmc:EmbeddingDirective relationship="RolePathOwnerCalculatesCalculatedPathValue_Deprecated" ignore="true"/>
 			<cmc:EmbeddingDirective relationship="RolePathOwnerHasPathComponent_Deprecated" ignore="true"/>
 			<cmc:EmbeddingDirective relationship="SubtypeHasDerivationExpression" ignore="true"/>
-			
+
 			<!-- Extension point handled outside the model. -->
 			<cmc:EmbeddingDirective relationship="ORMModelElementHasExtensionElement" ignore="true"/>
 			<cmc:EmbeddingDirective relationship="ModelHasError" ignore="true"/>
+
+			<!-- Owned paths are modeled as embedded relationships. However, these are used as both
+			shared and owned relationships, and the distinction between owner/sharer is effectively arbitrary.
+			We want the container relationship to propagate, but referencing the path through a shared
+			owner does not require the native owner to be copied. Rules are used to ensure that an owner
+			is always established before the transaction ends. -->
+			<cmc:EmbeddingDirective relationship="RolePathOwnerOwnsLeadRolePath" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="RolePathOwnerOwnsSubquery" ignore="true"/>
 
 			<!-- Unordered top-level relationships -->
 			<cmc:EmbeddingDirective relationship="ModelHasFactType" order="Unordered"/>
@@ -207,6 +215,8 @@
 			<cmc:ClosureRole relationship="PathedRole" role="Role" closureBehavior="ExternalReferencedPart" order="From"/>
 			<cmc:ClosureRole relationship="RolePathObjectTypeRoot" role="RootObjectType" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="LeadRolePathSatisfiesCalculatedCondition" role="CalculatedCondition" closureBehavior="InternalReferencedPart"/>
+			<cmc:ClosureRole relationship="RolePathOwnerOwnsLeadRolePath" role="RolePath" closureBehavior="ContainedPart" order="From"/>
+			<cmc:ClosureRole relationship="RolePathOwnerOwnsSubquery" role="Subquery" closureBehavior="ContainedPart" order="From"/>
 			<cmc:ClosureRole relationship="RolePathOwnerUsesSharedLeadRolePath" role="RolePath" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="RolePathOwnerUsesSharedSubquery" role="Subquery" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="CalculatedPathValueIsCalculatedWithFunction" role="Function" closureBehavior="ExternalReferencedPart"/>

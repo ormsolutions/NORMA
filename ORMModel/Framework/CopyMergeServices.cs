@@ -1678,9 +1678,13 @@ namespace ORMSolutions.ORMArchitect.Framework
 						if (copy.CopyType == CopiedElementType.Existing)
 						{
 							ModelElement copyElement = copy.Element;
-							if (!copyElement.IsDeleted)
+							IClosureElement closureElement;
+							// Automatic dependency expansion across embedded elements can resolve elements
+							// that are not in the copy closure, which can override embeddings. This is harmless
+							// as long as we don't expect all resolved elements to be in the copy closure.
+							if (!copyElement.IsDeleted && copyClosure.TryGetValue(pair.Key, out closureElement))
 							{
-								PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(copyClosure[pair.Key].Element, copyElement);
+								PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(closureElement.Element, copyElement);
 								if (propertyAssignments != null)
 								{
 									// Update the element with new property assignments
