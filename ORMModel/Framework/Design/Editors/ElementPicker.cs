@@ -122,16 +122,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			#region Member Variables
 			private IList myItems;
 			private string myNullItemText;
+			private ElementPicker<T> myPicker;
 			#endregion // Member Variables
 			#region Constructor
-			public SimpleBranch(IList items, string nullItemText)
+			public SimpleBranch(ElementPicker<T> picker, IList items, string nullItemText)
 			{
+				myPicker = picker;
 				myItems = items;
 				myNullItemText = nullItemText;
 			}
 			#endregion // Constructor
 			#region IBranch Implementation
-			private static TypeConverter myStringConverter;
 			string IBranch.GetText(int row, int column)
 			{
 				string nullItemText = myNullItemText;
@@ -143,13 +144,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 					}
 					--row;
 				}
-				TypeConverter converter = myStringConverter;
-				if (converter == null)
-				{
-					System.Threading.Interlocked.CompareExchange<TypeConverter>(ref myStringConverter, TypeDescriptor.GetConverter(typeof(string)), null);
-					converter = myStringConverter;
-				}
-				return converter.ConvertToString(myItems[row]);
+				return myPicker.GetDisplayString(myItems[row]);
 			}
 			int IBranch.VisibleItemCount
 			{
@@ -278,7 +273,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 
 						// Create a tree for the control
 						ITree tree = new VirtualTree();
-						tree.Root = new SimpleBranch(elements, nullText);
+						tree.Root = new SimpleBranch(this, elements, nullText);
 						treeControl.Tree = tree;
 
 						// Manage the size of the control
@@ -421,6 +416,23 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		protected virtual object TranslateToDisplayObject(object initialObject, IList contentList)
 		{
 			return initialObject;
+		}
+		private static TypeConverter myStringConverter;
+		/// <summary>
+		/// Convert an object returned by <see cref="GetContentList"/> to
+		/// a displayable string value.
+		/// </summary>
+		/// <param name="displayObject">An object from the content list.</param>
+		/// <returns>A displayable string.</returns>
+		protected virtual string GetDisplayString(object displayObject)
+		{
+			TypeConverter converter = myStringConverter;
+			if (converter == null)
+			{
+				System.Threading.Interlocked.CompareExchange<TypeConverter>(ref myStringConverter, TypeDescriptor.GetConverter(typeof(string)), null);
+				converter = myStringConverter;
+			}
+			return converter.ConvertToString(displayObject);
 		}
 		/// <summary>
 		/// Set display options on the tree control. The list is implemented as
