@@ -1800,6 +1800,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							bool modified = false;
 							bool inserted = false;
 							bool deleted = false;
+							bool matchedInSubBranch = false;
 							if (myNeutralOnTop)
 							{
 								for (int i = 0; i < subBranches.Length;  ++i)
@@ -1820,10 +1821,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 												deleted = true;
 												--startAdjustment;
 											}
+											matchedInSubBranch = true;
 										}
 										else if (toIndex < subBranch.Start)
 										{
-											inserted = true;
+											inserted = matchedInSubBranch = true;
 											++startAdjustment;
 										}
 										break;
@@ -1851,17 +1853,18 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 											{
 												deleted = true;
 											}
+											matchedInSubBranch = true;
 										}
 										else if (toIndex > subBranch.End)
 										{
-											inserted = true;
+											inserted = matchedInSubBranch = true;
 										}
 										// startAdjustment not used after this
 										break;
 									}
 								}
 							}
-							if (modified)
+							if (modified || (!matchedInSubBranch && currentAnswerHere))
 							{
 								grouper.ElementModifiedAt(fromIndex, toIndex, nodeData, displayChanged, modificationEvents, notifyBranch, offsetAdjustment, forwardAdjustment);
 							}
