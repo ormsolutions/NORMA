@@ -4162,6 +4162,266 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship MandatoryConstraintIsInherentForObjectType
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("717582e0-4fab-47f9-9e14-62c385a61125")]
+	public partial class MandatoryConstraintIsInherentForObjectType : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// MandatoryConstraintIsInherentForObjectType domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x717582e0, 0x4fab, 0x47f9, 0x9e, 0x14, 0x62, 0xc3, 0x85, 0xa6, 0x11, 0x25);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a MandatoryConstraintIsInherentForObjectType link in the same Partition as the given ObjectType
+		/// </summary>
+		/// <param name="source">ObjectType to use as the source of the relationship.</param>
+		/// <param name="target">MandatoryConstraint to use as the target of the relationship.</param>
+		public MandatoryConstraintIsInherentForObjectType(ObjectType source, MandatoryConstraint target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId, source), new DslModeling::RoleAssignment(MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public MandatoryConstraintIsInherentForObjectType(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public MandatoryConstraintIsInherentForObjectType(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public MandatoryConstraintIsInherentForObjectType(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public MandatoryConstraintIsInherentForObjectType(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ObjectType domain role code
+		
+		/// <summary>
+		/// ObjectType domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ObjectTypeDomainRoleId = new global::System.Guid(0x56728280, 0x33d7, 0x4218, 0x95, 0x98, 0x70, 0x3e, 0x8d, 0xb5, 0x9f, 0x39);
+		
+		/// <summary>
+		/// DomainRole ObjectType
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectType
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/ObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/ObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "InherentMandatoryConstraint", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/ObjectType.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("56728280-33d7-4218-9598-703e8db59f39")]
+		public virtual ObjectType ObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ObjectType)DslModeling::DomainRoleInfo.GetRolePlayer(this, ObjectTypeDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ObjectTypeDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access InherentForObjectType of a MandatoryConstraint
+		/// <summary>
+		/// Gets InherentForObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ObjectType GetInherentForObjectType(MandatoryConstraint element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, MandatoryConstraintDomainRoleId) as ObjectType;
+		}
+		
+		/// <summary>
+		/// Sets InherentForObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetInherentForObjectType(MandatoryConstraint element, ObjectType newObjectType)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, MandatoryConstraintDomainRoleId, newObjectType);
+		}
+		#endregion
+		#region MandatoryConstraint domain role code
+		
+		/// <summary>
+		/// MandatoryConstraint domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid MandatoryConstraintDomainRoleId = new global::System.Guid(0x672605ce, 0xf276, 0x4e80, 0x9e, 0x47, 0x80, 0xdd, 0xb3, 0xd5, 0xbb, 0x4a);
+		
+		/// <summary>
+		/// DomainRole MandatoryConstraint
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraint
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/MandatoryConstraint.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/MandatoryConstraint.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "InherentForObjectType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/MandatoryConstraint.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("672605ce-f276-4e80-9e47-80ddb3d5bb4a")]
+		public virtual MandatoryConstraint MandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (MandatoryConstraint)DslModeling::DomainRoleInfo.GetRolePlayer(this, MandatoryConstraintDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, MandatoryConstraintDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access InherentMandatoryConstraint of a ObjectType
+		/// <summary>
+		/// Gets InherentMandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static MandatoryConstraint GetInherentMandatoryConstraint(ObjectType element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as MandatoryConstraint;
+		}
+		
+		/// <summary>
+		/// Sets InherentMandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetInherentMandatoryConstraint(ObjectType element, MandatoryConstraint newMandatoryConstraint)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newMandatoryConstraint);
+		}
+		#endregion
+		#region ObjectType link accessor
+		/// <summary>
+		/// Get the MandatoryConstraintIsInherentForObjectType link to a ObjectType.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType GetLinkToInherentMandatoryConstraint (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType objectTypeInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType>(objectTypeInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ObjectType not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region MandatoryConstraint link accessor
+		/// <summary>
+		/// Get the MandatoryConstraintIsInherentForObjectType link to a MandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType GetLinkToInherentForObjectType (global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint mandatoryConstraintInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType>(mandatoryConstraintInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of MandatoryConstraint not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region MandatoryConstraintIsInherentForObjectType instance accessors
+		
+		/// <summary>
+		/// Get any MandatoryConstraintIsInherentForObjectType links between a given ObjectType and a MandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType link in links )
+			{
+				if ( target.Equals(link.MandatoryConstraint) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one MandatoryConstraintIsInherentForObjectType link between a given ObjectTypeand a MandatoryConstraint.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraint target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType link in links )
+			{
+				if ( target.Equals(link.MandatoryConstraint) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship ModelHasSetComparisonConstraint
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint

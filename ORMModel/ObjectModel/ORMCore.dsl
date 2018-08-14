@@ -2866,6 +2866,23 @@
 			</Target>
 		</DomainRelationship>
 
+		<DomainRelationship Name="MandatoryConstraintIsInherentForObjectType" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="717582E0-4FAB-47F9-9E14-62C385A61125">
+			<Source>
+				<DomainRole Name="ObjectType" PropertyName="InherentMandatoryConstraint" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="InherentForObjectType" Id="56728280-33D7-4218-9598-703E8DB59F39">
+					<RolePlayer>
+						<DomainClassMoniker Name="ObjectType"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="MandatoryConstraint" PropertyName="InherentForObjectType" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="InherentMandatoryConstraint" Id="672605CE-F276-4E80-9E47-80DDB3D5BB4A">
+					<RolePlayer>
+						<DomainClassMoniker Name="MandatoryConstraint"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
 		<DomainRelationship Name="ModelHasSetComparisonConstraint" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" IsEmbedding="true" Id="37FBE5B6-4E18-43E2-B34B-DAB0EF69DDE4">
 			<!--<BaseRelationship>
 				<DomainRelationshipMoniker Name="ORMElementLink"/>

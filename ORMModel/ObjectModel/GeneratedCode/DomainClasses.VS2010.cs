@@ -5327,6 +5327,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion
+		#region InherentMandatoryConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets InherentMandatoryConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectType
+		/// </summary>
+		public virtual MandatoryConstraint InherentMandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId) as MandatoryConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
 		#region AbbreviationCollection opposite domain role accessor
 		
 		/// <summary>
@@ -10799,6 +10831,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region InherentForObjectType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets InherentForObjectType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraint
+		/// </summary>
+		public virtual ObjectType InherentForObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId, value);
 				}
 			}
 		}

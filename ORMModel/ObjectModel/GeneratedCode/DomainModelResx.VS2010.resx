@@ -3318,6 +3318,38 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Implied By Object Type</value>
     <comment>PropertyDisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;ObjectTypeImpliesMandatoryConstraint&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType</value>
+    <comment>Description for DomainClass &apos;MandatoryConstraintIsInherentForObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.DisplayName" xml:space="preserve">
+    <value>Mandatory Constraint Is Inherent For Object Type</value>
+    <comment>DisplayName for DomainClass &apos;MandatoryConstraintIsInherentForObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/ObjectType.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectType</value>
+    <comment>Description for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;MandatoryConstraintIsInherentForObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/ObjectType.DisplayName" xml:space="preserve">
+    <value>InherentForObjectType</value>
+    <comment>DisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;MandatoryConstraintIsInherentForObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/ObjectType.PropertyDisplayName" xml:space="preserve">
+    <value>Inherent Mandatory Constraint</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ObjectType&apos; on DomainRelationship &apos;MandatoryConstraintIsInherentForObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/MandatoryConstraint.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraint</value>
+    <comment>Description for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintIsInherentForObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/MandatoryConstraint.DisplayName" xml:space="preserve">
+    <value>InherentMandatoryConstraint</value>
+    <comment>DisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintIsInherentForObjectType&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType/MandatoryConstraint.PropertyDisplayName" xml:space="preserve">
+    <value>Inherent For Object Type</value>
+    <comment>PropertyDisplayName for DomainRole &apos;MandatoryConstraint&apos; on DomainRelationship &apos;MandatoryConstraintIsInherentForObjectType&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint</value>
     <comment>Description for DomainClass &apos;ModelHasSetComparisonConstraint&apos;</comment>
