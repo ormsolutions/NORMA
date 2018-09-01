@@ -170,10 +170,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.cmbxDataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbxDataType.FormattingEnabled = true;
 			this.cmbxDataType.Items.AddRange(new object[] {
-            "string",
-            "integer",
-            "decimal",
-            "datetime"});
+            "String",
+            "Integer",
+            "Decimal",
+            "DateTime"});
 			this.cmbxDataType.Location = new System.Drawing.Point(105, 100);
 			this.cmbxDataType.Name = "cmbxDataType";
 			this.cmbxDataType.Size = new System.Drawing.Size(209, 24);

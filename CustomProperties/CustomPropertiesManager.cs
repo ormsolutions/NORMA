@@ -331,7 +331,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 					nameAttrib.Value = PickNewDefinitionName(groupObject);
 				}
 
-				dataTypeAttrib.Value = "string";
+				dataTypeAttrib.Value = "String";
 
 				TreeNode newPropertyNode = groupNode.Nodes.Add(nameAttrib.Value);
 				newPropertyNode.Tag = newProperty;
