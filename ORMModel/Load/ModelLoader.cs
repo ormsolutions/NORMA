@@ -284,7 +284,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		}
 		private TypedDomainModelProviderCache myTypedDomainModelCache;
 		/// <summary>
-		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders"/>.
+		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders(System.Boolean)"/>.
 		/// </summary>
 		protected T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class
 		{
@@ -294,6 +294,10 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				myTypedDomainModelCache = cache = new TypedDomainModelProviderCache(this);
 			}
 			return cache.GetTypedDomainModelProviders<T>(dependencyOrder);
+		}
+		T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
+		{
+			return GetTypedDomainModelProviders<T>(false);
 		}
 		T[] IFrameworkServices.GetTypedDomainModelProviders<T>(bool dependencyOrder)
 		{

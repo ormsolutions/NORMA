@@ -273,11 +273,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
-			/// Defer to <see cref="IFrameworkServices.GetTypedDomainModelProviders"/> on the document.
+			/// Defer to <see cref="IFrameworkServices.GetTypedDomainModelProviders(System.Boolean)"/> on the document.
 			/// </summary>
 			protected T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class
 			{
 				return myServices.GetTypedDomainModelProviders<T>(dependencyOrder);
+			}
+			T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
+			{
+				return GetTypedDomainModelProviders<T>(false);
 			}
 			T[] IFrameworkServices.GetTypedDomainModelProviders<T>(bool dependencyOrder)
 			{
@@ -1498,7 +1502,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		/// <summary>
 		/// Retrieve the domain models that implement a given interface for this model
-		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders"/>.
+		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders(System.Boolean)"/>.
 		/// </summary>
 		protected T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class
 		{
@@ -1516,6 +1520,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myTypedDomainModelProviderCache = cache = new TypedDomainModelProviderCache(store);
 			}
 			return cache.GetTypedDomainModelProviders<T>(dependencyOrder);
+		}
+		T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
+		{
+			return GetTypedDomainModelProviders<T>(false);
 		}
 		T[] IFrameworkServices.GetTypedDomainModelProviders<T>(bool dependencyOrder)
 		{

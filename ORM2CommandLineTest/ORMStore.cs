@@ -125,7 +125,17 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 				{
 					myTypedDomainModelCache = cache = new TypedDomainModelProviderCache(this);
 				}
-				return cache.GetTypedDomainModelProviders<T>();
+				return cache.GetTypedDomainModelProviders<T>(false);
+			}
+			T[] IFrameworkServices.GetTypedDomainModelProviders<T>(bool dependencyOrder)
+			{
+				// Implemented on a per-store basis, do not defer to myServices
+				TypedDomainModelProviderCache cache = myTypedDomainModelCache;
+				if (cache == null)
+				{
+					myTypedDomainModelCache = cache = new TypedDomainModelProviderCache(this);
+				}
+				return cache.GetTypedDomainModelProviders<T>(dependencyOrder);
 			}
 			private CopyClosureManager myCopyClosureManager;
 			ICopyClosureManager IFrameworkServices.CopyClosureManager

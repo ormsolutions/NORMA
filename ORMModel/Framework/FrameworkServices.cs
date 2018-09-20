@@ -78,10 +78,17 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// Can be implemented using the <see cref="TypedDomainModelProviderCache"/> class.
 		/// </summary>
 		/// <typeparam name="T">The interface to test</typeparam>
+		/// <returns>An array of instances, or null</returns>
+		T[] GetTypedDomainModelProviders<T>() where T : class;
+		/// <summary>
+		/// Retrieve a cached set of domain model instances that implement the requested interface.
+		/// Can be implemented using the <see cref="TypedDomainModelProviderCache"/> class.
+		/// </summary>
+		/// <typeparam name="T">The interface to test</typeparam>
 		/// <param name="dependencyOrder">If true, then return multiple matches in
 		/// dependency order, with the least dependent models first.</param>
 		/// <returns>An array of instances, or null</returns>
-		T[] GetTypedDomainModelProviders<T>(bool dependencyOrder = false) where T : class;
+		T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class;
 		/// <summary>
 		/// Retrieve the <see cref="ICopyClosureManager"/> interface for this store.
 		/// Can be implemented using an instance of the <see cref="CopyClosureManager"/>
