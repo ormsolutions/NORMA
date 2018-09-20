@@ -99,7 +99,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (((isAlethic = (brushId == CardinalityTextAlethicBrush)) || brushId == CardinalityTextDeonticBrush) &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, CardinalityConstraintShape, CardinalityConstraint>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, CardinalityConstraintShape, CardinalityConstraint>>(true)) &&
 				null != (element = (CardinalityConstraint)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)

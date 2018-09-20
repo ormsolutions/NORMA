@@ -284,20 +284,24 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		}
 		private TypedDomainModelProviderCache myTypedDomainModelCache;
 		/// <summary>
-		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders"/>.
+		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders(System.Boolean)"/>.
 		/// </summary>
-		protected T[] GetTypedDomainModelProviders<T>() where T : class
+		protected T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class
 		{
 			TypedDomainModelProviderCache cache = myTypedDomainModelCache;
 			if (cache == null)
 			{
 				myTypedDomainModelCache = cache = new TypedDomainModelProviderCache(this);
 			}
-			return cache.GetTypedDomainModelProviders<T>();
+			return cache.GetTypedDomainModelProviders<T>(dependencyOrder);
 		}
 		T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
 		{
-			return GetTypedDomainModelProviders<T>();
+			return GetTypedDomainModelProviders<T>(false);
+		}
+		T[] IFrameworkServices.GetTypedDomainModelProviders<T>(bool dependencyOrder)
+		{
+			return GetTypedDomainModelProviders<T>(dependencyOrder);
 		}
 		private CopyClosureManager myCopyClosureManager;
 		/// <summary>

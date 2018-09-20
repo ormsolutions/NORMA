@@ -340,7 +340,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				penId == NonPrimaryNormalResource ||
 				penId == DiagramPens.ConnectionLineDecorator) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>(true)) &&
 				null != (element = (SubtypeFact)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)
@@ -373,7 +373,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, SubtypeLink, SubtypeFact>>(true)) &&
 				null != (element = (SubtypeFact)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)

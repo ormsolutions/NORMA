@@ -131,7 +131,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Store store;
 			if ((penId == DashedShapeOutlinePen || penId == DiagramPens.ShapeOutline) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>(true)) &&
 				null != (element = (ObjectType)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)
@@ -166,7 +166,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				brushId == DiagramBrushes.ShapeTitleText) &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectTypeShape, ObjectType>>(true)) &&
 				null != (element = (ObjectType)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = isBackgroundBrush ? ORMDiagramDynamicColor.Background : ORMDiagramDynamicColor.ForegroundText;
