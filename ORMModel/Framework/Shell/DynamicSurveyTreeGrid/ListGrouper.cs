@@ -234,7 +234,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					/// <summary>
 					/// Return true if the calling grouper should show a new header item
 					/// </summary>
-					public bool AdjustAdd(bool isChanged, bool headerAlwaysVisible, int index, BranchModificationEventHandler modificationEvents)
+					public bool AdjustAdd(bool isChanged, bool contextAnswerChanged, bool headerAlwaysVisible, int index, BranchModificationEventHandler modificationEvents)
 					{
 						if (End < Start)
 						{
@@ -269,7 +269,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 									{
 										ListGrouper notifyListGrouper = (ListGrouper)branch;
 										notifyListGrouper.RebaseHeaderOnlyBranch(index);
-										notifyListGrouper.ElementAddedAt(index, modificationEvents, null, 0, 0);
+										notifyListGrouper.ElementAddedAt(index, modificationEvents, null, 0, 0, isChanged || contextAnswerChanged);
 									}
 								}
 								else
@@ -312,7 +312,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 									}
 									else
 									{
-										notifyListGrouper.ElementAddedAt(startIndex, modificationEvents, null, 0, 0);
+										notifyListGrouper.ElementAddedAt(startIndex, modificationEvents, null, 0, 0, true);
 									}
 								}
 							}
@@ -328,7 +328,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 									}
 									else
 									{
-										notifyListGrouper.ElementAddedAt(index, null, null, 0, 0);
+										notifyListGrouper.ElementAddedAt(index, null, null, 0, 0, contextAnswerChanged);
 									}
 								}
 							}
@@ -477,7 +477,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							else if (null != (grouper = branch as ListGrouper))
 							{
 								startedEmpty = grouper.VisibleItemCount == 0;
-								grouper.ElementAddedAt(toIndex, modificationEvents, null, 0, forwardAdjustment);
+								grouper.ElementAddedAt(toIndex, modificationEvents, null, 0, forwardAdjustment, true);
 							}
 							if (startedEmpty)
 							{
@@ -1447,7 +1447,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				/// <param name="modificationEvents">The event handler to notify the tree with</param>
 				public void ElementAddedAt(int index, BranchModificationEventHandler modificationEvents)
 				{
-					ElementAddedAt(index, modificationEvents, null, 0, 0);
+					ElementAddedAt(index, modificationEvents, null, 0, 0, false);
 				}
 
 				/// <summary>
@@ -1458,14 +1458,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				/// <param name="notifyThrough">A wrapper branch. Notify the event handler with this branch, not the current branch</param>
 				/// <param name="notifyThroughOffset">Used if notifyThrough is not null. The starting offset of this branch in the outer branch.</param>
 				/// <param name="startAdjustment">An offset adjustment for the whole branch. Apply before notifications.</param>
+				/// <param name="contextAnswerChanged">When adding an element results in a nested call with multiple contained neutral branches,
+				/// this is set if any of the context 'AdjustAdd' calls have isChanged= true, meaning something was added in this section. This
+				/// results from not knowing if an index matching the first/last item of a group was added to the current section or a later section.</param>
 				/// <returns>The size change for the branch. With nested groupers this may not add to the size of the grouper branch. This will return 0 or 1.</returns>
-				private int ElementAddedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset, int startAdjustment)
+				private int ElementAddedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset, int startAdjustment, bool contextAnswerChanged)
 				{
 					// UNDONE: NOW Handle startAdjustment
 					Debug.Assert(startAdjustment == 0);
 					int currentAnswer = myQuestion.ExtractAnswer(((MainList)myBaseBranch).myNodes[index].NodeData);
 					bool neutralOnTop = myNeutralOnTop;
-					int neutralOffset = neutralOnTop ? AdjustNeutralBranchForAdded(index, currentAnswer, modificationEvents, notifyThrough, notifyThroughOffset, ref startAdjustment) : 0;
+					int neutralOffset = neutralOnTop ? AdjustNeutralBranchForAdded(index, currentAnswer, contextAnswerChanged, modificationEvents, notifyThrough, notifyThroughOffset, ref startAdjustment) : 0;
 
 						// An element may have been added to a header that is visible only
 					// because it is always shown, not because it has visible children.
@@ -1478,7 +1481,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					int initialAdjustment = startAdjustment;
 					for (int i = 0; i < subBranches.Length; ++i)
 					{
-						if (subBranches[i].AdjustAdd(i == currentAnswer, groupAlwaysShownFor == i, index, modificationEvents))
+						if (subBranches[i].AdjustAdd(i == currentAnswer, contextAnswerChanged, groupAlwaysShownFor == i, index, modificationEvents))
 						{
 							// We need to add the header row
 							int currentHeaderCount = myVisibleSubBranchCount;
@@ -1516,7 +1519,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					}
 					if (!myNeutralOnTop)
 					{
-						AdjustNeutralBranchForAdded(index, currentAnswer, modificationEvents, notifyThrough, notifyThroughOffset, ref startAdjustment);
+						AdjustNeutralBranchForAdded(index, currentAnswer, contextAnswerChanged, modificationEvents, notifyThrough, notifyThroughOffset, ref startAdjustment);
 					}
 					startAdjustment += myVisibleSubBranchCount - initialSubBranchCount;
 					return startAdjustment - initialAdjustment;
@@ -1524,13 +1527,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				/// <summary>
 				/// Helper for element deletion. Returns the count of items in the neutral branch.
 				/// </summary>
-				private int AdjustNeutralBranchForAdded(int index, int currentAnswer, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset, ref int startAdjustment)
+				private int AdjustNeutralBranchForAdded(int index, int currentAnswer, bool contextAnswerChanged, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset, ref int startAdjustment)
 				{
 					IBranch notifyBranch = notifyThrough ?? this;
 					IBranch neutralBranch = myNeutralBranch;
 					bool neutralOnTop = myNeutralOnTop;
 					int forwardAdjustment = startAdjustment;
 					int itemCount = 0;
+					bool addedToCurrentBranches = currentAnswer != SurveyQuestion.NeutralAnswer;
 					if (neutralBranch != null)
 					{
 						Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
@@ -1544,12 +1548,12 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 								shifter.FirstItem += startAdjustment;
 							}
 							// Simple shifter cases
-							if (shifter.FirstItem > index)
+							if (shifter.FirstItem > index || (shifter.FirstItem == index && (!contextAnswerChanged || addedToCurrentBranches)))
 							{
 								shifter.FirstItem += 1;
 							}
 							else if (shifter.LastItem >= index ||
-								(currentAnswer == SurveyQuestion.NeutralAnswer && index == (shifter.LastItem + 1)))
+								((contextAnswerChanged || !addedToCurrentBranches) && (index == (shifter.LastItem + 1) || index == shifter.FirstItem)))
 							{
 								shifter.Count += 1;
 								++startAdjustment;
@@ -1561,7 +1565,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						}
 						else
 						{
-							startAdjustment += ((ListGrouper)neutralBranch).ElementAddedAt(index, modificationEvents, notifyBranch, offsetAdjustment, forwardAdjustment);
+							startAdjustment += ((ListGrouper)neutralBranch).ElementAddedAt(index, modificationEvents, notifyBranch, offsetAdjustment, forwardAdjustment, contextAnswerChanged && !addedToCurrentBranches);
 						}
 						itemCount = neutralBranch.VisibleItemCount;
 					}
@@ -1870,7 +1874,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							}
 							else if (inserted)
 							{
-								grouper.ElementAddedAt(fromIndex, modificationEvents, notifyThrough, notifyThroughOffset, forwardAdjustment);
+								grouper.ElementAddedAt(fromIndex, modificationEvents, notifyThrough, notifyThroughOffset, forwardAdjustment, currentAnswerHere);
 							}
 							else if (deleted)
 							{
