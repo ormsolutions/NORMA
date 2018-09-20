@@ -65,7 +65,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (brushId == DiagramBrushes.ShapeText &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>(true)) &&
 				null != (factTypeShape = ParentShape as FactTypeShape) &&
 				null != (factType = factTypeShape.AssociatedFactType))
 			{

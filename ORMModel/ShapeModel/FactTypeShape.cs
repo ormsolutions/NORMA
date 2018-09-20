@@ -1870,7 +1870,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				StyleSet styleSet = factShape.StyleSet;
 				Pen alethicConstraintPen = styleSet.GetPen(InternalFactConstraintPen);
 				Pen deonticConstraintPen = styleSet.GetPen(DeonticInternalFactConstraintPen);
-				IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, IConstraint>[] dynamicColorProviders = ((IFrameworkServices)parentShape.Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, IConstraint>>();
+				IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, IConstraint>[] dynamicColorProviders = ((IFrameworkServices)parentShape.Store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, IConstraint>>(true);
 				float gap = alethicConstraintPen.Width;
 				ConstraintAttachPosition attachPosition = AttachPosition;
 				ConstraintDisplayPosition position = factShape.DisplayPositionFromAttachPosition(attachPosition);
@@ -5474,7 +5474,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (((isRoleBox = (penId == RoleBoxResource || penId == LinkFactTypeRoleBoxResource)) ||
 				penId == DiagramPens.ShapeOutline) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>(true)) &&
 				null != (element = (FactType)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = isRoleBox ? ORMDiagramDynamicColor.ForegroundGraphics : ORMDiagramDynamicColor.Outline;
@@ -5510,7 +5510,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				(textBrush = (brushId == DiagramBrushes.ShapeTitleText && DisplayAsObjectType))) &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, FactTypeShape, FactType>>(true)) &&
 				null != (element = (FactType)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)
@@ -7455,7 +7455,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (brushId == DiagramBrushes.ShapeText &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectifiedFactTypeNameShape, ObjectType>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ObjectifiedFactTypeNameShape, ObjectType>>(true)) &&
 				null != (objectType = this.AssociatedObjectType))
 			{
 				for (int i = 0; i < providers.Length; ++i)

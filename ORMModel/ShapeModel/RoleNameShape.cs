@@ -181,7 +181,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (brushId == RoleNameTextBrush &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RoleNameShape, RoleBase>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RoleNameShape, RoleBase>>(true)) &&
 				null != (element = (RoleBase)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)

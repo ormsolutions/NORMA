@@ -194,7 +194,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (!myCheckedColors)
 					{
 						myCheckedColors = true;
-						myColorsEnabled = null != ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>();
+						myColorsEnabled = null != ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>(true);
 					}
 					return myColorsEnabled;
 				}
@@ -207,7 +207,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					null != (store = Utility.ValidateStore(this.SurveyContext)))
 				{
 					// We know the next one will succeed because it worked for DynamicColorsEnabled
-					IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>[] providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>();
+					IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>[] providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>(true);
 					ORMModelBrowserDynamicColor checkColor = (colorRole == SurveyDynamicColor.ForeColor) ? ORMModelBrowserDynamicColor.Foreground : ORMModelBrowserDynamicColor.Background;
 					for (int i = 0; i < providers.Length; ++i)
 					{
@@ -275,13 +275,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Defer to <see cref="IFrameworkServices.GetTypedDomainModelProviders"/> on the document.
 			/// </summary>
-			protected T[] GetTypedDomainModelProviders<T>() where T : class
+			protected T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class
 			{
-				return myServices.GetTypedDomainModelProviders<T>();
+				return myServices.GetTypedDomainModelProviders<T>(dependencyOrder);
 			}
-			T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
+			T[] IFrameworkServices.GetTypedDomainModelProviders<T>(bool dependencyOrder)
 			{
-				return GetTypedDomainModelProviders<T>();
+				return GetTypedDomainModelProviders<T>(dependencyOrder);
 			}
 			/// <summary>
 			/// Defer to <see cref="IFrameworkServices.CopyClosureManager"/> on the document.
@@ -1500,7 +1500,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// Retrieve the domain models that implement a given interface for this model
 		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders"/>.
 		/// </summary>
-		protected T[] GetTypedDomainModelProviders<T>() where T : class
+		protected T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class
 		{
 			// Defensively verify store state
 			TypedDomainModelProviderCache cache = myTypedDomainModelProviderCache;
@@ -1515,11 +1515,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				myTypedDomainModelProviderCache = cache = new TypedDomainModelProviderCache(store);
 			}
-			return cache.GetTypedDomainModelProviders<T>();
+			return cache.GetTypedDomainModelProviders<T>(dependencyOrder);
 		}
-		T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
+		T[] IFrameworkServices.GetTypedDomainModelProviders<T>(bool dependencyOrder)
 		{
-			return GetTypedDomainModelProviders<T>();
+			return GetTypedDomainModelProviders<T>(dependencyOrder);
 		}
 		private CopyClosureManager myCopyClosureManager;
 		/// <summary>

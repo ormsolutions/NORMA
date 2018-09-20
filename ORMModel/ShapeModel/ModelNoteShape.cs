@@ -150,7 +150,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>[] providers;
 			if (penId == DiagramPens.ShapeOutline &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>(true)) &&
 				null != (element = (ModelNote)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)
@@ -185,7 +185,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				brushId == DiagramBrushes.ShapeText) &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ModelNoteShape, ModelNote>>(true)) &&
 				null != (element = (ModelNote)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = ORMDiagramDynamicColor.Background;

@@ -320,7 +320,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			}
 		}
 		/// <summary>
-		/// The identifiers for the <see cref="DomainClassInfo"/> models
+		/// The identifiers for the <see cref="DomainModelInfo"/> models
 		/// extended by this extension.
 		/// </summary>
 		public ICollection<Guid> ExtendsDomainModelIds

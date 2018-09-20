@@ -450,7 +450,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Store store;
 			if (penId == DiagramPens.ShapeOutline &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>(true)) &&
 				null != (element = (IConstraint)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = element.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
@@ -492,7 +492,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				brushId == DiagramBrushes.ShapeText) &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ExternalConstraintShape, IConstraint>>(true)) &&
 				null != (element = (IConstraint)ModelElement))
 			{
 				ORMDiagramDynamicColor requestColor = element.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
