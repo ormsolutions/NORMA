@@ -1548,7 +1548,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 								shifter.FirstItem += startAdjustment;
 							}
 							// Simple shifter cases
-							if (shifter.FirstItem > index || (shifter.FirstItem == index && (!contextAnswerChanged || addedToCurrentBranches)))
+							if (shifter.FirstItem > index || (shifter.FirstItem == index && (!contextAnswerChanged && addedToCurrentBranches)))
 							{
 								shifter.FirstItem += 1;
 							}
