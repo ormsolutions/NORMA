@@ -15,8 +15,8 @@
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <BaseAddress>1414397952</BaseAddress>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <InstallInGac>true</InstallInGac>
-    <GenerateNativeImage>true</GenerateNativeImage>
+    <!--<InstallInGac>true</InstallInGac>
+    <GenerateNativeImage>true</GenerateNativeImage>-->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NUBuildVS|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

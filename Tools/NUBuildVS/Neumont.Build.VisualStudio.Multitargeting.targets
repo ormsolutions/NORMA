@@ -144,6 +144,26 @@
 				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
 			</PropertyGroup>
 		</When>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v15.0' ">
+			<PropertyGroup>
+				<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.6.2</TargetFrameworkVersion>
+				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">15.0.0.0</TargetVisualStudioAssemblyVersion>
+				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.15.0</TargetVisualStudioAssemblySuffix>
+				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">4.6.2.0</TargetVisualStudioFrameworkAssemblyVersion>
+				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' ">.15.0</TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetVisualStudioLongProductYear Condition=" '$(TargetVisualStudioLongProductYear)' == '' ">2017</TargetVisualStudioLongProductYear>
+				<TargetVisualStudioShortProductYear Condition=" '$(TargetVisualStudioShortProductYear)' == '' ">17</TargetVisualStudioShortProductYear>
+				<TargetVisualStudioLongProductName Condition=" '$(TargetVisualStudioLongProductName)' == '' ">Visual Studio 2017</TargetVisualStudioLongProductName>
+				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2017</TargetVisualStudioShortProductName>
+				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">15.0.0.0</TargetDslToolsAssemblyVersion>
+				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.15.0</TargetDslToolsVersionSuffix>
+				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">15.0</ProjectToolsVersion>
+				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.Core</ProjectToolsAssemblySuffix>
+				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">15.1.0.0</ProjectToolsAssemblyVersion>
+				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' ">.VS2010</GeneratedDslFileSuffix>
+				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
+			</PropertyGroup>
+		</When>
 		<Otherwise>
 			<PropertyGroup>
 				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">*Undefined*</TargetVisualStudioAssemblyVersion>
@@ -181,6 +201,11 @@
 				<DefineConstants>$(DefineConstants);VISUALSTUDIO_9_0;VISUALSTUDIO_10_0;VISUALSTUDIO_11_0;VISUALSTUDIO_12_0;VISUALSTUDIO_14_0</DefineConstants>
 			</PropertyGroup>
 		</When>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v15.0' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);VISUALSTUDIO_9_0;VISUALSTUDIO_10_0;VISUALSTUDIO_11_0;VISUALSTUDIO_12_0;VISUALSTUDIO_14_0;VISUALSTUDIO_15_0</DefineConstants>
+			</PropertyGroup>
+		</When>
 	</Choose>
 
 	<!-- Set up conditional compilation constants for the .NET Framework. -->
@@ -215,6 +240,11 @@
 				<DefineConstants>$(DefineConstants);NET_2_0;NET_3_0;NET_3_5;NET_4_0;NET_4_5;NET_4_6</DefineConstants>
 			</PropertyGroup>
 		</When>
+		<When Condition=" '$(TargetFrameworkVersion)' == 'v4.6.2' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);NET_2_0;NET_3_0;NET_3_5;NET_4_0;NET_4_5;NET_4_6;NET_4_6_1;NET_4_6_2</DefineConstants>
+			</PropertyGroup>
+		</When>
 	</Choose>
 
   <!-- Set up conditional compilation constants for tools version. -->
@@ -242,6 +272,11 @@
     <When Condition=" '$(ProjectToolsVersion)' == '14.0' ">
       <PropertyGroup>
         <DefineConstants>$(DefineConstants);TOOLS_14_0</DefineConstants>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(ProjectToolsVersion)' == '15.0' ">
+      <PropertyGroup>
+        <DefineConstants>$(DefineConstants);TOOLS_15_1</DefineConstants>
       </PropertyGroup>
     </When>
   </Choose>

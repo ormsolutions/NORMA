@@ -114,9 +114,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	{
 		#region Constants
 		private const string REGISTRYROOT_PACKAGE_USER = @"ORM Solutions\Natural ORM Architect";
-#if VISUALSTUDIO_14_0
-        // Key relative to the root local-machine key
-        private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2015\Designer";
+#if VISUALSTUDIO_15_0
+		// Key relative to the root local-machine key
+		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2017\Designer";
+#elif VISUALSTUDIO_14_0
+		// Key relative to the root local-machine key
+		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2015\Designer";
 #elif VISUALSTUDIO_12_0
         // Key relative to the root local-machine key
         private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2013\Designer";
