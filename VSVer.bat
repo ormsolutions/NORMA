@@ -8,6 +8,7 @@ IF NOT "%~1"==""  (
 ::file, so establish it before calling SETLOCAL
 SETLOCAL
 IF "%ProgramFiles(X86)%"=="" (
+	SET ResolvedProgramFiles=%ProgramFiles%
 	SET WOWRegistryAdjust=
 ) ELSE (
 	CALL:SET6432
@@ -21,22 +22,60 @@ IF "%UseToolsVersion%"=="" (
 
 SET HackToolsVersion=12.34
 
-REG DELETE "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" /f 1>NUL 2>&1
-::Ignore error state, delete fails if the key is not there.
-REG ADD "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" 1>NUL 2>&1
-IF ERRORLEVEL 1 (
-	@ECHO Registry write permissions are required for this file.
-	@ECHO Run from a Visual Studio 20xx Command Prompt opened as an Administrator.
-	@PAUSE
+if "%NotRegistryBased%"=="1" (
+	if NOT EXIST "%~dp0%TargetVisualStudioShortProductName%Installation.bat" (
+		ECHO %TargetVisualStudioLongProductName% supports side-by-side installations of the
+		ECHO Visual Studio product. The NORMA build systems needs to know which of these
+		ECHO installations to target.
+		ECHO(
+		ECHO Please create %TargetVisualStudioShortProductName%Installation.bat to set the TargetVisualStudioEdition
+		ECHO and TargetVisualStudioInstallSuffix environment variables.
+		ECHO(
+		ECHO The installed editions are:
+		dir /b "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioLongProductYear%"
+		ECHO(
+		ECHO The installed suffixes are the 8 characters after '%TargetVisualStudioMajorMinorVersion%_' and
+		ECHO before any recognizable suffix like 'Exp' in:
+		dir /b /ad "%LocalAppData%\Microsoft\VisualStudio\%TargetVisualStudioMajorMinorVersion%_*"
+		GOTO:EOF
+	)
+	CALL "%~dp0%TargetVisualStudioShortProductName%Installation"
+
+	IF NOT DEFINED TargetVisualStudioEdition (
+		ECHO The 'TargetVisualStudioEdition' environment variable must be defined.
+		GOTO:EOF
+	)
+) ELSE (
+	REG DELETE "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" /f 1>NUL 2>&1
+	::Ignore error state, delete fails if the key is not there.
+	REG ADD "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" 1>NUL 2>&1
+	IF ERRORLEVEL 1 (
+		@ECHO Registry write permissions are required for this file.
+		@ECHO Run from a Visual Studio 20xx Command Prompt opened as an Administrator.
+		@PAUSE
+		GOTO:EOF
+	)
+	REG COPY "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%UseToolsVersion%" "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" /s /f 1>NUL 2>&1
+	::VS Doesn't like the empty state on the default value, which is how this ends up. Delete the default value.
+	REG DELETE "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" /ve /f 1>NUL 2>&1
 	GOTO:EOF
 )
-REG COPY "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%UseToolsVersion%" "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" /s /f 1>NUL 2>&1
-::VS Doesn't like the empty state on the default value, which is how this ends up. Delete the default value.
-REG DELETE "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" /ve /f 1>NUL 2>&1
+
+CALL:SETVAR "MSBuildDir" "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioLongProductYear%\%TargetVisualStudioEdition%\MSBuild"
+IF NOT EXIST "%MSBuildDir%\%HackToolsVersion%" (
+	md "%MSBuildDir%\%HackToolsVersion%"
+	IF ERRORLEVEL 1 (
+		@ECHO Additional permissions are required to update this directory.
+		@ECHO Run from a Visual Studio 20xx Command Prompt opened as an Administrator.
+		@PAUSE
+		GOTO:EOF
+	)
+	xcopy /S "%MSBuildDir%\%UseToolsVersion%" "%MSBuildDir%\%HackToolsVersion%"
+)
 GOTO:EOF
 
-
 :SET6432
+SET ResolvedProgramFiles=%ProgramFiles(x86)%
 ::If this batch file is already running under a 32 bit process, then the
 ::reg utility will choose the appropriate registry keys without our help.
 ::This also means that this file should not be called to pre-set environment
@@ -98,6 +137,13 @@ GOTO:EOF
 CALL:SETVAR "TargetVisualStudioVersion" "v14.0"
 GOTO:EOF
 
+:_VER_2017
+:_VER_15.0
+:_VER_v15.0
+:_VER_15
+CALL:SETVAR "TargetVisualStudioVersion" "v15.0"
+GOTO:EOF
+
 :_TOOLS_v8.0
 CALL:SETVAR "UseToolsVersion" "2.0"
 GOTO:EOF
@@ -117,4 +163,13 @@ GOTO:EOF
 
 :_TOOLS_v14.0
 CALL:SETVAR "UseToolsVersion" "14.0"
+GOTO:EOF
+
+:_TOOLS_v15.0
+CALL:SETVAR "UseToolsVersion" "15.0"
+CALL:SETVAR "TargetVisualStudioLongProductYear" "2017"
+CALL:SETVAR "TargetVisualStudioLongProductName" "Visual Studio 2017"
+CALL:SETVAR "TargetVisualStudioShortProductName" "VS2017"
+CALL:SETVAR "TargetVisualStudioMajorMinorVersion" "15.0"
+CALL:SETVAR "NotRegistryBased" "1"
 GOTO:EOF
