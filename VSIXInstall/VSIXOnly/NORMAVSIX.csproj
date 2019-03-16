@@ -1,0 +1,807 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <VSIXNamespace>
+        <Namespace Prefix="vsx" Uri="http://schemas.microsoft.com/developer/vsx-schema/2011" />
+    </VSIXNamespace>
+  </PropertyGroup>
+  <Target Name="NORMAGitVerTarget">
+    <Exec Command="$(ProjectDir)..\..\NORMAGitVer.bat" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="NORMAGitVer" />
+    </Exec>
+  </Target>
+  <Target Name="ManifestVersionPoke" DependsOnTargets="NORMAGitVerTarget">
+    <XmlPoke
+      XmlInputPath="source.extension.vsixmanifest"
+      Value="$(NORMAGitVer)"
+      Query="/vsx:PackageManifest/vsx:Metadata/vsx:Identity/@Version"
+      Namespaces="$(VSIXNamespace)"/>
+  </Target>
+  <PropertyGroup>
+    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);ManifestVersionPoke</CreateVsixContainerDependsOn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{F5D6984F-21E0-4238-B183-3EEF70CF589C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NORMAVSIX</RootNamespace>
+    <AssemblyName>NORMA.$(TargetVisualStudioShortProductName)</AssemblyName>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <RegisterOutputPackage>true</RegisterOutputPackage>
+    <CopyBuildOutputToOutputDirectory>false</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+    <ZipPackageCompressionLevel>Normal</ZipPackageCompressionLevel>
+    <StartAction>Program</StartAction>
+    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="PLiX.vsix">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <None Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ItemTemplates\CSharp\1033\NewORMModel\ORMModel.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\CSharp\1033\NewORMModel\ORM.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\General\1033\NewORMModel\ORM.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\General\1033\NewORMModel\ORMModel.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Modeling\1033\NewORMModel\ORM.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Modeling\1033\NewORMModel\ORMModel.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Modeling\1033\ORMDatabaseImport\ORMDatabaseImport.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Modeling\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\VisualBasic\1033\NewORMModel\ORM.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\VisualBasic\1033\NewORMModel\ORMModel.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\VisualC\1033\NewORMModel\ORM.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\VisualC\1033\NewORMModel\ORMModel.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\VisualC\1033\ORMDatabaseImport\ORMDatabaseImport.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\VisualC\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Web\CSharp\1033\NewORMModel\ORM.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Web\CSharp\1033\NewORMModel\ORMModel.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Web\VisualBasic\1033\NewORMModel\ORM.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Web\VisualBasic\1033\NewORMModel\ORMModel.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.ico">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\ORMModel.orm">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ItemTemplates\ORMDatabaseImport.orm">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Assembly installation -->
+    <Content Include="..\$(TargetVisualStudioShortProductName)\ORMDesigner.pkgdef">
+      <Link>ORMDesigner.pkgdef</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\ORMDesignerIcon.png">
+      <Link>ORMDesignerIcon.png</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMDesignerIcon.png</TargetPath>
+      <VSIXSubPath>Resources</VSIXSubPath>
+    </Content>
+    <Content Include="..\ORMDesignerPreview200x200.png">
+      <Link>ORMDesignerPreview200x200.png</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMDesignerPreview.png</TargetPath>
+      <VSIXSubPath>Resources</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\$(OutDir)\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll">
+      <Link>Core.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</TargetPath>
+    </Content>
+    <Content Include="..\..\Oial\OialModel\$(OutDir)\ORMSolutions.ORMArchitect.ORMAbstraction.VS2017.dll">
+      <Link>ORMAbstraction.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.ORMAbstraction.VS2017.dll</TargetPath>
+      <VSIXSubPath>Extensions</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Oial\ORMOialBridge\$(OutDir)\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).dll">
+      <Link>ORMToORMAbstractionBridge.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).dll</TargetPath>
+      <VSIXSubPath>Extensions</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\RelationalModel\DcilModel\$(OutDir)\ORMSolutions.ORMArchitect.RelationalModels.$(TargetVisualStudioShortProductName).dll">
+      <Link>ConceptualDatabase.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.RelationalModels.$(TargetVisualStudioShortProductName).dll</TargetPath>
+      <VSIXSubPath>Extensions</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\RelationalModel\OialDcilBridge\$(OutDir)\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.$(TargetVisualStudioShortProductName).dll">
+      <Link>ORMAbstractionToConceptualDatabaseBridge.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.$(TargetVisualStudioShortProductName).dll</TargetPath>
+      <VSIXSubPath>Extensions</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\EntityRelationship\BarkerERModel\$(OutDir)\ORMSolutions.ORMArchitect.EntityRelationshipModels.$(TargetVisualStudioShortProductName).dll">
+      <Link>EntityRelationship.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.EntityRelationshipModels.$(TargetVisualStudioShortProductName).dll</TargetPath>
+      <VSIXSubPath>Extensions</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\EntityRelationship\OialBerBridge\$(OutDir)\ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.$(TargetVisualStudioShortProductName).dll">
+      <Link>ORMAbstractionToBarkerERBridge.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.$(TargetVisualStudioShortProductName).dll</TargetPath>
+      <VSIXSubPath>Extensions</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\AlternateViews\RelationalView\$(OutDir)\ORMSolutions.ORMArchitect.Views.RelationalView.$(TargetVisualStudioShortProductName).dll">
+      <Link>RelationalView.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.Views.RelationalView.$(TargetVisualStudioShortProductName).dll</TargetPath>
+      <VSIXSubPath>Extensions</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\AlternateViews\BarkerERView\$(OutDir)\ORMSolutions.ORMArchitect.Views.BarkerERView.$(TargetVisualStudioShortProductName).dll">
+      <Link>BarkerERView.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.Views.BarkerERView.$(TargetVisualStudioShortProductName).dll</TargetPath>
+      <VSIXSubPath>Extensions</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\CustomProperties\$(OutDir)\ORMSolutions.ORMArchitect.CustomProperties.$(TargetVisualStudioShortProductName).dll">
+      <Link>CustomProperties.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.CustomProperties.$(TargetVisualStudioShortProductName).dll</TargetPath>
+      <VSIXSubPath>Extensions</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Tools\ORMCustomTool\$(OutDir)\ORMSolutions.ORMArchitect.ORMCustomTool.$(TargetVisualStudioShortProductName).dll">
+      <Link>ORMCustomTool.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.ORMCustomTool.$(TargetVisualStudioShortProductName).dll</TargetPath>
+    </Content>
+    <Content Include="..\..\Tools\DatabaseImport\$(OutDir)\ORMSolutions.ORMArchitect.DatabaseImport.$(TargetVisualStudioShortProductName).dll">
+      <Link>DatabaseImport.dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMSolutions.ORMArchitect.DatabaseImport.$(TargetVisualStudioShortProductName).dll</TargetPath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- ModelingSDK Dependencies -->
+    <Content Include="$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix).dll">
+      <Link>Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix).dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix).dll</TargetPath>
+    </Content>
+    <Content Include="$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix).dll">
+      <Link>Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix).dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix).dll</TargetPath>
+    </Content>
+    <Content Include="$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix).dll">
+      <Link>Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix).dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix).dll</TargetPath>
+    </Content>
+    <Content Include="$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk.Shell$(TargetDslToolsVersionSuffix).dll">
+      <Link>Microsoft.VisualStudio.Modeling.Sdk.Shell$(TargetDslToolsVersionSuffix).dll</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>Microsoft.VisualStudio.Modeling.Sdk.Shell$(TargetDslToolsVersionSuffix).dll</TargetPath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Verbalization files -->
+    <Content Include="..\..\ORMModel\ObjectModel\VerbalizationUntypedSnippets.xsd">
+      <Link>VerbalizationUntypedSnippets.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>VerbalizationUntypedSnippets.xsd</TargetPath>
+      <VSIXSubPath>Xml\Verbalization</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xml">
+      <Link>VerbalizationCoreSnippets.xml</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>_default.xml</TargetPath>
+      <VSIXSubPath>Xml\Verbalization\Core</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreSnippets.xsd">
+      <Link>VerbalizationCoreSnippets.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>VerbalizationCoreSnippets.xsd</TargetPath>
+      <VSIXSubPath>Xml\Verbalization\Core</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreReportSnippets.xml">
+      <Link>VerbalizationCoreReportSnippets.xml</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DefaultReportSnippets.xml</TargetPath>
+      <VSIXSubPath>Xml\Verbalization\Core</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\ObjectModel\VerbalizationCoreSnippets\VerbalizationCoreBrowserNoHyperlinksSnippets.xml">
+      <Link>VerbalizationCoreBrowserNoHyperlinksSnippets.xml</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>BrowserNoHyperlinksSnippets.xml</TargetPath>
+      <VSIXSubPath>Xml\Verbalization\Core</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\ObjectModel\VerbalizationCoreSnippetsDocumentation.html">
+      <Link>VerbalizationCoreSnippetsDocumentation.html</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>VerbalizationCoreSnippetsDocumentation.html</TargetPath>
+      <VSIXSubPath>Xml\Verbalization\Core</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xml">
+      <Link>VerbalizationReportSnippets.xml</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>_default.xml</TargetPath>
+      <VSIXSubPath>Xml\Verbalization\HtmlReport</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\ObjectModel\VerbalizationReportSnippets\VerbalizationReportSnippets.xsd">
+      <Link>VerbalizationReportSnippets.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>VerbalizationReportSnippets.xsd</TargetPath>
+      <VSIXSubPath>Xml\Verbalization\HtmlReport</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xml">
+      <Link>CustomPropertyVerbalizationSnippets.xml</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>_default.xml</TargetPath>
+      <VSIXSubPath>Xml\Verbalization\CustomProperties</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\CustomProperties\VerbalizationSnippets\CustomPropertyVerbalizationSnippets.xsd">
+      <Link>CustomPropertyVerbalizationSnippets.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>CustomPropertyVerbalizationSnippets.xsd</TargetPath>
+      <VSIXSubPath>Xml\Verbalization\CustomProperties</VSIXSubPath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Designer settings and converters -->
+    <Content Include="..\..\ORMModel\Shell\ORMDesignerSettings.xml">
+      <Link>ORMDesignerSettings.xml</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMDesignerSettings.xml</TargetPath>
+      <VSIXSubPath>Xml</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\CoreModelImport.xslt">
+      <Link>CoreModelImport.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>CoreModelImport.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\CoreUpgradeTo2006-01.xslt">
+      <Link>CoreUpgradeTo2006-01.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>CoreUpgradeTo2006-01.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\RootUpgradeTo2006-01.xslt">
+      <Link>RootUpgradeTo2006-01.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>RootUpgradeTo2006-01.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\CoreUpgradeTo2006-04.xslt">
+      <Link>CoreUpgradeTo2006-04.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>CoreUpgradeTo2006-04.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\RootUpgradeTo2006-04.xslt">
+      <Link>RootUpgradeTo2006-04.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>RootUpgradeTo2006-04.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\VisioToCoreModelImport.xslt">
+      <Link>VisioToCoreModelImport.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>VisioToCoreModelImport.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\DCILtoOIAL.xslt">
+      <Link>DCILtoOIAL.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DCILtoOIAL.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\OIALtoORM.xslt">
+      <Link>OIALtoORM.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>OIALtoORM.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\CustomPropertiesPreviewTo2007-11.xslt">
+      <Link>CustomPropertiesPreviewTo2007-11.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>CustomPropertiesPreviewTo2007-11.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\RelationalViewUpgradeTo2007-11.xslt">
+      <Link>RelationalViewUpgradeTo2007-11.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>RelationalViewUpgradeTo2007-11.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Shell\Converters\RemoveOIAL2006-01.xslt">
+      <Link>RemoveOIAL2006-01.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>RemoveOIAL2006-01.xslt</TargetPath>
+      <VSIXSubPath>Xml\Transforms\Converters</VSIXSubPath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Generator Transforms -->
+    <Content Include="..\..\Xml\OIAL\CoRefORM.xslt">
+      <Link>CoRefORM.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIAL\ORMtoOIAL.xslt">
+      <Link>ORMtoOIAL.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\OIALtoCLIProperties.xslt">
+      <Link>OIALtoCLIProperties.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\OIALtoPLiX_GenerateTuple.xslt">
+      <Link>OIALtoPLiX_GenerateTuple.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\OIALtoPLiX_GlobalSupportFunctions.xslt">
+      <Link>OIALtoPLiX_GlobalSupportFunctions.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\OIALtoPLiX_GlobalSupportParameters.xslt">
+      <Link>OIALtoPLiX_GlobalSupportParameters.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\OIALtoPLiX_GenerateGlobalSupportClasses.xslt">
+      <Link>OIALtoPLiX_GenerateGlobalSupportClasses.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\OIALtoPLiX_Abstract.xslt">
+      <Link>OIALtoPLiX_Abstract.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\OIALtoPLiX_InMemory_Implementation.xslt">
+      <Link>OIALtoPLiX_InMemory_Implementation.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\PHP\PHPEntities.xslt">
+      <Link>PHPEntities.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms\PHP</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\PHP\PHPProxies.xslt">
+      <Link>PHPProxies.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms\PHP</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\PHP\PHPServices.xslt">
+      <Link>PHPServices.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms\PHP</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoPLiX\PHP\PHPDataLayer.xslt">
+      <Link>PHPDataLayer.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms\PHP</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DCILtoLinq\LinqToSqlSettings.xslt">
+      <Link>LinqToSqlSettings.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms\LinqToSql</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DCILtoLinq\DCILtoLinqAttributeMapping.xslt">
+      <Link>DCILtoLinqAttributeMapping.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms\LinqToSql</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoXSD\OIALtoXSD.xslt">
+      <Link>OIALtoXSD.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\ConceptualDBtoDCIL\ConceptualDBtoDCIL.xslt">
+      <Link>ConceptualDBtoDCIL.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\OIALtoDCIL\OIALtoDCIL.xslt">
+      <Link>OIALtoDCIL.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\ORM\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DIL\DILSupportFunctions.xslt">
+      <Link>DILSupportFunctions.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\DDILtoSQLStandard.xslt">
+      <Link>DDILtoSQLStandard.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\DDILtoDB2.xslt">
+      <Link>DDILtoDB2.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\DDILtoPostgreSQL.xslt">
+      <Link>DDILtoPostgreSQL.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\DDILtoSQLServer.xslt">
+      <Link>DDILtoSQLServer.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\DDILtoSQLServer_ANSITypes.xslt">
+      <Link>DDILtoSQLServer_ANSITypes.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\DDILtoOracle.xslt">
+      <Link>DDILtoOracle.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\DDILtoMySQL.xslt">
+      <Link>DDILtoMySQL.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\DomainInliner.xslt">
+      <Link>DomainInliner.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\TruthValueTestRemover.xslt">
+      <Link>TruthValueTestRemover.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\UniqueNullableOutliner.xslt">
+      <Link>UniqueNullableOutliner.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\TinyIntRemover.xslt">
+      <Link>TinyIntRemover.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DILToSQL\DCILtoDDIL.xslt">
+      <Link>DCILtoDDIL.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DCILtoHTML\DCILtoTV.xslt">
+      <Link>DCILtoTV.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Xml\DCILtoHTML\TVtoHTML.xslt">
+      <Link>TVtoHTML.xslt</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <VSIXSubPath>Xml\Generators\DIL\Transforms</VSIXSubPath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Schema items, classified as Designer and Generators -->
+    <Content Include="..\..\ORMModel\Shell\ORMDesignerSettings.xsd">
+      <Link>ORMDesignerSettings.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMDesignerSettings.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Load\ORM2Root.xsd">
+      <Link>ORM2Root.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORM2Root.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\ObjectModel\ORM2Core.xsd">
+      <Link>ORM2Core.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORM2Core.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\ShapeModel\ORM2Diagram.xsd">
+      <Link>ORM2Diagram.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORM2Diagram.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\ORMModel\Framework\Shell\DiagramDisplay.xsd">
+      <Link>DiagramDisplay.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DiagramDisplay.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\CustomProperties\CustomProperties.xsd">
+      <Link>CustomProperties.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>CustomProperties.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Oial\OialModel\ORMAbstraction.xsd">
+      <Link>ORMAbstraction.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMAbstraction.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Oial\OialModel\ORMAbstractionDatatypes.xsd">
+      <Link>ORMAbstractionDataTypes.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMAbstractionDataTypes.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\Oial\ORMOialBridge\ORMToORMAbstraction.xsd">
+      <Link>ORMToORMAbstraction.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMToORMAbstraction.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\RelationalModel\DcilModel\ConceptualDatabase.xsd">
+      <Link>ConceptualDatabase.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ConceptualDatabase.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd">
+      <Link>ORMAbstractionToConceptualDatabase.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMAbstractionToConceptualDatabase.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\AlternateViews\RelationalView\RelationalView.xsd">
+      <Link>RelationalView.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>RelationalView.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\EntityRelationship\BarkerErModel\BarkerERModel.xsd">
+      <Link>BarkerERModel.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>BarkerERModel.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\EntityRelationship\OialBerBridge\ORMAbstractionToBarkerERBridge.xsd">
+      <Link>ORMAbstractionToBarkerERBridge.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMAbstractionToBarkerERBridge.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\AlternateViews\BarkerERView\BarkerERView.xsd">
+      <Link>BarkerERView.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>BarkerERView.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\OIAL\OIAL.xsd">
+      <Link>OIAL.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>OIAL.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\OIAL\ORMDataTypes.xsd">
+      <Link>ORMDataTypes.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMDataTypes.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\OIAL\ORMDataTypes-Temporal.xsd">
+      <Link>ORMDataTypes-Temporal.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMDataTypes-Temporal.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd">
+      <Link>OIALtoPLiX_Properties.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>OIALtoPLiX_Properties.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\DIL\DCIL.xsd">
+      <Link>DCIL.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DCIL.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\DIL\DIL.xsd">
+      <Link>DIL.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DIL.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\DIL\DILDT.xsd">
+      <Link>DILDT.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DILDT.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\DIL\DILEP.xsd">
+      <Link>DILEP.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DILEP.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\DIL\DILMS.xsd">
+      <Link>DILMS.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DILMS.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\DIL\DMIL.xsd">
+      <Link>DMIL.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DMIL.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="..\..\XML\DIL\DDIL.xsd">
+      <Link>DDIL.xsd</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>DDIL.xsd</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+    </Content>
+    <Content Include="NORMACatalog.xml">
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>NORMACatalog.xml</TargetPath>
+      <InstallRoot>Schemas</InstallRoot>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <PropertyGroup>
+    <PreBuildEvent>copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\source.extension.vsixmanifest" "$(ProjectDir)\source.extension.vsixmanifest"
+copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\CSharp\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport"
+copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\General\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport"
+copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\Modeling\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport"
+copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\VisualC\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\VisualC\1033\ORMDatabaseImport"
+copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport"
+copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport"
+copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport"</PreBuildEvent>
+    <PostBuildEvent>del "$(ProjectDir)\source.extension.vsixmanifest"
+del "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\*.vstemplate"    
+del "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\*.vstemplate"    
+del "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport\*.vstemplate"    
+del "$(ProjectDir)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport\*.vstemplate"    
+del "$(ProjectDir)\ItemTemplates\VisualC\1033\ORMDatabaseImport\*.vstemplate"    
+del "$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\*.vstemplate"    
+del "$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\*.vstemplate"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

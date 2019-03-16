@@ -124,11 +124,11 @@
 							</Component>
 
 							<Component Id="ORMCustomToolComponent" Guid="9B2F677A-1D14-4E9E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
-								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" ShortName="ORMCstTl.dll" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" Source="..\Tools\ORMCustomTool\bin\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll"
+								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" ShortName="ORMCstTl.dll" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" Source="..\Tools\ORMCustomTool\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll"
 									DefaultVersion="$(var.ProductVersion)" DefaultLanguage="0" KeyPath="yes" Assembly=".net" AssemblyManifest="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" AssemblyApplication="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll" ProcessorArchitecture="msil"/>
-								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).pdb" ShortName="ORMCstTl.pdb" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).pdb" Source="..\Tools\ORMCustomTool\bin\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).pdb"
+								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).pdb" ShortName="ORMCstTl.pdb" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).pdb" Source="..\Tools\ORMCustomTool\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).pdb"
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll"/>
-								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml" ShortName="ORMCstTl.xml" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml" Source="..\Tools\ORMCustomTool\bin\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml"
+								<File Id="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml" ShortName="ORMCstTl.xml" Name="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml" Source="..\Tools\ORMCustomTool\bin\$(var.BuildConfiguration)\ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).xml"
 									DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMCustomTool$(var.VSExt).dll"/>
 								<RegistryKey Root="HKLM" Key="$(var.VSClsidRoot)\{$(var.ORMCustomToolGuid)}">
 									<RegistryValue Type="string" Value="ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"/>
@@ -401,9 +401,9 @@
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.CustomProperties$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSORMAbstractionSchemaComponent" Guid="1AFB3357-16AC-4A2B-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">
-									<File Id="ORMAbstraction.xsd" ShortName="ORMAbstr.xsd" Name="ORMAbstraction.xsd" Source="..\Oial\OialModel\OIAL.xsd"
+									<File Id="ORMAbstraction.xsd" ShortName="ORMAbstr.xsd" Name="ORMAbstraction.xsd" Source="..\Oial\OialModel\ORMAbstraction.xsd"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"/>
-									<File Id="ORMAbstractionDataTypes.xsd" ShortName="ORMAbsDT.xsd" Name="ORMAbstractionDataTypes.xsd" Source="..\Oial\OialModel\OIALDatatypes.xsd"
+									<File Id="ORMAbstractionDataTypes.xsd" ShortName="ORMAbsDT.xsd" Name="ORMAbstractionDataTypes.xsd" Source="..\Oial\OialModel\ORMAbstractionDatatypes.xsd"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.ORMAbstraction$(var.VSExt).dll"/>
 								</Component>
 								<Component Id="NORMAVSORMToORMAbstractionSchemaComponent" Guid="D79F2881-1707-4499-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)" KeyPath="yes">

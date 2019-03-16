@@ -9,7 +9,7 @@ IF NOT EXIST "%RootDir%\Version.bat" (
 CALL "%RootDir%\Version.bat" %*
 
 IF "%VSIXInstallDir%"=="" (
-	IF EXIST "%OldNORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%NORMADir%\bin\Neumont.Tools.ORM.dll")
+	IF EXIST "%OldNORMADir%\bin\Neumont.Tools.ORM.dll" (%RegPkg% /unregister "%OldNORMADir%\bin\Neumont.Tools.ORM.dll")
 	IF EXIST "%OldNORMADir%\bin\Neumont.Tools.ORM.%TargetVisualStudioShortProductName%.dll" (%RegPkg% /unregister "%OldNORMADir%\bin\Neumont.Tools.ORM.%TargetVisualStudioShortProductName%.dll")
 	CALL:_CleanupFile "%OldNORMADir%\bin\Neumont.Tools.ORM.dll"
 	CALL:_CleanupFile "%OldNORMADir%\bin\Neumont.Tools.ORM.pdb"
@@ -19,13 +19,13 @@ IF "%VSIXInstallDir%"=="" (
 SET TargetBaseName=ORMSolutions.ORMArchitect.Core.%TargetVisualStudioShortProductName%
 if EXIST "%VSDir%" (
 	IF "%VSIXInstallDir%"=="" (
-		IF EXIST "%NORMADir%\bin\%TargetBaseName%.dll" (%RegPkg% /unregister "%NORMADir%\bin\%TargetBaseName%.dll")
+		IF EXIST "%NORMABinDir%\%TargetBaseName%.dll" (%RegPkg% /unregister "%NORMABinDir%\%TargetBaseName%.dll")
 		IF NOT EXIST "%NORMADir%" (SET RunDevEnvSetup=True)
 	)
 )
 
-CALL:_MakeDir "%NORMADir%\bin"
-CALL:_RemoveDir "%NORMADir%\bin\1033"
+CALL:_MakeDir "%NORMABinDir%"
+CALL:_RemoveDir "%NORMABinDir%\1033"
 CALL:_MakeDir "%NORMADir%\Help"
 CALL:_MakeDir "%NORMADir%\Xml\Schemas"
 CALL:_MakeDir "%NORMADir%\Xml\Transforms\Converters"
@@ -40,9 +40,9 @@ CALL:_RemoveDir "%DILDir%\..\..\DIL"
 CALL:_MakeDir "%DILDir%\Schemas"
 CALL:_MakeDir "%DILDir%\Transforms"
 
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.dll" "%NORMADir%\bin\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMADir%\bin\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.xml" "%NORMADir%\bin\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.dll" "%NORMABinDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMABinDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.xml" "%NORMABinDir%\"
 CALL:_CleanupFile "%OldNORMADir%\bin\1033\Neumont.Tools.ORMUI.dll"
 
 IF NOT "%ItemTemplatesInstallDir%"=="" (
@@ -54,8 +54,10 @@ IF NOT "%ItemTemplatesInstallDir%"=="" (
 	)
 )
 IF NOT "%VSIXInstallDir%"=="" (
-	IF EXIST "%VSEnvironmentDir%\NewFileItems" (
-		FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\NewFileItems\*.*") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSEnvironmentDir%\NewFileItems\%%~nxA"
+	IF NOT "%VSSideBySide%"=="true" (
+		IF EXIST "%VSEnvironmentDir%\NewFileItems" (
+			FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\NewFileItems\*.*") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSEnvironmentDir%\NewFileItems\%%~nxA"
+		)
 	)
 )
 
@@ -96,7 +98,7 @@ IF EXIST "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreReportSnippets.xml"
 	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Core\DefaultReportSnippets.xml"
 	REN "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreReportSnippets.xml" "DefaultReportSnippets.xml"
 )
-IF EXIST "%NORMADir%\Xml\Verbalization\Core\BrowserNoHyperlinksSnippets.xml" (
+IF EXIST "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreBrowserNoHyperlinksSnippets.xml" (
 	CALL:_CleanupFile "%NORMADir%\Xml\Verbalization\Core\BrowserNoHyperlinksSnippets.xml"
 	REN "%NORMADir%\Xml\Verbalization\Core\VerbalizationCoreBrowserNoHyperlinksSnippets.xml" "BrowserNoHyperlinksSnippets.xml"
 )
@@ -121,7 +123,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 	XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
 
 	IF "%VSIXInstallDir%"=="" (
-		%RegPkg% "%NORMADir%\bin\%TargetBaseName%.dll"
+		%RegPkg% "%NORMABinDir%\%TargetBaseName%.dll"
 
 		REG DELETE "HKLM\%VSRegistryRoot%\InstalledProducts\Natural ORM Architect" /v "UseRegNameAsSplashName" /f 1>NUL
 
@@ -146,27 +148,38 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 		REG ADD "%VSRegistryConfigHive%\%VSRegistryConfigRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "LogicalView" /d "7651A702-06E5-11D1-8EBD-00A0C90F26EA" /f 1>NUL
 		REG ADD "%VSRegistryConfigHive%\%VSRegistryConfigRoot%\XmlDesigners\{EDA9E282-8FC6-4AE4-AF2C-C224FD3AE49B}" /v "Namespace" /d "http://schemas.neumont.edu/ORM/2006-04/ORMRoot" /f 1>NUL
 
-		REG ADD "HKLM\SOFTWARE%WOWRegistryAdjust%\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS" /ve /d "%NORMADir%\bin" /f 1>NUL
-		REG ADD "HKLM\SOFTWARE%WOWRegistryAdjust%\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions" /ve /d "%NORMADir%\bin\Extensions" /f 1>NUL
+		REG ADD "HKLM\SOFTWARE%WOWRegistryAdjust%\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVS" /ve /d "%NORMABinDir%" /f 1>NUL
+		REG ADD "HKLM\SOFTWARE%WOWRegistryAdjust%\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions" /ve /d "%NORMAExtenionsDir%" /f 1>NUL
 	) ELSE (
-		CALL:_MakeDir "%VSIXInstallDir%
-		XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\%TargetVisualStudioShortProductName%\extension.vsixmanifest" "%VSIXInstallDir%\"
-		XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\%TargetVisualStudioShortProductName%\ORMDesigner.pkgdef" "%VSIXInstallDir%\"
-		XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerIcon.png" "%VSIXInstallDir%\"
-		XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerPreview.png" "%VSIXInstallDir%\"
-		REG ADD "%VSRegistryConfigHive%\%VSRegistryConfigRootBase%\%VSRegistryRootVersion%%VSRegistryRootSuffix%\ExtensionManager\EnabledExtensions" /v "efddc549-1646-4451-8a51-e5a5e94d647c,%ProductMajorVersion%.%ProductMinorVersion%" /d "%VSIXInstallDir%\\" /f 1>NUL
+		IF '%VSSideBySide%'=='' (
+			CALL:_MakeDir "%VSIXInstallDir%
+			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\%TargetVisualStudioShortProductName%\extension.vsixmanifest" "%VSIXInstallDir%\"
+			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\%TargetVisualStudioShortProductName%\ORMDesigner.pkgdef" "%VSIXInstallDir%\"
+			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerIcon.png" "%VSIXInstallDir%\"
+			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerPreview.png" "%VSIXInstallDir%\"
+			REG ADD "%VSRegistryConfigHive%\%VSRegistryConfigRootBase%\%VSRegistryRootVersion%%VSRegistryRootSuffix%\ExtensionManager\EnabledExtensions" /v "efddc549-1646-4451-8a51-e5a5e94d647c,%ProductMajorVersion%.%ProductMinorVersion%" /d "%VSIXInstallDir%\\" /f 1>NUL
+		) ELSE (
+			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerIcon.png" "%NORMADir%\"
+			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerPreview200x200.png" "%NORMADir%\"
+			IF EXIST "%NORMADir%\ORMDesignerPreview.png" (
+				CALL:_CleanupFile "%NORMADir%\ORMDesignerPreview.png"
+				REN "%NORMADir%\ORMDesignerPreview200x200.png" "ORMDesignerPreview.png"
+			)
+		)
 	)
 
-	REG ADD "%DesignerRegistryRoot%\DesignerSettings\Core" /v "SettingsFile" /d "%NORMADir%\Xml\ORMDesignerSettings.xml" /f 1>NUL
-	REG ADD "%DesignerRegistryRoot%\DesignerSettings\Core" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
-	REG ADD "%DesignerRegistryRoot%" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
-	REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" /v "Class" /d "ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel" /f 1>NUL
+	IF '%VSSideBySide%'=='' (
+		REG ADD "%DesignerRegistryRoot%\DesignerSettings\Core" /v "SettingsFile" /d "%NORMADir%\Xml\ORMDesignerSettings.xml" /f 1>NUL
+		REG ADD "%DesignerRegistryRoot%\DesignerSettings\Core" /v "ConvertersDir" /d "%NORMADir%\Xml\Transforms\Converters\\" /f 1>NUL
+		REG ADD "%DesignerRegistryRoot%" /v "VerbalizationDir" /d "%NORMADir%\Xml\Verbalization\\" /f 1>NUL
+		REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" /v "Class" /d "ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel" /f 1>NUL
+	)
 
 	REG ADD "HKCR\MIME\Database\Content Type\application/orm+xml" /v "Extension" /d ".orm" /f 1>NUL
 	REG ADD "HKCR\.orm" /ve /d "ormfile" /f 1>NUL
 	REG ADD "HKCR\.orm" /v "Content Type" /d "application/orm+xml" /f 1>NUL
 	REG ADD "HKCR\ormfile" /ve /d "Object-Role Modeling File" /f 1>NUL
-	REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMADir%\bin\%TargetBaseName%.dll,0" /f 1>NUL
+	REG ADD "HKCR\ormfile\DefaultIcon" /ve /d "%NORMABinDir%\%TargetBaseName%.dll,0" /f 1>NUL
 	REG ADD "HKCR\ormfile\shell\open" /ve /d "&Open" /f 1>NUL
 	CALL:_SetShellCommand
 	REG ADD "HKCR\ormfile\shell\open\ddeexec" /ve /d "Open(\"%%1\")" /f 1>NUL
@@ -174,7 +187,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 	REG ADD "HKCR\ormfile\shell\open\ddeexec\topic" /ve /d "system" /f 1>NUL
 
 
-	IF /I "%RunDevEnvSetup%"=="True" (ECHO Running 'devenv.exe /RootSuffix "%VSRegistryRootSuffix%" /Setup'... This may take a few minutes... && "%VSEnvironmentPath%" /RootSuffix "%VSRegistryRootSuffix%" /Setup)
+	IF /I "%RunDevEnvSetup%|%VSSideBySide%"=="True|" (ECHO Running 'devenv.exe /RootSuffix "%VSRegistryRootSuffix%" /Setup'... This may take a few minutes... && "%VSEnvironmentPath%" /RootSuffix "%VSRegistryRootSuffix%" /Setup)
 )
 
 GOTO:EOF

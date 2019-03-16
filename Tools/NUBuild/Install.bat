@@ -12,7 +12,7 @@ if EXIST "%VSDIR%" (
 
 XCOPY /Y /D /V /Q "%RootDir%\Neumont.Build.targets" "%ResolvedMSBuildExtensionsPath%\"
 
-IF "%VSSideBySide%"=="1" (
+IF "%VSSideBySide%"=="true" (
 	:: Not GAC Installed
 	copy /y "%RootDir%\bin\Neumont.Build%ProjectToolsAssemblySuffix%.dll" "%ResolvedMSBuildExtensionsPath%"
 	GOTO:EOF

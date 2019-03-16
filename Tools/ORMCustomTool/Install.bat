@@ -8,20 +8,20 @@ SET NetTiersDir=%TrunkDir%\CodeSmith\NetTiersPort
 SET NORMAGenerators=HKLM\SOFTWARE%WOWRegistryAdjust%\ORM Solutions\Natural ORM Architect for %TargetVisualStudioLongProductName%\Generators
 
 :: Delete old dlls
-DEL /F /Q "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.dll.delete.*" 1>NUL 2>&1
-CALL:_CleanupFile "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.dll"
-CALL:_CleanupFile "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.pdb"
-CALL:_CleanupFile "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.xml"
-IF EXIST "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.dll" (REN "%NORMADir%\bin\ORMSolutions.ORMArchitect.ORMCustomTool.dll" "ORMSolutions.ORMArchitect.ORMCustomTool.dll.delete.%RANDOM%")
+DEL /F /Q "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.dll.delete.*" 1>NUL 2>&1
+CALL:_CleanupFile "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.dll"
+CALL:_CleanupFile "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.pdb"
+CALL:_CleanupFile "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.xml"
+IF EXIST "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.dll" (REN "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.dll" "ORMSolutions.ORMArchitect.ORMCustomTool.dll.delete.%RANDOM%")
 
 :: Install Custom Tool DLL
 SET TargetBaseName=ORMSolutions.ORMArchitect.ORMCustomTool.%TargetVisualStudioShortProductName%
-DEL /F /Q "%NORMADir%\bin\%TargetBaseName%.dll.delete.*" 1>NUL 2>&1
-IF EXIST "%NORMADir%\bin\%TargetBaseName%.dll" (REN "%NORMADir%\bin\%TargetBaseName%.dll" "%TargetBaseName%.dll.delete.%RANDOM%")
-XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.dll" "%NORMADir%\bin\"
-XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMADir%\bin\"
+DEL /F /Q "%NORMABinDir%\%TargetBaseName%.dll.delete.*" 1>NUL 2>&1
+IF EXIST "%NORMABinDir%\%TargetBaseName%.dll" (REN "%NORMABinDir%\%TargetBaseName%.dll" "%TargetBaseName%.dll.delete.%RANDOM%")
+XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.dll" "%NORMABinDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMABinDir%\"
 :: For some reason, the next copy is randomly giving errors about half the time. They can be safely ignored, so they've been redirected to NUL.
-XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.xml" "%NORMADir%\bin\" 2>NUL
+XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.xml" "%NORMABinDir%\" 2>NUL
 CALL:_InstallCustomToolReg "%VSRegistryRootVersion%"
 CALL:_InstallExtenderReg "%VSRegistryRootVersion%"
 IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallCustomToolReg "%VSRegistryRootVersion%%VSRegistryRootSuffix%")
@@ -161,7 +161,7 @@ REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "ThreadingModel" /d "Both" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Class" /d "ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool" 1>NUL 2>&1
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\%TargetBaseName%.dll" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "CodeBase" /d "%NORMABinDir%\%TargetBaseName%.dll" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" 1>NUL 2>&1
 GOTO:EOF
 
@@ -170,7 +170,7 @@ REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /ve /d "%SystemRoot%\System32\mscoree.dll" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "ThreadingModel" /d "Both" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Class" /d "ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
-REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "CodeBase" /d "%NORMADir%\bin\%TargetBaseName%.dll" 1>NUL 2>&1
+REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "CodeBase" /d "%NORMABinDir%\%TargetBaseName%.dll" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32" /f /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "Class" /d "ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider" 1>NUL 2>&1
 REG ADD "HKLM\%VSRegistryRootBase%\%~1\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32\1.0.0.0" /f /v "CodeBase" /d "%TargetBaseName%.dll" 1>NUL 2>&1

@@ -54,7 +54,11 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				XmlReaderSettings.XmlResolver = XslORMGenerator.XmlResolver;
 			}
 
-			public XslORMGenerator(RegistryKey generatorKey)
+			public XslORMGenerator(RegistryKey generatorKey
+#if VISUALSTUDIO_15_0
+				, RegistryKey rootKey
+#endif
+				)
 			{
 				// TODO: We need a better way to localize DisplayName and DisplayDescription for XSLT stylesheets...
 				string outputFormat;
@@ -112,8 +116,40 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				this._companionOutputFormats = Array.AsReadOnly<string>(companionOutputFormats);
 
 				this._transform = new XslCompiledTransform(System.Diagnostics.Debugger.IsAttached);
-
-				Uri transformUri = XmlResolver.ResolveUri(null, generatorKey.GetValue("TransformUri", null) as string);
+				string transformLocation = generatorKey.GetValue("TransformUri", null) as string;
+#if VISUALSTUDIO_15_0
+				// Enable a redirection to a different registry key to support transforms registered with other extensions
+				while (!string.IsNullOrEmpty(transformLocation) && transformLocation.StartsWith("reg:", StringComparison.OrdinalIgnoreCase))
+				{
+					// This must a subkey relative to the application registry root, ending with a @attr name or no @ for the default value
+					transformLocation = transformLocation.Substring(4);
+					int attrLoc = transformLocation.LastIndexOf('@');
+					string attrValue;
+					string keyName;
+					if (attrLoc != -1)
+					{
+						attrValue = transformLocation.Substring(attrLoc + 1);
+						keyName = transformLocation.Substring(0, attrLoc); ;
+					}
+					else
+					{
+						attrValue = "";
+						keyName = transformLocation;
+					}
+					using (RegistryKey redirectKey = rootKey.OpenSubKey(keyName, RegistryKeyPermissionCheck.ReadSubTree))
+					{
+						if (redirectKey == null)
+						{
+							transformLocation = "";
+						}
+						else
+						{
+							transformLocation = redirectKey.GetValue(attrValue) as string ?? "";
+						}
+					}
+				}
+#endif
+				Uri transformUri = XmlResolver.ResolveUri(null, transformLocation);
 				this._transformCanonicalUri = transformUri.ToString();
 				if (transformUri.IsFile || transformUri.IsUnc)
 				{

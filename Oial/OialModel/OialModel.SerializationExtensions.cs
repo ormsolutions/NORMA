@@ -50,10 +50,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 			string[,] ret = new string[2, 3];
 			ret[0, 0] = "oial";
 			ret[0, 1] = "http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core";
-			ret[0, 2] = "OIAL.xsd";
+			ret[0, 2] = "ORMAbstraction.xsd";
 			ret[1, 0] = "odt";
 			ret[1, 1] = "http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core";
-			ret[1, 2] = "OIALDatatypes.xsd";
+			ret[1, 2] = "ORMAbstractionDatatypes.xsd";
 			return ret;
 		}
 		string[,] ICustomSerializedDomainModel.GetCustomElementNamespaces()

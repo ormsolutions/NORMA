@@ -10,6 +10,8 @@ IF "%ProgramFiles(X86)%"=="" (
 	CALL:SET6432
 )
 
+FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0\NORMAGitVer.bat" "%~dp0."`) DO SET NORMAGitVer=%%i
+
 :: TargetVisualStudioVersion settings:
 ::   v8.0 = Visual Studio 2005 (Code Name "Whidbey")
 ::   v9.0 = Visual Studio 2008 (Code Name "Orcas")
@@ -32,14 +34,6 @@ IF NOT DEFINED FrameworkDir (CALL:_SetupVsVars)
 :: for there to be parentheses in the %ProgramFiles% path (and there are by default on x64), which
 :: causes a syntax error. Therefore, we leave the parentheses off here.
 IF NOT DEFINED TrunkDir SET TrunkDir=%~dp0.
-IF NOT DEFINED NORMADir SET NORMADir=%ResolvedProgramFiles%\ORM Solutions\ORM Architect for %TargetVisualStudioLongProductName%
-IF NOT DEFINED OldNORMADir SET OldNORMADir=%ResolvedProgramFiles%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%
-IF NOT DEFINED NORMAExtensionsDir SET NORMAExtensionsDir=%NORMADir%\bin\Extensions
-IF NOT DEFINED ORMDir SET ORMDir=%ResolvedCommonProgramFiles%\Neumont\ORM
-IF NOT DEFINED DILDir SET DILDir=%ResolvedCommonProgramFiles%\Neumont\DIL
-IF NOT DEFINED PLiXDir SET PLiXDir=%ResolvedCommonProgramFiles%\Neumont\PLiX
-IF NOT DEFINED ORMTransformsDir SET ORMTransformsDir=%ORMDir%\Transforms
-IF NOT DEFINED DILTransformsDir SET DILTransformsDir=%DILDir%\Transforms
 
 IF NOT DEFINED VSRegistryRootBase (SET VSRegistryRootBase=SOFTWARE%WOWRegistryAdjust%\Microsoft\VisualStudio)
 IF NOT DEFINED VSRegistryRootVersion (SET VSRegistryRootVersion=%TargetVisualStudioMajorMinorVersion%)
@@ -53,7 +47,7 @@ IF NOT DEFINED VSRegistryConfigRootBase (
 )
 IF NOT DEFINED VSRegistryConfigRoot (SET VSRegistryConfigRoot=%VSRegistryConfigRootBase%\%VSRegistryRootVersion%%VSRegistryRootSuffix%%VSRegistryConfigDecorator%)
 
-IF NOT "%VSSideBySide%"=="1" (
+IF NOT "%VSSideBySide%"=="true" (
 	CALL "%TrunkDir%\SetFromRegistry.bat" "VSEnvironmentPath" "%VSRegistryConfigHive%\%VSRegistryConfigRoot%\Setup\VS" "EnvironmentPath" "f"
 	CALL "%TrunkDir%\SetFromRegistry.bat" "VSEnvironmentDir" "%VSRegistryConfigHive%\%VSRegistryConfigRoot%\Setup\VS" "EnvironmentDirectory" "f"
 	CALL "%TrunkDir%\SetFromRegistry.bat" "VSDir" "%VSRegistryConfigHive%\%VSRegistryConfigRoot%\Setup\VS" "ProductDir" "f"
@@ -87,23 +81,23 @@ IF NOT "%VSSideBySide%"=="1" (
 		GOTO:EOF
 	)
 )
-IF "%VSSideBySide%"=="1" (
+IF "%VSSideBySide%"=="true" (
 	CALL:SETVAR "VSDir" "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioLongProductYear%\%TargetVisualStudioEdition%\"
 )
-IF "%VSSideBySide%"=="1" (
+IF "%VSSideBySide%"=="true" (
 	CALL:SETVAR "VSEnvironmentDir" "%VSDir%Common7\IDE\"
 	IF NOT DEFINED MSBuildExtensionsPath CALL:SETVAR "MSBuildExtensionsPath" "%VSDir%MSBuild"
 ) ELSE (
 	IF NOT DEFINED MSBuildExtensionsPath CALL:SETVAR "MSBuildExtensionsPath" "%ResolvedProgramFiles%\MSBuild"
 )
-IF "%VSSideBySide%"=="1" (
+IF "%VSSideBySide%"=="true" (
 	CALL:SETVAR "VSEnvironmentPath" "%VSEnvironmentDir%devenv.exe"
 	CALL:SETVAR "VSItemTemplatesDir" "%VSEnvironmentDir%ItemTemplates"
 	CALL:SETVAR "VSIPDir" "%VSDir%VSSDK\"
 )
 IF NOT DEFINED LocalAppData SET LocalAppData=%UserProfile%\Local Settings\Application Data
 IF NOT "%VSIXExtensionDir%"=="" (
-	IF "%VSSideBySide%"=="1" (
+	IF "%VSSideBySide%"=="true" (
 		CALL:SETVAR "VSIXInstallDir" "%LocalAppData%\Microsoft\VisualStudio\%TargetVisualStudioMajorMinorVersion%_%TargetVisualStudioInstallSuffix%%VSRegistryRootSuffix%\%VSIXExtensionDir%"
 	) ELSE (
 		IF "%VSRegistryRootSuffix%"=="" (
@@ -124,7 +118,7 @@ IF "%VSIXInstallDir%"=="" (
 )
 IF ERRORLEVEL 1 %COMSPEC% /c
 
-IF NOT "%VSSideBySide%"=="1" (
+IF NOT "%VSSideBySide%"=="true" (
 	CALL "%TrunkDir%\SetFromRegistry.bat" "VSIPDir" "HKLM\%VSRegistryRootBase%\VSIP\%VSRegistryRootVersion%" "InstallDir" "f"
 	:: Fallback, enable building 8.0 without an 8.0 installation
 	CALL "%TrunkDir%\SetFromRegistry.bat" "VSIPDir" "HKLM\%VSRegistryRootBase%\VSIP\9.0" "InstallDir" "f"
@@ -132,14 +126,41 @@ IF NOT "%VSSideBySide%"=="1" (
 
 IF NOT DEFINED RegPkg (SET RegPkg="%VSIPDir%\VisualStudioIntegration\Tools\Bin\regpkg.exe" /root:"%VSRegistryRoot%")
 
+IF "%VSSideBySide%"=="true" (
+	CALL:_SideBySideVars
+) ELSE (
+	CALL:_NotSideBySideVars
+)
 GOTO:EOF
-
 
 :_SetupVsVars
 :: Set up the build environment.
 CALL "%%VS%TargetVisualStudioMajorMinorVersion:.=%COMNTOOLS%%\vsvars32.bat"
 GOTO:EOF
 
+:_NotSideBySideVars
+IF NOT DEFINED NORMADir SET NORMADir=%ResolvedProgramFiles%\ORM Solutions\ORM Architect for %TargetVisualStudioLongProductName%
+IF NOT DEFINED NORMABinDir SET NORMABinDir=%NORMADir%\bin
+IF NOT DEFINED OldNORMADir SET OldNORMADir=%ResolvedProgramFiles%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%
+IF NOT DEFINED NORMAExtensionsDir SET NORMAExtensionsDir=%NORMADir%\bin\Extensions
+IF NOT DEFINED ORMDir SET ORMDir=%ResolvedCommonProgramFiles%\Neumont\ORM
+IF NOT DEFINED DILDir SET DILDir=%ResolvedCommonProgramFiles%\Neumont\DIL
+IF NOT DEFINED PLiXDir SET PLiXDir=%ResolvedCommonProgramFiles%\Neumont\PLiX
+IF NOT DEFINED ORMTransformsDir SET ORMTransformsDir=%ORMDir%\Transforms
+IF NOT DEFINED DILTransformsDir SET DILTransformsDir=%DILDir%\Transforms
+GOTO:EOF
+
+:_SideBySideVars
+IF NOT DEFINED NORMADir SET NORMADir=%VSIXInstallDir%
+IF NOT DEFINED NORMABinDir SET NORMABinDir=%NORMADir%
+IF NOT DEFINED OldNORMADir SET OldNORMADir=%ResolvedProgramFiles%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%
+IF NOT DEFINED NORMAExtensionsDir SET NORMAExtensionsDir=%NORMADir%\Extensions
+IF NOT DEFINED ORMDir SET ORMDir=%ResolvedCommonProgramFiles%\Neumont\ORM
+IF NOT DEFINED DILDir SET DILDir=%ResolvedCommonProgramFiles%\Neumont\DIL
+IF NOT DEFINED PLiXDir SET PLiXDir=%ResolvedCommonProgramFiles%\Neumont\PLiX
+IF NOT DEFINED ORMTransformsDir SET ORMTransformsDir=%ORMDir%\Transforms
+IF NOT DEFINED DILTransformsDir SET DILTransformsDir=%DILDir%\Transforms
+GOTO:EOF
 
 :_SetupVersionVars_v8.0
 IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v2.0)
@@ -259,8 +280,8 @@ IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.Core)
 IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=15.1.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
-IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0)
-IF NOT DEFINED VSSideBySide (SET VSSideBySide=1)
+IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0.0.0)
+IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
 GOTO:EOF
 
 :SET6432

@@ -11,7 +11,7 @@ IF NOT EXIST "%ResolvedMSBuildExtensionsPath%" (MKDIR "%ResolvedMSBuildExtension
 XCOPY /Y /D /V /Q "%RootDir%\Neumont.Build.VisualStudio.targets" "%ResolvedMSBuildExtensionsPath%\"
 XCOPY /Y /D /V /Q "%RootDir%\Neumont.Build.VisualStudio.Multitargeting.targets" "%ResolvedMSBuildExtensionsPath%\"
 
-IF "%VSSideBySide%"=="1" (
+IF "%VSSideBySide%"=="true" (
 	:: Not GAC Installed
 	copy /y "%RootDir%\bin\Neumont.Build.VisualStudio%ProjectToolsAssemblySuffix%.dll" "%ResolvedMSBuildExtensionsPath%"
 	GOTO:EOF
