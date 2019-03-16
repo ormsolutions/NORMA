@@ -115,8 +115,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		#region Constants
 		private const string REGISTRYROOT_PACKAGE_USER = @"ORM Solutions\Natural ORM Architect";
 #if VISUALSTUDIO_15_0
-		// Key relative to the root local-machine key
-		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2017\Designer";
+		// Key relative to the VS-provided application registry root
+		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"ORM Solutions\Natural ORM Architect\Designer";
 #elif VISUALSTUDIO_14_0
 		// Key relative to the root local-machine key
 		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2015\Designer";
@@ -238,7 +238,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			get
 			{
 
-#if VISUALSTUDIO_10_0
+#if VISUALSTUDIO_10_0 && !VISUALSTUDIO_15_0
 				return Registry.LocalMachine.OpenSubKey(REGISTRYROOT_PACKAGE_SETTINGS);
 #else
 				using (RegistryKey rootKey = ApplicationRegistryRoot)

@@ -15,7 +15,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <InstallInGac>true</InstallInGac>
+    <InstallInGac Condition="'$(VSSideBySide)'!='true'">true</InstallInGac>
     <TrunkDir Condition=" '$(TrunkDir)' == '' ">$(MSBuildProjectDirectory)\..</TrunkDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,7 +40,7 @@
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <HintPath>..\ORMModel\$(OutDir)\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />

@@ -2,9 +2,9 @@ Windows Registry Editor Version 5.00
 
 [$RootKey$\Packages\{efddc549-1646-4451-8a51-e5a5e94d647c}]
 @="ORM Solutions Natural Object-Role Modeling Architect Package"
-"InprocServer32"="%windir%\\system32\\mscoree.dll"
+"InprocServer32"="$WinDir$\System32\mscoree.dll"
 "Class"="ORMSolutions.ORMArchitect.Core.Shell.ORMDesignerPackage"
-"Assembly"="ORMSolutions.ORMArchitect.Core.VS2017, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f"
+"CodeBase"="$PackageFolder$\ORMSolutions.ORMArchitect.Core.VS2017.dll"
 [$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}]
 "Package"="{efddc549-1646-4451-8a51-e5a5e94d647c}"
 [$RootKey$\Editors\{eda9e282-8fc6-4ae4-af2c-c224fd3ae49b}\Extensions]
@@ -192,3 +192,402 @@ Windows Registry Editor Version 5.00
 "Namespace"="http://schemas.neumont.edu/ORM/2006-04/ORMRoot"
 [$RootKey$\ShellFileAssociations\.orm]
 @="ormfile"
+
+;ORMCustomTool Registration
+[$RootKey$\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}]
+@="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"
+[$RootKey$\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32]
+@="$WinDir$\System32\mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"
+"CodeBase"="$PackageFolder$\ORMSolutions.ORMArchitect.ORMCustomTool.VS2017.dll"
+[$RootKey$\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}]
+@="ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"
+[$RootKey$\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32]
+@="$WinDir$\System32\mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"
+"CodeBase"="$PackageFolder$\ORMSolutions.ORMArchitect.ORMCustomTool.VS2017.dll"
+
+;Microsoft Visual C# Package ORM Custom Tool
+[$RootKey$\Generators\{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}\ORMCustomTool]
+@="ORM Custom Tool"
+"CLSID"="{977BD01E-F2B4-4341-9C47-459420624A20}"
+[$RootKey$\Generators\{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}\.orm]
+@="ORMCustomTool"
+;.NET Standard/Core C# project type
+;[$RootKey$\Generators\{9A19103F-16F7-4668-BE54-9A1E7A4F7556}\ORMCustomTool]
+;@="ORM Custom Tool"
+;"CLSID"="{977BD01E-F2B4-4341-9C47-459420624A20}"
+;[$RootKey$\Generators\{9A19103F-16F7-4668-BE54-9A1E7A4F7556}\.orm]
+;@="ORMCustomTool"
+;C# prjCATIDCSharpFileBrowseObject extender
+[$RootKey$\Extenders\{8D58E6AF-ED4E-48B0-8C7B-C74EF0735451}\ORMCustomTool]
+@="{6FDCC073-20C2-4435-9B2E-9E70451C81D8}"
+
+;Microsoft Visual Basic Package ORM Custom Tool
+[$RootKey$\Generators\{164B10B9-B200-11D0-8C61-00A0C91E29D5}\ORMCustomTool]
+@="ORM Custom Tool"
+"CLSID"="{977BD01E-F2B4-4341-9C47-459420624A20}"
+[$RootKey$\Generators\{164B10B9-B200-11D0-8C61-00A0C91E29D5}\.orm]
+@="ORMCustomTool"
+;.NET Standard/Core VB project type
+;[$RootKey$\Generators\{778DAE3C-4631-46EA-AA77-85C1314464D9}\ORMCustomTool]
+;@="ORM Custom Tool"
+;"CLSID"="{977BD01E-F2B4-4341-9C47-459420624A20}"
+;[$RootKey$\Generators\{778DAE3C-4631-46EA-AA77-85C1314464D9}\.orm]
+;@="ORMCustomTool"
+;VB prjCATIDVBFileBrowseObject
+[$RootKey$\Extenders\{EA5BD05D-3C72-40A5-95A0-28A2773311CA}\ORMCustomTool]
+@="{6FDCC073-20C2-4435-9B2E-9E70451C81D8}"
+
+;DatabaseImport assembly registration
+[$RootKey$\RuntimeConfiguration\dependentAssembly\codeBase\{0BDDEA7A-835C-4050-9659-FC10B3DE3569}]
+"CodeBase"="$PackageFolder$\ORMSolutions.ORMArchitect.DatabaseImport.VS2017.dll"
+"Culture"="neutral"
+"Name"="ORMSolutions.ORMArchitect.DatabaseImport.VS2017"
+"PublicKeyToken"="957d5b7d5e79e25f"
+"Version"="1.0.0.0"
+
+;Core extension and converter registration
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer]
+"VerbalizationDir"="$PackageFolder$\Xml\Verbalization\"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\DesignerSettings]
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\DesignerSettings\Core]
+"SettingsFile"="$PackageFolder$\Xml\ORMDesignerSettings.xml"
+"ConvertersDir"="$PackageFolder$\Xml\Transforms\Converters\"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions]
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/2007-11/CustomProperties]
+"Class"="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel"
+"CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.CustomProperties.VS2017.dll"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/2007-11/RelationalView]
+"Class"="ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel"
+"CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.Views.RelationalView.VS2017.dll"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/2008-05/BarkerERView]
+"Class"="ORMSolutions.ORMArchitect.Views.BarkerERView.BarkerERShapeDomainModel"
+"CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.Views.BarkerERView.VS2017.dll"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay]
+"Class"="ORMSolutions.ORMArchitect.Framework.Shell.DiagramDisplayDomainModel"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core]
+"Class"="ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel"
+"CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.ORMAbstraction.VS2017.dll"
+"SecondaryNamespace"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase]
+"Class"="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel"
+"CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.VS2017.dll"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction]
+"Class"="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel"
+"CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.VS2017.dll"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER]
+"Class"="ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel"
+"CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.VS2017.dll"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker]
+"Class"="ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker.BarkerDomainModel"
+"CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.EntityRelationshipModels.VS2017.dll"
+"SecondaryNamespace"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase]
+"Class"="ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel"
+"CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.RelationalModels.VS2017.dll"
+"SecondaryNamespace"=dword:00000001
+
+;Generator registration
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\CLIPropertiesToPLiXAbstract]
+"Type"="XSLT"
+"OfficialName"="CLIPropertiesToPLiXAbstract"
+"DisplayName"="CLIProperties to PLiX Abstract"
+"DisplayDescription"="Transforms a CLI Properties file to Abstract PLiX"
+"FileExtension"=".Abstract.PLiX.xml"
+"SourceInputFormat"="CLIProperties"
+"ProvidesOutputFormat"="PLiX_Abstract"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\OIALtoPLiX_Abstract.xslt"
+"CustomTool"="NUPlixLoader"
+"GeneratesSupportFile"=dword:00000001
+"ReferenceInputFormats"=hex(7):4f,00,52,00,4d,00,00,00,00,00
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\CLIPropertiesToPLiXInMemory]
+"Type"="XSLT"
+"OfficialName"="CLIPropertiesToPLiXInMemory"
+"DisplayName"="CLIProperties to PLiX In Memory"
+"DisplayDescription"="Transforms a CLI Properties file to InMemory PLiX"
+"FileExtension"=".Implementation.PLiX.xml"
+"SourceInputFormat"="CLIProperties"
+"ProvidesOutputFormat"="PLiX_Implementation"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\OIALtoPLiX_InMemory_Implementation.xslt"
+"CustomTool"="NUPlixLoader"
+"ReferenceInputFormats"=hex(7):4f,00,52,00,4d,00,00,00,00,00
+"CompanionOutputFormats"=hex(7):50,00,4c,00,69,00,58,00,5f,00,41,00,62,00,73,\
+  00,74,00,72,00,61,00,63,00,74,00,00,00,00,00
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\ConceptualDBtoDCL]
+"Type"="XSLT"
+"OfficialName"="ConceptualDBtoDCL"
+"DisplayName"="ConceptualDB to DCIL"
+"DisplayDescription"="Transforms an ORM file with the ConceptualDB extension to DCIL."
+"FileExtension"=".DCIL.xml"
+"SourceInputFormat"="ORM http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
+"ProvidesOutputFormat"="DCIL"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\ConceptualDBtoDCIL.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\CoRefORM]
+"Type"="XSLT"
+"OfficialName"="CoRefORM"
+"DisplayName"="ORM Co-Referencer"
+"DisplayDescription"="Co-references (binarizes) an ORM file."
+"FileExtension"=".CoRef.orm"
+"SourceInputFormat"="ORM"
+"ProvidesOutputFormat"="CoRefORM"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\CoRefORM.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DCILtoDDIL]
+"Type"="XSLT"
+"OfficialName"="DCILtoDDIL"
+"DisplayName"="DCIL to DDIL"
+"DisplayDescription"="Transforms DCIL to DDIL."
+"FileExtension"=".DDIL.xml"
+"SourceInputFormat"="DCIL"
+"ProvidesOutputFormat"="DDIL"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\DCILtoDDIL.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DCILtoLinqAttributeMapping]
+"Type"="XSLT"
+"OfficialName"="DCILtoLinqAttributeMapping"
+"DisplayName"="DCIL to LinqToSql"
+"DisplayDescription"="Transforms DCIL to a LinqToSql-targeted object model"
+"FileExtension"=".LinqToSqlAttributeMapping.PLiX.xml"
+"SourceInputFormat"="DCIL"
+"ProvidesOutputFormat"="LinqToSqlAttributeMapping"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\LinqToSql\DCILtoLinqAttributeMapping.xslt"
+"CustomTool"="NUPlixLoader"
+"ReferenceInputFormats"=hex(7):4c,00,69,00,6e,00,71,00,54,00,6f,00,53,00,71,00,\
+  6c,00,53,00,65,00,74,00,74,00,69,00,6e,00,67,00,73,00,00,00,00,00
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DCILtoTV]
+"Type"="XSLT"
+"OfficialName"="DCILtoTV"
+"DisplayName"="DCIL to TableView"
+"DisplayDescription"="Transforms DCIL to TableView."
+"FileExtension"=".TableView.xml"
+"SourceInputFormat"="DCIL"
+"ProvidesOutputFormat"="TV"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\DCILtoTV.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DDILtoDB2]
+"Type"="XSLT"
+"OfficialName"="DDILtoDB2"
+"DisplayName"="DDIL to DB2"
+"DisplayDescription"="Transforms DDIL to DB2-dialect SQL."
+"FileExtension"=".DB2.sql"
+"SourceInputFormat"="DDIL"
+"ProvidesOutputFormat"="SQL_DB2"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\DDILtoDB2.xslt"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DDILtoMySQL]
+"Type"="XSLT"
+"OfficialName"="DDILtoMySQL"
+"DisplayName"="DDIL to MySQL"
+"DisplayDescription"="Transforms DDIL to MySQL-dialect SQL."
+"FileExtension"=".MySQL.sql"
+"SourceInputFormat"="DDIL"
+"ProvidesOutputFormat"="SQL_MySQL"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\DDILtoMySQL.xslt"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DDILtoOracle]
+"Type"="XSLT"
+"OfficialName"="DDILtoOracle"
+"DisplayName"="DDIL to Oracle"
+"DisplayDescription"="Transforms DDIL to Oracle-dialect SQL."
+"FileExtension"=".Oracle.sql"
+"SourceInputFormat"="DDIL"
+"ProvidesOutputFormat"="SQL_Oracle"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\DDILtoOracle.xslt"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DDILtoPostgreSQL]
+"Type"="XSLT"
+"OfficialName"="DDILtoPostgreSQL"
+"DisplayName"="DDIL to PostgreSQL"
+"DisplayDescription"="Transforms DDIL to PostgreSQL-dialect SQL."
+"FileExtension"=".PostgreSQL.sql"
+"SourceInputFormat"="DDIL"
+"ProvidesOutputFormat"="SQL_PostgreSQL"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\DDILtoPostgreSQL.xslt"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DDILtoSQLServer]
+"Type"="XSLT"
+"OfficialName"="DDILtoSQLServer"
+"DisplayName"="DDIL to SQL Server"
+"DisplayDescription"="Transforms DDIL to SQL Server-dialect SQL."
+"FileExtension"=".SQLServer.sql"
+"SourceInputFormat"="DDIL"
+"ProvidesOutputFormat"="SQL_SQLServer"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\DDILtoSQLServer.xslt"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DDILtoSQLServerANSI]
+"Type"="XSLT"
+"OfficialName"="DDILtoSQLServerANSI"
+"DisplayName"="DDIL to SQL Server (ANSI Types)"
+"DisplayDescription"="Transforms DDIL to SQL Server-dialect SQL with ANSI data types."
+"FileExtension"=".SQLServer.sql"
+"SourceInputFormat"="DDIL"
+"ProvidesOutputFormat"="SQL_SQLServer"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\DDILtoSQLServer_ANSITypes.xslt"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\DDILtoSQLStandard]
+"Type"="XSLT"
+"OfficialName"="DDILtoSQLStandard"
+"DisplayName"="DDIL to SQL Standard"
+"DisplayDescription"="Transforms DDIL to Standard-dialect SQL."
+"FileExtension"=".SQLStandard.sql"
+"SourceInputFormat"="DDIL"
+"ProvidesOutputFormat"="SQL_SQLStandard"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\DDILtoSQLStandard.xslt"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\LinqToSqlSettings]
+"Type"="XSLT"
+"OfficialName"="LinqToSqlSettings"
+"DisplayName"="LinqToSql Settings"
+"DisplayDescription"="Default settings file for LinqToSql generators"
+"FileExtension"=".LinqToSqlSettings.xml"
+"SourceInputFormat"="ORM"
+"ProvidesOutputFormat"="LinqToSqlSettings"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\LinqToSql\LinqToSqlSettings.xslt"
+"GeneratesSupportFile"=dword:00000001
+"GeneratesOnce"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\OIALtoCLIProperties]
+"Type"="XSLT"
+"OfficialName"="OIALtoCLIProperties"
+"DisplayName"="OIAL to CLI Properties"
+"DisplayDescription"="Transforms an OIAL file to CLI (Common Language Infrastructure) Properties"
+"FileExtension"=".CLIProperties.xml"
+"SourceInputFormat"="ORM http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction"
+"ProvidesOutputFormat"="CLIProperties"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\OIALtoCLIProperties.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\OIALtoDCIL]
+"Type"="XSLT"
+"OfficialName"="OIALtoDCIL"
+"DisplayName"="OIAL to DCIL"
+"DisplayDescription"="Transforms an OIAL file to DCIL."
+"FileExtension"=".DCIL.xml"
+"SourceInputFormat"="OIAL"
+"ProvidesOutputFormat"="DCIL"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\OIALtoDCIL.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\OIALtoPHPDataLayerPLiX]
+"Type"="XSLT"
+"OfficialName"="OIALtoPHPDataLayerPLiX"
+"DisplayName"="OIAL to PHP Data Layer PLiX"
+"DisplayDescription"="Transforms OIAL to PHP Data Layer PLiX."
+"FileExtension"=".DataLayer.php.xml"
+"SourceInputFormat"="OIAL"
+"ProvidesOutputFormat"="PHPDataLayerPLiX"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\PHP\PHPDataLayer.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\OIALtoPHPEntitiesPLiX]
+"Type"="XSLT"
+"OfficialName"="OIALtoPHPEntitiesPLiX"
+"DisplayName"="OIAL to PHP Entities PLiX"
+"DisplayDescription"="Transforms OIAL to PHP Entities PLiX."
+"FileExtension"=".Entities.php.xml"
+"SourceInputFormat"="OIAL"
+"ProvidesOutputFormat"="PHPEntitiesPLiX"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\PHP\PHPEntities.xslt"
+"GeneratesSupportFile"=dword:00000001
+"CompanionOutputFormats"=hex(7):50,00,48,00,50,00,50,00,72,00,6f,00,78,00,69,\
+  00,65,00,73,00,50,00,4c,00,69,00,58,00,00,00,50,00,48,00,50,00,53,00,65,00,\
+  72,00,76,00,69,00,63,00,65,00,73,00,50,00,4c,00,69,00,58,00,00,00,50,00,48,\
+  00,50,00,44,00,61,00,74,00,61,00,4c,00,61,00,79,00,65,00,72,00,50,00,4c,00,\
+  69,00,58,00,00,00,00,00
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\OIALtoPHPProxiesPLiX]
+"Type"="XSLT"
+"OfficialName"="OIALtoPHPProxiesPLiX"
+"DisplayName"="OIAL to PHP Proxies PLiX"
+"DisplayDescription"="Transforms OIAL to PHP Proxies PLiX."
+"FileExtension"=".Proxies.php.xml"
+"SourceInputFormat"="OIAL"
+"ProvidesOutputFormat"="PHPProxiesPLiX"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\PHP\PHPProxies.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\OIALtoPHPServicesPLiX]
+"Type"="XSLT"
+"OfficialName"="OIALtoPHPServicesPLiX"
+"DisplayName"="OIAL to PHP Services PLiX"
+"DisplayDescription"="Transforms OIAL to PHP Services PLiX."
+"FileExtension"=".Services.php.xml"
+"SourceInputFormat"="OIAL"
+"ProvidesOutputFormat"="PHPServicesPLiX"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\PHP\PHPServices.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\OIALtoXSD]
+"Type"="XSLT"
+"OfficialName"="OIALtoXSD"
+"DisplayName"="OIAL to XSD"
+"DisplayDescription"="Transforms an OIAL file to XML Schema."
+"FileExtension"=".xsd"
+"SourceInputFormat"="OIAL"
+"ProvidesOutputFormat"="XSD"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\OIALtoXSD.xslt"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\ORMtoOIAL]
+"Type"="XSLT"
+"OfficialName"="ORMtoOIAL"
+"DisplayName"="ORM to OIAL"
+"DisplayDescription"="Transforms a coreferenced ORM file to OIAL."
+"FileExtension"=".OIAL.xml"
+"SourceInputFormat"="CoRefORM"
+"ProvidesOutputFormat"="OIAL"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\ORMtoOIAL.xslt"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\PHPDataLayerPLiXtoPHP]
+"Type"="XSLT"
+"OfficialName"="PHPDataLayerPLiXtoPHP"
+"DisplayName"="PHP DataLayer PLiX to PHP"
+"DisplayDescription"="Transforms PLiX Data Layer TO PHP."
+"FileExtension"=".DataLayer.php"
+"SourceInputFormat"="PHPDataLayerPLiX"
+"ProvidesOutputFormat"="PHPDataLayerImplementation"
+"TransformUri"="reg:Neumont\PLiX\Formatters@php"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\PHPEntitiesPLiXtoPHP]
+"Type"="XSLT"
+"OfficialName"="PHPEntitiesPLiXtoPHP"
+"DisplayName"="PHP Entities PLiX to PHP"
+"DisplayDescription"="Transforms PLiX Entities TO PHP."
+"FileExtension"=".Entities.php"
+"SourceInputFormat"="PHPEntitiesPLiX"
+"ProvidesOutputFormat"="PHPEntitiesImplementation"
+"TransformUri"="reg:Neumont\PLiX\Formatters@php"
+"CompanionOutputFormats"=hex(7):50,00,48,00,50,00,50,00,72,00,6f,00,78,00,69,\
+  00,65,00,73,00,49,00,6d,00,70,00,6c,00,65,00,6d,00,65,00,6e,00,74,00,61,00,\
+  74,00,69,00,6f,00,6e,00,00,00,50,00,48,00,50,00,53,00,65,00,72,00,76,00,69,\
+  00,63,00,65,00,73,00,49,00,6d,00,70,00,6c,00,65,00,6d,00,65,00,6e,00,74,00,\
+  61,00,74,00,69,00,6f,00,6e,00,00,00,50,00,48,00,50,00,44,00,61,00,74,00,61,\
+  00,4c,00,61,00,79,00,65,00,72,00,49,00,6d,00,70,00,6c,00,65,00,6d,00,65,00,\
+  6e,00,74,00,61,00,74,00,69,00,6f,00,6e,00,00,00,00,00
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\PHPProxiesPLiXtoPHP]
+"Type"="XSLT"
+"OfficialName"="PHPProxiesPLiXtoPHP"
+"DisplayName"="PHP Proxies PLiX to PHP"
+"DisplayDescription"="Transforms PLiX Proxies TO PHP."
+"FileExtension"=".Proxies.php"
+"SourceInputFormat"="PHPProxiesPLiX"
+"ProvidesOutputFormat"="PHPProxiesImplementation"
+"TransformUri"="reg:Neumont\PLiX\Formatters@php"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\PHPServicesPLiXtoPHP]
+"Type"="XSLT"
+"OfficialName"="PHPServicesPLiXtoPHP"
+"DisplayName"="PHP Services PLiX to PHP"
+"DisplayDescription"="Transforms PLiX Services TO PHP."
+"FileExtension"=".Services.php"
+"SourceInputFormat"="PHPServicesPLiX"
+"ProvidesOutputFormat"="PHPServicesImplementation"
+"TransformUri"="reg:Neumont\PLiX\Formatters@php"
+"GeneratesSupportFile"=dword:00000001
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\PLiXSupport]
+"Type"="XSLT"
+"OfficialName"="PLiXSupport"
+"DisplayName"="PLiX Support"
+"DisplayDescription"="Transforms nothing to SupportClasses PLiX."
+"FileExtension"=".Support.PLiX.xml"
+"SourceInputFormat"="ORM"
+"ProvidesOutputFormat"="PLiX_Support"
+"TransformUri"="$PackageFolder$\Xml\Generators\ORM\Transforms\OIALtoPLiX_GenerateGlobalSupportClasses.xslt"
+"CustomTool"="NUPlixLoader"
+[$RootKey$\ORM Solutions\Natural ORM Architect\Generators\TVtoHTML]
+"Type"="XSLT"
+"OfficialName"="TVtoHTML"
+"DisplayName"="TableView to HTML"
+"DisplayDescription"="Transforms TableView to HTML."
+"FileExtension"=".TableView.html"
+"SourceInputFormat"="TV"
+"ProvidesOutputFormat"="TableViewHTML"
+"TransformUri"="$PackageFolder$\Xml\Generators\DIL\Transforms\TVtoHTML.xslt"

@@ -1,0 +1,3 @@
+VS2017 (and higher) item templates have a different form (not zipped) and are located with the installer in NORMAROOT\VSIXInstall\VS2017\ItemTemplates.
+
+New Visual Studio version will also be added at this location.

@@ -16,7 +16,7 @@
     <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <ApplicationIcon>Resources\ORM.ico</ApplicationIcon>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <InstallInGac>true</InstallInGac>
+    <InstallInGac Condition="'$(VSSideBySide)'!='true'">true</InstallInGac>
     <TrunkDir Condition=" '$(TrunkDir)' == '' ">$(MSBuildProjectDirectory)\..</TrunkDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -55,9 +55,10 @@
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-<!--     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+      <HintPath Condition="'$(TargetVisualStudioVersion)' == 'v15.0'">$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix).dll</HintPath>
       <Private>False</Private>
-    </Reference> -->
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Shell$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v10.0' Or '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' Or '$(TargetVisualStudioVersion)' == 'v14.0' " Include="Microsoft.VisualStudio.Shell.Immutable.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' Or '$(TargetVisualStudioVersion)' == 'v14.0' Or '$(TargetVisualStudioVersion)' == 'v15.0' " Include="Microsoft.VisualStudio.Shell.Immutable.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -106,8 +107,9 @@
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <!-- <Reference Include="Microsoft.VisualStudio.VirtualTreeGrid, Version=$(TargetVisualStudioAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" /> -->
-    <Reference Include="Microsoft.VisualStudio.VirtualTreeGrid, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.VirtualTreeGrid, Version=$(TargetVisualStudioAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="'$(TargetVisualStudioVersion)' == 'v15.0'">$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.VirtualTreeGrid.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
@@ -660,7 +662,9 @@
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>ORMCore.AttachRules.cs</LastGenOutput>
     </Content>
-    <None Include="Plix.xml" />
+    <None Include="Plix.xml">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="ObjectModel\VerbalizationGenerator.xml">
       <Generator>NUPlixLoader</Generator>
       <LastGenOutput>VerbalizationGenerator.cs</LastGenOutput>
@@ -959,11 +963,32 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
+  <!-- Properties for VSSDK/DSL Targets: Must be defined before importing the targets -->
+  <PropertyGroup Condition=" '$(TargetVisualStudioVersion)' == 'v15.0' ">
+    <GenerateVSIX>false</GenerateVSIX>
+    <IncludePkgdefInVSIXContainer>false</IncludePkgdefInVSIXContainer>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <RegisterOutputPackage>false</RegisterOutputPackage>
+    <RegisterWithCodebase>false</RegisterWithCodebase>
+    <GacTargetOutput>false</GacTargetOutput>
+    <TransformOnBuild>True</TransformOnBuild>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Condition=" '$(TargetVisualStudioVersion)' == 'v15.0' And '$(VSToolsPath)'!='' And '$(GenerateVSIX)'=='true'" Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
-  <!-- <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.targets" /> -->
+  <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.targets" />
+  <ItemGroup Condition="'$(TargetVisualStudioVersion)' == 'v15.0' And '$(GenerateVSIX)' != 'false'">
+    <None Include="source.extension.vsixmanifest">
+      <DesignTime>True</DesignTime>
+    </None>
+    <Content Include="..\VSIXInstall\$(TargetVisualStudioShortProductName)\ORMDesigner.pkgdef">
+      <Link>ORMDesigner.pkgdef</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+      <TargetPath>ORMDesigner.pkgdef</TargetPath>
+    </Content>
+  </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>"$(TrunkDir)\VersionGenerator.exe"</PreBuildEvent>
-    <PostBuildEvent>"$(TrunkDir)\install.bat" "$(OutputPath)" "$(TargetVisualStudioVersion)"</PostBuildEvent>
+    <PostBuildEvent Condition="'$(VSSideBySide)'==''">"$(TrunkDir)\install.bat" "$(OutputPath)" "$(TargetVisualStudioVersion)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

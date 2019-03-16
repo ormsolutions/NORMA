@@ -161,6 +161,8 @@
 				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.Core</ProjectToolsAssemblySuffix>
 				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">15.1.0.0</ProjectToolsAssemblyVersion>
 				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' ">.VS2010</GeneratedDslFileSuffix>
+				<VSToolsPath Condition="'$(VSToolsPath)'==''">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\$(TargetVisualStudioVersion)</VSToolsPath>
+				<VSSideBySide Condition="'$(VSSideBySide)'==''">true</VSSideBySide>
 				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
 			</PropertyGroup>
 		</When>
@@ -283,7 +285,6 @@
 
 
   <!-- This is here because the MSBuild schema requires at least one Target or Import to be present. -->
-	<Target Name="_Neumont_Build_VisualStudio_Multitargeting_DummyTarget" Condition="'false'"/>
-	
+  <Target Name="_Neumont_Build_VisualStudio_Multitargeting_DummyTarget" Condition="'false'"/>
 
 </Project>

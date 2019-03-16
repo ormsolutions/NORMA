@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SchemaCatalog xmlns="http://schemas.microsoft.com/xsd/catalog">
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/DesignerSettings" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ORMDesignerSettings.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2006-04/ORMRoot" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ORM2Root.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ORM2Core.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2006-04/ORMDiagram" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ORM2Diagram.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/DiagramDisplay.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2007-11/CustomProperties" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/CustomProperties.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ORMAbstraction.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ORMAbstractionDataTypes.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ORMToORMAbstraction.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ConceptualDatabase.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ORMAbstractionToConceptualDatabase.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2007-11/RelationalView" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/RelationalView.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/BarkerERModel.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/ORMAbstractionToBarkerERBridge.xsd"/>
+	<Schema targetNamespace="http://schemas.neumont.edu/ORM/2008-05/BarkerERView" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Designer/BarkerERView.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/OIAL" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/OIAL.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/ORMDataTypes" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/ORMDataTypes.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/ORMDataTypes-Temporal" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/ORMDataTypes-Temporal.xsd"/>
+	<Schema targetNamespace="urn:schemas-orm-net:PLiX:CLI:Properties" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/OIALtoPLiX_Properties.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DCIL" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/DCIL.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DIL" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/DIL.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DILDT" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/DILDT.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DILEP" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/DILEP.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DILMS" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/DILMS.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DMIL" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/DMIL.xsd"/>
+	<Schema targetNamespace="http://schemas.orm.net/DIL/DDIL" href="%InstallRoot%/xml/schemas/ORM Solutions/NORMA/Generators/DDIL.xsd"/>
+</SchemaCatalog>

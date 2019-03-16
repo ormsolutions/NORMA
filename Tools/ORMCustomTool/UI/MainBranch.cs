@@ -63,12 +63,22 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				row -= branchCount;
 				return RowStyle.Modifier;
 			}
-			public MainBranch(ORMGeneratorSelectionControl parent)
+			public MainBranch(ORMGeneratorSelectionControl parent
+#if VISUALSTUDIO_15_0
+				, IServiceProvider serviceProvider
+#endif
+				)
 			{
 				SortedList<string, OutputFormatBranch> branches = new SortedList<string, OutputFormatBranch>(StringComparer.OrdinalIgnoreCase);
 				List<OutputFormatBranch> modifiers = null;
 				int modifierAsGeneratorCount = 0;
-				foreach (IORMGenerator ormGenerator in ORMCustomTool.ORMGenerators.Values)
+				IDictionary<string, IORMGenerator> generators =
+#if VISUALSTUDIO_15_0
+					ORMCustomTool.GetORMGenerators(serviceProvider);
+#else
+					ORMCustomTool.ORMGenerators;
+#endif
+				foreach (IORMGenerator ormGenerator in generators.Values)
 				{
 					string outputFormatName = ormGenerator.ProvidesOutputFormat;
 					OutputFormatBranch formatBranch;
@@ -544,7 +554,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				return TranslateRow(ref row) == RowStyle.Generator &&
 					this._branches.Values[row].VisibleItemCount != 1;
 			}
-			#region IMultiColumnBranch Members
+#region IMultiColumnBranch Members
 			int IMultiColumnBranch.ColumnCount
 			{
 				get { return 2; }
@@ -559,7 +569,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				return 2;
 			}
 
-			#endregion // IMultiColumnBranch Members
+#endregion // IMultiColumnBranch Members
 		}
 	}
 }

@@ -953,14 +953,50 @@
 						<oil:ringConstraint name="{@Name}" modality="{$modality}" sourceRef="{@id}">
 							<xsl:attribute name="type">
 								<xsl:choose>
+									<xsl:when test="@Type='Reflexive'">
+										<xsl:value-of select="'reflexive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='ReflexiveSymmetric'">
+										<xsl:value-of select="'reflexive symmetric'"/>
+									</xsl:when>
+									<xsl:when test="@Type='ReflexiveAntisymmetric'">
+										<xsl:value-of select="'reflexive anti-symmetric'"/>
+									</xsl:when>
+									<xsl:when test="@Type='ReflexiveTransitive'">
+										<xsl:value-of select="'reflexive transitive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='ReflexiveTransitiveAntisymmetric'">
+										<xsl:value-of select="'reflexive transitive anti-symmetric'"/>
+									</xsl:when>
 									<xsl:when test="@Type='Irreflexive'">
 										<xsl:value-of select="'irreflexive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='TransitiveIrreflexive'">
+										<xsl:value-of select="'transitive irreflexive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='PurelyReflexive'">
+										<xsl:value-of select="'purely-reflexive'"/>
 									</xsl:when>
 									<xsl:when test="@Type='Acyclic'">
 										<xsl:value-of select="'acyclic'"/>
 									</xsl:when>
+									<xsl:when test="@Type='Transitive'">
+										<xsl:value-of select="'transitive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='TransitiveAntisymmetric'">
+										<xsl:value-of select="'transitive anti-symmetric'"/>
+									</xsl:when>
+									<xsl:when test="@Type='TransitiveAsymmetric'">
+										<xsl:value-of select="'transitive asymmetric'"/>
+									</xsl:when>
+									<xsl:when test="@Type='AcyclicTransitive'">
+										<xsl:value-of select="'acyclic transitive'"/>
+									</xsl:when>
 									<xsl:when test="@Type='Intransitive'">
 										<xsl:value-of select="'intransitive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='StronglyIntransitive'">
+										<xsl:value-of select="'strongly-intransitive'"/>
 									</xsl:when>
 									<xsl:when test="@Type='Symmetric'">
 										<xsl:value-of select="'symmetric'"/>
@@ -968,11 +1004,14 @@
 									<xsl:when test="@Type='Asymmetric'">
 										<xsl:value-of select="'asymmetric'"/>
 									</xsl:when>
-									<xsl:when test="@Type='AntiSymmetric'">
+									<xsl:when test="@Type='Antisymmetric'">
 										<xsl:value-of select="'anti-symmetric'"/>
 									</xsl:when>
 									<xsl:when test="@Type='AcyclicIntransitive'">
 										<xsl:value-of select="'acyclic intransitive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='AcyclicStronglyIntransitive'">
+										<xsl:value-of select="'acyclic strongly-intransitive'"/>
 									</xsl:when>
 									<xsl:when test="@Type='SymmetricIrreflexive'">
 										<xsl:value-of select="'symmetric irreflexive'"/>
@@ -980,8 +1019,17 @@
 									<xsl:when test="@Type='SymmetricIntransitive'">
 										<xsl:value-of select="'symmetric intransitive'"/>
 									</xsl:when>
+									<xsl:when test="@Type='SymmetricStronglyIntransitive'">
+										<xsl:value-of select="'symmetric strongly-intransitive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='SymmetricTransitive'">
+										<xsl:value-of select="'symmetric transitive'"/>
+									</xsl:when>
 									<xsl:when test="@Type='AsymmetricIntransitive'">
 										<xsl:value-of select="'asymmetric intransitive'"/>
+									</xsl:when>
+									<xsl:when test="@Type='AsymmetricStronglyIntransitive'">
+										<xsl:value-of select="'asymmetric strongly-intransitive'"/>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:message terminate="yes">
