@@ -573,7 +573,11 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				targetedSnippets[target] = retVal = VerbalizationSnippetSetsManager.LoadSnippetsDictionary(
 					this,
 					target,
+#if VISUALSTUDIO_15_0
+					mgr.SnippetsDirectories,
+#else
 					mgr.SnippetsDirectory,
+#endif
 					(identifiers != null && identifiers.Count != 0) ? identifiers : null);
 			}
 			return retVal;
@@ -710,8 +714,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		{
 			return NavigateTo(element, window);
 		}
-		#endregion // IORMToolServices Implementation
-		#region IModelingEventManagerProvider Implementation
+#endregion // IORMToolServices Implementation
+#region IModelingEventManagerProvider Implementation
 		private ModelingEventManager myModelingEventManager;
 		/// <summary>
 		/// Implements <see cref="IModelingEventManagerProvider.ModelingEventManager"/>
@@ -735,8 +739,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				return ModelingEventManager;
 			}
 		}
-		#endregion // IModelingEventManagerProvider Implementation
-		#region ModelingEventManagerImpl class
+#endregion // IModelingEventManagerProvider Implementation
+#region ModelingEventManagerImpl class
 		/// <summary>  
 		/// Display event exceptions by rethrowing
 		/// </summary>  
@@ -758,8 +762,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				throw new InvalidOperationException("", ex);
 			}
 		}
-		#endregion // ModelingEventManagerImpl class
-		#region ISerializationContextHost Implementation
+#endregion // ModelingEventManagerImpl class
+#region ISerializationContextHost Implementation
 		private ISerializationContext mySerializationContext;
 		/// <summary>
 		/// Implements <see cref="ISerializationContextHost.SerializationContext"/>
@@ -786,8 +790,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				SerializationContext = value;
 			}
 		}
-		#endregion // ISerializationContextHost Implementation
-		#region IORMFontAndColorService Implementation
+#endregion // ISerializationContextHost Implementation
+#region IORMFontAndColorService Implementation
 		/// <summary>
 		/// Implements <see cref="IORMFontAndColorService.GetBackColor"/>
 		/// </summary>
@@ -854,7 +858,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		{
 			return GetForeColor(colorIndex);
 		}
-		#endregion // IORMFontAndColorService Implementation
+#endregion // IORMFontAndColorService Implementation
 	}
-	#endregion // ORMStandaloneStore class
+#endregion // ORMStandaloneStore class
 }

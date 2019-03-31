@@ -1223,7 +1223,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="customIdentifiers">A list of preferred custom identifiers
 		/// for the preferred verbalization sets. Can be null if no customizations are in place.</param>
 		/// <returns>Snippets dictionary</returns>
-		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(Store store, string target, string customSnippetsDirectory, IList<VerbalizationSnippetsIdentifier> customIdentifiers)
+		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(
+			Store store, 
+			string target,
+#if VISUALSTUDIO_15_0
+			string[] customSnippetsDirectory,
+#else
+			string customSnippetsDirectory,
+#endif
+			IList<VerbalizationSnippetsIdentifier> customIdentifiers)
 		{
 			if (store == null)
 			{
@@ -1252,7 +1260,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="providers">The snippet providers</param>
 		/// <param name="customSnippetsDirectory">The base directory to search for additional snippets</param>
 		/// <returns>An array of available snippets identifiers</returns>
-		public static VerbalizationSnippetsIdentifier[] LoadAvailableSnippets(IEnumerable<IVerbalizationSnippetsProvider> providers, string customSnippetsDirectory)
+		public static VerbalizationSnippetsIdentifier[] LoadAvailableSnippets(
+			IEnumerable<IVerbalizationSnippetsProvider> providers,
+#if VISUALSTUDIO_15_0
+			string[] customSnippetsDirectory)
+#else
+			string customSnippetsDirectory)
+#endif
 		{
 			Type[] typeArgs = new Type[1];
 			Dictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> allSets = null;
@@ -1282,7 +1296,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								null,
 								BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static,
 								null,
-								new object[] { Path.Combine(customSnippetsDirectory ?? string.Empty, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, true },
+								new object[] { FindVerbalizationDirectory(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, true },
 								null);
 						}
 					}
@@ -1301,7 +1315,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return retVal;
 		}
-		
+
 		/// <summary>
 		/// Load all verbalization snippets provided by <see cref="DomainModel"/>s in the provided <see cref="Store"/>.
 		/// </summary>
@@ -1311,7 +1325,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="customIdentifiers">A list of preferred custom identifiers
 		/// for the preferred verbalization sets. Can be null if no customizations are in place.</param>
 		/// <returns>Snippets dictionary</returns>
-		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(IEnumerable<IVerbalizationSnippetsProvider> providers, string target, string customSnippetsDirectory, IList<VerbalizationSnippetsIdentifier> customIdentifiers)
+		public static IDictionary<Type, IVerbalizationSets> LoadSnippetsDictionary(
+			IEnumerable<IVerbalizationSnippetsProvider> providers,
+			string target,
+#if VISUALSTUDIO_15_0
+			string[] customSnippetsDirectory,
+#else
+			string customSnippetsDirectory,
+#endif
+			IList<VerbalizationSnippetsIdentifier> customIdentifiers)
 		{
 			// UNDONE: The API here should change to load the full dictionary regardless of target and
 			// return a dictionary keyed off a targeted identifier. A wrapper can then be placed on
@@ -1381,7 +1403,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									null,
 									BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static,
 									null,
-									new object[] { Path.Combine(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, false },
+									new object[] { FindVerbalizationDirectory(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, false },
 									null);
 								IVerbalizationSets useVerbalization;
 								if (!allSets.TryGetValue(
@@ -1402,6 +1424,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			return retVal;
 		}
+#if VISUALSTUDIO_15_0
+		private static string FindVerbalizationDirectory(string[] baseDirectories, string subDirectory)
+		{
+			int directoryCount = baseDirectories.Length;
+			if (directoryCount == 0)
+			{
+				return "";
+			}
+			else if (directoryCount > 1)
+			{
+				for (int i = 0; directoryCount - i > 1; ++i)
+				{
+					string testPath = Path.Combine(baseDirectories[0], subDirectory);
+					if (Directory.Exists(testPath))
+					{
+						return testPath;
+					}
+				}
+			}
+			return Path.Combine(baseDirectories[directoryCount - 1], subDirectory); // Let LoadVerbalizationFiles test last existence
+		}
+#else
+		private static string FindVerbalizationDirectory(string baseDirectory, string subDirectory)
+		{
+			return Path.Combine(baseDirectory, subDirectory);
+		}
+#endif
 		/// <summary>
 		/// Load all xml files in the provided directory
 		/// </summary>
@@ -1440,8 +1489,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // Directory and file loading methods
-		#region XML processing structs
+#endregion // Directory and file loading methods
+#region XML processing structs
 		private struct RawSnippet<TEnum> where TEnum : struct
 		{
 			public RawSnippet(TEnum id, string value, ConstraintModality? modality, bool? sign)
@@ -1458,12 +1507,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private struct RawSnippets<TEnum> where TEnum : struct
 		{
-			#region Member Variables
+#region Member Variables
 			public VerbalizationSnippetsIdentifier Id;
 			public VerbalizationSnippetsIdentifier BaseId;
 			public List<RawSnippet<TEnum>> Snippets;
-			#endregion // Member Variables
-			#region Helper Functions
+#endregion // Member Variables
+#region Helper Functions
 			public bool IsEmpty
 			{
 				get
@@ -1471,8 +1520,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return Id.IsEmpty || Snippets == null;
 				}
 			}
-			#endregion // Helper Functions
-			#region VerbalizationSets implementation class
+#endregion // Helper Functions
+#region VerbalizationSets implementation class
 			private sealed class PassthroughVerbalizationSets : VerbalizationSets<TEnum>, IVerbalizationSets<TEnum>
 			{
 				private IVerbalizationSets<TEnum> myDeferTo;
@@ -1500,7 +1549,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 					// Sort the snippets by enum value, number of specified properties (modality, sign),
 					// then by modality, sign so they're nicely grouped for the loop below
-					#region Sort Snippets
+#region Sort Snippets
 					snippetsList.Sort(
 						delegate(RawSnippet<TEnum> snippet1, RawSnippet<TEnum> snippet2)
 						{
@@ -1582,7 +1631,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 							return compareResult;
 						});
-					#endregion //Sort Snippets
+#endregion //Sort Snippets
 
 					for (int i = 0; i < snippetsCount; ++i)
 					{
@@ -1642,15 +1691,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return (int)(object)enumValue;
 				}
 			}
-			#endregion // VerbalizationSets implementation class
-			#region Snippet processing
+#endregion // VerbalizationSets implementation class
+#region Snippet processing
 			/// <summary>
 			/// A placeholder empty implementaiton of IVerbalizationSets&lt;TEnum&gt;
 			/// to enable cycle detection when we're loading identifiers only
 			/// </summary>
 			private sealed class EmptyVerbalizationSets : IVerbalizationSets<TEnum>
 			{
-				#region IVerbalizationSets<TEnum> Implementation
+#region IVerbalizationSets<TEnum> Implementation
 				string IVerbalizationSets<TEnum>.GetSnippet(TEnum snippetType, bool isDeontic, bool isNegative)
 				{
 					return null;
@@ -1659,7 +1708,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					return null;
 				}
-				#endregion // IVerbalizationSets<TEnum> Implementation
+#endregion // IVerbalizationSets<TEnum> Implementation
 			}
 			public IVerbalizationSets<TEnum> Process(IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> processedSets, List<RawSnippets<TEnum>> rawSnippetsList, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier, bool identifiersOnly)
 			{
@@ -1742,10 +1791,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 				return retVal;
 			}
-			#endregion // Snippet processing
+#endregion // Snippet processing
 		}
-		#endregion // XML processing structs
-		#region XML element processing methods
+#endregion // XML processing structs
+#region XML element processing methods
 		/// <summary>
 		/// Load the snippets for a given enum type defining those snippets from a stream
 		/// </summary>
@@ -1933,8 +1982,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // XML element processing methods
-		#region XML Helper Functions
+#endregion // XML element processing methods
+#region XML Helper Functions
 		private static bool TestElementName(string localName, string elementName)
 		{
 			return (object)localName == (object)elementName;
@@ -1963,7 +2012,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // XML Helper Functions
+#endregion // XML Helper Functions
 	}
-	#endregion // VerbalizationSnippetSetsManager class
+#endregion // VerbalizationSnippetSetsManager class
 }

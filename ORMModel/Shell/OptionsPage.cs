@@ -1144,6 +1144,20 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		private sealed class CustomVerbalizationSnippetsEditor : AvailableVerbalizationSnippetsPicker<CustomVerbalizationSnippetsEditor>
 		{
+#if VISUALSTUDIO_15_0
+			/// <summary>
+			/// Provide the root directories for verbalization snippets. Multiple VSIX extensions
+			/// are supported by supporting multiple root directories. Individual NORMA packages
+			/// within the installed extensions have directories below these directories.
+			/// </summary>
+			protected sealed override string[] VerbalizationDirectories
+			{
+				get
+				{
+					return ORMDesignerPackage.VerbalizationDirectories;
+				}
+			}
+#else
 			/// <summary>
 			/// Provide the root directory for verbalization snippets. Individual packages
 			/// have directories below this.
@@ -1155,6 +1169,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					return ORMDesignerPackage.VerbalizationDirectory;
 				}
 			}
+#endif
 			/// <summary>
 			/// Enumerate all registered snippets providers
 			/// </summary>
@@ -1208,8 +1223,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-		#endregion // Custom dropdown for CustomVerbalizationSnippets option
-		#region Type converter for CustomVerbalizationSnippets option
+#endregion // Custom dropdown for CustomVerbalizationSnippets option
+#region Type converter for CustomVerbalizationSnippets option
 		/// <summary>
 		/// Stop live editing of the CustomVerbalizationSnippets property when shown
 		/// in the OptionsPage dialog. Also display the 'Default' string if all defaults
@@ -1235,6 +1250,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return retVal;
 			}
 		}
-		#endregion // Type converter for CustomVerbalizationSnippets option
+#endregion // Type converter for CustomVerbalizationSnippets option
 	}
 }

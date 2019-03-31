@@ -7,7 +7,7 @@ SET GitSub=%%k
 SET GitUpdate=%%l
 )
 SET PadSub=00%GitSub%
-REM Put a 3 in front of the tagged update number. This distinguished the git tag
+REM Put a 3 in front of the tagged update number. This distinguishes the git tag
 REM based versioning system (and makes the numbers larger than) previous versioning
-REM schemes were year/month based.
+REM schemes that were year/month based.
 @ECHO %GitMajor%.%GitMinor%.3%PadSub:~-3%.%GitUpdate%

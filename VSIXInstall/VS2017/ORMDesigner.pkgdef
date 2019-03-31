@@ -251,11 +251,11 @@ Windows Registry Editor Version 5.00
 
 ;Core extension and converter registration
 [$RootKey$\ORM Solutions\Natural ORM Architect\Designer]
-"VerbalizationDir"="$PackageFolder$\Xml\Verbalization\"
 [$RootKey$\ORM Solutions\Natural ORM Architect\Designer\DesignerSettings]
 [$RootKey$\ORM Solutions\Natural ORM Architect\Designer\DesignerSettings\Core]
 "SettingsFile"="$PackageFolder$\Xml\ORMDesignerSettings.xml"
 "ConvertersDir"="$PackageFolder$\Xml\Transforms\Converters\"
+"VerbalizationDir"="$PackageFolder$\Xml\Verbalization\"
 [$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions]
 [$RootKey$\ORM Solutions\Natural ORM Architect\Designer\Extensions\http://schemas.neumont.edu/ORM/2007-11/CustomProperties]
 "Class"="ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel"
