@@ -1451,7 +1451,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private string myLastVerbalizationSnippetsOptions;
 		private IDictionary<string, IDictionary<Type, IVerbalizationSets>> myTargetedVerbalizationSnippets;
 		private uint myInstanceVerbalizationChangeCookie;
+#if VISUALSTUDIO_15_0
+		private static FileSystemWatcher[] myVerbalizationChangeWatcher;
+#else
 		private static FileSystemWatcher myVerbalizationChangeWatcher;
+#endif
 		private static uint myVerbalizationChangeCookie;
 		private IDictionary<string, VerbalizationTargetData> myVerbalizationTargets;
 		private IExtensionVerbalizerService myExtensionVerbalizerService;
@@ -1650,27 +1654,60 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				retVal = VerbalizationSnippetSetsManager.LoadSnippetsDictionary(
 					Store,
 					target,
+#if VISUALSTUDIO_15_0
+					ORMDesignerPackage.VerbalizationDirectories,
+#else
 					ORMDesignerPackage.VerbalizationDirectory,
+#endif
 					VerbalizationSnippetsIdentifier.ParseIdentifiers(verbalizationOptions));
 				if (targetedSnippets == null)
 				{
 					myTargetedVerbalizationSnippets = targetedSnippets = new Dictionary<string, IDictionary<Type, IVerbalizationSets>>();
-					if (myVerbalizationChangeWatcher == null)
+					if (myVerbalizationChangeWatcher == null
+#if VISUALSTUDIO_15_0
+						|| ((IList< FileSystemWatcher>)myVerbalizationChangeWatcher).IndexOf(null) != -1
+#endif
+					)
 					{
-						FileSystemWatcher changeWatcher = new FileSystemWatcher(ORMDesignerPackage.VerbalizationDirectory, "*.xml");
-						changeWatcher.IncludeSubdirectories = true;
-						changeWatcher.NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.CreationTime;
 						FileSystemEventHandler handler = new FileSystemEventHandler(VerbalizationCustomizationsChanged);
-						changeWatcher.Created += handler;
-						changeWatcher.Changed += handler;
-						changeWatcher.Deleted += handler;
-						changeWatcher.Renamed += new RenamedEventHandler(VerbalizationCustomizationsRenamed);
-						changeWatcher.EnableRaisingEvents = true;
-						FileSystemWatcher useWatcher = System.Threading.Interlocked.CompareExchange<FileSystemWatcher>(ref myVerbalizationChangeWatcher, changeWatcher, null);
-						if (useWatcher != null)
+#if VISUALSTUDIO_15_0
+						string[] directories = ORMDesignerPackage.VerbalizationDirectories;
+						int directoryCount = directories.Length;
+						FileSystemWatcher[] changeWatchers = new FileSystemWatcher[directoryCount];
+						FileSystemWatcher[] useWatchers = System.Threading.Interlocked.CompareExchange<FileSystemWatcher[]>(ref myVerbalizationChangeWatcher, changeWatchers, null);
+						if (useWatchers != null)
 						{
-							changeWatcher.Dispose();
+							changeWatchers = useWatchers;
 						}
+						for (int i = 0; i < directoryCount; ++i)
+						{
+							if (changeWatchers[i] != null)
+							{
+								continue;
+							}
+							FileSystemWatcher changeWatcher = new FileSystemWatcher(directories[i], "*.xml");
+#else
+							FileSystemWatcher changeWatcher = new FileSystemWatcher(ORMDesignerPackage.VerbalizationDirectory, "*.xml");
+#endif
+							changeWatcher.IncludeSubdirectories = true;
+							changeWatcher.NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.CreationTime;
+							changeWatcher.Created += handler;
+							changeWatcher.Changed += handler;
+							changeWatcher.Deleted += handler;
+							changeWatcher.Renamed += new RenamedEventHandler(VerbalizationCustomizationsRenamed);
+							changeWatcher.EnableRaisingEvents = true;
+#if VISUALSTUDIO_15_0
+							FileSystemWatcher useWatcher = System.Threading.Interlocked.CompareExchange<FileSystemWatcher>(ref changeWatchers[i], changeWatcher, null);
+#else
+							FileSystemWatcher useWatcher = System.Threading.Interlocked.CompareExchange<FileSystemWatcher>(ref myVerbalizationChangeWatcher, changeWatcher, null);
+#endif
+							if (useWatcher != null)
+							{
+								changeWatcher.Dispose();
+							}
+#if VISUALSTUDIO_15_0
+						}
+#endif
 					}
 				}
 				targetedSnippets[target] = retVal;
@@ -2147,7 +2184,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private MultiDiagramDocView ActivateView(Diagram diagram)
 		{
 			MultiDiagramDocView docView = null;
-			#region Walk RunningDocumentTable
+#region Walk RunningDocumentTable
 			IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
 			IEnumRunningDocuments docIter;
 			ErrorHandler.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
@@ -2202,7 +2239,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			} while (fetched != 0 && docView == null);
-			#endregion // Walk RunningDocumentTable
+#endregion // Walk RunningDocumentTable
 			return docView;
 		}
 		bool IORMToolServices.ActivateShape(ShapeElement shape, NavigateToWindow window)
@@ -2607,18 +2644,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			return NavigateTo(target, window);
 		}
-		#endregion // IORMToolServices Implementation
-		#region TaskProvider implementation
+#endregion // IORMToolServices Implementation
+#region TaskProvider implementation
 		/// <summary>
 		/// Default implementation of a task provider
 		/// </summary>
 		[CLSCompliant(false)]
 		protected class ORMTaskProvider : TaskProvider, IORMToolTaskProvider
 		{
-			#region Member Variables
+#region Member Variables
 			ORMDesignerDocData myDocument;
-			#endregion //Member Variables
-			#region Constructors
+#endregion //Member Variables
+#region Constructors
 			/// <summary>
 			/// Create a task provider for this document
 			/// </summary>
@@ -2629,8 +2666,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Debug.Assert(document.myTaskProvider == null); // Only need one
 				myDocument = document;
 			}
-			#endregion // Constructors
-			#region IORMToolTaskProvider Implementation
+#endregion // Constructors
+#region IORMToolTaskProvider Implementation
 			/// <summary>
 			/// Implements <see cref="IORMToolTaskProvider.CreateTask"/>
 			/// </summary>
@@ -2706,7 +2743,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				return NavigateTo(task);
 			}
-			#endregion // IORMToolTaskProvider Implementation
+#endregion // IORMToolTaskProvider Implementation
 		}
 		/// <summary>
 		/// Default implementation of a task item
@@ -2714,11 +2751,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		[CLSCompliant(false)]
 		protected class ORMTaskItem : Task, IORMToolTaskItem
 		{
-			#region Member Variables
+#region Member Variables
 			IRepresentModelElements myElementLocator;
 			IORMToolTaskProvider myOwner;
-			#endregion //Member Variables
-			#region Constructors
+#endregion //Member Variables
+#region Constructors
 			private ORMTaskItem()
 			{
 			}
@@ -2730,8 +2767,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				myOwner = owner;
 			}
-			#endregion // Constructors
-			#region IORMToolTaskItem Implementation
+#endregion // Constructors
+#region IORMToolTaskItem Implementation
 			/// <summary>
 			/// Implements <see cref="IORMToolTaskItem.ElementLocator"/> property
 			/// </summary>
@@ -2766,8 +2803,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				get { return Text; }
 				set { Text = value; }
 			}
-			#endregion // IORMToolTaskItem Implementation
-			#region Base overrides
+#endregion // IORMToolTaskItem Implementation
+#region Base overrides
 			/// <summary>
 			/// Navigate to the item associate with this task
 			/// </summary>
@@ -2779,7 +2816,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					base.OnNavigate(e);
 				}
 			}
-			#endregion // Base overrides
+#endregion // Base overrides
 		}
 		/// <summary>
 		/// Create a new task provider. Called once the first time the TaskProvider
@@ -2790,8 +2827,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			Debug.Assert(myTaskProvider == null);
 			return new ORMTaskProvider(this);
 		}
-		#endregion // TaskProvider implementation
-		#region UIModelingEventManager class
+#endregion // TaskProvider implementation
+#region UIModelingEventManager class
 		/// <summary>  
 		/// A class to display an exception message without  
 		/// breaking an event loop.  
@@ -2823,6 +2860,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-		#endregion // UIModelingEventManager class
+#endregion // UIModelingEventManager class
 	}
 }

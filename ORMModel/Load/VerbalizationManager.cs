@@ -46,11 +46,24 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 	public class VerbalizationManager
 	{
 		#region Member Variables
+#if VISUALSTUDIO_15_0
+		private string[] myDirectories;
+#else
 		private string myDirectory;
+#endif
 		private IDictionary<string, object> myOptions;
 		private IList<VerbalizationSnippetsIdentifier> mySnippetsIdentifiers;
 		#endregion // Member Variables
 		#region Constructor
+#if VISUALSTUDIO_15_0
+		/// <summary>
+		/// Private constructor, called through public static create methods
+		/// </summary>
+		/// <param name="snippetsDirectories">The snippet directory locations</param>
+		private VerbalizationManager(string[] snippetsDirectories)
+		{
+			myDirectories = snippetsDirectories;
+#else
 		/// <summary>
 		/// Private constructor, called through public static create methods
 		/// </summary>
@@ -58,11 +71,28 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		private VerbalizationManager(string snippetsDirectory)
 		{
 			myDirectory = snippetsDirectory;
+#endif
 			myOptions = new Dictionary<string, object>();
 			mySnippetsIdentifiers = new List<VerbalizationSnippetsIdentifier>();
 		}
 		#endregion // Constructor
 		#region Static creation methods
+#if VISUALSTUDIO_15_0
+		// UNDONE: VS2017 We need something similar to LoadFromRegistry for VS2017. We will need to
+		// load the privateregistry.bin file from the VS directories to get this information, which should
+		// be reasonable unless VS is running, in which case the file is locked. This should be as seamless
+		// as possible, but will not have the same API as the pre-VS2017 versions.
+
+		/// <summary>
+		/// Load the verbalization manager using snippets from the given directory
+		/// </summary>
+		/// <param name="snippetsDirectories">An array of full directory paths</param>
+		/// <returns>The <see cref="VerbalizationManager"/> using snippets from these directories.</returns>
+		public static VerbalizationManager LoadFromDirectories(string[] snippetsDirectories)
+		{
+			return new VerbalizationManager(snippetsDirectories);
+		}
+#else
 		/// <summary>
 		/// Create a <see cref="VerbalizationManager"/> with snippets loaded from a registry-
 		/// specified directory. The loader checks for information under this key at the given
@@ -115,8 +145,21 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		{
 			return new VerbalizationManager(snippetsDirectory);
 		}
+#endif
 		#endregion // Static creation methods
 		#region Accessor Properties
+#if VISUALSTUDIO_15_0
+		/// <summary>
+		/// Get the root directories for snippet files
+		/// </summary>
+		public string[] SnippetsDirectories
+		{
+			get
+			{
+				return myDirectories;
+			}
+		}
+#else
 		/// <summary>
 		/// Get the root directory for snippet files
 		/// </summary>
@@ -127,6 +170,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				return myDirectory;
 			}
 		}
+#endif
 		/// <summary>
 		/// Get the custom options to apply
 		/// </summary>
@@ -147,8 +191,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				return mySnippetsIdentifiers;
 			}
 		}
-		#endregion // Accessor Properties
-		#region Font and color management
+#endregion // Accessor Properties
+#region Font and color management
 		private string myFontFamilyName;
 		private float myFontSize = 8.0F;
 		private struct CategoryFontData
@@ -265,8 +309,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				dict[verbalizerColor] = new CategoryFontData(defaultColor ? defaultData.Color : color.Value, defaultBold ? defaultData.IsBold : isBold.Value);
 			}
 		}
-		#endregion // Font and color management
-		#region Verbalization Methods
+#endregion // Font and color management
+#region Verbalization Methods
 		/// <summary>
 		/// Using the current verbalization settings, verbalize the specified
 		/// elements into the output text writer.
@@ -341,7 +385,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				alreadyVerbalized.Clear();
 			}
 		}
-		#endregion // Verbalization Methods
+#endregion // Verbalization Methods
 	}
-	#endregion // VerbalizationManager class
+#endregion // VerbalizationManager class
 }

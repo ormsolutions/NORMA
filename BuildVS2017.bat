@@ -19,3 +19,6 @@ IF "%TargetVisualStudioVersion%"=="v8.0" (
 )
 
 CALL "%~dp0Build.bat" %* /consoleloggerparameters:DisableMPLogging %DegradeToolsVersion%
+IF "%TargetVisualStudioVersion%"=="v15.0" (
+	MSBuild.exe /nologo "%~dp0VSIXInstall\VSIXOnly\NORMAVSIX.VS2017.sln" /consoleloggerparameters:DisableMPLogging"  %DegradeToolsVersion% %*
+)
