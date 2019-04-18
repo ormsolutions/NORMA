@@ -94,6 +94,7 @@ IF "%VSSideBySide%"=="true" (
 	CALL:SETVAR "VSEnvironmentPath" "%VSEnvironmentDir%devenv.exe"
 	CALL:SETVAR "VSItemTemplatesDir" "%VSEnvironmentDir%ItemTemplates"
 	CALL:SETVAR "VSIPDir" "%VSDir%VSSDK\"
+	CALL:SETVAR "VSXmlSchemas" "%VSDIR%Xml\Schemas\"
 )
 IF NOT DEFINED LocalAppData SET LocalAppData=%UserProfile%\Local Settings\Application Data
 IF NOT "%VSIXExtensionDir%"=="" (
@@ -155,11 +156,11 @@ IF NOT DEFINED NORMADir SET NORMADir=%VSIXInstallDir%
 IF NOT DEFINED NORMABinDir SET NORMABinDir=%NORMADir%
 IF NOT DEFINED OldNORMADir SET OldNORMADir=%ResolvedProgramFiles%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%
 IF NOT DEFINED NORMAExtensionsDir SET NORMAExtensionsDir=%NORMADir%\Extensions
-IF NOT DEFINED ORMDir SET ORMDir=%ResolvedCommonProgramFiles%\Neumont\ORM
-IF NOT DEFINED DILDir SET DILDir=%ResolvedCommonProgramFiles%\Neumont\DIL
-IF NOT DEFINED PLiXDir SET PLiXDir=%ResolvedCommonProgramFiles%\Neumont\PLiX
-IF NOT DEFINED ORMTransformsDir SET ORMTransformsDir=%ORMDir%\Transforms
-IF NOT DEFINED DILTransformsDir SET DILTransformsDir=%DILDir%\Transforms
+IF NOT DEFINED NORMADesignerSchemasDir SET NORMADesignerSchemasDir=%VSXmlSchemas%ORM Solutions\NORMA\Designer
+IF NOT DEFINED NORMAGeneratorSchemasDir SET NORMAGeneratorSchemasDir=%VSXmlSchemas%ORM Solutions\NORMA\Generators
+IF NOT DEFINED ORMTransformsDir SET ORMTransformsDir=%VSIXInstallDir%\Xml\Generators\ORM\Transforms
+IF NOT DEFINED DILTransformsDir SET DILTransformsDir=%VSIXInstallDir%\Xml\Generators\DIL\Transforms
+::PLiXDir not used in SideBySide
 GOTO:EOF
 
 :_SetupVersionVars_v8.0
@@ -280,7 +281,7 @@ IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.Core)
 IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=15.1.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
-IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\1.0.0.0)
+IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
 GOTO:EOF
 

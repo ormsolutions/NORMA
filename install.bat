@@ -33,12 +33,8 @@ CALL:_MakeDir "%NORMADir%\Xml\Verbalization\Core"
 CALL:_MakeDirCopy "%NORMADir%\Xml\Verbalization\HtmlReport" "%NORMADir%\Xml\Verbalization\Report"
 CALL:_RemoveDir "%NORMADir%\Xml\Verbalization\Report"
 CALL:_RemoveDir "%NORMADir%\ORMProjectItems"
-CALL:_RemoveDir "%ORMDir%\..\..\ORM"
-CALL:_MakeDir "%ORMDir%\Schemas"
-CALL:_MakeDir "%ORMDir%\Transforms"
-CALL:_RemoveDir "%DILDir%\..\..\DIL"
-CALL:_MakeDir "%DILDir%\Schemas"
-CALL:_MakeDir "%DILDir%\Transforms"
+CALL:_MakeDir "%ORMTransformsDir%"
+CALL:_MakeDir "%DILTransformsDir%"
 
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.dll" "%NORMABinDir%\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMABinDir%\"
@@ -61,28 +57,42 @@ IF NOT "%VSIXInstallDir%"=="" (
 	)
 )
 
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\ORM2Core.xsd" "%ORMDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ShapeModel\ORM2Diagram.xsd" "%ORMDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Load\ORM2Root.xsd" "%ORMDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\OIAL.xsd" "%ORMDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\ORMDataTypes.xsd" "%ORMDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\ORMDataTypes-Temporal.xsd" "%ORMDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd" "%ORMDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\catalog.xml" "%ORMDir%\Schemas\"
+IF "%VSSideBySide%"=="true" (
+	CALL:_MakeDir "%NORMADesignerSchemasDir%"
+	CALL:_MakeDir "%NORMAGeneratorSchemasDir%"
+	XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\VSIXOnly\NORMACatalog.xml" "%VSXmlSchemas%"
+) else (
+	CALL:_MakeDir "%ORMDir%\Schemas"
+	CALL:_SETVAR "NORMADesignerSchemasDir" "%ORMDir%\Schemas"
+	CALL:_SETVAR "NORMAGeneratorSchemasDir" "%ORMDir%\Schemas"
+	XCOPY /Y /D /V /Q "%RootDir%\catalog.xml" "%ORMDir%\Schemas\"
+	XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\catalog.xml" "%NORMADir%\Xml\Schemas\"
+)
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ObjectModel\ORM2Core.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\ShapeModel\ORM2Diagram.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Load\ORM2Root.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\OIAL.xsd" "%NORMAGeneratorSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\ORMDataTypes.xsd" "%NORMAGeneratorSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\OIAL\ORMDataTypes-Temporal.xsd" "%NORMAGeneratorSchemasDir%"
+XCOPY /Y /D /V /Q "%RootDir%\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd" "%NORMAGeneratorSchemasDir%"
 
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xsd" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\CustomProperties\CustomProperties.xsd" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\AlternateViews\RelationalView\RelationalView.xsd" "%NORMADir%\Xml\Schemas\"
-ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Oial\OialModel\OIAL.xsd" "%NORMADir%\Xml\Schemas\ORMAbstraction.xsd"
-ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Oial\OialModel\OIALDatatypes.xsd" "%NORMADir%\Xml\Schemas\ORMAbstractionDataTypes.xsd"
-XCOPY /Y /D /V /Q "%RootDir%\Oial\ORMOialBridge\ORMToORMAbstraction.xsd" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\RelationalModel\DcilModel\ConceptualDatabase.xsd" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\EntityRelationship\BarkerErModel\BarkerERModel.xsd" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\EntityRelationship\OialBerBridge\ORMAbstractionToBarkerERBridge.xsd" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\AlternateViews\BarkerERView\BarkerERView.xsd" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Framework\Shell\DiagramDisplay.xsd" "%NORMADir%\Xml\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\catalog.xml" "%NORMADir%\Xml\Schemas\"
+IF NOT "%VSSideBySide%"=="true" (
+	CALL:_SETVAR "NORMADesignerSchemasDir" "%NORMADir%\Xml\Schemas"
+)
+
+
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\CustomProperties\CustomProperties.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\AlternateViews\RelationalView\RelationalView.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\Oial\OialModel\ORMAbstraction.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\Oial\OialModel\ORMAbstractionDataTypes.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\Oial\ORMOialBridge\ORMToORMAbstraction.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\RelationalModel\DcilModel\ConceptualDatabase.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\EntityRelationship\BarkerErModel\BarkerERModel.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\EntityRelationship\OialBerBridge\ORMAbstractionToBarkerERBridge.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\AlternateViews\BarkerERView\BarkerERView.xsd" "%NORMADesignerSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Framework\Shell\DiagramDisplay.xsd" "%NORMADesignerSchemasDir%\"
 CALL:_CleanupFile "%NORMADir%\ORMDesignerSettings.xml"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\ORMDesignerSettings.xml" "%NORMADir%\Xml\"
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\Shell\Converters\*.xslt" "%NORMADir%\Xml\Transforms\Converters\"
@@ -107,20 +117,27 @@ IF EXIST "%NORMADir%\Xml\Verbalization\HtmlReport\VerbalizationReportSnippets.xm
 	REN "%NORMADir%\Xml\Verbalization\HtmlReport\VerbalizationReportSnippets.xml" "_default.xml"
 )
 
-XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DIL.xsd" "%DILDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILDT.xsd" "%DILDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILEP.xsd" "%DILDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILMS.xsd" "%DILDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DMIL.xsd" "%DILDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DCIL.xsd" "%DILDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DDIL.xsd" "%DILDir%\Schemas\"
-XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\catalog.xml" "%DILDir%\Schemas\"
+IF NOT "%VSSideBySide%"=="true" (
+	CALL:_MakeDir "%DILDir%\Schemas"
+	CALL:_SETVAR "NORMAGeneratorSchemasDir" "%DILDir%\Schemas"
+	XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\catalog.xml" "%DILDir%\Schemas\"
+)
+
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DIL.xsd" "%NORMAGeneratorSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILDT.xsd" "%NORMAGeneratorSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILEP.xsd" "%NORMAGeneratorSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DILMS.xsd" "%NORMAGeneratorSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DMIL.xsd" "%NORMAGeneratorSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DCIL.xsd" "%NORMAGeneratorSchemasDir%\"
+XCOPY /Y /D /V /Q "%RootDir%\XML\DIL\DDIL.xsd" "%NORMAGeneratorSchemasDir%\"
 
 if EXIST "%VSDir%" (
 SETLOCAL ENABLEDELAYEDEXPANSION
-	ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Setup\NORMASchemaCatalog.%TargetVisualStudioShortProductName%.xml" "%VSDir%\Xml\Schemas\NORMASchemaCatalog.xml"
-	XCOPY /Y /D /V /Q "%RootDir%\Setup\ORMSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
-	XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+	IF NOT "%VSSideBySide%"=="true" (
+		ECHO F | XCOPY /Y /D /V /Q "%RootDir%\Setup\NORMASchemaCatalog.%TargetVisualStudioShortProductName%.xml" "%VSDir%\Xml\Schemas\NORMASchemaCatalog.xml"
+		XCOPY /Y /D /V /Q "%RootDir%\Setup\ORMSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+		XCOPY /Y /D /V /Q "%RootDir%\Setup\DILSchemaCatalog.xml" "%VSDir%\Xml\Schemas\"
+	)
 
 	IF "%VSIXInstallDir%"=="" (
 		%RegPkg% "%NORMABinDir%\%TargetBaseName%.dll"
@@ -220,4 +237,8 @@ GOTO:EOF
 
 :_GenerateVersion
 "%RootDir%\VersionGenerator.exe"
+GOTO:EOF
+
+:_SETVAR
+SET %~1=%~2
 GOTO:EOF
