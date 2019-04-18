@@ -989,6 +989,6 @@
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>"$(TrunkDir)\VersionGenerator.exe"</PreBuildEvent>
-    <PostBuildEvent Condition="'$(VSSideBySide)'==''">"$(TrunkDir)\install.bat" "$(OutputPath)" "$(TargetVisualStudioVersion)"</PostBuildEvent>
+    <PostBuildEvent>"$(TrunkDir)\install.bat" "$(OutputPath)" "$(TargetVisualStudioVersion)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

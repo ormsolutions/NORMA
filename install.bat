@@ -26,8 +26,10 @@ if EXIST "%VSDir%" (
 
 CALL:_MakeDir "%NORMABinDir%"
 CALL:_RemoveDir "%NORMABinDir%\1033"
-CALL:_MakeDir "%NORMADir%\Help"
-CALL:_MakeDir "%NORMADir%\Xml\Schemas"
+IF NOT "%VSSideBySide%"=="true" (
+	CALL:_MakeDir "%NORMADir%\Help"
+	CALL:_MakeDir "%NORMADir%\Xml\Schemas"
+)
 CALL:_MakeDir "%NORMADir%\Xml\Transforms\Converters"
 CALL:_MakeDir "%NORMADir%\Xml\Verbalization\Core"
 CALL:_MakeDirCopy "%NORMADir%\Xml\Verbalization\HtmlReport" "%NORMADir%\Xml\Verbalization\Report"
@@ -41,16 +43,16 @@ XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.pdb" "%NORM
 XCOPY /Y /D /V /Q "%RootDir%\ORMModel\%BuildOutDir%\%TargetBaseName%.xml" "%NORMABinDir%\"
 CALL:_CleanupFile "%OldNORMADir%\bin\1033\Neumont.Tools.ORMUI.dll"
 
-IF NOT "%ItemTemplatesInstallDir%"=="" (
-	CALL:_MakeDir "%ItemTemplatesInstallDir%"
-	FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%ItemTemplatesInstallDir%\%%~nA\ORMModel.zip"
-	FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\Web\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%ItemTemplatesInstallDir%\Web\%%~nA\ORMModel.zip"
-	IF "%VSIXInstallDir%"=="" (
-		FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\%TargetVisualStudioShortProductName%\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
+IF NOT "%VSSideBySide%"=="true" (
+	IF NOT "%ItemTemplatesInstallDir%"=="" (
+		CALL:_MakeDir "%ItemTemplatesInstallDir%"
+		FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%ItemTemplatesInstallDir%\%%~nA\ORMModel.zip"
+		FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\Web\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%ItemTemplatesInstallDir%\Web\%%~nA\ORMModel.zip"
+		IF "%VSIXInstallDir%"=="" (
+			FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\%TargetVisualStudioShortProductName%\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
+		)
 	)
-)
-IF NOT "%VSIXInstallDir%"=="" (
-	IF NOT "%VSSideBySide%"=="true" (
+	IF NOT "%VSIXInstallDir%"=="" (
 		IF EXIST "%VSEnvironmentDir%\NewFileItems" (
 			FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\NewFileItems\*.*") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSEnvironmentDir%\NewFileItems\%%~nxA"
 		)
@@ -169,19 +171,20 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 		REG ADD "HKLM\SOFTWARE%WOWRegistryAdjust%\Microsoft\.NETFramework\v2.0.50727\AssemblyFoldersEx\NORMAVSExtensions" /ve /d "%NORMAExtenionsDir%" /f 1>NUL
 	) ELSE (
 		IF '%VSSideBySide%'=='' (
-			CALL:_MakeDir "%VSIXInstallDir%
+			CALL:_MakeDir "%VSIXInstallDir%"
 			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\%TargetVisualStudioShortProductName%\extension.vsixmanifest" "%VSIXInstallDir%\"
 			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\%TargetVisualStudioShortProductName%\ORMDesigner.pkgdef" "%VSIXInstallDir%\"
 			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerIcon.png" "%VSIXInstallDir%\"
 			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerPreview.png" "%VSIXInstallDir%\"
 			REG ADD "%VSRegistryConfigHive%\%VSRegistryConfigRootBase%\%VSRegistryRootVersion%%VSRegistryRootSuffix%\ExtensionManager\EnabledExtensions" /v "efddc549-1646-4451-8a51-e5a5e94d647c,%ProductMajorVersion%.%ProductMinorVersion%" /d "%VSIXInstallDir%\\" /f 1>NUL
 		) ELSE (
-			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerIcon.png" "%NORMADir%\"
-			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerPreview200x200.png" "%NORMADir%\"
+			CALL:_MakeDir "%VSIXInstallDir%\Resources"
+			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerIcon.png" "%NORMADir%\Resources\"
+			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerPreview200x200.png" "%NORMADir%\Resources\"
 			IF EXIST "%NORMADir%\ORMDesignerPreview.png" (
-				CALL:_CleanupFile "%NORMADir%\ORMDesignerPreview.png"
-				REN "%NORMADir%\ORMDesignerPreview200x200.png" "ORMDesignerPreview.png"
+				CALL:_CleanupFile "%NORMADir%\Resources\ORMDesignerPreview.png"
 			)
+			REN "%NORMADir%\Resources\ORMDesignerPreview200x200.png" "ORMDesignerPreview.png"
 		)
 	)
 

@@ -46,16 +46,6 @@ if "%NotRegistryBased%"=="1" (
 		GOTO:EOF
 	)
 	CALL:SETVAR "MSBuildDir" "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioLongProductYear%\%TargetVisualStudioEdition%\MSBuild"
-	IF NOT EXIST "%MSBuildDir%\%HackToolsVersion%" (
-		md "%MSBuildDir%\%HackToolsVersion%"
-		IF ERRORLEVEL 1 (
-			@ECHO Additional permissions are required to update this directory.
-			@ECHO Run from a Visual Studio 20xx Command Prompt opened as an Administrator.
-			@PAUSE
-			GOTO:EOF
-		)
-		xcopy /S "%MSBuildDir%\%UseToolsVersion%" "%MSBuildDir%\%HackToolsVersion%"
-	)
 ) ELSE (
 	REG DELETE "HKLM\Software%WOWRegistryAdjust%\Microsoft\MSBuild\ToolsVersions\%HackToolsVersion%" /f 1>NUL 2>&1
 	::Ignore error state, delete fails if the key is not there.
