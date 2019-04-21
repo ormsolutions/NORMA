@@ -3,9 +3,12 @@
 	<Metadata>
 		<Identity Id="c5aebec2-5d8e-467f-ae59-cf8c37ad6dda" Version="1.0.0.0" Language="en-US" Publisher="ORM Solutions" />
 		<DisplayName>Natural ORM Architect</DisplayName>
-		<Description>Object-Role Modeling Designer</Description>
+		<Description xml:space="preserve">Object-Role Modeling Designer</Description>
+		<MoreInfo>https://github.com/ormsolutions/NORMA</MoreInfo>
+		<ReleaseNotes>http://ORMSolutions.com/NORMA/Readme.htm</ReleaseNotes>
 		<Icon>Resources\ORMDesignerIcon.png</Icon>
 		<PreviewImage>Resources\ORMDesignerPreview.png</PreviewImage>
+		<Tags>NORMA;code generation;ORM;Object Role Modeling;Object-Role Modeling;ORM Solutions;Neumont University</Tags>
 	</Metadata>
 	<Installation InstalledByMsi="false" AllUsers="true">
 		<InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Community" />

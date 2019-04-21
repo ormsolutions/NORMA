@@ -29,7 +29,7 @@ Microsoft Visual Studio Modeling and Visualization Tools (DSL Tools SDK), instal
 	Download (Visual Studio 2012): http://www.microsoft.com/en-us/download/details.aspx?id=30680
 	Download (Visual Studio 2013): http://www.microsoft.com/en-us/download/details.aspx?id=40754
 	Download (Visual Studio 2015): http://www.microsoft.com/en-us/download/details.aspx?id=48148
-
+For Visual Studio 2017 and 2019, the Visual Studio SDK and modeling tools are installed with the 'Visual Studio extension development' area near the bottom of the setup page. You will need to add the optional 'Modeling SDK' component under this area. 
 
 Additional components used by other portions of this software include:
 
@@ -72,8 +72,12 @@ SET TargetVisualStudioVersion=v10.0
 SET TargetVisualStudioVersion=v11.0
 SET TargetVisualStudioVersion=v12.0
 SET TargetVisualStudioVersion=v14.0
+SET TargetVisualStudioVersion=v15.0
+SET TargetVisualStudioVersion=v16.0
 
-These values correspond to Visual Studio 20xx where v8.0=2005, v9.0=2008, v10.0=2010, v11.0=2012, v12.0=2013, v14.0=2015.
+Note that these are set for you with the VS20xx.bat files discussed below, which we strongly recommend you run before launching Visual Studio from a command prompt.
+
+These values correspond to Visual Studio 20xx where v8.0=2005, v9.0=2008, v10.0=2010, v11.0=2012, v12.0=2013, v14.0=2015, v15.0=2017, v16.0=2019.
 
 See the comments in SetupEnvironment.bat for additional details on how the options are used.
 
@@ -120,3 +124,6 @@ The installation process on VS2015 is not as easy as on VS2010, which simply req
 
 If NORMA is not functioning after the first dev build (the first clue will be in the file new dialog, which will simply say 'ORMModel' instead of 'Object-Role Modeling File') then you will need to reset the VSIX installation following the directions from the readme in the VSIXInstall/VS2015 directory. This should be required only after the first build, or in situations indicated in the readme.
 
+The build and installation process for VS2015 and VS2017 is radically different because of the side-by-side installation support introduced with VS2017. The VS installation is no longer in a fixed location discoverable with the registry, so you will need to provide customized feedback to the system before you build. When you run VS2017.bat (or VS2019.bat) from the corresponding Visual Studio Command Prompt environment you will see instructions on how to create the VS20xxInstallation.bat file to set additional environment variables to tell the NORMA build system which installation of Visual Studio you are building for. Once this information is known, builds will run as normal except that you will not see any files in the normal installation locations (under C:\Program Files (x86)\ORM Solutions). Your files are instead written to %localappdata%\Microsoft\VisualStudio under the directory corresponding to the appropriate target. Below that directory, go into the instance ending in Exp, then Extensions\ORM Solutions\Natural ORM Architect. You'll find your files in here.
+
+The actual installation is also radically different. There are no Setup files for any version above VS2015. Instead, there is a new VSIXInstall\VSIXOnly directory that takes the role of setup. This will automatically run once when you call BuildVS20xx.bat, allowing you to debug. 
