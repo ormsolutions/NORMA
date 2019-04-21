@@ -181,7 +181,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 			CALL:_MakeDir "%VSIXInstallDir%\Resources"
 			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerIcon.png" "%NORMADir%\Resources\"
 			XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\ORMDesignerPreview200x200.png" "%NORMADir%\Resources\"
-			IF EXIST "%NORMADir%\ORMDesignerPreview.png" (
+			IF EXIST "%NORMADir%\Resources\ORMDesignerPreview.png" (
 				CALL:_CleanupFile "%NORMADir%\Resources\ORMDesignerPreview.png"
 			)
 			REN "%NORMADir%\Resources\ORMDesignerPreview200x200.png" "ORMDesignerPreview.png"
