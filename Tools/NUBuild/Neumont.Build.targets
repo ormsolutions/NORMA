@@ -22,14 +22,22 @@
 		 <!-- The name of the assembly that contains the NUBuild tasks. -->
 		<NUBuildTasksAssemblyName>Neumont.Build$(ProjectToolsAssemblySuffix), Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildTasksAssemblyName>
 	</PropertyGroup>
-	
-	<UsingTask TaskName="Gacutil" AssemblyName="$(NUBuildTasksAssemblyName)"/>
-	<UsingTask TaskName="Ngen" AssemblyName="$(NUBuildTasksAssemblyName)"/>
-	<UsingTask TaskName="CopyWithPreprocessing" AssemblyName="$(NUBuildTasksAssemblyName)"/>
-	<UsingTask TaskName="ResourceMergeTargetResolver" AssemblyName="$(NUBuildTasksAssemblyName)"/>
-	<UsingTask TaskName="ResourceMerger" AssemblyName="$(NUBuildTasksAssemblyName)"/>
-	<UsingTask TaskName="RegexCompiler" AssemblyName="$(NUBuildTasksAssemblyName)"/>
 
+	<!-- VS2019 is not finding assemblies in the subdirectory. The helper assembly is in the
+	same directory as the .targets file, so a bare file name will load. -->
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 16.0" TaskName="Gacutil" AssemblyFile="Neumont.Build.Core.dll"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 16.0" TaskName="Ngen" AssemblyFile="Neumont.Build.Core.dll"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 16.0" TaskName="CopyWithPreprocessing" AssemblyFile="Neumont.Build.Core.dll"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 16.0" TaskName="ResourceMergeTargetResolver" AssemblyFile="Neumont.Build.Core.dll"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 16.0" TaskName="ResourceMerger" AssemblyFile="Neumont.Build.Core.dll"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 16.0" TaskName="RegexCompiler" AssemblyFile="Neumont.Build.Core.dll"/>
+
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 16.0" TaskName="Gacutil" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 16.0" TaskName="Ngen" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 16.0" TaskName="CopyWithPreprocessing" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 16.0" TaskName="ResourceMergeTargetResolver" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 16.0" TaskName="ResourceMerger" AssemblyName="$(NUBuildTasksAssemblyName)"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 16.0" TaskName="RegexCompiler" AssemblyName="$(NUBuildTasksAssemblyName)"/>
 
 	<PropertyGroup Condition="Exists('$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets')">
 		 <!-- This forces a rebuild of a project if it references this targets file and this targets file changes. -->

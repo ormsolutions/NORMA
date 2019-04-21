@@ -133,6 +133,13 @@ GOTO:EOF
 CALL:SETVAR "TargetVisualStudioVersion" "v15.0"
 GOTO:EOF
 
+:_VER_2019
+:_VER_16.0
+:_VER_v16.0
+:_VER_16
+CALL:SETVAR "TargetVisualStudioVersion" "v16.0"
+GOTO:EOF
+
 :_TOOLS_v8.0
 CALL:SETVAR "UseToolsVersion" "2.0"
 GOTO:EOF
@@ -160,5 +167,14 @@ CALL:SETVAR "TargetVisualStudioLongProductYear" "2017"
 CALL:SETVAR "TargetVisualStudioLongProductName" "Visual Studio 2017"
 CALL:SETVAR "TargetVisualStudioShortProductName" "VS2017"
 CALL:SETVAR "TargetVisualStudioMajorMinorVersion" "15.0"
+CALL:SETVAR "NotRegistryBased" "1"
+GOTO:EOF
+
+:_TOOLS_v16.0
+CALL:SETVAR "UseToolsVersion" "15.0"
+CALL:SETVAR "TargetVisualStudioLongProductYear" "2019"
+CALL:SETVAR "TargetVisualStudioLongProductName" "Visual Studio 2019"
+CALL:SETVAR "TargetVisualStudioShortProductName" "VS2019"
+CALL:SETVAR "TargetVisualStudioMajorMinorVersion" "16.0"
 CALL:SETVAR "NotRegistryBased" "1"
 GOTO:EOF

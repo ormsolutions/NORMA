@@ -1,0 +1,19 @@
+<VSTemplate Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Item">
+	<TemplateData>
+		<TemplateID>{f0050dde-311c-4d17-8404-5c0bcd65cd9d}</TemplateID>
+		<Name>Object-Role Modeling (DB Import)</Name>
+		<Description>Object-Role Modeling File for Natural ORM Architect (Reverse Engineer from Database)</Description>
+		<Icon>ORMDatabaseImport.ico</Icon>
+		<DefaultName>ORMModelFromDatabase.orm</DefaultName>
+		<ProjectType>Web</ProjectType>
+		<ProjectSubType>VisualBasic</ProjectSubType>
+	</TemplateData>
+	<TemplateContent>
+		<References />
+		<ProjectItem SubType="" TargetFileName="$fileinputname$.orm" ReplaceParameters="true">..\..\..\..\ORMDatabaseImport.orm</ProjectItem>
+	</TemplateContent>
+	<WizardExtension>
+		<Assembly>ORMSolutions.ORMArchitect.DatabaseImport.VS2019, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</Assembly>
+		<FullClassName>ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard</FullClassName>
+	</WizardExtension>
+</VSTemplate>

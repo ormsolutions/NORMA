@@ -192,10 +192,10 @@
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</TargetPath>
     </Content>
-    <Content Include="..\..\Oial\OialModel\$(OutDir)\ORMSolutions.ORMArchitect.ORMAbstraction.VS2017.dll">
+    <Content Include="..\..\Oial\OialModel\$(OutDir)\ORMSolutions.ORMArchitect.ORMAbstraction.$(TargetVisualStudioShortProductName).dll">
       <Link>ORMAbstraction.dll</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
-      <TargetPath>ORMSolutions.ORMArchitect.ORMAbstraction.VS2017.dll</TargetPath>
+      <TargetPath>ORMSolutions.ORMArchitect.ORMAbstraction.$(TargetVisualStudioShortProductName).dll</TargetPath>
       <VSIXSubPath>Extensions</VSIXSubPath>
     </Content>
     <Content Include="..\..\Oial\ORMOialBridge\$(OutDir)\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).dll">
