@@ -22,7 +22,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="PortableDataTypeLength"><![CDATA[ <span class="listSeparator">(</span><span class="instance">{0}</span><span class="listSeparator">)</span>]]></Snippet>
 			<Snippet type="ReferenceModeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Reference Mode:</span> <span class="referenceMode">{0}</span></span>]]></Snippet>
 			<Snippet type="ReferenceSchemeVerbalization"><![CDATA[<span class="smallIndent"><span class="quantifier">Reference Scheme:</span> {0}</span>]]></Snippet>
-			<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[<span class="smallIndent">{0} <span class="quantifier">objectifies</span> <span class="listSeparator">“</span>{1}<span class="listSeparator">”</span></span>]]></Snippet>
+			<Snippet type="ObjectifiesFactTypeVerbalization"><![CDATA[<span class="smallIndent">{0} <span class="quantifier">objectifies</span> <span class="listSeparator">&#8220;</span>{1}<span class="listSeparator">&#8221;</span></span>]]></Snippet>
 			<Snippet type="EntityTypeVerbalization"><![CDATA[{0} <span class="quantifier">is an entity type</span>]]></Snippet>
 			<Snippet type="ValueTypeVerbalization"><![CDATA[{0} <span class="quantifier">is a value type</span>]]></Snippet>
 			<Snippet type="ModelVerbalization"><![CDATA[<span class="quantifier">Object-Role Model:</span> {0}]]></Snippet>
@@ -279,7 +279,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="Equality"><![CDATA[{0}<span class="quantifier"> if and only if </span>{1}]]></Snippet>
 			<Snippet type="ExclusionBinaryLeadReading"><![CDATA[<span class="quantifier">no</span> {0}<span class="quantifier"> the same </span>{1}]]></Snippet>
 			<Snippet type="ExclusionCombined"><![CDATA[{0} {1}]]></Snippet>
-			<Snippet type="FrequencyPopulation"><![CDATA[<span class="quantifier">each</span> {0} <span class="quantifier">in the population of</span> <span class="listSeparator">“</span>{1}<span class="listSeparator">”</span> <span class="quantifier">occurs there</span> {2}]]></Snippet>
+			<Snippet type="FrequencyPopulation"><![CDATA[<span class="quantifier">each</span> {0} <span class="quantifier">in the population of</span> <span class="listSeparator">&#8220;</span>{1}<span class="listSeparator">&#8221;</span> <span class="quantifier">occurs there</span> {2}]]></Snippet>
 			<Snippet type="FrequencyTypedOccurrences"><![CDATA[{1} <span class="quantifier">instances of</span> {0}]]></Snippet>
 			<Snippet type="FrequencyTypedCombinationOccurrences"><![CDATA[{1} <span class="quantifier">combinations of</span> {0}]]></Snippet>
 			<Snippet type="FrequencyUntypedOccurrences"><![CDATA[{0} <span class="quantifier">times</span>]]></Snippet>
@@ -289,7 +289,7 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="CountRangeMaxUnbounded"><![CDATA[<span class="quantifier">at least</span> <span class="instance">{0}</span>]]></Snippet>
 			<Snippet type="CountRangeMinUnbounded"><![CDATA[<span class="quantifier">at most</span> <span class="instance">{1}</span>]]></Snippet>
 			<Snippet type="ObjectTypeCardinality"><![CDATA[<span class="quantifier">each population of </span>{0}<span class="quantifier"> contains </span>{1}]]></Snippet>
-			<Snippet type="UnaryRoleCardinality"><![CDATA[<span class="quantifier">for each population of </span><span class="listSeparator">“</span>{0}<span class="listSeparator">”,</span><span class="smallIndent"><br/><span class="quantifier">the number of</span> {1} <span class="quantifier">instances is </span>{2}</span>]]></Snippet>
+			<Snippet type="UnaryRoleCardinality"><![CDATA[<span class="quantifier">for each population of </span><span class="listSeparator">&#8220;</span>{0}<span class="listSeparator">&#8221;,</span><span class="smallIndent"><br/><span class="quantifier">the number of</span> {1} <span class="quantifier">instances is </span>{2}</span>]]></Snippet>
 			<Snippet type="CardinalitySingleInstance"><![CDATA[{0} <span class="quantifier">instance</span>]]></Snippet>
 			<Snippet type="CardinalityMultipleInstances"><![CDATA[{0} <span class="quantifier">instances</span>]]></Snippet>
 			<Snippet type="ExactlyOneUntypedOccurrence" sign="positive"><![CDATA[<span class="quantifier">exactly once</span>]]></Snippet>
