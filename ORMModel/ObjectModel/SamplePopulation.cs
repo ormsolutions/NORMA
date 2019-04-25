@@ -6144,6 +6144,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// or <see cref="ObjectifiedUnaryRole"/>.
 		/// </summary>
 		public readonly RoleBase ImpliedProxyRole;
+		/// <summary>
+		/// If this is implied by an entity type and the identifying preferred identifier
+		/// has more than one role then set this to the identifying role in this fact type.
+		/// </summary>
+		public readonly Role ImpliedIdentifyingRole;
 		#endregion // Fields
 		#region Constructor
 		/// <summary>
@@ -6157,6 +6162,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ObjectType impliedByEntityType = null;
 			ObjectType identifyingSuperType = null;
 			RoleBase impliedProxyRole = null;
+			Role identifyingRole = null;
 			IList<RoleBase> factRoles;
 			SubtypeFact subtypeFact;
 			Objectification objectification;
@@ -6193,6 +6199,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							preferredFor.NestedFactType != factType)
 						{
 							identifyingSuperType = impliedByEntityType = preferredFor;
+							LinkedElementCollection<Role> identifyingRoles = uc.RoleCollection;
+							int roleCount = identifyingRoles.Count;
+							if (roleCount > 1)
+							{
+								for (int i = 0; i < roleCount; ++i)
+								{
+									Role testIdentifyingRole = identifyingRoles[i];
+									if (testIdentifyingRole.FactType == factType)
+									{
+										identifyingRole = testIdentifyingRole;
+										break;
+									}
+								}
+							}
 							break;
 						}
 					}
@@ -6201,6 +6221,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ImpliedByEntityType = impliedByEntityType;
 			IdentifyingSupertype = identifyingSuperType;
 			ImpliedProxyRole = impliedProxyRole;
+			ImpliedIdentifyingRole = identifyingRole;
 		}
 		#endregion // Constructor
 		#region Accessor Properties

@@ -5100,7 +5100,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 							else
 							{
-								text = instance.Name;
+								// If this is a compound identifier than get the instance from the correct role.
+								// Otherwise, just use the name of the instance.
+								Role identifyingRole;
+								if (null != (identifyingRole = myImplicationProxy.ImpliedIdentifyingRole) &&
+									ResolveColumn(ref column) == ColumnType.FactType &&
+									identifyingRole == myFactType.OrderedRoleCollection[column])
+								{
+									ObjectTypeInstance resolvedInstance;
+									EntityTypeInstance entityInstance;
+									EntityTypeRoleInstance roleInstance;
+									text = (null != (entityInstance = instance as EntityTypeInstance) &&
+										null != (roleInstance = entityInstance.FindRoleInstance(identifyingRole)) &&
+										null != (resolvedInstance = roleInstance.ObjectTypeInstance)) ?
+											resolvedInstance.Name :
+											string.Empty;
+								}
+								else
+								{
+									text = instance.Name;
+								}
 							}
 						}
 					}
