@@ -1089,7 +1089,7 @@
 		<comment>Exception message when an attempt is made to change the role players of an ObjectTypeHasObjectTypeInstance relationship.</comment>
 	</data>
 	<data name="ModelException.Reading.DuplicateSignature.Text" xml:space="preserve">
-		<value>The reading signatue '{0}' is already used in this model.</value>
+		<value>The reading signature '{0}' is already used in this model.</value>
 		<comment>Exception message when a reading signature change in the editor attempts to introduce a duplicate signature into the model.</comment>
 	</data>
 	<data name="ModelException.Reading.IsPrimary.ReadOnlyWhenFalse" xml:space="preserve">
