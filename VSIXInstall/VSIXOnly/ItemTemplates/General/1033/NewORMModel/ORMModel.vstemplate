@@ -1,0 +1,13 @@
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+	<TemplateData>
+		<TemplateID>{8D8B0590-6D15-49FC-99D3-0BB873A1FF94}</TemplateID>
+		<Name>Object-Role Modeling File</Name>
+		<Description>Object-Role Modeling File for Natural ORM Architect</Description>
+		<Icon>ORM.ico</Icon>
+		<DefaultName>ORMModel.orm</DefaultName>
+		<ProjectType>General</ProjectType>
+	</TemplateData>
+	<TemplateContent>
+		<ProjectItem ReplaceParameters="true" TargetFileName="$fileinputname$.$fileinputextension$">..\..\..\ORMModel.orm</ProjectItem>
+	</TemplateContent>
+</VSTemplate>

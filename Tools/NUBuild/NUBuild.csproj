@@ -16,8 +16,8 @@
     <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
     <BaseAddress>1413349376</BaseAddress>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <!--<InstallInGac>true</InstallInGac>
-    <GenerateNativeImage>true</GenerateNativeImage>-->
+    <InstallInGac Condition="'$(VSSideBySide)'!='true'">true</InstallInGac>
+    <GenerateNativeImage Condition="'$(VSSideBySide)'!='true'">true</GenerateNativeImage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'NUBuild|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

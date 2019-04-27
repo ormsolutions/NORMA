@@ -55,6 +55,8 @@
 
 	<PropertyGroup>
 		<!-- If we are building for Visual Studio 9.0, use VSCT v3.5, otherwise use VSCT v2.0. -->
+		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v16.0'">16.0.0.0</VsctAssemblyVersion>
+		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v15.0'">15.0.0.0</VsctAssemblyVersion>
 		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v14.0'">14.0.0.0</VsctAssemblyVersion>
 		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v12.0'">12.0.0.0</VsctAssemblyVersion>
 		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v11.0'">11.0.0.0</VsctAssemblyVersion>
@@ -64,32 +66,34 @@
 	</PropertyGroup>
 
 	<!-- Compiles .vsct files into .cto files. -->
-	<UsingTask TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+	<!-- <UsingTask TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/> -->
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 16.0" TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 16.0" TaskName="VSCTCompiler" AssemblyFile="$(MSBuildExtensionsPath)\..\VSSDK\VisualStudioIntegration\Tools\bin\vsct.exe"/>
 	<ItemGroup>
 		<!-- Add the CompileVsct Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio (and the equivalent in other IDEs). -->
 		<AvailableItemName Include="CompileVsct"/>
 	</ItemGroup>
 	
 	<PropertyGroup>
-		<VsctCompileDependsOn>
+		<_VsctCompileDependsOn>
 			$(VsctCompileDependsOn);
 			LocateVisualStudioSDK
-		</VsctCompileDependsOn>
+		</_VsctCompileDependsOn>
 		<MergeResourcesDependsOn>
 			$(MergeResourcesDependsOn);
-			VsctCompile
+			_VsctCompile
 		</MergeResourcesDependsOn>
 		<ResGenDependsOn>
 			$(ResGenDependsOn);
-			VsctCompile
+			_VsctCompile
 		</ResGenDependsOn>
 
 		<VsctIncludesDirs>$(VsctIncludesDirs)</VsctIncludesDirs>
 	</PropertyGroup>
 
 	<Target
-		Name="VsctCompile"
-		DependsOnTargets="$(VsctCompileDependsOn)"
+		Name="_VsctCompile"
+		DependsOnTargets="$(_VsctCompileDependsOn)"
 		Condition="'@(CompileVsct)'!=''">
 
 		<!-- We need to include the $(MSBuildProjectDirectory) in the IntermediateDirectory below because the VSCT compiler changes the current directory while it is running. -->

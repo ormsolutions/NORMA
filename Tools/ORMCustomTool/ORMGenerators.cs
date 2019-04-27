@@ -19,11 +19,49 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.Reflection;
+#if VISUALSTUDIO_15_0
+using Microsoft.VisualStudio.Shell.Interop;
+#endif
 
 namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
 	public sealed partial class ORMCustomTool
 	{
+#if VISUALSTUDIO_15_0
+		private static Dictionary<string, IORMGenerator> _ormGenerators;
+		internal static IDictionary<string, IORMGenerator> GetORMGenerators(IServiceProvider serviceProvider)
+		{
+			Dictionary<string, IORMGenerator> generators = _ormGenerators;
+			if (generators == null)
+			{
+				generators = new Dictionary<string, IORMGenerator>();
+				string registryRoot = null;
+				try
+				{
+					IVsShell shell = serviceProvider.GetService(typeof(SVsShell)) as IVsShell;
+					object registryRootObj;
+					shell.GetProperty((int)__VSSPROPID.VSSPROPID_VirtualRegistryRoot, out registryRootObj);
+					registryRoot = registryRootObj.ToString();
+				}
+				catch (Exception ex)
+				{
+					// TODO: Localize message.
+					ReportError("WARNING: Exception ocurred while trying to read registry root in ORMCustomTool:", ex);
+				}
+
+				if (registryRoot != null)
+				{
+					LoadGeneratorsFromRoot(Registry.CurrentUser, generators, registryRoot + "_Config");
+				}
+
+				if (null != System.Threading.Interlocked.CompareExchange(ref _ormGenerators, generators, null))
+				{
+					generators = _ormGenerators;
+				}
+			}
+			return generators;
+		}
+#else
 		private static readonly Dictionary<string, IORMGenerator> _ormGenerators;
 		// TODO: Change this back to private once the Control has been nested inside us...
 		internal static IDictionary<string, IORMGenerator> ORMGenerators
@@ -36,18 +74,31 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 
 		static ORMCustomTool()
 		{
-			_ormGenerators = new Dictionary<string, IORMGenerator>(StringComparer.OrdinalIgnoreCase);
+			Dictionary<string, IORMGenerator> generators = new Dictionary<string, IORMGenerator>(StringComparer.OrdinalIgnoreCase);
+			_ormGenerators = generators;
 
-			LoadGeneratorsFromRoot(Registry.LocalMachine);
-			LoadGeneratorsFromRoot(Registry.CurrentUser);
+			LoadGeneratorsFromRoot(Registry.LocalMachine, generators);
+			LoadGeneratorsFromRoot(Registry.CurrentUser, generators);
 		}
+#endif
 
-		private static void LoadGeneratorsFromRoot(RegistryKey rootKey)
+		private static void LoadGeneratorsFromRoot(RegistryKey rootKey, IDictionary<string, IORMGenerator> generators
+#if VISUALSTUDIO_15_0
+			, string baseKey
+#endif
+			)
 		{
 			RegistryKey generatorsKey = null;
 			try
 			{
-				LoadGenerators(generatorsKey = rootKey.OpenSubKey(GENERATORS_REGISTRYROOT, RegistryKeyPermissionCheck.ReadSubTree));
+#if VISUALSTUDIO_15_0
+				using (RegistryKey localRootKey = rootKey.OpenSubKey(baseKey, RegistryKeyPermissionCheck.ReadSubTree))
+				{
+					LoadGenerators(generatorsKey = localRootKey.OpenSubKey(GENERATORS_REGISTRYROOT, RegistryKeyPermissionCheck.ReadSubTree), generators, localRootKey);
+				}
+#else
+				LoadGenerators(generatorsKey = rootKey.OpenSubKey(GENERATORS_REGISTRYROOT, RegistryKeyPermissionCheck.ReadSubTree), generators);
+#endif
 			}
 			catch (Exception ex)
 			{
@@ -63,7 +114,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 		}
 
-		private static void LoadGenerators(RegistryKey generatorsKey)
+		private static void LoadGenerators(RegistryKey generatorsKey, IDictionary<string, IORMGenerator> generators
+#if VISUALSTUDIO_15_0
+			// Allow resolution of reg: prefixed transform URI's
+			, RegistryKey rootKey
+#endif
+			)
 		{
 			if (generatorsKey == null)
 			{
@@ -81,7 +137,11 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					IORMGenerator ormGenerator = null;
 					if (String.Equals(type, "XSLT", StringComparison.OrdinalIgnoreCase))
 					{
-						ormGenerator = new XslORMGenerator(generatorKey);
+						ormGenerator = new XslORMGenerator(generatorKey
+#if VISUALSTUDIO_15_0
+							, rootKey
+#endif
+						);
 					}
 					else if (String.Equals(type, "Class", StringComparison.OrdinalIgnoreCase))
 					{
@@ -92,7 +152,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					{
 						System.Diagnostics.Debug.Assert(String.Equals(generatorName, ormGenerator.OfficialName, StringComparison.OrdinalIgnoreCase));
 						//ormGenerator.ORMCustomTool = this;
-						ORMGenerators.Add(ormGenerator.OfficialName, ormGenerator);
+						generators.Add(ormGenerator.OfficialName, ormGenerator);
 					}
 				}
 				catch (Exception ex)

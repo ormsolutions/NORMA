@@ -114,9 +114,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	{
 		#region Constants
 		private const string REGISTRYROOT_PACKAGE_USER = @"ORM Solutions\Natural ORM Architect";
-#if VISUALSTUDIO_14_0
-        // Key relative to the root local-machine key
-        private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2015\Designer";
+#if VISUALSTUDIO_15_0
+		// Key relative to the VS-provided application registry root
+		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"ORM Solutions\Natural ORM Architect\Designer";
+#elif VISUALSTUDIO_14_0
+		// Key relative to the root local-machine key
+		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2015\Designer";
 #elif VISUALSTUDIO_12_0
         // Key relative to the root local-machine key
         private const string REGISTRYROOT_PACKAGE_SETTINGS = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2013\Designer";
@@ -143,12 +146,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private CommandSet myCommandSet;
 		private ORMDesignerFontsAndColors myFontAndColorService;
 		private ORMDesignerSettings myDesignerSettings;
+#if VISUALSTUDIO_15_0
+		private string[] myVerbalizationDirectories;
+#else
 		private string myVerbalizationDirectory;
+#endif
 		private IDictionary<string, ToolboxProviderInfo> myToolboxProviderInfoMap;
 		private ExtensionLoader myExtensionLoader;
 		private static ORMDesignerPackage mySingleton;
-		#endregion
-		#region Construction/destruction
+#endregion
+#region Construction/destruction
 		/// <summary>
 		/// Class constructor.
 		/// </summary>
@@ -157,8 +164,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			Debug.Assert(mySingleton == null); // Should only be loaded once per IDE session
 			mySingleton = this;
 		}
-		#endregion
-		#region Properties
+#endregion
+#region Properties
 		/// <summary>
 		/// Gets the singleton command set create for this package.
 		/// </summary>
@@ -204,21 +211,56 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <summary>
 		/// Get the designer settings for this package
 		/// </summary>
+#if VISUALSTUDIO_15_0
+		public static string[] VerbalizationDirectories
+#else
 		public static string VerbalizationDirectory
+#endif
 		{
 			get
 			{
 				ORMDesignerPackage package = mySingleton;
 				if (package != null)
 				{
+#if VISUALSTUDIO_15_0
+					string[] retVal = package.myVerbalizationDirectories;
+#else
 					string retVal = package.myVerbalizationDirectory;
+#endif
 					if (retVal == null)
 					{
-						using (RegistryKey key = package.PackageSettingsRegistryRoot)
+						using (RegistryKey rootKey = package.PackageSettingsRegistryRoot)
 						{
-							if (key != null)
+							if (rootKey != null)
 							{
-								package.myVerbalizationDirectory = retVal = (string)key.GetValue(REGISTRYVALUE_VERBALIZATIONDIR, String.Empty);
+#if VISUALSTUDIO_15_0
+								using (RegistryKey settingsKey = rootKey.OpenSubKey(REGISTRYKEY_DESIGNERSETTINGS, RegistryKeyPermissionCheck.ReadSubTree))
+								{
+									if (settingsKey != null)
+									{
+										List<string> directoryList = new List<string>();
+										string[] settingsKeyNames = settingsKey.GetSubKeyNames();
+										int settingsCount = (settingsKeyNames == null) ? 0 : settingsKeyNames.Length;
+										for (int i = 0; i < settingsCount; ++i)
+										{
+											using (RegistryKey settingKey = settingsKey.OpenSubKey(settingsKeyNames[i], RegistryKeyPermissionCheck.ReadSubTree))
+											{
+												if (settingKey != null)
+												{
+													string directoryName = settingKey.GetValue(REGISTRYVALUE_VERBALIZATIONDIR, string.Empty, RegistryValueOptions.None) as string;
+													if (!string.IsNullOrEmpty(directoryName))
+													{
+														directoryList.Add(directoryName);
+													}
+												}
+											}
+										}
+										package.myVerbalizationDirectories = retVal = directoryList.ToArray();
+									}
+								}
+#else
+								package.myVerbalizationDirectory = retVal = (string)rootKey.GetValue(REGISTRYVALUE_VERBALIZATIONDIR, String.Empty);
+#endif
 							}
 						}
 					}
@@ -235,7 +277,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			get
 			{
 
-#if VISUALSTUDIO_10_0
+#if VISUALSTUDIO_10_0 && !VISUALSTUDIO_15_0
 				return Registry.LocalMachine.OpenSubKey(REGISTRYROOT_PACKAGE_SETTINGS);
 #else
 				using (RegistryKey rootKey = ApplicationRegistryRoot)
@@ -296,8 +338,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return mySingleton;
 			}
 		}
-		#endregion // Properties
-		#region Base overrides
+#endregion // Properties
+#region Base overrides
 		/// <summary>
 		/// This is called by the package base class when our package is loaded. When devenv is run
 		/// with the "/setup" command line switch it is not able to do a lot of the normal things,
@@ -556,8 +598,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			return items;
 		}
-		#endregion // Base overrides
-		#region IVsInstalledProduct Members
+#endregion // Base overrides
+#region IVsInstalledProduct Members
 
 		[Obsolete("Visual Studio 2005 no longer calls this method.", true)]
 		int IVsInstalledProduct.IdBmpSplash(out uint pIdBmp)
@@ -600,8 +642,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			return VSConstants.S_OK;
 		}
 
-		#endregion
-		#region Tool Window properties
+#endregion
+#region Tool Window properties
 		/// <summary>
 		/// ORMModelBrowserToolWindow singleton
 		/// </summary>
@@ -745,8 +787,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-		#endregion
-		#region IVsToolWindowFactory Implementation
+#endregion
+#region IVsToolWindowFactory Implementation
 		private delegate int ForwardCreateToolWindowDelegate(ModelingPackage @this, ref Guid rguidPersistenceSlot, uint dwToolWindowId);
 		private static ForwardCreateToolWindowDelegate myForwardCreateToolWindow;
 		private static ForwardCreateToolWindowDelegate ForwardCreateToolWindow
@@ -778,8 +820,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			return ForwardCreateToolWindow(this, ref rguidPersistenceSlot, dwToolWindowId);
 		}
-		#endregion // IVsToolWindowFactory Implementation
-		#region Extension DomainModels
+#endregion // IVsToolWindowFactory Implementation
+#region Extension DomainModels
 		/// <summary>
 		/// Get the <see cref="ExtensionLoader"/> for this package
 		/// </summary>
@@ -919,6 +961,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-		#endregion // Extension DomainModels
+#endregion // Extension DomainModels
 	}
 }

@@ -143,7 +143,11 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					new VirtualTreeColumnHeader("Generated File Format", 0.30f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled),
 					new VirtualTreeColumnHeader("Generated File Name", 1f, VirtualTreeColumnHeaderStyles.ColumnPositionLocked | VirtualTreeColumnHeaderStyles.DragDisabled)
 				}, true);
-			MainBranch mainBranch = this._mainBranch = new MainBranch(this);
+			MainBranch mainBranch = this._mainBranch = new MainBranch(this
+#if VISUALSTUDIO_15_0
+				, serviceProvider
+#endif
+				);
 			int totalCount = mainBranch.VisibleItemCount;
 			int[] primaryIndices = new int[totalCount];
 			for (int i = 0; i < totalCount; ++i)
@@ -204,7 +208,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					String.Equals(buildItem.GetEvaluatedMetadata(ITEMMETADATA_DEPENDENTUPON), sourceFileName, StringComparison.OrdinalIgnoreCase) &&
 					null != (generatorNames = generatorNameData.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)) &&
 					0 != (generatorNameCount = generatorNames.Length) &&
-					ORMCustomTool.ORMGenerators.TryGetValue(generatorNames[0], out primaryGenerator) &&
+#if VISUALSTUDIO_15_0
+					ORMCustomTool.GetORMGenerators(serviceProvider)
+#else
+					ORMCustomTool.ORMGenerators
+#endif
+						.TryGetValue(generatorNames[0], out primaryGenerator) &&
 					mainBranch.Branches.TryGetValue(primaryGenerator.ProvidesOutputFormat, out primaryFormatBranch))
 				{
 					System.Diagnostics.Debug.Assert(primaryFormatBranch.SelectedORMGenerator == null);

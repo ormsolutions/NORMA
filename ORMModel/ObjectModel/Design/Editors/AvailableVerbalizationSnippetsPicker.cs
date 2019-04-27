@@ -43,10 +43,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		where T : AvailableVerbalizationSnippetsPicker<T>
 	{
 		#region Abstract properties
+#if VISUALSTUDIO_15_0
+		/// <summary>
+		/// The directories containing snippet XML files
+		/// </summary>
+		protected abstract string[] VerbalizationDirectories { get;}
+#else
 		/// <summary>
 		/// The directory containing snippet XML files
 		/// </summary>
 		protected abstract string VerbalizationDirectory { get;}
+#endif
 		/// <summary>
 		/// An enumerator of snippets providers
 		/// </summary>
@@ -62,15 +69,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// not display any language information.
 		/// </summary>
 		protected abstract string LanguageFormatString { get;}
-		#endregion // Abstract properties
-		#region TreePicker overrides
+#endregion // Abstract properties
+#region TreePicker overrides
 		/// <summary>
 		/// Get the ITree representing the current verbalization settings
 		/// </summary>
 		protected override ITree GetTree(ITypeDescriptorContext context, object value)
 		{
 			ITree tree = new VirtualTree();
-			IBranch rootBranch = new ProviderBranch((string)value, TargetProviders, SnippetsProviders, VerbalizationDirectory, LanguageFormatString);
+			IBranch rootBranch = new ProviderBranch(
+				(string)value,
+				TargetProviders,
+				SnippetsProviders,
+#if VISUALSTUDIO_15_0
+				VerbalizationDirectories,
+#else
+				VerbalizationDirectory,
+#endif
+				LanguageFormatString);
 			tree.Root = rootBranch;
 			if (rootBranch.VisibleItemCount == 1)
 			{
@@ -111,14 +127,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			get { return myLastControlSize; }
 			set { myLastControlSize = value; }
 		}
-		#endregion // TreePicker overrides
-		#region ProviderBranch class
+#endregion // TreePicker overrides
+#region ProviderBranch class
 		/// <summary>
 		/// A branch class to display snippet types
 		/// </summary>
 		private sealed class ProviderBranch : BaseBranch, IBranch
 		{
-			#region SnippetsType structure
+#region SnippetsType structure
 			private struct SnippetsType
 			{
 				public string TypeDescription;
@@ -127,8 +143,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				public int FirstExplicitlyTargetedType;
 				public int LastTargetedType;
 			}
-			#endregion // SnippetsType structure
-			#region TargetedSnippetsType structure
+#endregion // SnippetsType structure
+#region TargetedSnippetsType structure
 			private struct TargetedSnippetsType
 			{
 				public string Target;
@@ -142,8 +158,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					Target = target;
 				}
 			}
-			#endregion // TargetedSnippetsType structure
-			#region TargetKeyComparer class
+#endregion // TargetedSnippetsType structure
+#region TargetKeyComparer class
 			private sealed class TargetKeyComparer : IComparer<VerbalizationTargetData>
 			{
 				public static readonly IComparer<VerbalizationTargetData> Instance = new TargetKeyComparer();
@@ -155,21 +171,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					return string.CompareOrdinal(x.KeyName, y.KeyName);
 				}
 			}
-			#endregion // TargetKeyComparer class
-			#region Member Variables
+#endregion // TargetKeyComparer class
+#region Member Variables
 			private List<SnippetsType> myTypes;
 			private TargetedSnippetsType[] myTargetedTypes;
 			private VerbalizationSnippetsIdentifier[] myIdentifiers;
 			private string[] myItemStrings;
 			private string myLanguageFormatString;
 			private VerbalizationTargetData[] myVerbalizationTargets;
-			#endregion // Member Variables
-			#region Constructors
-			public ProviderBranch(string currentSettings, IEnumerable<IVerbalizationTargetProvider> targetProviders, IEnumerable<IVerbalizationSnippetsProvider> snippetProviders, string verbalizationDirectory, string languageFormatString)
+#endregion // Member Variables
+#region Constructors
+			public ProviderBranch(
+				string currentSettings,
+				IEnumerable<IVerbalizationTargetProvider> targetProviders,
+				IEnumerable<IVerbalizationSnippetsProvider> snippetProviders,
+#if VISUALSTUDIO_15_0
+				string[] verbalizationDirectories,
+#else
+				string verbalizationDirectory,
+#endif
+				string languageFormatString)
 			{
 				VerbalizationSnippetsIdentifier[] allIdentifiers = VerbalizationSnippetSetsManager.LoadAvailableSnippets(
 					snippetProviders,
+#if VISUALSTUDIO_15_0
+					verbalizationDirectories);
+#else
 					verbalizationDirectory);
+#endif
 				VerbalizationSnippetsIdentifier[] currentIdentifiers = VerbalizationSnippetsIdentifier.ParseIdentifiers(currentSettings);
 
 				if (languageFormatString != null)
@@ -440,8 +469,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					myItemStrings = new string[allIdentifiersCount];
 				}
 			}
-			#endregion // Constructors
-			#region ProviderBranch specific
+#endregion // Constructors
+#region ProviderBranch specific
 			/// <summary>
 			/// Get the display name for the verbalization target
 			/// </summary>
@@ -474,8 +503,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					}
 				}
 			}
-			#endregion // ProviderBranch specific
-			#region IBranch implementation
+#endregion // ProviderBranch specific
+#region IBranch implementation
 			int IBranch.VisibleItemCount
 			{
 				get
@@ -528,22 +557,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				retVal.Bold = true;
 				return retVal;
 			}
-			#endregion // IBranch implementation
-			#region TypeBranch class
+#endregion // IBranch implementation
+#region TypeBranch class
 			private class TypeBranch : BaseBranch, IBranch
 			{
-				#region Member Variables
+#region Member Variables
 				private ProviderBranch myParentBranch;
 				private int myTargetedTypeIndex;
-				#endregion // Member Variables
-				#region Constructors
+#endregion // Member Variables
+#region Constructors
 				public TypeBranch(ProviderBranch parentBranch, int targetedTypeIndex)
 				{
 					myParentBranch = parentBranch;
 					myTargetedTypeIndex = targetedTypeIndex;
 				}
-				#endregion // Constructors
-				#region Accessor Functions
+#endregion // Constructors
+#region Accessor Functions
 				protected ProviderBranch ParentBranch
 				{
 					get
@@ -551,8 +580,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						return myParentBranch;
 					}
 				}
-				#endregion // Accessor Functions
-				#region IBranch implementation
+#endregion // Accessor Functions
+#region IBranch implementation
 				/// <summary>
 				/// The item count for this branch. Implements IBranch.VisibleItemCount;
 				/// </summary>
@@ -670,10 +699,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				{
 					return ToggleState(row, column);
 				}
-				#endregion // IBranch implementation
+#endregion // IBranch implementation
 			}
-			#endregion // TypeBranch class
-			#region TypeBranchWithExplicitTargets class
+#endregion // TypeBranch class
+#region TypeBranchWithExplicitTargets class
 			/// <summary>
 			/// A structure representing an explicitly targeted snippet expansion
 			/// </summary>
@@ -692,18 +721,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			/// </summary>
 			private sealed class TypeBranchWithExplicitTargets : TypeBranch, IBranch
 			{
-				#region Member Variables
+#region Member Variables
 				private TargetedTypeData[] myExpansions;
-				#endregion // Member Variables
-				#region Constructors
+#endregion // Member Variables
+#region Constructors
 				public TypeBranchWithExplicitTargets(ProviderBranch parentBranch, int typeIndex, TargetedTypeData[] expansions)
 					: base(parentBranch, typeIndex)
 				{
 					Debug.Assert(expansions != null && expansions.Length != 0); // Create a TypeBranch directly if there are no expansions
 					myExpansions = expansions;
 				}
-				#endregion // Constructors
-				#region IBranch implementation
+#endregion // Constructors
+#region IBranch implementation
 				int IBranch.VisibleItemCount
 				{
 					get
@@ -761,18 +790,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					}
 					return StateRefreshChanges.None;
 				}
-				#endregion // IBranch implementation
+#endregion // IBranch implementation
 			}
-			#endregion // TypeBranchWithExplicitTargets class
+#endregion // TypeBranchWithExplicitTargets class
 		}
-		#endregion // ProviderBranch class
-		#region BaseBranch class
+#endregion // ProviderBranch class
+#region BaseBranch class
 		/// <summary>
 		/// A helper class to provide a default IBranch implementation
 		/// </summary>
 		private abstract class BaseBranch : IBranch
 		{
-			#region IBranch Implementation
+#region IBranch Implementation
 			VirtualTreeLabelEditData IBranch.BeginLabelEdit(int row, int column, VirtualTreeLabelEditActivationStyles activationStyle)
 			{
 				return VirtualTreeLabelEditData.Invalid;
@@ -861,9 +890,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					return 0;
 				}
 			}
-			#endregion // IBranch Implementation
+#endregion // IBranch Implementation
 		}
-		#endregion // BaseBranch class
+#endregion // BaseBranch class
 	}
-	#endregion // AvailableVerbalizationSnippetsPicker class
+#endregion // AvailableVerbalizationSnippetsPicker class
 }

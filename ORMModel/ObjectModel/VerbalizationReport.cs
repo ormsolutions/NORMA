@@ -205,16 +205,51 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 			VerbalizationCallbackWriter writer;
 			#endregion // Member Variable
 			#region ObjectType Reports
-			ObjectType[] objectTypeList = null;
 			if (0 != (reportContent & VerbalizationReportContent.ObjectTypes))
 			{
-				alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
-				objectTypeList = model.ObjectTypeCollection.ToArray();
-
-				int objectTypeCount = objectTypeList.Length;
+				LinkedElementCollection<ObjectType> allObjectTypes = model.ObjectTypeCollection;
+				int objectTypeCount = allObjectTypes.Count;
 				if (objectTypeCount != 0)
 				{
-					Array.Sort<ObjectType>(objectTypeList, NamedElementComparer<ObjectType>.CurrentCulture);
+					List<ObjectType> filteredList = null;
+
+					for (int i = 0; i < objectTypeCount; ++i)
+					{
+						ObjectType testObjectType = allObjectTypes[i];
+						Objectification objectification;
+						if (testObjectType.IsImplicitBooleanValue ||
+							(null != (objectification = testObjectType.Objectification) && objectification.IsImplied))
+						{
+							if (filteredList == null)
+							{
+								filteredList = new List<ObjectType>();
+								for (int k = 0; k < i; ++k)
+								{
+									filteredList.Add(allObjectTypes[k]);
+								}
+							}
+						}
+						else if (filteredList != null)
+						{
+							filteredList.Add(testObjectType);
+						}
+					}
+
+					IList<ObjectType> objectTypeList;
+					if (filteredList != null)
+					{
+						filteredList.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
+						objectTypeList = filteredList;
+						objectTypeCount = filteredList.Count;
+					}
+					else
+					{
+						allObjectTypes.Sort(NamedElementComparer<ObjectType>.CurrentCulture);
+						objectTypeList = allObjectTypes;
+					}
+
+					alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
+
 					#region Object Type List Report
 					fileStream = new FileStream(Path.Combine(baseDir, "ObjectTypeList.html"), FileMode.Create, FileAccess.ReadWrite);
 					textWriter = new StreamWriter(fileStream);
@@ -286,97 +321,128 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 				}
 			}
 			#endregion // ObjectType Reports
-			#region Individual FactType Page Reports
-			FactType[] factTypeList = null;
-			if (0 != (VerbalizationReportContent.FactTypes & reportContent))
+			#region Collect Fact Types
+			int factTypeCount = 0;
+			IList<FactType> factTypeList = null;
+			if (0 != (reportContent & (VerbalizationReportContent.FactTypes | VerbalizationReportContent.ValidationReport)))
 			{
-				factTypeList = model.FactTypeCollection.ToArray();
-				alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
-
-				int factCount = factTypeList.Length;
-				if (factCount != 0)
+				LinkedElementCollection<FactType> allFactTypes = model.FactTypeCollection;
+				factTypeCount = allFactTypes.Count;
+				if (factTypeCount != 0)
 				{
-					string factTypeDir = Path.Combine(baseDir, "FactTypes");
-					if (!Directory.Exists(factTypeDir))
+					List<FactType> filteredList = null;
+
+					for (int i = 0; i < factTypeCount; ++i)
 					{
-						Directory.CreateDirectory(factTypeDir);
+						FactType testFactType = allFactTypes[i];
+						Objectification objectification;
+						if (null != (objectification = testFactType.ImpliedByObjectification) && objectification.IsImplied)
+						{
+							if (filteredList == null)
+							{
+								filteredList = new List<FactType>();
+								for (int k = 0; k < i; ++k)
+								{
+									filteredList.Add(allFactTypes[k]);
+								}
+							}
+						}
+						else if (filteredList != null)
+						{
+							filteredList.Add(testFactType);
+						}
 					}
 
-					Array.Sort<FactType>(factTypeList, NamedElementComparer<FactType>.CurrentCulture);
-					for (int i = 0; i < factCount; ++i)
+					if (filteredList != null)
 					{
-						bool firstCallPending = true;
-						alreadyVerbalized.Clear();
-						locallyVerbalized.Clear();
-						fileStream = new FileStream(Path.Combine(factTypeDir, AsFileName(factTypeList[i].Name) + ".html"), FileMode.Create, FileAccess.ReadWrite);
-						textWriter = new StreamWriter(fileStream);
-						writer = new VerbalizationReportCallbackWriter(snippetsDictionary, textWriter);
-
-						FactTypePageReport factTypePageReport = new FactTypePageReport(factTypeList[i], reportContent, snippets);
-						VerbalizationHelper.VerbalizeChildren(
-							((IVerbalizeCustomChildren)factTypePageReport).GetCustomChildVerbalizations(factTypePageReport, verbalizationOptions, sign),
-							null,
-							snippetsDictionary,
-							extensionVerbalizer,
-							verbalizationOptions,
-							HtmlReport.HtmlReportTargetName,
-							alreadyVerbalized,
-							locallyVerbalized,
-							sign,
-							writer,
-							false,
-							ref firstCallPending);
-
-						if (!firstCallPending)
-						{
-							writer.WriteDocumentFooter();
-						}
-						textWriter.Flush();
-						textWriter.Close();
+						filteredList.Sort(NamedElementComparer<FactType>.CurrentCulture);
+						factTypeList = filteredList;
+						factTypeCount = filteredList.Count;
+					}
+					else
+					{
+						allFactTypes.Sort(NamedElementComparer<FactType>.CurrentCulture);
+						factTypeList = allFactTypes;
 					}
 				}
 			}
-			#endregion // Individual FactType Page Reports
-			#region Constraint Validation Report
-			if (0 != (reportContent & VerbalizationReportContent.ValidationReport))
+			#endregion // Collect Fact Types
+			#region Individual FactType Page Reports
+			if (0 != (reportContent & VerbalizationReportContent.FactTypes) && 0 != factTypeCount)
 			{
-				alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
-				bool firstCall = true;
-				if (factTypeList == null)
+				string factTypeDir = Path.Combine(baseDir, "FactTypes");
+				if (!Directory.Exists(factTypeDir))
 				{
-					factTypeList = model.FactTypeCollection.ToArray();
-					Array.Sort<FactType>(factTypeList, NamedElementComparer<FactType>.CurrentCulture);
+					Directory.CreateDirectory(factTypeDir);
 				}
 
-				if (factTypeList.Length != 0)
+				alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
+
+				for (int i = 0; i < factTypeCount; ++i)
 				{
-					fileStream = new FileStream(Path.Combine(baseDir, "ConstraintValidationReport.html"), FileMode.Create, FileAccess.ReadWrite);
+					bool firstCallPending = true;
+					alreadyVerbalized.Clear();
+					locallyVerbalized.Clear();
+					fileStream = new FileStream(Path.Combine(factTypeDir, AsFileName(factTypeList[i].Name) + ".html"), FileMode.Create, FileAccess.ReadWrite);
 					textWriter = new StreamWriter(fileStream);
 					writer = new VerbalizationReportCallbackWriter(snippetsDictionary, textWriter);
 
-					FactTypeConstraintValidationListReport factTypeConstraintValidationReport = new FactTypeConstraintValidationListReport(model, factTypeList, reportContent, snippets);
+					FactTypePageReport factTypePageReport = new FactTypePageReport(factTypeList[i], reportContent, snippets);
 					VerbalizationHelper.VerbalizeChildren(
-						((IVerbalizeCustomChildren)factTypeConstraintValidationReport).GetCustomChildVerbalizations(factTypeConstraintValidationReport, verbalizationOptions, sign),
+						((IVerbalizeCustomChildren)factTypePageReport).GetCustomChildVerbalizations(factTypePageReport, verbalizationOptions, sign),
 						null,
 						snippetsDictionary,
 						extensionVerbalizer,
 						verbalizationOptions,
 						HtmlReport.HtmlReportTargetName,
 						alreadyVerbalized,
-						null,
+						locallyVerbalized,
 						sign,
 						writer,
 						false,
-						ref firstCall);
+						ref firstCallPending);
 
-					if (!firstCall)
+					if (!firstCallPending)
 					{
 						writer.WriteDocumentFooter();
 					}
-
 					textWriter.Flush();
 					textWriter.Close();
 				}
+			}
+			#endregion // Individual FactType Page Reports
+			#region Constraint Validation Report
+			if (0 != (reportContent & VerbalizationReportContent.ValidationReport) && factTypeCount != 0)
+			{
+				alreadyVerbalized = new Dictionary<IVerbalize, IVerbalize>();
+				bool firstCall = true;
+
+				fileStream = new FileStream(Path.Combine(baseDir, "ConstraintValidationReport.html"), FileMode.Create, FileAccess.ReadWrite);
+				textWriter = new StreamWriter(fileStream);
+				writer = new VerbalizationReportCallbackWriter(snippetsDictionary, textWriter);
+
+				FactTypeConstraintValidationListReport factTypeConstraintValidationReport = new FactTypeConstraintValidationListReport(model, factTypeList, reportContent, snippets);
+				VerbalizationHelper.VerbalizeChildren(
+					((IVerbalizeCustomChildren)factTypeConstraintValidationReport).GetCustomChildVerbalizations(factTypeConstraintValidationReport, verbalizationOptions, sign),
+					null,
+					snippetsDictionary,
+					extensionVerbalizer,
+					verbalizationOptions,
+					HtmlReport.HtmlReportTargetName,
+					alreadyVerbalized,
+					null,
+					sign,
+					writer,
+					false,
+					ref firstCall);
+
+				if (!firstCall)
+				{
+					writer.WriteDocumentFooter();
+				}
+
+				textWriter.Flush();
+				textWriter.Close();
 			}
 			#endregion // Constraint Validation Report
 		}
@@ -402,15 +468,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 		/// <summary>
 		/// Gets the Fact Types for which the specified Object Type plays a role
 		/// </summary>
-		protected static IList<FactType> GetFactTypesFromObjectType(ObjectType objectType)
+		protected static IList<FactType> GetFactTypesFromObjectType(ObjectType objectType, bool includeNonImpliedLinkFactTypes)
 		{
 			List<FactType> factTypeList = new List<FactType>();
-			LinkedElementCollection<Role> roleCollecton = objectType.PlayedRoleCollection;
-			int roleCount = roleCollecton.Count;
+			LinkedElementCollection<Role> roleCollection = objectType.PlayedRoleCollection;
+			int roleCount = roleCollection.Count;
 			for (int i = 0; i < roleCount; ++i)
 			{
-				FactType factType = roleCollecton[i].FactType;
+				Role role = roleCollection[i];
+				FactType factType = role.FactType;
 				if (!factTypeList.Contains(factType))
+				{
+					factTypeList.Add(factType);
+				}
+
+				RoleProxy proxy;
+				if (includeNonImpliedLinkFactTypes &&
+					null != (proxy = role.Proxy) &&
+					!factType.Objectification.IsImplied &&
+					!factTypeList.Contains(factType = proxy.FactType))
 				{
 					factTypeList.Add(factType);
 				}
@@ -794,7 +870,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					IList<FactType> retVal = myUniqueFactTypeList;
 					if (retVal == null)
 					{
-						myUniqueFactTypeList = retVal = GetFactTypesFromObjectType(myObjectType);
+						myUniqueFactTypeList = retVal = GetFactTypesFromObjectType(myObjectType, true);
 					}
 					return retVal;
 				}
@@ -865,7 +941,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 					if (retVal == null)
 					{
 						List<ObjectType> relatedObjectList = new List<ObjectType>();
-						IList<FactType> uniqueFactList = GetFactTypesFromObjectType(myObjectType);
+						IList<FactType> uniqueFactList = GetFactTypesFromObjectType(myObjectType, false);
 						int factCount = uniqueFactList.Count;
 						for (int i = 0; i < factCount; i++)
 						{
@@ -874,13 +950,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Verbalization
 							{
 								LinkedElementCollection<RoleBase> currentFactRoles = factType.RoleCollection;
 								int currentFactRoleCount = currentFactRoles.Count;
+								ObjectType rolePlayer;
 								for (int j = 0; j < currentFactRoleCount; ++j)
 								{
-									ObjectType rolePlayer = currentFactRoles[j].Role.RolePlayer;
-									if (rolePlayer != null && rolePlayer != myObjectType && !relatedObjectList.Contains(rolePlayer))
+									rolePlayer = currentFactRoles[j].Role.RolePlayer;
+									if (rolePlayer != null &&
+										rolePlayer != myObjectType &&
+										!rolePlayer.IsImplicitBooleanValue &&
+										!relatedObjectList.Contains(rolePlayer))
 									{
 										relatedObjectList.Add(rolePlayer);
 									}
+								}
+
+								// The unique fact list is based on PlayedRoleCollection, which does not
+								// pick up any link fact types because of the use of role proxies. However,
+								// we want to be related to a non-implied objectification, which is also
+								// related to us.
+								Objectification objectification = factType.Objectification;
+								if (objectification != null &&
+									!objectification.IsImplied &&
+									null != (rolePlayer = objectification.NestingType) &&
+									rolePlayer != myObjectType &&
+									!relatedObjectList.Contains(rolePlayer))
+								{
+									relatedObjectList.Add(rolePlayer);
 								}
 							}
 						}

@@ -46,6 +46,7 @@ namespace Neumont.Build.Tasks
 		public override bool Execute()
 		{
 			const string VsSdkInstallDirEnvironmentVariable = "VsSDKInstall";
+			const string VsSdkInstallDirEnvironmentVariable2 = "VSIPDir";
 			const string VsSdkVersionsRegistryPath = @"SOFTWARE\Microsoft\VisualStudio\VSIP";
 			const string VsSdkInstallDirRegistryValue = "InstallDir";
 			const string VsSdkIncludeFilesSubdirectory = @"VisualStudioIntegration\Common\Inc";
@@ -56,7 +57,7 @@ namespace Neumont.Build.Tasks
 
 			// Try to find the VsSDK installation directory by first checking the environment variable, and then by checking the specified version listed in the registry.
 			string installDir = Environment.GetEnvironmentVariable(VsSdkInstallDirEnvironmentVariable);
-			if (!string.IsNullOrEmpty(installDir))
+			if (!string.IsNullOrEmpty(installDir) || !string.IsNullOrEmpty(installDir = Environment.GetEnvironmentVariable(VsSdkInstallDirEnvironmentVariable2)))
 			{
 				log.LogMessage(MessageImportance.Low, "Using Visual Studio SDK installation directory from \"" + VsSdkInstallDirEnvironmentVariable + "\" environment variable: \"{0}\"", installDir);
 			}

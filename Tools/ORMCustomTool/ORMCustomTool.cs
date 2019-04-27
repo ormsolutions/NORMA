@@ -59,7 +59,10 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		private const string DEFAULT_EXTENSION_DECORATOR = "._ORMCustomToolReport."; // Add the _ here to put it above other generators
 		private const string EXTENSION_ORM = ".orm";
 		private const string EXTENSION_XML = ".xml";
-#if VISUALSTUDIO_14_0
+#if VISUALSTUDIO_15_0
+		// The registry location is no longer fixed with Side by Side VSIX-only installation. This value is appended to a base key.
+		private const string GENERATORS_REGISTRYROOT = @"ORM Solutions\Natural ORM Architect\Generators";
+#elif VISUALSTUDIO_14_0
 		private const string GENERATORS_REGISTRYROOT = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2015\Generators";
 #elif VISUALSTUDIO_12_0
 		private const string GENERATORS_REGISTRYROOT = @"Software\ORM Solutions\Natural ORM Architect for Visual Studio 2013\Generators";
@@ -81,8 +84,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		private const string ITEMGROUP_CONDITIONEND = "')";
 		private const string DEBUG_ERROR_CATEGORY = "ORMCustomTool";
 		private const string ORM_OUTPUT_FORMAT = "ORM";
-		#endregion // Private Constants
-		#region Member Variables
+#endregion // Private Constants
+#region Member Variables
 		/// <summary>
 		/// A wrapper object to provide unified managed and unmanaged IServiceProvider implementations
 		/// </summary>
@@ -97,8 +100,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// </summary>
 		private IOleServiceProvider _dteServiceProvider;
 		private CodeDomProvider _codeDomProvider;
-		#endregion // Member Variables
-		#region Constructors
+#endregion // Member Variables
+#region Constructors
 		/// <summary>
 		/// Instantiates a new instance of <see cref="ORMCustomTool"/>.
 		/// </summary>
@@ -108,8 +111,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			// unless SetSite has been called on us.
 			this._serviceProvider = new ServiceProvider(this, true);
 		}
-		#endregion // Constructors
-		#region Private Helper Methods
+#endregion // Constructors
+#region Private Helper Methods
 		private static void ReportError(string message, Exception ex)
 		{
 			ReportError(message, DEBUG_ERROR_CATEGORY, ex);
@@ -257,8 +260,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				return retVal;
 			}
 		}
-		#endregion // Private Helper Methods
-		#region ServiceProvider Interface Implementations
+#endregion // Private Helper Methods
+#region ServiceProvider Interface Implementations
 		/// <summary>
 		/// Returns a service instance of type <typeparamref name="T"/>, or <see langword="null"/> if no service instance of
 		/// type <typeparamref name="T"/> is available.
@@ -268,7 +271,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		{
 			return this._serviceProvider.GetService(typeof(T)) as T;
 		}
-		#region IObjectWithSite Members
+#region IObjectWithSite Members
 		void IObjectWithSite.GetSite(ref Guid riid, out IntPtr ppvSite)
 		{
 			(_serviceProvider as IObjectWithSite).GetSite(ref riid, out ppvSite);
@@ -280,8 +283,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			_dteServiceProvider = null;
 			_codeDomProvider = null;
 		}
-		#endregion // IObjectWithSite Members
-		#region IOleServiceProvider Members
+#endregion // IObjectWithSite Members
+#region IOleServiceProvider Members
 		int IOleServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
 		{
 			IOleServiceProvider customToolServiceProvider = this._customToolServiceProvider;
@@ -318,16 +321,16 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 			return errorCode;
 		}
-		#endregion // IOleServiceProvider Members
-		#region IServiceProvider Members
+#endregion // IOleServiceProvider Members
+#region IServiceProvider Members
 		object IServiceProvider.GetService(Type serviceType)
 		{
 			// Pass this on to our ServiceProvider which will pass it back to us via our implementation of IOleServiceProvider
 			return this._serviceProvider.GetService(serviceType);
 		}
-		#endregion // IServiceProvider Members
-		#endregion // ServiceProvider Interface Implementations
-		#region IVsSingleFileGenerator Members
+#endregion // IServiceProvider Members
+#endregion // ServiceProvider Interface Implementations
+#region IVsSingleFileGenerator Members
 		/// <summary>
 		/// The types of reports to write during generation
 		/// </summary>
@@ -361,7 +364,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		}
 		int IVsSingleFileGenerator.Generate(string wszInputFilePath, string bstrInputFileContents, string wszDefaultNamespace, IntPtr[] rgbOutputFileContents, out uint pcbOutput, IVsGeneratorProgress pGenerateProgress)
 		{
-			#region ParameterValidation
+#region ParameterValidation
 			if (String.IsNullOrEmpty(bstrInputFileContents))
 			{
 				if (!String.IsNullOrEmpty(wszInputFilePath))
@@ -375,14 +378,14 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					return VSConstants.E_INVALIDARG;
 				}
 			}
-			#endregion
+#endregion
 			StringWriter outputWriter = new StringWriter();
 			CodeDomProvider codeProvider = CodeDomProvider;
 			GenerateCode(
 				bstrInputFileContents,
 				wszDefaultNamespace,
 				pGenerateProgress,
-				#region Report callback
+#region Report callback
 				delegate(string message, ReportType type, Exception ex)
 				{
 					switch (type)
@@ -459,7 +462,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							break;
 					}
 				}
-				#endregion // Report callback
+#endregion // Report callback
 			);
 			outputWriter.Flush();
 			byte[] bytes = Encoding.UTF8.GetBytes(outputWriter.ToString());
@@ -474,7 +477,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		}
 		private sealed class ItemPropertiesImpl : IORMGeneratorItemProperties
 		{
-			#region Member Variables and Constructor
+#region Member Variables and Constructor
 			private EnvDTE.Properties myProjectProperties;
 			private EnvDTE.Properties myProjectItemProperties;
 			private References myReferences;
@@ -488,8 +491,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				myProjectProperties = project.Properties;
 				myProjectItemProperties = projectItem.Properties;
 			}
-			#endregion // Member Variables and Constructor
-			#region IORMGeneratorItemProperties Members
+#endregion // Member Variables and Constructor
+#region IORMGeneratorItemProperties Members
 			/// <summary>
 			/// Implements <see cref="IORMGeneratorItemProperties.GetItemProperty"/>
 			/// </summary>
@@ -540,7 +543,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				}
 				return retVal;
 			}
-			#endregion // IORMGeneratorItemProperties Members
+#endregion // IORMGeneratorItemProperties Members
 		}
 		/// <summary>
 		/// Helper structure for GenerateCode to
@@ -674,7 +677,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			{
 				IORMGeneratorItemProperties itemProperties = new ItemPropertiesImpl(envProject, projectItem);
 				List<BoundBuildItem> boundBuildItems = new List<BoundBuildItem>(ormItemGroup.Count);
-				IDictionary<string, IORMGenerator> generators = ORMCustomTool.ORMGenerators;
+				IDictionary<string, IORMGenerator> generators =
+#if VISUALSTUDIO_15_0
+					ORMCustomTool.GetORMGenerators(_serviceProvider);
+#else
+					ORMCustomTool.ORMGenerators;
+#endif
 #if VISUALSTUDIO_10_0
 				foreach (ProjectItemElement buildItem in ormItemGroup.Items)
 #else
@@ -1040,10 +1048,10 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				pGenerateProgress.Progress(progressTotal, progressTotal);
 			}
 		}
-		#endregion // IVsSingleFileGenerator Members
+#endregion // IVsSingleFileGenerator Members
 	}
-	#endregion // ORMCustomTool class
-	#region ORMCustomToolUtility class
+#endregion // ORMCustomTool class
+#region ORMCustomToolUtility class
 	/// <summary>
 	/// Miscellaneous extension methods matching older methods
 	/// </summary>
@@ -1168,5 +1176,5 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		}
 #endif // VISUALSTUDIO_10_0
 	}
-	#endregion // ORMCustomToolUtility class
+#endregion // ORMCustomToolUtility class
 }
