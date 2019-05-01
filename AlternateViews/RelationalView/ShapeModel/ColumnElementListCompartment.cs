@@ -57,7 +57,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		/// <summary>
 		/// The <see cref="T:System.Drawing.StringFormat"/> used to write text for the columns and table name.
 		/// </summary>
-		private static readonly StringFormat DefaultStringFormat = new StringFormat(StringFormatFlags.NoClip);
+		private static readonly StringFormat DefaultStringFormat = new StringFormat(StringFormatFlags.NoClip | StringFormatFlags.NoWrap);
 		/// <summary>
 		/// Specifies a comma string for use with delimiting constraints.
 		/// </summary>
@@ -345,7 +345,7 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		{
 			DefaultStringFormat.Alignment = StringAlignment.Center;
 			DefaultStringFormat.LineAlignment = StringAlignment.Center;
-			DefaultStringFormat.Trimming = StringTrimming.EllipsisCharacter;
+			DefaultStringFormat.Trimming = StringTrimming.None;
 		}
 		/// <summary>
 		/// Updates the size of this <see cref="T:ORMSolutions.ORMArchitect.Views.RelationalView.ColumnElementListCompartment"/> and

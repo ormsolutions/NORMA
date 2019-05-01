@@ -26,6 +26,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
@@ -76,6 +77,14 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			textField.DefaultAutoSize = true;
 			textField.AnchoringBehavior.MinimumHeightInLines = 1;
 			textField.AnchoringBehavior.MinimumWidthInCharacters = 1;
+
+			// Header measure can be off by a small amount. This is harmless for display
+			// unless the text is modified (clipped, wrapped, ellipsis, etc.)
+			StringFormat headerFormat = new StringFormat(StringFormatFlags.NoClip | StringFormatFlags.NoWrap);
+			headerFormat.Alignment = StringAlignment.Center;
+			headerFormat.LineAlignment = StringAlignment.Center;
+			headerFormat.Trimming = StringTrimming.None;
+			textField.DefaultStringFormat = headerFormat;
 			textField.DefaultFontId = new StyleSetResourceId(string.Empty, "ShapeTextBold10");
 			shapeFields.Add(textField);
 		}
