@@ -201,9 +201,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		IntersectingConstraintModalityNotWeaker = 2,
 		/// <summary>
+		/// The context constraint must be alethic
+		/// </summary>
+		ContextConstraintAlethic = 4,
+		/// <summary>
+		/// The intersecting constraint must be alethic.
+		/// </summary>
+		IntersectingConstraintAlethic = 8,
+		/// <summary>
 		/// A mask value representating all modality flags
 		/// </summary>
-		IntersectingConstraintModalityMask = IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger | IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
+		IntersectingConstraintModalityMask = IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger | IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker | IntersectingConstraintPatternOptions.ContextConstraintAlethic | IntersectingConstraintPatternOptions.IntersectingConstraintAlethic,
 	}
 
 
@@ -349,20 +357,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public bool TestModality(ConstraintModality contextModality, ConstraintModality intersectingModality)
 		{
 			bool retVal = true;
-			switch (myPatternOptions & IntersectingConstraintPatternOptions.IntersectingConstraintModalityMask)
+			IntersectingConstraintPatternOptions options = myPatternOptions;
+			if (0 != (options & IntersectingConstraintPatternOptions.IntersectingConstraintModalityMask))
 			{
-				case IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger:
-					if (contextModality == ConstraintModality.Deontic)
+				if ((0 != (options & IntersectingConstraintPatternOptions.ContextConstraintAlethic) && contextModality != ConstraintModality.Alethic) ||
+					(0 != (options & IntersectingConstraintPatternOptions.IntersectingConstraintAlethic) && intersectingModality != ConstraintModality.Alethic))
+				{
+					retVal = false;
+				}
+				else
+				{
+					switch (options & ~(IntersectingConstraintPatternOptions.ContextConstraintAlethic | IntersectingConstraintPatternOptions.IntersectingConstraintAlethic))
 					{
-						retVal = intersectingModality != ConstraintModality.Alethic;
+						case IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger:
+							if (contextModality == ConstraintModality.Deontic)
+							{
+								retVal = intersectingModality != ConstraintModality.Alethic;
+							}
+							break;
+						case IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker:
+							if (contextModality == ConstraintModality.Alethic)
+							{
+								retVal = intersectingModality != ConstraintModality.Deontic;
+							}
+							break;
 					}
-					break;
-				case IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker:
-					if (contextModality == ConstraintModality.Alethic)
-					{
-						retVal = intersectingModality != ConstraintModality.Deontic;
-					}
-					break;
+				}
 			}
 			return retVal;
 		}
@@ -4666,6 +4686,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					//The error occurs when simple mandatory is on several roles
 					//TODO: handle disjunctive mandatory too
+					ConstraintModality currentModality = curConstraint.Modality;
 
 					foreach (SetComparisonConstraintRoleSequence sequence in sequences)
 					{
@@ -4675,6 +4696,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							validationInfo.ConstraintTypesInPotentialConflict,
 							delegate(IConstraint matchConstraint)
 							{
+								if (!validationInfo.TestModality(currentModality, matchConstraint.Modality))
+								{
+									return true;
+								}
 								if (constrFound == null)
 								{
 									constrFound = new List<IConstraint>();
@@ -4688,7 +4713,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						numOfViolatingConstraints = constrFound.Count;
 					}
 				}
-
 
 				if (numOfViolatingConstraints >= minNumViolatingConstraints)
 				{
@@ -11788,7 +11812,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetComparisonConstraintSubset,
-					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
+					IntersectingConstraintPatternOptions.ContextConstraintAlethic | IntersectingConstraintPatternOptions.IntersectingConstraintAlethic,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Subset),
@@ -11805,7 +11829,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.ExclusionContradictsMandatory,
-					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
+					IntersectingConstraintPatternOptions.ContextConstraintAlethic | IntersectingConstraintPatternOptions.IntersectingConstraintAlethic,
 					ExclusionConstraintHasExclusionContradictsMandatoryError.ExclusionConstraintDomainRoleId,
 					MandatoryConstraintHasExclusionContradictsMandatoryError.MandatoryConstraintDomainRoleId,
 					ConstraintType.SimpleMandatory),
@@ -11909,7 +11933,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.ExclusionContradictsMandatory,
-					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
+					IntersectingConstraintPatternOptions.IntersectingConstraintAlethic | IntersectingConstraintPatternOptions.ContextConstraintAlethic,
 					MandatoryConstraintHasExclusionContradictsMandatoryError.MandatoryConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: Reverse many on this relationship, 1 error per contradiction
 					ExclusionConstraintHasExclusionContradictsMandatoryError.ExclusionConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: Reverse many on this relationship, 1 error per contradiction
 					ConstraintType.Exclusion),
@@ -12091,7 +12115,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
-					IntersectingConstraintPatternOptions.None,
+					IntersectingConstraintPatternOptions.IntersectingConstraintAlethic | IntersectingConstraintPatternOptions.ContextConstraintAlethic,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Exclusion),
