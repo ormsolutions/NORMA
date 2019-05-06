@@ -97,10 +97,10 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			// ORMGeneratorSelectionControl
 			// 
 			this.AcceptButton = this.button_SaveChanges;
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+			resources.ApplyResources(this, "$this");
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
 			this.CancelButton = this.button_Cancel;
-			resources.ApplyResources(this, "$this");
 			this.Controls.Add(this.button_SaveChanges);
 			this.Controls.Add(this.button_Cancel);
 			this.Controls.Add(this.textBox_ORMFileName);

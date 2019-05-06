@@ -91,7 +91,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 				myPanel = new System.Windows.Forms.ContainerControl();
 				myPanel.SuspendLayout();
-				Control pnlOption = new System.Windows.Forms.ContainerControl();
+				ContainerControl pnlOption = new System.Windows.Forms.ContainerControl();
+				pnlOption.AutoScaleMode = AutoScaleMode.Font;
+				// Regardless of what I set AutoScaleDimensions to it always has the same value as
+				// CurrentAutoScaleDimensions. Let's hear it for brute-force scaling!
+				//pnlOption.AutoScaleDimensions = new SizeF(6F, 13F);
+				SizeF currentDimensions = pnlOption.CurrentAutoScaleDimensions;
+				float xFactor = currentDimensions.Width / 6F;
+				float yFactor = currentDimensions.Height / 13F;
+				pnlOption.AutoScaleMode = AutoScaleMode.None;
 				Label lblGenerations = new System.Windows.Forms.Label();
 				DiagramView viewControl = myDiagramView;
 				if (viewControl == null)
@@ -107,24 +115,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				//pnlOption.Dock = System.Windows.Forms.DockStyle.Top;
 				pnlOption.Location = new System.Drawing.Point(0, 0);
 				pnlOption.Name = "Options";
-				pnlOption.Size = new System.Drawing.Size(316, 24);
+				pnlOption.Size = new System.Drawing.Size((int)Math.Ceiling(316 * xFactor), (int)Math.Ceiling(24 * yFactor));
 				pnlOption.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
 				//pnlOption.TabIndex = 0;
 				// 
 				// lblGenerations
 				// 
 				lblGenerations.AutoSize = true;
-				lblGenerations.Location = new System.Drawing.Point(4, 4);
+				lblGenerations.Location = new System.Drawing.Point((int)Math.Ceiling(4 * xFactor), (int)Math.Ceiling(4 * yFactor));
 				lblGenerations.Name = "lblGenerations";
-				lblGenerations.Size = new System.Drawing.Size(64, 13);
+				lblGenerations.Size = new System.Drawing.Size((int)Math.Ceiling(64 * xFactor), (int)Math.Ceiling(13 * yFactor));
 				lblGenerations.TabIndex = 0;
 				lblGenerations.Text = "Generations";
 				// 
 				// myUpDownGenerations
 				// 
-				myUpDownGenerations.Location = new System.Drawing.Point(73, 1);
+				myUpDownGenerations.Location = new System.Drawing.Point((int)Math.Ceiling(73 * xFactor), (int)Math.Ceiling(1 * yFactor));
 				myUpDownGenerations.Name = "numericUpDown1";
-				myUpDownGenerations.Size = new System.Drawing.Size(50, 20);
+				myUpDownGenerations.Size = new System.Drawing.Size((int)Math.Ceiling(50 * xFactor), (int)Math.Ceiling(20 * yFactor));
 				myUpDownGenerations.TabIndex = 1;
 				myUpDownGenerations.Minimum = 0;
 				myUpDownGenerations.Maximum = 3;
@@ -133,8 +141,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				// 
 				// viewControl
 				// 
-				viewControl.Size = new Size(myPanel.ClientSize.Width, myPanel.ClientSize.Height - 24);
-				viewControl.Location = new Point(0, 24);
+				viewControl.Size = new Size(myPanel.ClientSize.Width, myPanel.ClientSize.Height - pnlOption.Height);
+				viewControl.Location = new Point(0, pnlOption.Height);
 				viewControl.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right | AnchorStyles.Left;
 				//
 				// myPanel
