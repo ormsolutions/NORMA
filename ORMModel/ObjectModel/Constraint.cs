@@ -201,9 +201,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		IntersectingConstraintModalityNotWeaker = 2,
 		/// <summary>
+		/// The context constraint must be alethic
+		/// </summary>
+		ContextConstraintAlethic = 4,
+		/// <summary>
+		/// The intersecting constraint must be alethic.
+		/// </summary>
+		IntersectingConstraintAlethic = 8,
+		/// <summary>
 		/// A mask value representating all modality flags
 		/// </summary>
-		IntersectingConstraintModalityMask = IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger | IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker,
+		IntersectingConstraintModalityMask = IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger | IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker | IntersectingConstraintPatternOptions.ContextConstraintAlethic | IntersectingConstraintPatternOptions.IntersectingConstraintAlethic,
+		/// <summary>
+		/// The constraint validation rule relies on the role players in addition to the intersecting constraints.
+		/// </summary>
+		RolePlayerDependent = 0x10,
 	}
 
 
@@ -349,20 +361,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public bool TestModality(ConstraintModality contextModality, ConstraintModality intersectingModality)
 		{
 			bool retVal = true;
-			switch (myPatternOptions & IntersectingConstraintPatternOptions.IntersectingConstraintModalityMask)
+			IntersectingConstraintPatternOptions options = myPatternOptions;
+			if (0 != (options & IntersectingConstraintPatternOptions.IntersectingConstraintModalityMask))
 			{
-				case IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger:
-					if (contextModality == ConstraintModality.Deontic)
+				if ((0 != (options & IntersectingConstraintPatternOptions.ContextConstraintAlethic) && contextModality != ConstraintModality.Alethic) ||
+					(0 != (options & IntersectingConstraintPatternOptions.IntersectingConstraintAlethic) && intersectingModality != ConstraintModality.Alethic))
+				{
+					retVal = false;
+				}
+				else
+				{
+					switch (options & ~(IntersectingConstraintPatternOptions.ContextConstraintAlethic | IntersectingConstraintPatternOptions.IntersectingConstraintAlethic))
 					{
-						retVal = intersectingModality != ConstraintModality.Alethic;
+						case IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotStronger:
+							if (contextModality == ConstraintModality.Deontic)
+							{
+								retVal = intersectingModality != ConstraintModality.Alethic;
+							}
+							break;
+						case IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker:
+							if (contextModality == ConstraintModality.Alethic)
+							{
+								retVal = intersectingModality != ConstraintModality.Deontic;
+							}
+							break;
 					}
-					break;
-				case IntersectingConstraintPatternOptions.IntersectingConstraintModalityNotWeaker:
-					if (contextModality == ConstraintModality.Alethic)
-					{
-						retVal = intersectingModality != ConstraintModality.Deontic;
-					}
-					break;
+				}
 			}
 			return retVal;
 		}
@@ -3532,27 +3556,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					link.Role,
 					null,
 					false,
+					false,
 					delegate(IConstraint matchConstraint)
 					{
 						DelayValidateConstraintPatternError(matchConstraint);
 						return true;
 					});
-			}
-		}
-		/// <summary>
-		/// DeletingRule: typeof(ConstraintRoleSequence)
-		/// </summary>
-		private static void SetComparisonConstraintHasRoleSequenceDeletingRule(ElementDeletingEventArgs e)
-		{
-			ConstraintRoleSequence sequence = (ConstraintRoleSequence)e.ModelElement;
-			SetComparisonConstraint curSetComparisonConstraint = sequence.Constraint as SetComparisonConstraint;
-
-			if (curSetComparisonConstraint != null)
-			{
-				if (curSetComparisonConstraint.IsDeleting)
-				{
-					HandleConstraintDeleting(null, curSetComparisonConstraint);
-				}
 			}
 		}
 		/// <summary>
@@ -3568,6 +3577,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (curSetComparisonConstraint.IsDeleting)
 				{
 					HandleConstraintDeleting(null, curSetComparisonConstraint);
+				}
+				else
+				{
+					ProcessSetComparisonConstraintPattern(
+						curSetComparisonConstraint,
+						null,
+						null,
+						false,
+						false,
+						delegate(IConstraint matchConstraint)
+						{
+							DelayValidateConstraintPatternError(matchConstraint);
+							return true;
+						});
+
 				}
 			}
 		}
@@ -3611,6 +3635,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null,
 					null,
 					true,
+					false,
 					delegate(IConstraint matchConstraint)
 					{
 						DelayValidateConstraintPatternError(matchConstraint);
@@ -3874,7 +3899,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void RolePlayerAddedRule(ElementAddedEventArgs e)
 		{
-			DelayValidateFactTypeJoinPaths(((ObjectTypePlaysRole)e.ModelElement).PlayedRole.FactType, true);
+			Role playedRole = ((ObjectTypePlaysRole)e.ModelElement).PlayedRole;
+			DelayValidateFactTypeJoinPaths(playedRole.FactType, true);
+			DelayValidateRolePlayerDependentConstraintPatterns(playedRole);
 		}
 		/// <summary>
 		/// DeleteRule: typeof(ObjectTypePlaysRole)
@@ -3885,6 +3912,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (!role.IsDeleted)
 			{
 				DelayValidateFactTypeJoinPaths(role.FactType, true);
+				DelayValidateRolePlayerDependentConstraintPatterns(role);
 			}
 		}
 		/// <summary>
@@ -3898,12 +3926,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (!role.IsDeleted)
 				{
 					DelayValidateFactTypeJoinPaths(role.FactType, true);
+					DelayValidateRolePlayerDependentConstraintPatterns(role);
 				}
 			}
 			else
 			{
-				DelayValidateFactTypeJoinPaths(((Role)e.OldRolePlayer).FactType, true);
-				DelayValidateFactTypeJoinPaths(((Role)e.NewRolePlayer).FactType, true);
+				Role oldRole = (Role)e.OldRolePlayer;
+				Role newRole = (Role)e.NewRolePlayer;
+				DelayValidateFactTypeJoinPaths(oldRole.FactType, true);
+				DelayValidateRolePlayerDependentConstraintPatterns(oldRole);
+				DelayValidateFactTypeJoinPaths(newRole.FactType, true);
+				DelayValidateRolePlayerDependentConstraintPatterns(newRole);
 			}
 		}
 		/// <summary>
@@ -3981,6 +4014,40 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (constraint != null)
 			{
 				FrameworkDomainModel.DelayValidateElement(constraint, DelayValidatePatternErrorForConstraint);
+			}
+		}
+		private static void DelayValidateRolePlayerDependentConstraintPatterns(Role role)
+		{
+			if (role != null && !role.IsDeleted)
+			{
+				FrameworkDomainModel.DelayValidateElement(role, DelayValidateConstraintsOnRoleForTypeChange);
+			}
+		}
+		[DelayValidatePriority(-1)]
+		private static void DelayValidateConstraintsOnRoleForTypeChange(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				// Currently, the only patterns that are role-player sensitive intersect set
+				// comparison constraints, so we limit our check to this set of validation errors.
+				foreach (ConstraintRoleSequence sequence in ((Role)element).ConstraintRoleSequenceCollection)
+				{
+					SetComparisonConstraintRoleSequence setComparisonSequence = sequence as SetComparisonConstraintRoleSequence;
+					if (null != setComparisonSequence)
+					{
+						ProcessSetComparisonConstraintPattern(
+							setComparisonSequence.ExternalConstraint,
+							null,
+							null,
+							false,
+							true,
+							delegate (IConstraint matchConstraint)
+							{
+								DelayValidateConstraintPatternError(matchConstraint);
+								return true;
+							});
+					}
+				}
 			}
 		}
 		/// <summary>
@@ -4203,6 +4270,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									role,
 									validationInfo,
 									false,
+									false,
 									delegate(IConstraint matchConstraint)
 									{
 										Debug.Assert(matchConstraint.ConstraintStorageStyle == ConstraintStorageStyle.SetComparisonConstraint);
@@ -4408,11 +4476,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						break;
 					//However, if it has a mandatory on one role and the other one is optional - it is
 					//a contradiction error
-					case IntersectingConstraintPattern.NotWellModeledEqualityAndMandatory:
-						HandleExclusionOrEqualityAndMandatory(sequences, shouldExecuteValidationCode,
-							false, 1, error, validationInfo,
-							notifyAdded, currentConstraint, hasError);
-						break;
+					//case IntersectingConstraintPattern.NotWellModeledEqualityAndMandatory:
+					//	HandleExclusionOrEqualityAndMandatory(sequences, shouldExecuteValidationCode,
+					//		false, 1, error, validationInfo,
+					//		notifyAdded, currentConstraint, hasError);
+					//	break;
 					//In order for an equality constraint to be implied by mandatories - it must be on roles
 					//with at least 2 mandatory constraints
 					case IntersectingConstraintPattern.EqualityImpliedByMandatory:
@@ -4655,26 +4723,92 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			object currentConstraintOwner = (null == (toAlternateOwner = curConstraint as IHasAlternateOwner)) ? null : toAlternateOwner.UntypedAlternateOwner;
 
 			if (shouldExecuteValidationCode &&
-				(0 < minNumViolatingConstraints ||
-				0 < (minNumViolatingConstraints = (sequences != null) ? sequences.Count : 0)))
+				sequences != null &&
+				sequences.Count != 0)
 			{
-				int numOfViolatingConstraints = 0;
-
 				//For these patterns: there can be an error only if there are more than one sequences on
 				//the constraint and the constraint is only on one column
 				if (sequences.Count > 1 && CheckIfHasOneColumn(sequences))
 				{
+					int numOfViolatingConstraints = 0;
+					bool requireAll = minNumViolatingConstraints < 0;
+					if (requireAll)
+					{
+						minNumViolatingConstraints = sequences.Count;
+					}
+
 					//The error occurs when simple mandatory is on several roles
 					//TODO: handle disjunctive mandatory too
+					ConstraintModality currentModality = curConstraint.Modality;
+
+					// This pattern applies if there is at least one constrained role that
+					// has the same type or a subtype of a role with a mandatory constraint.
+					// The the 'requireAll' case (used for implied equality checks), this
+					// would mean that each role must have the same role player. (Explanation)
+					// A single column equality constraint over n > 2 means that any two constrained
+					// roles are equal. If there is a mandatory constraint on two roles where one
+					// is the subtype of the other, then the above condition stating that we ignore
+					// a mandatory role where there is not another role in the constraint with an
+					// equal type or subtype would disqualify one of the roles, meaning that we
+					// no longer have a full set of roles matching the requirements. The easy
+					// check is simply to see of all roles have the same role player.
+					ObjectType onlyRolePlayer = null;
+					int onlyRolePlayerCount = 0;
+					Dictionary<ObjectType, int> multipleRolePlayers = null; // Instantiated if we get more than one role player
 
 					foreach (SetComparisonConstraintRoleSequence sequence in sequences)
 					{
+						LinkedElementCollection<Role> sequenceRoles = sequence.RoleCollection;
+						ObjectType testRolePlayer = sequenceRoles[0].RolePlayer;
+
+						if (testRolePlayer == null)
+						{
+							constrFound = null;
+							break;
+						}
+						else if (multipleRolePlayers != null)
+						{
+							int newCount = 1;
+							if (multipleRolePlayers.TryGetValue(testRolePlayer, out newCount))
+							{
+								++newCount;
+							}
+							multipleRolePlayers[testRolePlayer] = newCount;
+						}
+						else if (onlyRolePlayer == null)
+						{
+							onlyRolePlayer = testRolePlayer;
+							onlyRolePlayerCount = 1;
+						}
+						else if (onlyRolePlayer == testRolePlayer)
+						{
+							++onlyRolePlayerCount;
+						}
+						else // new role player
+						{
+							if (requireAll)
+							{
+								// See above comment. Multiple role players disables the pattern.
+								constrFound = null;
+								break;
+							}
+
+							multipleRolePlayers = new Dictionary<ObjectType, int>();
+							multipleRolePlayers[onlyRolePlayer] = onlyRolePlayerCount;
+							onlyRolePlayer = null;
+							multipleRolePlayers[testRolePlayer] = 1;
+						}
+
 						CheckIfAnyRolesInCollectionCanConflict(
 							currentConstraintOwner,
-							sequence.RoleCollection,
+							sequenceRoles,
 							validationInfo.ConstraintTypesInPotentialConflict,
 							delegate(IConstraint matchConstraint)
 							{
+								if (!validationInfo.TestModality(currentModality, matchConstraint.Modality))
+								{
+									return true;
+								}
 								if (constrFound == null)
 								{
 									constrFound = new List<IConstraint>();
@@ -4686,13 +4820,57 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (constrFound != null)
 					{
 						numOfViolatingConstraints = constrFound.Count;
+
+						if (multipleRolePlayers != null)
+						{
+							// Toss out any mandatory constraint that does not have another
+							// constrained role player of the same type or a subtype.
+							for (int i = 0; i < numOfViolatingConstraints; ++i)
+							{
+								onlyRolePlayer = ((MandatoryConstraint)constrFound[i]).RoleCollection[0].RolePlayer;
+
+								// Check same type first
+								if (multipleRolePlayers[onlyRolePlayer] > 1)
+								{
+									continue;
+								}
+
+								// Now walk the supertype chain to match the role player. The supertype
+								// set is generally smaller than the subtypes, which can get very large.
+								bool matchedSubtype = false;
+								foreach (ObjectType potentialSubtype in multipleRolePlayers.Keys)
+								{
+									if (potentialSubtype != onlyRolePlayer)
+									{
+										ObjectType.WalkSupertypes(potentialSubtype, delegate (ObjectType type, int depth, bool isPrimary)
+										{
+											if (type == onlyRolePlayer)
+											{
+												matchedSubtype = true;
+												return ObjectTypeVisitorResult.Stop;
+											}
+											return ObjectTypeVisitorResult.Continue;
+										});
+
+										if (matchedSubtype)
+										{
+											break;
+										}
+									}
+								}
+
+								if (!matchedSubtype)
+								{
+									// Nix this constraint
+									constrFound.RemoveAt(i);
+									--i;
+									--numOfViolatingConstraints;
+								}
+							}
+						}
 					}
-				}
 
-
-				if (numOfViolatingConstraints >= minNumViolatingConstraints)
-				{
-					hasError = true;
+					hasError = numOfViolatingConstraints >= minNumViolatingConstraints;
 				}
 				else
 				{
@@ -4990,9 +5168,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="validationOfInterest">if specified - only constraints relevant to conflicting with thise validation
 		/// will be returned</param>
 		/// <param name="modalityChange">true if only modality changes should be considered</param>
+		/// <param name="rolePlayerTypeChange">true if a role player was changed. Only process constraints that are role-player dependent.</param>
 		/// <param name="matchCallback">Callback delegate of type <see cref="Predicate{IConstraint}"/>.
 		/// Return <see langword="true"/> to continue iteration.</param>
-		private static void ProcessSetComparisonConstraintPattern(SetComparisonConstraint setComparisonConstraint, Role role, IntersectingConstraintValidation? validationOfInterest, bool modalityChange, Predicate<IConstraint> matchCallback)
+		private static void ProcessSetComparisonConstraintPattern(SetComparisonConstraint setComparisonConstraint, Role role, IntersectingConstraintValidation? validationOfInterest, bool modalityChange, bool rolePlayerTypeChange, Predicate<IConstraint> matchCallback)
 		{
 			if (setComparisonConstraint != null)
 			{
@@ -5016,6 +5195,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							}
 						}
 						if (modalityChange && IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored == (validationInfo.IntersectionValidationOptions & IntersectingConstraintPatternOptions.IntersectingConstraintModalityMask))
+						{
+							continue;
+						}
+						if (rolePlayerTypeChange && 0 != (validationInfo.IntersectionValidationOptions & IntersectingConstraintPatternOptions.RolePlayerDependent))
 						{
 							continue;
 						}
@@ -5067,7 +5250,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								}
 								break;
 							default:
-								if (modalityChange)
+								if (modalityChange || rolePlayerTypeChange)
 								{
 									if (comparisonConstraintSequences == null)
 									{
@@ -11651,7 +11834,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Implication
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.EqualityImpliedByMandatory,
-					IntersectingConstraintPatternOptions.None,
+					IntersectingConstraintPatternOptions.ContextConstraintAlethic | IntersectingConstraintPatternOptions.IntersectingConstraintAlethic | IntersectingConstraintPatternOptions.RolePlayerDependent,
 					SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId,
 					null,
 					ConstraintType.SimpleMandatory),
@@ -11788,7 +11971,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetComparisonConstraintSubset,
-					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
+					IntersectingConstraintPatternOptions.ContextConstraintAlethic | IntersectingConstraintPatternOptions.IntersectingConstraintAlethic,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Subset),
@@ -11805,7 +11988,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.ExclusionContradictsMandatory,
-					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
+					IntersectingConstraintPatternOptions.ContextConstraintAlethic | IntersectingConstraintPatternOptions.IntersectingConstraintAlethic | IntersectingConstraintPatternOptions.RolePlayerDependent,
 					ExclusionConstraintHasExclusionContradictsMandatoryError.ExclusionConstraintDomainRoleId,
 					MandatoryConstraintHasExclusionContradictsMandatoryError.MandatoryConstraintDomainRoleId,
 					ConstraintType.SimpleMandatory),
@@ -11893,7 +12076,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Implication
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.EqualityImpliedByMandatory,
-					IntersectingConstraintPatternOptions.None,
+					IntersectingConstraintPatternOptions.IntersectingConstraintAlethic | IntersectingConstraintPatternOptions.ContextConstraintAlethic,
 					null,
 					SetComparisonConstraintHasEqualityOrSubsetImpliedByMandatoryError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Equality),
@@ -11909,7 +12092,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.ExclusionContradictsMandatory,
-					IntersectingConstraintPatternOptions.IntersectingConstraintModalityIgnored,
+					IntersectingConstraintPatternOptions.IntersectingConstraintAlethic | IntersectingConstraintPatternOptions.ContextConstraintAlethic,
 					MandatoryConstraintHasExclusionContradictsMandatoryError.MandatoryConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: Reverse many on this relationship, 1 error per contradiction
 					ExclusionConstraintHasExclusionContradictsMandatoryError.ExclusionConstraintDomainRoleId, // UNDONE: CONSTRAINTINTERSECTION: Reverse many on this relationship, 1 error per contradiction
 					ConstraintType.Exclusion),
@@ -12091,7 +12274,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Contradiction
 				new IntersectingConstraintValidation(
 					IntersectingConstraintPattern.SetComparisonConstraintSuperset,
-					IntersectingConstraintPatternOptions.None,
+					IntersectingConstraintPatternOptions.IntersectingConstraintAlethic | IntersectingConstraintPatternOptions.ContextConstraintAlethic,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					SetComparisonConstraintHasExclusionContradictsSubsetError.SetComparisonConstraintDomainRoleId,
 					ConstraintType.Exclusion),
