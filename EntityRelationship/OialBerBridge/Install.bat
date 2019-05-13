@@ -12,6 +12,8 @@ XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.dll" "%NORMAExtensio
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMAExtensionsDir%\"
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.xml" "%NORMAExtensionsDir%\"
 
+IF "%VSSideBySide%"=="true" GOTO:EOF
+
 REG DELETE "%~1\Extensions\http://schemas.neumont.edu/ORM/2008-04/ORMAbstractionToBarkerERBridge" /f 1>NUL 2>&1
 
 REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" /v "Class" /d "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel" /f 1>NUL

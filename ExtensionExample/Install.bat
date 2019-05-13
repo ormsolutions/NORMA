@@ -11,6 +11,8 @@ SET TargetBaseName=ORMSolutions.ORMArchitect.ExtensionExample.%TargetVisualStudi
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.dll" "%NORMAExtensionsDir%\"
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMAExtensionsDir%\"
 
+IF "%VSSideBySide%"=="true" GOTO:EOF
+
 REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/ExtensionExample" /v "Class" /d "ORMSolutions.ORMArchitect.ExtensionExample.ExtensionDomainModel" /f 1>NUL
 REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/ExtensionExample" /v "CodeBase" /d "%NORMAExtensionsDir%\%TargetBaseName%.dll" /f 1>NUL
 REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/ExtensionExample" /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" /f 1>NUL

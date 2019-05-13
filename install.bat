@@ -62,7 +62,6 @@ IF NOT "%VSSideBySide%"=="true" (
 IF "%VSSideBySide%"=="true" (
 	CALL:_MakeDir "%NORMADesignerSchemasDir%"
 	CALL:_MakeDir "%NORMAGeneratorSchemasDir%"
-	XCOPY /Y /D /V /Q "%RootDir%\VSIXInstall\VSIXOnly\NORMACatalog.xml" "%VSXmlSchemas%"
 ) else (
 	CALL:_MakeDir "%ORMDir%\Schemas"
 	CALL:_SETVAR "NORMADesignerSchemasDir" "%ORMDir%\Schemas"

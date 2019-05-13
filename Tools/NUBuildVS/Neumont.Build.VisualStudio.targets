@@ -11,7 +11,7 @@
 	3. This notice may not be removed or altered from any source distribution.
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	
+
 	<!--
 		This .targets file provides various tasks and targets related to extending Microsoft® Visual Studio®.
 		It should be imported after Microsoft.Common.targets is imported.
@@ -22,9 +22,9 @@
 		 <!-- The name of the assembly that contains the NUBuildVS tasks. -->
 		<NUBuildVSTasksAssemblyName>Neumont.Build.VisualStudio$(ProjectToolsAssemblySuffix), Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</NUBuildVSTasksAssemblyName>
 	</PropertyGroup>
-	
-	<UsingTask TaskName="VsSdkLocator" AssemblyName="$(NUBuildVSTasksAssemblyName)"/>
 
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 15.0" TaskName="VsSdkLocator" AssemblyFile="Neumont.Build.VisualStudio.Core.dll"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 15.0" TaskName="VsSdkLocator" AssemblyName="$(NUBuildVSTasksAssemblyName)"/>
 
 	<PropertyGroup Condition="Exists('$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.targets')">
 		 <!-- This forces a rebuild of a project if it references this targets file and this targets file changes. -->
@@ -52,7 +52,6 @@
 
 	</Target>
 
-
 	<PropertyGroup>
 		<!-- If we are building for Visual Studio 9.0, use VSCT v3.5, otherwise use VSCT v2.0. -->
 		<VsctAssemblyVersion Condition="'$(VsctAssemblyVersion)'=='' and '$(TargetVisualStudioVersion)'=='v16.0'">16.0.0.0</VsctAssemblyVersion>
@@ -66,9 +65,8 @@
 	</PropertyGroup>
 
 	<!-- Compiles .vsct files into .cto files. -->
-	<!-- <UsingTask TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/> -->
-	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 16.0" TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
-	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 16.0" TaskName="VSCTCompiler" AssemblyFile="$(MSBuildExtensionsPath)\..\VSSDK\VisualStudioIntegration\Tools\bin\vsct.exe"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 15.0" TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 15.0" TaskName="VSCTCompiler" AssemblyFile="$(MSBuildExtensionsPath)\..\VSSDK\VisualStudioIntegration\Tools\bin\vsct.exe"/>
 	<ItemGroup>
 		<!-- Add the CompileVsct Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio (and the equivalent in other IDEs). -->
 		<AvailableItemName Include="CompileVsct"/>
@@ -120,8 +118,5 @@
 		<CreateItem Include="$(IntermediateOutputPath)VSCT.write.1.tlog" Condition="Exists('$(IntermediateOutputPath)VSCT.write.1.tlog')">
 			<Output TaskParameter="Include" ItemName="FileWrites"/>
 		</CreateItem>
-
 	</Target>
-
-
 </Project>
