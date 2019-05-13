@@ -11,6 +11,8 @@ SET TargetBaseName=ORMSolutions.ORMArchitect.Views.RelationalView.%TargetVisualS
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.dll" "%NORMAExtensionsDir%\"
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMAExtensionsDir%\"
 
+IF "%VSSideBySide%"=="true" GOTO:EOF
+
 REG DELETE "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/Views/RelationalView" /f 1>NUL 2>&1
 
 REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2007-11/RelationalView" /v "Class" /d "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel" /f 1>NUL

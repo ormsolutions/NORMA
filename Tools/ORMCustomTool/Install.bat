@@ -15,6 +15,7 @@ CALL:_CleanupFile "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.xml"
 IF EXIST "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.dll" (REN "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.dll" "ORMSolutions.ORMArchitect.ORMCustomTool.dll.delete.%RANDOM%")
 
 :: Install Custom Tool DLL
+IF "%VSSideBySide%"=="" (
 SET TargetBaseName=ORMSolutions.ORMArchitect.ORMCustomTool.%TargetVisualStudioShortProductName%
 DEL /F /Q "%NORMABinDir%\%TargetBaseName%.dll.delete.*" 1>NUL 2>&1
 IF EXIST "%NORMABinDir%\%TargetBaseName%.dll" (REN "%NORMABinDir%\%TargetBaseName%.dll" "%TargetBaseName%.dll.delete.%RANDOM%")
@@ -31,6 +32,7 @@ IF NOT "%VSRegistryRootSuffix%"=="" (CALL:_InstallExtenderReg "%VSRegistryRootVe
 REG DELETE "HKLM\SOFTWARE%WOWRegistryAdjust%\Neumont\ORM Architect for Visual Studio" /f 1>NUL 2>&1
 REG DELETE "HKLM\SOFTWARE%WOWRegistryAdjust%\Neumont\ORM Architect for %TargetVisualStudioLongProductName%" /f 1>NUL 2>&1
 REG DELETE "%NORMAGenerators%" /f 1>NUL 2>&1
+)
 
 :: Install and register ORM Transforms
 XCOPY /Y /D /V /Q "%XMLDir%\OIAL\CoRefORM.xslt" "%ORMTransformsDir%\"
@@ -188,6 +190,7 @@ REG ADD "HKLM\%VSRegistryRootBase%\%~1\Extenders\%~2\ORMCustomTool" /f /ve /d "{
 GOTO:EOF
 
 :_AddXslORMGenerator
+IF "%VSSideBySide%"=="true" GOTO:EOF
 REG DELETE "%NORMAGenerators%\%~1" /va /f 1>NUL 2>&1
 REG ADD "%NORMAGenerators%\%~1" /f /v "Type" /d "XSLT" 1>NUL
 REG ADD "%NORMAGenerators%\%~1" /f /v "OfficialName" /d "%~1" 1>NUL
