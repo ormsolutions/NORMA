@@ -173,6 +173,17 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 			DefaultStringFormat.Trimming = StringTrimming.EllipsisCharacter;
 		}
 		/// <summary>
+		/// The default implementation of CollapsedSize requires the
+		/// header text field, which we remove.
+		/// </summary>
+		protected override SizeD CollapsedSize
+		{
+			get
+			{
+				return new SizeD(0d, 0d);
+			}
+		}
+		/// <summary>
 		/// Updates the size of this <see cref="AttributeElementListCompartment"/> and
 		/// its associated <see cref="BarkerEntityShape"/> to size according to the widest column or
 		/// table name.
