@@ -566,9 +566,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					if (readingOrderCount == 1)
 					{
 						readingFormatString = defaultOrder.ReadingText;
-						if (roleCount > 2 &&
+						if (ReadingFormatStringHasEmbeddedEllipses(readingFormatString) ||
+							(roleCount > 2 &&
 							defaultOrder != factShape.FindMatchingReadingOrder(false) &&
-							defaultOrder != factShape.FindMatchingReadingOrder(true))
+							defaultOrder != factShape.FindMatchingReadingOrder(true)))
 						{
 							doNamedReplacement = true;
 						}
@@ -577,7 +578,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							// Do not ellipsize unary reading role placeholders when the role is at the beginning
 							retVal = Reading.ReplaceFields(
 								readingFormatString,
-								delegate(int index, Match match)
+								delegate (int index, Match match)
 								{
 									return (match.Index == 0) ? string.Empty : ellipsis;
 								}).Trim();
@@ -590,10 +591,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					else if (roleCount > 2)
 					{
 						ReadingOrder matchingOrder;
-						if (null != (matchingOrder = factShape.FindMatchingReadingOrder(false)) ||
-							null != (matchingOrder = factShape.FindMatchingReadingOrder(true)))
+						string matchingFormatString;
+						if ((null != (matchingOrder = factShape.FindMatchingReadingOrder(false)) ||
+							null != (matchingOrder = factShape.FindMatchingReadingOrder(true))) &&
+							!ReadingFormatStringHasEmbeddedEllipses(matchingFormatString = matchingOrder.ReadingText))
 						{
-							retVal = Reading.ReplaceFields(matchingOrder.ReadingText, ellipsis).Trim();
+							retVal = Reading.ReplaceFields(matchingFormatString, ellipsis).Trim();
 						}
 						else
 						{
@@ -607,6 +610,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						Debug.Assert(roleCount == 2, "A unary fact should not have more than one reading order.");
 						ReadingOrder firstOrder;
 						ReadingOrder secondOrder;
+						string firstFormatString;
+						string secondFormatString;
 						if (defaultOrder == factShape.FindMatchingReadingOrder())
 						{
 							firstOrder = defaultOrder;
@@ -617,65 +622,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							firstOrder = readingOrders[1];
 							secondOrder = defaultOrder;
 						}
+						firstFormatString = firstOrder.ReadingText;
+						secondFormatString = secondOrder.ReadingText;
 						retVal = string.Concat(
-							EllipsizeReadingFormatString(firstOrder.ReadingText, roleCount),
+							ReadingFormatStringHasEmbeddedEllipses(firstFormatString) ? NamedReplacementReadingText(factShape, firstOrder, null, firstFormatString) : EllipsizeReadingFormatString(firstFormatString, roleCount),
 							ResourceStrings.ReadingShapeReadingSeparator,
-							EllipsizeReadingFormatString(secondOrder.ReadingText, roleCount));
+							ReadingFormatStringHasEmbeddedEllipses(secondFormatString) ? NamedReplacementReadingText(factShape, secondOrder, null, secondFormatString) : EllipsizeReadingFormatString(secondFormatString, roleCount));
 					}
 					if (doNamedReplacement)
 					{
-						LinkedElementCollection<RoleBase> factRoles = factShape.DisplayedRoleOrder;
-						string[] roleTranslator = new string[roleCount];
-						bool reverseNumbering = factShape.DisplayOrientation == DisplayOrientation.VerticalRotatedLeft; // Number top down, not bottom up
-						BitTracker fullyProcessed = new BitTracker(roleCount);
-						for (int readingRoleIndex = 0; readingRoleIndex < roleCount; ++readingRoleIndex)
-						{
-							RoleBase currentRole = orderedRoles[readingRoleIndex];
-							ObjectType rolePlayer = currentRole.Role.RolePlayer;
-							if (rolePlayer == null)
-							{
-								roleTranslator[readingRoleIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeUnattachedRoleDisplay, reverseNumbering ? roleCount - factRoles.IndexOf(currentRole) : factRoles.IndexOf(currentRole) + 1);
-								fullyProcessed[readingRoleIndex] = true;
-							}
-							else
-							{
-								roleTranslator[readingRoleIndex] = rolePlayer.Name;
-								// Decorate later when we can look for duplicated names and
-								// add additional diplayed role index information.
-							}
-						}
-
-						// Second pass, look for duplicates
-						for (int readingRoleIndex = 0; readingRoleIndex < roleCount; ++readingRoleIndex)
-						{
-							if (!fullyProcessed[readingRoleIndex])
-							{
-								string rolePlayerName = roleTranslator[readingRoleIndex];
-								bool haveDuplicate = false;
-								for (int duplicateIndex = readingRoleIndex + 1; duplicateIndex < roleCount; ++duplicateIndex)
-								{
-									if (!fullyProcessed[duplicateIndex])
-									{
-										if (roleTranslator[duplicateIndex] == rolePlayerName)
-										{
-											roleTranslator[duplicateIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeAttachedDuplicateRoleDisplay, rolePlayerName, reverseNumbering ? roleCount - factRoles.IndexOf(orderedRoles[duplicateIndex]) : factRoles.IndexOf(orderedRoles[duplicateIndex]) + 1);
-											fullyProcessed[duplicateIndex] = true;
-											haveDuplicate = true;
-										}
-									}
-								}
-								if (haveDuplicate)
-								{
-									roleTranslator[readingRoleIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeAttachedDuplicateRoleDisplay, rolePlayerName, reverseNumbering ? roleCount - factRoles.IndexOf(orderedRoles[readingRoleIndex]) : factRoles.IndexOf(orderedRoles[readingRoleIndex]) + 1);
-								}
-								else
-								{
-									roleTranslator[readingRoleIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeAttachedRoleDisplay, rolePlayerName);
-								}
-								fullyProcessed[readingRoleIndex] = true;
-							}
-						}
-						retVal = string.Format(CultureInfo.InvariantCulture, (readingFormatString == null) ? defaultOrder.ReadingText : readingFormatString, roleTranslator);
+						retVal = NamedReplacementReadingText(factShape, defaultOrder, orderedRoles, readingFormatString);
 					}
 					string derivationDecorator;
 					if (null != (derivationDecorator = GetDerivationDecorator(factType)))
@@ -686,6 +642,70 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				return retVal;
 			}
+		}
+		private static bool ReadingFormatStringHasEmbeddedEllipses(string readingFormatString)
+		{
+			return readingFormatString.Contains(ellipsis) || readingFormatString.Contains("...");
+		}
+		private static string NamedReplacementReadingText(FactTypeShape factShape, ReadingOrder readingOrder, LinkedElementCollection<RoleBase> orderedRoles, string readingFormatString)
+		{
+			if (orderedRoles == null)
+			{
+				orderedRoles = readingOrder.RoleCollection;
+			}
+			int roleCount = orderedRoles.Count;
+			LinkedElementCollection<RoleBase> factRoles = factShape.DisplayedRoleOrder;
+			string[] roleTranslator = new string[roleCount];
+			bool reverseNumbering = factShape.DisplayOrientation == DisplayOrientation.VerticalRotatedLeft; // Number top down, not bottom up
+			BitTracker fullyProcessed = new BitTracker(roleCount);
+			for (int readingRoleIndex = 0; readingRoleIndex < roleCount; ++readingRoleIndex)
+			{
+				RoleBase currentRole = orderedRoles[readingRoleIndex];
+				ObjectType rolePlayer = currentRole.Role.RolePlayer;
+				if (rolePlayer == null)
+				{
+					roleTranslator[readingRoleIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeUnattachedRoleDisplay, reverseNumbering ? roleCount - factRoles.IndexOf(currentRole) : factRoles.IndexOf(currentRole) + 1);
+					fullyProcessed[readingRoleIndex] = true;
+				}
+				else
+				{
+					roleTranslator[readingRoleIndex] = rolePlayer.Name;
+					// Decorate later when we can look for duplicated names and
+					// add additional diplayed role index information.
+				}
+			}
+
+			// Second pass, look for duplicates
+			for (int readingRoleIndex = 0; readingRoleIndex < roleCount; ++readingRoleIndex)
+			{
+				if (!fullyProcessed[readingRoleIndex])
+				{
+					string rolePlayerName = roleTranslator[readingRoleIndex];
+					bool haveDuplicate = false;
+					for (int duplicateIndex = readingRoleIndex + 1; duplicateIndex < roleCount; ++duplicateIndex)
+					{
+						if (!fullyProcessed[duplicateIndex])
+						{
+							if (roleTranslator[duplicateIndex] == rolePlayerName)
+							{
+								roleTranslator[duplicateIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeAttachedDuplicateRoleDisplay, rolePlayerName, reverseNumbering ? roleCount - factRoles.IndexOf(orderedRoles[duplicateIndex]) : factRoles.IndexOf(orderedRoles[duplicateIndex]) + 1);
+								fullyProcessed[duplicateIndex] = true;
+								haveDuplicate = true;
+							}
+						}
+					}
+					if (haveDuplicate)
+					{
+						roleTranslator[readingRoleIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeAttachedDuplicateRoleDisplay, rolePlayerName, reverseNumbering ? roleCount - factRoles.IndexOf(orderedRoles[readingRoleIndex]) : factRoles.IndexOf(orderedRoles[readingRoleIndex]) + 1);
+					}
+					else
+					{
+						roleTranslator[readingRoleIndex] = string.Format(CultureInfo.InvariantCulture, ResourceStrings.ReadingShapeAttachedRoleDisplay, rolePlayerName);
+					}
+					fullyProcessed[readingRoleIndex] = true;
+				}
+			}
+			return string.Format(CultureInfo.InvariantCulture, (readingFormatString == null) ? readingOrder.ReadingText : readingFormatString, roleTranslator);
 		}
 		/// <summary>
 		/// Replace replacement fields with ellipsis and trim leading/trailing ellipsis
