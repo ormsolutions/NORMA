@@ -1032,7 +1032,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 
 					return (endIndex < startIndex) ?
 						startIndex :
-						((index < endIndex || index == 0) ? index : endIndex);
+						((index <= endIndex || index == 0) ? index : endIndex + 1);
 				}
 				#endregion //tree creation
 				#region IBranch Members
@@ -1610,7 +1610,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							if (i == -1)
 							{
 								// Same comments as above. This is a rebased branch with header nodes only.
-								addNeutral = index == (subBranches[0].End + 1);
+								addNeutral = subBranches[0].Count > 0 && index == (subBranches[0].End + 1);
 							}
 						}
 						if (addNeutral)
