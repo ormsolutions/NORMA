@@ -1,8 +1,9 @@
-# Neumont Object-Role Modeling Architect
+# Natural Object-Role Modeling Architect
 
-Copyright © Neumont University. All rights reserved.
-Copyright © ORM Solutions, LLC. All rights reserved.
-[Homepage](http://orm.sourceforge.net)
+Copyright &copy; Neumont University. All rights reserved.
+Copyright &copy; ORM Solutions, LLC. All rights reserved.
+[Homepage](https://github.com/ormsolutions/NORMA)
+[Original Project](https://orm.sourceforge.net)
 
 NORMA is a plugin to Visual Studio for designing relational databases
 using Object-Role Modeling version 2 standard, a fact-based conceptual
@@ -19,18 +20,22 @@ For licensing terms, see the adjacent [LICENSE.txt](LICENSE.txt) file.
 ### Third-party components
 
 Several third-party components are required to build or compile the main
-portion of this software. These components, and the locations from which
-they can be obtained, are as follows:
+portion of this software prior to Visual Studio 2017 (instructions for the newer environments are at the end of this file). These components can be obtained as follows:
 
-* [PLiX](https://sourceforge.net/projects/plix) - Programming Language in XML
+* PLiX - Programming Language in XML
+
+  * [Original Project](https://sourceforge.net/projects/plix)
+  * [Current Source](https://github.com/ormsolutions/PLiX)
+  * Through VS2015 this is included as a separate .msi file in the NORMA download installers. The NORMA project itself uses PLiX for many of its code generation needs, so this .msi should be installed to make code modifications.
+  * See VS2017/VS2019 notes for how to get this installed from the Visual Studio Marketplace.
 
 * [Microsoft Visual Studio SDK](http://www.microsoft.com/extendvs)
 
   * [Download for Visual Studio 2005](http://go.microsoft.com/fwlink/?LinkId=73702)
   * [Download for Visual Studio 2008](http://www.microsoft.com/en-us/download/details.aspx?id=508)
   * [Download for Visual Studio 2010](http://www.microsoft.com/en-us/download/details.aspx?id=2680)
-  * [Download (Visual Studio 2012](http://www.microsoft.com/en-us/download/details.aspx?id=30668)
-  * [Download (Visual Studio 2013](http://www.microsoft.com/en-us/download/details.aspx?id=40758)
+  * [Download (Visual Studio 2012)](http://www.microsoft.com/en-us/download/details.aspx?id=30668)
+  * [Download (Visual Studio 2013)](http://www.microsoft.com/en-us/download/details.aspx?id=40758)
   * Visual Studio 2015 installs the SDK with the normal VS setup. Choose a custom setup and select 'Visual Studio Extensibility'
 
   IMPORTANT: You will need to establish the Visual Studio experimental
@@ -252,28 +257,49 @@ the VSIX installation following the directions from the readme in the
 required only after the first build, or in situations indicated in the
 readme.
 
-### Notes on building and debuggin with VS2017 and VS2019:
+### Notes on building and debugging with VS2017 and VS2019:
 
-The build and installation process for VS2015 and VS2017 is radically
-different because of the side-by-side installation support introduced
-with VS2017. The VS installation is no longer in a fixed location
-discoverable with the registry, so you will need to provide customized
-feedback to the system before you build. When you run `VS2017.bat` (or
-`VS2019.bat`) from the corresponding Visual Studio Command Prompt
-environment you will see instructions on how to create the
-`VS20xxInstallation.bat` file to set additional environment variables
-to tell the NORMA build system which installation of Visual Studio you
-are building for. Once this information is known, builds will run as
-normal except that you will not see any files in the normal
-installation locations (under `C:\Program Files (x86)\ORM
-Solutions`). Your files are instead written to
-`%localappdata%\Microsoft\VisualStudio` under the directory
-corresponding to the appropriate target. Below that directory, go into
-the instance ending in Exp, then `Extensions\ORM Solutions\Natural ORM
-Architect`. You'll find your files in here.
+The build and installation process for VS2015 (and earlier) and VS2017 (and later) is radically
+different because of the side-by-side installation support introduced with VS2017. When NORMA
+is installed through the Visual Studio Marketplace installer it will be installed for all users,
+which means it will appear in all Visual Studio instances. However, as a developer you will be
+developing NORMA in a Visual Studio instance, so you don't can't have NORMA running in that instance
+while you develop it. If you already have NORMA installed as an extension please uninstall it.
 
-The actual installation is also radically different. There are no
-Setup files for any version above VS2015. Instead, there is a new
-(VSIXInstall\VSIXOnly](VSIXInstall/VSIXOnly) directory that takes the
-role of setup. This will automatically run once when you call
-`BuildVS20xx.bat`, allowing you to debug.
+1. In your Visual Studio installation, make sure you have the _Visual Studio extension development_
+workload selected. You will also need to add the option _Modeling SDK_ selection.
+2. The VSSDK options adds an second Visual Studio installation, kwown as the _Experimental Instance_.
+You need to run this once before trying to build NORMA. There are two ways to do this. If you search
+for _experimental_ in your start menu, you'll see an option to _Start Experimental Instance of Visual Studio 201x_.
+Alternately, open the _Developer Command Prompt for Visual Studio 201x_ command prompt and run _devenv /rootsuffix Exp_.
+Once the Experimental instance is open shut it down again.
+3. Make sure the PLiX extension is installed and available for the NORMA build. To get PLiX.vsix, you need to download
+the NORMA installer _but not actually install it_.
+  * Open Visual Studio and go to the extension dialog (Tools/Updates and Extension in VS2017, Extensions/Manage Extension in VS2019)
+  * Click _Online_ and search for NORMA
+  * Select the item to install.
+  * Close Visual Studio and let the installer launch and download the .vsix file. _DO NOT CLICK MODIFY._
+  * The extension will be the latest item in your %temp% directory. (From a command prompt, cd %temp% then dir /od will list it last. The file name will be random, but it will have a .vsix extension). Copy this file, but rename it to have a .zip extension.
+  * Close the installer.
+  * Open the Windows Explorer and find the renamed .vsix. Open the context menu to view the file properties, then locate the Security warning at the bottom of the dialog and click the Unblock button (if you can't find that you're fine).
+  * Open the renamed .vsix file and extract the PLiX.vsix file. You're doing two things with this file.
+  * First, install the PLiX.vsix. Just double click on it an let it install. This will add it to all of the Visual Studio instances.
+  * Second, copy the file into your NORMA git repository in the VSIXInstall/VSIXOnly directory.
+4. Open the _Developer Command Prompt for Visual Studio 201x_ as an administrator and navigate to the NORMA git root. (As in other Visual Studio version, this will be your launch environment when working with NORMA, so you might want to add a shortcut to the start menu.)
+5. Unlike earlier versions, the VS installation is no longer in a fixed location discoverable from the registry, so the NORMA build needs you to provide some data. Depending on your version, run either `VS2017.bat` or `VS2019.bat`, which will fail with instructions on how to create a VS20xxInstallation.bat file. Following the instructions, then run `VS20xx.bat` again. In earlier VS versions built NORMA files will be under the `C:\Program Files (x86)\ORM Solutions` directory. With the side-by-side installs, the location will be based on the VS version and (15.0 for VS2017, 16.0 for VS2019) and the VisualStudioInstallSuffix you just set. For example, my install suffix for VS2019 is f5148b42, so the build NORMA files install under the `%localappdata%\Microsoft\VisualStudio\16.0_f5148b42Exp\ORM Solutions\Natural ORM Architect` directory. The exact install directory is based on the git version--you can run `NORMAGitVer.bat` to see it. Note that the schema files will be copied to the Visual Studio installation, which is why you need to be running as an administrator.
+6. With your build environment set (Developer command prompt in admin mode, run the matching VS20xx.bat file) you are ready to build.
+7. Make sure there are no VS instances running (be patient after shutting them, they can take a while to shut down), then run `FirstTimeBuildVS20xx /t:Rebuild`. Note that this step usually does not have to be rerun. However, if you have problems after updating your Visual Studio installation try rerunning this.
+8. You can now run `BuildVS20xx /t:Rebuild` to finish the NORMA build. This will build everything, including creating the .vsix project, which automatically writes to your Exp registry to install the product. If you are building individual components you do not need to rerun this step _unless_ you do a git pull or commit that changes the result of NORMAGitVer. If this happens and you do not rebuild, then the other projects will writer to the new version while the registry is still pointing to the version when you last ran this.
+9. `devenv ORMPackage.VS20xx.sln` from your command prompt will now let you build the core package, with similar packages for other extensions. There is no central solution that builds them all together. Note that the ORMModel\ORMModel.csproj.user file is the only .user file checked into the project. If you try to F5 launch another project it will tell you that it can't start a class library. In this case, close the project, copy this .user file to the project directory (renamed to match the corresponding .csproj project file, so DcilModel.csproj would need DcilModel.csproj.user). There is no need to check these .user files in.
+
+Note that the Setup directory is no longer used for VS2017 and above, so you will not see BuildSetup* or BuildAll* batch files for the newer versions.
+
+At this point, the basic protocol is much simpler:
+1. Open the dev prompt in admin mode, navigate to the root of the NORMA git repository, and run `VS20xx` (xx matching your VS version).
+2. Find the .sln file you want to work on in the command prompt.
+3. `devenv WHATEVER.VS20xx.sln` where xx again matches your version. If you get the wrong solution file you'll get a solution upgrade warning message. Just cancel and try with the solution file that matches your Visual Studio version. Just remember that you need to launch the VS version to open these projects from inside an environment where you've run the correspond `VS20xx` batch file--you can't just double click them in your file explorer. 
+4. F5 to launch VS and you'll get an instance where you can open or create a .orm file and hit your breakpoints.
+5. If you pull or commit, make sure you run `Buildvs20xx /t:Rebuild` to reset the registry with the right version, and rerun `BuildDevToolsVS20xx /t:Rebuild` if you see any build issues.
+
+## DSL-generated Files
+Note that if you need to regenerate .dsl files you will need to make some modifications to the Microsoft-installed .tt generators for the DSL library. Please contact mcurland@live.com for instructions on how to do this. You will not need this unless you modify a .dsl file.
