@@ -19,8 +19,7 @@ For licensing terms, see the adjacent [LICENSE.txt](LICENSE.txt) file.
 
 ### Third-party components
 
-Several third-party components are required to build or compile the main
-portion of this software prior to Visual Studio 2017 (instructions for the newer environments are at the end of this file). These components can be obtained as follows:
+Several third-party components are required to build or compile the main portion of this software prior to Visual Studio 2017 (instructions for the newer environments are at the end of this file). These components can be obtained as follows:
 
 * PLiX - Programming Language in XML
 
@@ -259,12 +258,7 @@ readme.
 
 ### Notes on building and debugging with VS2017 and VS2019:
 
-The build and installation process for VS2015 (and earlier) and VS2017 (and later) is radically
-different because of the side-by-side installation support introduced with VS2017. When NORMA
-is installed through the Visual Studio Marketplace installer it will be installed for all users,
-which means it will appear in all Visual Studio instances. However, as a developer you will be
-developing NORMA in a Visual Studio instance, so you don't can't have NORMA running in that instance
-while you develop it. If you already have NORMA installed as an extension please uninstall it.
+The build and installation process for VS2015 (and earlier) and VS2017 (and later) is radically different because of the side-by-side installation support introduced with VS2017. When NORMA is installed through the Visual Studio Marketplace installer it will be installed for all users, which means it will appear in all Visual Studio instances. However, as a developer you will be developing NORMA in a Visual Studio instance, so you don't can't have NORMA running in that instance while you develop it. If you already have NORMA installed as an extension please uninstall it.
 
 1. In your Visual Studio installation, make sure you have the _Visual Studio extension development_
 workload selected. You will also need to add the option _Modeling SDK_ selection.
