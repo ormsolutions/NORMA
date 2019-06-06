@@ -1,8 +1,11 @@
 # Natural Object-Role Modeling Architect
 
 Copyright &copy; Neumont University. All rights reserved.
+
 Copyright &copy; ORM Solutions, LLC. All rights reserved.
+
 [Homepage](https://github.com/ormsolutions/NORMA)
+
 [Original Project](https://orm.sourceforge.net)
 
 NORMA is a plugin to Visual Studio for designing relational databases
@@ -269,16 +272,16 @@ Alternately, open the _Developer Command Prompt for Visual Studio 201x_ command 
 Once the Experimental instance is open shut it down again.
 3. Make sure the PLiX extension is installed and available for the NORMA build. To get PLiX.vsix, you need to download
 the NORMA installer _but not actually install it_.
-  * Open Visual Studio and go to the extension dialog (Tools/Updates and Extension in VS2017, Extensions/Manage Extension in VS2019)
-  * Click _Online_ and search for NORMA
-  * Select the item to install.
-  * Close Visual Studio and let the installer launch and download the .vsix file. _DO NOT CLICK MODIFY._
-  * The extension will be the latest item in your %temp% directory. (From a command prompt, cd %temp% then dir /od will list it last. The file name will be random, but it will have a .vsix extension). Copy this file, but rename it to have a .zip extension.
-  * Close the installer.
-  * Open the Windows Explorer and find the renamed .vsix. Open the context menu to view the file properties, then locate the Security warning at the bottom of the dialog and click the Unblock button (if you can't find that you're fine).
-  * Open the renamed .vsix file and extract the PLiX.vsix file. You're doing two things with this file.
-  * First, install the PLiX.vsix. Just double click on it an let it install. This will add it to all of the Visual Studio instances.
-  * Second, copy the file into your NORMA git repository in the VSIXInstall/VSIXOnly directory.
+    * Open Visual Studio and go to the extension dialog (Tools/Updates and Extension in VS2017, Extensions/Manage Extension in VS2019)
+    * Click _Online_ and search for NORMA
+    * Select the item to install.
+    * Close Visual Studio and let the installer launch and download the .vsix file. _DO NOT CLICK MODIFY._
+    * The extension will be the latest item in your %temp% directory. (From a command prompt, cd %temp% then dir /od will list it last. The file name will be random, but it will have a .vsix extension). Copy this file, but rename it to have a .zip extension.
+    * Close the installer.
+    * Open the Windows Explorer and find the renamed .vsix. Open the context menu to view the file properties, then locate the Security warning at the bottom of the dialog and click the Unblock button (if you can't find that you're fine).
+    * Open the renamed .vsix file and extract the PLiX.vsix file. You're doing two things with this file.
+    * First, install the PLiX.vsix. Just double click on it an let it install. This will add it to all of the Visual Studio instances.
+    * Second, copy the file into your NORMA git repository in the VSIXInstall/VSIXOnly directory.
 4. Open the _Developer Command Prompt for Visual Studio 201x_ as an administrator and navigate to the NORMA git root. (As in other Visual Studio version, this will be your launch environment when working with NORMA, so you might want to add a shortcut to the start menu.)
 5. Unlike earlier versions, the VS installation is no longer in a fixed location discoverable from the registry, so the NORMA build needs you to provide some data. Depending on your version, run either `VS2017.bat` or `VS2019.bat`, which will fail with instructions on how to create a VS20xxInstallation.bat file. Following the instructions, then run `VS20xx.bat` again. In earlier VS versions built NORMA files will be under the `C:\Program Files (x86)\ORM Solutions` directory. With the side-by-side installs, the location will be based on the VS version and (15.0 for VS2017, 16.0 for VS2019) and the VisualStudioInstallSuffix you just set. For example, my install suffix for VS2019 is f5148b42, so the build NORMA files install under the `%localappdata%\Microsoft\VisualStudio\16.0_f5148b42Exp\ORM Solutions\Natural ORM Architect` directory. The exact install directory is based on the git version--you can run `NORMAGitVer.bat` to see it. Note that the schema files will be copied to the Visual Studio installation, which is why you need to be running as an administrator.
 6. With your build environment set (Developer command prompt in admin mode, run the matching VS20xx.bat file) you are ready to build.
