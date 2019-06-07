@@ -276,6 +276,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 								}
 								else
 								{
+									itemAddedStatus = true;
 									return !headerAlwaysVisible;
 								}
 							}
