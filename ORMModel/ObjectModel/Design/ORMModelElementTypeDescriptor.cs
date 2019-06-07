@@ -3,6 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -15,14 +16,11 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.Security.Permissions;
-using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
-using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
@@ -53,7 +51,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
 		{
 			PropertyDescriptorCollection properties = base.GetProperties(attributes);
-			ExtendableElementUtility.GetExtensionProperties(ModelElement, properties, typeof(TModelElement));
+			TModelElement element = ModelElement;
+			if (element != null && null != Utility.ValidateStore(element.Store))
+			{
+				ExtendableElementUtility.GetExtensionProperties(element, properties, typeof(TModelElement));
+			}
 			return properties;
 		}
 	}
