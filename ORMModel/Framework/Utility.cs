@@ -338,11 +338,11 @@ namespace ORMSolutions.ORMArchitect.Framework
 					++count;
 				}
 			}
+			T[] retVal = new T[count];
 			if (count == 0)
 			{
-				return null;
+				return retVal;
 			}
-			T[] retVal = new T[count];
 			int index = 0;
 			foreach (DomainModel domainModel in domainModels)
 			{
