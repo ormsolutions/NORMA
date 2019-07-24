@@ -654,7 +654,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			}
 			else if (reference != null && !trackedReference)
 			{
-				// A non-tracked reference with not list is in a partially deleted state, there
+				// A non-tracked reference with no list is in a partially deleted state, there
 				// is nothing more to do.
 				return;
 			}
@@ -1174,6 +1174,42 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		void INotifySurveyElementChanged.ElementReferenceCustomSortChanged(object element, object referenceReason, object contextElement)
 		{
 			ElementReferenceCustomSortChanged(element, referenceReason, contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementContextChanged(ISurveyNodeContext)"/>
+		/// </summary>
+		protected void ElementContextChanged(ISurveyNodeContext element)
+		{
+			Stack<MainList> removedLists = null;
+			NodeLocation location;
+			MainList currentList;
+			object currentContext;
+			if (myNodeDictionary.TryGetValue(element, out location) &&
+				null != (currentList = location.MainList))
+			{
+				// The node is currently tracked and has been given a primary location in
+				// a list (not just tracked as a floating node created for a reference target).
+				// and may need to be removed from the list and readded elsewhere, unless the
+				// context object is current.
+				if ((currentContext = element.SurveyNodeContext) != currentList.ContextElement)
+				{
+					ElementDeleted(location, ref removedLists);
+					if (removedLists != null)
+					{
+						EmptyRemovedLists(removedLists);
+					}
+					ElementAdded(element, currentContext);
+				}
+			}
+			else
+			{
+				// The element is currently untracked or simply floating. Attempt to add it with its new context.
+				ElementAdded(element, element.SurveyNodeContext);
+			}
+		}
+		void INotifySurveyElementChanged.ElementContextChanged(ISurveyNodeContext element)
+		{
+			ElementContextChanged(element);
 		}
 		#endregion //INotifySurveyElementChanged Implementation
 		#region Survey class

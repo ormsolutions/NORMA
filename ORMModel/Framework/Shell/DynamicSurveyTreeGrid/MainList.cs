@@ -67,7 +67,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			private int myAttachedEventCount;
 			private ListGrouper myRootGrouper;
 			private SurveyTree<SurveyContextType> mySurveyTree;
-			private object myContextElement;
+			private readonly object myContextElement;
 			private int[] myOverlayIndices;
 			/// <summary>
 			/// Public constructor
@@ -1002,20 +1002,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				if (!displayChangeOnly && questionTypes.Length != 0)
 				{
 					UpdateNode(index, nodeReference, node.UpdateAnswers(mySurveyTree, myContextElement, mySurvey, questionTypes), true, false);
-					//node.Update(questionTypes, myContextElement, mySurvey);
-					//myNodes[index] = node;
-					//object element = node.Element;
-					//ISurveyNodeReference reference;
-					//if (null == (reference = element as ISurveyNodeReference) ||
-					//	0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
-					//{
-					//	mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, node);
-					//}
-					//if (nodeReference != null)
-					//{
-					//	Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
-					//	nodeReference.Value = new SurveyNodeReference(node, myContextElement);
-					//}
 				}
 				else
 				{

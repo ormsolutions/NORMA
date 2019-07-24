@@ -877,6 +877,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// then this is removes the old reference and relies on a subsequent event to reattach it.</param>
 		/// <param name="contextElement">The context container of the referenced element.</param>
 		void ElementReferenceTargetChanged(ISurveyNodeReference elementReference, object previousReferencedElement, object newReferencedElement, object contextElement);
+		/// <summary>
+		/// Move the element to a different context if the element is not currently located at the given context.
+		/// This combines a delete and add operation if the current context does not match on a known survey element.
+		/// Any expansion of the item itself will be lost if the item moves. ElementContextChanged cannot be used to
+		/// delete an element. A <see langword="null"/> context element simply moves the element to the root.
+		/// </summary>
+		/// <param name="element">The survey element to check. If the element is also an element reference, then the
+		/// <see cref="SurveyNodeReferenceOptions.TrackReferenceInstance"/> option must be set for this element.</param>
+		void ElementContextChanged(ISurveyNodeContext element);
 	}
 	#endregion // INotifySurveyElementChanged interface
 }
