@@ -458,10 +458,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			public DisplayModifiedPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category)
 				: base(descriptorName ?? modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
 			{
-				myInner = modifyDescriptor;
-				myDisplayName = displayName;
-				myDescription = description;
-				myCategory = category;
+				DisplayModifiedPropertyDescriptor wrappedModifier = modifyDescriptor as DisplayModifiedPropertyDescriptor;
+				if (wrappedModifier != null)
+				{
+					myInner = wrappedModifier.myInner;
+					myDisplayName = displayName != null ? displayName : wrappedModifier.myDisplayName;
+					myDescription = description != null ? description : wrappedModifier.myDescription;
+					myCategory = category != null ? category : wrappedModifier.myCategory;
+				}
+				else
+				{
+					myInner = modifyDescriptor;
+					myDisplayName = displayName;
+					myDescription = description;
+					myCategory = category;
+				}
 			}
 			#endregion // Constructor
 			#region Accessor Properties
