@@ -1652,7 +1652,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							if (i == -1)
 							{
 								// Same comments as above. This is a rebased branch with header nodes only.
-								addNeutral = subBranches[0].Count > 0 && index == (subBranches[0].End + 1);
+								addNeutral = subBranches[0].Count == 0 || index == (subBranches[0].End + 1);
 							}
 						}
 						if (addNeutral)
