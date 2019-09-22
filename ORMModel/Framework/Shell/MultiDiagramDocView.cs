@@ -28,6 +28,9 @@ using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using System.Drawing.Design;
+#if NET_4_7_2
+using System.Reflection;
+#endif // NET_4_7_2
 
 namespace ORMSolutions.ORMArchitect.Framework.Shell
 {
@@ -434,6 +437,56 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			diagram.Associate(designer);
 			AddDesigner(designer, selectAsCurrent);
 		}
+
+#if NET_4_7_2
+		private static MethodInfo getDpiState;
+		private static MethodInfo forceRecreate;
+
+		/// <summary>
+		/// Verify compatible Dpi settings so the DiagramClientView does
+		/// not disappear.
+		/// </summary>
+		public override VSDiagramView CreateDiagramView()
+		{
+			// On reload, the DiagramClientView and VSDiagramView windows end
+			// up with different Dpi settings. This causes the internal Windowss
+			// SetParent API to return a ERROR_INVALID_STATE result after Windows 10,
+			// release 1703 and later. This effectively orphans the DiagramClientView,
+			// which is the window the diagram shapes draw in, so all of the diagram
+			// windows are blank. This is bad.
+			// UNDONE: MSBUG: There is no way I should have to fix this here. The
+			// DiagramClientView window handle is created much earlier than it
+			// needs to be causing the window to be temporarily 'parked'. Creating the
+			// window for the child DiagramClientView after the VSDiagramView handle is
+			// created would eliminate all of this hacking.
+			VSDiagramView designer = base.CreateDiagramView();
+
+			if (forceRecreate == null)
+			{
+				// The first one is most reliable (part of the public API), the internal less so.
+				forceRecreate = typeof(Control).GetMethod("RecreateHandle", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+				getDpiState = typeof(Control).GetMethod("get_DpiAwarenessContext", BindingFlags.Instance | BindingFlags.NonPublic);
+			}
+
+			if (getDpiState != null)
+			{
+				EventHandler designerHandleCreated = null;
+				designer.HandleCreated += designerHandleCreated = delegate (object sender, EventArgs e)
+				{
+					VSDiagramView view = (VSDiagramView)sender;
+					view.HandleCreated -= designerHandleCreated; // Run once
+					DiagramClientView clientView = view.DiagramClientView;
+					if (clientView.IsHandleCreated &&
+						(int)getDpiState.Invoke(clientView, null) != (int)getDpiState.Invoke(view, null))
+					{
+						forceRecreate.Invoke(clientView, null);
+					}
+				};
+			}
+			return designer;
+		}
+#endif // NET_4_7_2
+
 		/// <summary>
 		/// Adds the <see cref="DiagramView"/> specified by <paramref name="designer"/> to this <see cref="MultiDiagramDocView"/>.
 		/// </summary>
