@@ -585,6 +585,14 @@
     <value>Auto Populate Shapes</value>
     <comment>DisplayName for DomainProperty &apos;AutoPopulateShapes&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/UpdateCounter.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.Update Counter</value>
+    <comment>Description for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/UpdateCounter.DisplayName" xml:space="preserve">
+    <value>Update Counter</value>
+    <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
   <data name="ORM DesignerToolboxTab" xml:space="preserve">
     <value>ORM Designer</value>
     <comment>Toolbox item tab name</comment>

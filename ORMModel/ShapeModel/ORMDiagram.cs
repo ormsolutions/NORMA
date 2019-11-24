@@ -65,7 +65,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	{
 	}
 	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "Diagram.MenuDisplayName", "Diagram.TabImage", "Diagram.BrowserImage", NestedDiagramInitializerTypeName="DiagramInitializer")]
-	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements, IStickyObjectDiagram
+	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements, IStickyObjectDiagram, IInvalidateDisplay
 	{
 		#region DiagramInitializer class
 		/// <summary>
@@ -125,6 +125,59 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			base.Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
 		}
 		#endregion // Constructors
+		#region Auto-invalidate tracking, IInvalidateDisplay implementation
+		/// <summary>
+		/// Implements <see cref="IInvalidateDisplay.InvalidateRequired()"/>
+		/// Call to automatically invalidate the shape during events.
+		/// Invalidates during the original event sequence as well as undo and redo.
+		/// </summary>
+		protected void InvalidateRequired()
+		{
+			InvalidateRequired(false);
+		}
+		void IInvalidateDisplay.InvalidateRequired()
+		{
+			InvalidateRequired();
+		}
+		/// <summary>
+		/// Implements <see cref="IInvalidateDisplay.InvalidateRequired(bool)"/>
+		/// Call to automatically invalidate the shape during events.
+		/// Invalidates during the original event sequence as well as undo and redo.
+		/// </summary>
+		/// <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
+		protected void InvalidateRequired(bool refreshBitmap)
+		{
+			long? newValue = ORMShapeDomainModel.GetNewUpdateCounterValue(this, refreshBitmap);
+			if (newValue.HasValue)
+			{
+				UpdateCounter = newValue.Value;
+			}
+		}
+		void IInvalidateDisplay.InvalidateRequired(bool refreshBitmap)
+		{
+			InvalidateRequired(refreshBitmap);
+		}
+		/// <summary>
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="ORMBaseShape"/>s.
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(UpdateCounterDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(UpdateRequiredEvent), action);
+		}
+		private static void UpdateRequiredEvent(object sender, ElementPropertyChangedEventArgs e)
+		{
+			ORMDiagram diagram = (ORMDiagram)e.ModelElement;
+			if (!diagram.IsDeleted)
+			{
+				diagram.Invalidate(Math.Abs(unchecked((long)e.OldValue - (long)e.NewValue)) != 1L);
+			}
+		}
+		#endregion // Auto-invalidate tracking, IInvalidateDisplay implementation
 		#region DragDrop overrides
 		/// <summary>
 		/// Check to see if <see cref="DiagramDragEventArgs.Data">dragged object</see> is a type that can be dropped on the <see cref="Diagram"/>,
@@ -3656,6 +3709,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private LinkShape CreateConnectorForObjectTypePlaysRole(ObjectTypePlaysRole newElement)
 		{
 			return this.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(CreatingRolePlayerProxyLinkKey) ? (LinkShape)new RolePlayerProxyLink(this.Partition) : new RolePlayerLink(this.Partition);
+		}
+		private long GetUpdateCounterValue()
+		{
+			return ORMShapeDomainModel.GetCurrentUpdateCounterValue(this);
+		}
+		private void SetUpdateCounterValue(long newValue)
+		{
+			// Nothing to do, we're just trying to create a transaction log entry
 		}
 	}
 	#endregion // ORMDiagramBase class
