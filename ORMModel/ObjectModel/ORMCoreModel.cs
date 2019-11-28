@@ -62,7 +62,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	[VerbalizationTargetProvider("VerbalizationTargets")]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	[VerbalizationOptionProvider("VerbalizationOptions")]
-	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener, IPermanentAutomatedElementFilterProvider, IDynamicColorSetConsumer, IRegisterSignalChanges
+	public partial class ORMCoreDomainModel : IModelingEventSubscriber, ISurveyNodeProvider, INotifyCultureChange, ICopyClosureIntegrationListener, IPermanentAutomatedElementFilterProvider, IDynamicColorSetConsumer, IRegisterSignalChanges, IShapeFreeDataObjectProvider
 	{
 		#region Static Survey Data
 		private static readonly Type[] SurveyErrorQuestionTypes = new Type[] { typeof(SurveyErrorState) };
@@ -157,7 +157,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				//Track name change
 				EventHandler<ElementPropertyChangedEventArgs> standardNameChangedHandler = new EventHandler<ElementPropertyChangedEventArgs>(ModelElementNameChangedEvent);
 				propertyInfo = directory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId);
-				eventManager.AddOrRemoveHandler(propertyInfo, standardNameChangedHandler , action);
+				eventManager.AddOrRemoveHandler(propertyInfo, standardNameChangedHandler, action);
 				propertyInfo = directory.FindDomainProperty(FactType.NameChangedDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardNameChangedHandler, action);
 				propertyInfo = directory.FindDomainProperty(ModelNote.TextDomainPropertyId);
@@ -1343,7 +1343,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (errorPath != null)
 			{
 				ModelError.WalkAssociatedElements(errorPath.ErrorOwnerRolePlayer,
-					delegate(ModelElement associatedElement)
+					delegate (ModelElement associatedElement)
 					{
 						eventNotify.ElementChanged(associatedElement, SurveyErrorQuestionTypes);
 					});
@@ -1442,6 +1442,26 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return GetSignalPropertyChanges();
 		}
 		#endregion // IRegisterSignalChanges Implementation
+		#region IShapeFreeDataObjectProvider Implementation
+		private static Type[] m_shapeFreeDataObjectTypes = new Type[] { typeof(ElementGrouping) };
+		/// <summary>
+		/// Implements IShapeFreeDataObjectProvider.ShapeFreeDataObjectTypes
+		/// </summary>
+		protected Type[] ShapeFreeDataObjectTypes
+		{
+			get
+			{
+				return m_shapeFreeDataObjectTypes;
+			}
+		}
+		Type[] IShapeFreeDataObjectProvider.ShapeFreeDataObjectTypes
+		{
+			get
+			{
+				return ShapeFreeDataObjectTypes;
+			}
+		}
+		#endregion // IShapeFreeDataObjectProvider Implementation
 	}
 	#region IModelErrorOwner Implementations
 	partial class FactTypeHasFactTypeInstance : IModelErrorOwnerPath

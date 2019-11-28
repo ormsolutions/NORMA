@@ -141,6 +141,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		bool NavigateTo(object target, NavigateToWindow window);
 	}
 	#endregion // IORMToolServices interface
+	#region IShapeFreeDataObjectProvider interface
+	/// <summary>
+	/// Implement on a domain model, returning the types of elements
+	/// that do not have shapes but can be dropped on a diagram in a
+	/// different model file to merge them into the target model.
+	/// Returned types must derive from <see cref="ModelElement"/>
+	/// </summary>
+	public interface IShapeFreeDataObjectProvider
+	{
+		/// <summary>
+		/// Return the list of types in this model that support shape-free drag drop
+		/// into an external model.
+		/// </summary>
+		Type[] ShapeFreeDataObjectTypes { get; }
+	}
+	#endregion // IShapeFreeDataObjectProvider interface
 	#region ORMModelErrorActivation delegate
 	/// <summary>
 	/// Activate the provided <paramref name="error"/> using the provided <paramref name="services"/>.

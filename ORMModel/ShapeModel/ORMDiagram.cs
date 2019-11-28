@@ -197,14 +197,30 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
 			}
-			else if (Array.IndexOf(dataFormats, typeof(ElementGrouping).FullName) >= 0 &&
-				null != (grouping = data.GetData(typeof(ElementGrouping)) as ElementGrouping) &&
-				grouping.Store != Store)
+			else
 			{
-				// Allow a group to be dragged across stores. This does not create shapes, it
-				// just duplicates all of the elements.
-				e.Effect = DragDropEffects.All;
-				e.Handled = true;
+				// Allow shape-free members to be dragged across stores. This does not create
+				// shapes, it just duplicates all of the elements. This includes ElementGrouping
+				// in the core model, but is also available for extensions.
+				IShapeFreeDataObjectProvider[] shapeFreeProviders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeFreeDataObjectProvider>();
+				for (int i = 0; i < shapeFreeProviders.Length; ++i)
+				{
+					Type[] dataObjectTypes = shapeFreeProviders[i].ShapeFreeDataObjectTypes;
+					for (int j = 0; j < dataObjectTypes.Length; ++j)
+					{
+						Type testType = dataObjectTypes[j];
+						ModelElement element;
+						if (Array.IndexOf<string>(dataFormats, testType.FullName) >= 0 &&
+							null != (element = data.GetData(testType) as ModelElement) &&
+							element.Store != null)
+						{
+							e.Effect = DragDropEffects.All;
+							e.Handled = true;
+							i = shapeFreeProviders.Length;
+							break;
+						}
+					}
+				}
 			}
 			if (!e.Handled)
 			{
@@ -356,9 +372,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			SetConstraint setConstraint = null;
 			ModelNote modelNote = null;
 			ModelElement element = null;
-			ElementGrouping grouping = null;
 			LinkedElementCollection<FactType> verifyFactTypeList = null;
 			Store store = Store;
+			IList<ModelElement> closureElements = null;
 			if (null != (objectType = (dataObject == null) ? elementToPlace as ObjectType : dataObject.GetData(typeof(ObjectType)) as ObjectType))
 			{
 				factType = objectType.NestedFactType;
@@ -394,22 +410,52 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				element = modelNote;
 			}
-			else if (null != (grouping = (dataObject == null) ? elementToPlace as ElementGrouping : dataObject.GetData(typeof(ElementGrouping)) as ElementGrouping))
-			{
-				if (store != grouping.Store)
-				{
-					// Support cross-store group drag. Shapes are not created.
-					element = grouping;
-				}
-			}
-			if (verifyFactTypeList != null)
-			{
-				if (!VerifyCorrespondingFactTypes(verifyFactTypeList, null))
-				{
-					element = null;
-				}
-			}
+
 			if (element != null)
+			{
+				closureElements = (verifyFactTypeList == null || VerifyCorrespondingFactTypes(verifyFactTypeList, null)) ? new ModelElement[] { element } : null;
+			}
+			else
+			{
+				// Support cross-store drag drop of specially tagged elements with no associated shape.
+				// For the core model this is the ElementGrouping type, so there will always be something here.
+				List<ModelElement> shapeFreeData = null;
+				IShapeFreeDataObjectProvider[] shapeFreeProviders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeFreeDataObjectProvider>();
+				for (int i = 0; i < shapeFreeProviders.Length; ++i)
+				{
+					Type[] dataObjectTypes = shapeFreeProviders[i].ShapeFreeDataObjectTypes;
+					for (int j = 0; j < dataObjectTypes.Length; ++j)
+					{
+						Type testType = dataObjectTypes[j];
+						ModelElement testElement;
+						if (dataObject == null)
+						{
+							if (testType.IsAssignableFrom(elementToPlace.GetType()))
+							{
+								element = elementToPlace;
+								closureElements = new ModelElement[] { element };
+								i = shapeFreeProviders.Length;
+								break;
+							}
+						}
+						else if (null != (testElement = dataObject.GetData(testType) as ModelElement) &&
+							store != testElement.Store)
+						{
+							if (shapeFreeData == null)
+							{
+								closureElements = shapeFreeData = new List<ModelElement>();
+								closureElements.Add(element = testElement);
+							}
+							else
+							{
+								shapeFreeData.Add(testElement);
+							}
+						}
+					}
+				}
+			}
+
+			if (closureElements != null)
 			{
 				Store sourceStore = element.Store;
 				IDictionary<Guid, IClosureElement> copyClosure = null;
@@ -417,7 +463,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				bool crossStoreCopy;
 				if ((crossStoreCopy = store != sourceStore) &&
 					(null == (closureManager = ((IFrameworkServices)sourceStore).CopyClosureManager) ||
-					null == (copyClosure = closureManager.GetCopyClosure(new ModelElement[] { element }))))
+					null == (copyClosure = closureManager.GetCopyClosure(closureElements))))
 				{
 					return false;
 				}

@@ -2091,35 +2091,59 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
 		{
+			bool retVal = false;
 			foreach (ElementGroupingSet otherGroupingSet in foreignStore.ElementDirectory.FindElements<ElementGroupingSet>(false))
 			{
 				ElementGrouping otherGrouping = otherGroupingSet.GroupsDictionary.GetElement(Name).FirstElement as ElementGrouping;
+				LinkedElementCollection<ElementGroupingType> unmatchedGroupingTypes = null;
 				if (otherGrouping != null)
 				{
 					elementTracker.AddEquivalentElement(this, otherGrouping);
 					LinkedElementCollection<ElementGroupingType> groupTypes;
 					LinkedElementCollection<ElementGroupingType> otherGroupTypes;
-					if (0 != (groupTypes = GroupingTypeCollection).Count &&
-						0 != (otherGroupTypes = otherGrouping.GroupingTypeCollection).Count)
+					if (0 != (groupTypes = GroupingTypeCollection).Count)
 					{
-						foreach (ElementGroupingType groupType in groupTypes)
+						if (0 != (otherGroupTypes = otherGrouping.GroupingTypeCollection).Count)
 						{
-							Type testType = groupType.GetType();
-							foreach (ElementGroupingType otherGroupType in otherGroupTypes)
+							foreach (ElementGroupingType groupType in groupTypes)
 							{
-								if (testType == otherGroupType.GetType())
+								Type testType = groupType.GetType();
+								foreach (ElementGroupingType otherGroupType in otherGroupTypes)
 								{
-									elementTracker.AddEquivalentElement(groupType, otherGroupType);
-									break;
+									if (testType == otherGroupType.GetType())
+									{
+										elementTracker.AddEquivalentElement(groupType, otherGroupType);
+										testType = null; // Signal
+										break;
+									}
+								}
+								if (testType == null)
+								{
+									elementTracker.AddFailedEquivalentElement(groupType);
 								}
 							}
 						}
+						else
+						{
+							unmatchedGroupingTypes = groupTypes;
+						}
 					}
-					return true;
+					retVal = true;
+				}
+				else
+				{
+					unmatchedGroupingTypes = GroupingTypeCollection;
+				}
+				if (unmatchedGroupingTypes != null)
+				{
+					foreach (ElementGroupingType groupType in unmatchedGroupingTypes)
+					{
+						elementTracker.AddFailedEquivalentElement(groupType);
+					}
 				}
 				break;
 			}
-			return false;
+			return retVal;
 		}
 		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
 		{
