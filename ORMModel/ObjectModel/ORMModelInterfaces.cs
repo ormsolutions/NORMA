@@ -146,8 +146,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// Implement on a domain model, returning the types of elements
 	/// that do not have shapes but can be dropped on a diagram in a
 	/// different model file to merge them into the target model.
-	/// Returned types must derive from <see cref="ModelElement"/>
+	/// Returned types must derive from <see cref="ModelElement"/>.
 	/// </summary>
+	/// <remarks>A data object that includes a shape-free instance must also
+	/// add a value for the type of <see cref="ShapeFreeDataObjectSourceStore"/>
+	/// to the data object, with the source store as the data value.</remarks>
 	public interface IShapeFreeDataObjectProvider
 	{
 		/// <summary>
@@ -157,6 +160,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		Type[] ShapeFreeDataObjectTypes { get; }
 	}
 	#endregion // IShapeFreeDataObjectProvider interface
+	#region ShapeFreeDataObjectSourceStore class
+	/// <summary>
+	/// The type of this class is used as a signal that a drag of a shape-free
+	/// data object is being requested. The registered value should be the
+	/// <see cref="ModelElement.Store"/> property for the dragged element. This
+	/// allows for an easy check to determine if a shape-free item is available
+	/// and will block it from being dropped in the source store, which is meaningless
+	/// for a shape-free object.
+	/// </summary>
+	public static class ShapeFreeDataObjectSourceStore { }
+	#endregion // ShapeFreeDataObjectSourceStore class
 	#region ORMModelErrorActivation delegate
 	/// <summary>
 	/// Activate the provided <paramref name="error"/> using the provided <paramref name="services"/>.

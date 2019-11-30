@@ -85,6 +85,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				DataObject retVal = new DataObject();
 				retVal.SetData(typeof(ElementGrouping), this);
+				retVal.SetData(typeof(ShapeFreeDataObjectSourceStore), Store);
 				return retVal;
 			}
 		}

@@ -187,7 +187,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			IDataObject data = e.Data;
 			string[] dataFormats = data.GetFormats();
-			ElementGrouping grouping;
 			if (Array.IndexOf(dataFormats, typeof(ObjectType).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(FactType).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(SetComparisonConstraint).FullName) >= 0 ||
@@ -197,30 +196,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
 			}
-			else
+			else if (Array.IndexOf(dataFormats, typeof(ShapeFreeDataObjectSourceStore).FullName) > 0 &&
+				(data.GetData(typeof(ShapeFreeDataObjectSourceStore)) as Store) != Store)
 			{
 				// Allow shape-free members to be dragged across stores. This does not create
-				// shapes, it just duplicates all of the elements. This includes ElementGrouping
-				// in the core model, but is also available for extensions.
-				IShapeFreeDataObjectProvider[] shapeFreeProviders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeFreeDataObjectProvider>();
-				for (int i = 0; i < shapeFreeProviders.Length; ++i)
-				{
-					Type[] dataObjectTypes = shapeFreeProviders[i].ShapeFreeDataObjectTypes;
-					for (int j = 0; j < dataObjectTypes.Length; ++j)
-					{
-						Type testType = dataObjectTypes[j];
-						ModelElement element;
-						if (Array.IndexOf<string>(dataFormats, testType.FullName) >= 0 &&
-							null != (element = data.GetData(testType) as ModelElement) &&
-							element.Store != null)
-						{
-							e.Effect = DragDropEffects.All;
-							e.Handled = true;
-							i = shapeFreeProviders.Length;
-							break;
-						}
-					}
-				}
+				// shapes, it just duplicates all of the closure elements. This includes
+				// ElementGrouping in the core model, but is also available for extensions.
+				// The extra data object must be added as a signal when the data object for
+				// a shape-free element is created.
+				e.Effect = DragDropEffects.All;
+				e.Handled = true;
 			}
 			if (!e.Handled)
 			{
@@ -375,6 +360,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			LinkedElementCollection<FactType> verifyFactTypeList = null;
 			Store store = Store;
 			IList<ModelElement> closureElements = null;
+			Store sourceStore;
 			if (null != (objectType = (dataObject == null) ? elementToPlace as ObjectType : dataObject.GetData(typeof(ObjectType)) as ObjectType))
 			{
 				factType = objectType.NestedFactType;
@@ -415,12 +401,16 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				closureElements = (verifyFactTypeList == null || VerifyCorrespondingFactTypes(verifyFactTypeList, null)) ? new ModelElement[] { element } : null;
 			}
-			else
+			else if (dataObject != null &&
+				null != (sourceStore = dataObject.GetData(typeof(ShapeFreeDataObjectSourceStore)) as Store) &&
+				store != sourceStore)
 			{
 				// Support cross-store drag drop of specially tagged elements with no associated shape.
 				// For the core model this is the ElementGrouping type, so there will always be something here.
+				// This list is retrieved from the source store in case the target store does not have the
+				// extension loaded for the shape free element.
 				List<ModelElement> shapeFreeData = null;
-				IShapeFreeDataObjectProvider[] shapeFreeProviders = ((IFrameworkServices)Store).GetTypedDomainModelProviders<IShapeFreeDataObjectProvider>();
+				IShapeFreeDataObjectProvider[] shapeFreeProviders = ((IFrameworkServices)sourceStore).GetTypedDomainModelProviders<IShapeFreeDataObjectProvider>();
 				for (int i = 0; i < shapeFreeProviders.Length; ++i)
 				{
 					Type[] dataObjectTypes = shapeFreeProviders[i].ShapeFreeDataObjectTypes;
@@ -428,17 +418,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						Type testType = dataObjectTypes[j];
 						ModelElement testElement;
-						if (dataObject == null)
-						{
-							if (testType.IsAssignableFrom(elementToPlace.GetType()))
-							{
-								element = elementToPlace;
-								closureElements = new ModelElement[] { element };
-								i = shapeFreeProviders.Length;
-								break;
-							}
-						}
-						else if (null != (testElement = dataObject.GetData(testType) as ModelElement) &&
+						if (null != (testElement = dataObject.GetData(testType) as ModelElement) &&
 							store != testElement.Store)
 						{
 							if (shapeFreeData == null)
@@ -457,7 +437,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 			if (closureElements != null)
 			{
-				Store sourceStore = element.Store;
+				sourceStore = element.Store;
 				IDictionary<Guid, IClosureElement> copyClosure = null;
 				ICopyClosureManager closureManager = null;
 				bool crossStoreCopy;
@@ -505,17 +485,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						CopyClosureIntegrationResult integrationResult = closureManager.IntegrateCopyClosure(copyClosure, sourceStore, store, new ModelElement[] { model }, true);
 						integratedElements = integrationResult.CopiedElements;
 
-						// Translate the element to the equivalent element in the other store
-						if (!integratedElements.TryGetValue(element.Id, out element))
-						{
-							return false; // Transaction rolls back on dispose
-						}
-
 						// Track missing references for a message after integration is complete
 						Guid[] missingExtensions = integrationResult.MissingExtensionModels;
 						if (missingExtensions != null)
 						{
 							store.PropertyBag["ORMDiagram.MergeMissingExtensions"] = missingExtensions;
+						}
+
+						// Translate each closure element to the equivalent element in the other store
+						for (int i = 0, count = closureElements.Count; i < count; ++i)
+						{
+							ModelElement closureElement = closureElements[i];
+							if (!integratedElements.TryGetValue(closureElement.Id, out closureElement))
+							{
+								return false; // Transaction rolls back on dispose
+							}
+							closureElements[i] = closureElement;
+							if (i == 0)
+							{
+								element = closureElement;
+							}
 						}
 
 						// Add some context information for view fixup
