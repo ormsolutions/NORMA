@@ -31,7 +31,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// main branch provider for a SurveyTree, implements IBranch, main branch can be retrieved from RootBranch
 		/// </summary>
-		private partial class MainList : IBranch
+		private partial class MainList : IBranch, ITrackSurveyElementLocation
 		{
 			#region survey question display struct
 			//TODO: ask Matt, probably want to move this inside of the survey along with myCurrentDisplays, and have the survey manage it all
@@ -1302,6 +1302,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			#endregion //INotifySurveyElementChanged Implementation
+			#region ITrackSurveyElementLocation implementation
+			/// <summary>
+			/// Pass through event handler. This allows listeners to attach the location tracking event to
+			/// the root branch of a tree.
+			/// </summary>
+			event ElementLocationChangedEventHandler ITrackSurveyElementLocation.ElementLocationChanged
+			{
+				add { mySurveyTree.ElementLocationChanged += value; }
+				remove { mySurveyTree.ElementLocationChanged += value; }
+			}
+			#endregion // ITrackSurveyElementLocation implementation
 		}
 	}
 }

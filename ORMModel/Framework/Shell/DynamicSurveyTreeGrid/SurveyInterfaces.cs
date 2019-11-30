@@ -773,11 +773,36 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		bool IsSurveyNodeExpandable(object context, object expansionKey);
 	}
 	#endregion //ISurveyNodeProvider interface
+	#region ElementLocationChangedEventHandler delegate
+	/// <summary>
+	/// Event signature used by <see cref="ITrackSurveyElementLocation.ElementLocationChanged"/> event to signal
+	/// that an item is in a different location in the tree.
+	/// </summary>
+	/// <param name="element">The element that was relocated.</param>
+	public delegate void ElementLocationChangedEventHandler(object element);
+	#endregion // ElementLocationChangedEventHandler delegate
+	#region ITrackSurveyElementLocation interface
+	/// <summary>
+	/// Provide an attach point for tracking when a survey element has moved in the tree.
+	/// </summary>
+	/// <remarks>The expected use here is for selection tracking. If the selected item is moved (generally due to user
+	/// interactions with the selected item) then the selection should be restored to that item when all other events
+	/// have been notified. To handle this scenario, this event should be activated when changes begin and then
+	/// deactivated when changes are completed.</remarks>
+	public interface ITrackSurveyElementLocation
+	{
+		/// <summary>
+		/// Notify when an element is moved to a different location in the tree as a result of a
+		/// <see cref="INotifySurveyElementChanged.ElementContextChanged"/> change notification.
+		/// </summary>
+		event ElementLocationChangedEventHandler ElementLocationChanged;
+	}
+	#endregion // ITrackSurveyElementLocation interface
 	#region INotifySurveyElementChanged interface
 	/// <summary>
 	///defines behavior for a container in the survey tree to recieve events from it's contained elements
 	/// </summary>
-	public interface INotifySurveyElementChanged
+	public interface INotifySurveyElementChanged : ITrackSurveyElementLocation
 	{
 		/// <summary>
 		/// Called when an element is added to the container's node provider

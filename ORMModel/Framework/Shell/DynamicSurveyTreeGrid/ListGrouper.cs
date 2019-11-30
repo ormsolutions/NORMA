@@ -75,7 +75,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 	{
 		partial class MainList
 		{
-			private sealed partial class ListGrouper : IBranch
+			private sealed partial class ListGrouper : IBranch, ITrackSurveyElementLocation
 			{
 				#region SubBranchMetaData struct
 				private struct SubBranchMetaData
@@ -1323,6 +1323,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					}
 				}
 				#endregion
+				#region ITrackSurveyElementLocation implementation
+				/// <summary>
+				/// Pass through event handler. This allows listeners to attach the location tracking event to
+				/// the root branch of a tree.
+				/// </summary>
+				event ElementLocationChangedEventHandler ITrackSurveyElementLocation.ElementLocationChanged
+				{
+					add { ((ITrackSurveyElementLocation)myBaseBranch).ElementLocationChanged += value; }
+					remove { ((ITrackSurveyElementLocation)myBaseBranch).ElementLocationChanged += value; }
+				}
+				#endregion // ITrackSurveyElementLocation implementation
 				#region ElementDeletedAt
 
 				/// <summary>

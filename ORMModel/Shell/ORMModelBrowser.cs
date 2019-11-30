@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -1086,11 +1086,36 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(ElementEventsEndedEvent), action);
 		}
 
+		private object myLocationTrackedElement;
+		private bool myTrackedElementMoved;
+		private void TrackElementLocation(object element)
+		{
+			if (element == myLocationTrackedElement)
+			{
+				myTrackedElementMoved = true;
+			}
+		}
 		private void ElementEventsBegunEvent(object sender, ElementEventsBegunEventArgs e)
 		{
 			ITree tree = this.myTreeContainer.Tree;
 			if (tree != null)
 			{
+				ITrackSurveyElementLocation attachLocationTracker = tree.Root as ITrackSurveyElementLocation;
+				if (attachLocationTracker != null)
+				{
+					object trackSelection = SelectedNode;
+					myLocationTrackedElement = trackSelection;
+					myTrackedElementMoved = false;
+					if (trackSelection != null)
+					{
+						attachLocationTracker.ElementLocationChanged += TrackElementLocation;
+					}
+				}
+				else
+				{
+					myLocationTrackedElement = null;
+					myTrackedElementMoved = false;
+				}
 				tree.DelayRedraw = true;
 			}
 		}
@@ -1099,6 +1124,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			ITree tree = this.myTreeContainer.Tree;
 			if (tree != null)
 			{
+				object movedElement = myLocationTrackedElement;
+				if (movedElement != null)
+				{
+					myLocationTrackedElement = null;
+					ITrackSurveyElementLocation attachLocationTracker = tree.Root as ITrackSurveyElementLocation;
+					if (attachLocationTracker != null)
+					{
+						attachLocationTracker.ElementLocationChanged -= TrackElementLocation;
+					}
+					IORMToolServices services;
+					if (myTrackedElementMoved &&
+						null != (services = CurrentDocument as IORMToolServices))
+					{
+						services.NavigateTo(movedElement, NavigateToWindow.ModelBrowser);
+					}
+				}
+				myTrackedElementMoved = false;
 				tree.DelayRedraw = false;
 			}
 			if (((IORMToolServices)sender).ProcessingVisibleTransactionItemEvents)

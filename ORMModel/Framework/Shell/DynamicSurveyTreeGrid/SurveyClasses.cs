@@ -1199,6 +1199,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						EmptyRemovedLists(removedLists);
 					}
 					ElementAdded(element, currentContext);
+					ElementLocationChangedEventHandler handler = myElementLocationChangedHandler;
+					if (handler != null)
+					{
+						handler(element);
+					}
 				}
 			}
 			else
@@ -1210,6 +1215,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		void INotifySurveyElementChanged.ElementContextChanged(ISurveyNodeContext element)
 		{
 			ElementContextChanged(element);
+		}
+		private ElementLocationChangedEventHandler myElementLocationChangedHandler;
+		/// <summary>
+		/// Implements <see cref="ITrackSurveyElementLocation.ElementLocationChanged"/>
+		/// </summary>
+		protected event ElementLocationChangedEventHandler ElementLocationChanged
+		{
+			add { myElementLocationChangedHandler += value; }
+			remove { myElementLocationChangedHandler -= value; }
+		}
+		event ElementLocationChangedEventHandler ITrackSurveyElementLocation.ElementLocationChanged
+		{
+			add { ElementLocationChanged += value; }
+			remove { ElementLocationChanged -= value; }
 		}
 		#endregion //INotifySurveyElementChanged Implementation
 		#region Survey class
