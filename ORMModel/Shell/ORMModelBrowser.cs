@@ -1133,11 +1133,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						attachLocationTracker.ElementLocationChanged -= TrackElementLocation;
 					}
-					IORMToolServices services;
-					if (myTrackedElementMoved &&
-						null != (services = CurrentDocument as IORMToolServices))
+					if (myTrackedElementMoved)
 					{
-						services.NavigateTo(movedElement, NavigateToWindow.ModelBrowser);
+						myTreeContainer.TreeControl.SelectObject(null, movedElement, (int)ObjectStyle.TrackingObject, 0);
 					}
 				}
 				myTrackedElementMoved = false;
