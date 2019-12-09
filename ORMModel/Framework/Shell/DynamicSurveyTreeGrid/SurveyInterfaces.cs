@@ -910,7 +910,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// </summary>
 		/// <param name="element">The survey element to check. If the element is also an element reference, then the
 		/// <see cref="SurveyNodeReferenceOptions.TrackReferenceInstance"/> option must be set for this element.</param>
-		void ElementContextChanged(ISurveyNodeContext element);
+		/// <param name="oldContext">The previous context, or null if not known. This is used to manage the displayed
+		/// expandable state of the old context element if it has not previously been expanded.</param>
+		void ElementContextChanged(ISurveyNodeContext element, object oldContext);
 	}
 	#endregion // INotifySurveyElementChanged interface
 }

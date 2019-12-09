@@ -430,6 +430,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			{
 				list.ElementAdded(element);
 			}
+			else if (contextElement != null)
+			{
+				// Possibly going from 0 elements to 1, change expandability
+				ElementExpandibilityChanged(contextElement);
+			}
 		}
 		void INotifySurveyElementChanged.ElementAdded(object element, object contextElement)
 		{
@@ -1176,9 +1181,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			ElementReferenceCustomSortChanged(element, referenceReason, contextElement);
 		}
 		/// <summary>
-		/// Implements <see cref="INotifySurveyElementChanged.ElementContextChanged(ISurveyNodeContext)"/>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementContextChanged(ISurveyNodeContext,System.Object)"/>
 		/// </summary>
-		protected void ElementContextChanged(ISurveyNodeContext element)
+		protected void ElementContextChanged(ISurveyNodeContext element, object oldContext)
 		{
 			Stack<MainList> removedLists = null;
 			NodeLocation location;
@@ -1208,13 +1213,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			}
 			else
 			{
+				// If the old context is known there is a chance that this is now an empty list, check the expansion.
+				if (oldContext != null && !myMainListDictionary.ContainsKey(oldContext))
+				{
+					ElementExpandibilityChanged(oldContext);
+				}
+
 				// The element is currently untracked or simply floating. Attempt to add it with its new context.
 				ElementAdded(element, element.SurveyNodeContext);
 			}
 		}
-		void INotifySurveyElementChanged.ElementContextChanged(ISurveyNodeContext element)
+		void INotifySurveyElementChanged.ElementContextChanged(ISurveyNodeContext element, object oldContext)
 		{
-			ElementContextChanged(element);
+			ElementContextChanged(element, oldContext);
 		}
 		private ElementLocationChangedEventHandler myElementLocationChangedHandler;
 		/// <summary>
