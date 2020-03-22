@@ -66,14 +66,14 @@ CALL:_AddXslORMGenerator "ConceptualDBtoDCL" "ConceptualDB to DCIL" "Transforms 
 
 CALL:_AddXslORMGenerator "OIALtoCLIProperties" "OIAL to CLI Properties" "Transforms an OIAL file to CLI (Common Language Infrastructure) Properties" ".CLIProperties.xml" "ORM http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction" "CLIProperties" "%ORMTransformsDir%\OIALtoCLIProperties.xslt" "" "1"
 CALL:_AddXslORMGenerator "PLiXSupport" "PLiX Support" "Transforms nothing to SupportClasses PLiX." ".Support.PLiX.xml" "ORM" "PLiX_Support" "%ORMTransformsDir%\OIALtoPLiX_GenerateGlobalSupportClasses.xslt" "NUPlixLoader"
-CALL:_AddXslORMGenerator "CLIPropertiesToPLiXAbstract" "CLIProperties to PLiX Abstract" "Transforms a CLI Properties file to Abstract PLiX" ".Abstract.PLiX.xml" "CLIProperties" "PLiX_Abstract" "%ORMTransformsDir%\OIALtoPLiX_Abstract.xslt" "NUPlixLoader" "1" "" "" "ORM\0"
-CALL:_AddXslORMGenerator "CLIPropertiesToPLiXDataLayerWithSproc" "CLIProperties to PLiX Data Layer with Sprocs" "Transforms a CLI Properties file to DataLayer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_Implementation.xslt" "NUPlixLoader" "" "" "" "OIAL\0" "PLiX_Abstract\0"
-CALL:_AddXslORMGenerator "CLIPropertiesToPliXDataLayerSprocFree" "CLIProperties to PLiX Sproc Free Data Layer" "Transforms a CLI Properties file to Sproc Free Data Layer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" "NUPlixLoader" "" "" "" "OIAL\0" "PLiX_Abstract\0"
-CALL:_AddXslORMGenerator "CLIPropertiesToPLiXInMemory" "CLIProperties to PLiX In Memory" "Transforms a CLI Properties file to InMemory PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_InMemory_Implementation.xslt" "NUPlixLoader" "" "" "" "ORM\0" "PLiX_Abstract\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXAbstract" "CLIProperties to PLiX Abstract" "Transforms a CLI Properties file to Abstract PLiX" ".Abstract.PLiX.xml" "CLIProperties" "PLiX_Abstract" "%ORMTransformsDir%\OIALtoPLiX_Abstract.xslt" "NUPlixLoader" "1" "" "" "" "ORM\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXDataLayerWithSproc" "CLIProperties to PLiX Data Layer with Sprocs" "Transforms a CLI Properties file to DataLayer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_Implementation.xslt" "NUPlixLoader" "" "" "" "" "OIAL\0" "PLiX_Abstract\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPliXDataLayerSprocFree" "CLIProperties to PLiX Sproc Free Data Layer" "Transforms a CLI Properties file to Sproc Free Data Layer PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_DataLayer_SprocFree_Implementation.xslt" "NUPlixLoader" "" "" "" "" "OIAL\0" "PLiX_Abstract\0"
+CALL:_AddXslORMGenerator "CLIPropertiesToPLiXInMemory" "CLIProperties to PLiX In Memory" "Transforms a CLI Properties file to InMemory PLiX" ".Implementation.PLiX.xml" "CLIProperties" "PLiX_Implementation" "%ORMTransformsDir%\OIALtoPLiX_InMemory_Implementation.xslt" "NUPlixLoader" "" "" "" "" "ORM\0" "PLiX_Abstract\0"
 
-CALL:_AddXslORMGenerator "DataLayerTestForm" "Data Layer Test Form" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.PLiX.xml" "PLiX_Implementation" "DataLayerTestForm" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt" "NUPlixLoader" "" "" "" "" "DataLayerTestFormInputControl\0"
-CALL:_AddXslORMGenerator "DataLayerTestFormInputControl" "Data Layer Test Form Input Control" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControl" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "NUPlixLoader" "" "" "" "OIAL\0" "DataLayerTestFormInputControlDesigner\0"
-CALL:_AddXslORMGenerator "DataLayerTestFormInputControlDesigner" "Data Layer Test Form Input Control Designer" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.Designer.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControlDesigner" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt" "NUPlixLoader" "1" "" "" "OIAL\0"
+CALL:_AddXslORMGenerator "DataLayerTestForm" "Data Layer Test Form" "Generates a Windows Form with custom controls for testing and manipulating data using the generated data access layer and database." ".DataLayerTestForm.PLiX.xml" "PLiX_Implementation" "DataLayerTestForm" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_DataLayerTestForm.xslt" "NUPlixLoader" "" "" "" "" "" "DataLayerTestFormInputControl\0"
+CALL:_AddXslORMGenerator "DataLayerTestFormInputControl" "Data Layer Test Form Input Control" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControl" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl.xslt" "NUPlixLoader" "" "" "" "" "OIAL\0" "DataLayerTestFormInputControlDesigner\0"
+CALL:_AddXslORMGenerator "DataLayerTestFormInputControlDesigner" "Data Layer Test Form Input Control Designer" "Generates a custom controls to be used on the generated form for testing and manipulating data using the generated data access layer and database." ".DataLayerTestFormInputControl.Designer.PLiX.xml" "PLiX_Implementation" "DataLayerTestFormInputControlDesigner" "%ORMTransformsDir%\DataLayerTestForm\OIALtoPLiX_InputControl_Designer.xslt" "NUPlixLoader" "1" "" "" "" "OIAL\0"
 
 :: Install and register DIL Transforms
 XCOPY /Y /D /V /Q "%XMLDir%\DILtoSQL\DCILtoDDIL.xslt" "%DILTransformsDir%\"
@@ -112,16 +112,16 @@ XCOPY /Y /D /V /Q "%NetTiersDir%\Entities.xslt" "%ORMTransformsDir%\NetTiers\"
 XCOPY /Y /D /V /Q "%NetTiersDir%\SqlProvider.xslt" "%ORMTransformsDir%\NetTiers\"
 CALL:_AddXslORMGenerator "DCILtoSchemaExplorer" "DCIL to SchemaExplorer" "Transforms DCIL to SchemaExplorer." ".SchemaExplorer.xml" "DCIL" "SchemaExplorer" "%ORMTransformsDir%\NetTiers\DCILToSchemaExplorer.xslt" "" "1"
 CALL:_AddXslORMGenerator "NetTiersSettings" "NetTiers Settings" "Default settings file for NetTiers generators" ".NetTiersSettings.xml" "ORM" "NetTiersSettings" "%ORMTransformsDir%\NetTiers\NetTiersSettings.xslt" "" "1" "1"
-CALL:_AddXslORMGenerator "SchemaExplorertoNetTiersEntities" "SchemaExplorer to NetTiers Entities" "Transforms SchemaExplorer to NetTiers Entity layer." ".NetTiersEntities.xml" "SchemaExplorer" "NetTiersEntities" "%ORMTransformsDir%\NetTiers\Entities.xslt" "NUPlixLoader" "1" "" "" "NetTiersSettings\0"
-CALL:_AddXslORMGenerator "SchemaExplorertoNetTiersDataAccessLayer" "SchemaExplorer to NetTiers DataAccessLayer" "Transforms SchemaExplorer to NetTiers DataAccessLayer." ".NetTiersDataAccessLayer.xml" "SchemaExplorer" "NetTiersDataAccessLayer" "%ORMTransformsDir%\NetTiers\EntityProvider.xslt" "NUPlixLoader" "" "" "" "NetTiersSettings\0" "NetTiersEntities\0"
+CALL:_AddXslORMGenerator "SchemaExplorertoNetTiersEntities" "SchemaExplorer to NetTiers Entities" "Transforms SchemaExplorer to NetTiers Entity layer." ".NetTiersEntities.xml" "SchemaExplorer" "NetTiersEntities" "%ORMTransformsDir%\NetTiers\Entities.xslt" "NUPlixLoader" "1" "" "" "" "NetTiersSettings\0"
+CALL:_AddXslORMGenerator "SchemaExplorertoNetTiersDataAccessLayer" "SchemaExplorer to NetTiers DataAccessLayer" "Transforms SchemaExplorer to NetTiers DataAccessLayer." ".NetTiersDataAccessLayer.xml" "SchemaExplorer" "NetTiersDataAccessLayer" "%ORMTransformsDir%\NetTiers\EntityProvider.xslt" "NUPlixLoader" "" "" "" "" "NetTiersSettings\0" "NetTiersEntities\0"
 
 :: Install and register LinqToSql Transforms
 IF NOT "%TargetVisualStudioVersion%"=="v8.0" (
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoLINQ\LinqToSqlSettings.xslt" "%ORMTransformsDir%\LinqToSql\"
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoLINQ\DCILtoLinqAttributeMapping.xslt" "%ORMTransformsDir%\LinqToSql\"
 XCOPY /Y /D /V /Q "%XMLDir%\DCILtoLINQ\DCILtoDBML.xslt" "%ORMTransformsDir%\LinqtoSql\"
-CALL:_AddXslORMGenerator "DCILtoDBML" "DCIL to DBML" "Transforms DCIL to DBML." ".DBML" "DCIL" "DBML" "%ORMTransformsDir%\LinqToSql\DCILtoDBML.xslt" "MSLinqToSqlGenerator" "" "" "" "LinqToSqlSettings\0"
-CALL:_AddXslORMGenerator "DCILtoLinqAttributeMapping" "DCIL to LinqToSql" "Transforms DCIL to a LinqToSql-targeted object model" ".LinqToSqlAttributeMapping.PLiX.xml" "DCIL" "LinqToSqlAttributeMapping" "%ORMTransformsDir%\LinqToSql\DCILtoLinqAttributeMapping.xslt" "NUPlixLoader" "" "" "" "LinqToSqlSettings\0"
+CALL:_AddXslORMGenerator "DCILtoDBML" "DCIL to DBML" "Transforms DCIL to DBML." ".DBML" "DCIL" "DBML" "%ORMTransformsDir%\LinqToSql\DCILtoDBML.xslt" "MSLinqToSqlGenerator" "" "" "" "" "LinqToSqlSettings\0"
+CALL:_AddXslORMGenerator "DCILtoLinqAttributeMapping" "DCIL to LinqToSql" "Transforms DCIL to a LinqToSql-targeted object model" ".LinqToSqlAttributeMapping.PLiX.xml" "DCIL" "LinqToSqlAttributeMapping" "%ORMTransformsDir%\LinqToSql\DCILtoLinqAttributeMapping.xslt" "NUPlixLoader" "" "" "" "" "LinqToSqlSettings\0"
 CALL:_AddXslORMGenerator "LinqToSqlSettings" "LinqToSql Settings" "Default settings file for LinqToSql generators" ".LinqToSqlSettings.xml" "ORM" "LinqToSqlSettings" "%ORMTransformsDir%\LinqToSql\LinqToSqlSettings.xslt" "" "1" "1"
 )
 
@@ -131,17 +131,17 @@ XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPServices.xslt" "%ORMTransformsDir%
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPProxies.xslt" "%ORMTransformsDir%\PHP\"
 XCOPY /Y /D /V /Q "%XMLDir%\OIALtoPLiX\PHP\PHPEntities.xslt" "%ORMTransformsDir%\PHP\"
 
-CALL:_AddXslORMGenerator "OIALtoPHPEntitiesPLiX" "OIAL to PHP Entities PLiX" "Transforms OIAL to PHP Entities PLiX." ".Entities.php.xml" "OIAL" "PHPEntitiesPLiX" "%ORMTransformsDir%\PHP\PHPEntities.xslt" "" "1" "" "" "" "PHPProxiesPLiX\0PHPServicesPLiX\0PHPDataLayerPLiX\0"
-CALL:_AddXslORMGenerator "PHPEntitiesPLiXtoPHP" "PHP Entities PLiX to PHP" "Transforms PLiX Entities TO PHP." ".Entities.php" "PHPEntitiesPLiX" "PHPEntitiesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "" "" "" "" "PHPProxiesImplementation\0PHPServicesImplementation\0PHPDataLayerImplementation\0"
+CALL:_AddXslORMGenerator "OIALtoPHPEntitiesPLiX" "OIAL to PHP Entities PLiX" "Transforms OIAL to PHP Entities PLiX." ".Entities.php.xml" "OIAL" "PHPEntitiesPLiX" "%ORMTransformsDir%\PHP\PHPEntities.xslt" "" "1" "" "" "" "" "PHPProxiesPLiX\0PHPServicesPLiX\0PHPDataLayerPLiX\0"
+CALL:_AddXslORMGenerator "PHPEntitiesPLiXtoPHP" "PHP Entities PLiX to PHP" "Transforms PLiX Entities TO PHP." ".Entities.php" "PHPEntitiesPLiX" "PHPEntitiesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "" "" "" "1" "" "PHPProxiesImplementation\0PHPServicesImplementation\0PHPDataLayerImplementation\0"
 
 CALL:_AddXslORMGenerator "OIALtoPHPProxiesPLiX" "OIAL to PHP Proxies PLiX" "Transforms OIAL to PHP Proxies PLiX." ".Proxies.php.xml" "OIAL" "PHPProxiesPLiX" "%ORMTransformsDir%\PHP\PHPProxies.xslt" "" "1"
-CALL:_AddXslORMGenerator "PHPProxiesPLiXtoPHP" "PHP Proxies PLiX to PHP" "Transforms PLiX Proxies TO PHP." ".Proxies.php" "PHPProxiesPLiX" "PHPProxiesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1"
+CALL:_AddXslORMGenerator "PHPProxiesPLiXtoPHP" "PHP Proxies PLiX to PHP" "Transforms PLiX Proxies TO PHP." ".Proxies.php" "PHPProxiesPLiX" "PHPProxiesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1" "" "" "1"
 
 CALL:_AddXslORMGenerator "OIALtoPHPServicesPLiX" "OIAL to PHP Services PLiX" "Transforms OIAL to PHP Services PLiX." ".Services.php.xml" "OIAL" "PHPServicesPLiX" "%ORMTransformsDir%\PHP\PHPServices.xslt" "" "1"
-CALL:_AddXslORMGenerator "PHPServicesPLiXtoPHP" "PHP Services PLiX to PHP" "Transforms PLiX Services TO PHP." ".Services.php" "PHPServicesPLiX" "PHPServicesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1"
+CALL:_AddXslORMGenerator "PHPServicesPLiXtoPHP" "PHP Services PLiX to PHP" "Transforms PLiX Services TO PHP." ".Services.php" "PHPServicesPLiX" "PHPServicesImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1" "" "" "1"
 
 CALL:_AddXslORMGenerator "OIALtoPHPDataLayerPLiX" "OIAL to PHP Data Layer PLiX" "Transforms OIAL to PHP Data Layer PLiX." ".DataLayer.php.xml" "OIAL" "PHPDataLayerPLiX" "%ORMTransformsDir%\PHP\PHPDataLayer.xslt" "" "1"
-CALL:_AddXslORMGenerator "PHPDataLayerPLiXtoPHP" "PHP DataLayer PLiX to PHP" "Transforms PLiX Data Layer TO PHP." ".DataLayer.php" "PHPDataLayerPLiX" "PHPDataLayerImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1"
+CALL:_AddXslORMGenerator "PHPDataLayerPLiXtoPHP" "PHP DataLayer PLiX to PHP" "Transforms PLiX Data Layer TO PHP." ".DataLayer.php" "PHPDataLayerPLiX" "PHPDataLayerImplementation" "%PLiXDir%\Formatters\PLiXPHP.xslt" "" "1" "" "" "1"
 GOTO:EOF
 
 :_InstallCustomToolReg
@@ -206,6 +206,8 @@ SHIFT /8
 IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "GeneratesOnce" /t REG_DWORD /d "%~9") 1>NUL
 SHIFT /8
 IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "Compilable" /t REG_DWORD /d "%~9") 1>NUL
+SHIFT /8
+IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "NoByteOrderMark" /t REG_DWORD /d "%~9") 1>NUL
 SHIFT /8
 IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "ReferenceInputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
 SHIFT /8
