@@ -529,9 +529,18 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 
 			// Add assembly resolution callbacks to support extension assemblies
 			// that are not in the global assembly cache.
-			Dictionary<string, Assembly> knownAssemblies = new Dictionary<string, Assembly>(1 + availableExtensions.Count, StringComparer.Ordinal);
+			Dictionary<string, Assembly> knownAssemblies = new Dictionary<string, Assembly>(3 + availableExtensions.Count, StringComparer.Ordinal);
 			Assembly knownAssembly = typeof(ExtensionLoader).Assembly;
 			knownAssemblies[knownAssembly.FullName] = knownAssembly;
+
+			// Converter resolution relies on Type.GetType, which is failing for modeling
+			// SDK library dependencies when they are not loaded from the Visual Studio probing
+			// path. Add these dependencies as well.
+			knownAssembly = typeof(Microsoft.VisualStudio.Modeling.ModelElement).Assembly;
+			knownAssemblies[knownAssembly.FullName] = knownAssembly;
+			knownAssembly = typeof(Microsoft.VisualStudio.Modeling.Diagrams.PresentationElement).Assembly;
+			knownAssemblies[knownAssembly.FullName] = knownAssembly;
+
 			foreach (ExtensionModelBinding extensionType in availableExtensions.Values)
 			{
 				knownAssembly = extensionType.Type.Assembly;
