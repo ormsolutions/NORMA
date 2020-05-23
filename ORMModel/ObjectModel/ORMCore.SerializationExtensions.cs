@@ -8232,11 +8232,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedElementInfo(null, "ImpliedByObjectType", null, CustomSerializedElementWriteStyle.Element, null);
 			}
+			if (roleId == MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "InherentForObjectType", null, CustomSerializedElementWriteStyle.Element, null);
+			}
 			if (roleId == ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, "ExclusiveOrExclusionConstraint", null, CustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId || roleId == MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId || roleId == MandatoryConstraintHasExclusionContradictsMandatoryError.ExclusionContradictsMandatoryErrorDomainRoleId || roleId == MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.NotWellModeledSubsetAndMandatoryErrorDomainRoleId)
+			if (roleId == MandatoryConstraintHasPopulationMandatoryError.PopulationMandatoryErrorDomainRoleId || roleId == MandatoryConstraintHasExclusionContradictsMandatoryError.ExclusionContradictsMandatoryErrorDomainRoleId || roleId == MandatoryConstraintHasNotWellModeledSubsetAndMandatoryError.NotWellModeledSubsetAndMandatoryErrorDomainRoleId)
 			{
 				return CustomSerializedElementInfo.NotWritten;
 			}
@@ -8335,6 +8339,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
 				match.InitializeRoles(ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId);
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ImpliedByObjectType", match);
+				match.InitializeRoles(MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|InherentForObjectType", match);
 				match.InitializeRoles(ExclusiveOrConstraintCoupler.ExclusionConstraintDomainRoleId);
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|ExclusiveOrExclusionConstraint", match);
 				MandatoryConstraint.myChildElementMappings = childElementMappings;

@@ -1188,8 +1188,7 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Link Name="ImpliedByObjectType" RelationshipName="ObjectTypeImpliesMandatoryConstraint" RoleName="ObjectType"/>
-		<!-- UNDONE: Not writing an inherent mandatory is temporary to avoid a core file format change for the time being. It will be recreated on load. -->
-		<se:Link Name="InherentForObjectType" RelationshipName="MandatoryConstraintIsInherentForObjectType" RoleName="ObjectType" WriteStyle="NotWritten"/>
+		<se:Link Name="InherentForObjectType" RelationshipName="MandatoryConstraintIsInherentForObjectType" RoleName="ObjectType"/>
 		<se:Link RelationshipName="ExclusiveOrConstraintCoupler" RoleName="ExclusionConstraint" Name="ExclusiveOrExclusionConstraint"/>
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="MandatoryConstraintHasExclusionContradictsMandatoryError" RoleName="ExclusionContradictsMandatoryError" WriteStyle="NotWritten"/>
