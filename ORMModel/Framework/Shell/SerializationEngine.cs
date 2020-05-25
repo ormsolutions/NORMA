@@ -4478,11 +4478,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				else
 				{
 					Debug.Fail(string.Format(
-						"Could not deserialize property.\r\nProperty Name: {0}\r\nSerialized Value: {1}\r\nProperty Type: {2}\r\nConverter Type: {3})",
+						"Could not deserialize property.\r\nProperty Name: {0}\r\nSerialized Value: {1}\r\nProperty Type: {2} (in {3})\r\nConverter Type: {4} (in {5})",
 						domainPropertyInfo.Name,
 						stringValue,
 						domainPropertyInfo.PropertyType.AssemblyQualifiedName,
-						converter.GetType().AssemblyQualifiedName));
+						domainPropertyInfo.PropertyType.Assembly.Location,
+						converter.GetType().AssemblyQualifiedName,
+						converter.GetType().Assembly.Location));
 				}
 			}
 			if (objectValue != null)
