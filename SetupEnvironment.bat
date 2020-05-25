@@ -10,7 +10,7 @@ IF "%ProgramFiles(X86)%"=="" (
 	CALL:SET6432
 )
 
-FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0\NORMAGitVer.bat" "%~dp0."`) DO SET NORMAGitVer=%%i
+FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0\NORMAGitVer.bat" "%~dps0."`) DO SET NORMAGitVer=%%i
 
 :: TargetVisualStudioVersion settings:
 ::   v8.0 = Visual Studio 2005 (Code Name "Whidbey")
