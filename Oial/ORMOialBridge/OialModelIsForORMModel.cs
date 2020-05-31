@@ -374,9 +374,34 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					bool firstRoleIsMandatory = null != (mandatory = firstRole.SingleRoleAlethicMandatoryConstraint);
 					bool firstRoleIsImplicitlyMandatory = firstRoleIsMandatory && mandatory.IsImplied;
 					bool firstRoleIsExplicitlyMandatory = firstRoleIsMandatory && !firstRoleIsImplicitlyMandatory;
+					bool firstRoleIsInherentlyMandatory = firstRoleIsExplicitlyMandatory && null != mandatory.InherentForObjectType;
 					bool secondRoleIsMandatory = null != (mandatory = secondRole.SingleRoleAlethicMandatoryConstraint);
 					bool secondRoleIsImplicitlyMandatory = secondRoleIsMandatory && mandatory.IsImplied;
 					bool secondRoleIsExplicitlyMandatory = secondRoleIsMandatory && !secondRoleIsImplicitlyMandatory;
+					bool secondRoleIsInherentlyMandatory = secondRoleIsExplicitlyMandatory && null != mandatory.InherentForObjectType;
+
+					// Classify inherent mandatory constraints as implied depending on the opposite mandatory state.
+					if (firstRoleIsInherentlyMandatory)
+					{
+						if (secondRoleIsInherentlyMandatory)
+						{
+							// Downgrade both constraints to implied mandatory
+							firstRoleIsImplicitlyMandatory = secondRoleIsImplicitlyMandatory = true;
+							firstRoleIsExplicitlyMandatory = secondRoleIsExplicitlyMandatory = false;
+						}
+						else if (secondRoleIsExplicitlyMandatory)
+						{
+							// Prioritize the explicit mandatory on the towards role by downgrading the from role to implied
+							firstRoleIsImplicitlyMandatory = true;
+							firstRoleIsExplicitlyMandatory = false;
+						}
+					}
+					else if (secondRoleIsInherentlyMandatory && firstRoleIsExplicitlyMandatory)
+					{
+						// Prioritize the explicit mandatory on the from role by downgrading the towards role to implied
+						secondRoleIsImplicitlyMandatory = true;
+						secondRoleIsExplicitlyMandatory = false;
+					}
 
 					// We don't need to worry about shallow mappings towards preferred identifiers on many-to-ones, since the preferred
 					// identifier pattern ensures that these cases will always map towards the object type being identified anyway.
@@ -488,7 +513,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 								if (allowMappingTowardsOptionalRole)
 #endif // FALSE
-								if (null == secondRolePlayer.ImpliedMandatoryConstraint ||
+								if ((null == secondRolePlayer.ImpliedMandatoryConstraint && null == secondRolePlayer.InherentMandatoryConstraint) ||
 									((secondRoleIsUniqueAndPreferred && !secondRolePlayerIsValueType) || factType.ImpliedByObjectification != null))
 								{
 									// If secondRole is not preferred...
@@ -543,7 +568,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 								if (allowMappingTowardsOptionalRole)
 #endif // FALSE
-								if (null == firstRolePlayer.ImpliedMandatoryConstraint ||
+								if ((null == firstRolePlayer.ImpliedMandatoryConstraint && null == firstRolePlayer.InherentMandatoryConstraint) ||
 									((firstRoleIsUniqueAndPreferred && !firstRolePlayerIsValueType) || factType.ImpliedByObjectification != null))
 								{
 									// If firstRole is not preferred...

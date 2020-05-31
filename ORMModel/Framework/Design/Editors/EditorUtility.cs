@@ -458,12 +458,35 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			public DisplayModifiedPropertyDescriptor(PropertyDescriptor modifyDescriptor, string descriptorName, string displayName, string description, string category)
 				: base(descriptorName ?? modifyDescriptor.Name, EditorUtility.GetAttributeArray(modifyDescriptor.Attributes))
 			{
-				myInner = modifyDescriptor;
-				myDisplayName = displayName;
-				myDescription = description;
-				myCategory = category;
+				DisplayModifiedPropertyDescriptor wrappedModifier = modifyDescriptor as DisplayModifiedPropertyDescriptor;
+				if (wrappedModifier != null)
+				{
+					myInner = wrappedModifier.myInner;
+					myDisplayName = displayName != null ? displayName : wrappedModifier.myDisplayName;
+					myDescription = description != null ? description : wrappedModifier.myDescription;
+					myCategory = category != null ? category : wrappedModifier.myCategory;
+				}
+				else
+				{
+					myInner = modifyDescriptor;
+					myDisplayName = displayName;
+					myDescription = description;
+					myCategory = category;
+				}
 			}
 			#endregion // Constructor
+			#region Accessor Properties
+			/// <summary>
+			/// Get the inner descriptor
+			/// </summary>
+			public PropertyDescriptor WrappedDescriptor
+			{
+				get
+				{
+					return myInner;
+				}
+			}
+			#endregion // Acccessor Properties
 			#region Display overrides
 			public override string Category
 			{
@@ -872,20 +895,33 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 		#region PropertyDescriptorAs
 		/// <summary>
 		/// See if a property descriptor is of a given type, including resolution of
-		/// any wrapped descriptors returned by <see cref="RedirectPropertyDescriptor"/>.
+		/// any wrapped descriptors returned by <see cref="RedirectPropertyDescriptor"/>
+		/// or by <see cref="ModifyPropertyDescriptorDisplay(PropertyDescriptor, string, string, string, string)"/>
+		/// or by <see cref="ModifyPropertyDescriptorDisplay(PropertyDescriptorCollection, string, string, string, string, string)"/>.
 		/// </summary>
 		/// <typeparam name="DescriptorType">A type assignable to <see cref="PropertyDescriptor"/></typeparam>
-		/// <param name="descriptor">The (possibly redirection) property descriptor.</param>
+		/// <param name="descriptor">The (possibly redirected) property descriptor.</param>
 		/// <returns>An instance of the given type, or <see langword="null"/></returns>
 		public static DescriptorType PropertyDescriptorAs<DescriptorType>(PropertyDescriptor descriptor)
 			where DescriptorType : PropertyDescriptor
 		{
-			DescriptorType retVal;
+			DescriptorType retVal = null;
 			RedirectedPropertyDescriptor redirectedDescriptor;
-			if (null == (retVal = descriptor as DescriptorType) &&
-				null != (redirectedDescriptor = descriptor as RedirectedPropertyDescriptor))
+			DisplayModifiedPropertyDescriptor displayDescriptor;
+			while (descriptor != null && null == (retVal = descriptor as DescriptorType))
 			{
-				retVal = redirectedDescriptor.WrappedDescriptor as DescriptorType;
+				if (null != (redirectedDescriptor = descriptor as RedirectedPropertyDescriptor))
+				{
+					descriptor = redirectedDescriptor.WrappedDescriptor;
+				}
+				else if (null != (displayDescriptor = descriptor as DisplayModifiedPropertyDescriptor))
+				{
+					descriptor = displayDescriptor.WrappedDescriptor;
+				}
+				else
+				{
+					descriptor = null;
+				}
 			}
 			return retVal;
 		}

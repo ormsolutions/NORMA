@@ -74,6 +74,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				this._compilable = Convert.ToBoolean((int)generatorKey.GetValue("Compilable", 0));
 				this._generatesSupportFile = Convert.ToBoolean((int)generatorKey.GetValue("GeneratesSupportFile", 0));
 				this._generatesOnce = Convert.ToBoolean((int)generatorKey.GetValue("GeneratesOnce", 0));
+				this._noByteOrderMark = Convert.ToBoolean((int)generatorKey.GetValue("NoByteOrderMark", 0));
 				this._customTool = generatorKey.GetValue("CustomTool", null) as string;
 
 				Dictionary<string, IEnumerable<string>> extensions = null;
@@ -202,6 +203,10 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				this._transform.Load(this._transformCanonicalUri, XsltSettings.TrustedXslt, XmlResolver);
 				this._transformLoadedTime = DateTime.UtcNow;
 				XmlWriterSettings outputSettings = this._xmlWriterSettings = this._transform.OutputSettings.Clone();
+				if (this._noByteOrderMark)
+				{
+					outputSettings.Encoding = new System.Text.UTF8Encoding(false);
+				}
 				outputSettings.CloseOutput = false;
 				outputSettings.IndentChars = "\t";
 			}
@@ -231,6 +236,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			private readonly string _transformLocalPath;
 			private readonly XslCompiledTransform _transform;
 			private readonly string _customTool;
+			private readonly bool _noByteOrderMark;
 			private XmlWriterSettings _xmlWriterSettings;
 			private DateTime _transformLoadedTime;
 

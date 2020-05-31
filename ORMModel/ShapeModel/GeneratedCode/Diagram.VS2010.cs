@@ -491,6 +491,99 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		
 		#endregion
+		#region UpdateCounter domain property code
+		
+		/// <summary>
+		/// UpdateCounter domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UpdateCounterDomainPropertyId = new global::System.Guid(0xd3fbc03e, 0x0a25, 0x48e6, 0x8d, 0x93, 0x74, 0x7e, 0x01, 0xc5, 0x4e, 0x06);
+		
+		/// <summary>
+		/// Gets or sets the value of UpdateCounter domain property.
+		/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.Update
+		/// Counter
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/UpdateCounter.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/UpdateCounter.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[global::System.ComponentModel.ReadOnly(true)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("d3fbc03e-0a25-48e6-8d93-747e01c54e06")]
+		protected global::System.Int64 UpdateCounter
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return UpdateCounterPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UpdateCounterPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMDiagram.UpdateCounter domain property.
+		/// </summary>
+		internal sealed partial class UpdateCounterPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMDiagramBase, global::System.Int64>
+		{
+			private UpdateCounterPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMDiagram.UpdateCounter domain property value handler.
+			/// </summary>
+			public static readonly UpdateCounterPropertyHandler Instance = new UpdateCounterPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMDiagram.UpdateCounter domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UpdateCounterDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Int64 GetValue(ORMDiagramBase element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for UpdateCounter because its Kind is
+				// set to CustomStorage. Please provide the GetUpdateCounterValue()
+				// method on the domain class.
+				return element.GetUpdateCounterValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMDiagramBase element, global::System.Int64 newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Int64 oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for UpdateCounter because its Kind is
+					// set to CustomStorage. Please provide the SetUpdateCounterValue()
+					// method on the domain class.
+					element.SetUpdateCounterValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 	}
 	/// <summary>
 	/// DomainClass ORMDiagram

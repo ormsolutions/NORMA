@@ -479,6 +479,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <returns><see langword="true"/> if an equivalence relationship was added for this element.</returns>
 		bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker);
 	}
+	#endregion // IElementEquivalence interface
+	#region IEquivalentElementTracker interface
 	/// <summary>
 	/// Track equivalent elements
 	/// </summary>
@@ -513,7 +515,50 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// </summary>
 		bool IsFailedEquivalentElement(ModelElement nativeElement);
 	}
-	#endregion // IElementEquivalence interface
+	#endregion // IEquivalentElementTracker interface
+	#region ICopyClosureFilterProvider interface
+	/// <summary>
+	/// Implement on a domain model to support overriding native copy closure
+	/// behavior. A closure filter provider is passed the root elements of a
+	/// copy closure and should return a <see cref="ICopyClosureFilter"/> for
+	/// the root elements. Returned filters are applied to all of the selected
+	/// roots.
+	/// </summary>
+	/// <remarks>Getting copy closure correct is difficult. The recommendation is that
+	/// this should be used to remove items that would normally be filtered, not try
+	/// to add new items to a copy closure. The default copy closures will correctly
+	/// integrate as much of a closure tree as possible, so adding new elements is
+	/// not a normal use case.</remarks>
+	public interface ICopyClosureFilterProvider
+	{
+		/// <summary>
+		/// Retrieve zero or more closure filters to apply to root elements. This modifies the
+		/// behavior of <see cref="ICopyClosureManager.GetCopyClosure(IEnumerable{ModelElement})"/>
+		/// </summary>
+		/// <param name="rootElements">The elements to base the returned filters on.</param>
+		/// <returns>A list of closure filters to apply. The returned order is significant, with
+		/// normal domain model ordering (based on dependencies) used if multiple models return filters.</returns>
+		IEnumerable<ICopyClosureFilter> GetCopyClosureFilters(IEnumerable<ModelElement> rootElements);
+	}
+	#endregion // ICopyClosureFilterProvider interface
+	#region ICopyClosureFilterProvider interface
+	/// <summary>
+	/// Return an alternate evaluator callback for an entry role.
+	/// </summary>
+	public interface ICopyClosureFilter
+	{
+		/// <summary>
+		/// Override a default <see cref="EvaluateCopyClosure"/>
+		/// </summary>
+		/// <param name="entryRole">The entry role for the copy closure.</param>
+		/// <param name="entryRolePlayerType">The type of the role player on the entry role.</param>
+		/// <param name="exitRolePlayerType">The type of the role player on the exit role, if known.</param>
+		/// <param name="defaultEvaluator">The evaluator registered with the normal copy closure behavior.</param>
+		/// <returns>An alternate evaluator, or the default. To remove items, the evaluator should return
+		/// <see cref="CopyClosureBehavior.Ignored"/></returns>
+		EvaluateCopyClosure FilterCopyClosureEvaluator(DomainRoleInfo entryRole, Type entryRolePlayerType, Type exitRolePlayerType, EvaluateCopyClosure defaultEvaluator);
+	}
+	#endregion // ICopyClosureFilterProvider interface
 	#region CopyClosureIntegrationPhase enum
 	/// <summary>
 	/// The current stage of copy closure integration.
@@ -1678,9 +1723,13 @@ namespace ORMSolutions.ORMArchitect.Framework
 						if (copy.CopyType == CopiedElementType.Existing)
 						{
 							ModelElement copyElement = copy.Element;
-							if (!copyElement.IsDeleted)
+							IClosureElement closureElement;
+							// Automatic dependency expansion across embedded elements can resolve elements
+							// that are not in the copy closure, which can override embeddings. This is harmless
+							// as long as we don't expect all resolved elements to be in the copy closure.
+							if (!copyElement.IsDeleted && copyClosure.TryGetValue(pair.Key, out closureElement))
 							{
-								PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(copyClosure[pair.Key].Element, copyElement);
+								PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(closureElement.Element, copyElement);
 								if (propertyAssignments != null)
 								{
 									// Update the element with new property assignments
@@ -2304,6 +2353,33 @@ namespace ORMSolutions.ORMArchitect.Framework
 			#endregion // IClosureElementLink Implementation
 		}
 		#endregion // ClosureElementLink class
+		#region ClosureFilterConsolidator class
+		/// <summary>
+		/// Small helper class to represent a list of <see cref="ICopyClosureFilter"/> implementations
+		/// as a single <see cref="ICopyClosureFilter"/>.
+		/// </summary>
+		private sealed class ClosureFilterConsolidator : ICopyClosureFilter
+		{
+			private readonly IList<ICopyClosureFilter> myFilters;
+			public ClosureFilterConsolidator(IList<ICopyClosureFilter> filters)
+			{
+				myFilters = filters;
+			}
+			EvaluateCopyClosure ICopyClosureFilter.FilterCopyClosureEvaluator(DomainRoleInfo entryRole, Type entryRolePlayerType, Type exitRolePlayerType, EvaluateCopyClosure defaultEvaluator)
+			{
+				EvaluateCopyClosure deferToEvaluator = defaultEvaluator;
+				for (int filterCount = myFilters.Count, i = 0; i < filterCount; ++i)
+				{
+					EvaluateCopyClosure evaluator = myFilters[i].FilterCopyClosureEvaluator(entryRole, entryRolePlayerType, exitRolePlayerType, deferToEvaluator);
+					if (evaluator != null)
+					{
+						deferToEvaluator = evaluator;
+					}
+				}
+				return deferToEvaluator == defaultEvaluator ? null : deferToEvaluator;
+			}
+		}
+		#endregion // ClosureFilterConsolidator class
 		private Dictionary<Guid, IClosureElement> GenerateCopyClosure(IEnumerable<ModelElement> rootElements)
 		{
 			// To avoid having to strengthen relationships from Match to Duplicate, we
@@ -2312,13 +2388,29 @@ namespace ORMSolutions.ORMArchitect.Framework
 			EnsureClosureDirectives();
 			Dictionary<Guid, IClosureElement> retVal = new Dictionary<Guid, IClosureElement>();
 			Dictionary<ModelElement, object> processedDuplicateNonRootParts = new Dictionary<ModelElement, object>();
+
+			// Add filters as needed.
+			List<ICopyClosureFilter> filters = null;
+			foreach (ICopyClosureFilterProvider filterProvider in ((IFrameworkServices)myStore).GetTypedDomainModelProviders<ICopyClosureFilterProvider>())
+			{
+				IEnumerable<ICopyClosureFilter> providerFilters = filterProvider.GetCopyClosureFilters(rootElements);
+				if (providerFilters != null)
+				{
+					foreach (ICopyClosureFilter filter in providerFilters)
+					{
+						(filters ?? (filters = new List<ICopyClosureFilter>())).Add(filter);
+					}
+				}
+			}
+			ICopyClosureFilter closureFilter = filters != null ? new ClosureFilterConsolidator(filters) : null;
+
 			foreach (ModelElement rootElement in rootElements)
 			{
-				GenerateElementClosure(rootElement, retVal, null, CopyMergeAction.Duplicate, true, processedDuplicateNonRootParts);
+				GenerateElementClosure(rootElement, retVal, null, CopyMergeAction.Duplicate, true, processedDuplicateNonRootParts, closureFilter);
 			}
 			foreach (ModelElement rootElement in rootElements)
 			{
-				GenerateElementClosure(rootElement, retVal, null, CopyMergeAction.Duplicate, false, processedDuplicateNonRootParts);
+				GenerateElementClosure(rootElement, retVal, null, CopyMergeAction.Duplicate, false, processedDuplicateNonRootParts, closureFilter);
 			}
 			return retVal;
 		}
@@ -2334,7 +2426,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// If this is false then continue down external path parts.</param>
 		/// <param name="processedDuplicateNonRootParts">A helper dictionary to avoid recurse for non-root
 		/// part tracking.</param>
-		private void GenerateElementClosure(ModelElement element, Dictionary<Guid, IClosureElement> closureDictionary, IClosureElement createWith, CopyMergeAction action, bool rootParts, Dictionary<ModelElement, object> processedDuplicateNonRootParts)
+		/// <param name="closureFilter">An external filter used to change closure evaluators.</param>
+		private void GenerateElementClosure(ModelElement element, Dictionary<Guid, IClosureElement> closureDictionary, IClosureElement createWith, CopyMergeAction action, bool rootParts, Dictionary<ModelElement, object> processedDuplicateNonRootParts, ICopyClosureFilter closureFilter)
 		{
 			Guid elementId = element.Id;
 			IClosureElement existingClosure;
@@ -2345,7 +2438,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 					if (!rootParts && !processedDuplicateNonRootParts.ContainsKey(element))
 					{
 						processedDuplicateNonRootParts.Add(element, null);
-						ProcessAttachedLinks(element, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts);
+						ProcessAttachedLinks(element, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts, closureFilter);
 					}
 				}
 				else if (createWith != null)
@@ -2361,17 +2454,17 @@ namespace ORMSolutions.ORMArchitect.Framework
 					closureDictionary.Add(elementId, new ClosureElementLink(link));
 					foreach (ModelElement linkedElement in link.LinkedElements)
 					{
-						GenerateElementClosure(linkedElement, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts);
+						GenerateElementClosure(linkedElement, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts, closureFilter);
 					}
 				}
 				else
 				{
 					closureDictionary.Add(elementId, new ClosureElement(element, action));
 				}
-				ProcessAttachedLinks(element, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts);
+				ProcessAttachedLinks(element, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts, closureFilter);
 			}
 		}
-		private void ProcessAttachedLinks(ModelElement element, Dictionary<Guid, IClosureElement> closureDictionary, IClosureElement createWith, CopyMergeAction action, bool rootParts, Dictionary<ModelElement, object> processedDuplicateNonRootParts)
+		private void ProcessAttachedLinks(ModelElement element, Dictionary<Guid, IClosureElement> closureDictionary, IClosureElement createWith, CopyMergeAction action, bool rootParts, Dictionary<ModelElement, object> processedDuplicateNonRootParts, ICopyClosureFilter closureFilter)
 		{
 			Dictionary<BoundEntryRole, EvaluateCopyClosure> normalBehaviors = myNormalBehaviors;
 			Dictionary<BoundEntryRole, EvaluateCopyClosure> primaryBehaviors = myPrimaryBehaviors;
@@ -2393,7 +2486,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 							continue;
 						}
 					}
-					bool needExitRoleType = 0 != (availableBehaviors & AvailableClosureBehaviors.ExitRoleRestricted | AvailableClosureBehaviors.EntryAndExitRoleRestricted | AvailableClosureBehaviors.PrimaryExitRoleRestricted | AvailableClosureBehaviors.PrimaryEntryAndExitRoleRestricted);
+					bool needExitRoleType = 0 != (availableBehaviors & (AvailableClosureBehaviors.ExitRoleRestricted | AvailableClosureBehaviors.EntryAndExitRoleRestricted | AvailableClosureBehaviors.PrimaryExitRoleRestricted | AvailableClosureBehaviors.PrimaryEntryAndExitRoleRestricted));
 					DomainRoleInfo oppositeRoleInfo = null;
 
 					foreach (ElementLink elementLink in roleInfo.GetElementLinks(element))
@@ -2415,6 +2508,12 @@ namespace ORMSolutions.ORMArchitect.Framework
 						{
 							continue;
 						}
+
+						if (closureFilter != null)
+						{
+							evaluator = closureFilter.FilterCopyClosureEvaluator(roleInfo, nearType, farType, evaluator) ?? evaluator;
+						}
+
 						Guid linkId;
 						switch (evaluator(elementLink))
 						{
@@ -2433,8 +2532,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 									if (!closureDictionary.ContainsKey(linkId = elementLink.Id))
 									{
 										closureDictionary.Add(linkId, new ClosureElementLink(elementLink));
-										GenerateElementClosure(oppositeRolePlayer ?? (oppositeRoleInfo ?? (oppositeRoleInfo = roleInfo.OppositeDomainRole)).GetRolePlayer(elementLink), closureDictionary, closureDictionary[element.Id], CopyMergeAction.Match, false, processedDuplicateNonRootParts);
-										ProcessAttachedLinks(elementLink, closureDictionary, createWith, CopyMergeAction.Match, false, processedDuplicateNonRootParts);
+										GenerateElementClosure(oppositeRolePlayer ?? (oppositeRoleInfo ?? (oppositeRoleInfo = roleInfo.OppositeDomainRole)).GetRolePlayer(elementLink), closureDictionary, closureDictionary[element.Id], CopyMergeAction.Match, false, processedDuplicateNonRootParts, closureFilter);
+										ProcessAttachedLinks(elementLink, closureDictionary, createWith, CopyMergeAction.Match, false, processedDuplicateNonRootParts, closureFilter);
 									}
 								}
 								break;
@@ -2448,16 +2547,16 @@ namespace ORMSolutions.ORMArchitect.Framework
 									if (!closureDictionary.ContainsKey(linkId = elementLink.Id))
 									{
 										closureDictionary.Add(linkId, new ClosureElementLink(elementLink));
-										GenerateElementClosure(oppositeRolePlayer ?? (oppositeRoleInfo ?? (oppositeRoleInfo = roleInfo.OppositeDomainRole)).GetRolePlayer(elementLink), closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts);
-										ProcessAttachedLinks(elementLink, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts);
+										GenerateElementClosure(oppositeRolePlayer ?? (oppositeRoleInfo ?? (oppositeRoleInfo = roleInfo.OppositeDomainRole)).GetRolePlayer(elementLink), closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts, closureFilter);
+										ProcessAttachedLinks(elementLink, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts, closureFilter);
 									}
 									else if (!rootParts)
 									{
-										GenerateElementClosure(oppositeRolePlayer ?? (oppositeRoleInfo ?? (oppositeRoleInfo = roleInfo.OppositeDomainRole)).GetRolePlayer(elementLink), closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts);
+										GenerateElementClosure(oppositeRolePlayer ?? (oppositeRoleInfo ?? (oppositeRoleInfo = roleInfo.OppositeDomainRole)).GetRolePlayer(elementLink), closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts, closureFilter);
 										if (!processedDuplicateNonRootParts.ContainsKey(elementLink))
 										{
 											processedDuplicateNonRootParts.Add(elementLink, null);
-											ProcessAttachedLinks(elementLink, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts);
+											ProcessAttachedLinks(elementLink, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts, closureFilter);
 										}
 
 									}
@@ -2466,8 +2565,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 								{
 									// UNDONE: COPYMERGE Is the element always added in the previous pass? If so, remove the assert
 									Debug.Assert(closureDictionary.ContainsKey(elementLink.Id));
-									GenerateElementClosure(oppositeRolePlayer ?? (oppositeRoleInfo ?? (oppositeRoleInfo = roleInfo.OppositeDomainRole)).GetRolePlayer(elementLink), closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts);
-									ProcessAttachedLinks(elementLink, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts);
+									GenerateElementClosure(oppositeRolePlayer ?? (oppositeRoleInfo ?? (oppositeRoleInfo = roleInfo.OppositeDomainRole)).GetRolePlayer(elementLink), closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts, closureFilter);
+									ProcessAttachedLinks(elementLink, closureDictionary, createWith, action, rootParts, processedDuplicateNonRootParts, closureFilter);
 								}
 								break;
 						}
@@ -2487,7 +2586,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 						element,
 						delegate(ModelElement impliedElement)
 						{
-							GenerateElementClosure(impliedElement, closureDictionary, closureDictionary[element.Id], CopyMergeAction.Match, false, processedDuplicateNonRootParts);
+							GenerateElementClosure(impliedElement, closureDictionary, closureDictionary[element.Id], CopyMergeAction.Match, false, processedDuplicateNonRootParts, closureFilter);
 						});
 				}
 			}

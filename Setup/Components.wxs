@@ -725,6 +725,7 @@
 										<RegistryValue Type="string" Name="SourceInputFormat" Value="PHPEntitiesPLiX"/>
 										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPEntitiesImplementation"/>
 										<RegistryValue Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
+										<RegistryValue Type="integer" Name="NoByteOrderMark" Value="1"/>
 										<RegistryValue Type="multiString" Name="CompanionOutputFormats">
 											<MultiStringValue>PHPProxiesImplementation</MultiStringValue>
 											<MultiStringValue>PHPServicesImplementation</MultiStringValue>
@@ -755,6 +756,7 @@
 										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPProxiesImplementation"/>
 										<RegistryValue Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
 										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+										<RegistryValue Type="integer" Name="NoByteOrderMark" Value="1"/>
 									</RegistryKey>
 
 									<File Id="PHP_PHPServices.xslt" ShortName="PHPServ.xsl" Name="PHPServices.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPServices.xslt"
@@ -780,6 +782,7 @@
 										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPServicesImplementation"/>
 										<RegistryValue Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
 										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+										<RegistryValue Type="integer" Name="NoByteOrderMark" Value="1"/>
 									</RegistryKey>
 
 									<File Id="PHP_PHPDataLayer.xslt" ShortName="PHPDL.xsl" Name="PHPDataLayer.xslt" Source="..\XML\OIALtoPLiX\PHP\PHPDataLayer.xslt"
@@ -805,6 +808,7 @@
 										<RegistryValue Type="string" Name="ProvidesOutputFormat" Value="PHPDataLayerImplementation"/>
 										<RegistryValue Type="string" Name="TransformUri" Value="[NEUMONTCOMMONFILESDIR]\PLiX\Formatters\PLiXPHP.xslt"/>
 										<RegistryValue Type="integer" Name="GeneratesSupportFile" Value="1"/>
+										<RegistryValue Type="integer" Name="NoByteOrderMark" Value="1"/>
 									</RegistryKey>
 
 								</Component>

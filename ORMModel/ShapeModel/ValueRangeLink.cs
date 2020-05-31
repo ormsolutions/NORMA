@@ -87,7 +87,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				null != (link = ModelElement as RoleHasValueConstraint) &&
 				null != (constraint = link.ValueConstraint) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueRangeLink, RoleValueConstraint>>()))
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueRangeLink, RoleValueConstraint>>(true)))
 			{
 				for (int i = 0; i < providers.Length; ++i)
 				{

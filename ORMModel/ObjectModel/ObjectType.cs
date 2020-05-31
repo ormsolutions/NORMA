@@ -2558,6 +2558,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			RoleProjectedDerivationRule derivationRule;
 			FactTypeDerivationRule factTypeDerivationRule;
 			FactType factType;
+			MandatoryConstraint inherentConstraintCandidate = null;
+			bool seenAdditionalInherentMandatoryConstraintCandidate = false;
 			for (int i = 0; i < playedRoleCount; ++i)
 			{
 				Role playedRole = playedRoles[i];
@@ -2590,7 +2592,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						else if (!canBeIndependent)
 						{
-							// We're only staying in the loop to look for an implied mandatory
+							// We're only staying in the loop to look for implied mandatory roles
+							// and inherent constraints.
+							RoleBase oppositeRole;
+							if (preferredIdentifierRoles == null ||
+								null == (oppositeRole = playedRole.OppositeRole) ||
+								!preferredIdentifierRoles.Contains(oppositeRole.Role))
+							{
+								if (!checkedCurrentRoleDerivation)
+								{
+									checkedCurrentRoleDerivation = true;
+									currentRoleOnFullyDerivedFactType = null != (factType = playedRole.FactType) &&
+										null != (derivationRule = factType.DerivationRule) &&
+										(null == (factTypeDerivationRule = derivationRule as FactTypeDerivationRule) ||
+										(factTypeDerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+										!factTypeDerivationRule.ExternalDerivation));
+								}
+								if (!currentRoleOnFullyDerivedFactType)
+								{
+									if (inherentConstraintCandidate == null)
+									{
+										inherentConstraintCandidate = mandatoryConstraint;
+									}
+									else if (inherentConstraintCandidate != mandatoryConstraint)
+									{
+										seenAdditionalInherentMandatoryConstraintCandidate = true;
+									}
+								}
+							}
 							continue;
 						}
 						currentRoleIsMandatory = true;
@@ -2635,17 +2664,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								currentRoleIsWithPreferredIdentifier = true;
 							}
 						}
-						if (turnedOffCanBeIndependent && impliedMandatory == null)
+						if (turnedOffCanBeIndependent)
 						{
-							// Look farther down the constraints on this role for an implied mandatory
-							for (int k = j + 1; k < constraintCount; ++k)
+							if (impliedMandatory == null)
 							{
-								MandatoryConstraint testImplied = constraints[k] as MandatoryConstraint;
-								if (testImplied != null && testImplied.IsImplied)
+								// Look farther down the constraints on this role for an implied mandatory
+								for (int k = j + 1; k < constraintCount; ++k)
 								{
-									currentRoleIsAlreadyImplied = true;
-									break;
+									MandatoryConstraint testImplied = constraints[k] as MandatoryConstraint;
+									if (testImplied != null && testImplied.IsImplied)
+									{
+										currentRoleIsAlreadyImplied = true;
+										break;
+									}
 								}
+							}
+
+							// Track this non-preferred constraint as a possible inherent constraint,
+							// which is a non-implicit mandatory constraint with exactly the same
+							// roles as an implicit constraint that would be automatically created if
+							// the constraint were deleted.
+							if (inherentConstraintCandidate == null)
+							{
+								inherentConstraintCandidate = mandatoryConstraint;
+							}
+							else if (inherentConstraintCandidate != mandatoryConstraint)
+							{
+								seenAdditionalInherentMandatoryConstraintCandidate = true;
 							}
 						}
 					}
@@ -2682,7 +2727,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						seenNonMandatoryRole = true;
 					}
 				}
-				if (impliedMandatory != null &&	canBeIndependent)
+				if (impliedMandatory != null && canBeIndependent)
 				{
 					if (!checkedCurrentRoleDerivation)
 					{
@@ -2775,14 +2820,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else if (impliedMandatory != null)
 				{
 					impliedMandatory.Delete();
+					impliedMandatory = null;
 				}
 			}
 			else if (impliedMandatory != null)
 			{
 				impliedMandatory.Delete();
+				impliedMandatory = null;
 			}
 
-			// Finally, turn off IsIndependent if it is no longer needed
+			// Turn off IsIndependent if it is no longer needed
 			if (!canBeIndependent && currentIsIndependent)
 			{
 				if (notifyAdded == null)
@@ -2806,6 +2853,65 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					IsIndependent = false;
 				}
 			}
+
+			// If there is no implied mandatory constraint, check for an inherent mandatory constraint
+			if (impliedMandatory == null &&
+				!seenNonMandatoryRole &&
+				inherentConstraintCandidate != null &&
+				!seenAdditionalInherentMandatoryConstraintCandidate)
+			{
+				// An inherent mandatory constraint must be the only non-identifying mandatory
+				// constraint on role played by the object type, cover all of the non-identifying
+				// and non-fully-derived played roles, and cover no roles not played directly by
+				// this type.
+				int matchedRoleCount = 0;
+				LinkedElementCollection<Role> inherentRoles = inherentConstraintCandidate.RoleCollection;
+				for (int i = 0; i < playedRoleCount; ++i)
+				{
+					bool expected = true;
+					RoleBase playedRole = playedRoles[i];
+					if (preferredIdentifierRoles != null)
+					{
+						RoleBase oppositeRole = playedRole.OppositeRole;
+						if (oppositeRole != null && preferredIdentifierRoles.Contains(oppositeRole.Role))
+						{
+							expected = false;
+						}
+					}
+
+					if (expected)
+					{
+						expected = !(null != (factType = playedRole.FactType) &&
+							null != (derivationRule = factType.DerivationRule) &&
+							(null == (factTypeDerivationRule = derivationRule as FactTypeDerivationRule) ||
+							(factTypeDerivationRule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
+							!factTypeDerivationRule.ExternalDerivation)));
+					}
+
+					if (expected)
+					{
+						if (inherentRoles.Contains(playedRole.Role))
+						{
+							++matchedRoleCount;
+						}
+						else
+						{
+							inherentConstraintCandidate = null;
+							break;
+						}
+					}
+				}
+
+				if (inherentConstraintCandidate != null && inherentRoles.Count > matchedRoleCount)
+				{
+					inherentConstraintCandidate = null;
+				}
+			}
+			else
+			{
+				inherentConstraintCandidate = null;
+			}
+			InherentMandatoryConstraint = inherentConstraintCandidate;
 		}
 		/// <summary>
 		/// Indicates if this <see cref="ObjectType"/> is either explicitly marked as <see cref="IsIndependent">independent</see>

@@ -35,6 +35,15 @@ namespace ORMSolutions.ORMArchitect.Framework
 	/// <param name="element">The <see cref="ModelElement"/> to validate</param>
 	public delegate void ElementValidation(ModelElement element);
 	#endregion // ElementValidation delegate
+	#region ElementPairValidation delegate
+	/// <summary>
+	/// A delegate callback to use with the <see cref="FrameworkDomainModel.DelayValidateElementPair"/> method.
+	/// The delegate will be called when the current transaction finishes committing.
+	/// </summary>
+	/// <param name="element1">The first <see cref="ModelElement"/> to validate</param>
+	/// <param name="element2">The first <see cref="ModelElement"/> to validate</param>
+	public delegate void ElementPairValidation(ModelElement element1, ModelElement element2);
+	#endregion // ElementPairValidation delegate
 	#region DelayValidatePriorityOrder enum
 	/// <summary>
 	/// Determines the order where delay validation routines run relative
@@ -317,7 +326,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 									// is checked before the key is added, but all bets are off when it comes
 									// to merging these elements into the existing validators.
 									IEnumerable<ElementValidation> relatedValidators;
-									ModelElement validatedElement = newValidator.Element;
+									object validatedElement = newValidator.Element;
 									if (null != (relatedValidators = newValidator.ReplacedByValidators))
 									{
 										foreach (ElementValidation strongerValidator in relatedValidators)
@@ -873,7 +882,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			/// <summary>
 			/// Initializes a new instance of <see cref="ElementValidator"/>.
 			/// </summary>
-			public ElementValidator(ModelElement element, ElementValidation validation)
+			public ElementValidator(object element, Delegate validation)
 			{
 				this.Element = element;
 				this.Validation = validation;
@@ -883,10 +892,25 @@ namespace ORMSolutions.ORMArchitect.Framework
 			/// </summary>
 			public void Validate()
 			{
-				TraceUtility.TraceDelegateStart(Element.Store, Validation);
-				Validation(Element);
-				TraceUtility.TraceDelegateEnd(Element.Store, Validation);
+				object target = Validation.Target;
+				if (target == null)
+				{
+					ModelElement element = (ModelElement)Element;
+					Store store = element.Store;
+					TraceUtility.TraceDelegateStart(store, Validation);
+					((ElementValidation)Validation)(element);
+					TraceUtility.TraceDelegateEnd(store, Validation);
+				}
+				else
+				{
+					IMultiElementValidator validator = (IMultiElementValidator)target;
+					Store store = validator.ResolveStore(Element);
+					TraceUtility.TraceDelegateStart(store, Validation);
+					validator.Validate(Element);
+					TraceUtility.TraceDelegateEnd(store, Validation);
+				}
 			}
+
 			private static Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> myMethodToElementValidatorInfoCacheMap =
 				new Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache>(RuntimeMethodHandleComparer.Instance);
 			/// <summary>
@@ -897,8 +921,19 @@ namespace ORMSolutions.ORMArchitect.Framework
 				get
 				{
 					ElementValidatorInfoCache infoCache;
-					MethodInfo methodInfo = Validation.Method;
-					Store store = Element.Store;
+					IMultiElementValidator multiElementTarget = Validation.Target as IMultiElementValidator;
+					MethodInfo methodInfo;
+					Store store;
+					if (multiElementTarget == null)
+					{
+						methodInfo = Validation.Method;
+						store = ((ModelElement)Element).Store;
+					}
+					else
+					{
+						methodInfo = multiElementTarget.WrappedMethodInfo;
+						store = multiElementTarget.ResolveStore(Element);
+					}
 					Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> cacheMap = myMethodToElementValidatorInfoCacheMap;
 					if (!cacheMap.TryGetValue(methodInfo.MethodHandle, out infoCache))
 					{
@@ -915,11 +950,12 @@ namespace ORMSolutions.ORMArchitect.Framework
 				get
 				{
 					ElementValidatorInfoCache infoCache;
-					MethodInfo methodInfo = Validation.Method;
+					IMultiElementValidator multiElementTarget = Validation.Target as IMultiElementValidator;
+					MethodInfo methodInfo = multiElementTarget == null ? Validation.Method : multiElementTarget.WrappedMethodInfo;
 					Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> cacheMap = myMethodToElementValidatorInfoCacheMap;
 					if (!cacheMap.TryGetValue(methodInfo.MethodHandle, out infoCache))
 					{
-						infoCache = ElementValidatorInfoCache.PopulateValidatorInfoCache(methodInfo, Element.Store, cacheMap);
+						infoCache = ElementValidatorInfoCache.PopulateValidatorInfoCache(methodInfo, multiElementTarget == null ? ((ModelElement)Element).Store : multiElementTarget.ResolveStore(Element), cacheMap);
 					}
 					return infoCache.CanReplaceValidators ? infoCache.GetReplacedValidators() : null;
 				}
@@ -932,11 +968,12 @@ namespace ORMSolutions.ORMArchitect.Framework
 				get
 				{
 					ElementValidatorInfoCache infoCache;
-					MethodInfo methodInfo = Validation.Method;
+					IMultiElementValidator multiElementTarget = Validation.Target as IMultiElementValidator;
+					MethodInfo methodInfo = multiElementTarget == null ? Validation.Method : multiElementTarget.WrappedMethodInfo;
 					Dictionary<RuntimeMethodHandle, ElementValidatorInfoCache> cacheMap = myMethodToElementValidatorInfoCacheMap;
 					if (!cacheMap.TryGetValue(methodInfo.MethodHandle, out infoCache))
 					{
-						infoCache = ElementValidatorInfoCache.PopulateValidatorInfoCache(methodInfo, Element.Store, cacheMap);
+						infoCache = ElementValidatorInfoCache.PopulateValidatorInfoCache(methodInfo, multiElementTarget == null ? ((ModelElement)Element).Store : multiElementTarget.ResolveStore(Element), cacheMap);
 					}
 					return infoCache.CanBeReplacedByValidators ? infoCache.GetReplacedByValidators() : null;
 				}
@@ -945,11 +982,11 @@ namespace ORMSolutions.ORMArchitect.Framework
 			/// <summary>
 			/// The <see cref="ModelElement"/> to validate.
 			/// </summary>
-			public readonly ModelElement Element;
+			public readonly object Element;
 			/// <summary>
-			/// The callback valdiation function.
+			/// The callback validation function.
 			/// </summary>
-			public readonly ElementValidation Validation;
+			public readonly Delegate Validation;
 			/// <summary>See <see cref="Object.GetHashCode()"/>.</summary>
 			public override int GetHashCode()
 			{
@@ -967,7 +1004,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 		}
 		/// <summary>
-		/// Called inside a transaction register a callback function that validates an
+		/// Called inside a transaction to register a callback function that validates an
 		/// element when the transaction completes. There are multiple model changes
 		/// that can trigger most validation rules. Registering validation rules for delayed
 		/// validation ensures that the validation code only runs once for any given object.
@@ -986,15 +1023,21 @@ namespace ORMSolutions.ORMArchitect.Framework
 			{
 				throw new ArgumentNullException("validation");
 			}
-			Store store = element.Store;
-			Debug.Assert(store.TransactionActive);
 #if DEBUG
 			if (validation.Target != null)
 			{
 				Debug.Fail(validation.Target.GetType().FullName + " registered non-static DelayValidate function: " + validation.Method.Name + ". The DelayValidation pattern should only need static functions.");
 			}
 #endif // DEBUG
+			return DelayValidateElementImpl(element, validation, element.Store);
+		}
 
+		/// <summary>
+		/// Helper function for <see cref="DelayValidateElement"/> and <see cref="DelayValidateElementPair"/>
+		/// </summary>
+		private static bool DelayValidateElementImpl(object element, Delegate validation, Store store)
+		{
+			Debug.Assert(store.TransactionActive);
 			Dictionary<object, object> contextDictionary = GetContextInfo(store.TransactionManager.CurrentTransaction);
 			object dictionaryObject;
 			Dictionary<ElementValidator, object> dictionary;
@@ -1072,6 +1115,186 @@ namespace ORMSolutions.ORMArchitect.Framework
 			return currentTransaction.Context.ContextInfo;
 		}
 		#endregion // Delayed Model Validation
+		#region Multi-element Delayed Validation
+		/// <summary>
+		/// An interface to retrieve the wrapped method info from a validator that wraps
+		/// a multi-element delayed validation function. Currently we only do this for a
+		/// pair of elements, but this could easily be extended to more if needed, so we
+		/// abstract the concept.
+		/// </summary>
+		private interface IMultiElementValidator
+		{
+			/// <summary>
+			/// Return the wrapped method info. If a delay-validation delegate has a
+			/// Target instance that instance must implement this interface and return
+			/// the code method, which must be static.
+			/// </summary>
+			MethodInfo WrappedMethodInfo { get; }
+
+			/// <summary>
+			/// Call the validation method
+			/// </summary>
+			/// <param name="element">The element to call. The type of object will generally
+			/// be specific to the multi element arity.</param>
+			void Validate(object element);
+
+			/// <summary>
+			/// Retrieve the <see cref="Store"/> for the given element.
+			/// </summary>
+			Store ResolveStore(object element);
+		}
+		private delegate void UntypedValidator(object element);
+		private static class MultiElementValidator
+		{
+			/// <summary>
+			/// Cache the instance functions that map multi-element validation functions to single-instance validators
+			/// </summary>
+			private static Dictionary<RuntimeMethodHandle, UntypedValidator> myValidatorCache = new Dictionary<RuntimeMethodHandle, UntypedValidator>(RuntimeMethodHandleComparer.Instance);
+
+			/// <summary>
+			/// Cache a constructor for each requested type of validator
+			/// </summary>
+			private static Dictionary<Type, ConstructorInfo> myConstructors = new Dictionary<Type, ConstructorInfo>();
+
+			public static UntypedValidator GetValidator<TValidator, TDelegate>(TDelegate callback)
+				where TDelegate : class
+				where TValidator : MultiElementValidatorBase<TDelegate>
+			{
+				MethodInfo methodInfo = (callback as Delegate).Method;
+				Dictionary<RuntimeMethodHandle, UntypedValidator> cacheMap = myValidatorCache;
+				UntypedValidator validator;
+				if (!cacheMap.TryGetValue(methodInfo.MethodHandle, out validator))
+				{
+					ConstructorInfo ctor;
+					if (!myConstructors.TryGetValue(typeof(TValidator), out ctor))
+					{
+						myConstructors[typeof(TValidator)] = ctor = typeof(TValidator).GetConstructor(new Type[] { typeof(TDelegate) });
+					}
+					validator = ((IMultiElementValidator)ctor.Invoke(new object[] { callback })).Validate;
+					cacheMap[methodInfo.MethodHandle] = validator;
+				}
+				return validator;
+			}
+		}
+		/// <summary>
+		/// Helper for creating a multi-element validator. Plug in a delegate with
+		/// the desired number of elements in a derived class.
+		/// </summary>
+		/// <typeparam name="T">A delegate type</typeparam>
+		private abstract class MultiElementValidatorBase<T> : IMultiElementValidator where T : class
+		{
+			protected readonly T MultiElementValidator;
+			protected MultiElementValidatorBase(T validator)
+			{
+				Delegate validatorAsDelegate = validator as Delegate;
+#if DEBUG
+				if (validatorAsDelegate.Target != null)
+				{
+					Debug.Fail(validatorAsDelegate.Target.GetType().FullName + " registered non-static DelayValidate function: " + validatorAsDelegate.Method.Name + ". The DelayValidation pattern should only need static functions.");
+				}
+#endif // DEBUG
+				MultiElementValidator = validator;
+			}
+			MethodInfo IMultiElementValidator.WrappedMethodInfo
+			{
+				get
+				{
+					return (MultiElementValidator as Delegate).Method;
+				}
+			}
+			Store IMultiElementValidator.ResolveStore(object element)
+			{
+				// This will be replaced
+				return null;
+			}
+			void IMultiElementValidator.Validate(object element)
+			{
+				// This will be replaced
+			}
+		}
+		#endregion // Multi-element Delayed Validation
+		#region Pair delayed element validation
+		/// <summary>
+		/// Called inside a transaction to register a callback function that validates
+		/// a pair of elements when the transaction completes. There are multiple model changes
+		/// that can trigger most validation rules. Registering validation rules for delayed
+		/// validation ensures that the validation code only runs once for any given object.
+		/// </summary>
+		/// <param name="element1">The first element to validate</param>
+		/// <param name="element2">The second element to validate</param>
+		/// <param name="validation">The validation function to run</param>
+		/// <returns>true if this element/validator pair is being added for the first time in this transaction</returns>
+		[DebuggerStepThrough]
+		public static bool DelayValidateElementPair(ModelElement element1, ModelElement element2, ElementPairValidation validation)
+		{
+			if (element1 == null)
+			{
+				throw new ArgumentNullException("element1");
+			}
+			if (element2 == null)
+			{
+				throw new ArgumentNullException("element2");
+			}
+			if (element1.Partition != element2.Partition)
+			{
+				throw new ArgumentException("Element partitions must match for delayed pair validation.", "element2");
+			}
+			return DelayValidateElementImpl(new ModelElementPair(element1, element2), MultiElementValidator.GetValidator<ElementPairValidator, ElementPairValidation>(validation), element1.Store);
+		}
+		/// <summary>
+		/// A fake model element that represents a pair of model elements. The mockup allows it to be used as
+		/// a normal ModelElement in the delayed validation system.
+		/// </summary>
+		private class ModelElementPair
+		{
+			public readonly ModelElement Element1;
+			public readonly ModelElement Element2;
+
+			// This is a fake model element that represents a pair of model elements
+			public ModelElementPair(ModelElement element1, ModelElement element2)
+			{
+				Element1 = element1;
+				Element2 = element2;
+			}
+			/// <summary>See <see cref="Object.GetHashCode()"/>.</summary>
+			public override int GetHashCode()
+			{
+				return Utility.GetCombinedHashCode(Element1.GetHashCode(), Element2.GetHashCode());
+			}
+			/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
+			public override bool Equals(object obj)
+			{
+				ModelElementPair pair = obj as ModelElementPair;
+				return pair != null && this.Equals(pair);
+			}
+			/// <summary>See <see cref="IEquatable{ModelElementPair}.Equals"/>.</summary>
+			public bool Equals(ModelElementPair other)
+			{
+				return Element1 == other.Element1 && Element2 == other.Element2;
+			}
+		}
+		/// <summary>
+		/// Pair validator
+		/// </summary>
+		private class ElementPairValidator : MultiElementValidatorBase<ElementPairValidation>, IMultiElementValidator
+		{
+			public ElementPairValidator(ElementPairValidation validator) : base(validator) { }
+
+			/// <summary>
+			/// Callback for implementing an ElementValidation delegate
+			/// </summary>
+			void IMultiElementValidator.Validate(object element)
+			{
+				ModelElementPair pair = (ModelElementPair)element;
+				MultiElementValidator(pair.Element1, pair.Element2);
+			}
+
+			Store IMultiElementValidator.ResolveStore(object element)
+			{
+				return ((ModelElementPair)element).Element1.Store;
+			}
+		}
+		#endregion // Pair delayed element validation
 		#region TransactionRulesFixupHack class
 		private sealed partial class TransactionRulesFixupHack
 		{

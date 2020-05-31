@@ -3290,17 +3290,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return this.CanMergeSetConstraint(rootElement, elementGroupPrototype);
 				}
 				
+				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.DomainClassId)) 
+				{
+					return true;
+				}
+				
 				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint.DomainClassId)) 
 				{
 					return true;
 				}
 				
 				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote.DomainClassId)) 
-				{
-					return true;
-				}
-				
-				if (rootElementDomainInfo.IsDerivedFrom(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.DomainClassId)) 
 				{
 					return true;
 				}
@@ -3343,30 +3343,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint2 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint;
-			if (sourceSetComparisonConstraint2 != null)
-			{
-				// Create link for path ModelHasSetComparisonConstraint.SetComparisonConstraintCollection
-				this.SetComparisonConstraintCollection.Add(sourceSetComparisonConstraint2);
-
-				return;
-			}
-				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote sourceModelNote3 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote;
-			if (sourceModelNote3 != null)
-			{
-				// Create link for path ModelHasModelNote.NoteCollection
-				this.NoteCollection.Add(sourceModelNote3);
-
-				return;
-			}
-				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType sourceObjectType4 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
-			if (sourceObjectType4 != null)
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType sourceObjectType2 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
+			if (sourceObjectType2 != null)
 			{
 				
 				// Call custom method implemented in partial class
-				this.MergeRelateObjectType(sourceObjectType4, elementGroup);
+				this.MergeRelateObjectType(sourceObjectType2, elementGroup);
+				return;
+			}
+				
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint3 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint;
+			if (sourceSetComparisonConstraint3 != null)
+			{
+				// Create link for path ModelHasSetComparisonConstraint.SetComparisonConstraintCollection
+				this.SetComparisonConstraintCollection.Add(sourceSetComparisonConstraint3);
+
+				return;
+			}
+				
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote sourceModelNote4 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote;
+			if (sourceModelNote4 != null)
+			{
+				// Create link for path ModelHasModelNote.NoteCollection
+				this.NoteCollection.Add(sourceModelNote4);
+
 				return;
 			}
 				
@@ -3415,12 +3415,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint2 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint;
-			if (sourceSetComparisonConstraint2 != null)
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType sourceObjectType2 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
+			if (sourceObjectType2 != null)
+			{
+				
+				// Call custom method implemented in partial class
+				this.MergeDisconnectObjectType(sourceObjectType2);
+				return;
+			}
+				
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint sourceSetComparisonConstraint3 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint;
+			if (sourceSetComparisonConstraint3 != null)
 			{
 				// Delete link for path ModelHasSetComparisonConstraint.SetComparisonConstraintCollection
 				
-				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.GetLinks((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)this, sourceSetComparisonConstraint2))
+				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.GetLinks((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)this, sourceSetComparisonConstraint3))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
 					link.Delete(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasSetComparisonConstraint.SetComparisonConstraintDomainRoleId);
@@ -3429,26 +3438,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return;
 			}
 				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote sourceModelNote3 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote;
-			if (sourceModelNote3 != null)
+			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote sourceModelNote4 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote;
+			if (sourceModelNote4 != null)
 			{
 				// Delete link for path ModelHasModelNote.NoteCollection
 				
-				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote.GetLinks((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)this, sourceModelNote3))
+				foreach (DslModeling::ElementLink link in global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote.GetLinks((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel)this, sourceModelNote4))
 				{
 					// Delete the link, but without possible delete propagation to the element since it's moving to a new location.
 					link.Delete(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote.ModelDomainRoleId, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelHasModelNote.NoteDomainRoleId);
 				}
 
-				return;
-			}
-				
-			global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType sourceObjectType4 = sourceElement as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
-			if (sourceObjectType4 != null)
-			{
-				
-				// Call custom method implemented in partial class
-				this.MergeDisconnectObjectType(sourceObjectType4);
 				return;
 			}
 				
@@ -5323,6 +5323,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeImpliesMandatoryConstraint.ObjectTypeDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region InherentMandatoryConstraint opposite domain role accessor
+		/// <summary>
+		/// Gets or sets InherentMandatoryConstraint.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectType
+		/// </summary>
+		public virtual MandatoryConstraint InherentMandatoryConstraint
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId) as MandatoryConstraint;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId, value);
 				}
 			}
 		}
@@ -10799,6 +10831,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				else
 				{
 					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeImpliesMandatoryConstraint.MandatoryConstraintDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region InherentForObjectType opposite domain role accessor
+		/// <summary>
+		/// Gets or sets InherentForObjectType.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraint
+		/// </summary>
+		public virtual ObjectType InherentForObjectType
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId) as ObjectType;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.ObjectTypeDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.MandatoryConstraintIsInherentForObjectType.MandatoryConstraintDomainRoleId, value);
 				}
 			}
 		}

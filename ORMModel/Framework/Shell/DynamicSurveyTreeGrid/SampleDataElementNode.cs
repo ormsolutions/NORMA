@@ -50,7 +50,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				return new SampleDataElementNode(surveyTree, contextElement, element, InitializeNodeData(element, contextElement, survey), null, null, true);
 			}
 			/// <summary>
-			/// Refetch the current settings of the <see cref="SurveyName"/> property
+			/// Refetch the current settings of the <see cref="SurveyName"/> property in a copy of this node.
 			/// </summary>
 			/// <param name="surveyTree">The owning <see cref="SurveyTree{SurveyContextType}"/> container</param>
 			/// <param name="contextElement">The parent element, or null for a root expansion context</param>
@@ -60,7 +60,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				return new SampleDataElementNode(surveyTree, contextElement, myElement, myNodeData, null, myCustomSortData, false);
 			}
 			/// <summary>
-			/// Refetch the current settings of the <see cref="SurveyName"/> property
+			/// Update the current settings of the <see cref="CustomSortData"/> property in a copy of this node.
 			/// </summary>
 			/// <param name="surveyTree">The owning <see cref="SurveyTree{SurveyContextType}"/> container</param>
 			/// <param name="contextElement">The parent element, or null for a root expansion context</param>
@@ -69,6 +69,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			public SampleDataElementNode UpdateCustomSortData(SurveyTree<SurveyContextType> surveyTree, object contextElement, object customSortData)
 			{
 				return new SampleDataElementNode(surveyTree, contextElement, myElement, myNodeData, myDisplayText, customSortData, false);
+			}
+			/// <summary>
+			/// Refetch the answer to the provided <see cref="SurveyName"/> property in a copy of this node.
+			/// </summary>
+			/// <param name="surveyTree">The owning <see cref="SurveyTree{SurveyContextType}"/> container</param>
+			/// <param name="contextElement">The parent element, or null for a root expansion context</param>
+			/// <param name="survey">survey</param>
+			/// <param name="questionTypes">types of the questions that are affected by  the change</param>
+			/// <returns>A new <see cref="SampleDataElementNode"/>. This node is not modified.</returns>
+			public SampleDataElementNode UpdateAnswers(SurveyTree<SurveyContextType> surveyTree, object contextElement, Survey survey, Type[] questionTypes)
+			{
+				SampleDataElementNode node = new SampleDataElementNode(surveyTree, contextElement, myElement, myNodeData, myDisplayText, myCustomSortData, false);
+				node.Update(questionTypes, contextElement, survey);
+				return node;
 			}
 			#endregion // Public and Update Methods
 			#region Constructors

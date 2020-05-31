@@ -35,6 +35,7 @@ using System.Xml.Xsl;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.Win32;
 using ORMSolutions.ORMArchitect.Framework.Shell;
+using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.Load
 {
@@ -241,6 +242,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		private readonly ICollection<Guid> myExtendsIds;
 		private readonly Guid myDomainModelId;
 		private readonly ExtensionModelOptions myOptions;
+		private ICollection<Guid> myAlsoLoadIds;
 		/// <summary>
 		/// Initializes a new instance of <see cref="ExtensionModelBinding"/>.
 		/// </summary>
@@ -297,6 +299,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			myExtendsIds = Array.AsReadOnly(extendsIds);
 			object[] domainObjectIdAttributes = type.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
 			myDomainModelId = (domainObjectIdAttributes.Length != 0) ? ((DomainObjectIdAttribute)domainObjectIdAttributes[0]).Id : Guid.Empty;
+			myAlsoLoadIds = null;
 			myOptions = options;
 		}
 		/// <summary>
@@ -320,7 +323,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			}
 		}
 		/// <summary>
-		/// The identifiers for the <see cref="DomainClassInfo"/> models
+		/// The identifiers for the <see cref="DomainModelInfo"/> models
 		/// extended by this extension.
 		/// </summary>
 		public ICollection<Guid> ExtendsDomainModelIds
@@ -339,6 +342,20 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			get
 			{
 				return myDomainModelId;
+			}
+		}
+		/// <summary>
+		/// Return a list of ids for extensions that should also be loaded. Can be null.
+		/// </summary>
+		public ICollection<Guid> AlsoLoadIds
+		{
+			get
+			{
+				return myAlsoLoadIds;
+			}
+			set
+			{
+				myAlsoLoadIds = value;
 			}
 		}
 		/// <summary>
@@ -463,11 +480,14 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 							domainModelType,
 							options = extensionData.Options)).IsValidExtension)
 					{
-						availableExtensions[extensionNamespace] = extensionType;
 						if (0 != (options & ExtensionModelOptions.AutoLoad))
 						{
 							++autoLoadCount;
 						}
+
+						availableExtensions[extensionNamespace] = default(ExtensionModelBinding);
+						ResolveAlsoLoadedDomainModels(ref extensionType, availableExtensions);
+						availableExtensions[extensionNamespace] = extensionType;
 					}
 				}
 
@@ -509,9 +529,18 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 
 			// Add assembly resolution callbacks to support extension assemblies
 			// that are not in the global assembly cache.
-			Dictionary<string, Assembly> knownAssemblies = new Dictionary<string, Assembly>(1 + availableExtensions.Count, StringComparer.Ordinal);
+			Dictionary<string, Assembly> knownAssemblies = new Dictionary<string, Assembly>(3 + availableExtensions.Count, StringComparer.Ordinal);
 			Assembly knownAssembly = typeof(ExtensionLoader).Assembly;
 			knownAssemblies[knownAssembly.FullName] = knownAssembly;
+
+			// Converter resolution relies on Type.GetType, which is failing for modeling
+			// SDK library dependencies when they are not loaded from the Visual Studio probing
+			// path. Add these dependencies as well.
+			knownAssembly = typeof(Microsoft.VisualStudio.Modeling.ModelElement).Assembly;
+			knownAssemblies[knownAssembly.FullName] = knownAssembly;
+			knownAssembly = typeof(Microsoft.VisualStudio.Modeling.Diagrams.PresentationElement).Assembly;
+			knownAssemblies[knownAssembly.FullName] = knownAssembly;
+
 			foreach (ExtensionModelBinding extensionType in availableExtensions.Values)
 			{
 				knownAssembly = extensionType.Type.Assembly;
@@ -525,6 +554,42 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				knownAssemblies.TryGetValue(e.Name, out resolvedAssembly);
 				return resolvedAssembly;
 			};
+		}
+		/// <summary>
+		/// Helper for the constructor to resolve <see cref="AlsoLoadDomainModelAttribute"/>
+		/// </summary>
+		/// <param name="expandExtension">Get additional domain models for this extension.</param>
+		/// <param name="availableExtensions">The currently known domain models. A previously-bound extension
+		/// will not be reprocessed.</param>
+		private static void ResolveAlsoLoadedDomainModels(ref ExtensionModelBinding expandExtension, Dictionary<string, ExtensionModelBinding> availableExtensions)
+		{
+			// Add 'also load' extensions
+			object[] alsoLoadedAttributes = expandExtension.Type.GetCustomAttributes(typeof(AlsoLoadDomainModelAttribute), false);
+			if (alsoLoadedAttributes != null &&
+				alsoLoadedAttributes.Length != 0)
+			{
+				List<Guid> alsoLoadedIds = null;
+				for (int i = 0; i < alsoLoadedAttributes.Length; ++i)
+				{
+					AlsoLoadDomainModelAttribute alsoLoad = (AlsoLoadDomainModelAttribute)alsoLoadedAttributes[i];
+					string testURI = alsoLoad.NamespaceURI;
+					ExtensionModelBinding alsoBound;
+					if (!string.IsNullOrEmpty(testURI) &&
+						!availableExtensions.ContainsKey(testURI) &&
+						(alsoBound = new ExtensionModelBinding(testURI, alsoLoad.AlsoLoadType, ExtensionModelOptions.Secondary)).IsValidExtension)
+					{
+						// Record and recurse
+						(alsoLoadedIds ?? (alsoLoadedIds = new List<Guid>())).Add(alsoBound.DomainModelId);
+						availableExtensions[testURI] = default(ExtensionModelBinding);
+						ResolveAlsoLoadedDomainModels(ref alsoBound, availableExtensions);
+						availableExtensions[testURI] = alsoBound;
+					}
+				}
+				if (alsoLoadedIds != null)
+				{
+					expandExtension.AlsoLoadIds = alsoLoadedIds;
+				}
+			}
 		}
 		#endregion // Constructor
 		#region Accessors
@@ -725,19 +790,25 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		{
 			ExtensionModelBinding extension = availableExtensions[extensionNamespace];
 			ICollection<Guid> recurseExtensions = extension.ExtendsDomainModelIds;
-			if (recurseExtensions.Count != 0)
+			bool firstPass = true;
+			while (recurseExtensions != null)
 			{
-				foreach (Guid recurseExtensionId in recurseExtensions)
+				if (recurseExtensions.Count != 0)
 				{
-					string recurseExtensionNamespace;
-					if (extensionModelMap.TryGetValue(recurseExtensionId, out recurseExtensionNamespace) &&
-						!standardModelMap.ContainsKey(recurseExtensionId) &&
-						!targetExtensions.ContainsKey(recurseExtensionNamespace))
+					foreach (Guid recurseExtensionId in recurseExtensions)
 					{
-						targetExtensions.Add(recurseExtensionNamespace, availableExtensions[recurseExtensionNamespace]);
-						VerifyExtensions(recurseExtensionNamespace, targetExtensions, availableExtensions, extensionModelMap, standardModelMap);
+						string recurseExtensionNamespace;
+						if (extensionModelMap.TryGetValue(recurseExtensionId, out recurseExtensionNamespace) &&
+							!standardModelMap.ContainsKey(recurseExtensionId) &&
+							!targetExtensions.ContainsKey(recurseExtensionNamespace))
+						{
+							targetExtensions.Add(recurseExtensionNamespace, availableExtensions[recurseExtensionNamespace]);
+							VerifyExtensions(recurseExtensionNamespace, targetExtensions, availableExtensions, extensionModelMap, standardModelMap);
+						}
 					}
 				}
+				recurseExtensions = firstPass ? extension.AlsoLoadIds : null;
+				firstPass = false;
 			}
 		}
 		/// <summary>

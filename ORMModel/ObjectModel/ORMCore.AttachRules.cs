@@ -410,7 +410,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(RolePathOwner).GetNestedType("SubPathAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RolePathOwner).GetNestedType("SubPathDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RolePathOwner).GetNestedType("SubPathRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(RolePathOwner).GetNestedType("SubqueryDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("SharedSubqueryAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("OwnedSubqueryDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(RolePathOwner).GetNestedType("OwnedSubqueryRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RoleProjectedDerivationRule).GetNestedType("DerivedRoleProjectionOnCalculatedPathValueAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RoleProjectedDerivationRule).GetNestedType("DerivedRoleProjectionOnCalculatedPathValueDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(RoleProjectedDerivationRule).GetNestedType("DerivedRoleProjectionOnCalculatedPathValueRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -554,7 +556,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 486; ++i)
+			for (int i = 0; i < 488; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -10505,11 +10507,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubPathRolePlayerChangedRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathOwnerHasSubquery), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class SubqueryDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathOwnerUsesSharedSubquery), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class SharedSubqueryAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public SubqueryDeletedRuleClass()
+			public SharedSubqueryAddedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -10517,18 +10519,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// Provide the following method in class: 
 			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
 			/// /// <summary>
-			/// /// DeleteRule: typeof(RolePathOwnerHasSubquery)
+			/// /// AddRule: typeof(RolePathOwnerUsesSharedSubquery)
 			/// /// </summary>
-			/// private static void SubqueryDeletedRule(ElementDeletedEventArgs e)
+			/// private static void SharedSubqueryAddedRule(ElementAddedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SharedSubqueryAddedRule");
+				RolePathOwner.SharedSubqueryAddedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SharedSubqueryAddedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathOwnerOwnsSubquery), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class OwnedSubqueryDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public OwnedSubqueryDeletedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// DeleteRule: typeof(RolePathOwnerOwnsSubquery)
+			/// /// </summary>
+			/// private static void OwnedSubqueryDeletedRule(ElementDeletedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryDeletedRule");
-				RolePathOwner.SubqueryDeletedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.SubqueryDeletedRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.OwnedSubqueryDeletedRule");
+				RolePathOwner.OwnedSubqueryDeletedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.OwnedSubqueryDeletedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RolePathOwnerOwnsSubquery), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class OwnedSubqueryRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public OwnedSubqueryRolePlayerChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(RolePathOwnerOwnsSubquery)
+			/// /// </summary>
+			/// private static void OwnedSubqueryRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.OwnedSubqueryRolePlayerChangedRule");
+				RolePathOwner.OwnedSubqueryRolePlayerChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.RolePathOwner.OwnedSubqueryRolePlayerChangedRule");
 			}
 		}
 	}

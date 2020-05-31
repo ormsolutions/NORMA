@@ -536,6 +536,7 @@ Windows Registry Editor Version 5.00
 "ProvidesOutputFormat"="PHPDataLayerImplementation"
 "TransformUri"="reg:Neumont\PLiX\Formatters@php"
 "GeneratesSupportFile"=dword:00000001
+"NoByteOrderMark"=dword:00000001
 [$RootKey$\ORM Solutions\Natural ORM Architect\Generators\PHPEntitiesPLiXtoPHP]
 "Type"="XSLT"
 "OfficialName"="PHPEntitiesPLiXtoPHP"
@@ -545,6 +546,7 @@ Windows Registry Editor Version 5.00
 "SourceInputFormat"="PHPEntitiesPLiX"
 "ProvidesOutputFormat"="PHPEntitiesImplementation"
 "TransformUri"="reg:Neumont\PLiX\Formatters@php"
+"NoByteOrderMark"=dword:00000001
 "CompanionOutputFormats"=hex(7):50,00,48,00,50,00,50,00,72,00,6f,00,78,00,69,\
   00,65,00,73,00,49,00,6d,00,70,00,6c,00,65,00,6d,00,65,00,6e,00,74,00,61,00,\
   74,00,69,00,6f,00,6e,00,00,00,50,00,48,00,50,00,53,00,65,00,72,00,76,00,69,\
@@ -562,6 +564,7 @@ Windows Registry Editor Version 5.00
 "ProvidesOutputFormat"="PHPProxiesImplementation"
 "TransformUri"="reg:Neumont\PLiX\Formatters@php"
 "GeneratesSupportFile"=dword:00000001
+"NoByteOrderMark"=dword:00000001
 [$RootKey$\ORM Solutions\Natural ORM Architect\Generators\PHPServicesPLiXtoPHP]
 "Type"="XSLT"
 "OfficialName"="PHPServicesPLiXtoPHP"
@@ -572,6 +575,7 @@ Windows Registry Editor Version 5.00
 "ProvidesOutputFormat"="PHPServicesImplementation"
 "TransformUri"="reg:Neumont\PLiX\Formatters@php"
 "GeneratesSupportFile"=dword:00000001
+"NoByteOrderMark"=dword:00000001
 [$RootKey$\ORM Solutions\Natural ORM Architect\Generators\PLiXSupport]
 "Type"="XSLT"
 "OfficialName"="PLiXSupport"

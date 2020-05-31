@@ -31,6 +31,7 @@ using Microsoft.VisualStudio.VirtualTreeGrid;
 using ORMSolutions.ORMArchitect.Core.Shell;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework.Design;
+using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 {
@@ -562,7 +563,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		/// </summary>
 		public override string GetComponentName()
 		{
-			return this.ModelElement.GetDomainClass().DisplayName;
+			TModelElement element = this.ModelElement;
+			return element.Store != null ? element.GetDomainClass().DisplayName : string.Empty;
 		}
 		/// <summary>
 		/// Show the base class name as the class name
@@ -595,11 +597,87 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			GroupingElementRelationship typedInstance;
 			ModelElement element;
 			if (null != (typedInstance = instance as GroupingElementRelationship) &&
+				typedInstance.Store != null &&
 				!(element = typedInstance.Element).IsDeleted)
 			{
 				return TypeDescriptor.GetProvider(element).GetTypeDescriptor(element.GetType(), element);
 			}
 			return base.GetTypeDescriptor(objectType, instance);
+		}
+		#endregion // Base overrides
+	}
+	/// <summary>
+	/// 
+	/// </summary>
+	[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
+	public sealed class GroupingElementRelationshipTypeDescriptor : BlockRelationshipPropertiesElementTypeDescriptor<GroupingElementRelationship>
+	{
+		#region Constructor and fields
+		private ICustomTypeDescriptor m_targetTypeDescriptor;
+		/// <summary>
+		/// Initializes a new instance of <see cref="GroupingElementRelationshipTypeDescriptor"/> specified
+		/// by <paramref name="selectedElement"/>.
+		/// </summary>
+		public GroupingElementRelationshipTypeDescriptor(ICustomTypeDescriptor parent, GroupingElementRelationship selectedElement)
+			: base(parent, selectedElement)
+		{
+		}
+		#endregion // Constructor and fields
+		#region Helper methods
+		private ICustomTypeDescriptor TargetTypeDescriptor
+		{
+			get
+			{
+				ICustomTypeDescriptor targetTypeDescriptor = m_targetTypeDescriptor;
+				if (targetTypeDescriptor == null)
+				{
+					GroupingElementRelationship relationship;
+					ModelElement element;
+					if (null != (relationship = ModelElement) &&
+						relationship.Store != null &&
+						null != (element = relationship.Element) &&
+						!element.IsDeleted)
+					{
+						m_targetTypeDescriptor = targetTypeDescriptor = TypeDescriptor.GetProvider(element).GetTypeDescriptor(element.GetType(), element);
+					}
+				}
+				return targetTypeDescriptor;
+			}
+		}
+		#endregion // Helper methods
+		#region Base overrides
+		/// <summary>
+		/// Redirect component name to grouped element
+		/// </summary>
+		public override string GetComponentName()
+		{
+			ICustomTypeDescriptor targetDescriptor = TargetTypeDescriptor;
+			return targetDescriptor != null ? TargetTypeDescriptor.GetComponentName() : base.GetComponentName();
+		}
+		/// <summary>
+		/// Redirect class name to grouped element
+		/// </summary>
+		/// <returns></returns>
+		public override string GetClassName()
+		{
+			ICustomTypeDescriptor targetDescriptor = TargetTypeDescriptor;
+			return targetDescriptor != null ? TargetTypeDescriptor.GetClassName() : base.GetClassName();
+		}
+		/// <summary>
+		/// Defer properties to the target element and <see cref="GroupingElementRelationship"/>
+		/// property extensions.
+		/// </summary>
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			ICustomTypeDescriptor targetDescriptor = TargetTypeDescriptor;
+			if (targetDescriptor != null)
+			{
+				PropertyDescriptorCollection propertyDescriptors = targetDescriptor.GetProperties(attributes);
+				GroupingElementRelationship requestor = ModelElement;
+				((IFrameworkServices)requestor.Store).PropertyProviderService.GetProvidedProperties(requestor, propertyDescriptors);
+				return propertyDescriptors;
+			}
+			return base.GetProperties(attributes);
 		}
 		#endregion // Base overrides
 	}

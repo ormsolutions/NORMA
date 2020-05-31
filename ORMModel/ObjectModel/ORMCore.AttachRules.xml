@@ -1256,9 +1256,15 @@
 			<arg:RolePlayerChangeRule methodName="SubPathRolePlayerChangedRule">
 				<arg:RuleOn targetType="RoleSubPathIsContinuationOfRolePath"/>
 			</arg:RolePlayerChangeRule>
-			<arg:DeleteRule methodName="SubqueryDeletedRule">
-				<arg:RuleOn targetType="RolePathOwnerHasSubquery"/>
+			<arg:AddRule methodName="SharedSubqueryAddedRule">
+				<arg:RuleOn targetType="RolePathOwnerUsesSharedSubquery"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="OwnedSubqueryDeletedRule">
+				<arg:RuleOn targetType="RolePathOwnerOwnsSubquery"/>
 			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="OwnedSubqueryRolePlayerChangedRule">
+				<arg:RuleOn targetType="RolePathOwnerOwnsSubquery"/>
+			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="RoleProjectedDerivationRule">
 			<arg:AddRule methodName="DerivedRoleProjectionOnCalculatedPathValueAddedRule">

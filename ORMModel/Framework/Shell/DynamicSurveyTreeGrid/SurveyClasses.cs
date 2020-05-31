@@ -430,6 +430,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			{
 				list.ElementAdded(element);
 			}
+			else if (contextElement != null)
+			{
+				// Possibly going from 0 elements to 1, change expandability
+				ElementExpandibilityChanged(contextElement);
+			}
 		}
 		void INotifySurveyElementChanged.ElementAdded(object element, object contextElement)
 		{
@@ -654,7 +659,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			}
 			else if (reference != null && !trackedReference)
 			{
-				// A non-tracked reference with not list is in a partially deleted state, there
+				// A non-tracked reference with no list is in a partially deleted state, there
 				// is nothing more to do.
 				return;
 			}
@@ -1174,6 +1179,67 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		void INotifySurveyElementChanged.ElementReferenceCustomSortChanged(object element, object referenceReason, object contextElement)
 		{
 			ElementReferenceCustomSortChanged(element, referenceReason, contextElement);
+		}
+		/// <summary>
+		/// Implements <see cref="INotifySurveyElementChanged.ElementContextChanged(ISurveyNodeContext,System.Object)"/>
+		/// </summary>
+		protected void ElementContextChanged(ISurveyNodeContext element, object oldContext)
+		{
+			Stack<MainList> removedLists = null;
+			NodeLocation location;
+			MainList currentList;
+			object currentContext;
+			if (myNodeDictionary.TryGetValue(element, out location) &&
+				null != (currentList = location.MainList))
+			{
+				// The node is currently tracked and has been given a primary location in
+				// a list (not just tracked as a floating node created for a reference target).
+				// and may need to be removed from the list and readded elsewhere, unless the
+				// context object is current.
+				if ((currentContext = element.SurveyNodeContext) != currentList.ContextElement)
+				{
+					ElementDeleted(location, ref removedLists);
+					if (removedLists != null)
+					{
+						EmptyRemovedLists(removedLists);
+					}
+					ElementAdded(element, currentContext);
+					ElementLocationChangedEventHandler handler = myElementLocationChangedHandler;
+					if (handler != null)
+					{
+						handler(element);
+					}
+				}
+			}
+			else
+			{
+				// If the old context is known there is a chance that this is now an empty list, check the expansion.
+				if (oldContext != null && !myMainListDictionary.ContainsKey(oldContext))
+				{
+					ElementExpandibilityChanged(oldContext);
+				}
+
+				// The element is currently untracked or simply floating. Attempt to add it with its new context.
+				ElementAdded(element, element.SurveyNodeContext);
+			}
+		}
+		void INotifySurveyElementChanged.ElementContextChanged(ISurveyNodeContext element, object oldContext)
+		{
+			ElementContextChanged(element, oldContext);
+		}
+		private ElementLocationChangedEventHandler myElementLocationChangedHandler;
+		/// <summary>
+		/// Implements <see cref="ITrackSurveyElementLocation.ElementLocationChanged"/>
+		/// </summary>
+		protected event ElementLocationChangedEventHandler ElementLocationChanged
+		{
+			add { myElementLocationChangedHandler += value; }
+			remove { myElementLocationChangedHandler -= value; }
+		}
+		event ElementLocationChangedEventHandler ITrackSurveyElementLocation.ElementLocationChanged
+		{
+			add { ElementLocationChanged += value; }
+			remove { ElementLocationChanged -= value; }
 		}
 		#endregion //INotifySurveyElementChanged Implementation
 		#region Survey class

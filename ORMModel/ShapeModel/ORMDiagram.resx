@@ -970,7 +970,7 @@ If a subtype is constrained use single-click to add and double-click to commit.<
     <comment xml:space="preserve">The display name for the dynamic floating text color.</comment>
   </data>
   <data name="ORMDiagramDynamicColor.FloatingText.Description">
-    <value xml:space="preserve">The display color for floating text elements. Displayed the diagram background.</value>
+    <value xml:space="preserve">The display color for floating text elements displayed against the diagram background.</value>
     <comment xml:space="preserve">The description of the dynamic floating text color.</comment>
   </data>
   <data name="ORMDiagramDynamicColor.ForegroundGraphics">

@@ -4477,7 +4477,14 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				}
 				else
 				{
-					Debug.Fail("Could not deserialize property!");
+					Debug.Fail(string.Format(
+						"Could not deserialize property.\r\nProperty Name: {0}\r\nSerialized Value: {1}\r\nProperty Type: {2} (in {3})\r\nConverter Type: {4} (in {5})",
+						domainPropertyInfo.Name,
+						stringValue,
+						domainPropertyInfo.PropertyType.AssemblyQualifiedName,
+						domainPropertyInfo.PropertyType.Assembly.Location,
+						converter.GetType().AssemblyQualifiedName,
+						converter.GetType().Assembly.Location));
 				}
 			}
 			if (objectValue != null)

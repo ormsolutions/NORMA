@@ -829,7 +829,7 @@
 					<xsl:value-of select="$itemString"/>
 				</element>
 				<xsl:variable name="remainder" select="substring-after($ItemList,' ')"/>
-				<xsl:if test="remainder">
+				<xsl:if test="$remainder">
 					<xsl:call-template name="SplitList">
 						<xsl:with-param name="ItemList" select="$remainder"/>
 					</xsl:call-template>

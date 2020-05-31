@@ -408,6 +408,11 @@
 					<ExternalTypeMoniker Name="/System/Boolean"/>
 				</Type>
 			</DomainProperty>
+			<DomainProperty Name="UpdateCounter" Id="D3FBC03E-0A25-48E6-8D93-747E01C54E06" GetterAccessModifier="Family" SetterAccessModifier="Family" Kind="CustomStorage" IsBrowsable="false">
+				<Type>
+					<ExternalTypeMoniker Name="/System/Int64"/>
+				</Type>
+			</DomainProperty>
 		</Properties>
 		<Class>
 			<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ORMModel"/>

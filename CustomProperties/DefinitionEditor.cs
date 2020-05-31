@@ -435,14 +435,18 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			switch (definitionNode.Attributes["dataType"].Value)
 			{
 				case "string":
+				case "String":
 					return true;
 				case "integer":
+				case "Integer":
 					int i;
 					return int.TryParse(attrib.Value, out i);
 				case "decimal":
+				case "Decimal":
 					decimal d;
 					return decimal.TryParse(attrib.Value, out d);
 				case "datetime":
+				case "DateTime":
 					DateTime dt;
 					return DateTime.TryParse(attrib.Value, out dt);
 				case "CustomEnumeration":

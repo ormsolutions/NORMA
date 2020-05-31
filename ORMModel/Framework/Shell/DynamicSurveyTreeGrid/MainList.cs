@@ -31,7 +31,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 		/// <summary>
 		/// main branch provider for a SurveyTree, implements IBranch, main branch can be retrieved from RootBranch
 		/// </summary>
-		private partial class MainList : IBranch
+		private partial class MainList : IBranch, ITrackSurveyElementLocation
 		{
 			#region survey question display struct
 			//TODO: ask Matt, probably want to move this inside of the survey along with myCurrentDisplays, and have the survey manage it all
@@ -55,7 +55,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 
 					// UNDONE: AnswerOrder
 					//AnswerOrder = new int[Question.CategoryCount];
-					NeutralOnTop = false;
+					NeutralOnTop = (question.UISupport & SurveyQuestionUISupport.SortNotApplicableElementsFirst) != 0;
 				}
 			}
 			#endregion //survey question display struct
@@ -67,7 +67,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			private int myAttachedEventCount;
 			private ListGrouper myRootGrouper;
 			private SurveyTree<SurveyContextType> mySurveyTree;
-			private object myContextElement;
+			private readonly object myContextElement;
 			private int[] myOverlayIndices;
 			/// <summary>
 			/// Public constructor
@@ -131,7 +131,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					ListGrouper grouper = myRootGrouper;
 					if (grouper == null || recreate)
 					{
-						myRootGrouper = grouper = new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1, myCurrentDisplays[0].NeutralOnTop, true);
+						myRootGrouper = grouper = new ListGrouper(this, mySurvey[0], 0, myNodes.Count - 1, true);
 					}
 					return grouper;
 				}
@@ -1001,29 +1001,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				}
 				if (!displayChangeOnly && questionTypes.Length != 0)
 				{
-					node.Update(questionTypes, myContextElement, mySurvey);
-					myNodes[index] = node;
-					object element = node.Element;
-					ISurveyNodeReference reference;
-					if (null == (reference = element as ISurveyNodeReference) ||
-						0 != (reference.SurveyNodeReferenceOptions & SurveyNodeReferenceOptions.TrackReferenceInstance))
-					{
-						mySurveyTree.myNodeDictionary[element] = new NodeLocation(this, node);
-					}
-					if (nodeReference != null)
-					{
-						Debug.Assert(nodeReference.Value.ContextElement == myContextElement);
-						nodeReference.Value = new SurveyNodeReference(node, myContextElement);
-					}
+					UpdateNode(index, nodeReference, node.UpdateAnswers(mySurveyTree, myContextElement, mySurvey, questionTypes), true, false);
 				}
-				BranchModificationEventHandler modificationEvents = myModificationEvents;
-				if (myRootGrouper != null)
+				else
 				{
-					myRootGrouper.ElementChangedAt(index, VirtualTreeDisplayDataChanges.Image, modificationEvents);
-				}
-				else if (modificationEvents != null)
-				{
-					modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Image, this, index, 0, 1)));
+					BranchModificationEventHandler modificationEvents = myModificationEvents;
+					if (myRootGrouper != null)
+					{
+						myRootGrouper.ElementChangedAt(index, VirtualTreeDisplayDataChanges.Image, modificationEvents);
+					}
+					else if (modificationEvents != null)
+					{
+						modificationEvents(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Image, this, index, 0, 1)));
+					}
 				}
 			}
 			/// <summary>
@@ -1263,7 +1253,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						nodes[nodeIndex] = replacementNode;
 						if (rootGrouper != null)
 						{
-							rootGrouper.ElementModifiedAt(nodeIndex, nodeIndex, displayChanged, modificationEvents);
+							rootGrouper.ElementModifiedAt(nodeIndex, nodeIndex, replacementNode.NodeData, displayChanged, modificationEvents);
 						}
 						else if (displayChanged && modificationEvents != null)
 						{
@@ -1298,7 +1288,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						nodes.Insert(inverseToIndex, replacementNode);
 						if (rootGrouper != null)
 						{
-							rootGrouper.ElementModifiedAt(nodeIndex, inverseToIndex, displayChanged, modificationEvents);
+							rootGrouper.ElementModifiedAt(nodeIndex, inverseToIndex, replacementNode.NodeData, displayChanged, modificationEvents);
 						}
 						else if (modificationEvents != null)
 						{
@@ -1312,6 +1302,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				}
 			}
 			#endregion //INotifySurveyElementChanged Implementation
+			#region ITrackSurveyElementLocation implementation
+			/// <summary>
+			/// Pass through event handler. This allows listeners to attach the location tracking event to
+			/// the root branch of a tree.
+			/// </summary>
+			event ElementLocationChangedEventHandler ITrackSurveyElementLocation.ElementLocationChanged
+			{
+				add { mySurveyTree.ElementLocationChanged += value; }
+				remove { mySurveyTree.ElementLocationChanged += value; }
+			}
+			#endregion // ITrackSurveyElementLocation implementation
 		}
 	}
 }

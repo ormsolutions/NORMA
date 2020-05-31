@@ -1468,7 +1468,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										IList<ElementGroupingType> groupingTypes = grouping.GroupingTypeCollection;
 										for (int j = 0; j < selectedElementCount; ++j)
 										{
-											if (GroupingMembershipInclusion.AddAllowed == grouping.GetElementInclusion(normalizedElements[j], groupingTypes))
+											if (GroupingMembershipInclusion.AddAllowed == grouping.GetElementInclusion(normalizedElements[j], true, groupingTypes))
 											{
 												cachedGroupings[allowedGroupingCount] = grouping;
 												++allowedGroupingCount;
@@ -4187,7 +4187,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						ModelElement normalizedElement = EditorUtility.ResolveContextInstance(element, false) as ModelElement;
 						if (normalizedElement != null &&
 							!(normalizedElement is ElementLink) && // UNDONE: ElementLinkInGroup
-							grouping.GetElementInclusion(normalizedElement, groupingTypes) == GroupingMembershipInclusion.AddAllowed)
+							grouping.GetElementInclusion(normalizedElement, true, groupingTypes) == GroupingMembershipInclusion.AddAllowed)
 						{
 							GroupingElementExclusion exclusion = GroupingElementExclusion.GetLink(grouping, normalizedElement);
 							if (exclusion != null)

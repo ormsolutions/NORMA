@@ -989,6 +989,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagnostics
 			}
 			#endregion // Helper methods
 			#region Filter implementation
+#if VISUALSTUDIO_16_0
+			/// <summary>
+			/// VS2019 is not respecting the DelayRedraw setting, so is attempting to get drawing data
+			/// with invalid indices while redraw is off. Track this and block.
+			/// </summary>
+			private bool myBlockRedraw;
+#endif // VISUALSTUDIO_16_0
 			private PartitionChange GetChange(int branchRow)
 			{
 				int[] filter = myFilter;
@@ -1016,6 +1023,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagnostics
 					if (modify != null)
 					{
 						modify(this, BranchModificationEventArgs.DelayRedraw(true));
+#if VISUALSTUDIO_16_0
+						myBlockRedraw = true;
+#endif // VISUALSTUDIO_16_0
 
 						myFilter = newFilter; // This changes the VisibleItemCount
 						int columnCount = (int)ColumnContent.Count;
@@ -1147,6 +1157,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagnostics
 							}
 						}
 
+#if VISUALSTUDIO_16_0
+						myBlockRedraw = false;
+#endif // VISUALSTUDIO_16_0
 						modify(this, BranchModificationEventArgs.DelayRedraw(false));
 					}
 				}
@@ -1930,6 +1943,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagnostics
 			}
 			string IBranch.GetText(int row, int column)
 			{
+#if VISUALSTUDIO_16_0
+				if (myBlockRedraw) return null;
+#endif // VISUALSTUDIO_16_0
 				string retVal = null;
 				PartitionChange change = GetChange(row);
 				switch ((ColumnContent)column)
@@ -2024,6 +2040,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagnostics
 			}
 			string IBranch.GetTipText(int row, int column, ToolTipType tipType)
 			{
+#if VISUALSTUDIO_16_0
+				if (myBlockRedraw) return null;
+#endif // VISUALSTUDIO_16_0
 				switch ((ColumnContent)column)
 				{
 					case ColumnContent.Id:
@@ -2050,6 +2069,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagnostics
 			VirtualTreeDisplayData IBranch.GetDisplayData(int row, int column, VirtualTreeDisplayDataMasks requiredData)
 			{
 				VirtualTreeDisplayData retVal = VirtualTreeDisplayData.Empty;
+#if VISUALSTUDIO_16_0
+				if (myBlockRedraw) return retVal;
+#endif // VISUALSTUDIO_16_0
 				switch ((ColumnContent)column)
 				{
 					case ColumnContent.Index:
@@ -2094,6 +2116,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Diagnostics
 			}
 			bool IBranch.IsExpandable(int row, int column)
 			{
+#if VISUALSTUDIO_16_0
+				if (myBlockRedraw) return false;
+#endif // VISUALSTUDIO_16_0
 				switch ((ColumnContent)column)
 				{
 					case ColumnContent.ChangeType:

@@ -2806,6 +2806,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else
 			{
 				FrameworkDomainModel.DelayValidateElement(owner, DelayValidateDerivedRolePathOwner);
+				RolePathOwner currentOwner = link.RolePath.PathOwner;
+				if (currentOwner == null || currentOwner == owner)
+				{
+					// We don't have an owner yet. If we don't get one later, then make the first shared
+					// path owner the owner.
+					FrameworkDomainModel.DelayValidateElement(link.RolePath, DelayValidateLeadRolePathOwned);
+				}
+			}
+		}
+		[DelayValidatePriority(-3)]
+		private static void DelayValidateLeadRolePathOwned(ModelElement element)
+		{
+			LeadRolePath rolePath;
+			if (!element.IsDeleted)
+			{
+				RolePathOwner currentOwner = (rolePath = (LeadRolePath)element).PathOwner;
+				foreach (RolePathOwnerUsesSharedLeadRolePath sharedLink in RolePathOwnerUsesSharedLeadRolePath.GetLinksToSharedWithPathOwnerCollection(rolePath))
+				{
+					RolePathOwner sharedOwner = sharedLink.PathOwner;
+					if (currentOwner == null)
+					{
+						sharedLink.Delete();
+						new RolePathOwnerOwnsLeadRolePath(sharedOwner, rolePath);
+						return;
+					}
+					else if (sharedOwner == currentOwner)
+					{
+						sharedLink.Delete();
+						return;
+					}
+				}
 			}
 		}
 		/// <summary>
@@ -2852,19 +2883,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
 			RolePathOwner owner;
-			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
+			RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ElementLink;
+			bool isOwnerLink = link is RolePathOwnerOwnsLeadRolePath;
+			if (e.DomainRole.Id == (isOwnerLink ? RolePathOwnerOwnsLeadRolePath.PathOwnerDomainRoleId : RolePathOwnerUsesSharedLeadRolePath.PathOwnerDomainRoleId))
 			{
 				// The owner changed, delay validate old and new owners. Note that this
 				// is not an initial add, so existing calculations will already be validated.
 				owner = (RolePathOwner)e.OldRolePlayer;
-				bool isOwnerLink = e.ElementLink is RolePathOwnerOwnsLeadRolePath;
-				FrameworkDomainModel.DelayValidateElement(owner, DelayValidateSingleLeadRolePath);
 				if (isOwnerLink)
 				{
+					LeadRolePath rolePath = link.RolePath;
+					if (null == RolePathOwnerUsesSharedLeadRolePath.GetLink(owner, link.RolePath))
+					{
+						new RolePathOwnerUsesSharedLeadRolePath(owner, link.RolePath); // Single lead role path will not change, we just changed the type of owning relationship
+					}
+					else
+					{
+						FrameworkDomainModel.DelayValidateElement(owner, DelayValidateSingleLeadRolePath);
+					}
 					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateLeadRolePaths);
 				}
 				else
 				{
+					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateSingleLeadRolePath);
 					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateDerivedRolePathOwner);
 				}
 
@@ -2881,9 +2922,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else
 			{
-				RolePathOwnerHasLeadRolePath link = (RolePathOwnerHasLeadRolePath)e.ElementLink;
 				owner = link.PathOwner;
-				if (link is RolePathOwnerOwnsLeadRolePath)
+				if (isOwnerLink)
 				{
 					FrameworkDomainModel.DelayValidateElement(owner, DelayValidateLeadRolePaths);
 				}
@@ -2894,20 +2934,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// DeleteRule: typeof(RolePathOwnerHasSubquery)
+		/// AddRule: typeof(RolePathOwnerUsesSharedSubquery)
+		/// Validate that a shared subquery is also owned
+		/// </summary>
+		private static void SharedSubqueryAddedRule(ElementAddedEventArgs e)
+		{
+			RolePathOwnerUsesSharedSubquery link = (RolePathOwnerUsesSharedSubquery)e.ModelElement;
+			RolePathOwner currentOwner = link.Subquery.PathOwner;
+			if (currentOwner == null || currentOwner == link.PathOwner)
+			{
+				FrameworkDomainModel.DelayValidateElement(link.Subquery, DelayValidateSubqueryOwned);
+			}
+		}
+		[DelayValidatePriority(-3)]
+		private static void DelayValidateSubqueryOwned(ModelElement element)
+		{
+			Subquery subquery;
+			if (!element.IsDeleted)
+			{
+				RolePathOwner currentOwner = (subquery = (Subquery)element).PathOwner;
+				foreach (RolePathOwnerUsesSharedSubquery sharedLink in RolePathOwnerUsesSharedSubquery.GetLinksToSharedWithPathOwnerCollection(subquery))
+				{
+					if (currentOwner == null)
+					{
+						RolePathOwner newOwner = sharedLink.PathOwner;
+						sharedLink.Delete();
+						new RolePathOwnerOwnsSubquery(newOwner, subquery);
+						return;
+					}
+					else if (currentOwner == sharedLink.PathOwner)
+					{
+						sharedLink.Delete();
+						return;
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// DeleteRule: typeof(RolePathOwnerOwnsSubquery)
 		/// Validate state on subquery owner link deletion. If the subquery
 		/// itself is not deleted, transfer ownership of the subquery to a
 		/// <see cref="RolePathOwner"/> that shares this subquery, or delete
 		/// the subquery otherwise.
 		/// </summary>
-		private static void SubqueryDeletedRule(ElementDeletedEventArgs e)
+		private static void OwnedSubqueryDeletedRule(ElementDeletedEventArgs e)
 		{
-			RolePathOwnerHasSubquery link = (RolePathOwnerHasSubquery)e.ModelElement;
-			bool isOwningLink = link is RolePathOwnerOwnsSubquery;
+			RolePathOwnerOwnsSubquery link = (RolePathOwnerOwnsSubquery)e.ModelElement;
 			RolePathOwner owner = link.PathOwner;
 			Subquery subquery;
-			if (isOwningLink &&
-				!(subquery = link.Subquery).IsDeleted)
+			if (!(subquery = link.Subquery).IsDeleted)
 			{
 				foreach (RolePathOwnerUsesSharedSubquery sharedLink in RolePathOwnerUsesSharedSubquery.GetLinksToSharedWithPathOwnerCollection(subquery))
 				{
@@ -2917,6 +2992,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return;
 				}
 				subquery.Delete();
+			}
+		}
+		/// <summary>
+		/// RolePlayerChangeRule: typeof(RolePathOwnerOwnsSubquery)
+		/// Changing a path owner should attach a sharing link on the subquery with the previous owner.
+		/// </summary>
+		private static void OwnedSubqueryRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		{
+			if (e.DomainRole.Id == RolePathOwnerOwnsSubquery.PathOwnerDomainRoleId)
+			{
+				RolePathOwner oldOwner = (RolePathOwner)e.OldRolePlayer;
+				Subquery query = ((RolePathOwnerOwnsSubquery)e.ElementLink).Subquery;
+				if (null == RolePathOwnerUsesSharedSubquery.GetLink(oldOwner, query))
+				{
+					new RolePathOwnerUsesSharedSubquery(oldOwner, query);
+				}
 			}
 		}
 		/// <summary>
@@ -5307,7 +5398,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
+			Guid testRoleId = e.DomainRole.Id;
+			if (testRoleId == RolePathOwnerOwnsLeadRolePath.PathOwnerDomainRoleId || testRoleId == RolePathOwnerUsesSharedLeadRolePath.PathOwnerDomainRoleId)
 			{
 				DeleteProjectionForDetachedPath((RolePathOwner)e.OldRolePlayer, ((RolePathOwnerHasLeadRolePath)e.ElementLink).RolePath);
 			}
@@ -5456,7 +5548,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
+			Guid testRoleId = e.DomainRole.Id;
+			if (testRoleId == RolePathOwnerOwnsLeadRolePath.PathOwnerDomainRoleId || testRoleId == RolePathOwnerUsesSharedLeadRolePath.PathOwnerDomainRoleId)
 			{
 				FactTypeDerivationRule derivationRule;
 				if (null != (derivationRule = e.NewRolePlayer as FactTypeDerivationRule) &&
@@ -5482,19 +5575,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// RolePlayerChangeRule: typeof(RolePathOwnerHasSubquery), FireTime=LocalCommit, Priority=FrameworkDomainModel.BeforeDelayValidateRulePriority;
-		/// Clear the ExternalDefinition setting when subqueries are added to the derivation rule and
-		/// eliminate projections for detached but undeleted paths.
+		/// Clear the ExternalDefinition setting when subqueries are added to the derivation rule.
 		/// </summary>
 		private static void SubqueryRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			if (e.DomainRole.Id == RolePathOwnerHasSubquery.PathOwnerDomainRoleId)
+			Guid testRoleId = e.DomainRole.Id;
+			FactTypeDerivationRule derivationRule;
+			if ((testRoleId == RolePathOwnerOwnsSubquery.PathOwnerDomainRoleId || testRoleId == RolePathOwnerUsesSharedSubquery.PathOwnerDomainRoleId) &&
+				null != (derivationRule = e.NewRolePlayer as FactTypeDerivationRule) &&
+				!derivationRule.IsDeleted)
 			{
-				FactTypeDerivationRule derivationRule;
-				if (null != (derivationRule = e.NewRolePlayer as FactTypeDerivationRule) &&
-					!derivationRule.IsDeleted)
-				{
-					derivationRule.ExternalDerivation = false;
-				}
+				derivationRule.ExternalDerivation = false;
 			}
 		}
 		#endregion // Validation Rule Methods
@@ -6249,7 +6340,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
 			SubtypeDerivationRule derivationRule;
-			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId &&
+			Guid testRoleId = e.DomainRole.Id;
+			if ((testRoleId == RolePathOwnerOwnsLeadRolePath.PathOwnerDomainRoleId || testRoleId == RolePathOwnerUsesSharedLeadRolePath.PathOwnerDomainRoleId) &&
 				null != (derivationRule = e.NewRolePlayer as SubtypeDerivationRule) &&
 				!derivationRule.IsDeleted)
 			{
@@ -6277,7 +6369,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		private static void SubqueryRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
 			SubtypeDerivationRule derivationRule;
-			if (e.DomainRole.Id == RolePathOwnerHasSubquery.PathOwnerDomainRoleId &&
+			Guid testRoleId = e.DomainRole.Id;
+			if ((testRoleId == RolePathOwnerOwnsSubquery.PathOwnerDomainRoleId || testRoleId == RolePathOwnerUsesSharedSubquery.PathOwnerDomainRoleId) &&
 				null != (derivationRule = e.NewRolePlayer as SubtypeDerivationRule) &&
 				!derivationRule.IsDeleted)
 			{
@@ -7203,7 +7296,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void LeadRolePathRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
-			if (e.DomainRole.Id == RolePathOwnerHasLeadRolePath.PathOwnerDomainRoleId)
+			Guid testRoleId = e.DomainRole.Id;
+			if (testRoleId == RolePathOwnerOwnsLeadRolePath.PathOwnerDomainRoleId || testRoleId == RolePathOwnerUsesSharedLeadRolePath.PathOwnerDomainRoleId)
 			{
 				DeleteProjectionForDetachedPath((RolePathOwner)e.OldRolePlayer, ((RolePathOwnerHasLeadRolePath)e.ElementLink).RolePath);
 			}

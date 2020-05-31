@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -81,6 +81,15 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <returns>An array of instances, or null</returns>
 		T[] GetTypedDomainModelProviders<T>() where T : class;
 		/// <summary>
+		/// Retrieve a cached set of domain model instances that implement the requested interface.
+		/// Can be implemented using the <see cref="TypedDomainModelProviderCache"/> class.
+		/// </summary>
+		/// <typeparam name="T">The interface to test</typeparam>
+		/// <param name="dependencyOrder">If true, then return multiple matches in
+		/// dependency order, with the least dependent models first.</param>
+		/// <returns>An array of instances, or null</returns>
+		T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class;
+		/// <summary>
 		/// Retrieve the <see cref="ICopyClosureManager"/> interface for this store.
 		/// Can be implemented using an instance of the <see cref="CopyClosureManager"/>
 		/// class that implements this interface.
@@ -133,6 +142,158 @@ namespace ORMSolutions.ORMArchitect.Framework
 		object ReferencedElement { get;}
 	}
 	#endregion // IElementReference interface
+	#region SoftExtensionDependencyAttribute class
+	/// <summary>
+	/// An attribute to add to a domain model to create a dependency on a domain
+	/// model that might not be loaded. This will force the attributed domain model
+	/// to load before or after the targeted domain model if the targeted model is
+	/// loaded for some other reason. This allows relative load order to be specified
+	/// between extension models that do not have hard dependencies on each other.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+	public class SoftExtensionDependencyAttribute : Attribute
+	{
+		private Guid myDependentExtensionId;
+		private bool myLoadBefore;
+		/// <summary>
+		/// Create a default <see cref="SoftExtensionDependencyAttribute"/>
+		/// </summary>
+		public SoftExtensionDependencyAttribute()
+		{
+			myDependentExtensionId = Guid.Empty;
+		}
+		/// <summary>
+		/// Create a <see cref="SoftExtensionDependencyAttribute"/> for a specific domain model.
+		/// </summary>
+		/// <param name="domainModelId">The model if for soft dependency.</param>
+		public SoftExtensionDependencyAttribute(string domainModelId)
+		{
+			myDependentExtensionId = new Guid(domainModelId);
+		}
+		/// <summary>
+		/// Create a <see cref="SoftExtensionDependencyAttribute"/> for a specific domain model.
+		/// </summary>
+		/// <param name="domainModelId">The model if for soft dependency.</param>
+		/// <param name="loadBefore">Load this model before the referenced dependency instead of after.</param>
+		public SoftExtensionDependencyAttribute(string domainModelId, bool loadBefore)
+		{
+			myDependentExtensionId = new Guid(domainModelId);
+			myLoadBefore = loadBefore;
+		}
+		/// <summary>
+		/// The <see cref="Guid"/> form of the identifier.
+		/// </summary>
+		public Guid DependentExtensionId
+		{
+			get
+			{
+				return myDependentExtensionId;
+			}
+		}
+		/// <summary>
+		/// The string form of the model identifier. Used during
+		/// attribute construction.
+		/// </summary>
+		public string DependentExtensionIdString
+		{
+			get
+			{
+				return myDependentExtensionId.ToString();
+			}
+			set
+			{
+				myDependentExtensionId = new Guid(value);
+			}
+		}
+		/// <summary>
+		/// Load this model before the dependency instead of after.
+		/// </summary>
+		public bool LoadBefore
+		{
+			get
+			{
+				return myLoadBefore;
+			}
+			set
+			{
+				myLoadBefore = value;
+			}
+		}
+		/// <summary>
+		/// Standard override, empty if id not set
+		/// </summary>
+		public override bool IsDefaultAttribute()
+		{
+			return myDependentExtensionId == Guid.Empty;
+		}
+	}
+	#endregion // SoftExtensionDependencyAttribute class
+	#region AlsoLoadDomainModelAttribute class
+	/// <summary>
+	/// Add as an attribute to a registered extension type to force additional domain
+	/// models to load with the registered domain model. Apart from being public,
+	/// there are no restrictions or assumptions about the secondary models, including
+	/// no topological dependencies between the models.
+	/// </summary>
+	/// <remarks>These models are assumed to be secondary, so they do not appear in the
+	/// extension manager. All extensions are identified with a namespace URI, so we require
+	/// URIs here as well for consistency.</remarks>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+	public class AlsoLoadDomainModelAttribute : Attribute
+	{
+		private string myNamespaceURI;
+		private Type myAlsoLoadType;
+		/// <summary>
+		/// Create a default <see cref="AlsoLoadDomainModelAttribute"/>
+		/// </summary>
+		public AlsoLoadDomainModelAttribute()
+		{
+		}
+		/// <summary>
+		/// Create a <see cref="AlsoLoadDomainModelAttribute"/> for a specific domain model.
+		/// </summary>
+		public AlsoLoadDomainModelAttribute(string namespaceURI, Type type)
+		{
+			myAlsoLoadType = type;
+			myNamespaceURI = namespaceURI;
+		}
+		/// <summary>
+		/// The additional domain model that is loaded with the context domain model.
+		/// </summary>
+		public Type AlsoLoadType
+		{
+			get
+			{
+				return myAlsoLoadType;
+			}
+			set
+			{
+				myAlsoLoadType = value;
+			}
+		}
+		/// <summary>
+		/// Load this model before the dependency instead of after.
+		/// </summary>
+		public string NamespaceURI
+		{
+			get
+			{
+				return myNamespaceURI;
+			}
+			set
+			{
+				myNamespaceURI = value;
+			}
+		}
+		/// <summary>
+		/// Standard override, empty if data not set.
+		/// </summary>
+		public override bool IsDefaultAttribute()
+		{
+			return myNamespaceURI == null && myAlsoLoadType == null;
+		}
+	}
+	#endregion // AlsoLoadDomainModelAttribute class
 	#region DomainModelTypeProviderCache class
 	/// <summary>
 	/// Helper class to implement <see cref="M:IFrameworkServices.GetTypedDomainModelProviders"/>
@@ -141,6 +302,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 	{
 		private Store myStore;
 		private Dictionary<Type, Array> myProviderCache;
+		private Dictionary<Type, Array> myDependecyOrderedProviderCache;
+		private DomainModel[] myDependencyOrderedDomainModels;
 		/// <summary>
 		/// Create a new DomainModelTypeProviderCache
 		/// </summary>
@@ -162,15 +325,28 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <summary>
 		/// Get an array of providers of the requested type, or null if the interface is not implemented
 		/// </summary>
-		public T[] GetTypedDomainModelProviders<T>() where T : class
+		/// <param name="dependencyOrder">Return matching domain models in strict
+		/// dependency order, with less dependent domain models listed first.</param>
+		public T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class
 		{
 			T[] retVal;
-			Dictionary<Type, Array> cache = myProviderCache;
+			Dictionary<Type, Array> cache = dependencyOrder ? myDependecyOrderedProviderCache : myProviderCache;
 			Type TType = typeof(T);
 			if (cache == null)
 			{
-				myProviderCache = cache = new Dictionary<Type, Array>();
-				retVal = Utility.GetTypedDomainModels<T>(myStore.DomainModels);
+				cache = new Dictionary<Type, Array>();
+				IEnumerable<DomainModel> models;
+				if (dependencyOrder)
+				{
+					myDependecyOrderedProviderCache = cache;
+					models = myDependencyOrderedDomainModels = GetDependencyOrderedDomainModels(myStore);
+				}
+				else
+				{
+					myProviderCache = cache;
+					models = myStore.DomainModels;
+				}
+				retVal = Utility.GetTypedDomainModels<T>(models);
 				cache.Add(TType, retVal);
 			}
 			else
@@ -182,11 +358,188 @@ namespace ORMSolutions.ORMArchitect.Framework
 				}
 				else
 				{
-					retVal = Utility.GetTypedDomainModels<T>(myStore.DomainModels);
+					retVal = Utility.GetTypedDomainModels<T>(dependencyOrder ? (IEnumerable<DomainModel>)myDependencyOrderedDomainModels : myStore.DomainModels);
 					cache.Add(TType, retVal);
 				}
 			}
 			return retVal;
+		}
+		private static DomainModel[] GetDependencyOrderedDomainModels(Store store)
+		{
+			// Get basic information
+			ICollection<DomainModel> startModels = store.DomainModels;
+			int modelCount = startModels.Count;
+			DomainModel[] allModels = new DomainModel[modelCount];
+			startModels.CopyTo(allModels, 0);
+
+			// There is no way to do a dependency graph sort using a quicksort, so we do a
+			// topological sort instead (this is a directed acyclic graph)
+
+			// Track head nodes (that nothing depends on). We default these to the original
+			// model index, then change to ~index as we examine the contents to indicate a
+			// non-head node. This also gives us a quick lookup to see if a referenced target
+			// is actually included in our original list.
+			Dictionary<Guid, int> headNodes = new Dictionary<Guid, int>();
+			for (int i = 0; i < modelCount; ++i)
+			{
+				headNodes[allModels[i].DomainModelInfo.Id] = i;
+			}
+
+			// A dictionary of direct dependencies. We filter the dependencies before adding to
+			// guarantee that the target is available.
+			Dictionary<Guid, List<Guid>> directDependencies = new Dictionary<Guid, List<Guid>>();
+
+			// Retrieve direct dependency information for both hard and soft dependencies.
+			// Note that soft dependency allows reversing the dependency, so dependencies
+			// can be added before or after the model dependencies are walked. Defer all
+			// sort operations until all models are processed.
+			for (int iModel = 0; iModel < modelCount; ++iModel)
+			{
+				DomainModel domainModel = allModels[iModel];
+				Type type = domainModel.GetType();
+				Guid currentModelId = domainModel.DomainModelInfo.Id;
+				List<Guid> dependentIds;
+				bool currentModelHadDependencies = directDependencies.TryGetValue(currentModelId, out dependentIds);
+#if VISUALSTUDIO_10_0
+				object[] extendsAttributes = type.GetCustomAttributes(typeof(DependsOnDomainModelAttribute), false);
+#else
+				object[] extendsAttributes = type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false);
+#endif
+				for (int i = 0; i < extendsAttributes.Length; ++i)
+				{
+#if VISUALSTUDIO_10_0
+					Type extendedModelType = ((DependsOnDomainModelAttribute)extendsAttributes[i]).ExtendedDomainModelType;
+					object[] extensionIdAttributes = extendedModelType.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+					Guid dependentId = (extensionIdAttributes.Length != 0) ? ((DomainObjectIdAttribute)extensionIdAttributes[0]).Id : Guid.Empty;
+#else
+					Guid dependentId = ((ExtendsDomainModelAttribute)extendsAttributes[i]).ExtendedModelId;
+#endif
+					int headIndex;
+					if (dependentId != Guid.Empty && headNodes.TryGetValue(dependentId, out headIndex))
+					{
+						if (headIndex >= 0)
+						{
+							headNodes[dependentId] = ~headIndex;
+						}
+						(dependentIds ?? (dependentIds = new List<Guid>())).Add(dependentId);
+					}
+				}
+
+				// Do the same for soft extensions, which apply only if the target model is loaded
+				// but have no effect otherwise.
+				extendsAttributes = type.GetCustomAttributes(typeof(SoftExtensionDependencyAttribute), false);
+				for (int i = 0; i < extendsAttributes.Length; ++i)
+				{
+					SoftExtensionDependencyAttribute softExtension = ((SoftExtensionDependencyAttribute)extendsAttributes[i]);
+					Guid dependentId = softExtension.DependentExtensionId;
+					int headIndex;
+					if (dependentId != Guid.Empty && headNodes.TryGetValue(dependentId, out headIndex))
+					{
+						if (softExtension.LoadBefore)
+						{
+							// Reverse the dependency, modify the opposite list and
+							// make sure this is marked as a leaf node.
+							List<Guid> oppositeDependencies;
+							if (directDependencies.TryGetValue(dependentId, out oppositeDependencies))
+							{
+								if (oppositeDependencies.Contains(currentModelId))
+								{
+									oppositeDependencies = null; // Sanity test, already tracked, don't touch it.
+								}
+							}
+							else
+							{
+								directDependencies[dependentId] = oppositeDependencies = new List<Guid>();
+							}
+							if (oppositeDependencies != null)
+							{
+								oppositeDependencies.Add(currentModelId);
+
+								// Flip the original index so we know this model is used.
+								if (headNodes[currentModelId] == iModel)
+								{
+									headNodes[currentModelId] = ~iModel;
+								}
+							}
+						}
+						else
+						{
+							if (headIndex >= 0)
+							{
+								headNodes[dependentId] = ~headIndex;
+							}
+							(dependentIds ?? (dependentIds = new List<Guid>())).Add(dependentId);
+						}
+					}
+				}
+
+				if (dependentIds != null && !currentModelHadDependencies)
+				{
+					directDependencies[currentModelId] = dependentIds;
+				}
+			}
+
+			// Sort all dependency lists based on the original order so we preserve as much
+			// of the default (class name based) order as we can.
+			foreach (List<Guid> dependentIds in directDependencies.Values)
+			{
+				if (dependentIds.Count > 1)
+				{
+					dependentIds.Sort(delegate (Guid x, Guid y)
+					{
+						int index1 = headNodes[x];
+						if (index1 < 0)
+						{
+							index1 = ~index1;
+						}
+						int index2 = headNodes[y];
+						if (index2 < 0)
+						{
+							index2 = ~index1;
+						}
+						return index1.CompareTo(index2);
+					});
+				}
+			}
+
+			// Apply a recursive depth-first-sort algorithm starting from head nodes, record the results.
+			DomainModel[] retVal = new DomainModel[modelCount];
+			int nextResultIndex = 0;
+			foreach (KeyValuePair<Guid, int> kvp in headNodes)
+			{
+				if (kvp.Value >= 0) // Index not inverted, nothing references this
+				{
+					VisitDependencies(kvp.Key, headNodes, directDependencies, allModels, retVal, ref nextResultIndex);
+				}
+			}
+
+			return retVal;
+		}
+		private static void VisitDependencies(Guid modelId, Dictionary<Guid, int> headNodes, Dictionary<Guid, List<Guid>> directDependencies, DomainModel[] allModels, DomainModel[] results, ref int nextResultIndex)
+		{
+			int modelIndex = headNodes[modelId];
+			if (modelIndex < 0)
+			{
+				modelIndex = ~modelIndex;
+			}
+			DomainModel model = allModels[modelIndex];
+			if (model == null)
+			{
+				// Already processed
+				return;
+			}
+			allModels[modelIndex] = null;
+
+			List<Guid> dependencies;
+			if (directDependencies.TryGetValue(modelId, out dependencies))
+			{
+				for (int i = 0, count = dependencies.Count; i < count; ++i)
+				{
+					VisitDependencies(dependencies[i], headNodes, directDependencies, allModels, results, ref nextResultIndex);
+				}
+			}
+			results[nextResultIndex] = model;
+			++nextResultIndex;
 		}
 	}
 	#endregion // DomainModelTypeProviderCache class

@@ -393,6 +393,7 @@
 			<se:Embed RelationshipName="EntityTypeSubtypeHasEntityTypeSubtypeInstance" RoleName="EntityTypeSubtypeInstance"/>
 		</se:Container>
 		<se:Link RelationshipName="ObjectTypeImpliesMandatoryConstraint" RoleName="MandatoryConstraint" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="MandatoryConstraintIsInherentForObjectType" RoleName="MandatoryConstraint" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasEntityTypeRequiresReferenceSchemeError" RoleName="ReferenceSchemeError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasDuplicateNameError" RoleName="DuplicateNameError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="ObjectTypeHasPreferredIdentifierRequiresMandatoryError" RoleName="PreferredIdentifierRequiresMandatoryError" WriteStyle="NotWritten"/>
@@ -1187,6 +1188,7 @@
 			</se:Condition>
 		</se:Attribute>
 		<se:Link Name="ImpliedByObjectType" RelationshipName="ObjectTypeImpliesMandatoryConstraint" RoleName="ObjectType"/>
+		<se:Link Name="InherentForObjectType" RelationshipName="MandatoryConstraintIsInherentForObjectType" RoleName="ObjectType"/>
 		<se:Link RelationshipName="ExclusiveOrConstraintCoupler" RoleName="ExclusionConstraint" Name="ExclusiveOrExclusionConstraint"/>
 		<se:Link RelationshipName="MandatoryConstraintHasPopulationMandatoryError" RoleName="PopulationMandatoryError" WriteStyle="NotWritten"/>
 		<se:Link RelationshipName="MandatoryConstraintHasExclusionContradictsMandatoryError" RoleName="ExclusionContradictsMandatoryError" WriteStyle="NotWritten"/>

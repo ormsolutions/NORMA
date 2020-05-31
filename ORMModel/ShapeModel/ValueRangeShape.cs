@@ -91,7 +91,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (brushId == ValueRangeTextBrush &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>>(true)) &&
 				null != (element = (ValueConstraint)ModelElement))
 			{
 				for (int i = 0; i < providers.Length; ++i)

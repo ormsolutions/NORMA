@@ -36,6 +36,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if ((EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.UserInterfaceEvents) == (reasons & (EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.UserInterfaceEvents)))
 			{
 				Store store = Store;
+				ORMDiagram.ManageEventHandlers(store, eventManager, action);
 				ORMBaseShape.ManageEventHandlers(store, eventManager, action);
 				ReadingShape.ManageEventHandlers(store, eventManager, action);
 				ExternalConstraintShape.ManageEventHandlers(store, eventManager, action);

@@ -269,7 +269,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (forLink)
 				{
 					IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, ObjectTypePlaysRole>[] providers;
-					if (null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, ObjectTypePlaysRole>>()))
+					if (null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, ObjectTypePlaysRole>>(true)))
 					{
 						for (int i = 0; i < providers.Length; ++i)
 						{
@@ -288,7 +288,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>[] providers;
 					Role playedRole;
 					MandatoryConstraint mandatory;
-					if (null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
+					if (null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>(true)) &&
 						null != (playedRole = link.PlayedRole) &&
 						null != (mandatory = playedRole.SimpleMandatoryConstraint))
 					{
@@ -326,7 +326,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			Store store;
 			if (brushId == DiagramBrushes.ConnectionLineDecorator &&
 				null != (store = Utility.ValidateStore(Store)) &&
-				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>()) &&
+				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, RolePlayerLink, MandatoryConstraint>>(true)) &&
 				null != (solidBrush = brush as SolidBrush) &&
 				null != (link = ModelElement as ObjectTypePlaysRole) &&
 				null != (playedRole = link.PlayedRole) &&

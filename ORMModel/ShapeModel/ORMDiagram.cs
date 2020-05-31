@@ -65,7 +65,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	{
 	}
 	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "Diagram.MenuDisplayName", "Diagram.TabImage", "Diagram.BrowserImage", NestedDiagramInitializerTypeName="DiagramInitializer")]
-	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements, IStickyObjectDiagram
+	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements, IStickyObjectDiagram, IInvalidateDisplay
 	{
 		#region DiagramInitializer class
 		/// <summary>
@@ -125,6 +125,59 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			base.Name = ResourceStrings.DiagramCommandNewPage.Replace("&", "");
 		}
 		#endregion // Constructors
+		#region Auto-invalidate tracking, IInvalidateDisplay implementation
+		/// <summary>
+		/// Implements <see cref="IInvalidateDisplay.InvalidateRequired()"/>
+		/// Call to automatically invalidate the shape during events.
+		/// Invalidates during the original event sequence as well as undo and redo.
+		/// </summary>
+		protected void InvalidateRequired()
+		{
+			InvalidateRequired(false);
+		}
+		void IInvalidateDisplay.InvalidateRequired()
+		{
+			InvalidateRequired();
+		}
+		/// <summary>
+		/// Implements <see cref="IInvalidateDisplay.InvalidateRequired(bool)"/>
+		/// Call to automatically invalidate the shape during events.
+		/// Invalidates during the original event sequence as well as undo and redo.
+		/// </summary>
+		/// <param name="refreshBitmap">Value to forward to the Invalidate method's refreshBitmap property during event playback</param>
+		protected void InvalidateRequired(bool refreshBitmap)
+		{
+			long? newValue = ORMShapeDomainModel.GetNewUpdateCounterValue(this, refreshBitmap);
+			if (newValue.HasValue)
+			{
+				UpdateCounter = newValue.Value;
+			}
+		}
+		void IInvalidateDisplay.InvalidateRequired(bool refreshBitmap)
+		{
+			InvalidateRequired(refreshBitmap);
+		}
+		/// <summary>
+		/// Manages <see cref="EventHandler{TEventArgs}"/>s in the <see cref="Store"/> for <see cref="ORMBaseShape"/>s.
+		/// </summary>
+		/// <param name="store">The <see cref="Store"/> for which the <see cref="EventHandler{TEventArgs}"/>s should be managed.</param>
+		/// <param name="eventManager">The <see cref="ModelingEventManager"/> used to manage the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		/// <param name="action">The <see cref="EventHandlerAction"/> that should be taken for the <see cref="EventHandler{TEventArgs}"/>s.</param>
+		public static void ManageEventHandlers(Store store, ModelingEventManager eventManager, EventHandlerAction action)
+		{
+			DomainDataDirectory dataDirectory = store.DomainDataDirectory;
+			DomainPropertyInfo propertyInfo = dataDirectory.FindDomainProperty(UpdateCounterDomainPropertyId);
+			eventManager.AddOrRemoveHandler(propertyInfo, new EventHandler<ElementPropertyChangedEventArgs>(UpdateRequiredEvent), action);
+		}
+		private static void UpdateRequiredEvent(object sender, ElementPropertyChangedEventArgs e)
+		{
+			ORMDiagram diagram = (ORMDiagram)e.ModelElement;
+			if (!diagram.IsDeleted)
+			{
+				diagram.Invalidate(Math.Abs(unchecked((long)e.OldValue - (long)e.NewValue)) != 1L);
+			}
+		}
+		#endregion // Auto-invalidate tracking, IInvalidateDisplay implementation
 		#region DragDrop overrides
 		/// <summary>
 		/// Check to see if <see cref="DiagramDragEventArgs.Data">dragged object</see> is a type that can be dropped on the <see cref="Diagram"/>,
@@ -134,7 +187,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			IDataObject data = e.Data;
 			string[] dataFormats = data.GetFormats();
-			ElementGrouping grouping;
 			if (Array.IndexOf(dataFormats, typeof(ObjectType).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(FactType).FullName) >= 0 ||
 				Array.IndexOf(dataFormats, typeof(SetComparisonConstraint).FullName) >= 0 ||
@@ -144,12 +196,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
 			}
-			else if (Array.IndexOf(dataFormats, typeof(ElementGrouping).FullName) >= 0 &&
-				null != (grouping = data.GetData(typeof(ElementGrouping)) as ElementGrouping) &&
-				grouping.Store != Store)
+			else if (Array.IndexOf(dataFormats, typeof(ShapeFreeDataObjectSourceStore).FullName) > 0 &&
+				(data.GetData(typeof(ShapeFreeDataObjectSourceStore)) as Store) != Store)
 			{
-				// Allow a group to be dragged across stores. This does not create shapes, it
-				// just duplicates all of the elements.
+				// Allow shape-free members to be dragged across stores. This does not create
+				// shapes, it just duplicates all of the closure elements. This includes
+				// ElementGrouping in the core model, but is also available for extensions.
+				// The extra data object must be added as a signal when the data object for
+				// a shape-free element is created.
 				e.Effect = DragDropEffects.All;
 				e.Handled = true;
 			}
@@ -303,9 +357,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			SetConstraint setConstraint = null;
 			ModelNote modelNote = null;
 			ModelElement element = null;
-			ElementGrouping grouping = null;
 			LinkedElementCollection<FactType> verifyFactTypeList = null;
 			Store store = Store;
+			IList<ModelElement> closureElements = null;
+			Store sourceStore;
 			if (null != (objectType = (dataObject == null) ? elementToPlace as ObjectType : dataObject.GetData(typeof(ObjectType)) as ObjectType))
 			{
 				factType = objectType.NestedFactType;
@@ -341,30 +396,54 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				element = modelNote;
 			}
-			else if (null != (grouping = (dataObject == null) ? elementToPlace as ElementGrouping : dataObject.GetData(typeof(ElementGrouping)) as ElementGrouping))
-			{
-				if (store != grouping.Store)
-				{
-					// Support cross-store group drag. Shapes are not created.
-					element = grouping;
-				}
-			}
-			if (verifyFactTypeList != null)
-			{
-				if (!VerifyCorrespondingFactTypes(verifyFactTypeList, null))
-				{
-					element = null;
-				}
-			}
+
 			if (element != null)
 			{
-				Store sourceStore = element.Store;
+				closureElements = (verifyFactTypeList == null || VerifyCorrespondingFactTypes(verifyFactTypeList, null)) ? new ModelElement[] { element } : null;
+			}
+			else if (dataObject != null &&
+				null != (sourceStore = dataObject.GetData(typeof(ShapeFreeDataObjectSourceStore)) as Store) &&
+				store != sourceStore)
+			{
+				// Support cross-store drag drop of specially tagged elements with no associated shape.
+				// For the core model this is the ElementGrouping type, so there will always be something here.
+				// This list is retrieved from the source store in case the target store does not have the
+				// extension loaded for the shape free element.
+				List<ModelElement> shapeFreeData = null;
+				IShapeFreeDataObjectProvider[] shapeFreeProviders = ((IFrameworkServices)sourceStore).GetTypedDomainModelProviders<IShapeFreeDataObjectProvider>();
+				for (int i = 0; i < shapeFreeProviders.Length; ++i)
+				{
+					Type[] dataObjectTypes = shapeFreeProviders[i].ShapeFreeDataObjectTypes;
+					for (int j = 0; j < dataObjectTypes.Length; ++j)
+					{
+						Type testType = dataObjectTypes[j];
+						ModelElement testElement;
+						if (null != (testElement = dataObject.GetData(testType) as ModelElement) &&
+							store != testElement.Store)
+						{
+							if (shapeFreeData == null)
+							{
+								closureElements = shapeFreeData = new List<ModelElement>();
+								closureElements.Add(element = testElement);
+							}
+							else
+							{
+								shapeFreeData.Add(testElement);
+							}
+						}
+					}
+				}
+			}
+
+			if (closureElements != null)
+			{
+				sourceStore = element.Store;
 				IDictionary<Guid, IClosureElement> copyClosure = null;
 				ICopyClosureManager closureManager = null;
 				bool crossStoreCopy;
 				if ((crossStoreCopy = store != sourceStore) &&
 					(null == (closureManager = ((IFrameworkServices)sourceStore).CopyClosureManager) ||
-					null == (copyClosure = closureManager.GetCopyClosure(new ModelElement[] { element }))))
+					null == (copyClosure = closureManager.GetCopyClosure(closureElements))))
 				{
 					return false;
 				}
@@ -406,17 +485,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						CopyClosureIntegrationResult integrationResult = closureManager.IntegrateCopyClosure(copyClosure, sourceStore, store, new ModelElement[] { model }, true);
 						integratedElements = integrationResult.CopiedElements;
 
-						// Translate the element to the equivalent element in the other store
-						if (!integratedElements.TryGetValue(element.Id, out element))
-						{
-							return false; // Transaction rolls back on dispose
-						}
-
 						// Track missing references for a message after integration is complete
 						Guid[] missingExtensions = integrationResult.MissingExtensionModels;
 						if (missingExtensions != null)
 						{
 							store.PropertyBag["ORMDiagram.MergeMissingExtensions"] = missingExtensions;
+						}
+
+						// Translate each closure element to the equivalent element in the other store
+						for (int i = 0, count = closureElements.Count; i < count; ++i)
+						{
+							ModelElement closureElement = closureElements[i];
+							if (!integratedElements.TryGetValue(closureElement.Id, out closureElement))
+							{
+								return false; // Transaction rolls back on dispose
+							}
+							closureElements[i] = closureElement;
+							if (i == 0)
+							{
+								element = closureElement;
+							}
 						}
 
 						// Add some context information for view fixup
@@ -3656,6 +3744,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private LinkShape CreateConnectorForObjectTypePlaysRole(ObjectTypePlaysRole newElement)
 		{
 			return this.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(CreatingRolePlayerProxyLinkKey) ? (LinkShape)new RolePlayerProxyLink(this.Partition) : new RolePlayerLink(this.Partition);
+		}
+		private long GetUpdateCounterValue()
+		{
+			return ORMShapeDomainModel.GetCurrentUpdateCounterValue(this);
+		}
+		private void SetUpdateCounterValue(long newValue)
+		{
+			// Nothing to do, we're just trying to create a transaction log entry
 		}
 	}
 	#endregion // ORMDiagramBase class

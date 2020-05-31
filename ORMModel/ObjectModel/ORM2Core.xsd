@@ -2278,8 +2278,21 @@
 		<xs:complexContent>
 			<xs:extension base="SetConstraintType">
 				<xs:sequence>
-					<xs:element name="ExclusiveOrExclusionConstraint" type="ExclusionConstraintRef" minOccurs="0"/>
-					<xs:element name="ImpliedByObjectType" type="ObjectTypeRef" minOccurs="0"/>
+					<xs:element name="ExclusiveOrExclusionConstraint" type="ExclusionConstraintRef" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The associated exclusion constraint that is combined with this mandatory constraint to form an exclusive-or pattern.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ImpliedByObjectType" type="ObjectTypeRef" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The object type with an explicit mandatory constraint pattern that implies this constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="InherentForObjectType" type="ObjectTypeRef" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The object type that would implicitly recreate this constraint if it were not explicit in the model.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
 					<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 				</xs:sequence>
 				<xs:attribute name="IsSimple" type="xs:boolean" default="false">

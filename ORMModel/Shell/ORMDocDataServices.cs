@@ -85,7 +85,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 		}
 		/// <summary>
-		/// Maintain the currently selected roe for the survey tree
+		/// Maintain the currently selected row for the survey tree
 		/// to enable reactivation in the same location.
 		/// </summary>
 		public int SurveyTreeSelectedRowCache
@@ -194,7 +194,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (!myCheckedColors)
 					{
 						myCheckedColors = true;
-						myColorsEnabled = null != ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>();
+						myColorsEnabled = null != ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>(true);
 					}
 					return myColorsEnabled;
 				}
@@ -207,7 +207,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					null != (store = Utility.ValidateStore(this.SurveyContext)))
 				{
 					// We know the next one will succeed because it worked for DynamicColorsEnabled
-					IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>[] providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>();
+					IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>[] providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMModelBrowserDynamicColor, ShapeElement, ModelElement>>(true);
 					ORMModelBrowserDynamicColor checkColor = (colorRole == SurveyDynamicColor.ForeColor) ? ORMModelBrowserDynamicColor.Foreground : ORMModelBrowserDynamicColor.Background;
 					for (int i = 0; i < providers.Length; ++i)
 					{
@@ -273,15 +273,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
-			/// Defer to <see cref="IFrameworkServices.GetTypedDomainModelProviders"/> on the document.
+			/// Defer to <see cref="IFrameworkServices.GetTypedDomainModelProviders(System.Boolean)"/> on the document.
 			/// </summary>
-			protected T[] GetTypedDomainModelProviders<T>() where T : class
+			protected T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class
 			{
-				return myServices.GetTypedDomainModelProviders<T>();
+				return myServices.GetTypedDomainModelProviders<T>(dependencyOrder);
 			}
 			T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
 			{
-				return GetTypedDomainModelProviders<T>();
+				return GetTypedDomainModelProviders<T>(false);
+			}
+			T[] IFrameworkServices.GetTypedDomainModelProviders<T>(bool dependencyOrder)
+			{
+				return GetTypedDomainModelProviders<T>(dependencyOrder);
 			}
 			/// <summary>
 			/// Defer to <see cref="IFrameworkServices.CopyClosureManager"/> on the document.
@@ -1502,9 +1506,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 		/// <summary>
 		/// Retrieve the domain models that implement a given interface for this model
-		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders"/>.
+		/// Implements <see cref="IFrameworkServices.GetTypedDomainModelProviders(System.Boolean)"/>.
 		/// </summary>
-		protected T[] GetTypedDomainModelProviders<T>() where T : class
+		protected T[] GetTypedDomainModelProviders<T>(bool dependencyOrder) where T : class
 		{
 			// Defensively verify store state
 			TypedDomainModelProviderCache cache = myTypedDomainModelProviderCache;
@@ -1519,11 +1523,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				myTypedDomainModelProviderCache = cache = new TypedDomainModelProviderCache(store);
 			}
-			return cache.GetTypedDomainModelProviders<T>();
+			return cache.GetTypedDomainModelProviders<T>(dependencyOrder);
 		}
 		T[] IFrameworkServices.GetTypedDomainModelProviders<T>()
 		{
-			return GetTypedDomainModelProviders<T>();
+			return GetTypedDomainModelProviders<T>(false);
+		}
+		T[] IFrameworkServices.GetTypedDomainModelProviders<T>(bool dependencyOrder)
+		{
+			return GetTypedDomainModelProviders<T>(dependencyOrder);
 		}
 		private CopyClosureManager myCopyClosureManager;
 		/// <summary>
@@ -2184,7 +2192,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private MultiDiagramDocView ActivateView(Diagram diagram)
 		{
 			MultiDiagramDocView docView = null;
-#region Walk RunningDocumentTable
+			#region Walk RunningDocumentTable
 			IVsRunningDocumentTable docTable = (IVsRunningDocumentTable)ServiceProvider.GetService(typeof(IVsRunningDocumentTable));
 			IEnumRunningDocuments docIter;
 			ErrorHandler.ThrowOnFailure(docTable.GetRunningDocumentsEnum(out docIter));
@@ -2239,7 +2247,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			} while (fetched != 0 && docView == null);
-#endregion // Walk RunningDocumentTable
+			#endregion // Walk RunningDocumentTable
 			return docView;
 		}
 		bool IORMToolServices.ActivateShape(ShapeElement shape, NavigateToWindow window)
@@ -2644,18 +2652,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		{
 			return NavigateTo(target, window);
 		}
-#endregion // IORMToolServices Implementation
-#region TaskProvider implementation
+		#endregion // IORMToolServices Implementation
+		#region TaskProvider implementation
 		/// <summary>
 		/// Default implementation of a task provider
 		/// </summary>
 		[CLSCompliant(false)]
 		protected class ORMTaskProvider : TaskProvider, IORMToolTaskProvider
 		{
-#region Member Variables
+			#region Member Variables
 			ORMDesignerDocData myDocument;
-#endregion //Member Variables
-#region Constructors
+			#endregion //Member Variables
+			#region Constructors
 			/// <summary>
 			/// Create a task provider for this document
 			/// </summary>
@@ -2666,8 +2674,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				Debug.Assert(document.myTaskProvider == null); // Only need one
 				myDocument = document;
 			}
-#endregion // Constructors
-#region IORMToolTaskProvider Implementation
+			#endregion // Constructors
+			#region IORMToolTaskProvider Implementation
 			/// <summary>
 			/// Implements <see cref="IORMToolTaskProvider.CreateTask"/>
 			/// </summary>
@@ -2743,7 +2751,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				return NavigateTo(task);
 			}
-#endregion // IORMToolTaskProvider Implementation
+			#endregion // IORMToolTaskProvider Implementation
 		}
 		/// <summary>
 		/// Default implementation of a task item
@@ -2751,11 +2759,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		[CLSCompliant(false)]
 		protected class ORMTaskItem : Task, IORMToolTaskItem
 		{
-#region Member Variables
+			#region Member Variables
 			IRepresentModelElements myElementLocator;
 			IORMToolTaskProvider myOwner;
-#endregion //Member Variables
-#region Constructors
+			#endregion //Member Variables
+			#region Constructors
 			private ORMTaskItem()
 			{
 			}
@@ -2767,8 +2775,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				myOwner = owner;
 			}
-#endregion // Constructors
-#region IORMToolTaskItem Implementation
+			#endregion // Constructors
+			#region IORMToolTaskItem Implementation
 			/// <summary>
 			/// Implements <see cref="IORMToolTaskItem.ElementLocator"/> property
 			/// </summary>
@@ -2803,8 +2811,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				get { return Text; }
 				set { Text = value; }
 			}
-#endregion // IORMToolTaskItem Implementation
-#region Base overrides
+			#endregion // IORMToolTaskItem Implementation
+			#region Base overrides
 			/// <summary>
 			/// Navigate to the item associate with this task
 			/// </summary>
@@ -2816,7 +2824,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					base.OnNavigate(e);
 				}
 			}
-#endregion // Base overrides
+			#endregion // Base overrides
 		}
 		/// <summary>
 		/// Create a new task provider. Called once the first time the TaskProvider
@@ -2827,28 +2835,28 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			Debug.Assert(myTaskProvider == null);
 			return new ORMTaskProvider(this);
 		}
-#endregion // TaskProvider implementation
-#region UIModelingEventManager class
-		/// <summary>  
-		/// A class to display an exception message without  
-		/// breaking an event loop.  
-		/// </summary>  
+		#endregion // TaskProvider implementation
+		#region UIModelingEventManager class
+		/// <summary>
+		/// A class to display an exception message without
+		/// breaking an event loop.
+		/// </summary>
 		private class UIModelingEventManager : ModelingEventManager
 		{
 			private IServiceProvider myServiceProvider;
-			/// <summary>  
-			/// Create a new UIModelingEventManager  
-			/// </summary>  
+			/// <summary>
+			/// Create a new UIModelingEventManager
+			/// </summary>
 			public UIModelingEventManager(Store store, IServiceProvider serviceProvider)
 				: base(store)
 			{
 				myServiceProvider = serviceProvider;
 			}
-			/// <summary>  
-			/// Use the standard <see cref="System.Windows.Forms.Design.IUIService"/> to display  
-			/// the exception message.  
-			/// </summary>  
-			/// <param name="ex">The exception to display.</param>  
+			/// <summary>
+			/// Use the standard <see cref="System.Windows.Forms.Design.IUIService"/> to display
+			/// the exception message.
+			/// </summary>
+			/// <param name="ex">The exception to display.</param>
 			protected override void DisplayException(Exception ex)
 			{
 				IServiceProvider provider;
@@ -2860,6 +2868,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 		}
-#endregion // UIModelingEventManager class
+		#endregion // UIModelingEventManager class
 	}
 }
