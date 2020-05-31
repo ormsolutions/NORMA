@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA March 2019 Readme</title>
+<title>NORMA May 2020 Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	.toggle{font-size:larger;cursor:pointer;font-family: monospace; color:rgb(97, 133, 160); display:inline; padding-right:.15em;}
@@ -35,9 +35,9 @@ function toggleDisp(sign,bodyId) {
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA March 2019 Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2020 Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The March 2019 release adds support for Visual Studio 2017 and Visual Studio 2019. See detailed change notes below for specifics.<br/><br/>
+The May 2020 release is primarily a maintenance release with additional extension support for grouping. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2><span class="toggle" onclick="toggleDisp(this,'contents')">-</span>Contents</h2>
 <div id="contents">
@@ -70,9 +70,30 @@ The March 2019 release adds support for Visual Studio 2017 and Visual Studio 201
 </div>-->
 
 <hr/>
-<h2><span class="toggle" onclick="toggleDisp(this,'mar2019')">-</span>March 2019 Changes</h2>
+<h2><span class="toggle" onclick="toggleDisp(this,'mar2019')">-</span>May 2020 CTP Changes</h2>
+<div id="may2020">
+<div>The May 2020 release includes all modifications through git tag v1.0.41. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>.</div>
+<ul>
+<li>Feature Changes:
+<ol>
+<li><a href="#InherentMandatory 2020-05">Inherent Mandatory Constraints</a>&nbsp;</li>
+<li><a href="#GroupingExtensions 2020-05">Grouping Extensions</a>&nbsp;</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>NORMA would fail diagram loading on a VS2019 minimal installation. This occurred because the Modeling SDK assemblies are installed with NORMA but are generally loaded directly from the Visual Studio <em>PrivateAssemblies</em> directory as they are written here for most Visual Studio installations.
+However, because NORMA (as with any other Visual Studio extension) is not loaded on the class path these backup assemblies were not fully resolved. To fix this, these additional NORMA-installed dependencies are added to the list of recognized assemblies the tool can locate for the system. This code was already in place to load NORMA extensions and has been modified to load NORMA's dependencies as well.</li>
+</ol>
+</li>
+</ul>
+<hr/>
+</div>
+<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
+<div style="display:none;" id="oldChanges">
+<h3><span class="toggle" onclick="toggleDisp(this,'mar2019')">-</span>March 2019 Changes</h3>
 <div id="mar2019">
-<div>The Marh 2019 release includes all modifications through git tag v1.0.40. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">on github</a>.</div>
+<div>The March 2019 release includes all modifications through git tag v1.0.40. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>.</div>
 <ul>
 <li>Feature Changes:
 <ol>
@@ -82,9 +103,7 @@ The March 2019 release adds support for Visual Studio 2017 and Visual Studio 201
 </ul>
 <hr/>
 </div>
-<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
-<div style="display:none;" id="oldChanges">
-<h2><span class="toggle" onclick="toggleDisp(this,'sep2015')">+</span>September 2015 CTP Changes</h2>
+<h3><span class="toggle" onclick="toggleDisp(this,'sep2015')">+</span>September 2015 CTP Changes</h3>
 <div style="display:none;" id="sep2015">
 <div>The September 2015 CTP release includes all modifications through changeset 1563. Full changeset descriptions can be found at the <a href="http://orm.svn.sourceforge.net/viewvc/orm/trunk/?view=log">sourceforge code repository</a>.</div>
 <ul>
@@ -684,6 +703,11 @@ Note that link fact types are also created for implicitly objectifications (bina
 There are numerous designer operations—ranging from role player changes to object type name changes to objectifying a fact type—that can introduce duplicate reading signatures in the model. The designer will only throw an exception to block the addition of a duplicate reading signature if the user is making a direct edit to the fact type reading using either the Reading Editor or Fact Editor tool windows. Any other edit that introduces a duplicate reading signature will just add the duplicate signature error to the set of validation errors.<br /><br />
 The Fact Editor also checks for a single existing fact type with a matching signature before committing a new fact type. If a matching fact type is found, then the editor adds a new shape for that fact type, not a new conflicting fact type. If the forward and reverse readings entered in the fact editor match different fact types then you will see a duplicate reading signature exception when the fact editor line is committed.
 </li>
+<li><a id="InherentMandatory 2020-05" class="new" title="May 2020 CTP: Inherent Mandatory Constraints">2020-05</a>&nbsp;
+ORM theory adds implied mandatory constraints for any object type that is not independent and does not play at least one non-identifying mandatory role. These implied mandatory constraints are given lower precedence in certain mapping situations when we are determining the absorption direction for an unbalanced one-to-one fact type, meaning a one-to-one fact type with a mandatory constraint on one role but not the other. The problem with this system is that there is nothing stopping a user from adding the inherent mandatory constraints, and in fact some modelers prefer viewing the implied constraints. However, performance of the mapping layer is heavily dependent on the ability to identity as many unbalanced one-to-one fact types as possible early in the analysis of the model.
+To remedy this situation we have added the notion of an <em>inherent mandatory constraint</em>, which is defined as any mandatory constraint that would be implied if it were not explicitly specified. For mapping purposes these constraints are treated the same as an implied mandatory constraint <em>unless</em> the inherent constraint is opposite an implied constraint in a one-to-one fact type.
+Saving these constraints adds additional XML to an .ORM file which will cause a schema validation error in earlier versions of the tool, so all users should upgrade to the latest version for their Visual Studio environment or they will be forced to load with schema validation off (by holding down the shift key). There is currently no visual feedback that a mandatory constraint is considered inherent.
+</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>
@@ -955,6 +979,10 @@ The <em>Groups</em> menu and corresponding Model Browser node is a facility for 
 <li>[The remaining points are part of the grouping facility, but are not applicable until group types are added in future releases.] The <em>GroupTypes</em> property contains a checked list of Group Types, which can be added to the system by extension models. Multiple group types can be specified for one group. A group type can automatically add member elements to a group as well as blocking elements from inclusion in the group.</li>
 <li>The <em>GroupTypeCompliance</em> property is used to determine how tightly the group types control constrain group membership. The default setting (<em>Not Excluded)</em> allows element inclusion as long as no group type explicitly excludes the element. The other two settings (<em>Approved by Some Type</em> and <em>Approved by All types</em>) require one or all associated group types to either formally recognize or automatically include the element. Any automatically included elements can be explicitly excluded by the user, and will appear greyed out with an 'x' on the icon. If an element is automatically included by one group type and excluded by another then an error state is display with a '?' on the group member icon and a validation error '!' on the group node icon.</li>
 </ul>
+</li>
+<li><a id="GroupingExtensions 2020-05" class="new" title="May 2020 CTP: Grouping Extensions">2020-05</a>&nbsp;
+(This is used for NORMA extensions and will have no effect without extensions that leverage it.) There have been a number of significant extensions to allow greater flexibility for group types to add elements within a group. Previously a group type could either add elements automatically or respond to elements added explicitly by the user (or another group type). However, there was no way to use both explicit (user-defined) content and automatic content in the same group. For example, if a group type wants to automatically add the role players (and track changes) when a fact type is explicitly added to the group then that group type needs support for both explicit and automatic group content.
+The grouping extensions were also enhanced to enable custom expansions within the group itself, allowing for much more advanced classification and nesting of grouped elements.
 </li>
 </ol>
 <a href="#The Top">Return to top</a>
