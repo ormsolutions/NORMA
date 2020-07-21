@@ -326,12 +326,12 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <summary>
 		/// The first standard fixup phase for loading presentation elements.
 		/// </summary>
-        FirstPresentationElementPhase = AutoCreateStoredPresentationElements,
-        /// <summary>
-        /// Initialized automatically created stored presentation elements that
-        /// will be serialized with the model.
-        /// </summary>
-        AutoCreateStoredPresentationElements = 5100,
+		FirstPresentationElementPhase = AutoCreateStoredPresentationElements,
+		/// <summary>
+		/// Initialized automatically created stored presentation elements that
+		/// will be serialized with the model.
+		/// </summary>
+		AutoCreateStoredPresentationElements = 5100,
 		/// <summary>
 		/// Fixup stored presentation elements
 		/// </summary>

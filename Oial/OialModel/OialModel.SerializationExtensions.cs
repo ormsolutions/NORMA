@@ -345,13 +345,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == InformationType.ConceptTypeDomainRoleId)
+			if (roleId == InformationType.ConceptTypeDomainRoleId || roleId == ConceptTypeChild.ParentDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, "ConceptType", null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeChild.ParentDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, "Parent", null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -585,33 +581,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 			{
 				return new CustomSerializedElementInfo(null, "assimilatedConceptType", null, CustomSerializedElementWriteStyle.PrimaryLinkElement, null);
 			}
-			if (roleId == ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
 			if (roleId == ConceptTypeHasChildAsPartOfAssociation.TargetDomainRoleId)
 			{
 				return new CustomSerializedElementInfo(null, "associationChild", null, CustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == ConceptTypeChild.ParentDomainRoleId)
+			if (roleId == ConceptTypeRelatesToConceptType.RelatingConceptTypeDomainRoleId || roleId == ConceptTypeAssimilatesConceptType.AssimilatorConceptTypeDomainRoleId || roleId == ConceptTypeChild.ParentDomainRoleId || roleId == ConceptTypeChild.TargetDomainRoleId || roleId == ConceptTypeReferencesConceptType.ReferencedConceptTypeDomainRoleId || roleId == ConceptTypeReferencesConceptType.ReferencingConceptTypeDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeChild.TargetDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeReferencesConceptType.ReferencedConceptTypeDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeReferencesConceptType.ReferencingConceptTypeDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -800,13 +776,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstraction
 		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == UniquenessIncludesConceptTypeChild.UniquenessDomainRoleId)
+			if (roleId == UniquenessIncludesConceptTypeChild.UniquenessDomainRoleId || roleId == ConceptTypeHasChildAsPartOfAssociation.ParentDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeHasChildAsPartOfAssociation.ParentDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}

@@ -340,7 +340,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			Guid roleId = rolePlayedInfo.Id;
 			if (roleId == CustomPropertyHasCustomPropertyDefinition.CustomPropertyDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, "CustomProperty", null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}

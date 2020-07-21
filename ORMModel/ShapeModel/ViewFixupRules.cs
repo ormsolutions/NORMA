@@ -1414,21 +1414,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // ModelNote fixup
-        #region Auto populated diagram fixup
-        #region DisplayAutoPopulatedShapesFixupListener class
-        /// <summary>
+		#region Auto populated diagram fixup
+		#region DisplayAutoPopulatedShapesFixupListener class
+		/// <summary>
 		/// A fixup class to create top-level shapes for automatically populated ORM diagrams.
 		/// </summary>
-        /// <remarks>This used to happen automatically when fixup listeners for implicit
-        /// links verified the existence of the shapes they were attaching too. However, this
-        /// had too many side effects, so we now check this condition explicitly on load.</remarks>
+		/// <remarks>This used to happen automatically when fixup listeners for implicit
+		/// links verified the existence of the shapes they were attaching too. However, this
+		/// had too many side effects, so we now check this condition explicitly on load.</remarks>
 		private sealed class DisplayAutoPopulatedShapesFixupListener : DeserializationFixupListener<ORMDiagram>
 		{
 			/// <summary>
-            /// Create a new DisplayAutoPopulatedShapesFixupListener
+			/// Create a new DisplayAutoPopulatedShapesFixupListener
 			/// </summary>
-            public DisplayAutoPopulatedShapesFixupListener()
-                : base((int)ORMDeserializationFixupPhase.AutoCreateStoredPresentationElements)
+			public DisplayAutoPopulatedShapesFixupListener()
+				: base((int)ORMDeserializationFixupPhase.AutoCreateStoredPresentationElements)
 			{
 			}
 			/// <summary>
@@ -1439,40 +1439,40 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// <param name="notifyAdded">The listener to notify if elements are added during fixup</param>
 			protected sealed override void ProcessElement(ORMDiagram element, Store store, INotifyElementAdded notifyAdded)
 			{
-                if (element.AutoPopulateShapes)
-                {
-                    IElementDirectory elementDir = store.ElementDirectory;
-                    ShapeElement shape;
-                    foreach (ObjectType objectType in elementDir.FindElements<ObjectType>(false))
-                    {
-                        Objectification objectification;
-                        if (!objectType.IsImplicitBooleanValue &&
-                            (null == (objectification = objectType.Objectification) || !objectification.IsImplied))
-                        {
-                            if (null != (shape = element.FixUpLocalDiagram(element, objectType)))
-                            {
-                                notifyAdded.ElementAdded(shape, true);
-                            }
-                        }
-                    }
-                    foreach (FactType factType in elementDir.FindElements<FactType>(false))
-                    {
-                        if (null == factType.ImpliedByObjectification)
-                        {
-                            if (null != (shape = element.FixUpLocalDiagram(element, factType)))
-                            {
-                                notifyAdded.ElementAdded(shape, true);
-                            }
-                        }
+				if (element.AutoPopulateShapes)
+				{
+					IElementDirectory elementDir = store.ElementDirectory;
+					ShapeElement shape;
+					foreach (ObjectType objectType in elementDir.FindElements<ObjectType>(false))
+					{
+						Objectification objectification;
+						if (!objectType.IsImplicitBooleanValue &&
+							(null == (objectification = objectType.Objectification) || !objectification.IsImplied))
+						{
+							if (null != (shape = element.FixUpLocalDiagram(element, objectType)))
+							{
+								notifyAdded.ElementAdded(shape, true);
+							}
+						}
+					}
+					foreach (FactType factType in elementDir.FindElements<FactType>(false))
+					{
+						if (null == factType.ImpliedByObjectification)
+						{
+							if (null != (shape = element.FixUpLocalDiagram(element, factType)))
+							{
+								notifyAdded.ElementAdded(shape, true);
+							}
+						}
 
-                    }
-                }
+					}
+				}
 			}
 		}
 		#endregion // DisplayModelNoteLinksFixupListener class
-        #endregion // Auto populated diagram fixup
-        #region ForceClearViewFixupDataListRuleClass
-        partial class ForceClearViewFixupDataListRuleClass
+		#endregion // Auto populated diagram fixup
+		#region ForceClearViewFixupDataListRuleClass
+		partial class ForceClearViewFixupDataListRuleClass
 		{
 			#region Dynamic Microsoft.VisualStudio.Modeling.Diagrams.Diagram.GetViewFixupDataListCount implementation
 			private delegate int GetViewFixupDataListCountDelegate(Diagram @this);

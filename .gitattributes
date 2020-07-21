@@ -1,2 +1,3 @@
 [core]
 safecrlf=false
+autocrlf=false

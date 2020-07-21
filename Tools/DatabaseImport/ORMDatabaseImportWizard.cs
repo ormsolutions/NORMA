@@ -139,7 +139,7 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 							selectedSchema = schemaList[0];
 							break;
 						default:
-                            // Allow this for an empty list
+							// Allow this for an empty list
 							selectedSchema = SchemaSelector.SelectSchema(serviceProvider, schemaList);
 							break;
 					}
@@ -160,8 +160,8 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 
 
 						replacementsDictionary.Add("$DcilFile$", replacementString);
-                        myAddToProject = true;
-                    }
+						myAddToProject = true;
+					}
 				}
 			}
 		}
