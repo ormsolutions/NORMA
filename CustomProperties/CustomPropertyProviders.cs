@@ -30,6 +30,13 @@ using ORMSolutions.ORMArchitect.Framework;
 
 namespace ORMSolutions.ORMArchitect.CustomProperties
 {
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"JFY6WqMA6wUlbTAgL9AksoobAlYXtcQSOavPBjE5LWAYHlzo6Qu+cyTd2pLChbpbAL0xk1cBY3wyuI/6bSeVhg=="
+#else
+		"aRp0/MYwmwu6PqJjyX0Hsm/EtGwapK+37VEoJa9fvMf9hRTZoS9n6+SLjukNjzI6TW6sOEmS4jSnfKKG8bXhSg=="
+#endif
+	)]
 	[VerbalizationSnippetsProvider("VerbalizationSnippets")]
 	sealed partial class CustomPropertiesDomainModel : IModelingEventSubscriber
 	{

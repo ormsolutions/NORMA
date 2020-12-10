@@ -22,6 +22,13 @@ using System.Collections;
 
 namespace Neumont.Tools.ORM.OIALModel
 {
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"cPTFNpdowDIbtaZ2AnwPayr8vcfNEwG5V7G1RQ4O00k0s/QI6HY/g3gqTU25wfQSQcd2uraUtgcrTwMCoMUd2A=="
+#else
+		"JgEOTMtyz3VB++JK1BdK8Dhfq6EyATDzxSOsQCdGdzJIVQadpRZ1Q0mqGRIOoG0TJPidv6+tFlX7XftFeJna0g=="
+#endif
+	)]
 	public partial class OIALDomainModel : IDeserializationFixupListenerProvider
 	{
 		#region IDeserializationFixupListenerProvider Implementation

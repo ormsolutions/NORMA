@@ -18,6 +18,13 @@ namespace ORMSolutions.ORMArchitect.ExtensionExample
 		/// </summary>
 		ValidateMeaningfulNames = ORMDeserializationFixupPhase.ValidateElementNames + 1,
 	}
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"VrUx10t/iw6A5nM94CYXHa9heHTcf/Aj87R/qhwF5ie2GhXjb29iQN+VgahexG23ssB+5Y3n8uSCtCMUZwSpbQ=="
+#else
+		"EBUijB4kWlDqXH0Yp3PaqWatQeKallOxhBGNGHYtfj1YB4sw1pvkOzF63ZKP6iE0fVQZOnWjaPtDczUvT2M5Mg=="
+#endif
+	)]
 	public partial class ExtensionDomainModel : IDeserializationFixupListenerProvider
 	{
 		#region IDeserializationFixupListenerProvider Implementation

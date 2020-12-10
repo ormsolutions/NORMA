@@ -18,7 +18,7 @@ REG DELETE "%~1\Extensions\http://schemas.neumont.edu/ORM/2008-04/ORMAbstraction
 
 REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" /v "Class" /d "ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge.ORMAbstractionToBarkerERBridgeDomainModel" /f 1>NUL
 REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" /v "CodeBase" /d "%NORMAExtensionsDir%\%TargetBaseName%.dll" /f 1>NUL
-REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" /f 1>NUL
+REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER" /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=%NORMAPublicKeyToken%" /f 1>NUL
 
 GOTO:EOF
 

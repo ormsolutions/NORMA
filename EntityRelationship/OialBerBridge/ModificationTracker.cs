@@ -28,6 +28,13 @@ using ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker;
 
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"ihmApxT0gDJ0BmrQcDs8a4ZZFgLEAPpjS23BzCkPR0ZwMU7sEb+x2tZzFPphBt1YYx1skjTr+yp9XgqGzATsvA=="
+#else
+		"D1oej6ZM4ZoY2JZPcK9z84hXehpWRXV7xYIRSIrvI1649jEGfwJpQRVSCbSkxh8M/XEEo3Yvl/XznJjkYHdF3w=="
+#endif
+	)]
 	partial class ORMAbstractionToBarkerERBridgeDomainModel
 	{
 		#region Regeneration rule delay validation methods

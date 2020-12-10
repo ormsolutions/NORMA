@@ -31,7 +31,6 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 	/// DomainModel ORMToORMAbstractionBridgeDomainModel
 	/// Bridge ORM and attribute-centric ORM Abstraction Model
 	/// </summary>
-	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("OPZ910MBYU/4qHhaA3s5lWOKi1SvItLMdIY6rIvK0CcxYISz3wsIjDN402GjXbfRQY634c/VBHUe414MoZLypQ==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]

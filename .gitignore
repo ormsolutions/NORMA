@@ -8,6 +8,9 @@ Version.wxi
 # Local build installation artifacts
 VS20[12][0-9]Installation.bat
 
+# Private signing artifacts for official NORMA builds
+NORMAOfficial.snk
+
 # PLiX.vsix must be copied in for a build, but we do not check this in
 VSIXInstall/VSIXOnly/[Pp][Ll][iI][Xx].vsix
 

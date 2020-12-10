@@ -15,7 +15,7 @@ IF "%VSSideBySide%"=="true" GOTO:EOF
 
 REM REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2006-01/OIALModel" /v "Class" /d "Neumont.Tools.ORM.OIALModel.OIALDomainModel" /f 1>NUL
 REM REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2006-01/OIALModel" /v "CodeBase" /d "%NORMAExtensionsDir%\%TargetBaseName%.dll" /f 1>NUL
-REM REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2006-01/OIALModel" /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" /f 1>NUL
+REM REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2006-01/OIALModel" /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=%NORMAPublicKeyToken%" /f 1>NUL
 
 GOTO:EOF
 

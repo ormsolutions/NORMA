@@ -35,7 +35,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("CEDE46B1-9CA1-4C55-BC88-3DACFADD70EA"/*ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("1F394F03-8A41-48BC-BDED-2268E131B4A3"/*ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel*/)]
-	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("G2bAG9BRljmgOGzhMTuef2UF2wLQYXt9pz2ougj/8X0pJ0arJFVVJrGrbO3wuGsYAQ4PWg5TtKifUmh6fhfLKQ==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

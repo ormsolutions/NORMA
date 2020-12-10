@@ -95,6 +95,13 @@ namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 		#endregion // Validation Rules
 	}
 
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"HCTAvwleAvA/D3wlfsONEUu+0UNEUXRfS8g/RhxEgxRcKS3nk4eAji98Gl/S3bv2JxQSHcwThy2lM6T/qhkdWA=="
+#else
+		"i4ZTtbpPyWFsaqPS3D+eD1ZioxOaKSSyJzcfRhC/HeZ/MeJOFcJNuJrnq9Yz1W6GNaNRXHdcn0z+qZqU+6gaCw=="
+#endif
+	)]
 	partial class BarkerERShapeDomainModel : IModelingEventSubscriber, IRegisterSignalChanges
 	{
 		#region IModelingEventSubscriber Implementation

@@ -48,6 +48,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		}
 		#endregion // Static helper functions
 	}
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"SbYDhfHzuqYEi1uEdhncAdRLxYHT67q2Fx0te17g4iRf8213hTFzp0ZdqVPqk6LcghbsedoaVJbVvSlrXvYaRQ=="
+#else
+		"G2bAG9BRljmgOGzhMTuef2UF2wLQYXt9pz2ougj/8X0pJ0arJFVVJrGrbO3wuGsYAQ4PWg5TtKifUmh6fhfLKQ=="
+#endif
+	)]
 	public partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : IModelingEventSubscriber
 	{
 		#region IModelingEventSubscriber Implementation

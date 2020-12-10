@@ -2,6 +2,10 @@
 <Project ToolsVersion="12.34" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
+    <NORMATrunkDir Condition=" '$(NORMATrunkDir)' == '' ">$(MSBuildProjectDirectory)\..</NORMATrunkDir>
+  </PropertyGroup>
+  <Import Project="$(NORMATrunkDir)\NORMACommon.targets" />
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
@@ -13,11 +17,10 @@
     <AssemblyName>ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName)</AssemblyName>
     <WarningLevel>4</WarningLevel>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\ORMPackage.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\$(NORMASigningFile).snk</AssemblyOriginatorKeyFile>
     <ApplicationIcon>Resources\ORM.ico</ApplicationIcon>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <InstallInGac Condition="'$(VSSideBySide)'!='true'">true</InstallInGac>
-    <TrunkDir Condition=" '$(TrunkDir)' == '' ">$(MSBuildProjectDirectory)\..</TrunkDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -360,8 +363,8 @@
     <Compile Include="..\Version.cs">
       <Link>Properties\Version.cs</Link>
     </Compile>
-    <None Include="..\ORMPackage.snk">
-      <Link>Properties\ORMPackage.snk</Link>
+    <None Include="..\$(NORMASigningFile).snk">
+      <Link>Properties\$(NORMASigningFile).snk</Link>
     </None>
     <Compile Include="Shell\IORMSelectionContainer.cs" />
     <Compile Include="Shell\ORMReadingEditor.cs" />
@@ -988,7 +991,7 @@
     </Content>
   </ItemGroup>
   <PropertyGroup>
-    <PreBuildEvent>"$(TrunkDir)\VersionGenerator.exe"</PreBuildEvent>
-    <PostBuildEvent>"$(TrunkDir)\install.bat" "$(OutputPath)" "$(TargetVisualStudioVersion)"</PostBuildEvent>
+    <PreBuildEvent>"$(NORMATrunkDir)\VersionGenerator.exe"</PreBuildEvent>
+    <PostBuildEvent>"$(NORMATrunkDir)\install.bat" "$(OutputPath)" "$(TargetVisualStudioVersion)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

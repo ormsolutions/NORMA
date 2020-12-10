@@ -32,7 +32,6 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 	/// </summary>
 	[DslModeling::ExtendsDomainModel("3EAE649F-E654-4D04-8289-C25D2C0322D8"/*ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel*/)]
 	[DslModeling::ExtendsDomainModel("F7BC82F4-83D1-408C-BA42-607E90B23BEA"/*ORMSolutions.ORMArchitect.ORMAbstraction.AbstractionDomainModel*/)]
-	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("OPZ910MBYU/4qHhaA3s5lWOKi1SvItLMdIY6rIvK0CcxYISz3wsIjDN402GjXbfRQY634c/VBHUe414MoZLypQ==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.ORMToORMAbstractionBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.GeneratedCode.ORMToORMAbstractionBridgeDomainModelResx")]
 	[global::System.CLSCompliant(true)]

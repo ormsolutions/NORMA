@@ -95,6 +95,14 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 		#endregion // Validation Rules
 	}
 
+
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"UrDdoAQHzJH6LorS5tYD75DtlPQo71aevqXivpXPrsYz+T7RItuoO/s4Ks403xYnu1YD07Fv9XPRVQ7dxs/V4Q=="
+#else
+		"M5Q7WqBV09V6lEMrpyOEqjpGOd30Z6mkE/o0LsvpGelLViQWQ9DENbgXSxXD6EF4lCw/Bv062+YpplhKqzpRhQ=="
+#endif
+	)]
 	partial class RelationalShapeDomainModel : IModelingEventSubscriber, IRegisterSignalChanges
 	{
 		#region IModelingEventSubscriber Implementation
