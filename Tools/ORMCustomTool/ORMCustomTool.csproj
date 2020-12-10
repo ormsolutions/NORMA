@@ -2,6 +2,10 @@
 <Project ToolsVersion="12.34" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
+    <NORMATrunkDir Condition=" '$(NORMATrunkDir)' == '' ">$(MSBuildProjectDirectory)\..\..</NORMATrunkDir>
+  </PropertyGroup>
+  <Import Project="$(NORMATrunkDir)\NORMACommon.targets" />
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
@@ -12,7 +16,7 @@
     <RootNamespace>ORMSolutions.ORMArchitect.ORMCustomTool</RootNamespace>
     <AssemblyName>ORMSolutions.ORMArchitect.ORMCustomTool.$(TargetVisualStudioShortProductName)</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\ORMPackage.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\$(NORMASigningFile).snk</AssemblyOriginatorKeyFile>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -119,8 +123,8 @@
     <Compile Include="XslORMGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\ORMPackage.snk">
-      <Link>Properties\ORMPackage.snk</Link>
+    <None Include="..\..\$(NORMASigningFile).snk">
+      <Link>Properties\$(NORMASigningFile).snk</Link>
     </None>
     <None Include="Install.bat" />
   </ItemGroup>

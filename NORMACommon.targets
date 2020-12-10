@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+	Copyright © ORM Solutions, LLC. All rights reserved.
+
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!--
+		-This .targets file provides common targets for signing and versioning NORMA assemblies.
+		-This .targets file should be imported before any of the properties it defines are used, but
+		after Neumont.Build.VisualStudio.Multitargeting.targets.
+		-Given different relative paths for including this file, each project file needs to define
+		the NORMATrunkDir property before including this file.
+	-->
+
+	<Choose>
+		<When Condition="!$(NORMAConstants.Contains(NORMA_Official)) AND ('$(NORMAOfficial)'=='1')">
+			<PropertyGroup>
+				<NORMAConstants>$(NORMAConstants);NORMA_Official</NORMAConstants>
+			</PropertyGroup>
+		</When>
+	</Choose>
+
+	<PropertyGroup>
+		<DefineConstants Condition="'$(NORMAConstants)'!=''">$(DefineConstants);$(NORMAConstants)</DefineConstants>
+		<MSBuildAllProjects>$(MSBuildAllProjects);$(NORMATrunkDir)\NORMACommon.targets</MSBuildAllProjects>
+	</PropertyGroup>
+
+	<!-- An alternate NORMA signing file should be copied into the root directory alongside ORMPackage.snk.
+	The base name of the file (without .snk) is stored in the NORMASigningFile variable. -->
+	<Choose>
+		<When Condition="'$(NORMASigningFile)'==''">
+			<Choose>
+				<When Condition="$(DefineConstants.Contains(NORMA_Official))">
+					<Choose>
+						<When Condition="Exists('$(NORMATrunkDir)\NORMAOfficial.snk')">
+							<PropertyGroup>
+								<NORMASigningFile>NORMAOfficial</NORMASigningFile>
+							</PropertyGroup>
+						</When>
+						<Otherwise>
+							<PropertyGroup>
+								<NORMASigningFile>NORMAOfficialPublic</NORMASigningFile>
+							</PropertyGroup>
+						</Otherwise>
+					</Choose>
+				</When>
+				<Otherwise>
+					<PropertyGroup>
+						<NORMASigningFile>ORMPackage</NORMASigningFile>
+					</PropertyGroup>
+				</Otherwise>
+			</Choose>
+		</When>
+	</Choose>
+
+	<Target Name="NORMAPublicKeyTokenTarget" BeforeTargets="BeforeBuild">
+		<Exec Command='$(NORMATrunkDir)\GetPublicKeyToken.bat "$(NORMATrunkDir)\$(NORMASigningFile).snk"' ConsoleToMSBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="NORMAPublicKeyToken" />
+		</Exec>
+	</Target>
+</Project>

@@ -246,7 +246,7 @@ Windows Registry Editor Version 5.00
 "CodeBase"="$PackageFolder$\ORMSolutions.ORMArchitect.DatabaseImport.VS2017.dll"
 "Culture"="neutral"
 "Name"="ORMSolutions.ORMArchitect.DatabaseImport.VS2017"
-"PublicKeyToken"="957d5b7d5e79e25f"
+"PublicKeyToken"="$NORMAPublicKeyToken$"
 "Version"="1.0.0.0"
 
 ;Core extension and converter registration

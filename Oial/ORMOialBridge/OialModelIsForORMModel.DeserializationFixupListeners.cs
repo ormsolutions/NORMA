@@ -33,6 +33,13 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// </summary>
 		CreateImplicitElements = (int)ORMDeserializationFixupPhase.ValidateErrors + 10,
 	}
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"j4jmzvw1xIdwyoqVswZjCho6KOX5crmmBl+TQFeG3EFgaVsSq8Iirk2ZWGdum8+24XzFAl6+DdkEnJhmRAZeMw=="
+#else
+		"OPZ910MBYU/4qHhaA3s5lWOKi1SvItLMdIY6rIvK0CcxYISz3wsIjDN402GjXbfRQY634c/VBHUe414MoZLypQ=="
+#endif
+	)]
 	public partial class ORMToORMAbstractionBridgeDomainModel : IDeserializationFixupListenerProvider
 	{
 		#region IDeserializationFixupListenerProvider Implementation

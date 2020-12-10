@@ -13,7 +13,7 @@
 		<ProjectItem SubType="" TargetFileName="$fileinputname$.orm" ReplaceParameters="true">..\..\..\..\ORMDatabaseImport.orm</ProjectItem>
 	</TemplateContent>
 	<WizardExtension>
-		<Assembly>ORMSolutions.ORMArchitect.DatabaseImport.VS2017, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f</Assembly>
+		<Assembly></Assembly>
 		<FullClassName>ORMSolutions.ORMArchitect.DatabaseImport.ORMDatabaseImportWizard</FullClassName>
 	</WizardExtension>
 </VSTemplate>

@@ -1737,6 +1737,15 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 	}
 	#endregion // ReferenceConstraintTargetsTable answers
 	#region ISurveyNodeProvider Implementation
+
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"DbdhhkuUQv2kxwubBUSmTC2f2V/TlgDRUxo53uZ5y7rToxRkPaecOKG+FIBJEbSX/QDxGU5pkWAKhGLl0kLTeQ=="
+#else
+		"V+3w5M0/Zq9u3RCjBLeNYLfoOEaU4e3Luv0uZIUamgKbIS/5akIHASioe0DHETIPP2ha0deNsScFHDvvEPuSJQ=="
+#endif
+	)]
+
 	partial class ConceptualDatabaseDomainModel : ISurveyNodeProvider, IModelingEventSubscriber
 	{
 		#region ISurveyNodeProvider Implementation

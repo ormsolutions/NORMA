@@ -7,10 +7,46 @@
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <VSIXNamespace>
-        <Namespace Prefix="vsx" Uri="http://schemas.microsoft.com/developer/vsx-schema/2011" />
-    </VSIXNamespace>
+    <NORMATrunkDir Condition=" '$(NORMATrunkDir)' == '' ">$(MSBuildProjectDirectory)\..\..</NORMATrunkDir>
   </PropertyGroup>
+  <Import Project="$(NORMATrunkDir)\NORMACommon.targets" />
+  <PropertyGroup>
+    <VSIXNamespace>
+      <Namespace Prefix="vsx" Uri="http://schemas.microsoft.com/developer/vsx-schema/2011" />
+    </VSIXNamespace>
+    <VSTemplateNamespace>
+      <Namespace Prefix="vst" Uri="http://schemas.microsoft.com/developer/vstemplate/2005" />
+    </VSTemplateNamespace>
+  </PropertyGroup>
+  <UsingTask TaskName="ReplaceFileText" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <InputFilename ParameterType="System.String" Required="true" />
+      <OutputFilename ParameterType="System.String" Required="true" />
+      <MatchExpression ParameterType="System.String" Required="true" />
+      <ReplacementText ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Core" />
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+              File.WriteAllText(
+                  OutputFilename,
+                  Regex.Replace(File.ReadAllText(InputFilename), MatchExpression, ReplacementText)
+                  );
+            ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+  <Target Name="PkgDefPublicKeyToken">
+    <ReplaceFileText 
+      InputFilename="$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ORMDesigner.pkgdef" 
+      OutputFilename="$(ProjectDir)ORMDesigner.pkgdef" 
+      MatchExpression="\$NORMAPublicKeyToken\$" 
+      ReplacementText="$(NORMAPublicKeyToken)" />
+  </Target>
   <Target Name="NORMAGitVerTarget">
     <Exec Command="$(ProjectDir)..\..\NORMAGitVer.bat" ConsoleToMSBuild="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="NORMAGitVer" />
@@ -23,8 +59,48 @@
       Query="/vsx:PackageManifest/vsx:Metadata/vsx:Identity/@Version"
       Namespaces="$(VSIXNamespace)"/>
   </Target>
+  <Target Name="AddDatabaseImportAssembly" DependsOnTargets="NORMAPublicKeyTokenTarget">
+    <PropertyGroup>
+      <DatabaseImportAssemblyName>ORMSolutions.ORMArchitect.DatabaseImport.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=$(NORMAPublicKeyToken)</DatabaseImportAssemblyName>
+    </PropertyGroup>
+    <XmlPoke
+      XmlInputPath="$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+      Value="$(DatabaseImportAssemblyName)"
+      Query="/vst:VSTemplate/vst:WizardExtension/vst:Assembly"
+      Namespaces="$(VSTemplateNamespace)"/>
+    <XmlPoke
+      XmlInputPath="$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+      Value="$(DatabaseImportAssemblyName)"
+      Query="/vst:VSTemplate/vst:WizardExtension/vst:Assembly"
+      Namespaces="$(VSTemplateNamespace)"/>
+    <XmlPoke
+      XmlInputPath="$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+      Value="$(DatabaseImportAssemblyName)"
+      Query="/vst:VSTemplate/vst:WizardExtension/vst:Assembly"
+      Namespaces="$(VSTemplateNamespace)"/>
+    <XmlPoke
+      XmlInputPath="$(ProjectDir)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+      Value="$(DatabaseImportAssemblyName)"
+      Query="/vst:VSTemplate/vst:WizardExtension/vst:Assembly"
+      Namespaces="$(VSTemplateNamespace)"/>
+    <XmlPoke
+      XmlInputPath="$(ProjectDir)\ItemTemplates\VisualC\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+      Value="$(DatabaseImportAssemblyName)"
+      Query="/vst:VSTemplate/vst:WizardExtension/vst:Assembly"
+      Namespaces="$(VSTemplateNamespace)"/>
+    <XmlPoke
+      XmlInputPath="$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+      Value="$(DatabaseImportAssemblyName)"
+      Query="/vst:VSTemplate/vst:WizardExtension/vst:Assembly"
+      Namespaces="$(VSTemplateNamespace)"/>
+    <XmlPoke
+      XmlInputPath="$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+      Value="$(DatabaseImportAssemblyName)"
+      Query="/vst:VSTemplate/vst:WizardExtension/vst:Assembly"
+      Namespaces="$(VSTemplateNamespace)"/>
+  </Target>
   <PropertyGroup>
-    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);ManifestVersionPoke</CreateVsixContainerDependsOn>
+    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);ManifestVersionPoke;AddDatabaseImportAssembly;PkgDefPublicKeyToken</CreateVsixContainerDependsOn>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -172,6 +248,10 @@
   <ItemGroup>
     <!-- Assembly installation -->
     <Content Include="..\$(TargetVisualStudioShortProductName)\ORMDesigner.pkgdef">
+      <Link>ORMDesigner.Unversioned.pkgdef</Link>
+      <IncludeInVSIX>false</IncludeInVSIX>
+    </Content>
+    <Content Include="ORMDesigner.pkgdef">
       <Link>ORMDesigner.pkgdef</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -781,21 +861,22 @@
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup>
     <PreBuildEvent>copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\source.extension.vsixmanifest" "$(ProjectDir)\source.extension.vsixmanifest"
-copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\CSharp\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport"
-copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\General\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport"
-copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\Modeling\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport"
-copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\VisualC\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\VisualC\1033\ORMDatabaseImport"
-copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport"
-copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport"
-copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\*.vstemplate" "$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport"</PreBuildEvent>
+copy /y "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+copy /y "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+copy /y "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+copy /y "$(ProjectDir)\ItemTemplates\VisualC\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\VisualC\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+copy /y "$(ProjectDir)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+copy /y "$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+copy /y "$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"</PreBuildEvent>
     <PostBuildEvent>del "$(ProjectDir)\source.extension.vsixmanifest"
-del "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\*.vstemplate"    
-del "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\*.vstemplate"    
-del "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport\*.vstemplate"    
-del "$(ProjectDir)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport\*.vstemplate"    
-del "$(ProjectDir)\ItemTemplates\VisualC\1033\ORMDatabaseImport\*.vstemplate"    
-del "$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\*.vstemplate"    
-del "$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\*.vstemplate"</PostBuildEvent>
+del "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+del "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+del "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+del "$(ProjectDir)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+del "$(ProjectDir)\ItemTemplates\VisualC\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+del "$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+del "$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
+del "$(ProjectDir)\ORMDesigner.pkgdef"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

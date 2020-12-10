@@ -1672,6 +1672,13 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 	#endregion
 	#endregion
 	#region NODE PROVIDER
+	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey(
+#if NORMA_Official
+		"OiSs9idSzxFREZTaE3WRrqKPqrotjzEpOkpwhK1MWViWLYswC/BhMfeiPvQC0h3EVY0mCyDw+nxPzYtz8eMAWg=="
+#else
+		"DO35d/c+tgNaqE/jwh83XEIP+GaD3yLA0xXnjjb6wp7X9x+STxsRxGhuyZVYH4GKm7ZrCegZ0bTvLgB9ioHUHg=="
+#endif
+	)]
 	partial class BarkerDomainModel : ISurveyNodeProvider, IModelingEventSubscriber
 	{
 		#region ISurveyNodeProvider Members

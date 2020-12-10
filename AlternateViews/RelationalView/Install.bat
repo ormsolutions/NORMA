@@ -17,7 +17,7 @@ REG DELETE "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/Vie
 
 REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2007-11/RelationalView" /v "Class" /d "ORMSolutions.ORMArchitect.Views.RelationalView.RelationalShapeDomainModel" /f 1>NUL
 REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2007-11/RelationalView" /v "CodeBase" /d "%NORMAExtensionsDir%\%TargetBaseName%.dll" /f 1>NUL
-REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2007-11/RelationalView" /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f" /f 1>NUL
+REG ADD "%DesignerRegistryRoot%\Extensions\http://schemas.neumont.edu/ORM/2007-11/RelationalView" /v "Assembly" /d "%TargetBaseName%, Version=1.0.0.0, Culture=neutral, PublicKeyToken=%NORMAPublicKeyToken%" /f 1>NUL
 
 GOTO:EOF
 

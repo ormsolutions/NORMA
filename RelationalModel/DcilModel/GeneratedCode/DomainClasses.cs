@@ -32,7 +32,6 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 	/// Base class for ConceptualData &lt;see cref='DslModeling::ModelElement'/&gt;s.
 	/// </summary>
 	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<ConceptualDatabaseModelElement, Design.ConceptualDatabaseElementTypeDescriptor<ConceptualDatabaseModelElement>>))]
-	[ORMSolutions.ORMArchitect.Core.Load.NORMAExtensionLoadKey("V+3w5M0/Zq9u3RCjBLeNYLfoOEaU4e3Luv0uZIUamgKbIS/5akIHASioe0DHETIPP2ha0deNsScFHDvvEPuSJQ==")]
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseModelElement.Description", typeof(global::ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.ConceptualDatabaseDomainModel), "ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]

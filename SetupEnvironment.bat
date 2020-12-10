@@ -10,7 +10,21 @@ IF "%ProgramFiles(X86)%"=="" (
 	CALL:SET6432
 )
 
-FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0\NORMAGitVer.bat" "%~dps0."`) DO SET NORMAGitVer=%%i
+FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0NORMAGitVer.bat" all "%~dps0."`) DO SET NORMAGitVer=%%i
+
+IF NOT DEFINED NORMASigningFile (
+	IF DEFINED NORMAOfficial (
+		IF EXIST "%~dp0NORMAOfficial.snk" (
+			SET NORMASigningFile=NORMAOfficial
+		) ELSE (
+			SET NORMASigningFile=NORMAOfficialPublic
+		)
+	) ELSE (
+		SET NORMASigningFile=ORMPackage
+	)
+)
+
+FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0GetPublicKeyToken.bat" "%~dps0%NORMASigningFile%.snk"`) DO SET NORMAPublicKeyToken=%%i
 
 :: TargetVisualStudioVersion settings:
 ::   v8.0 = Visual Studio 2005 (Code Name "Whidbey")
@@ -20,7 +34,7 @@ FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0\NORMAGitVer.bat" "%~dps0
 ::  v12.0 = Visual Studio 2013
 ::  v14.0 = Visual Studio 2015
 ::  v15.0 = Visual Studio 2017
-::  v16.0 = Visual Studio 2017
+::  v16.0 = Visual Studio 2019
 IF NOT DEFINED TargetVisualStudioVersion (SET TargetVisualStudioVersion=v8.0)
 
 :: Remove the value "Exp" on the next line if you want installations to be performed
@@ -62,7 +76,7 @@ IF NOT "%VSSideBySide%"=="true" (
 		ECHO Please create %TargetVisualStudioShortProductName%Installation.bat to set the TargetVisualStudioEdition
 		ECHO and TargetVisualStudioInstallSuffix environment variables.
 		ECHO(
-		ECHO The installed editions are:
+		ECHO The installed editions of %TargetVisualStudioLongProductName% are:
 		dir /b "%ResolvedProgramFiles%\Microsoft Visual Studio\%TargetVisualStudioLongProductYear%"
 		ECHO(
 		ECHO The installed suffixes are the 8 characters after '%TargetVisualStudioMajorMinorVersion%_' and
