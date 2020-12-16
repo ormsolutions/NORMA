@@ -1164,7 +1164,7 @@
 								<Component Id="VSIXExtensionComponent" Guid="B59C5018-CB4C-401E-$(var.VersionGuidSuffix)" DiskId="1" Win64="$(var.Win64)">
 									<File Id="VSIXManifest" ShortName="extend.fst" Name="extension.vsixmanifest" Source="..\VSIXInstall\$(var.VSShortName)\extension.vsixmanifest"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
-									<File Id="NORMAPackageDef" ShortName="Designer.def" Name="ORMDesigner.pkgdef" Source="..\VSIXInstall\$(var.VSShortName)\ORMDesigner.pkgdef"
+									<File Id="NORMAPackageDef" ShortName="Designer.def" Name="ORMDesigner.pkgdef" Source="..\VSIXInstall\$(var.VSShortName)\ORMDesigner$(var.OfficialFileSuffix).pkgdef"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
 									<File Id="NORMAVSIXIcon" ShortName="DsgnrIco.png" Name="ORMDesignerIcon.png" Source="..\VSIXInstall\ORMDesignerIcon.png"
 										DefaultLanguage="0" CompanionFile="ORMSolutions.ORMArchitect.Core$(var.VSExt).dll"/>
