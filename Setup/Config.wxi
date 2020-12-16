@@ -108,7 +108,12 @@
 	<!-- UpgradeCode should NOT be changed. -->
 	<?define UpgradeCode="$(var.PackageGuidStart)-0000-000000000000"?>
 	<!-- Public token for NORMA strong name key. -->
-	<?define PublicKeyToken="957d5b7d5e79e25f"?>
+	<?if $(env.NORMAOfficial) = 1?>
+		<?define PublicKeyToken="fd9102b3e2835fba"?>
+		<?define OfficialFileSuffix="_Official"?>
+	<?else?>
+		<?define PublicKeyToken="957d5b7d5e79e25f"?>
+	<?endif?>
 	<!-- GUID for NORMA Visual Studio Package (NOT MSI package!) -->
 	<?define NORMAVSPackageGuid="EFDDC549-1646-4451-8A51-E5A5E94D647C"?>
 	<?define BaseAssemblyName="Version=$(var.MajorMinorVersion).0.0, Culture=neutral, PublicKeyToken=$(var.PublicKeyToken)"?>

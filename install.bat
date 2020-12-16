@@ -49,7 +49,11 @@ IF NOT "%VSSideBySide%"=="true" (
 		FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%ItemTemplatesInstallDir%\%%~nA\ORMModel.zip"
 		FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\Web\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%ItemTemplatesInstallDir%\Web\%%~nA\ORMModel.zip"
 		IF "%VSIXInstallDir%"=="" (
-			FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\%TargetVisualStudioShortProductName%\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
+			IF "%NORMAOfficial%"=="1" (
+				FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\%TargetVisualStudioShortProductName%_Official\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
+			) ELSE (
+				FOR %%A IN ("%RootDir%\ORMModel\Shell\ProjectItems\%TargetVisualStudioShortProductName%\*.zip") DO ECHO F | XCOPY /Y /D /V /Q "%%~fA" "%VSItemTemplatesDir%\%%~nA\ORMModel.zip"
+			)
 		)
 	)
 	IF NOT "%VSIXInstallDir%"=="" (
