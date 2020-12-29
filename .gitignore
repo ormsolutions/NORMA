@@ -4,6 +4,7 @@
 Version.bat
 Version.cs
 Version.wxi
+LastVersion.xml
 
 # Local build installation artifacts
 VS20[12][0-9]Installation.bat

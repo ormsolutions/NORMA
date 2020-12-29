@@ -56,7 +56,7 @@
 	</Choose>
 
 	<Target Name="NORMAPublicKeyTokenTarget" BeforeTargets="BeforeBuild">
-		<Exec Command='$(NORMATrunkDir)\GetPublicKeyToken.bat "$(NORMATrunkDir)\$(NORMASigningFile).snk"' ConsoleToMSBuild="true">
+		<Exec Command='"$(NORMATrunkDir)\GetPublicKeyToken.bat" "$(NORMATrunkDir)\$(NORMASigningFile).snk"' ConsoleToMSBuild="true">
 			<Output TaskParameter="ConsoleOutput" PropertyName="NORMAPublicKeyToken" />
 		</Exec>
 	</Target>
