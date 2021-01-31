@@ -109,7 +109,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							{
 								retVal = myReaderSettings = new XmlReaderSettings();
 								retVal.ValidationType = ValidationType.Schema;
-								retVal.Schemas.Add(SchemaNamespace, new XmlTextReader(typeof(ORMDesignerSettings).Assembly.GetManifestResourceStream(typeof(ORMDesignerSettings), "ORMDesignerSettings.xsd")));
+								using (Stream stream = typeof(ORMDesignerSettings).Assembly.GetManifestResourceStream(typeof(ORMDesignerSettings), "ORMDesignerSettings.xsd"))
+								{
+									using (XmlReader reader = new XmlTextReader(stream))
+									{
+										retVal.Schemas.Add(SchemaNamespace, reader);
+									}
+								}
 								retVal.NameTable = Names;
 							}
 						}

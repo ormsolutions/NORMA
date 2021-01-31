@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.Framework.Shell
 {
 	#region DiagramDisplayDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/2008-11/DiagramDisplay", "DiagramDisplay.xsd")]
 	partial class DiagramDisplayDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'DiagramDisplayDomainModel' extension model</summary>

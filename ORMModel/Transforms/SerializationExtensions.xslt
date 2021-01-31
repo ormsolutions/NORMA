@@ -2275,13 +2275,16 @@
 				<plx:pragma type="closeRegion" data="{$ModelName} model serialization"/>
 			</plx:trailingInfo>
 			<xsl:if test="$namespaces">
-				<plx:attribute dataTypeName="CustomSerializedXmlNamespaces">
-					<xsl:for-each select="$namespaces">
+				<xsl:for-each select="$namespaces">
+					<plx:attribute dataTypeName="CustomSerializedXmlSchema">
 						<plx:passParam>
 							<plx:string data="{@URI}"/>
 						</plx:passParam>
-					</xsl:for-each>
-				</plx:attribute>
+						<plx:passParam>
+							<plx:string data="{@SchemaFile}"/>
+						</plx:passParam>
+					</plx:attribute>
+				</xsl:for-each>
 			</xsl:if>
 			<plx:implementsInterface dataTypeName="ICustomSerializedDomainModel"/>
 			<plx:field name="XmlNamespace" visibility="public" static="true" readOnly="true" dataTypeName=".string">

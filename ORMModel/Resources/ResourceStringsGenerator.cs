@@ -972,6 +972,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "LoadException.InvalidLoadKey");
 			}
 		}
+		/// <summary>Exception text used when a non-generative load is attempted on a store that does not support the ISkipExtensions interface.</summary>
+		public static string LoadExceptionExtensionSkippingNotSupportedByStore
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "LoadException.ExtensionSkippingNotSupportedByStore");
+			}
+		}
 		/// <summary>Exception message when an attempt is made to parse invalid range text for a cardinality constraint.</summary>
 		public static string ModelExceptionCardinalityConstraintInvalidRangeText
 		{

@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	#region ORMAbstractionToConceptualDatabaseBridgeDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMAbstractionToConceptualDatabase", "ORMAbstractionToConceptualDatabase.xsd")]
 	partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMAbstractionToConceptualDatabaseBridgeDomainModel' extension model</summary>

@@ -255,6 +255,10 @@
 		<value>The registered extension type '{0}' has a missing or invalid extension load key and cannot be safely used in NORMA.</value>
 		<comment>Exception text used when a NORMA extension fails because of a missing or invalid load key.</comment>
 	</data>
+	<data name="LoadException.ExtensionSkippingNotSupportedByStore" xml:space="preserve">
+		<value>The Store being loaded does not support skipping non-generative extensions.</value>
+		<comment>Exception text used when a non-generative load is attempted on a store that does not support the ISkipExtensions interface.</comment>
+	</data>
 	<data name="LogicalCombinationOperator.And" xml:space="preserve">
 		<value>And</value>
 	</data>

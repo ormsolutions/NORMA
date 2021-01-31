@@ -209,6 +209,28 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		MultipleOppositeMetaRolesExplicitRelationshipType,
 	}
 	#endregion // CustomSerializedElementMatchStyle enum
+	#region SerializationEngineLoadOptions enum
+	/// <summary>
+	/// Options modifying the behavior of <see cref="SerializationEngine.Load"/>.
+	/// </summary>
+	[Flags]
+	public enum SerializationEngineLoadOptions
+	{
+		/// <summary>
+		/// No special options
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// Do not do schema validation on the file load.
+		/// </summary>
+		SkipSchemaValidation = 1,
+		/// <summary>
+		/// Check the store for the <see cref="ISkipExtensions"/> interface
+		/// to load schemas for extensions skipped in this load.
+		/// </summary>
+		ResolveSkippedExtensions = 2,
+	}
+	#endregion // SerializationEngineLoadOptions enum
 	#endregion // Public Enumerations
 	#region Public Classes
 	#region CustomSerializedInfo class
@@ -1584,6 +1606,23 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		bool ShouldSerialize();
 	}
 	#endregion // ICustomSerializedElement interface
+	#region ISkipExtension interface
+	/// <summary>
+	/// Implement on a store when extensions are available but not loaded. This
+	/// allows non-displayed documents to be loaded without the cost of loading
+	/// non-generative extensions such as models used for display or editing of
+	/// models and diagrams but not for code generation. This will be checked if
+	/// the <see cref="SerializationEngineLoadOptions.ResolveSkippedExtensions"/>
+	/// flag is set on the call to <see cref="SerializationEngine.Load"/>
+	/// </summary>
+	public interface ISkipExtensions
+	{
+		/// <summary>
+		/// Get or set a list of skipped extension types. Can be null.
+		/// </summary>
+		IList<Type> SkippedExtensionTypes { get; set; }
+	}
+	#endregion // ISkipExtension interface
 	#endregion Public Interfaces
 	#region Public Attributes
 	#region CustomSerializedXmlNamespacesAttribute class
@@ -1592,6 +1631,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 	/// xml namespaces serialized by that model.
 	/// </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
+	[Obsolete("Please use CustomSerializedXmlSchemaAttribute instead of CustomSerializedXmlNamespacesAttribute.")]
 	public sealed class CustomSerializedXmlNamespacesAttribute : Attribute, IEnumerable<string>
 	{
 		#region Member variables
@@ -1712,6 +1752,75 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		#endregion // IEnumerable implementation
 	}
 	#endregion // CustomSerializedXmlNamespacesAttribute class
+	#region CustomSerializedXmlSchemaAttribute class
+	/// <summary>
+	/// An attribute associated with a <see cref="DomainModel"/> that indicates the
+	/// namespace and corresponding resource name for an xml namespace serialized by
+	/// that model. Use multiple attributes for multiple namespaces.
+	/// </summary>
+	/// <remarks><see cref="ICustomSerializedDomainModel"/> for a discussion on how
+	/// to build the schema file into the model assembly as a resource.</remarks>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = false)]
+	public sealed class CustomSerializedXmlSchemaAttribute : Attribute
+	{
+		#region Member variables
+		private string myNamespace;
+		private string mySchemaFile;
+		#endregion // Member variables
+		#region Constructors
+		/// <summary>
+		/// Create an <see cref="CustomSerializedXmlSchemaAttribute"/> with a namespace and schema file.
+		/// </summary>
+		/// <param name="xmlNamespace">An xml namespace to associate with this domain model.</param>
+		/// <param name="schemaFile">The name of a resoure in the model assembly that contains
+		/// the schema file. See comments in <see cref="ICustomSerializedDomainModel"/> for information on
+		/// how to integrate this file as part of the build process</param>
+		public CustomSerializedXmlSchemaAttribute(string xmlNamespace, string schemaFile)
+		{
+			myNamespace = xmlNamespace;
+			mySchemaFile = schemaFile;
+		}
+		#endregion // Constructors
+		#region Public accessor properties
+		/// <summary>
+		/// An XML namespace associated with the domain model
+		/// </summary>
+		public string XmlNamespace
+		{
+			get
+			{
+				return myNamespace;
+			}
+			set
+			{
+				myNamespace = value;
+			}
+		}
+		/// <summary>
+		/// The XML schema file for this namespace.
+		/// Used to resolve the schema file from a resource in this assembly.
+		/// </summary>
+		public string SchemaFile
+		{
+			get
+			{
+				return mySchemaFile;
+			}
+			set
+			{
+				mySchemaFile = value;
+			}
+		}
+		/// <summary>
+		/// Standard override
+		/// </summary>
+		public override bool IsDefaultAttribute()
+		{
+			return myNamespace == null && mySchemaFile == null;
+		}
+		#endregion // Public accessor properties
+	}
+	#endregion // CustomSerializedXmlSchemaAttribute class
 	#endregion // Public Attributes
 	#region Serialization Routines
 	/// <summary>
@@ -3512,14 +3621,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// Load the stream contents into the current store
 		/// </summary>
 		/// <param name="stream">An initialized stream</param>
-		public void Load(Stream stream)
+		/// <param name="options">Options to modify load behavior. Defaults to <see cref="SerializationEngineLoadOptions.None"/></param>
+		public void Load(Stream stream, SerializationEngineLoadOptions options = SerializationEngineLoadOptions.None)
 		{
 			DeserializationFixupManager fixupManager = new DeserializationFixupManager(myStore);
 			myNotifyAdded = fixupManager as INotifyElementAdded;
 			XmlReaderSettings settings = new XmlReaderSettings();
 			XmlSchemaSet schemas = settings.Schemas;
 			Type schemaResourcePathType = GetType();
-			schemas.Add(GetRootXmlNamespace(), new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, GetRootSchemaFileName())));
+			using (Stream schemaStream = schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, GetRootSchemaFileName()))
+			{
+				using (XmlReader reader = new XmlTextReader(schemaStream))
+				{
+					schemas.Add(GetRootXmlNamespace(), reader);
+				}
+			}
 
 			// Extract namespace and schema information from the different meta models
 			ICollection<DomainModel> domainModels = myStore.DomainModels;
@@ -3536,24 +3652,58 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					if (schemaFile != null && schemaFile.Length != 0)
 					{
 						schemaResourcePathType = customSerializedDomainModel.GetType();
-						schemas.Add(namespaceURI, new XmlTextReader(schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, schemaFile)));
+						using (Stream schemaStream = schemaResourcePathType.Assembly.GetManifestResourceStream(schemaResourcePathType, schemaFile))
+						{
+							using (XmlReader reader = new XmlTextReader(schemaStream))
+							{
+								schemas.Add(namespaceURI, reader);
+							}
+						}
 					}
 				}
 			}
+
+			ISkipExtensions skippingStore;
+			IList<Type> skippedExtensionTypes;
+			int skippedExtensionCount;
+			if (0 != (options & SerializationEngineLoadOptions.ResolveSkippedExtensions) &&
+				null != (skippingStore = myStore as ISkipExtensions) &&
+				null != (skippedExtensionTypes = skippingStore.SkippedExtensionTypes) &&
+				0 != (skippedExtensionCount = skippedExtensionTypes.Count))
+			{
+				for (int i = 0; i < skippedExtensionCount; ++i)
+				{
+					Type skippedType = skippedExtensionTypes[i];
+					object[] serializedSchemas;
+					int schemaCount;
+					if (typeof(ICustomSerializedDomainModel).IsAssignableFrom(skippedType) &&
+						null != (serializedSchemas = skippedType.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false)) &&
+						0 != (schemaCount = serializedSchemas.Length))
+					{
+						for (int iSchema = 0; iSchema < schemaCount; ++iSchema)
+						{
+							CustomSerializedXmlSchemaAttribute schemaAttribute = (CustomSerializedXmlSchemaAttribute)serializedSchemas[iSchema];
+							using (Stream schemaStream = skippedType.Assembly.GetManifestResourceStream(skippedType, schemaAttribute.SchemaFile))
+							{
+								using (XmlReader reader = new XmlTextReader(schemaStream))
+								{
+									schemas.Add(schemaAttribute.XmlNamespace, reader);
+								}
+							}
+						}
+					}
+				}
+			}
+
 			myXmlNamespaceToModelMap = namespaceToModelMap;
 			NameTable nameTable = new NameTable();
 			settings.NameTable = nameTable;
 
-
-#if DEBUG
-			// Skip validation when the shift key is down in debug mode
-			if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Shift) == 0)
+			if (0 == (options & SerializationEngineLoadOptions.SkipSchemaValidation))
 			{
-#endif // DEBUG
 				settings.ValidationType = ValidationType.Schema;
-#if DEBUG
 			}
-#endif // DEBUG
+
 			using (LoadSerializationContext context = LoadSerializationContext.InitializeContext(this))
 			{
 				// UNDONE: MSBUG Figure out why this transaction is needed. If it is ommitted then the EdgePointCollection

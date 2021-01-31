@@ -24,7 +24,8 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.ORMAbstraction
 {
 	#region AbstractionDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core", "http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Abstraction/2007-06/Core", "ORMAbstraction.xsd")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Abstraction/2007-06/DataTypes/Core", "ORMAbstractionDatatypes.xsd")]
 	partial class AbstractionDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'AbstractionDomainModel' extension model</summary>

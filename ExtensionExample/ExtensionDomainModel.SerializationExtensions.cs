@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.ExtensionExample
 {
 	#region ExtensionDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/ExtensionExample")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/ExtensionExample", "ExtensionDomainModelTest.xsd")]
 	partial class ExtensionDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ExtensionDomainModel' extension model</summary>

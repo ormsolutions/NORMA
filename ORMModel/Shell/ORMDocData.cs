@@ -24,6 +24,8 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
@@ -751,12 +753,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			Store store = this.Store;
 
 			Debug.Assert(base.InLoad);
-
+			SerializationEngineLoadOptions loadOptions = SerializationEngineLoadOptions.None;
+#if DEBUG
+			// Skip validation when the shift key is down in debug mode
+			if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Shift) != 0)
+			{
+				loadOptions = SerializationEngineLoadOptions.SkipSchemaValidation;
+			}
+#endif // DEBUG
 			if (stream.Length > 1)
 			{
 				try
 				{
-					(new ORMSerializationEngine(store)).Load(stream);
+					(new ORMSerializationEngine(store)).Load(stream, loadOptions);
 				}
 				catch (XmlSchemaValidationException ex)
 				{
@@ -1342,6 +1351,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				// GetLoadedExtensions returns an array of current loaded extension objects
 				// EnsureExtensions accepts an array of extensions that need to be loaded
 				result = new ORMExtensionManagerAutomationObject(this);
+				return;
+			}
+			else if ("ORMGeneratorTargets" == name)
+			{
+				Dictionary<string, GeneratorTarget[]> serializeableResult = GeneratorTarget.ConsolidateGeneratorTargets(this);
+				if (serializeableResult != null)
+				{
+					// This won't go through the automation layer as a dictionary,
+					// so we serialize it as a stream.
+					MemoryStream stream = new MemoryStream();
+					new BinaryFormatter().Serialize(stream, serializeableResult);
+					stream.Seek(0, SeekOrigin.Begin);
+					result = stream;
+				}
+				else
+				{
+					result = null;
+				}
 				return;
 			}
 			result = this;

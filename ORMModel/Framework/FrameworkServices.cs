@@ -243,6 +243,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 	{
 		private string myNamespaceURI;
 		private Type myAlsoLoadType;
+		private bool myIsNonGenerative;
 		/// <summary>
 		/// Create a default <see cref="AlsoLoadDomainModelAttribute"/>
 		/// </summary>
@@ -252,10 +253,11 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <summary>
 		/// Create a <see cref="AlsoLoadDomainModelAttribute"/> for a specific domain model.
 		/// </summary>
-		public AlsoLoadDomainModelAttribute(string namespaceURI, Type type)
+		public AlsoLoadDomainModelAttribute(string namespaceURI, Type type, bool isNonGenerative = false)
 		{
 			myAlsoLoadType = type;
 			myNamespaceURI = namespaceURI;
+			myIsNonGenerative = isNonGenerative;
 		}
 		/// <summary>
 		/// The additional domain model that is loaded with the context domain model.
@@ -286,11 +288,30 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 		}
 		/// <summary>
+		/// Treat this as a non-generative model for external loading.
+		/// If any registered model that sets this attribute has the
+		/// NonGenerative attribute marked then this is automatically
+		/// considered non generative, so this only needs to be set
+		/// if the primary model is used for code generation but the
+		/// also-loaded model is not.
+		/// </summary>
+		public bool IsNonGenerative
+		{
+			get
+			{
+				return myIsNonGenerative;
+			}
+			set
+			{
+				myIsNonGenerative = value;
+			}
+		}
+		/// <summary>
 		/// Standard override, empty if data not set.
 		/// </summary>
 		public override bool IsDefaultAttribute()
 		{
-			return myNamespaceURI == null && myAlsoLoadType == null;
+			return myNamespaceURI == null && myAlsoLoadType == null && !myIsNonGenerative;
 		}
 	}
 	#endregion // AlsoLoadDomainModelAttribute class
@@ -758,4 +779,190 @@ namespace ORMSolutions.ORMArchitect.Framework
 		IEnumerable<KeyValuePair<Guid, Predicate<ElementPropertyChangedEventArgs>>> GetSignalPropertyChanges();
 	}
 	#endregion // ICreateSignalTransactionItems
+	#region GeneratorTarget struct
+	/// <summary>
+	/// A structure representing a three part identifier that controls the
+	/// generation of different output targets. The general pattern is that
+	/// one artifact of a given type is generated per model file. Used with the
+	/// <see cref="IGeneratorTargetList"/> interface, this allows multiple
+	/// artifacts of the same type to be generated from the same model file.
+	/// </summary>
+	public struct GeneratorTarget
+	{
+		#region Member Variables
+		/// <summary>
+		/// The type of target to modify. A generator registers this basic
+		/// string value in its list of generator target types. This is a
+		/// case sensitive value.
+		/// </summary>
+		public readonly string TargetType;
+		/// <summary>
+		/// The name for this instance of the given type. This is used as
+		/// a decorator in the file name of the given type. An empty or null
+		/// return indicates no special name. The type and name pairs need
+		/// to be unique across the model. This is a case-insensitive value.
+		/// </summary>
+		public readonly string TargetName;
+		/// <summary>
+		/// The identifier for this instance. This value depends on the type
+		/// of data being used and will relate back to an id argument in the
+		/// .orm file or some other unique value in another generator input,
+		/// thereby allowing the generator to determine the data that should
+		/// be used to create the correct artifact.
+		/// </summary>
+		/// <remarks>Although the type and id will generally be unique this is
+		/// not actually required, so the identifier is ignored in equality
+		/// and hashcode comparisons comparing two <see cref="GeneratorTarget"/> instances.
+		/// Equality comparison ignores (ordinal) case for the target name.</remarks>
+		public readonly string TargetId;
+		#endregion // Member Variables
+		#region Constructors
+		/// <summary>
+		/// Create a new instance with a type, name and id
+		/// </summary>
+		public GeneratorTarget(string type, string name, string id)
+		{
+			TargetType = type;
+			TargetName = name;
+			TargetId = id;
+		}
+		#endregion // Constructors
+		#region Equality routines
+		/// <summary>
+		/// Standard Equals override
+		/// </summary>
+		public override bool Equals(object obj)
+		{
+			return (obj is GeneratorTarget) && Equals((GeneratorTarget)obj);
+		}
+		/// <summary>
+		/// Standard GetHashCode override
+		/// </summary>
+		public override int GetHashCode()
+		{
+			string type = TargetType;
+			string name = TargetName;
+			return Utility.GetCombinedHashCode(type != null ? type.GetHashCode() : 0, name != null ? StringComparer.OrdinalIgnoreCase.GetHashCode(name) : 0);
+		}
+		/// <summary>
+		/// Typed Equals method
+		/// </summary>
+		public bool Equals(GeneratorTarget obj)
+		{
+			// Note that the id is intentionally ignored for equality to allow an
+			// instance to be used as a type/name key.
+			return TargetType == obj.TargetType && StringComparer.OrdinalIgnoreCase.Equals(TargetName, obj.TargetName);
+		}
+		/// <summary>
+		/// Equality operator
+		/// </summary>
+		public static bool operator ==(GeneratorTarget left, GeneratorTarget right)
+		{
+			return left.Equals(right);
+		}
+		/// <summary>
+		/// Inequality operator
+		/// </summary>
+		public static bool operator !=(GeneratorTarget left, GeneratorTarget right)
+		{
+			return !left.Equals(right);
+		}
+		#endregion // Equality routines
+		#region Static helpers
+		/// <summary>
+		/// Consolidate data from all implementations of <see cref="IGeneratorTargetProvider"/> in loaded
+		/// domain models into a dictionary keyed by generator type.
+		/// </summary>
+		/// <param name="services"></param>
+		/// <returns></returns>
+		public static Dictionary<string, GeneratorTarget[]> ConsolidateGeneratorTargets(IFrameworkServices services)
+		{
+			Dictionary<string, List<GeneratorTarget>> targetsByType = null;
+			foreach (IGeneratorTargetProvider provider in services.GetTypedDomainModelProviders<IGeneratorTargetProvider>())
+			{
+				foreach (IGeneratorTargetList targetList in provider.GetGeneratorTargets())
+				{
+					IList<GeneratorTarget> localTargets;
+					int targetCount;
+					if (null != (localTargets = targetList.GeneratorTargets) &&
+						0 != (targetCount = localTargets.Count))
+					{
+						for (int i = 0; i < targetCount; ++i)
+						{
+							GeneratorTarget target = localTargets[i];
+							string targetType = target.TargetType;
+							List<GeneratorTarget> combinedTargets;
+							if (null == targetsByType)
+							{
+								targetsByType = new Dictionary<string, List<GeneratorTarget>>();
+								targetsByType[targetType] = combinedTargets = new List<GeneratorTarget>();
+							}
+							else if (!targetsByType.TryGetValue(targetType, out combinedTargets))
+							{
+								combinedTargets = new List<GeneratorTarget>();
+								targetsByType[targetType] = combinedTargets;
+							}
+						}
+					}
+				}
+			}
+
+			// This returns a dictionary keyed by a generator type
+			// with array values corresponding to unique GeneratorType
+			// instances for that target.
+			Dictionary<string, GeneratorTarget[]> serializeableResult = null;
+			if (targetsByType != null)
+			{
+				Dictionary<GeneratorTarget, object> keyedByTarget = new Dictionary<GeneratorTarget, object>();
+				serializeableResult = new Dictionary<string, GeneratorTarget[]>();
+				foreach (KeyValuePair<string, List<GeneratorTarget>> kvp in targetsByType)
+				{
+					List<GeneratorTarget> targetList = kvp.Value;
+					keyedByTarget.Clear();
+					int i;
+					int count;
+					for (i = 0, count = targetList.Count; i < count; ++i)
+					{
+						// This limits any duplicate key to a single id
+						keyedByTarget[targetList[i]] = null;
+					}
+
+					count = keyedByTarget.Count;
+					GeneratorTarget[] targets = new GeneratorTarget[count];
+					serializeableResult[kvp.Key] = targets;
+					keyedByTarget.Keys.CopyTo(targets, 0);
+				}
+			}
+			return serializeableResult;
+		}
+		#endregion // Static helpers
+	}
+	#endregion // GeneratorTarget struct
+	#region IGeneratorTargetList interface
+	/// <summary>
+	/// An interface to implement on elements that controls the generation
+	/// of different output targets.
+	/// </summary>
+	public interface IGeneratorTargetList
+	{
+		/// <summary>
+		/// Generator targets to associate with a group setting.
+		/// </summary>
+		IList<GeneratorTarget> GeneratorTargets { get; }
+	}
+	#endregion // IGeneratorTargetList interface
+	#region IGeneratorTargetProvider interface
+	/// <summary>
+	/// An interface to implement on a domain model to provide
+	/// generator target objects. Each object then produces a
+	/// generator target list.
+	/// </summary>
+	public interface IGeneratorTargetProvider
+	{
+		/// <summary>
+		/// Enumeration of elements that can have generator targets
+		/// </summary>
+		IEnumerable<IGeneratorTargetList> GetGeneratorTargets();
+	}
+	#endregion // IGeneratorTargetProvider interface
 }
