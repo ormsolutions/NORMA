@@ -461,7 +461,13 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 
 					if (placeholders != null)
 					{
-						argumentList.AddParam("_GeneratorPlaceholders", string.Empty, placeholders.Count == 1 ? placeholders[0] : string.Join(" ", placeholders));
+						argumentList.AddParam("_GeneratorPlaceholders", string.Empty, placeholders.Count == 1 ? placeholders[0] :
+#if VISUALSTUDIO_10_0
+							string.Join<string>(" ", placeholders)
+#else
+							string.Join(" ", placeholders.ToArray())
+#endif
+						);
 					}
 				}
 

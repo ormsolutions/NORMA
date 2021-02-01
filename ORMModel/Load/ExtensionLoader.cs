@@ -282,7 +282,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 					}
 				}
 
-#pragma warning disable CS0618
+#pragma warning disable 618
 				// UNDONE: Remove CustomSerializedXmlNamespacesAttribute support
 				if (!foundMatch)
 				{
@@ -299,7 +299,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 						}
 					}
 				}
-#pragma warning restore CS0618
+#pragma warning restore 618
 
 				if (!foundMatch)
 				{
@@ -637,7 +637,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			IDictionary<string, ExtensionModelBinding> originalAvailableExtensions = fullLoader.myAvailableExtensions;
 			foreach (ExtensionModelBinding binding in originalAvailableExtensions.Values)
 			{
-				fullLoader.TestIsNonGenerativeBinding(binding, nonGenerativeIds);
+				fullLoader.TestIsNonGenerativeBinding(binding, nonGenerativeIds, false);
 			}
 
 			// Set available extensions
@@ -701,7 +701,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			}
 			myAutoLoadExtensions = newAutoLoads ?? new string[0];
 		}
-		private bool TestIsNonGenerativeBinding(ExtensionModelBinding binding, Dictionary<Guid, bool> nonGenerativeIds, bool forceNonGenerative = false)
+		private bool TestIsNonGenerativeBinding(ExtensionModelBinding binding, Dictionary<Guid, bool> nonGenerativeIds, bool forceNonGenerative)
 		{
 			bool isNonGenerative;
 			Guid modelId = binding.DomainModelId;
@@ -736,7 +736,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 						if (myExtensionIdToExtensionNameMap.TryGetValue(extendsId, out extensionName) &&
 							myAvailableExtensions.TryGetValue(extensionName, out extensionBinding))
 						{
-							if (TestIsNonGenerativeBinding(extensionBinding, nonGenerativeIds))
+							if (TestIsNonGenerativeBinding(extensionBinding, nonGenerativeIds, false))
 							{
 								nonGenerativeIds[modelId] = isNonGenerative = true;
 								break;
@@ -1338,7 +1338,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				}
 			}
 
-#pragma warning disable CS0618
+#pragma warning disable 618
 			// UNDONE: Remove CustomSerializedXmlNamespacesAttribute support
 			List<CustomSerializedXmlNamespacesAttribute> namespaceAttributes = new List<CustomSerializedXmlNamespacesAttribute>();
 			foreach (Type standardType in standardTypes)
@@ -1373,7 +1373,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 					namespaceList.Add(currentAttribute[j]);
 				}
 			}
-#pragma warning restore CS0618
+#pragma warning restore 618
 
 			string[] namespaces = new string[namespaceList.Count];
 			namespaceList.CopyTo(namespaces);

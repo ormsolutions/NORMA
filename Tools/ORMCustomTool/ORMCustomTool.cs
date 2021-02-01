@@ -574,12 +574,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				ORMGenerator = generator;
 				TargetInstance = targetInstance;
 				FormatStep = step;
-				Signature = BuildSignature(generator.ProvidesOutputFormat, targetInstance);
+				Signature = BuildSignature(generator.ProvidesOutputFormat, targetInstance, null);
 			}
 			/// <summary>
 			/// Generator a string signature for the given format and target instances
 			/// </summary>
-			public static string BuildSignature(string generatedFormat, GeneratorTarget[] targetInstance, IList<int> filterIndices = null)
+			public static string BuildSignature(string generatedFormat, GeneratorTarget[] targetInstance, IList<int> filterIndices)
 			{
 				int instanceLength;
 				if (targetInstance == null ||
@@ -676,6 +676,11 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			/// </summary>
 			public readonly string Signature;
 		}
+#if !VISUALSTUDIO_10_0
+		private delegate void Action();
+		private delegate void Action<T1, T2>(T1 t1, T2 t2);
+		private delegate void Action<T1, T2, T3>(T1 t1, T2 t2, T3 t3);
+#endif
 		private void GenerateCode(string bstrInputFileContents, string wszDefaultNamespace, IVsGeneratorProgress pGenerateProgress, WriteReportItem report)
 		{
 			report(
@@ -750,7 +755,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 #if VISUALSTUDIO_10_0
 					ProjectItemElement,
 #else
-					BuildItem
+					BuildItem,
 #endif
 					Action<BoundBuildItem>,
 					Action<IORMGenerator, bool>> bindBuildItem = delegate (
@@ -936,7 +941,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							processedGeneratorTargets[generatedFormat] = new BitTracker(instances.Length);
 							for (int i = 0; i < instances.Length; ++i)
 							{
-								generatorTargetsBySignature[BoundBuildItem.BuildSignature(generatedFormat, instances[i])] = i;
+								generatorTargetsBySignature[BoundBuildItem.BuildSignature(generatedFormat, instances[i], null)] = i;
 							}
 						}
 					}
@@ -1605,7 +1610,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			public GeneratorTargetSet(List<string> targetNames)
 			{
 				// Keep the original data so we can do instance checking on the original collection
-				myTargetTypes = (IList<string>)targetNames ?? Array.Empty<string>();
+				myTargetTypes = (IList<string>)targetNames ??
+#if VISUALSTUDIO_15_0
+					Array.Empty<string>();
+#else
+					new string[0];
+#endif
 				myReadOnlyTargetTypes = targetNames != null ? targetNames.AsReadOnly() : myTargetTypes;
 			}
 #endregion // Member variables and constructor
@@ -2206,7 +2216,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				string nameString = name as string;
 				if (nameString != null && nameFilter(nameString))
 				{
-					callback(nameString, item.GetEvaluatedMetadata(nameString);
+					callback(nameString, item.GetEvaluatedMetadata(nameString));
 				}
 			}
 		}
@@ -2408,7 +2418,13 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 			if (placeholders != null)
 			{
-				item.SetMetadata(ITEMMETADATA_ORMGENERATORTARGET_PLACEHOLDERS, placeholders.Count == 1 ? placeholders[0] : string.Join<string>(" ", placeholders));
+				item.SetMetadata(ITEMMETADATA_ORMGENERATORTARGET_PLACEHOLDERS, placeholders.Count == 1 ? placeholders[0] :
+#if VISUALSTUDIO_10_0
+					string.Join<string>(" ", placeholders)
+#else
+					string.Join(" ", placeholders.ToArray())
+#endif
+				);
 			}
 		}
 
@@ -2445,12 +2461,18 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			else
 			{
 				// Update or add item
-				SetItemMetaData(item, ITEMMETADATA_ORMGENERATORTARGET_PLACEHOLDERS, placeholders.Count == 1 ? placeholders[0] : string.Join(" ", placeholders));
+				SetItemMetaData(item, ITEMMETADATA_ORMGENERATORTARGET_PLACEHOLDERS, placeholders.Count == 1 ? placeholders[0] :
+#if VISUALSTUDIO_10_0
+					string.Join<string>(" ", placeholders)
+#else
+					string.Join(" ", placeholders.ToArray())
+#endif
+				);
 			}
 		}
 
 		private static List<string> EmptyStringList = new List<string>();
-#pragma warning disable CS1587
+#pragma warning disable 1587
 		/// <summary>
 		/// Get generator targets by output format.
 		/// </summary>
@@ -2472,7 +2494,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			, IServiceProvider serviceProvider
 #endif
 			)
-#pragma warning restore CS1587
+#pragma warning restore 1587
 		{
 			// Filter the generator targets by those actually specified in the project.
 			// Target type order is determined by the specified target order and the

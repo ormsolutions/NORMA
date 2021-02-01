@@ -249,9 +249,14 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// </summary>
 		/// <param name="buildItem">The <see cref="BuildItem"/> for which output is to be generated.</param>
 		/// <param name="outputStream">The <see cref="Stream"/> to which output is to be generated.</param>
-		/// <param name="inputFormatStreams">A read-only <see cref="IDictionary{String,Stream}"/> containing pairs of official output format names and read-only <see cref="Stream"/>s containing the output in that format.</param>
+		/// <param name="inputFormatStreams">A read-only <see cref="GetFormatStream"/> callback returning a read-only
+		/// <see cref="Stream"/>s containing the output of that format.</param>
 		/// <param name="defaultNamespace">A <see cref="String"/> containing the default namespace that should be used in the generated output, as appropriate.</param>
 		/// <param name="itemProperties">An implementation of <see cref="IORMGeneratorItemProperties"/> to allow retrieval of additional properties</param>
+		/// <param name="targetInstance">Generator target instances distinguish this generated output from other instances of the same format. The target types are
+		/// treated as parameter names and the ids as parameter values. Target types should not overlap input or reference format names. Note that target instances
+		/// may be specified even if a format does not directly support target types because input formats may also be parameterized and the inputs target instances
+		/// are also provided as parameters.</param>
 		/// <remarks>
 		/// <para><paramref name="inputFormatStreams"/> is guaranteed to contain the output <see cref="Stream"/>s for
 		/// the "ORM" format and any formats returned by this <see cref="IORMGenerator"/>'s implementation of
@@ -264,7 +269,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// ...
 		/// oialStream.Seek(0, SeekOrigin.Begin);</example></para>
 		/// </remarks>
-		void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties);
+		void GenerateOutput(BuildItem buildItem, Stream outputStream, GetFormatStream inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties, GeneratorTarget[] targetInstance);
 #endif // VISUALSTUDIO_10_0
 	}
 	/// <summary>

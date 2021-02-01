@@ -211,7 +211,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 	#endregion // CustomSerializedElementMatchStyle enum
 	#region SerializationEngineLoadOptions enum
 	/// <summary>
-	/// Options modifying the behavior of <see cref="SerializationEngine.Load"/>.
+	/// Options modifying the behavior of <see cref="SerializationEngine.Load(System.IO.Stream,SerializationEngineLoadOptions)"/>.
 	/// </summary>
 	[Flags]
 	public enum SerializationEngineLoadOptions
@@ -1613,7 +1613,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 	/// non-generative extensions such as models used for display or editing of
 	/// models and diagrams but not for code generation. This will be checked if
 	/// the <see cref="SerializationEngineLoadOptions.ResolveSkippedExtensions"/>
-	/// flag is set on the call to <see cref="SerializationEngine.Load"/>
+	/// flag is set on the call to <see cref="SerializationEngine.Load(System.IO.Stream,SerializationEngineLoadOptions)"/>
 	/// </summary>
 	public interface ISkipExtensions
 	{
@@ -3621,8 +3621,16 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// Load the stream contents into the current store
 		/// </summary>
 		/// <param name="stream">An initialized stream</param>
+		public void Load(Stream stream)
+		{
+			Load(stream, SerializationEngineLoadOptions.None);
+		}
+		/// <summary>
+		/// Load the stream contents into the current store
+		/// </summary>
+		/// <param name="stream">An initialized stream</param>
 		/// <param name="options">Options to modify load behavior. Defaults to <see cref="SerializationEngineLoadOptions.None"/></param>
-		public void Load(Stream stream, SerializationEngineLoadOptions options = SerializationEngineLoadOptions.None)
+		public void Load(Stream stream, SerializationEngineLoadOptions options)
 		{
 			DeserializationFixupManager fixupManager = new DeserializationFixupManager(myStore);
 			myNotifyAdded = fixupManager as INotifyElementAdded;

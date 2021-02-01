@@ -129,7 +129,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		private readonly ProjectRootElement _project;
 		private readonly ProjectItemGroupElement _originalItemGroup;
 #else // VISUALSTUDIO_10_0
-		private readonly Project _project;
+		private readonly Microsoft.Build.BuildEngine.Project _project;
 		private readonly BuildItemGroup _originalItemGroup;
 #endif // VISUALSTUDIO_10_0
 		private readonly Dictionary<string, PseudoBuildItem> _pseudoItemsByOutputFormat;
@@ -148,7 +148,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			ProjectRootElement project = ProjectRootElement.TryOpen(projectItem.ContainingProject.FullName);
 			string projectFullPath = project.FullPath;
 #else // VISUALSTUDIO_10_0
-			Project project = Engine.GlobalEngine.GetLoadedProject(projectItem.ContainingProject.FullName);
+			Microsoft.Build.BuildEngine.Project project = Engine.GlobalEngine.GetLoadedProject(projectItem.ContainingProject.FullName);
 			string projectFullPath = project.FullFileName;
 #endif // VISUALSTUDIO_10_0
 			_project = project;
@@ -358,6 +358,9 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 		}
 
+#if !VISUALSTUDIO_10_0
+		private delegate void Action<T1, T2, T3, T4>(T1 t1, T2 t2, T3 t3, T4 t4);
+#endif
 		protected override void OnClosed(EventArgs e)
 		{
 			if (_savedChanges)
@@ -403,7 +406,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				ProjectRootElement project = _project;
 #else // VISUALSTUDIO_10_0
 				BuildItemGroup itemGroup = _originalItemGroup;
-				Project project = _project;
+				Microsoft.Build.BuildEngine.Project project = _project;
 #endif // VISUALSTUDIO_10_0
 				EnvDTE.ProjectItem projectItem = _projectItem;
 				string sourceFileName = _sourceFileName;
@@ -460,7 +463,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 						}
 
 						// Temporarily load the document so that the generator targets can be resolved.
-						using (Store store = new ModelLoader(ORMDesignerPackage.ExtensionLoader, true).Load(projectItem.FileNames[0]))
+						using (Store store = new ModelLoader(ORMDesignerPackage.ExtensionLoader, true).Load(projectItem.get_FileNames(0)))
 						{
 							docTargets = GeneratorTarget.ConsolidateGeneratorTargets(store as IFrameworkServices);
 						}

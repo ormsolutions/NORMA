@@ -253,7 +253,16 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <summary>
 		/// Create a <see cref="AlsoLoadDomainModelAttribute"/> for a specific domain model.
 		/// </summary>
-		public AlsoLoadDomainModelAttribute(string namespaceURI, Type type, bool isNonGenerative = false)
+		public AlsoLoadDomainModelAttribute(string namespaceURI, Type type)
+		{
+			myAlsoLoadType = type;
+			myNamespaceURI = namespaceURI;
+			myIsNonGenerative = false;
+		}
+		/// <summary>
+		/// Create a <see cref="AlsoLoadDomainModelAttribute"/> for a specific domain model.
+		/// </summary>
+		public AlsoLoadDomainModelAttribute(string namespaceURI, Type type, bool isNonGenerative)
 		{
 			myAlsoLoadType = type;
 			myNamespaceURI = namespaceURI;
