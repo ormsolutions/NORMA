@@ -27,6 +27,7 @@ using System.Xml.Xsl;
 using Microsoft.Win32;
 
 using Debug = System.Diagnostics.Debug;
+using ORMSolutions.ORMArchitect.Framework;
 
 #if VISUALSTUDIO_10_0
 using Microsoft.Build.Construction;
@@ -82,6 +83,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				Debug.Assert(sourceInputFormat != null);
 				string[] referenceInputFormats = generatorKey.GetValue("ReferenceInputFormats", EmptyStringArray) as string[];
 				string[] companionOutputFormats = generatorKey.GetValue("CompanionOutputFormats", EmptyStringArray) as string[];
+				string[] generatorTargetTypes = generatorKey.GetValue("GeneratorTargetTypes", EmptyStringArray) as string[];
+				string[] generatorTargetInstructions = generatorKey.GetValue("GeneratorTargetInstructions", EmptyStringArray) as string[];
 
 				List<string> requiresInputFormats;
 
@@ -115,6 +118,21 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				this._requiredExtensions = extensions;
 				this._requiresInputFormats = new ReadOnlyCollection<string>(requiresInputFormats);
 				this._companionOutputFormats = Array.AsReadOnly<string>(companionOutputFormats);
+				this._generatorTargetTypes = Array.AsReadOnly<string>(generatorTargetTypes);
+
+				if (generatorTargetTypes.Length != 0)
+				{
+					string[] instructions = new string[generatorTargetTypes.Length];
+					for (int i = 0; i < generatorTargetTypes.Length; ++i)
+					{
+						instructions[i] = generatorKey.GetValue("GeneratorTargetInstruction_" + generatorTargetTypes[i], null) as string;
+					}
+					this._generatorTargetInstructions = Array.AsReadOnly<string>(instructions);
+				}
+				else
+				{
+					this._generatorTargetInstructions = EmptyStringArray;
+				}
 
 				this._transform = new XslCompiledTransform(System.Diagnostics.Debugger.IsAttached);
 				string transformLocation = generatorKey.GetValue("TransformUri", null) as string;
@@ -310,6 +328,18 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				get { return this._companionOutputFormats; }
 			}
 
+			private readonly IList<string> _generatorTargetTypes;
+			public IList<string> GeneratorTargetTypes
+			{
+				get { return this._generatorTargetTypes; }
+			}
+
+			private readonly IList<string> _generatorTargetInstructions;
+			public IList<string> GeneratorTargetInstructions
+			{
+				get { return this._generatorTargetInstructions; }
+			}
+
 			private readonly string _fileExtension;
 			public string GetOutputFileDefaultName(string sourceFileName)
 			{
@@ -372,12 +402,13 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				BuildItem buildItem,
 #endif
 				Stream outputStream,
-				IDictionary<string, Stream> inputFormatStreams,
+				GetFormatStream inputFormatStreams,
 				string defaultNamespace,
-				IORMGeneratorItemProperties itemProperties)
+				IORMGeneratorItemProperties itemProperties,
+				GeneratorTarget[] targetInstance)
 			{
 				this.EnsureTransform();
-				Stream inputStream = inputFormatStreams[this._sourceInputFormat];
+				Stream inputStream = inputFormatStreams(this._sourceInputFormat);
 				
 				XsltArgumentList argumentList = new XsltArgumentList();
 				argumentList.AddParam("DefaultNamespace", string.Empty, defaultNamespace);
@@ -386,15 +417,57 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				string[] referenceFormats = this._referenceInputFormats;
 				if (referenceFormats != null)
 				{
-					for (int i = 0; i < referenceFormats.Length; i++)
+					for (int i = 0; i < referenceFormats.Length; ++i)
 					{
 						string referenceFormat = referenceFormats[i];
-						Stream referenceStream = inputFormatStreams[referenceFormat];
+						Stream referenceStream = inputFormatStreams(referenceFormat);
 						using (XmlReader referenceReader = XmlReader.Create(referenceStream))
 						{
 							argumentList.AddParam(referenceFormat, string.Empty, new XPathDocument(referenceReader).CreateNavigator().Select(DocumentElementXPathExpression));
 						}
 						referenceStream.Seek(0, SeekOrigin.Begin);
+					}
+				}
+
+				if (targetInstance != null)
+				{
+					List<string> placeholders = null;
+					for (int i = 0; i < targetInstance.Length; ++i)
+					{
+						GeneratorTarget target = targetInstance[i];
+						string targetType = target.TargetType;
+						string instructionText = null;
+						bool isLocalPlaceholder = false;
+						if (target.TargetName == null)
+						{
+							(placeholders ?? (placeholders = new List<string>())).Add(targetType);
+							IList<string> localTargetTypes = _generatorTargetTypes;
+							int targetTypeCount;
+							if (0 != (targetTypeCount = localTargetTypes.Count))
+							{
+								for (int j = 0; j < targetTypeCount; ++j)
+								{
+									if (targetType == localTargetTypes[j])
+									{
+										isLocalPlaceholder = true;
+										instructionText = _generatorTargetInstructions[j];
+										break;
+									}
+								}
+							}
+						}
+						argumentList.AddParam(targetType, string.Empty, target.TargetId ?? (isLocalPlaceholder ? instructionText : null) ?? string.Empty);
+					}
+
+					if (placeholders != null)
+					{
+						argumentList.AddParam("_GeneratorPlaceholders", string.Empty, placeholders.Count == 1 ? placeholders[0] :
+#if VISUALSTUDIO_10_0
+							string.Join<string>(" ", placeholders)
+#else
+							string.Join(" ", placeholders.ToArray())
+#endif
+						);
 					}
 				}
 

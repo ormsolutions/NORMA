@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 {
 	#region BarkerDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/EntityRelationship/2008-05/Barker", "BarkerERModel.xsd")]
 	partial class BarkerDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'BarkerDomainModel' extension model</summary>
@@ -374,7 +374,7 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 			}
 			if (roleId == EntityTypeIsSubtypeOfEntityType.SupertypeDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -797,17 +797,9 @@ namespace ORMSolutions.ORMArchitect.EntityRelationshipModels.Barker
 		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == BinaryAssociationContainsRole.BinaryAssociationDomainRoleId)
+			if (roleId == BinaryAssociationContainsRole.BinaryAssociationDomainRoleId || roleId == EntityTypePlaysRole.EntityTypeDomainRoleId || roleId == ExclusiveArcSpansOptionalRole.ExclusiveArcDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == EntityTypePlaysRole.EntityTypeDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ExclusiveArcSpansOptionalRole.ExclusiveArcDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}

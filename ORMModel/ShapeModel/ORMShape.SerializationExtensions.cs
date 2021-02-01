@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	#region ORMShapeDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2006-04/ORMDiagram")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/2006-04/ORMDiagram", "ORM2Diagram.xsd")]
 	partial class ORMShapeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMShapeDomainModel' extension model</summary>

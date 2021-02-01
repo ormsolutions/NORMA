@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.Views.BarkerERView
 {
 	#region BarkerERShapeDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2008-05/BarkerERView")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/2008-05/BarkerERView", "BarkerERView.xsd")]
 	partial class BarkerERShapeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'BarkerERShapeDomainModel' extension model</summary>

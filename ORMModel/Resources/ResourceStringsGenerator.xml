@@ -171,6 +171,7 @@
 	<ResourceString name="ModelBrowserWindowTitle" model="Diagram" resourceName="ORMModelBrowser.WindowTitle"/>
 	<ResourceString name="LoadExceptionIncompatibleAssembly" model="Model" resourceName="LoadException.IncompatibleAssembly"/>
 	<ResourceString name="LoadExceptionInvalidLoadKey" model="Model" resourceName="LoadException.InvalidLoadKey"/>
+	<ResourceString name="LoadExceptionExtensionSkippingNotSupportedByStore" model="Model" resourceName="LoadException.ExtensionSkippingNotSupportedByStore"/>
 	<ResourceString name="ModelExceptionCardinalityConstraintInvalidRangeText" model="Model" resourceName="ModelException.CardinalityConstraint.InvalidRangeText"/>
 	<ResourceString name="ModelExceptionUnaryRoleCardinalityConstraintUnaryOnly" model="Model" resourceName="ModelException.UnaryRoleCardinalityConstraint.UnaryOnly"/>
 	<ResourceString name="ModelExceptionModelErrorCategoryInvalid" model="Model" resourceName="ModelException.ModelErrorCategory.TypeNotDerivedFromModelErrorCategory"/>

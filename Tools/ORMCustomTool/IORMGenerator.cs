@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using ORMSolutions.ORMArchitect.Framework;
 #if VISUALSTUDIO_10_0
 using Microsoft.Build.Construction;
 using BuildItem = Microsoft.Build.Construction.ProjectItemElement;
@@ -30,6 +31,16 @@ using Microsoft.Build.BuildEngine;
 
 namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
+	/// <summary>
+	/// Used by <see cref="IORMGenerator.GenerateOutput"/> to retrieve a Stream for
+	/// a format identifier. Adding this abstraction instead of a direct callback
+	/// insulates the complications of integrating the generator with multiple outputs
+	/// of the same format.
+	/// </summary>
+	/// <param name="formatName"></param>
+	/// <returns></returns>
+	public delegate Stream GetFormatStream(string formatName);
+
 	/// <summary>
 	/// Implementations of this interface generate a specific output format based on requested input formats.
 	/// </summary>
@@ -115,6 +126,33 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		}
 
 		/// <summary>
+		/// A list of a generator types recognized by this generator. Specifying generator
+		/// types allows multiple different files of the same type to be generated from a single
+		/// model.
+		/// </summary>
+		IList<string> GeneratorTargetTypes
+		{
+			get;
+		}
+
+		/// <summary>
+		/// A list of a generator instructions matching <see cref="GeneratorTargetTypes"/>. If
+		/// the generator targets sent to a generator have placeholders then the instructions
+		/// for the generator types defined by this generator will be placed in the parameters
+		/// instead of empty data.
+		/// </summary>
+		/// <remarks>The registry format for this is GeneratorTargetInstruction_TARGETTYPE where TARGETTYPE is one
+		/// of the values in the GeneratorTargetTypes list. If input generators also have generator targets then
+		/// this will be listed. Note that the generator targets passed to a transform my also include target types
+		/// not directly defined with this generator. These items may be in the placeholders parameter, which
+		/// is a list of parameter names (in the _GeneratorPlaceholders parameter) that are empty because they
+		/// are placeholders.</remarks>
+		IList<string> GeneratorTargetInstructions
+		{
+			get;
+		}
+
+		/// <summary>
 		/// If <see cref="ProvidesOutputFormat"/> is part of the set of
 		/// <see cref="RequiresInputFormats"/> then this generator is used
 		/// to modify a previously generated instance of the same format.
@@ -170,9 +208,14 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// </summary>
 		/// <param name="itemElement">The <see cref="ProjectItemElement"/> for which output is to be generated.</param>
 		/// <param name="outputStream">The <see cref="Stream"/> to which output is to be generated.</param>
-		/// <param name="inputFormatStreams">A read-only <see cref="IDictionary{String,Stream}"/> containing pairs of official output format names and read-only <see cref="Stream"/>s containing the output in that format.</param>
+		/// <param name="inputFormatStreams">A read-only <see cref="GetFormatStream"/> callback returning a read-only
+		/// <see cref="Stream"/>s containing the output of that format.</param>
 		/// <param name="defaultNamespace">A <see cref="String"/> containing the default namespace that should be used in the generated output, as appropriate.</param>
 		/// <param name="itemProperties">An implementation of <see cref="IORMGeneratorItemProperties"/> to allow retrieval of additional properties</param>
+		/// <param name="targetInstance">Generator target instances distinguish this generated output from other instances of the same format. The target types are
+		/// treated as parameter names and the ids as parameter values. Target types should not overlap input or reference format names. Note that target instances
+		/// may be specified even if a format does not directly support target types because input formats may also be parameterized and the inputs target instances
+		/// are also provided as parameters.</param>
 		/// <remarks>
 		/// <para><paramref name="inputFormatStreams"/> is guaranteed to contain the output <see cref="Stream"/>s for
 		/// the "ORM" format and any formats returned by this <see cref="IORMGenerator"/>'s implementation of
@@ -185,7 +228,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// ...
 		/// oialStream.Seek(0, SeekOrigin.Begin);</example></para>
 		/// </remarks>
-		void GenerateOutput(ProjectItemElement itemElement, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties);
+		void GenerateOutput(ProjectItemElement itemElement, Stream outputStream, GetFormatStream inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties, GeneratorTarget[] targetInstance);
 #else // VISUALSTUDIO_10_0
 		/// <summary>
 		/// Adds a <see cref="BuildItem"/> for the generated file to <paramref name="buildItemGroup"/>.
@@ -206,9 +249,14 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// </summary>
 		/// <param name="buildItem">The <see cref="BuildItem"/> for which output is to be generated.</param>
 		/// <param name="outputStream">The <see cref="Stream"/> to which output is to be generated.</param>
-		/// <param name="inputFormatStreams">A read-only <see cref="IDictionary{String,Stream}"/> containing pairs of official output format names and read-only <see cref="Stream"/>s containing the output in that format.</param>
+		/// <param name="inputFormatStreams">A read-only <see cref="GetFormatStream"/> callback returning a read-only
+		/// <see cref="Stream"/>s containing the output of that format.</param>
 		/// <param name="defaultNamespace">A <see cref="String"/> containing the default namespace that should be used in the generated output, as appropriate.</param>
 		/// <param name="itemProperties">An implementation of <see cref="IORMGeneratorItemProperties"/> to allow retrieval of additional properties</param>
+		/// <param name="targetInstance">Generator target instances distinguish this generated output from other instances of the same format. The target types are
+		/// treated as parameter names and the ids as parameter values. Target types should not overlap input or reference format names. Note that target instances
+		/// may be specified even if a format does not directly support target types because input formats may also be parameterized and the inputs target instances
+		/// are also provided as parameters.</param>
 		/// <remarks>
 		/// <para><paramref name="inputFormatStreams"/> is guaranteed to contain the output <see cref="Stream"/>s for
 		/// the "ORM" format and any formats returned by this <see cref="IORMGenerator"/>'s implementation of
@@ -221,7 +269,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		/// ...
 		/// oialStream.Seek(0, SeekOrigin.Begin);</example></para>
 		/// </remarks>
-		void GenerateOutput(BuildItem buildItem, Stream outputStream, IDictionary<string, Stream> inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties);
+		void GenerateOutput(BuildItem buildItem, Stream outputStream, GetFormatStream inputFormatStreams, string defaultNamespace, IORMGeneratorItemProperties itemProperties, GeneratorTarget[] targetInstance);
 #endif // VISUALSTUDIO_10_0
 	}
 	/// <summary>

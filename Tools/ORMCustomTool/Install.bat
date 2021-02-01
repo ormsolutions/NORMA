@@ -15,12 +15,13 @@ CALL:_CleanupFile "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.xml"
 IF EXIST "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.dll" (REN "%NORMABinDir%\ORMSolutions.ORMArchitect.ORMCustomTool.dll" "ORMSolutions.ORMArchitect.ORMCustomTool.dll.delete.%RANDOM%")
 
 :: Install Custom Tool DLL
-IF "%VSSideBySide%"=="" (
 SET TargetBaseName=ORMSolutions.ORMArchitect.ORMCustomTool.%TargetVisualStudioShortProductName%
 DEL /F /Q "%NORMABinDir%\%TargetBaseName%.dll.delete.*" 1>NUL 2>&1
 IF EXIST "%NORMABinDir%\%TargetBaseName%.dll" (REN "%NORMABinDir%\%TargetBaseName%.dll" "%TargetBaseName%.dll.delete.%RANDOM%")
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.dll" "%NORMABinDir%\"
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.pdb" "%NORMABinDir%\"
+
+IF "%VSSideBySide%"=="" (
 :: For some reason, the next copy is randomly giving errors about half the time. They can be safely ignored, so they've been redirected to NUL.
 XCOPY /Y /D /V /Q "%RootDir%\%BuildOutDir%\%TargetBaseName%.xml" "%NORMABinDir%\" 2>NUL
 CALL:_InstallCustomToolReg "%VSRegistryRootVersion%"
@@ -212,6 +213,15 @@ SHIFT /8
 IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "ReferenceInputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
 SHIFT /8
 IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "CompanionOutputFormats" /t REG_MULTI_SZ /d "%~9") 1>NUL
+SHIFT /8
+IF NOT "%~9"=="" (REG ADD "%NORMAGenerators%\%~1" /f /v "GeneratorTargetTypes" /t REG_MULTI_SZ /d "%~9") 1>NUL
+:_NextInstruction
+SHIFT /8
+IF "%~9"=="" GOTO:EOF
+SET InstructionType=%~9
+SHIFT /8
+REG ADD "%NORMAGenerators%\%~1" /f /v "GeneratorTargetInstruction_%InstructionType%" /d "%~9") 1>NUL
+GOTO:_NextInstruction
 GOTO:EOF
 
 :_CleanupFile

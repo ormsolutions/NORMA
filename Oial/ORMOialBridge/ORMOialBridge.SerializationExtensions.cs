@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 {
 	#region ORMToORMAbstractionBridgeDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Bridge/2007-06/ORMToORMAbstraction", "ORMToORMAbstraction.xsd")]
 	partial class ORMToORMAbstractionBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMToORMAbstractionBridgeDomainModel' extension model</summary>

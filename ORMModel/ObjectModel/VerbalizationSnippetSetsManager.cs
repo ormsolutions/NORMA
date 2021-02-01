@@ -1161,7 +1161,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							{
 								retVal = myReaderSettings = new XmlReaderSettings();
 								retVal.ValidationType = ValidationType.Schema;
-								retVal.Schemas.Add(SchemaNamespace, new XmlTextReader(typeof(VerbalizationSnippetSetsManager).Assembly.GetManifestResourceStream(typeof(VerbalizationSnippetSetsManager), "VerbalizationUntypedSnippets.xsd")));
+								using (Stream stream = typeof(VerbalizationSnippetSetsManager).Assembly.GetManifestResourceStream(typeof(VerbalizationSnippetSetsManager), "VerbalizationUntypedSnippets.xsd"))
+								{
+									using (XmlReader reader = new XmlTextReader(stream))
+									{
+										retVal.Schemas.Add(SchemaNamespace, reader);
+									}
+								}
 								retVal.NameTable = Names;
 							}
 						}

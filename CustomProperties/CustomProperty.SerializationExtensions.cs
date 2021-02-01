@@ -25,7 +25,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.CustomProperties
 {
 	#region CustomPropertiesDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2007-11/CustomProperties")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/2007-11/CustomProperties", "CustomProperties.xsd")]
 	sealed partial class CustomPropertiesDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'CustomPropertiesDomainModel' extension model</summary>

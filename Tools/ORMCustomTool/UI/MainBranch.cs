@@ -22,11 +22,6 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using EnvDTE;
 using System.IO;
-#if VISUALSTUDIO_10_0
-using Microsoft.Build.Construction;
-#else
-using Microsoft.Build.BuildEngine;
-#endif
 
 namespace ORMSolutions.ORMArchitect.ORMCustomTool
 {
@@ -290,7 +285,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							}
 							if (selectedORMGenerator != null)
 							{
-								retVal = ORMCustomToolUtility.GetItemInclude(_parent.BuildItemsByGenerator[selectedORMGenerator.OfficialName]);
+								retVal =  _parent.PseudoItemsByOutputFormat[selectedORMGenerator.ProvidesOutputFormat].DefaultGeneratedFileName;
 							}
 						}
 						break;
@@ -302,12 +297,12 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				if (column == ColumnNumber.GeneratedFormat && tipType == ToolTipType.StateIcon)
 				{
 					OutputFormatBranch currentBranch = (TranslateRow(ref row) == RowStyle.Generator) ? _branches.Values[row] : _modifiers[row];
-					IORMGenerator useGenerator = currentBranch.SelectedORMGenerator;
-					if (useGenerator == null)
+					IORMGenerator generator = currentBranch.SelectedORMGenerator;
+					if (generator == null)
 					{
-						useGenerator = currentBranch.ORMGenerators[0];
+						generator = currentBranch.ORMGenerators[0];
 					}
-					return useGenerator.DisplayDescription;
+					return generator.DisplayDescription;
 				}
 				return base.GetTipText(row, column, tipType);
 			}
@@ -383,9 +378,9 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				{
 					if (formatBranch.SelectedORMGenerator == null)
 					{
-						// The build item is associated primarily with the primary generator,
-						// not the modifier. We need to make sure that the primary generator
-						// is turned on.
+						// The build item is associated primarily with the output format for
+						// the primary generator, not the modifier. We need to make sure that
+						// the primary generator is turned on.
 						IORMGenerator modifierGenerator = formatBranch.ORMGenerators[0];
 						OutputFormatBranch primaryBranch = _branches[modifierGenerator.ProvidesOutputFormat];
 						IORMGenerator primaryGenerator = primaryBranch.SelectedORMGenerator;
@@ -402,7 +397,8 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							}
 						}
 						formatBranch.SelectedORMGenerator = modifierGenerator;
-						SetItemMetaData(_parent.BuildItemsByGenerator[primaryGenerator.OfficialName], ITEMMETADATA_ORMGENERATOR, primaryBranch.SelectedGeneratorOfficialNames);
+						PseudoBuildItem pseudoItem = _parent.PseudoItemsByOutputFormat[primaryGenerator.ProvidesOutputFormat];
+						pseudoItem.CurrentGeneratorNames = primaryBranch.SelectedGeneratorOfficialNames;
 						retVal |= StateRefreshChanges.Children | StateRefreshChanges.Children;
 					}
 					else if (testToggleOff)
@@ -414,34 +410,14 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				}
 				else if (formatBranch.SelectedORMGenerator == null)
 				{
-#if VISUALSTUDIO_10_0
-					string projectPath = Parent._project.FullPath;
-#else
-					string projectPath = Parent._project.FullFileName;
-#endif
-					EnvDTE.ProjectItem projectItem = Parent._projectItem;
-
-					string sourceFileName = _parent._sourceFileName;
-					string projectItemPath = (string)projectItem.Properties.Item("LocalPath").Value;
-					string newItemDirectory = (new Uri(projectPath)).MakeRelativeUri(new Uri(projectItemPath)).ToString();
-					newItemDirectory = Path.GetDirectoryName(newItemDirectory);
-
+					IORMGenerator generator = formatBranch.ORMGenerators[branchGeneratorIndex];
 					retVal = StateRefreshChanges.Current | StateRefreshChanges.Children;
-					IORMGenerator useGenerator = formatBranch.ORMGenerators[branchGeneratorIndex];
-					string outputFileName = useGenerator.GetOutputFileDefaultName(sourceFileName);
-					outputFileName = Path.Combine(newItemDirectory, outputFileName);
-#if VISUALSTUDIO_10_0
-					ProjectItemElement newBuildItem;
-#else
-					BuildItem newBuildItem;
-#endif
-					newBuildItem = useGenerator.AddGeneratedFileItem(_parent._itemGroup, sourceFileName, outputFileName); //string.Concat(newItemPath, Path.DirectorySeparatorChar, _parent._sourceFileName));
-					_parent.BuildItemsByGenerator[useGenerator.OfficialName] = newBuildItem;
-					_parent.RemoveRemovedItem(newBuildItem);
-					formatBranch.SelectedORMGenerator = useGenerator;
-					IList<string> requiredFormats = useGenerator.RequiresInputFormats;
-					int requiredFormatCount = requiredFormats.Count;
-					IList<string> companionFormats = useGenerator.RequiresCompanionFormats;
+					formatBranch.SelectedORMGenerator = generator;
+					_parent.AddPseudoItem(generator, formatBranch.SelectedGeneratorOfficialNames);
+
+					// Notify related generator branches
+					IList<string> requiredFormats = generator.RequiresInputFormats; int requiredFormatCount = requiredFormats.Count;
+					IList<string> companionFormats = generator.RequiresCompanionFormats;
 					int companionFormatCount = companionFormats.Count;
 					int totalCount = requiredFormatCount + companionFormatCount;
 					for (int i = 0; i < totalCount; ++i)
@@ -474,73 +450,29 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			private void RemoveGenerator(OutputFormatBranch formatBranch)
 			{
 				IORMGenerator removeGenerator = formatBranch.SelectedORMGenerator;
-#if VISUALSTUDIO_10_0
-				IDictionary<string, ProjectItemElement> buildItemsByGeneratorName
-#else
-				IDictionary<string, BuildItem> buildItemsByGeneratorName
-#endif
-				 = _parent.BuildItemsByGenerator;
 				if (removeGenerator.IsFormatModifier)
 				{
 					OutputFormatBranch primaryBranch = _branches[removeGenerator.ProvidesOutputFormat];
 					IORMGenerator primaryGenerator = primaryBranch.SelectedORMGenerator;
 					if (primaryGenerator != null)
 					{
-#if VISUALSTUDIO_10_0
-						ProjectItemElement updateBuildItem
-#else
-						BuildItem updateBuildItem
-#endif
-						 = buildItemsByGeneratorName[primaryGenerator.OfficialName];
 						formatBranch.SelectedORMGenerator = null;
-						SetItemMetaData(updateBuildItem, ITEMMETADATA_ORMGENERATOR, primaryBranch.SelectedGeneratorOfficialNames);
+						PseudoBuildItem pseudoItem;
+						// Turning off a format modifier can indirectly remove the generated target, so make
+						// sure it is still there when the modifier itself is removed.
+						if (_parent.PseudoItemsByOutputFormat.TryGetValue(primaryGenerator.ProvidesOutputFormat, out pseudoItem))
+						{
+							pseudoItem.CurrentGeneratorNames = primaryBranch.SelectedGeneratorOfficialNames;
+						}
 					}
 				}
 				else
 				{
-					string generatorKey = removeGenerator.OfficialName;
 					formatBranch.SelectedORMGenerator = null;
-#if VISUALSTUDIO_10_0
-					ProjectItemElement removeBuildItem
-#else
-					BuildItem removeBuildItem
-#endif
-					 = buildItemsByGeneratorName[generatorKey];
-					buildItemsByGeneratorName.Remove(generatorKey);
-#if VISUALSTUDIO_10_0
-					_parent._itemGroup.RemoveChild(removeBuildItem);
-#else
-					_parent._itemGroup.RemoveItem(removeBuildItem);
-#endif
-					_parent.AddRemovedItem(removeBuildItem);
+					_parent.RemovePseudoItem(removeGenerator.ProvidesOutputFormat);
 				}
 			}
-#if VISUALSTUDIO_10_0
-			private static void SetItemMetaData(ProjectItemElement buildItem, string metadataName, string metadataValue)
-			{
-				// ProjectItemElement.SetMetadata adds a new metadata element with the same name
-				// as the previous one. There is no 'RemoveMetadata' that takes a string, so we go through
-				// the entire metadata collection and clean it out.
-				foreach (ProjectMetadataElement element in buildItem.Metadata)
-				{
-					if (element.Name == metadataName)
-					{
-						// The Metadata collection is a read-only snapshot, so deleting from it is safe
-						// inside the iterator.
-						buildItem.RemoveChild(element);
-						// Do not break. This handles removing multiple metadata items with the
-						// same name, which will clean up project files affected by this problem
-						// in previous drops.
-					}
-				}
-				buildItem.AddMetadata(metadataName, metadataValue);
-			}
-#else // VISUALSTUDIO_10_0
-			private static void SetItemMetaData(BuildItem buildItem, string metadataName, string metadataValue)
-			{
-				buildItem.SetMetadata(metadataName, metadataValue);
-			}
-#endif // VISUALSTUDIO_10_0
+
 			public override BranchFeatures Features
 			{
 				get
@@ -554,7 +486,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				return TranslateRow(ref row) == RowStyle.Generator &&
 					this._branches.Values[row].VisibleItemCount != 1;
 			}
-#region IMultiColumnBranch Members
+			#region IMultiColumnBranch Members
 			int IMultiColumnBranch.ColumnCount
 			{
 				get { return 2; }
@@ -569,7 +501,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				return 2;
 			}
 
-#endregion // IMultiColumnBranch Members
+			#endregion // IMultiColumnBranch Members
 		}
 	}
 }

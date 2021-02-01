@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToBarkerERBridge
 {
 	#region ORMAbstractionToBarkerERBridgeDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Bridge/2008-05/ORMAbstractionToBarkerER", "ORMAbstractionToBarkerERBridge.xsd")]
 	partial class ORMAbstractionToBarkerERBridgeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ORMAbstractionToBarkerERBridgeDomainModel' extension model</summary>

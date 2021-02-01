@@ -24,7 +24,8 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 {
 	#region ConceptualDatabaseDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase", "http://schemas.orm.net/DIL/DILDT")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/Relational/2007-06/ConceptualDatabase", "ConceptualDatabase.xsd")]
+	[CustomSerializedXmlSchema("http://schemas.orm.net/DIL/DILDT", "DILDT.xsd")]
 	partial class ConceptualDatabaseDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'ConceptualDatabaseDomainModel' extension model</summary>

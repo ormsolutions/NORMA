@@ -40,8 +40,9 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 	public class ModelLoader
 	{
 		#region Member Variables
-		private ExtensionLoader myExtensionLoader;
-		private VerbalizationManager myVerbalizationManager;
+		private readonly ExtensionLoader myExtensionLoader;
+		private readonly VerbalizationManager myVerbalizationManager;
+		private readonly bool mySkipNonGenerativeExtensions;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -53,6 +54,16 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			myExtensionLoader = extensionLoader;
 		}
 		/// <summary>
+		/// Create a new model loader with support for extension models
+		/// </summary>
+		/// <param name="extensionLoader">The <see cref="ExtensionLoader"/> to use with this model load.</param>
+		/// <param name="skipNonGenerativeExtensions">Do not load non-generative extensions.</param>
+		public ModelLoader(ExtensionLoader extensionLoader, bool skipNonGenerativeExtensions)
+		{
+			myExtensionLoader = extensionLoader;
+			mySkipNonGenerativeExtensions = skipNonGenerativeExtensions;
+		}
+		/// <summary>
 		/// Create a new model loader with support for extension models and verbalization
 		/// </summary>
 		/// <param name="extensionLoader">The <see cref="ExtensionLoader"/> to use with this model load.</param>
@@ -61,6 +72,18 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		{
 			myExtensionLoader = extensionLoader;
 			myVerbalizationManager = verbalizationManager;
+		}
+		/// <summary>
+		/// Create a new model loader with support for extension models and verbalization
+		/// </summary>
+		/// <param name="extensionLoader">The <see cref="ExtensionLoader"/> to use with this model load.</param>
+		/// <param name="verbalizationManager">Create a loader with verbalization support.</param>
+		/// <param name="skipNonGenerativeExtensions">Do not load non-generative extensions.</param>
+		public ModelLoader(ExtensionLoader extensionLoader, VerbalizationManager verbalizationManager, bool skipNonGenerativeExtensions)
+		{
+			myExtensionLoader = extensionLoader;
+			myVerbalizationManager = verbalizationManager;
+			mySkipNonGenerativeExtensions = skipNonGenerativeExtensions;
 		}
 		#endregion // Constructor
 		#region Virtual methods
@@ -89,9 +112,11 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			try
 			{
 				XmlReaderSettings readerSettings = new XmlReaderSettings();
-				ExtensionLoader extensionLoader = myExtensionLoader	;
+				ExtensionLoader fullExtensionLoader = myExtensionLoader;
+				ExtensionLoader extensionLoader = mySkipNonGenerativeExtensions ? fullExtensionLoader.NonGenerativeLoader : fullExtensionLoader;
 				readerSettings.CloseInput = false;
 				Dictionary<string, ExtensionModelBinding> documentExtensions = null;
+				Dictionary<string, Type> skippedExtensions = null;
 				using (XmlReader reader = XmlReader.Create(inputStream, readerSettings))
 				{
 					reader.MoveToContent();
@@ -104,8 +129,9 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 								if (reader.Prefix == "xmlns")
 								{
 									string URI = reader.Value;
+									bool isShapeNamespace = false;
 									if (!string.Equals(URI, ORMCoreDomainModel.XmlNamespace, StringComparison.Ordinal) &&
-										!string.Equals(URI, ORMShapeDomainModel.XmlNamespace, StringComparison.Ordinal) &&
+										!(isShapeNamespace = string.Equals(URI, ORMShapeDomainModel.XmlNamespace, StringComparison.Ordinal)) &&
 										!string.Equals(URI, ORMSerializationEngine.RootXmlNamespace, StringComparison.Ordinal))
 									{
 										ExtensionModelBinding? extensionType = extensionLoader.GetExtensionDomainModel(URI);
@@ -117,10 +143,26 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 											}
 											documentExtensions[URI] = extensionType.Value;
 										}
+										else if (fullExtensionLoader != extensionLoader && (extensionType = fullExtensionLoader.GetExtensionDomainModel(URI)).HasValue)
+										{
+											if (skippedExtensions == null)
+											{
+												skippedExtensions = new Dictionary<string, Type>();
+											}
+											skippedExtensions[URI] = extensionType.Value.Type;
+										}
 										else
 										{
 											(unrecognizedNamespaces ?? (unrecognizedNamespaces = new List<string>())).Add(URI);
 										}
+									}
+									else if (isShapeNamespace && fullExtensionLoader != extensionLoader)
+									{
+										if (skippedExtensions == null)
+										{
+											skippedExtensions = new Dictionary<string, Type>();
+										}
+										skippedExtensions[URI] = typeof(ORMShapeDomainModel);
 									}
 								}
 							} while (reader.MoveToNextAttribute());
@@ -146,6 +188,18 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				store = CreateStore();
 				store.UndoManager.UndoState = UndoState.Disabled;
 				store.LoadDomainModels(extensionLoader.GetRequiredDomainModels(documentExtensions));
+				if (skippedExtensions != null)
+				{
+					ISkipExtensions skippingStore = store as ISkipExtensions;
+					if (skippingStore == null)
+					{
+						throw new NORMAExtensionLoadException(ResourceStrings.LoadExceptionExtensionSkippingNotSupportedByStore);
+					}
+					int skipCount = skippedExtensions.Count;
+					Type[] skipped = new Type[skipCount];
+					skippedExtensions.Values.CopyTo(skipped, 0);
+					skippingStore.SkippedExtensionTypes = skipped;
+				}
 
 				try
 				{
@@ -158,7 +212,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 						}
 						if (inputStream.Length > 1)
 						{
-							(new ORMSerializationEngine(store)).Load(inputStream);
+							(new ORMSerializationEngine(store)).Load(inputStream, mySkipNonGenerativeExtensions ? SerializationEngineLoadOptions.ResolveSkippedExtensions : SerializationEngineLoadOptions.None);
 						}
 						t.Commit();
 					}
@@ -170,7 +224,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				}
 				catch (TypeInitializationException ex)
 				{
-					// If the type that failed to load is an extensions, then remove it from
+					// If the type that failed to load is an extension, then remove it from
 					// the list of available extensions and try again.
 					if (documentExtensions != null)
 					{
@@ -242,7 +296,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 	/// <summary>
 	/// A <see cref="Store"/> to use for loading an ORM model without display services.
 	/// </summary>
-	public class ORMStandaloneStore : Store, IORMToolServices, IFrameworkServices, IORMFontAndColorService, IModelingEventManagerProvider, ISerializationContextHost
+	public class ORMStandaloneStore : Store, IORMToolServices, IFrameworkServices, IORMFontAndColorService, IModelingEventManagerProvider, ISerializationContextHost, ISkipExtensions
 	{
 		#region Constructor
 		/// <summary>
@@ -718,8 +772,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		{
 			return NavigateTo(element, window);
 		}
-#endregion // IORMToolServices Implementation
-#region IModelingEventManagerProvider Implementation
+		#endregion // IORMToolServices Implementation
+		#region IModelingEventManagerProvider Implementation
 		private ModelingEventManager myModelingEventManager;
 		/// <summary>
 		/// Implements <see cref="IModelingEventManagerProvider.ModelingEventManager"/>
@@ -743,8 +797,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				return ModelingEventManager;
 			}
 		}
-#endregion // IModelingEventManagerProvider Implementation
-#region ModelingEventManagerImpl class
+		#endregion // IModelingEventManagerProvider Implementation
+		#region ModelingEventManagerImpl class
 		/// <summary>  
 		/// Display event exceptions by rethrowing
 		/// </summary>  
@@ -766,8 +820,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				throw new InvalidOperationException("", ex);
 			}
 		}
-#endregion // ModelingEventManagerImpl class
-#region ISerializationContextHost Implementation
+		#endregion // ModelingEventManagerImpl class
+		#region ISerializationContextHost Implementation
 		private ISerializationContext mySerializationContext;
 		/// <summary>
 		/// Implements <see cref="ISerializationContextHost.SerializationContext"/>
@@ -794,8 +848,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				SerializationContext = value;
 			}
 		}
-#endregion // ISerializationContextHost Implementation
-#region IORMFontAndColorService Implementation
+		#endregion // ISerializationContextHost Implementation
+		#region IORMFontAndColorService Implementation
 		/// <summary>
 		/// Implements <see cref="IORMFontAndColorService.GetBackColor"/>
 		/// </summary>
@@ -862,7 +916,35 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		{
 			return GetForeColor(colorIndex);
 		}
-#endregion // IORMFontAndColorService Implementation
+		#endregion // IORMFontAndColorService Implementation
+		#region ISkipExtensions implementation
+		IList<Type> ISkipExtensions.SkippedExtensionTypes
+		{
+			get
+			{
+				return SkippedExtensionTypes;
+			}
+			set
+			{
+				SkippedExtensionTypes = value;
+			}
+		}
+		private IList<Type> mySkippedExtensionTypes;
+		/// <summary>
+		/// Implements <see cref="ISkipExtensions.SkippedExtensionTypes"/>
+		/// </summary>
+		protected IList<Type> SkippedExtensionTypes
+		{
+			get
+			{
+				return mySkippedExtensionTypes;
+			}
+			set
+			{
+				mySkippedExtensionTypes = value;
+			}
+		}
+		#endregion // ISkipExtensions implementation
 	}
-#endregion // ORMStandaloneStore class
+	#endregion // ORMStandaloneStore class
 }

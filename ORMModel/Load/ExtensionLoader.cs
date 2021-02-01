@@ -49,16 +49,24 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <summary>
 		/// No special options are applied
 		/// </summary>
-		None,
+		None = 0,
 		/// <summary>
 		/// The extension model loads automatically as part
 		/// of another model, should not be displayed to the user.
 		/// </summary>
-		Secondary,
+		Secondary = 1,
 		/// <summary>
 		/// The extension model should always be loaded.
 		/// </summary>
-		AutoLoad,
+		AutoLoad = 2,
+		/// <summary>
+		/// The extension model should not be loaded if the document is loaded
+		/// solely for code generation. This overrides the <see cref="ExtensionModelOptions.AutoLoad"/>
+		/// flag and is generally used for models associated with displaying diagrams or
+		/// other displayed elements. If a model references a non-generative model then it should
+		/// also be set accordingly.
+		/// </summary>
+		NonGenerative = 4,
 	}
 	#endregion // ExtensionModelOptions enum
 	#region ExtensionModelData struct
@@ -164,6 +172,11 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 								{
 									options |= ExtensionModelOptions.AutoLoad;
 								}
+								valueObject = extensionKey.GetValue("NonGenerative");
+								if (valueObject != null && ((int)valueObject) == 1)
+								{
+									options |= ExtensionModelOptions.NonGenerative;
+								}
 								(retVal ?? (retVal = new List<ExtensionModelData>())).Add(new ExtensionModelData(
 									extensionNamespace,
 									extensionKey.GetValue("CodeBase") as string,
@@ -254,24 +267,45 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			// Verify that if the domain serializes elements, then it serializes this one
 			if (0 == (options & ExtensionModelOptions.AutoLoad))
 			{
-				object[] namespaceAttributes = type.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
-				if (namespaceAttributes != null && namespaceAttributes.Length != 0)
+				object[] namespaceAttributes = type.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
+				bool foundMatch = false;
+				int count;
+				if (namespaceAttributes != null && (count = namespaceAttributes.Length) != 0)
 				{
-					bool foundMatch = false;
-					foreach (string testNamespace in (CustomSerializedXmlNamespacesAttribute)namespaceAttributes[0])
+					for (int i = 0; i < count; ++i)
 					{
-						if (testNamespace == namespaceUri)
+						if (((CustomSerializedXmlSchemaAttribute)namespaceAttributes[i]).XmlNamespace == namespaceUri)
 						{
 							foundMatch = true;
 							break;
 						}
 					}
-					if (!foundMatch)
+				}
+
+#pragma warning disable 618
+				// UNDONE: Remove CustomSerializedXmlNamespacesAttribute support
+				if (!foundMatch)
+				{
+					namespaceAttributes = type.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
+					if (namespaceAttributes != null && namespaceAttributes.Length != 0)
 					{
-						// Bogus request, return and leave IsValidExtension false
-						this = default(ExtensionModelBinding);
-						return;
+						foreach (string testNamespace in (CustomSerializedXmlNamespacesAttribute)namespaceAttributes[0])
+						{
+							if (testNamespace == namespaceUri)
+							{
+								foundMatch = true;
+								break;
+							}
+						}
 					}
+				}
+#pragma warning restore 618
+
+				if (!foundMatch)
+				{
+					// Bogus request, return and leave IsValidExtension false
+					this = default(ExtensionModelBinding);
+					return;
 				}
 			}
 			this.myNamespaceUri = namespaceUri;
@@ -391,6 +425,19 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				return 0 != (myOptions & ExtensionModelOptions.AutoLoad);
 			}
 		}
+		/// <summary>
+		/// True if the extension is not needed for code generation scenarios.
+		/// Generally used for extensions that contribute display or editing elements.
+		/// This takes precedence over <see cref="IsAutoLoad"/> for models loaded
+		/// specifically for code generation.
+		/// </summary>
+		public bool IsNonGenerative
+		{
+			get
+			{
+				return 0 != (myOptions & ExtensionModelOptions.NonGenerative);
+			}
+		}
 		/// <summary>See <see cref="Object.Equals(Object)"/>.</summary>
 		public override bool Equals(object obj)
 		{
@@ -433,6 +480,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		private IDictionary<Guid, string> myExtensionIdToExtensionNameMap;
 		private readonly IDictionary<Guid, Type> myStandardDomainModelsMap;
 		private IDictionary<string, Exception> myUnloadableExtensionErrors;
+		private ExtensionLoader myNonGenerativeLoader;
 		#endregion // Member Variables
 		#region Constructor
 		/// <summary>
@@ -556,8 +604,179 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			};
 		}
 		/// <summary>
-		/// Helper for the constructor to resolve <see cref="AlsoLoadDomainModelAttribute"/>
+		/// Private entry point used to create the non-generative loader
+		/// from a full loader.
 		/// </summary>
+		private ExtensionLoader(ExtensionLoader fullLoader)
+		{
+			// Return previously reduced set on deeper request
+			myNonGenerativeLoader = this;
+			myExtensionIdToExtensionNameMap = fullLoader.myExtensionIdToExtensionNameMap; // This may be too big, but is harmless
+
+			// Make this recursive, so models that depend on non-generative models are
+			// automatically removed as well as any 'also loaded' models. This reduces
+			// the number of models we need to explicitly register as non-generative.
+			// A false value here indicates that the model is currently being processed
+			// and is meant to block uncontrolled recursion.
+			Dictionary<Guid, bool> nonGenerativeIds = new Dictionary<Guid, bool>();
+
+			// Standard models are very limited in this mode
+			Dictionary<Guid, Type> standardModels = new Dictionary<Guid, Type>(2);
+			standardModels.Add(ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.DomainModelId, typeof(ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel));
+			standardModels.Add(ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel.DomainModelId, typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel));
+
+			// The other standard models are considered non-generative
+			nonGenerativeIds.Add(Microsoft.VisualStudio.Modeling.Diagrams.CoreDesignSurfaceDomainModel.DomainModelId, true);
+			nonGenerativeIds.Add(ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.DomainModelId, true);
+			// UNDONE: Temporary. See comment in other constructor
+			nonGenerativeIds.Add(ObjectModel.Verbalization.HtmlReport.DomainModelId, true);
+			nonGenerativeIds.Add(ORMSolutions.ORMArchitect.Framework.Shell.DiagramSurvey.DomainModelId, true);
+			myStandardDomainModelsMap = standardModels;
+
+			// Recursively get non-generative binding information for all extensions
+			IDictionary<string, ExtensionModelBinding> originalAvailableExtensions = fullLoader.myAvailableExtensions;
+			foreach (ExtensionModelBinding binding in originalAvailableExtensions.Values)
+			{
+				fullLoader.TestIsNonGenerativeBinding(binding, nonGenerativeIds, false);
+			}
+
+			// Set available extensions
+			Dictionary<string, ExtensionModelBinding> availableExtensions = new Dictionary<string, ExtensionModelBinding>();
+			foreach (KeyValuePair<string, ExtensionModelBinding> kvp in originalAvailableExtensions)
+			{
+				bool isNonGenerative;
+				if (!nonGenerativeIds.TryGetValue(kvp.Value.DomainModelId, out isNonGenerative) || !isNonGenerative)
+				{
+					availableExtensions[kvp.Key] = kvp.Value;
+				}
+			}
+			myAvailableExtensions = availableExtensions;
+
+			// Fill in autoload settings
+			string[] originalAutoLoads = fullLoader.myAutoLoadExtensions;
+			string[] newAutoLoads = null;
+			if (originalAutoLoads != null)
+			{
+				int originalAutoLoadCount = originalAutoLoads.Length;
+				if (originalAutoLoadCount != 0)
+				{
+					int newAutoLoadCount = originalAutoLoadCount;
+					BitTracker nonGenerativeTracker = new BitTracker(originalAutoLoadCount);
+					ExtensionModelBinding binding;
+					bool isNonGenerative;
+					for (int i = 0; i < originalAutoLoadCount; ++i)
+					{
+						if (originalAvailableExtensions.TryGetValue(originalAutoLoads[i], out binding) &&
+							nonGenerativeIds.TryGetValue(binding.DomainModelId, out isNonGenerative) &&
+							isNonGenerative)
+						{
+							if (--newAutoLoadCount == 0)
+							{
+								break;
+							}
+							nonGenerativeTracker[i] = true;
+						}
+					}
+
+					if (newAutoLoadCount != 0)
+					{
+						if (newAutoLoadCount == originalAutoLoadCount)
+						{
+							newAutoLoads = originalAutoLoads;
+						}
+						else
+						{
+							newAutoLoads = new string[newAutoLoadCount];
+							for (int i = 0, newIndex = 0; i < originalAutoLoadCount; ++i)
+							{
+								if (!nonGenerativeTracker[i])
+								{
+									newAutoLoads[newIndex] = originalAutoLoads[i];
+									++newIndex;
+								}
+							}
+						}
+					}
+				}
+			}
+			myAutoLoadExtensions = newAutoLoads ?? new string[0];
+		}
+		private bool TestIsNonGenerativeBinding(ExtensionModelBinding binding, Dictionary<Guid, bool> nonGenerativeIds, bool forceNonGenerative)
+		{
+			bool isNonGenerative;
+			Guid modelId = binding.DomainModelId;
+			if (nonGenerativeIds.TryGetValue(binding.DomainModelId, out isNonGenerative))
+			{
+				return isNonGenerative;
+			}
+
+			isNonGenerative = forceNonGenerative || binding.IsNonGenerative;
+			nonGenerativeIds[modelId] = isNonGenerative; // Defensive, block recursion
+			string extensionName;
+			ExtensionModelBinding extensionBinding;
+			if (!isNonGenerative)
+			{
+				ICollection<Guid> extends = binding.ExtendsDomainModelIds;
+				if (extends != null && extends.Count != 0)
+				{
+					foreach (Guid extendsId in extends)
+					{
+						// Note that we enter all standard non-generative ids up front, so we only recurse
+						// on non-standard extensions.
+						bool knownNonGenerativeId;
+						if (nonGenerativeIds.TryGetValue(extendsId, out knownNonGenerativeId))
+						{
+							if (knownNonGenerativeId)
+							{
+								nonGenerativeIds[modelId] = isNonGenerative = true;
+								break;
+							}
+						}
+
+						if (myExtensionIdToExtensionNameMap.TryGetValue(extendsId, out extensionName) &&
+							myAvailableExtensions.TryGetValue(extensionName, out extensionBinding))
+						{
+							if (TestIsNonGenerativeBinding(extensionBinding, nonGenerativeIds, false))
+							{
+								nonGenerativeIds[modelId] = isNonGenerative = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+
+			if (isNonGenerative)
+			{
+				// Also remove 'also loaded' models.
+				ICollection<Guid> alsoLoadIds = binding.AlsoLoadIds;
+				if (alsoLoadIds != null && alsoLoadIds.Count != 0)
+				{
+					foreach (Guid alsoLoadId in alsoLoadIds)
+					{
+						bool alsoLoadNonGenerative;
+						if (nonGenerativeIds.TryGetValue(alsoLoadId, out alsoLoadNonGenerative))
+						{
+							if (alsoLoadNonGenerative)
+							{
+								continue;
+							}
+							nonGenerativeIds.Remove(alsoLoadId);
+						}
+
+						if (myExtensionIdToExtensionNameMap.TryGetValue(alsoLoadId, out extensionName) &&
+							myAvailableExtensions.TryGetValue(extensionName, out extensionBinding))
+						{
+							TestIsNonGenerativeBinding(extensionBinding, nonGenerativeIds, true);
+						}
+					}
+				}
+			}
+			return isNonGenerative;
+		}
+		/// <summary>
+		/// Helper for the constructor to resolve <see cref="AlsoLoadDomainModelAttribute"/>
+		/// </summary>,
 		/// <param name="expandExtension">Get additional domain models for this extension.</param>
 		/// <param name="availableExtensions">The currently known domain models. A previously-bound extension
 		/// will not be reprocessed.</param>
@@ -576,7 +795,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 					ExtensionModelBinding alsoBound;
 					if (!string.IsNullOrEmpty(testURI) &&
 						!availableExtensions.ContainsKey(testURI) &&
-						(alsoBound = new ExtensionModelBinding(testURI, alsoLoad.AlsoLoadType, ExtensionModelOptions.Secondary)).IsValidExtension)
+						(alsoBound = new ExtensionModelBinding(testURI, alsoLoad.AlsoLoadType, ExtensionModelOptions.Secondary | (alsoLoad.IsNonGenerative ? ExtensionModelOptions.NonGenerative : ExtensionModelOptions.None))).IsValidExtension)
 					{
 						// Record and recurse
 						(alsoLoadedIds ?? (alsoLoadedIds = new List<Guid>())).Add(alsoBound.DomainModelId);
@@ -861,6 +1080,24 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			return false;
 		}
 		#endregion // Methods
+		#region NonGenerative Models
+		/// <summary>
+		/// Get the set of extensions that are used for code generation
+		/// but not for display purposes.
+		/// </summary>
+		public ExtensionLoader NonGenerativeLoader
+		{
+			get
+			{
+				ExtensionLoader loader = myNonGenerativeLoader;
+				if (loader == null)
+				{
+					myNonGenerativeLoader = loader = new ExtensionLoader(this);
+				}
+				return loader;
+			}
+		}
+		#endregion // NonGenerative Models
 		#region Extension Stripping
 		#region ExtensionStripperUtility class
 		/// <summary>
@@ -1076,48 +1313,70 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			// extension types. The serialization engine does not serialize elements
 			// for types without a serialization attribute, so there is no need to
 			// look at standard or extension types without this attribute.
-			CustomSerializedXmlNamespacesAttribute[] namespaceAttributes = new CustomSerializedXmlNamespacesAttribute[extensionTypes.Count + standardTypes.Count];
-			int totalNamespaceCount = 0;
-			int serializedAttributeCount = 0;
+			List<string> namespaceList = new List<string>();
+			foreach (Type standardType in standardTypes)
+			{
+				object[] attributes = standardType.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
+				if (attributes != null)
+				{
+					for (int i = 0; i < attributes.Length; ++i)
+					{
+						namespaceList.Add(((CustomSerializedXmlSchemaAttribute)attributes[i]).XmlNamespace);
+					}
+				}
+			}
+
+			foreach (ExtensionModelBinding extensionType in extensionTypes)
+			{
+				object[] attributes = extensionType.Type.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
+				if (attributes != null)
+				{
+					for (int i = 0; i < attributes.Length; ++i)
+					{
+						namespaceList.Add(((CustomSerializedXmlSchemaAttribute)attributes[i]).XmlNamespace);
+					}
+				}
+			}
+
+#pragma warning disable 618
+			// UNDONE: Remove CustomSerializedXmlNamespacesAttribute support
+			List<CustomSerializedXmlNamespacesAttribute> namespaceAttributes = new List<CustomSerializedXmlNamespacesAttribute>();
 			foreach (Type standardType in standardTypes)
 			{
 				object[] attributes = standardType.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
 				CustomSerializedXmlNamespacesAttribute currentAttribute;
-				int currentNamespaceCount;
 				if (attributes != null &&
 					attributes.Length != 0 &&
-					0 != (currentNamespaceCount = (currentAttribute = (CustomSerializedXmlNamespacesAttribute)attributes[0]).Count))
+					0 != (currentAttribute = (CustomSerializedXmlNamespacesAttribute)attributes[0]).Count)
 				{
-					totalNamespaceCount += currentNamespaceCount;
-					namespaceAttributes[serializedAttributeCount] = currentAttribute;
-					++serializedAttributeCount;
+					namespaceAttributes.Add(currentAttribute);
 				}
 			}
 			foreach (ExtensionModelBinding extensionType in extensionTypes)
 			{
 				object[] attributes = extensionType.Type.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
 				CustomSerializedXmlNamespacesAttribute currentAttribute;
-				int currentNamespaceCount;
 				if (attributes != null &&
 					attributes.Length != 0 &&
-					0 != (currentNamespaceCount = (currentAttribute = (CustomSerializedXmlNamespacesAttribute)attributes[0]).Count))
+					0 != (currentAttribute = (CustomSerializedXmlNamespacesAttribute)attributes[0]).Count)
 				{
-					totalNamespaceCount += currentNamespaceCount;
-					namespaceAttributes[serializedAttributeCount] = currentAttribute;
-					++serializedAttributeCount;
+					namespaceAttributes.Add(currentAttribute);
 				}
 			}
-			string[] namespaces = new string[totalNamespaceCount];
-			int namespaceIndex = -1;
-			for (int i = 0; i < serializedAttributeCount; ++i)
+
+			for (int i = 0, count = namespaceAttributes.Count; i < count; ++i)
 			{
 				CustomSerializedXmlNamespacesAttribute currentAttribute = namespaceAttributes[i];
 				int attributeCount = currentAttribute.Count;
 				for (int j = 0; j < attributeCount; ++j)
 				{
-					namespaces[++namespaceIndex] = currentAttribute[j];
+					namespaceList.Add(currentAttribute[j]);
 				}
 			}
+#pragma warning restore 618
+
+			string[] namespaces = new string[namespaceList.Count];
+			namespaceList.CopyTo(namespaces);
 			Array.Sort<string>(namespaces);
 			if (unrecognizedNamespaces != null)
 			{

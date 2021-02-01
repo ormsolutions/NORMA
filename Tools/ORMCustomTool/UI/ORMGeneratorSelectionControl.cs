@@ -20,11 +20,19 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.VirtualTreeGrid;
+using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.Load;
+using ORMSolutions.ORMArchitect.Core.Shell;
+using Microsoft.VisualStudio.Modeling;
+using EnvDTE;
 #if VISUALSTUDIO_10_0
 using Microsoft.Build.Construction;
+using Microsoft.Win32;
 #else
 using Microsoft.Build.BuildEngine;
 #endif
@@ -39,25 +47,92 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 		private const string ITEMMETADATA_DEPENDENTUPON = "DependentUpon";
 		private const string ITEMMETADATA_GENERATOR = "Generator";
 		private const string ITEMMETADATA_ORMGENERATOR = "ORMGenerator";
+		private const string ITEMMETADATA_ORMGENERATORTARGET_PREFIX = "ORMGeneratorTarget_"; // Suffix is index then _ then the target type, value is the name (not the id)
+
+		/// <summary>
+		/// A component class for <see cref="PseudoBuildItem"/> to represent a
+		/// single build item. A PseudoBuildItem is a placeholder for a single
+		/// output format, which can be comprised of multiple instances dependending
+		/// on how the generator targets resolve.
+		/// </summary>
+		private class PseudoBuildInstance
+		{
+			public readonly string OriginalGeneratorNames;
+			public readonly GeneratorTarget[] OriginalGeneratorTargets;
+
+			/// <summary>
+			/// Flag during final processing if the instance is removed.
+			/// </summary>
+			/// <remarks>clearing PseudoBuiltItem.CurrentGeneratorNames indicates
+			/// that all instances for the build item are to be removed, so this is
+			/// used to manage individual instances.</remarks>
+			public bool IsRemoved;
+
+			/// <summary>
+			/// Create an instance corresponding to a single generated
+			/// output to associated with a <see cref="PseudoBuildItem"/>
+			/// </summary>
+			/// <param name="originalGeneratorNames"></param>
+			/// <param name="originalGeneratorTargets"></param>
+			public PseudoBuildInstance(string originalGeneratorNames, GeneratorTarget[] originalGeneratorTargets)
+			{
+				OriginalGeneratorNames = originalGeneratorNames;
+				OriginalGeneratorTargets = originalGeneratorTargets;
+				IsRemoved = false;
+			}
+		}
+
+		/// <summary>
+		/// Create a structure to represent a virtual build item. The dialog
+		/// is keyed off of generator types, which originally mapped to a single
+		/// build item in the current group in this system. However, generator
+		/// targets now allow multiple build items per group. We don't want to
+		/// radically complicate the dialog by adding additional dimensions showing
+		/// the different generator targets, so we pretend that all build items
+		/// with the same generator are the same item, then expand this back out
+		/// to real build items on commit.
+		/// </summary>
+		/// <remarks>We may split this up in the future with different generators
+		/// and different format modifiers applying to different branches, but it is
+		/// not worth the complication at this point.</remarks>
+		private class PseudoBuildItem
+		{
+			public string DefaultGeneratedFileName;
+			public string CurrentGeneratorNames;
+			public List<PseudoBuildInstance> OriginalInstances;
+
+			/// <summary>
+			/// Create an initial instance of a pseudo build item for an existing item.
+			/// </summary>
+			public PseudoBuildItem(string currentGeneratorNames, string defaultGeneratedFileName)
+			{
+				CurrentGeneratorNames = currentGeneratorNames;
+				DefaultGeneratedFileName = defaultGeneratedFileName;
+			}
+
+			/// <summary>
+			/// Add a tracked target set found in the original items.
+			/// </summary>
+			public void AddOriginalInstance(string generatorNames, GeneratorTarget[] generatorTargets)
+			{
+				(OriginalInstances ?? (OriginalInstances = new List<PseudoBuildInstance>())).Add(new PseudoBuildInstance(generatorNames, generatorTargets));
+			}
+		}
 
 		private readonly MainBranch _mainBranch;
 		private readonly EnvDTE.ProjectItem _projectItem;
 		private bool _savedChanges;
 		private readonly string _sourceFileName;
-		private Dictionary<string, string> _removedItems;
 		private readonly string _projectItemRelativePath;
 		private readonly IServiceProvider _serviceProvider;
 #if VISUALSTUDIO_10_0
 		private readonly ProjectRootElement _project;
 		private readonly ProjectItemGroupElement _originalItemGroup;
-		private readonly ProjectItemGroupElement _itemGroup;
-		private readonly Dictionary<string, ProjectItemElement> _itemsByGenerator;
 #else // VISUALSTUDIO_10_0
-		private readonly Project _project;
+		private readonly Microsoft.Build.BuildEngine.Project _project;
 		private readonly BuildItemGroup _originalItemGroup;
-		private readonly BuildItemGroup _itemGroup;
-		private readonly Dictionary<string, BuildItem> _itemsByGenerator;
 #endif // VISUALSTUDIO_10_0
+		private readonly Dictionary<string, PseudoBuildItem> _pseudoItemsByOutputFormat;
 		private ORMGeneratorSelectionControl()
 		{
 			this.InitializeComponent();
@@ -73,7 +148,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			ProjectRootElement project = ProjectRootElement.TryOpen(projectItem.ContainingProject.FullName);
 			string projectFullPath = project.FullPath;
 #else // VISUALSTUDIO_10_0
-			Project project = Engine.GlobalEngine.GetLoadedProject(projectItem.ContainingProject.FullName);
+			Microsoft.Build.BuildEngine.Project project = Engine.GlobalEngine.GetLoadedProject(projectItem.ContainingProject.FullName);
 			string projectFullPath = project.FullFileName;
 #endif // VISUALSTUDIO_10_0
 			_project = project;
@@ -84,53 +159,13 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 
 #if VISUALSTUDIO_10_0
 			ProjectItemGroupElement originalItemGroup = ORMCustomTool.GetItemGroup(project, projectItemRelativePath);
-			ProjectItemGroupElement itemGroup;
-			if (originalItemGroup == null)
-			{
-				itemGroup = project.AddItemGroup();
-				itemGroup.Condition = string.Concat(ITEMGROUP_CONDITIONSTART, projectItemRelativePath, ITEMGROUP_CONDITIONEND);
-			}
-			else
-			{
-				itemGroup = project.AddItemGroup();
-				itemGroup.Condition = originalItemGroup.Condition;
-				foreach (ProjectItemElement item in originalItemGroup.Items)
-				{
-					ProjectItemElement newItem = itemGroup.AddItem(item.ItemType, item.Include);
-					newItem.Condition = item.Condition;
-					foreach (ProjectMetadataElement metadataElement in item.Metadata)
-					{
-						newItem.AddMetadata(metadataElement.Name, metadataElement.Value);
-					}
-				}
-			}
 #else // VISUALSTUDIO_10_0
 			BuildItemGroup originalItemGroup = ORMCustomTool.GetItemGroup(project, projectItemRelativePath);
-			BuildItemGroup itemGroup;
-			if (originalItemGroup == null)
-			{
-				itemGroup = project.AddNewItemGroup();
-				itemGroup.Condition = string.Concat(ITEMGROUP_CONDITIONSTART, projectItemRelativePath, ITEMGROUP_CONDITIONEND);
-			}
-			else
-			{
-				itemGroup = project.AddNewItemGroup();
-				itemGroup.Condition = originalItemGroup.Condition;
-				foreach (BuildItem item in originalItemGroup)
-				{
-					BuildItem newItem = itemGroup.AddNewItem(item.Name, item.Include, false);
-					newItem.Condition = item.Condition;
-					item.CopyCustomMetadataTo(newItem);
-				}
-			}
 #endif // VISUALSTUDIO_10_0
 			_originalItemGroup = originalItemGroup;
-			_itemGroup = itemGroup;
 
-			string condition = itemGroup.Condition.Trim();
-
-			string sourceFileName = this._sourceFileName = projectItem.Name;
-
+			string sourceFileName = projectItem.Name;
+			_sourceFileName = sourceFileName;
 			this.textBox_ORMFileName.Text = sourceFileName;
 
 			this.button_SaveChanges.Click += new EventHandler(this.SaveChanges);
@@ -183,58 +218,80 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			tree.Root = (lastPrimary == -1) ? (IBranch)mainBranch : new BranchPartition(
 				mainBranch,
 				primaryIndices,
-				new BranchPartitionSection(0, lastPrimary + 1, null),
-				new BranchPartitionSection(totalCount - modifierCount, modifierCount, "Generated File Modifiers"),
-				new BranchPartitionSection(lastPrimary + 1, totalCount - lastPrimary - modifierCount - 1, "Intermediate and Secondary Files")); // UNDONE: Localize Header
+				new BranchPartitionSection(0, lastPrimary + 1),
+				new BranchPartitionSection(totalCount - modifierCount, modifierCount, "Generated File Modifiers", false),
+				new BranchPartitionSection(lastPrimary + 1, totalCount - lastPrimary - modifierCount - 1, "Intermediate and Secondary Files", true)); // UNDONE: Localize Header
 			this.virtualTreeControl.ShowToolTips = true;
 			this.virtualTreeControl.FullCellSelect = true;
 
-#if VISUALSTUDIO_10_0
-			Dictionary<string, ProjectItemElement> buildItemsByGenerator = this._itemsByGenerator = new Dictionary<string, ProjectItemElement>(itemGroup.Count, StringComparer.OrdinalIgnoreCase);
-			foreach (ProjectItemElement buildItem in itemGroup.Items)
-#else // VISUALSTUDIO_10_0
-			Dictionary<string, BuildItem> buildItemsByGenerator = this._itemsByGenerator = new Dictionary<string, BuildItem>(itemGroup.Count, StringComparer.OrdinalIgnoreCase);
-			foreach (BuildItem buildItem in itemGroup)
-#endif // VISUALSTUDIO_10_0
-			{
-				// Do this very defensively so that the dialog can still be opened if a project is out
-				// of step with the generators registered on a specific machine.
-				string generatorNameData = buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR);
-				string[] generatorNames; // The first string is the primary generator, others are the format modifiers
-				int generatorNameCount;
-				IORMGenerator primaryGenerator;
-				MainBranch.OutputFormatBranch primaryFormatBranch;
-				if (!String.IsNullOrEmpty(generatorNameData) &&
-					String.Equals(buildItem.GetEvaluatedMetadata(ITEMMETADATA_DEPENDENTUPON), sourceFileName, StringComparison.OrdinalIgnoreCase) &&
-					null != (generatorNames = generatorNameData.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)) &&
-					0 != (generatorNameCount = generatorNames.Length) &&
+			Dictionary<string, PseudoBuildItem> pseudoItemsByOutputFormat = new Dictionary<string, PseudoBuildItem>(StringComparer.OrdinalIgnoreCase);
+			_pseudoItemsByOutputFormat = pseudoItemsByOutputFormat;
+			IDictionary<string, IORMGenerator> generators = 
 #if VISUALSTUDIO_15_0
-					ORMCustomTool.GetORMGenerators(serviceProvider)
+				ORMCustomTool.GetORMGenerators(serviceProvider);
 #else
-					ORMCustomTool.ORMGenerators
+				ORMCustomTool.ORMGenerators;
 #endif
-						.TryGetValue(generatorNames[0], out primaryGenerator) &&
-					mainBranch.Branches.TryGetValue(primaryGenerator.ProvidesOutputFormat, out primaryFormatBranch))
+			if (originalItemGroup != null)
+			{
+#if VISUALSTUDIO_10_0
+				foreach (ProjectItemElement buildItem in originalItemGroup.Items)
+#else // VISUALSTUDIO_10_0
+				foreach (BuildItem buildItem in originalItemGroup)
+#endif // VISUALSTUDIO_10_0
 				{
-					System.Diagnostics.Debug.Assert(primaryFormatBranch.SelectedORMGenerator == null);
-					primaryFormatBranch.SelectedORMGenerator = primaryGenerator;
-					buildItemsByGenerator.Add(generatorNames[0], buildItem);
-
-					// Format modifiers are attached to the end of the list
-					for (int i = 1; i < generatorNameCount; ++i )
+					// Do this very defensively so that the dialog can still be opened if a project is out
+					// of step with the generators registered on a specific machine.
+					string generatorNameData;
+					string[] generatorNames; // The first string is the primary generator, others are the format modifiers
+					int generatorNameCount;
+					IORMGenerator primaryGenerator;
+					MainBranch.OutputFormatBranch primaryFormatBranch;
+					if (!string.IsNullOrEmpty(generatorNameData = buildItem.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR)) &&
+						!string.IsNullOrEmpty(generatorNameData = generatorNameData.Trim()) &&
+						string.Equals(buildItem.GetEvaluatedMetadata(ITEMMETADATA_DEPENDENTUPON), sourceFileName, StringComparison.OrdinalIgnoreCase) &&
+						null != (generatorNames = generatorNameData.Split((char[])null, StringSplitOptions.RemoveEmptyEntries)) &&
+						0 != (generatorNameCount = generatorNames.Length) &&
+						// This assumes that each generator target of the same type has all of the same options.
+						// This is currently the result of this dialog, and we're not considering hand edits
+						// to the project file at this point.
+						generators.TryGetValue(generatorNames[0], out primaryGenerator) &&
+						mainBranch.Branches.TryGetValue(primaryGenerator.ProvidesOutputFormat, out primaryFormatBranch))
 					{
-						MainBranch.OutputFormatBranch modifierBranch = primaryFormatBranch.NextModifier;
-						string findName = generatorNames[i];
-						while (modifierBranch != null)
+						PseudoBuildItem pseudoItem;
+						string outputFormat = primaryGenerator.ProvidesOutputFormat;
+
+						if (!pseudoItemsByOutputFormat.TryGetValue(outputFormat, out pseudoItem))
 						{
-							IORMGenerator testGenerator = modifierBranch.ORMGenerators[0];
-							if (testGenerator.OfficialName == findName)
+							// Note that we can't use the build item file name here as it might be decorated with
+							// target names. Go back to the generator to get an undecorated default name.
+							pseudoItem = new PseudoBuildItem(generatorNameData, primaryGenerator.GetOutputFileDefaultName(sourceFileName));
+							pseudoItemsByOutputFormat.Add(outputFormat, pseudoItem);
+
+							if (primaryFormatBranch.SelectedORMGenerator == null)
 							{
-								modifierBranch.SelectedORMGenerator = testGenerator;
-								break;
+								primaryFormatBranch.SelectedORMGenerator = primaryGenerator;
 							}
-							modifierBranch = modifierBranch.NextModifier;
+
+							// Format modifiers are attached to the end of the list
+							for (int i = 1; i < generatorNameCount; ++i)
+							{
+								MainBranch.OutputFormatBranch modifierBranch = primaryFormatBranch.NextModifier;
+								string findName = generatorNames[i];
+								while (modifierBranch != null)
+								{
+									IORMGenerator testGenerator = modifierBranch.ORMGenerators[0];
+									if (testGenerator.OfficialName == findName)
+									{
+										modifierBranch.SelectedORMGenerator = testGenerator;
+										break;
+									}
+									modifierBranch = modifierBranch.NextModifier;
+								}
+							}
 						}
+
+						pseudoItem.AddOriginalInstance(generatorNameData, ORMCustomToolUtility.GeneratorTargetsFromBuildItem(buildItem));
 					}
 				}
 			}
@@ -248,50 +305,62 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 		}
 
-#if VISUALSTUDIO_10_0
-		private IDictionary<string, ProjectItemElement> BuildItemsByGenerator
-#else
-		private IDictionary<string, BuildItem> BuildItemsByGenerator
-#endif
+		private IDictionary<string, PseudoBuildItem> PseudoItemsByOutputFormat
 		{
 			get
 			{
-				return this._itemsByGenerator;
+				return this._pseudoItemsByOutputFormat;
 			}
 		}
 
-#if VISUALSTUDIO_10_0
-		private void RemoveRemovedItem(ProjectItemElement buildItem)
-#else
-		private void RemoveRemovedItem(BuildItem buildItem)
-#endif
+		private void RemovePseudoItem(string outputFormat)
 		{
-			if (_removedItems != null)
+			Dictionary<string, PseudoBuildItem> items = _pseudoItemsByOutputFormat;
+			PseudoBuildItem pseudoItem;
+			if (items.TryGetValue(outputFormat, out pseudoItem))
 			{
-				string key = ORMCustomToolUtility.GetItemInclude(buildItem);
-				if (_removedItems.ContainsKey(key))
+				if (pseudoItem.OriginalInstances != null)
 				{
-					_removedItems.Remove(key);
+					// Indicate an original item is deleted by clearing the generator names.
+					pseudoItem.CurrentGeneratorNames = null;
+				}
+				else
+				{
+					// Added and removed in the same session, no reason to track.
+					items.Remove(outputFormat);
 				}
 			}
 		}
 
-#if VISUALSTUDIO_10_0
-		private void AddRemovedItem(ProjectItemElement buildItem)
-#else
-		private void AddRemovedItem(BuildItem buildItem)
-#endif
+		/// <summary>
+		/// Add a new item, or resurrect a deleted one.
+		/// </summary>
+		/// <param name="generator">The generator to add.</param>
+		/// <param name="currentGeneratorNames">The current generator names. Note that if this is a
+		/// toggle that adds a new generator for the same format, then the current names may
+		/// include format modifiers that are not available from the generator itself.</param>
+		private void AddPseudoItem(IORMGenerator generator, string currentGeneratorNames)
 		{
-			Dictionary<string, string> items = _removedItems;
-			if (items == null)
+			Dictionary<string, PseudoBuildItem> items = _pseudoItemsByOutputFormat;
+			string outputFormat = generator.ProvidesOutputFormat;
+			string generatedFileName = generator.GetOutputFileDefaultName(_sourceFileName);
+			PseudoBuildItem pseudoItem;
+			if (items.TryGetValue(outputFormat, out pseudoItem))
 			{
-				items = new Dictionary<string, string>();
-				_removedItems = items;
+				pseudoItem.CurrentGeneratorNames = currentGeneratorNames;
+				pseudoItem.DefaultGeneratedFileName = generatedFileName;
 			}
-			string key = ORMCustomToolUtility.GetItemInclude(buildItem);
-			items[key] = key;
+			else
+			{
+				pseudoItem = new PseudoBuildItem(null, generatedFileName);
+				pseudoItem.CurrentGeneratorNames = currentGeneratorNames;
+				items[outputFormat] = pseudoItem;
+			}
 		}
 
+#if !VISUALSTUDIO_10_0
+		private delegate void Action<T1, T2, T3, T4>(T1 t1, T2 t2, T3 t3, T4 t4);
+#endif
 		protected override void OnClosed(EventArgs e)
 		{
 			if (_savedChanges)
@@ -332,67 +401,319 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			}
 			if (_savedChanges)
 			{
-				// Delete the removed items from the project
-				if (_removedItems != null)
+#if VISUALSTUDIO_10_0
+				ProjectItemGroupElement itemGroup = _originalItemGroup;
+				ProjectRootElement project = _project;
+#else // VISUALSTUDIO_10_0
+				BuildItemGroup itemGroup = _originalItemGroup;
+				Microsoft.Build.BuildEngine.Project project = _project;
+#endif // VISUALSTUDIO_10_0
+				EnvDTE.ProjectItem projectItem = _projectItem;
+				string sourceFileName = _sourceFileName;
+				Dictionary<string, PseudoBuildItem>pseudoItems = _pseudoItemsByOutputFormat;
+				IDictionary<string, IORMGenerator> generators =
+#if VISUALSTUDIO_15_0
+					ORMCustomTool.GetORMGenerators(_serviceProvider);
+#else
+					ORMCustomTool.ORMGenerators;
+#endif
+				PseudoBuildItem pseudoItem;
+				string generatorNameData; // The first string is the primary generator, others are the format modifiers, space delimited
+				IVsShell shell;
+
+				Dictionary<string, IORMGenerator> generatorsWithTargetsByOutputFormat = null;
+				IDictionary<string, ORMCustomToolUtility.GeneratorTargetSet> targetSetsByFormatName = null;
+				foreach (PseudoBuildItem testPseudoItem in pseudoItems.Values)
 				{
-					EnvDTE.ProjectItems subItems = _projectItem.ProjectItems;
-					foreach (string itemName in _removedItems.Keys)
+					string primaryGeneratorName;
+					IList<string> generatorTargets;
+					IORMGenerator generator;
+					if (!string.IsNullOrEmpty(generatorNameData = testPseudoItem.CurrentGeneratorNames) &&
+						null != (primaryGeneratorName = ORMCustomToolUtility.GetPrimaryGeneratorName(generatorNameData)) &&
+						generators.TryGetValue(primaryGeneratorName, out generator) &&
+						null != (generatorTargets = generator.GeneratorTargetTypes) &&
+						0 != generatorTargets.Count)
 					{
-						try
-						{
-							EnvDTE.ProjectItem subItem = subItems.Item(itemName);
-							if (subItem != null)
-							{
-								subItem.Delete();
-							}
-						}
-						catch (ArgumentException)
-						{
-							// Swallow
-						}
+						(generatorsWithTargetsByOutputFormat ?? (generatorsWithTargetsByOutputFormat = new Dictionary<string, IORMGenerator>(StringComparer.OrdinalIgnoreCase)))[generator.ProvidesOutputFormat] = generator;
 					}
 				}
-				// throw away the original build item group
-				if (_originalItemGroup != null)
+				if (generatorsWithTargetsByOutputFormat != null)
 				{
-					try
+					IDictionary<string, GeneratorTarget[]> docTargets = null;
+					EnvDTE.Document projectItemDocument = projectItem.Document;
+					string itemPath;
+					if (projectItemDocument != null)
 					{
-#if VISUALSTUDIO_10_0
-						_project.RemoveChild(_originalItemGroup);
-#else
-						_project.RemoveItemGroup(_originalItemGroup);
-#endif
+						using (Stream targetsStream = ORMCustomToolUtility.GetDocumentExtension<Stream>(projectItemDocument, "ORMGeneratorTargets", itemPath = projectItem.get_FileNames(0), _serviceProvider))
+						{
+							if (targetsStream != null)
+							{
+								targetsStream.Seek(0, SeekOrigin.Begin);
+								docTargets = new BinaryFormatter().Deserialize(targetsStream) as IDictionary<string, GeneratorTarget[]>;
+							}
+						}
 					}
-					catch (InvalidOperationException)
+					else if (null != (shell = _serviceProvider.GetService(typeof(SVsShell)) as IVsShell))
 					{
-						// Swallow
+						Guid pkgId = typeof(ORMDesignerPackage).GUID;
+						IVsPackage package;
+						if (0 != shell.IsPackageLoaded(ref pkgId, out package) || package == null)
+						{
+							shell.LoadPackage(ref pkgId, out package);
+						}
+
+						// Temporarily load the document so that the generator targets can be resolved.
+						using (Store store = new ModelLoader(ORMDesignerPackage.ExtensionLoader, true).Load(projectItem.get_FileNames(0)))
+						{
+							docTargets = GeneratorTarget.ConsolidateGeneratorTargets(store as IFrameworkServices);
+						}
+					}
+
+					// We have generators that care about targets, which means that ExpandGeneratorTargets will
+					// product placeholder targets for these generators even if docTargets is currently null.
+					// This allows the dialog to turn on a generator before the data (or even extension) to feed
+					// it is available in the model and provides a smooth transition in and out of this placeholder
+					// state. It is up to the individual generators to proceed without explicit target data or
+					// to produce a message for the user with instructions on how to add the data to the model.
+					Dictionary<string, string> generatorNamesByOutputFormat = new Dictionary<string, string>();
+					foreach (KeyValuePair<string, PseudoBuildItem> pair in pseudoItems)
+					{
+						generatorNameData = pair.Value.CurrentGeneratorNames;
+						if (!string.IsNullOrEmpty(generatorNameData))
+						{
+							generatorNamesByOutputFormat[pair.Key] = ORMCustomToolUtility.GetPrimaryGeneratorName(generatorNameData);
+						}
+					}
+					targetSetsByFormatName = ORMCustomToolUtility.ExpandGeneratorTargets(generatorNamesByOutputFormat, docTargets
+#if VISUALSTUDIO_15_0
+						, _serviceProvider
+#endif // VISUALSTUDIO_15_0
+						);
+				}
+
+				Dictionary<string, BitTracker> processedGeneratorTargets = null;
+				if (targetSetsByFormatName != null)
+				{
+					processedGeneratorTargets = new Dictionary<string, BitTracker>();
+					foreach (KeyValuePair<string, ORMCustomToolUtility.GeneratorTargetSet> kvp in targetSetsByFormatName)
+					{
+						processedGeneratorTargets[kvp.Key] = new BitTracker(kvp.Value.Instances.Length);
 					}
 				}
 
+				if (null != itemGroup)
+				{
 #if VISUALSTUDIO_10_0
-				Dictionary<string, ProjectItemElement> removeItems = new Dictionary<string, ProjectItemElement>();
-#else
-				Dictionary<string, BuildItem> removeItems = new Dictionary<string, BuildItem>();
+					Dictionary<string, ProjectItemElement> removedItems = null;
+					foreach (ProjectItemElement item in itemGroup.Items)
+#else // VISUALSTUDIO_10_0
+					Dictionary<string, BuildItem> removedItems = null;
+					foreach (BuildItem item in itemGroup)
+#endif // VISUALSTUDIO_10_0
+					{
+						string primaryGeneratorName;
+						string outputFormat;
+						IORMGenerator generator;
+						if (null != (primaryGeneratorName = ORMCustomToolUtility.GetPrimaryGeneratorName(item.GetEvaluatedMetadata(ITEMMETADATA_ORMGENERATOR))) &&
+							string.Equals(item.GetEvaluatedMetadata(ITEMMETADATA_DEPENDENTUPON), sourceFileName, StringComparison.OrdinalIgnoreCase) &&
+							generators.TryGetValue(primaryGeneratorName, out generator) &&
+							pseudoItems.TryGetValue(outputFormat = generator.ProvidesOutputFormat, out pseudoItem))
+						{
+							generatorNameData = pseudoItem.CurrentGeneratorNames;
+							ORMCustomToolUtility.GeneratorTargetSet targetSet = null;
+							BitTracker processedForFormat = default(BitTracker);
+							if (targetSetsByFormatName != null)
+							{
+								if (targetSetsByFormatName.TryGetValue(outputFormat, out targetSet))
+								{
+									processedForFormat = processedGeneratorTargets[outputFormat];
+								}
+							}
+
+							List<PseudoBuildInstance> originalInstances;
+							bool removeInstance = false;
+							if (string.IsNullOrEmpty(generatorNameData))
+							{
+								// The item is deleted, mark for removal
+								removeInstance = true;
+							}
+							else if (null != (originalInstances = pseudoItem.OriginalInstances))
+							{
+								for (int i = 0, count = originalInstances.Count; i < count && !removeInstance; ++i)
+								{
+									PseudoBuildInstance instance = originalInstances[i];
+									if (instance.IsRemoved)
+									{
+										continue;
+									}
+
+									GeneratorTarget[] targets = instance.OriginalGeneratorTargets;
+									if (targetSet != null)
+									{
+										if (targets == null)
+										{
+											// Remove, if a target set is available then it must be used
+											removeInstance = true;
+										}
+										else
+										{
+											int instanceIndex = targetSet.IndexOfInstance(targets, delegate (int ignoreInstance) { return processedForFormat[ignoreInstance]; });
+											if (instanceIndex == -1)
+											{
+												removeInstance = true;
+											}
+											else if (!processedForFormat[instanceIndex])
+											{
+												if (instance.OriginalGeneratorNames != generatorNameData)
+												{
+													// This is a preexisting item, update its meta information
+													ORMCustomToolUtility.SetItemMetaData(item, ITEMMETADATA_ORMGENERATOR, generatorNameData);
+												}
+												processedForFormat[instanceIndex] = true;
+												processedGeneratorTargets[outputFormat] = processedForFormat;
+												break;
+											}
+										}
+									}
+									else if (targets != null)
+									{
+										// Remove, formatter changed to one that does not use a generator target
+										removeInstance = true;
+									}
+									else if (instance.OriginalGeneratorNames != generatorNameData)
+									{
+										// This is a preexisting item, update its meta information
+										ORMCustomToolUtility.SetItemMetaData(item, ITEMMETADATA_ORMGENERATOR, generatorNameData);
+									}
+
+									if (removeInstance)
+									{
+										instance.IsRemoved = true;
+									}
+								}
+							}
+
+							if (removeInstance)
+							{
+								if (removedItems == null)
+								{
+#if VISUALSTUDIO_10_0
+									removedItems = new Dictionary<string, ProjectItemElement>();
+#else // VISUALSTUDIO_10_0
+									removedItems = new Dictionary<string, BuildItem>();
+#endif // VISUALSTUDIO_10_0
+								}
+								removedItems[ORMCustomToolUtility.GetItemInclude(item)] = item;
+							}
+						}
+					}
+					if (removedItems != null)
+					{
+						EnvDTE.ProjectItems subItems = projectItem.ProjectItems;
+#if VISUALSTUDIO_10_0
+						foreach (KeyValuePair<string, ProjectItemElement> removePair in removedItems)
+						{
+							ProjectItemElement removeItem = removePair.Value;
+							ProjectElementContainer removeFrom;
+							if (null != (removeFrom = removeItem.Parent))
+							{
+								removeFrom.RemoveChild(removeItem);
+							}
+#else // VISUALSTUDIO_10_0
+						foreach (KeyValuePair<string, BuildItem> removePair in removedItems)
+						{
+							project.RemoveItem(removePair.Value);
+#endif // VISUALSTUDIO_10_0
+							try
+							{
+								EnvDTE.ProjectItem subItem = subItems.Item(removePair.Key);
+								if (subItem != null)
+								{
+									subItem.Delete();
+								}
+							}
+							catch (ArgumentException)
+							{
+								// Swallow
+							}
+						}
+					}
+
+#if !VISUALSTUDIO_10_0
+					// Empty item groups remove themselves from the project, we'll need
+					// to recreate below if the group is empty after the remove phase.
+					if (itemGroup.Count == 0)
+					{
+						itemGroup = null;
+					}
 #endif
+				}
+
+				// Removes and changes are complete, proceed with adds for any new items
+				string newItemDirectory = null;
+				string projectPath = null;
+				EnvDTE.ProjectItems projectItems = null;
 				string tmpFile = null;
+				// Adding a file to our special item group adds it to the build system. However,
+				// it does not add it to the parallel project system, which is what displays in
+				// the solution explorer. Therefore, we also explicitly add the item to the
+				// project system as well. Unfortunately, this extra add automatically creates
+				// a redundant item (usually in a new item group) for our adding item. Track anything
+				// we add through the project system so that we can remove these redundant items from the
+				// build system when we're done.
+				Dictionary<string, string> sideEffectItemNames = null;
 				try
 				{
-					EnvDTE.ProjectItems projectItems = _projectItem.ProjectItems;
-#if VISUALSTUDIO_10_0
-					string itemDirectory = (new FileInfo((string)_project.FullPath)).DirectoryName;
-					foreach (ProjectItemElement item in _itemGroup.Items)
-#else
-					string itemDirectory = (new FileInfo((string)_project.FullFileName)).DirectoryName;
-					foreach (BuildItem item in this._itemGroup)
-#endif
+					Action<IORMGenerator, string, ORMCustomToolUtility.GeneratorTargetSet, GeneratorTarget[]> addProjectItem = delegate (IORMGenerator generator, string allGenerators, ORMCustomToolUtility.GeneratorTargetSet targetSet, GeneratorTarget[] targetInstance)
 					{
-						string filePath = string.Concat(itemDirectory, Path.DirectorySeparatorChar, item.Include);
-						string fileName = (new FileInfo(item.Include)).Name;
-						if (File.Exists(filePath))
+						if (itemGroup == null)
+						{
+#if VISUALSTUDIO_10_0
+							itemGroup = project.AddItemGroup();
+#else
+							itemGroup = project.AddNewItemGroup();
+#endif
+							itemGroup.Condition = string.Concat(ITEMGROUP_CONDITIONSTART, _projectItemRelativePath, ITEMGROUP_CONDITIONEND);
+						}
+						if (newItemDirectory == null)
+						{
+							// Initialize general information
+#if VISUALSTUDIO_10_0
+							projectPath = project.FullPath;
+#else
+							projectPath = project.FullFileName;
+#endif
+							newItemDirectory = Path.GetDirectoryName(new Uri(projectPath).MakeRelativeUri(new Uri((string)projectItem.Properties.Item("LocalPath").Value)).ToString());
+							projectItems = projectItem.ProjectItems;
+						}
+
+						string defaultFileName = generator.GetOutputFileDefaultName(sourceFileName);
+						string fileName = targetInstance == null ? defaultFileName : ORMCustomToolUtility.GeneratorTargetSet.DecorateFileName(defaultFileName, targetInstance);
+						string fileRelativePath = Path.Combine(newItemDirectory, fileName);
+						string fileAbsolutePath = string.Concat(new FileInfo(projectPath).DirectoryName, Path.DirectorySeparatorChar, fileRelativePath);
+#if VISUALSTUDIO_10_0
+						ProjectItemElement newBuildItem;
+#else
+						BuildItem newBuildItem;
+#endif
+						newBuildItem = generator.AddGeneratedFileItem(itemGroup, sourceFileName, fileRelativePath);
+
+						if (allGenerators != null)
+						{
+							ORMCustomToolUtility.SetItemMetaData(newBuildItem, ITEMMETADATA_ORMGENERATOR, allGenerators);
+						}
+
+						if (targetInstance != null)
+						{
+							ORMCustomToolUtility.SetGeneratorTargetMetadata(newBuildItem, targetInstance);
+						}
+
+						(sideEffectItemNames ?? (sideEffectItemNames = new Dictionary<string, string>()))[fileRelativePath] = null;
+						if (File.Exists(fileAbsolutePath))
 						{
 							try
 							{
-								projectItems.AddFromFile(filePath);
+								projectItems.AddFromFile(fileAbsolutePath);
 							}
 							catch (ArgumentException)
 							{
@@ -405,14 +726,71 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							{
 								tmpFile = Path.GetTempFileName();
 							}
-							EnvDTE.ProjectItem projectItem = projectItems.AddFromTemplate(tmpFile, fileName);
-							string customTool = item.GetMetadata(ITEMMETADATA_GENERATOR);
-							if (!string.IsNullOrEmpty(customTool))
+							EnvDTE.ProjectItem newProjectItem = projectItems.AddFromTemplate(tmpFile, fileName);
+							string customTool;
+							if (!string.IsNullOrEmpty(customTool = newBuildItem.GetMetadata(ITEMMETADATA_GENERATOR)))
 							{
-								projectItem.Properties.Item("CustomTool").Value = customTool;
+								newProjectItem.Properties.Item("CustomTool").Value = customTool;
 							}
 						}
-						removeItems[item.Include] = null;
+					};
+
+					foreach (KeyValuePair<string, PseudoBuildItem> keyedPseudoItem in pseudoItems)
+					{
+						pseudoItem = keyedPseudoItem.Value;
+						string allGenerators = pseudoItem.CurrentGeneratorNames;
+						string primaryGenerator = ORMCustomToolUtility.GetPrimaryGeneratorName(allGenerators);
+						if (allGenerators == primaryGenerator)
+						{
+							allGenerators = null;
+						}
+						IORMGenerator generator = generators[primaryGenerator];
+						string outputFormat = generator.ProvidesOutputFormat;
+						ORMCustomToolUtility.GeneratorTargetSet targetSet = null;
+						if (targetSetsByFormatName != null)
+						{
+							targetSetsByFormatName.TryGetValue(outputFormat, out targetSet);
+						}
+
+						if (targetSet != null)
+						{
+							// OriginalInstances were already updated in the remove loop and processed
+							// instances were flagged. Find additional instances from the target set (created
+							// just now from the current model), not from the pseudoItem (created from the project
+							// files that possibly reflect a previous version of the model).
+							GeneratorTarget[][] instances = targetSet.Instances;
+							BitTracker processed = processedGeneratorTargets[outputFormat];
+
+							for (int i = 0, count = instances.Length; i < count; ++i)
+							{
+								if (!processed[i])
+								{
+									addProjectItem(generator, allGenerators, targetSet, instances[i]);
+								}
+							}
+						}
+						else if (pseudoItem.OriginalInstances == null)
+						{
+							addProjectItem(generator, allGenerators, null, null);
+						}
+						else
+						{
+							// Make sure there was an original instance that did not have a target set.
+							List<PseudoBuildInstance> originals = pseudoItem.OriginalInstances;
+							int i = 0, count = originals.Count;
+							for (; i < count; ++i)
+							{
+								if (originals[i].OriginalGeneratorTargets == null)
+								{
+									break;
+								}
+							}
+
+							if (i == count)
+							{
+								addProjectItem(generator, allGenerators, null, null);
+							}
+						}
 					}
 				}
 				finally
@@ -423,60 +801,25 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					}
 				}
 
-#if VISUALSTUDIO_10_0
-				foreach (ProjectItemGroupElement group in this._project.ItemGroups)
-#else
-				foreach (BuildItemGroup group in this._project.ItemGroups)
-#endif
+				if (sideEffectItemNames != null)
 				{
-					if (group.Condition.Trim() == this._itemGroup.Condition.Trim())
-					{
-						continue;
-					}
-#if VISUALSTUDIO_10_0
-					foreach (ProjectItemElement item in group.Items)
-#else
-					foreach (BuildItem item in group)
-#endif
-					{
-						if (removeItems.ContainsKey(item.Include))
-						{
-							removeItems[item.Include] = item;
-						}
-					}
-				}
-				foreach (string key in removeItems.Keys)
-				{
-#if VISUALSTUDIO_10_0
-					ProjectItemElement removeItem;
-					ProjectElementContainer removeFrom;
-					if (null != (removeItem =removeItems[key]) &&
-						null != (removeFrom = removeItem.Parent))
-					{
-						removeFrom.RemoveChild(removeItem);
-					}
-#else
-					BuildItem removeItem = removeItems[key];
-					if (removeItem != null)
-					{
-						_project.RemoveItem(removeItem);
-					}
-#endif
+					ORMCustomToolUtility.RemoveSideEffectItems(sideEffectItemNames, project, itemGroup);
 				}
 
-				VSLangProj.VSProjectItem vsProjectItem = _projectItem.Object as VSLangProj.VSProjectItem;
+#if VISUALSTUDIO_10_0
+				// Old group remove themselves when empty, but this is
+				// not true in the new build system. Clean up as needed.
+				if (itemGroup != null &&
+					itemGroup.Items.Count == 0)
+				{
+					project.RemoveChild(itemGroup);
+				}
+#endif
+				VSLangProj.VSProjectItem vsProjectItem = projectItem.Object as VSLangProj.VSProjectItem;
 				if (vsProjectItem != null)
 				{
 					vsProjectItem.RunCustomTool();
 				}
-			}
-			else
-			{
-#if VISUALSTUDIO_10_0
-				_project.RemoveChild(_itemGroup);
-#else
-				_project.RemoveItemGroup(_itemGroup);
-#endif
 			}
 			base.OnClosed(e);
 		}

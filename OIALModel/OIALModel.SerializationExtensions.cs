@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace Neumont.Tools.ORM.OIALModel
 {
 	#region OIALDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2006-01/OIALModel")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/2006-01/OIALModel", "OIALModel.xsd")]
 	partial class OIALDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'OIALDomainModel' extension model</summary>
@@ -310,11 +310,8 @@ namespace Neumont.Tools.ORM.OIALModel
 				match.InitializeRoles(OIALModelHasORMModel.ORMModelDomainRoleId);
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ORMModel", match);
 				match.InitializeRoles(OIALHasInformationTypeFormat.InformationTypeFormatDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|InformationTypeFormats||", match);
 				match.InitializeRoles(OIALModelHasConceptType.ConceptTypeDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ConceptTypes||", match);
 				match.InitializeRoles(OIALModelHasChildSequenceConstraint.ChildSequenceConstraintDomainRoleId);
-				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-01/OIALModel|ChildSequenceConstraints||", match);
 				OIALModel.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -410,7 +407,7 @@ namespace Neumont.Tools.ORM.OIALModel
 			Guid roleId = rolePlayedInfo.Id;
 			if (roleId == ChildHasSingleChildConstraint.ConceptTypeChildDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -882,13 +879,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				return new CustomSerializedElementInfo(null, "ValueType", null, CustomSerializedElementWriteStyle.Element, null);
 			}
-			if (roleId == InformationType.ConceptTypeDomainRoleId)
+			if (roleId == InformationType.ConceptTypeDomainRoleId || roleId == ConceptTypeChild.ParentDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, "ConceptType", null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeChild.ParentDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, "ConceptTypeChild", null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -1031,17 +1024,9 @@ namespace Neumont.Tools.ORM.OIALModel
 			{
 				return new CustomSerializedElementInfo(null, "InformationType", null, CustomSerializedElementWriteStyle.PrimaryLinkElement, null);
 			}
-			if (roleId == ConceptTypeRef.ReferencingConceptTypeDomainRoleId)
+			if (roleId == ConceptTypeRef.ReferencingConceptTypeDomainRoleId || roleId == ConceptTypeChild.ParentDomainRoleId || roleId == ConceptTypeChild.TargetDomainRoleId)
 			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeChild.ParentDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, "Parent", null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
-			if (roleId == ConceptTypeChild.TargetDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, "Target", null, CustomSerializedElementWriteStyle.NotWritten, null);
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}
@@ -1233,13 +1218,13 @@ namespace Neumont.Tools.ORM.OIALModel
 		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
 		{
 			Guid roleId = rolePlayedInfo.Id;
-			if (roleId == ChildSequenceHasConceptTypeChild.ChildSequenceDomainRoleId)
-			{
-				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
-			}
 			if (roleId == ConceptTypeChildHasPathRole.PathRoleDomainRoleId)
 			{
 				return new CustomSerializedElementInfo("orm", "Role", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (roleId == ChildSequenceHasConceptTypeChild.ChildSequenceDomainRoleId)
+			{
+				return CustomSerializedElementInfo.NotWritten;
 			}
 			return CustomSerializedElementInfo.Default;
 		}

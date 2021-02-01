@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell;
 namespace ORMSolutions.ORMArchitect.Views.RelationalView
 {
 	#region RelationalShapeDomainModel model serialization
-	[CustomSerializedXmlNamespaces("http://schemas.neumont.edu/ORM/2007-11/RelationalView")]
+	[CustomSerializedXmlSchema("http://schemas.neumont.edu/ORM/2007-11/RelationalView", "RelationalView.xsd")]
 	partial class RelationalShapeDomainModel : ICustomSerializedDomainModel
 	{
 		/// <summary>The default XmlNamespace associated with the 'RelationalShapeDomainModel' extension model</summary>

@@ -19,17 +19,33 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			private int myStart;
 			private int myCount;
 			private string myHeader;
+			private bool myDeemphasizedHeader;
 			/// <summary>
-			/// Create a new partition section
+			/// Create a new partition section with no header.
 			/// </summary>
 			/// <param name="start">The starting index in the inner branch</param>
 			/// <param name="count">The number of items in the inner branch to include in this branch.</param>
-			/// <param name="header">A header string for this group of items. It the header is not null, then this item will expand to a branch and have a length of 1.</param>
-			public BranchPartitionSection(int start, int count, string header)
+			public BranchPartitionSection(int start, int count)
+			{
+				myStart = start;
+				myCount = count;
+				myHeader = null;
+				myDeemphasizedHeader = false;
+			}
+			/// <summary>
+			/// Create a new partition section with a header. This section
+			/// will have one item in it and expand to a branch.
+			/// </summary>
+			/// <param name="start">The starting index in the inner branch</param>
+			/// <param name="count">The number of items in the inner branch to include in this branch.</param>
+			/// <param name="header">A header string for this group of items.</param>
+			/// <param name="deemphasizeHeader">Set to <see langword="true"/> to deemphasize (gray out) the header.</param>
+			public BranchPartitionSection(int start, int count, string header, bool deemphasizeHeader)
 			{
 				myStart = start;
 				myCount = count;
 				myHeader = header;
+				myDeemphasizedHeader = deemphasizeHeader;
 			}
 			/// <summary>
 			/// The starting index in the inner branch
@@ -59,6 +75,16 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				get
 				{
 					return myHeader;
+				}
+			}
+			/// <summary>
+			/// Deemphasize the header for this section
+			/// </summary>
+			public bool DeemphasizeHeader
+			{
+				get
+				{
+					return myDeemphasizedHeader;
 				}
 			}
 			public int VisibleItemCount
@@ -194,7 +220,10 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 				if (row == -1)
 				{
 					VirtualTreeDisplayData displayData = VirtualTreeDisplayData.Empty;
-					displayData.GrayText = true;
+					if (section.DeemphasizeHeader)
+					{
+						displayData.GrayText = true;
+					}
 					return displayData;
 				}
 				return myInnerBranch.GetDisplayData(row, column, requiredData);
@@ -208,7 +237,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					if (style == ObjectStyle.ExpandedBranch)
 					{
 						options = 0;
-						return new BranchPartition(myInnerBranch, myIndexer, new BranchPartitionSection(section.Start, section.Count, null));
+						return new BranchPartition(myInnerBranch, myIndexer, new BranchPartitionSection(section.Start, section.Count));
 					}
 					return null;
 				}
