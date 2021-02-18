@@ -469,6 +469,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				if (notifyList != null)
 				{
 					notifyList.NodeChanged(location.ElementNode, null, false, questionTypes);
+					ElementLocationChangedEventHandler handler = myElementLocationChangedHandler;
+					if (handler != null)
+					{
+						handler(element);
+					}
 				}
 				else if (questionTypes.Length != 0)
 				{

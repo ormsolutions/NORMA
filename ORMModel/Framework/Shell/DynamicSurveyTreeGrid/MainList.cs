@@ -1310,7 +1310,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 			event ElementLocationChangedEventHandler ITrackSurveyElementLocation.ElementLocationChanged
 			{
 				add { mySurveyTree.ElementLocationChanged += value; }
-				remove { mySurveyTree.ElementLocationChanged += value; }
+				remove { mySurveyTree.ElementLocationChanged -= value; }
 			}
 			#endregion // ITrackSurveyElementLocation implementation
 		}

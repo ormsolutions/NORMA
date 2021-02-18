@@ -1331,7 +1331,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				event ElementLocationChangedEventHandler ITrackSurveyElementLocation.ElementLocationChanged
 				{
 					add { ((ITrackSurveyElementLocation)myBaseBranch).ElementLocationChanged += value; }
-					remove { ((ITrackSurveyElementLocation)myBaseBranch).ElementLocationChanged += value; }
+					remove { ((ITrackSurveyElementLocation)myBaseBranch).ElementLocationChanged -= value; }
 				}
 				#endregion // ITrackSurveyElementLocation implementation
 				#region ElementDeletedAt
@@ -1399,7 +1399,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 
 					if (!myNeutralOnTop && myNeutralBranch != null)
 					{
-						AdjustNeutralBranchForDeleted(index, modificationEvents, notifyThrough, notifyThroughOffset, ref startAdjustment);
+						AdjustNeutralBranchForDeleted(index, modificationEvents, notifyBranch, notifyThroughOffset, ref startAdjustment);
 					}
 					startAdjustment += myVisibleSubBranchCount - initialSubBranchCount;
 					return startAdjustment - initialAdjustment;
@@ -1491,8 +1491,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				/// <returns>The size change for the branch. With nested groupers this may not add to the size of the grouper branch. This will return 0 or 1.</returns>
 				private int ElementAddedAt(int index, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset, int startAdjustment, ref bool? itemAddedStatus)
 				{
-					// UNDONE: NOW Handle startAdjustment
-					Debug.Assert(startAdjustment == 0);
 					int currentAnswer = myQuestion.ExtractAnswer(((MainList)myBaseBranch).myNodes[index].NodeData);
 					bool neutralOnTop = myNeutralOnTop;
 					int neutralOffset = 0;
@@ -1595,7 +1593,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						{
 							if (startAdjustment != 0)
 							{
-								index += startAdjustment;
 								shifter.FirstItem += startAdjustment;
 							}
 							// Simple shifter cases
@@ -1624,64 +1621,19 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 					}
 					else if (inNeutralBranch && itemAddedStatus != false)
 					{
-						// If all of the metadata Start/End information were kept in sync all the time, then
-						// we could check if we need a new neutral branch with the following code
-						// index == (neutralOnTop ? subBranches[0].Start - 1 : (subBranches[subBranches.Length - 1].End + 1))
-						// However, when empty groups are showing, these fields are updated only when data is
-						// actually displayed in that section of the branch. Therefore, we need to look closer
-						// at the data (besides the Start of the first and the End of the last) to get reliable
-						// information. Only trust branch information that has data in it.
-						bool addNeutral = false;
-						SubBranchMetaData[] subBranches = mySubBranches;
-						if (neutralOnTop)
+						// Dynamically create the neutral branch
+						SurveyQuestion nextQuestion = NextGroupableQuestion;
+						myNeutralBranch = neutralBranch = (nextQuestion != null) ?
+							(IBranch)new ListGrouper(myBaseBranch, nextQuestion, index, index, myNeutralAncestry) :
+							new SimpleListShifter(myBaseBranch, index, 1);
+						itemAddedStatus = true;
+						if (modificationEvents != null)
 						{
-							int i = 0;
-							for (; i < subBranches.Length; ++i)
-							{
-								if (subBranches[i].Count > 0)
-								{
-									addNeutral = index == (subBranches[i].Start - 1);
-									break;
-								}
-							}
-							if (i == subBranches.Length)
-							{
-								addNeutral = true;
-							}
+							Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
+							modificationEvents(notifyBranch, BranchModificationEventArgs.InsertItems(notifyBranch, notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount) - 1, 1));
 						}
-						else
-						{
-							int i = subBranches.Length - 1;
-							for (; i >= 0; --i)
-							{
-								if (subBranches[i].Count > 0)
-								{
-									addNeutral = index == (subBranches[i].End + 1);
-									break;
-								}
-							}
-							if (i == -1)
-							{
-								// Same comments as above. This is a rebased branch with header nodes only.
-								addNeutral = subBranches[0].Count == 0 || index == (subBranches[0].End + 1);
-							}
-						}
-						if (addNeutral)
-						{
-							// Dynamically create the neutral branch
-							SurveyQuestion nextQuestion = NextGroupableQuestion;
-							myNeutralBranch = neutralBranch = (nextQuestion != null) ?
-								(IBranch)new ListGrouper(myBaseBranch, nextQuestion, index, index, myNeutralAncestry) :
-								new SimpleListShifter(myBaseBranch, index, 1);
-							itemAddedStatus = true;
-							if (modificationEvents != null)
-							{
-								Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
-								modificationEvents(notifyBranch, BranchModificationEventArgs.InsertItems(notifyBranch, notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount) - 1, 1));
-							}
-							itemCount = neutralBranch.VisibleItemCount;
-							startAdjustment += itemCount;
-						}
+						itemCount = neutralBranch.VisibleItemCount;
+						startAdjustment += 1;
 					}
 					return itemCount;
 				}
@@ -1714,7 +1666,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				{
 					int currentAnswer = myQuestion.ExtractAnswer(nodeData);
 					int neutralOffset = 0;
-					if (myNeutralOnTop && myNeutralBranch != null)
+					if (myNeutralOnTop && (myNeutralBranch != null || currentAnswer == SurveyQuestion.NeutralAnswer))
 					{
 						neutralOffset = AdjustNeutralBranchForModified(fromIndex, toIndex, nodeData, currentAnswer == SurveyQuestion.NeutralAnswer, displayChanged, modificationEvents, notifyThrough, notifyThroughOffset, ref startAdjustment);
 					}
@@ -1782,22 +1734,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						}
 					}
 
-					if (!myNeutralOnTop && myNeutralBranch != null)
+					if (!myNeutralOnTop && (myNeutralBranch != null || currentAnswer == SurveyQuestion.NeutralAnswer))
 					{
 						AdjustNeutralBranchForModified(fromIndex, toIndex, nodeData, currentAnswer == SurveyQuestion.NeutralAnswer, displayChanged, modificationEvents, notifyThrough, notifyThroughOffset, ref startAdjustment);
 					}
 				}
 				private int AdjustNeutralBranchForModified(int fromIndex, int toIndex, int nodeData, bool currentAnswerHere, bool displayChanged, BranchModificationEventHandler modificationEvents, IBranch notifyThrough, int notifyThroughOffset, ref int startAdjustment)
 				{
-					// UNDONE: NOW Neutral branch may need to be created on add
 					// Handle any nested neutral branches
 					IBranch neutralBranch = myNeutralBranch;
 					int neutralCount = 0; // Return value, total number of visible items in the neutral section
+					Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
+					int offsetAdjustment = notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount);
+					IBranch notifyBranch = notifyThrough ?? this;
 					if (neutralBranch != null)
 					{
-						Debug.Assert(notifyThroughOffset == 0 || notifyThrough != null);
-						int offsetAdjustment = notifyThroughOffset + (myNeutralOnTop ? 0 : myVisibleSubBranchCount);
-						IBranch notifyBranch = (notifyThrough != null) ? notifyThrough : this;
 						SimpleListShifter shifter;
 						ListGrouper grouper;
 						if (null != (shifter = (neutralBranch as SimpleListShifter)))
@@ -1929,11 +1880,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 							else if (inserted)
 							{
 								bool? itemAddedStatus = null;
-								grouper.ElementAddedAt(fromIndex, modificationEvents, notifyThrough, notifyThroughOffset, forwardAdjustment, ref itemAddedStatus);
+								grouper.ElementAddedAt(toIndex, modificationEvents, notifyBranch, offsetAdjustment, forwardAdjustment, ref itemAddedStatus);
 							}
 							else if (deleted)
 							{
-								grouper.ElementDeletedAt(toIndex, modificationEvents, notifyThrough, notifyThroughOffset, forwardAdjustment);
+								grouper.ElementDeletedAt(fromIndex, modificationEvents, notifyBranch, offsetAdjustment, forwardAdjustment);
 							}
 							neutralCount = grouper.VisibleItemCount;
 						}
@@ -1941,6 +1892,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 						{
 							myNeutralBranch = null; // Easily recreated, don't keep an empty branch.
 						}
+					}
+					else if (currentAnswerHere)
+					{
+						// Dynamically create the neutral branch. If there was no branch previously then there was nothing to delete, so this can only be an add.
+						SurveyQuestion nextQuestion = NextGroupableQuestion;
+						myNeutralBranch = neutralBranch = (nextQuestion != null) ?
+							(IBranch)new ListGrouper(myBaseBranch, nextQuestion, toIndex, toIndex, myNeutralAncestry) :
+							new SimpleListShifter(myBaseBranch, toIndex, 1);
+						if (modificationEvents != null)
+						{
+							modificationEvents(notifyBranch, BranchModificationEventArgs.InsertItems(notifyThrough, offsetAdjustment - 1, 1));
+						}
+						startAdjustment += 1;
+						neutralCount = neutralBranch.VisibleItemCount;
 					}
 					return neutralCount;
 				}
