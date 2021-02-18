@@ -510,7 +510,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					if (unrecognizedNamespaces != null)
 					{
 						stream.Position = 0;
-						namespaceStrippedStream = ExtensionLoader.CleanupStream(stream, extensionLoader.StandardDomainModels, documentExtensions.Values, unrecognizedNamespaces);
+						namespaceStrippedStream = ExtensionLoader.CleanupStream(stream, extensionLoader.StandardDomainModels, documentExtensions != null ? documentExtensions.Values : null, unrecognizedNamespaces);
 						if (namespaceStrippedStream != null)
 						{
 							dontSave = true;
@@ -1308,10 +1308,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					try
 					{
 						extensionLoader.VerifyRequiredExtensions(ref requestedExtensions);
-						ICollection<ExtensionModelBinding> allExtensions = requestedExtensions.Values;
+						ICollection<ExtensionModelBinding> allExtensions = requestedExtensions != null ? requestedExtensions.Values : null;
 						if (nonRequestedLoadedExtensions != null)
 						{
-							nonRequestedLoadedExtensions.AddRange(allExtensions);
+							if (allExtensions != null)
+							{
+								nonRequestedLoadedExtensions.AddRange(allExtensions);
+							}
 							allExtensions = nonRequestedLoadedExtensions;
 						}
 						newStream = ExtensionLoader.CleanupStream(currentStream, extensionLoader.StandardDomainModels, allExtensions, null);

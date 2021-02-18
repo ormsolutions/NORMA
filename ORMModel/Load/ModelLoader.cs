@@ -174,7 +174,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				if (unrecognizedNamespaces != null)
 				{
 					inputStream.Position = 0;
-					namespaceStrippedStream = ExtensionLoader.CleanupStream(inputStream, extensionLoader.StandardDomainModels, documentExtensions.Values, unrecognizedNamespaces);
+					namespaceStrippedStream = ExtensionLoader.CleanupStream(inputStream, extensionLoader.StandardDomainModels, documentExtensions != null ? documentExtensions.Values : null, unrecognizedNamespaces);
 					if (namespaceStrippedStream != null)
 					{
 						inputStream = namespaceStrippedStream;

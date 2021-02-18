@@ -1625,133 +1625,6 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 	#endregion // ISkipExtension interface
 	#endregion Public Interfaces
 	#region Public Attributes
-	#region CustomSerializedXmlNamespacesAttribute class
-	/// <summary>
-	/// An attribute associated with a <see cref="DomainModel"/> that indicates all of the
-	/// xml namespaces serialized by that model.
-	/// </summary>
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=false)]
-	[Obsolete("Please use CustomSerializedXmlSchemaAttribute instead of CustomSerializedXmlNamespacesAttribute.")]
-	public sealed class CustomSerializedXmlNamespacesAttribute : Attribute, IEnumerable<string>
-	{
-		#region Member variables
-		private string[] myNamespaces;
-		#endregion // Member variables
-		#region Constructors (lots of overrides to eliminate CLSCompliant attribute array warnings)
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with a single xml namespace.
-		/// </summary>
-		/// <param name="xmlNamespace">The namespace to associate with this domain model.</param>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace) };
-		}
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
-		/// </summary>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2) };
-		}
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
-		/// </summary>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3) };
-		}
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
-		/// </summary>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4) };
-		}
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
-		/// </summary>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5) };
-		}
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
-		/// </summary>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6) };
-		}
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
-		/// </summary>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6, string xmlNamespace7)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6), EnsureNotNull(xmlNamespace7) };
-		}
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
-		/// </summary>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6, string xmlNamespace7, string xmlNamespace8)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6), EnsureNotNull(xmlNamespace7), EnsureNotNull(xmlNamespace8) };
-		}
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
-		/// </summary>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6, string xmlNamespace7, string xmlNamespace8, string xmlNamespace9)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6), EnsureNotNull(xmlNamespace7), EnsureNotNull(xmlNamespace8), EnsureNotNull(xmlNamespace9) };
-		}
-		/// <summary>
-		/// Create an <see cref="CustomSerializedXmlNamespacesAttribute"/> with multiple namespaces.
-		/// </summary>
-		public CustomSerializedXmlNamespacesAttribute(string xmlNamespace1, string xmlNamespace2, string xmlNamespace3, string xmlNamespace4, string xmlNamespace5, string xmlNamespace6, string xmlNamespace7, string xmlNamespace8, string xmlNamespace9, string xmlNamespace10)
-		{
-			myNamespaces = new string[] { EnsureNotNull(xmlNamespace1), EnsureNotNull(xmlNamespace2), EnsureNotNull(xmlNamespace3), EnsureNotNull(xmlNamespace4), EnsureNotNull(xmlNamespace5), EnsureNotNull(xmlNamespace6), EnsureNotNull(xmlNamespace7), EnsureNotNull(xmlNamespace8), EnsureNotNull(xmlNamespace9), EnsureNotNull(xmlNamespace10) };
-		}
-		private static string EnsureNotNull(string s)
-		{
-			return s ?? "";
-		}
-		#endregion // Constructors
-		#region Public accessor properties
-		/// <summary>
-		/// Return the total number of namespaces defined on this DomainModel
-		/// </summary>
-		public int Count
-		{
-			get
-			{
-				return (myNamespaces as ICollection).Count;
-			}
-		}
-		/// <summary>
-		/// Return the namespace at this index
-		/// </summary>
-		/// <param name="index">An index, bounded by <see cref="Count"/></param>
-		/// <returns>An xml namespace string</returns>
-		public string this[int index]
-		{
-			get
-			{
-				return myNamespaces[index];
-			}
-		}
-		#endregion // Public accessor properties
-		#region IEnumerable<string> Implementation
-		IEnumerator<string> IEnumerable<string>.GetEnumerator()
-		{
-			return (myNamespaces as IEnumerable<string>).GetEnumerator();
-		}
-		#endregion // IEnumerable<string> implementation
-		#region IEnumerable implementation
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return myNamespaces.GetEnumerator();
-		}
-		#endregion // IEnumerable implementation
-	}
-	#endregion // CustomSerializedXmlNamespacesAttribute class
 	#region CustomSerializedXmlSchemaAttribute class
 	/// <summary>
 	/// An attribute associated with a <see cref="DomainModel"/> that indicates the
@@ -1867,7 +1740,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// </summary>
 		/// <param name="guid">The GUID to convert.</param>
 		/// <returns>An XML encoded string.</returns>
-		private static string ToXml(Guid guid)
+		/// <remarks>This is public so that external services can always match the identifier format used by the serialization engine.</remarks>
+		public static string ToXml(Guid guid)
 		{
 			return '_' + XmlConvert.ToString(guid).ToUpperInvariant();
 		}
@@ -4281,27 +4155,34 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 								oppositeDomainClassFullyDeterministic = oppositeDomainClass.AllDescendants.Count == 0;
 								if (aggregatedClass && !oppositeDomainClassFullyDeterministic)
 								{
-									DomainClassInfo testMetaClass = null;
-									ICustomSerializedDomainModel elementModel = myXmlNamespaceToModelMap[namespaceName];
-									if (elementModel == null)
+									ICustomSerializedDomainModel elementModel;
+									if ( myXmlNamespaceToModelMap.TryGetValue(namespaceName, out elementModel))
 									{
-										elementModel = customModel;
-									}
-									if (elementModel != null)
-									{
-										Guid mappedGuid = elementModel.MapClassName(namespaceName, elementName);
-										if (!mappedGuid.Equals(Guid.Empty))
+										DomainClassInfo testMetaClass = null;
+										if (elementModel == null)
 										{
-											testMetaClass = dataDir.FindDomainClass(mappedGuid);
+											elementModel = customModel;
 										}
+										if (elementModel != null)
+										{
+											Guid mappedGuid = elementModel.MapClassName(namespaceName, elementName);
+											if (!mappedGuid.Equals(Guid.Empty))
+											{
+												testMetaClass = dataDir.FindDomainClass(mappedGuid);
+											}
+										}
+										if (testMetaClass == null)
+										{
+											Type namespaceType = (elementModel != null) ? elementModel.GetType() : element.GetType();
+											testMetaClass = dataDir.FindDomainClass(string.Concat(namespaceType.Namespace, ".", elementName));
+										}
+										oppositeDomainClass = testMetaClass;
+										oppositeDomainClassFullyDeterministic = true;
 									}
-									if (testMetaClass == null)
+									else
 									{
-										Type namespaceType = (elementModel != null) ? elementModel.GetType() : element.GetType();
-										testMetaClass = dataDir.FindDomainClass(string.Concat(namespaceType.Namespace, ".", elementName));
+										oppositeDomainClass = null;
 									}
-									oppositeDomainClass = testMetaClass;
-									oppositeDomainClassFullyDeterministic = true;
 								}
 							}
 						}

@@ -313,7 +313,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 									fallbackStream.Position = 0;
 									currentStream = fallbackStream;
 
-									newStream = ExtensionLoader.CleanupStream(currentStream, extensionLoader.StandardDomainModels, bindings.Values, null);
+									newStream = ExtensionLoader.CleanupStream(currentStream, extensionLoader.StandardDomainModels, bindings != null ? bindings.Values : null, null);
 									docData.ReloadFromStream(newStream, currentStream);
 								}
 								finally

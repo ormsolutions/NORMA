@@ -796,6 +796,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 	/// <see cref="IGeneratorTargetList"/> interface, this allows multiple
 	/// artifacts of the same type to be generated from the same model file.
 	/// </summary>
+	[Serializable]
 	public struct GeneratorTarget
 	{
 		#region Member Variables
@@ -911,6 +912,8 @@ namespace ORMSolutions.ORMArchitect.Framework
 								combinedTargets = new List<GeneratorTarget>();
 								targetsByType[targetType] = combinedTargets;
 							}
+
+							combinedTargets.Add(target);
 						}
 					}
 				}
@@ -932,7 +935,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 					int count;
 					for (i = 0, count = targetList.Count; i < count; ++i)
 					{
-						// This limits any duplicate key to a single id
+						// This limits any duplicate key to a single entry
 						keyedByTarget[targetList[i]] = null;
 					}
 

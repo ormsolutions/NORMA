@@ -282,25 +282,6 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 					}
 				}
 
-#pragma warning disable 618
-				// UNDONE: Remove CustomSerializedXmlNamespacesAttribute support
-				if (!foundMatch)
-				{
-					namespaceAttributes = type.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
-					if (namespaceAttributes != null && namespaceAttributes.Length != 0)
-					{
-						foreach (string testNamespace in (CustomSerializedXmlNamespacesAttribute)namespaceAttributes[0])
-						{
-							if (testNamespace == namespaceUri)
-							{
-								foundMatch = true;
-								break;
-							}
-						}
-					}
-				}
-#pragma warning restore 618
-
 				if (!foundMatch)
 				{
 					// Bogus request, return and leave IsValidExtension false
@@ -1326,54 +1307,20 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				}
 			}
 
-			foreach (ExtensionModelBinding extensionType in extensionTypes)
+			if (extensionTypes != null)
 			{
-				object[] attributes = extensionType.Type.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
-				if (attributes != null)
+				foreach (ExtensionModelBinding extensionType in extensionTypes)
 				{
-					for (int i = 0; i < attributes.Length; ++i)
+					object[] attributes = extensionType.Type.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
+					if (attributes != null)
 					{
-						namespaceList.Add(((CustomSerializedXmlSchemaAttribute)attributes[i]).XmlNamespace);
+						for (int i = 0; i < attributes.Length; ++i)
+						{
+							namespaceList.Add(((CustomSerializedXmlSchemaAttribute)attributes[i]).XmlNamespace);
+						}
 					}
 				}
 			}
-
-#pragma warning disable 618
-			// UNDONE: Remove CustomSerializedXmlNamespacesAttribute support
-			List<CustomSerializedXmlNamespacesAttribute> namespaceAttributes = new List<CustomSerializedXmlNamespacesAttribute>();
-			foreach (Type standardType in standardTypes)
-			{
-				object[] attributes = standardType.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
-				CustomSerializedXmlNamespacesAttribute currentAttribute;
-				if (attributes != null &&
-					attributes.Length != 0 &&
-					0 != (currentAttribute = (CustomSerializedXmlNamespacesAttribute)attributes[0]).Count)
-				{
-					namespaceAttributes.Add(currentAttribute);
-				}
-			}
-			foreach (ExtensionModelBinding extensionType in extensionTypes)
-			{
-				object[] attributes = extensionType.Type.GetCustomAttributes(typeof(CustomSerializedXmlNamespacesAttribute), false);
-				CustomSerializedXmlNamespacesAttribute currentAttribute;
-				if (attributes != null &&
-					attributes.Length != 0 &&
-					0 != (currentAttribute = (CustomSerializedXmlNamespacesAttribute)attributes[0]).Count)
-				{
-					namespaceAttributes.Add(currentAttribute);
-				}
-			}
-
-			for (int i = 0, count = namespaceAttributes.Count; i < count; ++i)
-			{
-				CustomSerializedXmlNamespacesAttribute currentAttribute = namespaceAttributes[i];
-				int attributeCount = currentAttribute.Count;
-				for (int j = 0; j < attributeCount; ++j)
-				{
-					namespaceList.Add(currentAttribute[j]);
-				}
-			}
-#pragma warning restore 618
 
 			string[] namespaces = new string[namespaceList.Count];
 			namespaceList.CopyTo(namespaces);
