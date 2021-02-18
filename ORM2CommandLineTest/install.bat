@@ -1,93 +1,57 @@
-@echo off
-setlocal
-
-IF "%ProgramFiles(X86)%"=="" (
-	SET ResolvedProgramFiles=%ProgramFiles%
-	SET WOWRegistryAdjust=
+@ECHO off
+SETLOCAL
+IF '%1'=='' (
+	CALL:SETVAR "RootDir" "%~dp0"
 ) ELSE (
-	CALL:SET6432
+	CALL:SETVAR "RootDir" "%~dp1"
+)
+CALL "%~dp0..\SetupEnvironment.bat"
+
+IF '%2'=='' (
+	SET OutPath=%RootDir%bin\Debug\
+) ELSE (
+	SET OutPath=%RootDir%%~2
 )
 
-if '%1'=='' (
-CALL:SETVAR "rootPath" "%~dp0"
-) else (
-CALL:SETVAR "rootPath" "%~dp1"
-)
-if '%2'=='' (
-set outDir=bin\Debug\
-) else (
-set outDir=%~2
-)
-if '%3'=='' (
-CALL:SETVAR "envPath" "%ResolvedProgramFiles%\Microsoft Visual Studio 8\"
-) else (
-CALL:SETVAR "envPath" "%~dp3"
-)
-if '%4'=='' (
-set VSProduct=VS2005
-) else (
-set VSProduct=%~4
-)
-if '%5'=='' (
-set VSLongProduct=Visual Studio 2005
-) else (
-set VSLongProduct=%~5
+XCOPY /Y /D /V /Q "%OutPath%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%TargetVisualStudioShortProductName%.dll" "%DevEnvDir%PrivateAssemblies\"
+XCOPY /Y /D /V /Q "%OutPath%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%TargetVisualStudioShortProductName%.XML" "%DevEnvDir%PrivateAssemblies\"
+XCOPY /Y /D /V /Q "%OutPath%TestEngine\nunit.framework.dll" "%DevEnvDir%PrivateAssemblies\"
+XCOPY /Y /D /V /Q "%OutPath%TestEngine\xmldiffpatch.dll" "%DevEnvDir%PrivateAssemblies\"
+
+IF EXIST "%OutPath%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%TargetVisualStudioShortProductName%.pdb" (
+	XCOPY /Y /D /V /Q "%OutPath%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%TargetVisualStudioShortProductName%.pdb" "%DevEnvDir%PrivateAssemblies\"
+) ELSE (
+	CALL:_CleanupFile "%DevEnvDir%PrivateAssemblies\ORMSolutions.ORMArchitectSDK.TestEngine.%TargetVisualStudioShortProductName%.pdb"
 )
 
-SET NORMADir=%ResolvedProgramFiles%\ORM Solutions\ORM Architect for %VSLongProduct%
-
-xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.dll" "%NORMADir%\bin\"
-xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.XML" "%NORMADir%\bin\"
-xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\nunit.framework.dll" "%NORMADir%\bin\"
-if exist "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.pdb" (
-xcopy /Y /D /Q "%rootPath%%outDir%TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.pdb" "%NORMADir%\bin\"
-) else (
-if exist "%NORMADir%\bin\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.pdb" (
-del "%NORMADir%\bin\ORMSolutions.ORMArchitectSDK.TestEngine.%VSProduct%.pdb"
-)
+IF EXIST "%OutPath%ORMTestDriver.%TargetVisualStudioShortProductName%.exe" (
+	XCOPY /Y /D /V /Q "%OutPath%ORMTestDriver.%TargetVisualStudioShortProductName%.exe" "%DevEnvDir%"
+	ECHO F | XCOPY /Y /D /V /Q "%DevEnvDir%devenv.exe.config" "%DeveEnvDir%ORMTestDriver.%TargetVisualStudioShortProductName%.exe.config"
+	IF EXIST "%OutPath%ORMTestDriver.%TargetVisualStudioShortProductName%.pdb" (
+		XCOPY /Y /D /V /Q "%OutPath%ORMTestDriver.%TargetVisualStudioShortProductName%.pdb" "%DevEnvDir%"
+	) ELSE (
+		CALL:_CleanupFile "%DevEnvDir%ORMTestDriver.%TargetVisualStudioShortProductName%.pdb"
+	)
 )
 
-if exist "%rootPath%%outDir%ORMTestDriver.%VSProduct%.exe" (
-xcopy /Y /D /Q "%rootPath%%outDir%ORMTestDriver.%VSProduct%.exe" "%NORMADir%\bin\"
-if exist "%rootPath%%outDir%ORMTestDriver.%VSProduct%.pdb" (
-xcopy /Y /D /Q "%rootPath%%outDir%ORMTestDriver.%VSProduct%.pdb" "%NORMADir%\bin\"
-) else (
-if exist "%NORMADir%\bin\ORMTestDriver.%VSProduct%.pdb" (
-del "%NORMADir%\bin\ORMTestDriver.%VSProduct%.pdb"
-)
-)
-)
-
-if exist "%rootPath%%outDir%ORMTestReportViewer.%VSProduct%.exe" (
-xcopy /Y /D /Q "%rootPath%%outDir%ORMTestReportViewer.%VSProduct%.exe" "%NORMADir%\bin\"
-if exist "%rootPath%%outDir%ORMTestReportViewer.%VSProduct%.pdb" (
-xcopy /Y /D /Q "%rootPath%%outDir%ORMTestReportViewer.%VSProduct%.pdb" "%NORMADir%\bin\"
-) else (
-if exist "%NORMADir%\bin\ORMTestReportViewer.%VSProduct%.pdb" (
-del "%NORMADir%\bin\ORMTestReportViewer.%VSProduct%.pdb"
-)
-)
+IF EXIST "%OutPath%ORMTestReportViewer.%TargetVisualStudioShortProductName%.exe" (
+	XCOPY /Y /D /V /Q "%OutPath%ORMTestReportViewer.%TargetVisualStudioShortProductName%.exe" "%DevEnvDir%"
+	ECHO F | XCOPY /Y /D /V /Q "%DevEnvDir%devenv.exe.config" "%DevEnvDir%ORMTestReportViewer.%TargetVisualStudioShortProductName%.exe.config"
+	if EXIST "%OutPath%ORMTestReportViewer.%TargetVisualStudioShortProductName%.pdb" (
+		XCOPY /Y /D /V /Q "%OutPath%ORMTestReportViewer.%TargetVisualStudioShortProductName%.pdb" "%DevEnvDir%"
+	) else (
+		CALL:_CleanupFile "%DevEnvDir%ORMTestReportViewer.%TargetVisualStudioShortProductName%.pdb"
+	)
 )
 
-xcopy /Y /D /Q "%rootPath%%outDir%ORMTestReport.xsd" "%envPath%Xml\Schemas\"
-xcopy /Y /D /Q "%rootPath%%outDir%ORMTestSuite.xsd" "%envPath%Xml\Schemas\"
-xcopy /Y /D /Q "%rootPath%%outDir%ORMTestSuiteReport.xsd" "%envPath%Xml\Schemas\"
-xcopy /Y /D /Q "%rootPath%%outDir%ORMTestSuiteReport.xsd" "%envPath%Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%ORMTestReport.xsd" "%DevEnvDir%..\..\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%ORMTestSuite.xsd" "%DevEnvDir%..\..\Xml\Schemas\"
+XCOPY /Y /D /V /Q "%RootDir%ORMTestSuiteReport.xsd" "%DevEnvDir%..\..\Xml\Schemas\"
 
 GOTO:EOF
 
 :_CleanupFile
 IF EXIST "%~1" (DEL /F /Q "%~1")
-GOTO:EOF
-
-:SET6432
-::Do this somewhere the resolved parens will not cause problems.
-SET ResolvedProgramFiles=%ProgramFiles(X86)%
-IF DEFINED PROCESSOR_ARCHITEW6432 (
-	SET WOWRegistryAdjust=
-) ELSE (
-	SET WOWRegistryAdjust=\Wow6432Node
-)
 GOTO:EOF
 
 :SETVAR

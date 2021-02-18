@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Xml;
 using System.IO;
+using System.Reflection;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitectSDK.TestEngine;
 
@@ -13,6 +14,25 @@ namespace ORMSolutions.ORMArchitectSDK.TestDriver
 		public const string SchemaNamespace = "http://schemas.neumont.edu/ORM/SDK/TestSuite";
 		public const string ReportSchemaNamespace = "http://schemas.neumont.edu/ORM/SDK/TestSuiteReport";
 
+		static Program()
+		{
+			Console.WriteLine(Process.GetCurrentProcess().StartInfo.EnvironmentVariables.ContainsKey("NORMADomainModelDirectories"));
+			string[] domainModelDirectories = Process.GetCurrentProcess().StartInfo.EnvironmentVariables["NORMADomainModelDirectories"].Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+			AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(delegate (object sender, ResolveEventArgs e)
+			{
+				string assemblySuffix = "\\" + new AssemblyName(e.Name).Name + ".dll";
+				for (int i = 0, count = domainModelDirectories.Length; i < count; ++i)
+				{
+					string fileName = domainModelDirectories[i] + assemblySuffix;
+					if (File.Exists(fileName))
+					{
+						return Assembly.LoadFrom(fileName);
+					}
+				}
+				return null;
+			});
+		}
 		private static int Main(string[] args)
 		{
 			string suiteFile = args[0];
@@ -55,7 +75,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestDriver
 								finally
 								{
 									result = report.CloseSuiteReport();
-								}	
+								}
 							}
 						}
 					}

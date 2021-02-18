@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="12.34" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
     <NORMATrunkDir Condition=" '$(NORMATrunkDir)' == '' ">$(MSBuildProjectDirectory)\..</NORMATrunkDir>
@@ -44,16 +44,14 @@
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Utilities, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=$(NORMAPublicKeyToken), processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\ORMModel\$(OutDir)\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -139,6 +137,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)install.bat" "$(ProjectDir)" "$(OutDir)" "$(DevEnvDir)\..\..\" "$(TargetVisualStudioShortProductName)" "$(TargetVisualStudioLongProductName)"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)install.bat" "$(ProjectDir)" "$(OutDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project ToolsVersion="12.34" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.Multitargeting.targets" />
   <PropertyGroup>
     <NORMATrunkDir Condition=" '$(NORMATrunkDir)' == '' ">$(MSBuildProjectDirectory)\..\..</NORMATrunkDir>
@@ -41,31 +41,30 @@
   <ItemGroup>
     <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=$(NORMAPublicKeyToken), processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\ORMModel\bin\Debug\ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName).dll</HintPath>
     </Reference>
     <Reference Include="ORMSolutions.ORMArchitect.RelationalModels.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=$(NORMAPublicKeyToken), processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Extensions\ORMSolutions.ORMArchitect.RelationalModels.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <HintPath>..\..\RelationalModel\DcilModel\bin\Debug\ORMSolutions.ORMArchitect.RelationalModels.$(TargetVisualStudioShortProductName).dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ORMSolutions.ORMArchitectSDK.TestEngine.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=957d5b7d5e79e25f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\ORMSolutions.ORMArchitectSDK.TestEngine.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <HintPath>..\..\ORM2CommandLineTest\bin\Debug\TestEngine\ORMSolutions.ORMArchitectSDK.TestEngine.$(TargetVisualStudioShortProductName).dll</HintPath>
     </Reference>
     <Reference Include="ORMSolutions.ORMArchitect.ORMAbstraction.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=$(NORMAPublicKeyToken), processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Extensions\ORMSolutions.ORMArchitect.ORMAbstraction.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <HintPath>..\..\Oial\OialModel\bin\Debug\ORMSolutions.ORMArchitect.ORMAbstraction.$(TargetVisualStudioShortProductName).dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=$(NORMAPublicKeyToken), processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Extensions\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <HintPath>..\..\RelationalModel\OialDcilBridge\bin\Debug\ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.$(TargetVisualStudioShortProductName).dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=$(NORMAPublicKeyToken), processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(ProgramFiles)\ORM Solutions\ORM Architect for $(TargetVisualStudioLongProductName)\bin\Extensions\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).dll</HintPath>
+      <HintPath>..\..\Oial\ORMOialBridge\bin\Debug\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.4.7.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
@@ -74,8 +73,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams, Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FullRegeneration\Tests.cs" />

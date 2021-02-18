@@ -8,8 +8,5 @@
     <Setting Name="DllMapping" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="VisualStudioVersion" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">8.0</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

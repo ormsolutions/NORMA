@@ -266,6 +266,7 @@
 				<orm:RoleSequence>
 					<orm:Role ref="_04057827-F201-489A-83DC-DB886884EF53" id="_26295010-DE6F-44D2-A1CD-B07A43EB573E" />
 				</orm:RoleSequence>
+				<orm:InherentForObjectType ref="_B7F0A79A-511E-4050-90DC-9E40C7486D53" />
 			</orm:MandatoryConstraint>
 			<orm:UniquenessConstraint id="_891C1543-9642-4D2E-9C89-840695323FD4" Name="InternalUniquenessConstraint1" IsInternal="true">
 				<orm:RoleSequence>
@@ -368,7 +369,7 @@
 				</ormDiagram:RelativeShapes>
 				<ormDiagram:Subject ref="_08AE4B42-62FC-4D57-8C78-F822CFD9D825" />
 			</ormDiagram:FactTypeShape>
-			<ormDiagram:FrequencyConstraintShape id="_C814A815-E9E1-4E4D-893B-FD6A90ADC4DD" IsExpanded="true" AbsoluteBounds="2.3125, 0.8625, 0.30537468194961548, 0.30537468194961548">
+			<ormDiagram:FrequencyConstraintShape id="_C814A815-E9E1-4E4D-893B-FD6A90ADC4DD" IsExpanded="true" AbsoluteBounds="2.3125, 0.8625, 0.27716287970542908, 0.27716287970542908">
 				<ormDiagram:Subject ref="_B2E70067-5046-426F-BD02-D3ADFF8512B4" />
 			</ormDiagram:FrequencyConstraintShape>
 		</ormDiagram:Shapes>

@@ -1,18 +1,8 @@
 @ECHO OFF
 SETLOCAL
+CALL "%~dp0..\SetupEnvironment.bat"
 
-IF "%ProgramFiles(X86)%"=="" (
-	SET ResolvedProgramFiles=%ProgramFiles%
-) ELSE (
-	CALL:SET6432
-)
-
-@call :run "%ResolvedProgramFiles%\ORM Solutions\ORM Architect For Visual Studio 2005\Bin\ORMTestReportViewer.VS2005.exe" %1 %2 %3 %4 %5 %6 %7 %8 
-goto:eof
-
-:SET6432
-::Do this somewhere the resolved parens will not cause problems.
-SET ResolvedProgramFiles=%ProgramFiles(x86)%
+CALL:run "%DevEnvDir%\ORMTestReportViewer.%TargetVisualStudioShortProductName%.exe" %1 %2 %3 %4 %5 %6 %7 %8 %9
 GOTO:EOF
 
 :run

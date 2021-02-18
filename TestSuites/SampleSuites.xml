@@ -15,7 +15,7 @@
 			<ExcludeCategory name="NotYet"/>
 		</Categories>
 		<TestAssemblies>
-			<TestAssembly location="TestSample\TestSample.VS2005.dll"/>
+			<TestAssembly location="TestSample\TestSample.%TargetVisualStudioShortProductName%.dll"/>
 		</TestAssemblies>
 	</Suite>
 </Suites>

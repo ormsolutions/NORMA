@@ -30,6 +30,28 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 
 	public partial class ReportViewer : Form
 	{
+		#region Visual Studio Version
+		private const string VisualStudioVersion =
+#if VISUALSTUDIO_16_0
+			"16.0"
+#elif VISUALSTUDIO_15_0
+			"15.0"
+#elif VISUALSTUDIO_14_0
+			"14.0"
+#elif VISUALSTUDIO_12_0
+			"12.0"
+#elif VISUALSTUDIO_11_0
+			"11.0"
+#elif VISUALSTUDIO_10_0
+			"10.0"
+#elif VISUALSTUDIO_9_0
+			"9.0"
+#else
+			"8.0"
+#endif
+		;
+		#endregion // Visual Studio Version
+
 		#region private variables
 		private string[] args;
 		private const string MissingReportBaseline = "failReportMissingBaseline";
@@ -169,7 +191,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 			}
 		}
 
-		#endregion //private variables
+#endregion //private variables
 		public ReportViewer(string[] args)
 		{
 			this.args = args;
@@ -177,7 +199,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 		}
 
 
-		#region set tree control
+#region set tree control
 		/// <summary>
 		/// Color representing that the testcase passed in the report file
 		/// </summary>
@@ -497,8 +519,8 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 			}
 
 		}
-		#endregion
-		#region XSL Transforms
+#endregion
+#region XSL Transforms
 		private static XslCompiledTransform myFakePassTransform;
 		private XslCompiledTransform FakePassTransform
 		{
@@ -531,8 +553,8 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 				return retVal;
 			}
 		}
-		#endregion
-		#region EventHandlers
+#endregion
+#region EventHandlers
 
 		private void ReportViewer_Load(object sender, EventArgs e)
 		{
@@ -936,8 +958,8 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 				}
 			}
 		}
-		#endregion
-		#region getTempFilePath functions
+#endregion
+#region getTempFilePath functions
 		//these functions use the current FileInfo object to create
 		//temporary files. The testInfo object must be set before they are called.
 
@@ -1157,8 +1179,8 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 			return null;
 		}
 
-		#endregion
-		#region FormatXml Helper Function
+#endregion
+#region FormatXml Helper Function
 		/// <summary>
 		/// Get the formatting the way we want it. Duplicates
 		/// reader contents into the current writer.
@@ -1211,8 +1233,8 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 			}
 			reader.Close();
 		}
-		#endregion // FormatXml Helper Function
-		#region Update Baseline & Compare buttons
+#endregion // FormatXml Helper Function
+#region Update Baseline & Compare buttons
 		private void btnCompare_Click(object sender, EventArgs e)
 		{
 			Control startActive = ActiveControl;
@@ -1320,7 +1342,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 				dte = FindDTEInstance(solution);
 				if (dte == null)
 				{
-					dte = Activator.CreateInstance(Type.GetTypeFromProgID("VisualStudio.DTE." + Settings.Default.VisualStudioVersion)) as DTE2;
+					dte = Activator.CreateInstance(Type.GetTypeFromProgID("VisualStudio.DTE." + VisualStudioVersion)) as DTE2;
 					dte.MainWindow.Visible = true;
 					dte.Solution.Open(solution);
 				}
@@ -1433,7 +1455,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 		}
 
 
-		#region replace baseline file helper methods
+#region replace baseline file helper methods
 		private string MapAssemblyToSolution(string assemblyLocation, string solution, bool allowInteraction, bool forceInteraction)
 		{
 			if ((forceInteraction || (allowInteraction && solution.Length == 0)) || !File.Exists(solution))
@@ -1505,7 +1527,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 			}
 			return solution;
 		}
-		#region solution lookup functions
+#region solution lookup functions
 		private static string LookupSolution(string assemblyLocation)
 		{
 			string map = Settings.Default.DllMapping;
@@ -1517,7 +1539,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 			solution = solution.Remove(solution.IndexOf(';'));
 			return solution.Substring(solution.IndexOf('|') +1 );
 		}
-		#endregion //solution lookup function
+#endregion //solution lookup function
 		private static void AddFileToProject(ProjectItems items, string filePath, string subDirectories, string fileText)
 		{
 			//ProjectItem destination = items.Item(0);
@@ -1607,7 +1629,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 			rot.EnumRunning(out enumMoniker);
 			IMoniker[] moniker = new IMoniker[1];
 			int hrEnum = 0;
-			string targetMoniker = "!VisualStudio.DTE." + Settings.Default.VisualStudioVersion + ":";
+			string targetMoniker = "!VisualStudio.DTE." + VisualStudioVersion + ":";
 			for (; ; )
 			{
 				hrEnum = enumMoniker.Next(1, moniker, IntPtr.Zero);
@@ -1644,9 +1666,9 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 				Marshal.ThrowExceptionForHR(hr);
 			}
 		}
-		#endregion //replace baseline file helper methods
-		#endregion // Update baseline
-		#region Shared LockObject
+#endregion //replace baseline file helper methods
+#endregion // Update baseline
+#region Shared LockObject
 		private static object myLockObject;
 		/// <summary>
 		/// LockObject to share across this and nested classes
@@ -1663,7 +1685,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 				return myLockObject;
 			}
 		}
-		#endregion // Shared LockObject
+#endregion // Shared LockObject
 		
 		private void InitializeComponent()
 		{
@@ -1952,7 +1974,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 			this.PerformLayout();
 
 		}
-		#region Menu options
+#region Menu options
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (reportSuiteFileDialog.ShowDialog() == DialogResult.OK)
@@ -2027,6 +2049,6 @@ namespace ORMSolutions.ORMArchitectSDK.TestReportViewer
 			}
 			return false;
 		}
-		#endregion Menu options
+#endregion Menu options
 	}
 }

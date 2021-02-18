@@ -98,11 +98,21 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 			myAssembly = assembly;
 			myDomainModelType = type;
 			myNamespaceUri = namespaceUri;
+#if VISUALSTUDIO_10_0
+			object[] extendsAttributes = type.GetCustomAttributes(typeof(DependsOnDomainModelAttribute), false);
+#else
 			object[] extendsAttributes = type.GetCustomAttributes(typeof(ExtendsDomainModelAttribute), false);
+#endif
 			Guid[] extendsIds = new Guid[extendsAttributes.Length];
 			for (int i = 0; i < extendsAttributes.Length; ++i)
 			{
+#if VISUALSTUDIO_10_0
+				Type extendedModelType = ((DependsOnDomainModelAttribute)extendsAttributes[i]).ExtendedDomainModelType;
+				object[] extensionIdAttributes = extendedModelType.GetCustomAttributes(typeof(DomainObjectIdAttribute), false);
+				extendsIds[i] = (extensionIdAttributes.Length != 0) ? ((DomainObjectIdAttribute)extensionIdAttributes[0]).Id : Guid.Empty;
+#else
 				extendsIds[i] = ((ExtendsDomainModelAttribute)extendsAttributes[i]).ExtendedModelId;
+#endif
 			}
 			myExtendsIds = Array.AsReadOnly<Guid>(extendsIds);
 		}
@@ -591,7 +601,7 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 		private static T ProcessAssembly<T>(XmlReader reader, SuiteLoaderNameTable names, string baseDirectory, CreateAssemblyRecord<T> createRecord) where T : struct
 		{
 			Assembly assembly = null;
-			string location = reader.GetAttribute(names.LocationAttribute);
+			string location = Environment.ExpandEnvironmentVariables(reader.GetAttribute(names.LocationAttribute));
 			baseDirectory = Environment.ExpandEnvironmentVariables(baseDirectory);
 			string fullAssemblyPath = string.Concat(baseDirectory, @"\", location);
 			if (File.Exists(fullAssemblyPath))

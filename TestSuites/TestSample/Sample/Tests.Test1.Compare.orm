@@ -132,6 +132,7 @@
 				<orm:RoleSequence>
 					<orm:Role ref="_0E961155-96F6-422B-93E7-DC90F696EE09" id="_BB0E4FB2-745B-4C99-B7C4-A9943208698C" />
 				</orm:RoleSequence>
+				<orm:InherentForObjectType ref="_DCF04807-BCD8-4DFA-8E5D-F34F7D76C0F1" />
 			</orm:MandatoryConstraint>
 			<orm:UniquenessConstraint id="_F1A0A007-624A-47E1-93C9-8331D7AFA054" Name="InternalUniquenessConstraint3" IsInternal="true">
 				<orm:RoleSequence>
