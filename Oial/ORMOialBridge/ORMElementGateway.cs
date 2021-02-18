@@ -223,7 +223,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 						if (rolePlayer == null ||
 							(ignoreRolePlayer != rolePlayer &&
 							IsElementExcluded(rolePlayer) &&
-							!(!ignoreRolePlayersFilteredForThisFactType || ShouldConsiderObjectType(rolePlayer, factType, true))))
+							(!ignoreRolePlayersFilteredForThisFactType || !ShouldConsiderObjectType(rolePlayer, factType, true))))
 						{
 							return false;
 						}

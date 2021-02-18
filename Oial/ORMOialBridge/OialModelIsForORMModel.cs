@@ -1227,7 +1227,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 
 					newConceptTypeChild = null;
 
-					UniquenessConstraint preferredIdentifier = factTypeMapping.FromObjectType.PreferredIdentifier;
+					UniquenessConstraint preferredIdentifier = factTypeMapping.FromObjectType.PreferredIdentifier ?? factTypeMapping.FromObjectType.ResolvedPreferredIdentifier;
 					Debug.Assert(preferredIdentifier != null);
 
 					foreach (Role preferredIdentifierRole in preferredIdentifier.RoleCollection)
