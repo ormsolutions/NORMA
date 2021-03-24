@@ -40,6 +40,11 @@
       </Code>
     </Task>
   </UsingTask>
+  <PropertyGroup Condition="'$(VSIXPerUser)'=='1'">
+    <NORMACatalogFileSuffix>Local</NORMACatalogFileSuffix>
+    <NORMASchemaSubpath>$Schemas\</NORMASchemaSubpath>
+    <PerUserFileSuffix>.PerUser</PerUserFileSuffix>
+  </PropertyGroup>
   <Target Name="PkgDefPublicKeyToken">
     <ReplaceFileText 
       InputFilename="$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ORMDesigner.pkgdef" 
@@ -58,6 +63,27 @@
       Value="$(NORMAGitVer)"
       Query="/vsx:PackageManifest/vsx:Metadata/vsx:Identity/@Version"
       Namespaces="$(VSIXNamespace)"/>
+  </Target>
+  <Target Name="PerUserPoke" Condition="'$(VSIXPerUser)'=='1'">
+    <XmlPoke
+      XmlInputPath="source.extension.vsixmanifest"
+      Value="false"
+      Query="/vsx:PackageManifest/vsx:Installation/@AllUsers"
+      Namespaces="$(VSIXNamespace)"/>
+  </Target>
+  <Target Name="PLiXPerUserPoke" Condition="'$(VSIXPerUser)'=='1'">
+    <XmlPoke
+      XmlInputPath="source.extension.vsixmanifest"
+      Value="PLiX.PerUser.vsix"
+      Query="/vsx:PackageManifest/vsx:Dependencies/vsx:Dependency[@Location='PLiX.vsix']/@Location"
+      Namespaces="$(VSIXNamespace)"/>
+  </Target>
+  <Target Name="LocalSchemaTargets" Condition="'$(VSIXPerUser)'=='1'">
+    <ReplaceFileText 
+      InputFilename="$(ProjectDir)NORMACatalog.xml"
+      OutputFilename="$(ProjectDir)NORMACatalog$(NORMACatalogFileSuffix).xml"
+      MatchExpression="%InstallRoot%/xml/schemas/"
+      ReplacementText="./" />
   </Target>
   <Target Name="AddDatabaseImportAssembly" DependsOnTargets="NORMAPublicKeyTokenTarget">
     <PropertyGroup>
@@ -102,6 +128,9 @@
   <PropertyGroup>
     <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);ManifestVersionPoke;AddDatabaseImportAssembly;PkgDefPublicKeyToken</CreateVsixContainerDependsOn>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(VSIXPerUser)'=='1'">
+    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);PerUserPoke;PLiXPerUserPoke;LocalSchemaTargets</CreateVsixContainerDependsOn>
+  </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -111,7 +140,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NORMAVSIX</RootNamespace>
-    <AssemblyName>NORMA.$(TargetVisualStudioShortProductName)</AssemblyName>
+    <AssemblyName>NORMA.$(TargetVisualStudioShortProductName)$(PerUserFileSuffix)</AssemblyName>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
@@ -145,7 +174,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="PLiX.vsix">
+    <Content Include="PLiX$(PerUserFileSuffix).vsix">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -672,188 +701,189 @@
       <Link>ORMDesignerSettings.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORMDesignerSettings.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\ORMModel\Load\ORM2Root.xsd">
       <Link>ORM2Root.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORM2Root.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\ORMModel\ObjectModel\ORM2Core.xsd">
       <Link>ORM2Core.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORM2Core.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\ORMModel\ShapeModel\ORM2Diagram.xsd">
       <Link>ORM2Diagram.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORM2Diagram.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\ORMModel\Framework\Shell\DiagramDisplay.xsd">
       <Link>DiagramDisplay.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>DiagramDisplay.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\CustomProperties\CustomProperties.xsd">
       <Link>CustomProperties.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>CustomProperties.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\Oial\OialModel\ORMAbstraction.xsd">
       <Link>ORMAbstraction.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORMAbstraction.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\Oial\OialModel\ORMAbstractionDatatypes.xsd">
       <Link>ORMAbstractionDataTypes.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORMAbstractionDataTypes.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\Oial\ORMOialBridge\ORMToORMAbstraction.xsd">
       <Link>ORMToORMAbstraction.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORMToORMAbstraction.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\RelationalModel\DcilModel\ConceptualDatabase.xsd">
       <Link>ConceptualDatabase.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ConceptualDatabase.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\RelationalModel\OialDcilBridge\ORMAbstractionToConceptualDatabase.xsd">
       <Link>ORMAbstractionToConceptualDatabase.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORMAbstractionToConceptualDatabase.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\AlternateViews\RelationalView\RelationalView.xsd">
       <Link>RelationalView.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>RelationalView.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\EntityRelationship\BarkerErModel\BarkerERModel.xsd">
       <Link>BarkerERModel.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>BarkerERModel.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\EntityRelationship\OialBerBridge\ORMAbstractionToBarkerERBridge.xsd">
       <Link>ORMAbstractionToBarkerERBridge.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORMAbstractionToBarkerERBridge.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\AlternateViews\BarkerERView\BarkerERView.xsd">
       <Link>BarkerERView.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>BarkerERView.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Designer</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Designer</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\OIAL\OIAL.xsd">
       <Link>OIAL.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>OIAL.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\OIAL\ORMDataTypes.xsd">
       <Link>ORMDataTypes.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORMDataTypes.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\OIAL\ORMDataTypes-Temporal.xsd">
       <Link>ORMDataTypes-Temporal.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>ORMDataTypes-Temporal.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\OIALtoPLiX\OIALtoPLiX_Properties.xsd">
       <Link>OIALtoPLiX_Properties.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>OIALtoPLiX_Properties.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\DIL\DCIL.xsd">
       <Link>DCIL.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>DCIL.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\DIL\DIL.xsd">
       <Link>DIL.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>DIL.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\DIL\DILDT.xsd">
       <Link>DILDT.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>DILDT.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\DIL\DILEP.xsd">
       <Link>DILEP.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>DILEP.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\DIL\DILMS.xsd">
       <Link>DILMS.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>DILMS.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\DIL\DMIL.xsd">
       <Link>DMIL.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>DMIL.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
     <Content Include="..\..\XML\DIL\DDIL.xsd">
       <Link>DDIL.xsd</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>DDIL.xsd</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
-      <VSIXSubPath>ORM Solutions\NORMA\Generators</VSIXSubPath>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)ORM Solutions\NORMA\Generators</VSIXSubPath>
     </Content>
-    <Content Include="NORMACatalog.xml">
+    <Content Include="NORMACatalog$(NORMACatalogFileSuffix).xml">
       <IncludeInVSIX>true</IncludeInVSIX>
       <TargetPath>NORMACatalog.xml</TargetPath>
-      <InstallRoot>Schemas</InstallRoot>
+      <InstallRoot Condition="'$(VSIXPerUser)'!='1'">Schemas</InstallRoot>
+      <VSIXSubPath>$(NORMASchemaSubpath)</VSIXSubPath>
     </Content>
   </ItemGroup>
   <ItemGroup />
@@ -861,6 +891,7 @@
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup>
     <PreBuildEvent>copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\source.extension.vsixmanifest" "$(ProjectDir)\source.extension.vsixmanifest"
+copy /y "$(ProjectDir)\NORMACatalog.xml" "$(ProjectDir)\NORMACatalogLocal.xml"
 copy /y "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
 copy /y "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
 copy /y "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
@@ -869,6 +900,7 @@ copy /y "$(ProjectDir)\ItemTemplates\VisualBasic\1033\ORMDatabaseImport\ORMDatab
 copy /y "$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\Web\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
 copy /y "$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\Web\VisualBasic\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"</PreBuildEvent>
     <PostBuildEvent>del "$(ProjectDir)\source.extension.vsixmanifest"
+del "$(ProjectDir)\NORMACatalogLocal.xml"
 del "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
 del "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
 del "$(ProjectDir)\ItemTemplates\Modeling\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
