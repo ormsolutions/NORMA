@@ -35,6 +35,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// An element picker to hide the fact that 0 means unbounded for the <see cref="FrequencyConstraint.MaxFrequency"/> property
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public sealed class FrequencyConstraintMaxPicker : ElementPicker<FrequencyConstraintMaxPicker>
 	{
 		private int myStartValue;

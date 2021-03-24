@@ -28,6 +28,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 	/// SurveyTree class. Used to create a tree that can be used with
 	/// a <see cref="SurveyTreeContainer"/>
 	/// </summary>
+	[CLSCompliant(false)]
 	public partial class SurveyTree<SurveyContextType> : INotifySurveyElementChanged
 		where SurveyContextType : class
 	{

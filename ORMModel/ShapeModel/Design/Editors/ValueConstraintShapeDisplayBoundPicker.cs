@@ -34,6 +34,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 	/// properties.
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public sealed class ValueConstraintShapeDisplayBoundPicker : ElementPicker<ValueConstraintShapeDisplayBoundPicker>
 	{
 		private short myStartValue;

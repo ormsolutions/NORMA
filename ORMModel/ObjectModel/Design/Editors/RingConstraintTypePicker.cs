@@ -34,6 +34,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// Editor for ring constraint types enables simplified feedback for valid ring combinations.
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public sealed class RingConstraintTypePicker : TreePicker<RingConstraintTypePicker>
 	{
 		#region TreePicker overrides

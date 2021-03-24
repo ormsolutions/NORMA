@@ -36,6 +36,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// Associated with the <see cref="ReferenceMode.KindDisplay"/> property.
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public sealed class ReferenceModeKindPicker : ElementPicker<ReferenceModeKindPicker>
 	{
 		/// <summary>
@@ -73,6 +74,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// <see cref="ObjectType.ReferenceModeDisplay"/> property.
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public sealed class ReferenceModePicker : ElementPicker<ReferenceModePicker>
 	{
 		private IList myModes;

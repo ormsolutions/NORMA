@@ -625,6 +625,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 	/// <see cref="ISurveyNode.EditableSurveyName"/> are
 	/// used to support base text editing.
 	/// </summary>
+	[CLSCompliant(false)]
 	public interface ISurveyNodeCustomEditor
 	{
 		/// <summary>
@@ -646,6 +647,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 	/// <summary>
 	/// Support dropping elements on a survey node
 	/// </summary>
+	[CLSCompliant(false)]
 	public interface ISurveyNodeDropTarget
 	{
 		/// <summary>

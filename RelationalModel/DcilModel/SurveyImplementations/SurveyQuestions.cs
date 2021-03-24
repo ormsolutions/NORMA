@@ -761,8 +761,9 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase
 		/// <summary>
 		/// Implements <see cref="ISurveyNodeDropTarget.OnDragEvent"/>
 		/// </summary>
-		protected void OnDragEvent(object contextElement, DragEventType eventType, DragEventArgs args)
+		private void OnDragEvent(object contextElement, DragEventType eventType, DragEventArgs args)
 		{
+			// private instead of protected to avoid CLSCompliant warning
 			Column column;
 			Table table;
 			switch (eventType)

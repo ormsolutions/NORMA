@@ -36,6 +36,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// Associated with the FactType.NestingTypeDisplay property
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public sealed class NestingTypePicker : ElementPicker<NestingTypePicker>
 	{
 		/// <summary>
@@ -114,6 +115,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// Associated with the ObjectType.NestedFactTypeDisplay property
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public sealed class NestedFactTypePicker : ElementPicker<NestedFactTypePicker>
 	{
 		/// <summary>

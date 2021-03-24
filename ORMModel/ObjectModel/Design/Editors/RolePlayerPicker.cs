@@ -34,6 +34,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// An element picker to select role players. Associated with the Role.RolePlayerDisplay property
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public sealed class RolePlayerPicker : ElementPicker<RolePlayerPicker>
 	{
 		/// <summary>

@@ -25,6 +25,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 	/// <summary>
 	/// Container for <see cref="VirtualTreeControl"/>.
 	/// </summary>
+	[CLSCompliant(false)]
 	public class SurveyTreeContainer : UserControl
 	{
 		private readonly VirtualTreeControl myTreeControl;

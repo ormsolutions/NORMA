@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -32,6 +32,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 	/// A version of <see cref="TypeEditorHost"/> that keeps dropdowns near the
 	/// left edge of the screen on the screen.
 	/// </summary>
+	[CLSCompliant(false)]
 	public class OnScreenTypeEditorHost : TypeEditorHost
 	{
 		#region Public factory methods

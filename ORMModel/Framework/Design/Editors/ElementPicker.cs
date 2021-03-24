@@ -45,6 +45,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
 	[PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public abstract class ElementPicker<T> : SizePreservingEditor<T>
 		where T : ElementPicker<T>
 	{

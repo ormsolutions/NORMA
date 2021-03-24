@@ -39,6 +39,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
 	[PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public abstract class AvailableVerbalizationSnippetsPicker<T> : TreePicker<T>
 		where T : AvailableVerbalizationSnippetsPicker<T>
 	{

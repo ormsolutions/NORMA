@@ -32,6 +32,7 @@ namespace ORMSolutions.ORMArchitect.ExtensionExample
 		/// The user is allowed to specify a value that is not in the drop down list by typing it in.
 		/// If the current value is not in the list of predefined values, it is added to the drop down list.
 		/// </remarks>
+		[CLSCompliant(false)]
 		public sealed class TestElementPicker : ORMSolutions.ORMArchitect.Framework.Design.ElementPicker<TestElementPicker>
 		{
 			private static readonly string[] predefinedValues =

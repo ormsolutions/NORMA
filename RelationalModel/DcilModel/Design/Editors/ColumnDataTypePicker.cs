@@ -34,6 +34,7 @@ namespace ORMSolutions.ORMArchitect.RelationalModels.ConceptualDatabase.Design
 	/// Associated with the ObjectType.DataTypeDisplay property
 	/// </summary>
 	[PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
+	[CLSCompliant(false)]
 	public sealed class ColumnDataTypePicker : ElementPicker<ColumnDataTypePicker>
 	{
 		private sealed class DataTypeToStringComparer : IComparer<DataType>
