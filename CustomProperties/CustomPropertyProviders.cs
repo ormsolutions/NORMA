@@ -27,6 +27,7 @@ using Microsoft.VisualStudio.Modeling.Design;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.ShapeModel;
 
 namespace ORMSolutions.ORMArchitect.CustomProperties
 {
@@ -55,9 +56,13 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				}
 			}
 
-			public static readonly PropertyProvider Model = delegate(object extendableElement, PropertyDescriptorCollection properties)
+			public static readonly PropertyProvider Model = delegate (object extendableElement, PropertyDescriptorCollection properties)
 			{
 				GetProvidedProperties(ORMTypes.Model, extendableElement, properties);
+			};
+			public static readonly PropertyProvider ORMDiagram = delegate (object extendableElement, PropertyDescriptorCollection properties)
+			{
+				GetProvidedProperties(ORMTypes.ORMDiagram, extendableElement, properties);
 			};
 			public static readonly PropertyProvider ElementGrouping = delegate(object extendableElement, PropertyDescriptorCollection properties)
 			{
@@ -265,6 +270,10 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			{
 				return 0 != (propertyDefinition.ORMTypes & ORMTypes.Model);
 			});
+			public static readonly IVerbalizeExtensionChildren ORMDiagram = new DefaultCustomPropertyVerbalizer(delegate (IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
+			{
+				return 0 != (propertyDefinition.ORMTypes & ORMTypes.ORMDiagram);
+			});
 			public static readonly IVerbalizeExtensionChildren ElementGrouping = new DefaultCustomPropertyVerbalizer(delegate(IORMExtendableElement propertyOwner, CustomPropertyDefinition propertyDefinition)
 			{
 				return 0 != (propertyDefinition.ORMTypes & ORMTypes.ElementGrouping);
@@ -338,6 +347,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				IExtensionVerbalizerService verbalizerService = ((IORMToolServices)store).ExtensionVerbalizerService;
 				propertyService.AddOrRemovePropertyProvider(typeof(ORMModel), CustomPropertyProviders.CustomPropertiesEditor, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(ORMModel), CustomPropertyProviders.Model, false, action);
+				propertyService.AddOrRemovePropertyProvider(typeof(ORMDiagram), CustomPropertyProviders.ORMDiagram, false, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(ElementGrouping), CustomPropertyProviders.ElementGrouping, false, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(ObjectType), CustomPropertyProviders.ObjectType, true, action);
 				propertyService.AddOrRemovePropertyProvider(typeof(SubtypeFact), CustomPropertyProviders.SubtypeFact, true, action);
@@ -356,6 +366,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				if (verbalizerService != null)
 				{
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ORMModel), DefaultVerbalizationProviders.Model, false, action);
+					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ORMDiagram), DefaultVerbalizationProviders.ORMDiagram, false, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ElementGrouping), DefaultVerbalizationProviders.ElementGrouping, false, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(ObjectType), DefaultVerbalizationProviders.ObjectType, true, action);
 					verbalizerService.AddOrRemoveExtensionVerbalizer(typeof(SubtypeFact), DefaultVerbalizationProviders.SubtypeFact, true, action);

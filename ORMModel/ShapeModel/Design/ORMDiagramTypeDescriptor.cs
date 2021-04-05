@@ -58,6 +58,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 				null != (store = Utility.ValidateStore(diagram.Store)))
 			{
 				properties.Add(EditorUtility.ModifyPropertyDescriptorDisplay(this.CreatePropertyDescriptor(diagram, store.DomainDataDirectory.GetDomainProperty(ORMDiagram.NameDomainPropertyId), attributes), "DiagramName", ResourceStrings.DiagramPropertiesDiagramNameDisplayName, ResourceStrings.DiagramPropertiesDiagramNameDescription, null));
+				properties = ExtendableElementUtility.GetExtensionProperties(diagram, properties, typeof(TPresentationElement));
 			}
 			return properties;
 		}

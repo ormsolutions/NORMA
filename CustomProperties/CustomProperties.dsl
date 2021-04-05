@@ -189,6 +189,7 @@
 
 				<EnumerationLiteral Name="Model" Value="32768"/>
 				<EnumerationLiteral Name="ElementGrouping" Value="65536"/>
+				<EnumerationLiteral Name="ORMDiagram" Value="131072"/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">

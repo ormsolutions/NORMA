@@ -322,6 +322,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 			/// <summary>
+			/// Defer to <see cref="IORMToolServices.ModelErrorActivationService"/> on the document.
+			/// </summary>
+			protected IORMExtendableElementService ExtendableElementService
+			{
+				get
+				{
+					return myServices.ExtendableElementService;
+				}
+			}
+			IORMExtendableElementService IORMToolServices.ExtendableElementService
+			{
+				get
+				{
+					return ExtendableElementService;
+				}
+			}
+			/// <summary>
 			/// Defer to TaskProvider on the document. Implements
 			/// <see cref="IORMToolServices.TaskProvider"/>
 			/// </summary>
@@ -1471,6 +1488,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private IPropertyProviderService myPropertyProviderService;
 		private TypedDomainModelProviderCache myTypedDomainModelProviderCache;
 		private IORMModelErrorActivationService myModelErrorActivatorService;
+		private IORMExtendableElementService myExtendableElementService;
 		private AutomatedElementFilterService myAutomatedElementFilterService;
 
 		/// <summary>
@@ -1572,6 +1590,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			get
 			{
 				return ModelErrorActivationService;
+			}
+		}
+		/// <summary>
+		/// Retrieve the <see cref="IORMExtendableElementService"/> for this document.
+		/// Implements <see cref="IORMToolServices.ExtendableElementService"/>.
+		/// </summary>
+		protected IORMExtendableElementService ExtendableElementService
+		{
+			get
+			{
+				return myExtendableElementService ?? (myExtendableElementService = ExtendableElementUtility.CreateExtendableElementService(Store));
+			}
+		}
+		IORMExtendableElementService IORMToolServices.ExtendableElementService
+		{
+			get
+			{
+				return ExtendableElementService;
 			}
 		}
 

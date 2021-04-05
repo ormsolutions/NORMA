@@ -397,6 +397,24 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				return ModelErrorActivationService;
 			}
 		}
+		private IORMExtendableElementService myExtendableElementService;
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.ExtendableElementService"/>
+		/// </summary>
+		protected IORMExtendableElementService ExtendableElementService
+		{
+			get
+			{
+				return (myExtendableElementService ?? (myExtendableElementService = ExtendableElementUtility.CreateExtendableElementService(this)));
+			}
+		}
+		IORMExtendableElementService IORMToolServices.ExtendableElementService
+		{
+			get
+			{
+				return ExtendableElementService;
+			}
+		}
 		/// <summary>
 		/// Implements <see cref="IORMToolServices.TaskProvider"/>
 		/// </summary>
@@ -801,7 +819,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		#region ModelingEventManagerImpl class
 		/// <summary>  
 		/// Display event exceptions by rethrowing
-		/// </summary>  
+		/// </summary>
 		private sealed class ModelingEventManagerImpl : ModelingEventManager
 		{
 			/// <summary>  
@@ -817,7 +835,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			/// <param name="ex">The exception to display.</param>  
 			protected override void DisplayException(Exception ex)
 			{
-				throw new InvalidOperationException("", ex);
+				throw ex;
 			}
 		}
 		#endregion // ModelingEventManagerImpl class

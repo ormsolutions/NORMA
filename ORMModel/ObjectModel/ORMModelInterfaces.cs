@@ -65,20 +65,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>
 		/// Retrieve the service for adding and removing tasks
 		/// </summary>
-		IORMToolTaskProvider TaskProvider { get;}
+		IORMToolTaskProvider TaskProvider { get; }
 		/// <summary>
 		/// Retrieve the service for getting current font and color information
 		/// </summary>
-		IORMFontAndColorService FontAndColorService { get;}
+		IORMFontAndColorService FontAndColorService { get; }
 		/// <summary>
 		/// Retrieve the <see cref="IORMModelErrorActivationService">service</see> for managing model error activation.
 		/// </summary>
-		IORMModelErrorActivationService ModelErrorActivationService { get;}
+		IORMModelErrorActivationService ModelErrorActivationService { get; }
+		/// <summary>
+		/// Return the <see cref="IORMExtendableElementService">service</see> for managing extension elements.
+		/// </summary>
+		IORMExtendableElementService ExtendableElementService { get; }
 		/// <summary>
 		/// Retrieve the context service provider. Can be null in some situations,
 		/// such as when the model is being loaded outside the Visual Studio environment.
 		/// </summary>
-		IServiceProvider ServiceProvider { get;}
+		IServiceProvider ServiceProvider { get; }
 		/// <summary>
 		/// Retrieve the VerbalizationSnippets dictionary for this store
 		/// </summary>
@@ -88,17 +92,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Get the current verbalization targets dictionary, which contains information about all verbalization targets
 		/// supported by loaded domain models.
 		/// </summary>
-		IDictionary<string, VerbalizationTargetData> VerbalizationTargets { get;}
+		IDictionary<string, VerbalizationTargetData> VerbalizationTargets { get; }
 		/// <summary>
 		/// Get a service to all extension models to inject verbalized child
 		/// elements into the standard verbalization.
 		/// </summary>
-		IExtensionVerbalizerService ExtensionVerbalizerService { get;}
+		IExtensionVerbalizerService ExtensionVerbalizerService { get; }
 		/// <summary>
 		/// Get a dictionary with named values for verbalization options supported
 		/// by loaded domain models.
 		/// </summary>
-		IDictionary<string, object> VerbalizationOptions { get;}
+		IDictionary<string, object> VerbalizationOptions { get; }
 		/// <summary>
 		/// Retrieve the LayoutEngines dictionary for this store
 		/// </summary>
@@ -110,7 +114,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// may set this property to false to signal other events that they should not
 		/// begin a new transaction at this time.
 		/// </summary>
-		bool CanAddTransaction { get; set;}
+		bool CanAddTransaction { get; set; }
 		/// <summary>
 		/// Return true if events are being processed for a visible transaction item.
 		/// A <see cref="TransactionItem"/> is visible if it contains changes to the primary
@@ -123,7 +127,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// is not in an Undo or Redo state. To override the default processing, an UndoUnit
 		/// implementation must explicitly set the property twice. The first call sets the
 		/// expected return value; the second call must be the opposite boolean value.</remarks>
-		bool ProcessingVisibleTransactionItemEvents { get; set;}
+		bool ProcessingVisibleTransactionItemEvents { get; set; }
 		/// <summary>
 		/// Activate the specified shape on the most appropriate view
 		/// </summary>

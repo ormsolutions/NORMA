@@ -175,6 +175,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		
 		#endregion
+		#region ExtensionCollection opposite domain role accessor
+		
+		/// <summary>
+		/// Gets a list of ExtensionCollection.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.ExtendedElement
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> ExtensionCollection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return GetRoleCollection<DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>, global::Microsoft.VisualStudio.Modeling.ModelElement>(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.ExtendedElementDomainRoleId);
+			}
+		}
+		#endregion
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel

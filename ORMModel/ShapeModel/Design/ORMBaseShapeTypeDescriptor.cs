@@ -23,8 +23,10 @@ using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using ORMSolutions.ORMArchitect.Framework.Diagrams.Design;
+using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
+using ORMSolutions.ORMArchitect.Framework.Design;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 {
@@ -45,7 +47,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		{
 		}
 
-		// This class does not have anything customized in it at the present time, but may in the future
-		// (e.g. for supporting shape extensions, etc.).
+		/// <summary>
+		/// Adds extension properties to the <see cref="PropertyDescriptorCollection"/> before returning it.
+		/// </summary>
+		/// <seealso cref="ElementTypeDescriptor{TModelElement}.GetProperties(Attribute[])"/>
+		/// <seealso cref="ICustomTypeDescriptor.GetProperties(Attribute[])"/>
+		public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+		{
+			PropertyDescriptorCollection properties = base.GetProperties(attributes);
+			TPresentationElement shapeElement = PresentationElement;
+			if (shapeElement != null && null != Utility.ValidateStore(shapeElement.Store))
+			{
+				properties = ExtendableElementUtility.GetExtensionProperties(shapeElement, properties, typeof(TPresentationElement));
+			}
+			return properties;
+		}
 	}
 }

@@ -298,6 +298,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				chkVerbalizeDefaultValue.Enabled = defaultText.Length != 0;
 				ClearCheckedItems(tvModelElements.Nodes);
 				CheckTypeIfNeeded(ORMTypes.Model);
+				CheckTypeIfNeeded(ORMTypes.ORMDiagram);
 				CheckTypeIfNeeded(ORMTypes.ElementGrouping);
 				CheckTypeIfNeeded(ORMTypes.EntityType);
 				CheckTypeIfNeeded(ORMTypes.FactType);
@@ -330,6 +331,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			nodes.Add(CreateTreeNode("Subtype Fact", "SubtypeFact"));
 			nodes.Add(CreateTreeNode("Role", "Role"));
 			nodes.Add(CreateTreeNode("ORM Model", "Model"));
+			nodes.Add(CreateTreeNode("ORM Diagram", "ORMDiagram"));
 			nodes.Add(CreateTreeNode("Group", "ElementGrouping"));
 
 			TreeNode constraintsNode = CreateTreeNode("All Constraints", "AllConstraints");

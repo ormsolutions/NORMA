@@ -20,6 +20,14 @@
 
 	<xs:import namespace="http://schemas.neumont.edu/ORM/2006-04/ORMCore"/>
 	<xs:element name="ORMDiagram" type="ORMDiagramType"/>
+	<xs:complexType name="ShapeExtensionsType">
+		<xs:annotation>
+			<xs:documentation>Standard container for extension data related to the containing shape or diagram.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence minOccurs="0" maxOccurs="unbounded">
+			<xs:any namespace="##other" processContents="strict"/>
+		</xs:sequence>
+	</xs:complexType>
 	<xs:complexType name="ORMDiagramType">
 		<xs:sequence>
 			<xs:element name="Shapes" minOccurs="0">
@@ -37,6 +45,9 @@
 				</xs:complexType>
 			</xs:element>
 			<xs:element ref="Subject"/>
+			<xs:sequence>
+				<xs:element name="Extensions" type="ShapeExtensionsType" minOccurs="0"/>
+			</xs:sequence>
 		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="IsCompleteView" type="xs:boolean" use="required"/>
@@ -50,6 +61,9 @@
 		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="ShapeType" abstract="true">
+		<xs:sequence>
+			<xs:element name="Extensions" type="ShapeExtensionsType" minOccurs="0"/>
+		</xs:sequence>
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="IsExpanded" type="xs:boolean"/>
 		<xs:attribute name="AbsoluteBounds" type="xs:string"/>

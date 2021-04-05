@@ -79,12 +79,12 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		{
 			CustomPropertyDefinition definition;
 			CustomPropertyDefinition otherDefinition;
-			ORMModelElement extendedElement;
-			ORMModelElement otherExtendedElement;
+			ModelElement extendedModelElement;
+			IORMExtendableElement otherExtendedElement;
 			if (null != (definition = CustomPropertyDefinition) &&
 				null != (otherDefinition = CopyMergeUtility.GetEquivalentElement(definition, foreignStore, elementTracker)) &&
-				null != (extendedElement = ORMModelElementHasExtensionElement.GetExtendedElement(this)) &&
-				null != (otherExtendedElement = CopyMergeUtility.GetEquivalentElement(extendedElement, foreignStore, elementTracker)))
+				null != (extendedModelElement =ExtensionElementUtility.GetExtendedElement(this) as ModelElement) &&
+				null != (otherExtendedElement = CopyMergeUtility.GetEquivalentElement(extendedModelElement, foreignStore, elementTracker) as IORMExtendableElement))
 			{
 				// UNDONE: COPYMERGE This will not work for custom properties on a model,
 				// but these are not currently selectable and all other contained elements should work correctly.

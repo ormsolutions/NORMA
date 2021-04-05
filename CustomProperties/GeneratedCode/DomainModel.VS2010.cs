@@ -553,6 +553,12 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ElementGrouping.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
 		ElementGrouping = 65536,
+		/// <summary>
+		/// ORMDiagram
+		/// Description for ORMSolutions.ORMArchitect.CustomProperties.ORMTypes.ORMDiagram
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.CustomProperties.ORMTypes/ORMDiagram.Description", typeof(global::ORMSolutions.ORMArchitect.CustomProperties.CustomPropertiesDomainModel), "ORMSolutions.ORMArchitect.CustomProperties.GeneratedCode.DomainModelResx")]
+		ORMDiagram = 131072,
 	}
 }
 namespace ORMSolutions.ORMArchitect.CustomProperties

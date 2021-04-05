@@ -114,6 +114,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					Design.ORMEditorUtility.RegisterModelErrorActivators(store);
 				}
+
+				ExtendableElementUtility.RegisterCoreExtensionRoles(store);
 			}
 			if (0 != (reasons & EventSubscriberReasons.SurveyQuestionEvents))
 			{

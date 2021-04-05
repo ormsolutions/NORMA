@@ -71,6 +71,13 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 					return null;
 				}
 			}
+			IORMExtendableElementService IORMToolServices.ExtendableElementService
+			{
+				get
+				{
+					return null;
+				}
+			}
 			IORMFontAndColorService IORMToolServices.FontAndColorService
 			{
 				get

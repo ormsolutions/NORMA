@@ -65,7 +65,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	{
 	}
 	[DiagramMenuDisplay(DiagramMenuDisplayOptions.Required | DiagramMenuDisplayOptions.AllowMultiple, typeof(ORMDiagram), "Diagram.MenuDisplayName", "Diagram.TabImage", "Diagram.BrowserImage", NestedDiagramInitializerTypeName="DiagramInitializer")]
-	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements, IStickyObjectDiagram, IInvalidateDisplay
+	public partial class ORMDiagram : IProxyDisplayProvider, IMergeElements, IStickyObjectDiagram, IInvalidateDisplay, IORMExtendableElement, IVerbalizeCustomChildren
 	{
 		#region DiagramInitializer class
 		/// <summary>
@@ -3485,6 +3485,36 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return retVal;
 		}
 		#endregion // ShapeExtension support
+		#region IORMExtendableElement implementation
+		LinkedElementCollection<ModelError> IORMExtendableElement.ExtensionModelErrorCollection
+		{
+			get
+			{
+				return null;
+			}
+		}
+		#endregion // IORMExtendableElement implementation
+		#region IVerbalizeCustomChildren Implementation
+		/// <summary>
+		/// Implements <see cref="IVerbalizeCustomChildren.GetCustomChildVerbalizations"/>.
+		/// Explicitly verbalizes extension elements
+		/// </summary>
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		{
+			foreach (ModelElement extensionElement in ExtensionCollection)
+			{
+				IVerbalize verbalizeExtension = extensionElement as IVerbalize;
+				if (verbalizeExtension != null)
+				{
+					yield return CustomChildVerbalizer.VerbalizeInstance(verbalizeExtension);
+				}
+			}
+		}
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		{
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
+		}
+		#endregion // IVerbalizeCustomChildren Implementation
 	}
 	#region ORMShapeDomainModel toolbox initialization
 	[ModelingToolboxItemProvider("ToolboxInitializer")]

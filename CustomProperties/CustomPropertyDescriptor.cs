@@ -137,7 +137,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		{
 			get
 			{
-				return typeof(ORMModelElement);
+				return typeof(ModelElement);
 			}
 		}
 		public sealed override bool IsReadOnly
@@ -222,7 +222,12 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		}
 		#endregion // CustomProperty TypeConverters
 
-		private CustomProperty FindCustomProperty(ORMModelElement modelElement)
+		private static IORMExtendableElement ResolveComponent(object component)
+		{
+			return component as IORMExtendableElement ?? EditorUtility.ResolveContextInstance(component, false) as IORMExtendableElement;
+		}
+
+		private CustomProperty FindCustomProperty(IORMExtendableElement modelElement)
 		{
 			if (modelElement != null)
 			{
@@ -237,14 +242,14 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			}
 			return null;
 		}
-		private Transaction StartTransaction(ORMModelElement modelElement)
+		private Transaction StartTransaction(Store store)
 		{
-			return modelElement.Store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(this.customPropertyDefinition.Name));
+			return store.TransactionManager.BeginTransaction(ElementPropertyDescriptor.GetSetValueTransactionName(this.customPropertyDefinition.Name));
 		}
 
 		public sealed override object GetValue(object component)
 		{
-			CustomProperty customProperty = FindCustomProperty(EditorUtility.ResolveContextInstance(component, false) as ORMModelElement);
+			CustomProperty customProperty = FindCustomProperty(ResolveComponent(component));
 			if (customProperty != null)
 			{
 				return customProperty.Value;
@@ -254,17 +259,15 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 
 		public sealed override bool ShouldSerializeValue(object component)
 		{
-			return FindCustomProperty(EditorUtility.ResolveContextInstance(component, false) as ORMModelElement) != null;
+			return FindCustomProperty(ResolveComponent(component)) != null;
 		}
 
 		public sealed override void ResetValue(object component)
 		{
-			ORMModelElement modelElement = EditorUtility.ResolveContextInstance(component, false) as ORMModelElement;
-			System.Diagnostics.Debug.Assert(modelElement != null);
-			CustomProperty customProperty = FindCustomProperty(modelElement);
-			if (customProperty != null)
+			CustomProperty customProperty;
+			if (null != (customProperty = FindCustomProperty(ResolveComponent(component))))
 			{
-				using (Transaction transaction = this.StartTransaction(modelElement))
+				using (Transaction transaction = this.StartTransaction(customProperty.Store))
 				{
 					customProperty.Delete();
 					transaction.Commit();
@@ -275,34 +278,36 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		public sealed override void SetValue(object component, object value)
 		{
 			CustomPropertyDefinition customPropertyDefinition = this.customPropertyDefinition;
-			ORMModelElement modelElement = EditorUtility.ResolveContextInstance(component, false) as ORMModelElement;
-			System.Diagnostics.Debug.Assert(modelElement != null);
-			CustomProperty customProperty = FindCustomProperty(modelElement);
-			using (Transaction transaction = this.StartTransaction(modelElement))
+			IORMExtendableElement modelElement;
+			if (null != (modelElement = ResolveComponent(component)))
 			{
-				if (customProperty != null)
+				CustomProperty customProperty = FindCustomProperty(modelElement);
+				using (Transaction transaction = this.StartTransaction(modelElement.Store))
 				{
-					if (!object.Equals(customProperty.Value, value))
+					if (customProperty != null)
 					{
-						if (value == null || object.Equals(customPropertyDefinition.DefaultValue, value))
+						if (!object.Equals(customProperty.Value, value))
 						{
-							customProperty.Delete();
-						}
-						else
-						{
-							customProperty.Value = value;
+							if (value == null || object.Equals(customPropertyDefinition.DefaultValue, value))
+							{
+								customProperty.Delete();
+							}
+							else
+							{
+								customProperty.Value = value;
+							}
 						}
 					}
-				}
-				else if (value != null && !object.Equals(customPropertyDefinition.DefaultValue, value))
-				{
-					customProperty = new CustomProperty(modelElement.Partition, new PropertyAssignment(CustomProperty.ValueDomainPropertyId, value));
-					customProperty.CustomPropertyDefinition = customPropertyDefinition;
-					modelElement.ExtensionCollection.Add(customProperty);
-				}
-				if (transaction.HasPendingChanges)
-				{
-					transaction.Commit();
+					else if (value != null && !object.Equals(customPropertyDefinition.DefaultValue, value))
+					{
+						customProperty = new CustomProperty(modelElement.Store.DefaultPartition, new PropertyAssignment(CustomProperty.ValueDomainPropertyId, value));
+						customProperty.CustomPropertyDefinition = customPropertyDefinition;
+						modelElement.ExtensionCollection.Add(customProperty);
+					}
+					if (transaction.HasPendingChanges)
+					{
+						transaction.Commit();
+					}
 				}
 			}
 		}

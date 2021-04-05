@@ -43,7 +43,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				throw new ArgumentNullException("extensionElement");
 			}
-			extendedElement.ExtensionCollection.Add(extensionElement);
+			LinkedElementCollection<ModelElement> extensions = extendedElement.ExtensionCollection;
+			if (extensions != null)
+			{
+				extensions.Add(extensionElement);
+			}
 		}
 		/// <summary>
 		/// Adds the extension <see cref="ModelError"/> specified by <paramref name="extensionError"/> to the
@@ -59,7 +63,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				throw new ArgumentNullException("extensionError");
 			}
-			extendedElement.ExtensionModelErrorCollection.Add(extensionError);
+			LinkedElementCollection<ModelError> extensions = extendedElement.ExtensionModelErrorCollection;
+			if (extensions != null)
+			{
+				extensions.Add(extensionError);
+			}
 		}
 		/// <summary>
 		/// Gets the <see cref="IORMExtendableElement"/> that the extension <see cref="ModelElement"/> specified
@@ -71,7 +79,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				throw new ArgumentNullException("extensionElement");
 			}
-			return (IORMExtendableElement)DomainRoleInfo.GetLinkedElement(extensionElement, ORMModelElementHasExtensionElement.ExtensionDomainRoleId);
+			IORMToolServices services;
+			IORMExtendableElementService extendableElementService;
+			return (null != (services = extensionElement.Store as IORMToolServices) &&
+				null != (extendableElementService = services.ExtendableElementService)) ?
+					extendableElementService.ResolvedExtendedElement(extensionElement) :
+					null;
 		}
 		/// <summary>
 		/// Gets the <see cref="IORMExtendableElement"/> that the extension <see cref="ModelError"/> specified
@@ -83,7 +96,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				throw new ArgumentNullException("extensionError");
 			}
-			return (IORMExtendableElement)DomainRoleInfo.GetLinkedElement(extensionError, ORMModelElementHasExtensionModelError.ExtensionModelErrorDomainRoleId);
+			IORMToolServices services;
+			IORMExtendableElementService extendableElementService;
+			return (null != (services = extensionError.Store as IORMToolServices) &&
+				null != (extendableElementService = services.ExtendableElementService)) ?
+					extendableElementService.ResolveExtendedErrorOwner(extensionError) :
+					null;
 		}
 	}
 	#endregion // ExtensionElementUtility
@@ -95,6 +113,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	public static class ExtendableElementUtility
 	{
 		/// <summary>
+		/// Get a stock implementation of <see cref="IORMExtendableElementService"/>
+		/// </summary>
+		/// <param name="store">The context store</param>
+		/// <returns>New service instance</returns>
+		public static IORMExtendableElementService CreateExtendableElementService(Store store)
+		{
+			return new ORMExtendableElementService(store);
+		}
+
+		/// <summary>
+		/// Register the extendable element roles for the ORM core model in the given <see cref="Store"/>
+		/// </summary>
+		public static void RegisterCoreExtensionRoles(Store store)
+		{
+			IORMToolServices services;
+			IORMExtendableElementService extendableElementService;
+			if (null != (services = store as IORMToolServices) &&
+				null != (extendableElementService = services.ExtendableElementService))
+			{
+				extendableElementService.RegisterExtensionRoles(new Guid[] { ORMModelElementHasExtensionElement.ExtensionDomainRoleId });
+				extendableElementService.RegisterExtensionErrorRoles(new Guid[] { ORMModelElementHasExtensionModelError.ExtensionModelErrorDomainRoleId });
+			}
+		}
+
+		/// <summary>
 		/// Adds the properties from the extension <see cref="ModelElement"/>s of the
 		/// <see cref="IORMExtendableElement"/> specified by <paramref name="extendableElement"/>
 		/// to the <see cref="PropertyDescriptorCollection"/> specified by <paramref name="properties"/>.
@@ -102,16 +145,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="extendableElement">The <see cref="IORMExtendableElement"/> from which the extension properties should be retrieved.</param>
 		/// <param name="properties">The <see cref="PropertyDescriptorCollection"/> to which the extension properties should be added.</param>
 		/// <param name="displayedWithComponentType">The <see cref="Type"/> of the element the extensions will be displayed with.</param>
-		public static void GetExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties, Type displayedWithComponentType)
+		/// <returns>Original properties collection, or a modified one if it was read only and properties needed to be added.</returns>
+		public static PropertyDescriptorCollection GetExtensionProperties(IORMExtendableElement extendableElement, PropertyDescriptorCollection properties, Type displayedWithComponentType)
 		{
 			if (extendableElement == null)
 			{
 				throw new ArgumentNullException("extendableElement");
 			}
-			if (properties == null)
-			{
-				throw new ArgumentNullException("properties");
-			}
+			bool checkReadOnly = true;
 			foreach (ModelElement extension in extendableElement.ExtensionCollection)
 			{
 				IORMPropertyExtension customPropertyExtension = extension as IORMPropertyExtension;
@@ -119,17 +160,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (0 != (settings & ORMExtensionPropertySettings.MergeAsExpandableProperty))
 				{
 					PropertyDescriptor descriptor = ExpandableExtensionPropertyDescriptor.CreateExtensionDescriptor(customPropertyExtension);
+					if (checkReadOnly)
+					{
+						checkReadOnly = false;
+						properties = EditorUtility.GetEditablePropertyDescriptors(properties);
+					}
 					properties.Add(displayedWithComponentType != null ? EditorUtility.RedirectPropertyDescriptor(extension, descriptor, displayedWithComponentType) : descriptor);
 				}
 				if (0 != (settings & ORMExtensionPropertySettings.MergeAsTopLevelProperty))
 				{
 					foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(extension))
 					{
+						if (checkReadOnly)
+						{
+							checkReadOnly = false;
+							properties = EditorUtility.GetEditablePropertyDescriptors(properties);
+						}
 						properties.Add(displayedWithComponentType != null ? EditorUtility.RedirectPropertyDescriptor(extension, descriptor, displayedWithComponentType) : descriptor);
 					}
 				}
 			}
-		
+			return properties;
 		}
 
 		#region ExpandableExtensionPropertyDescriptor
@@ -368,6 +419,62 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		#endregion // ExpandableExtensionPropertyDescriptor
+		#region ORMExtendableElementService class
+		private sealed class ORMExtendableElementService : IORMExtendableElementService
+		{
+			#region Member variables and constructor
+			private Store myStore;
+			private List<Guid> myExtensionRoles;
+			private List<Guid> myExtensionErrorRoles;
+			public ORMExtendableElementService(Store store)
+			{
+				myStore = store;
+			}
+			#endregion // Member variables and constructor
+			#region  IORMExtendableElementService implementation
+			void IORMExtendableElementService.RegisterExtensionErrorRoles(Guid[] extensionErrorRoles)
+			{
+				(myExtensionErrorRoles ?? (myExtensionErrorRoles = new List<Guid>())).AddRange(extensionErrorRoles);
+			}
+			void IORMExtendableElementService.RegisterExtensionRoles(Guid[] extensionRoles)
+			{
+				(myExtensionRoles ?? (myExtensionRoles = new List<Guid>())).AddRange(extensionRoles);
+			}
+			IORMExtendableElement IORMExtendableElementService.ResolvedExtendedElement(ModelElement extensionElement)
+			{
+				List<Guid> extensionRoles = myExtensionRoles;
+				IORMExtendableElement retVal = null;
+				if (extensionRoles != null)
+				{
+					for (int i = 0, count = extensionRoles.Count; i < count; ++i)
+					{
+						if (null != (retVal = DomainRoleInfo.GetLinkedElement(extensionElement, extensionRoles[i]) as IORMExtendableElement))
+						{
+							break;
+						}
+					}
+				}
+				return retVal;
+			}
+			IORMExtendableElement IORMExtendableElementService.ResolveExtendedErrorOwner(ModelError extensionError)
+			{
+				List<Guid> errorRoles = myExtensionErrorRoles;
+				IORMExtendableElement retVal = null;
+				if (errorRoles != null)
+				{
+					for (int i = 0, count = errorRoles.Count; i < count; ++i)
+					{
+						if (null != (retVal = DomainRoleInfo.GetLinkedElement(extensionError, errorRoles[i]) as IORMExtendableElement))
+						{
+							break;
+						}
+					}
+				}
+				return retVal;
+			}
+			#endregion // IORMExtendableElementService implementation
+		}
+		#endregion // ORMExtendableElementService class
 	}
 	#endregion // ExtendableElementUtility
 }

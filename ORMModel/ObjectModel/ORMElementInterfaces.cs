@@ -24,7 +24,7 @@ using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
-	#region IORMExtendableElement
+	#region IORMExtendableElement interface
 	/// <summary>
 	/// An ORM <see cref="ModelElement"/> that can be extended.
 	/// </summary>
@@ -48,8 +48,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		LinkedElementCollection<ModelError> ExtensionModelErrorCollection { get;}
 	}
-	#endregion
-	#region IORMPropertyExtension
+	#endregion // IORMExtendableElement interface
+	#region IORMExtendableElementService interface
+	/// <summary>
+	/// A service interface for interacting with extension elements.
+	/// This is used primarily to support navigation from an extension element
+	/// or extension error to the container element in the embedding relationship.
+	/// </summary>
+	public interface IORMExtendableElementService
+	{
+		/// <summary>
+		/// Register one or more role ids for the contained role (on the extension element)
+		/// of an embedding extension relationship.
+		/// </summary>
+		/// <param name="extensionRoles">Possible extension role ids.</param>
+		void RegisterExtensionRoles(Guid[] extensionRoles);
+		/// <summary>
+		/// Register one or more role ids for the contained role (on the extension error)
+		/// of an embedding extension error relationship.
+		/// </summary>
+		/// <param name="extensionErrorRoles">Possible extension role ids.</param>
+		void RegisterExtensionErrorRoles(Guid[] extensionErrorRoles);
+		/// <summary>
+		/// Resolve the owner of the provided extension element.
+		/// </summary>
+		IORMExtendableElement ResolvedExtendedElement(ModelElement extensionElement);
+		/// <summary>
+		/// Resolve the owner of the provided extension error.
+		/// </summary>
+		IORMExtendableElement ResolveExtendedErrorOwner(ModelError extensionError);
+	}
+	#endregion // IORMExtendableElementService interface
+	#region IORMPropertyExtension interface
 	/// <summary>
 	/// An extension <see cref="ModelElement"/> that provides custom properties for the
 	/// <see cref="System.Windows.Forms.PropertyGrid"/> of the <see cref="IORMExtendableElement"/>
@@ -95,5 +125,5 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		MergeAsTopLevelProperty = 2,
 	}
-	#endregion
+	#endregion // IORMPropertyExtension interface
 }

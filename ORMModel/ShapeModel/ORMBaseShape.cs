@@ -35,7 +35,7 @@ using ORMSolutions.ORMArchitect.Framework.Diagrams;
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	[DebuggerDisplay("{System.String.Concat(ToString(), \": \",(ModelElement != null) ? ModelElement.ToString() : \"null\")}")]
-	public partial class ORMBaseShape : IInvalidateDisplay
+	public partial class ORMBaseShape : IInvalidateDisplay, IORMExtendableElement, IVerbalizeCustomChildren
 	{
 		#region Public token values
 		/// <summary>
@@ -786,6 +786,36 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return currentLuminosity;
 		}
 		#endregion // Luminosity Modification
+		#region IORMExtendableElement implementation
+		LinkedElementCollection<ModelError> IORMExtendableElement.ExtensionModelErrorCollection
+		{
+			get
+			{
+				return null;
+			}
+		}
+		#endregion // IORMExtendableElement implementation
+		#region IVerbalizeCustomChildren Implementation
+		/// <summary>
+		/// Implements <see cref="IVerbalizeCustomChildren.GetCustomChildVerbalizations"/>.
+		/// Explicitly verbalizes extension elements
+		/// </summary>
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		{
+			foreach (ModelElement extensionElement in ExtensionCollection)
+			{
+				IVerbalize verbalizeExtension = extensionElement as IVerbalize;
+				if (verbalizeExtension != null)
+				{
+					yield return CustomChildVerbalizer.VerbalizeInstance(verbalizeExtension);
+				}
+			}
+		}
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		{
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
+		}
+		#endregion // IVerbalizeCustomChildren Implementation
 	}
 	#region ORMShapeDeleteClosure for multiple shapes
 	public partial class ORMShapeDeleteClosure

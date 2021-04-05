@@ -54,7 +54,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			TModelElement element = ModelElement;
 			if (element != null && null != Utility.ValidateStore(element.Store))
 			{
-				ExtendableElementUtility.GetExtensionProperties(element, properties, typeof(TModelElement));
+				properties = ExtendableElementUtility.GetExtensionProperties(element, properties, typeof(TModelElement));
 			}
 			return properties;
 		}

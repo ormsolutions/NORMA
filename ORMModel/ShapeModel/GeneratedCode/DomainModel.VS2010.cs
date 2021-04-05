@@ -85,6 +85,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return new global::System.Type[]
 			{
 				typeof(FactTypeShapeHasRoleDisplayOrder),
+				typeof(ORMDiagramHasExtensionElement),
+				typeof(ORMBaseShapeHasExtensionElement),
 				typeof(ORMDiagram),
 				typeof(ORMBaseBinaryLinkShape),
 				typeof(ORMDirectBinaryLinkShape),
@@ -152,6 +154,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				new DomainRolePlayerInfo(typeof(FactTypeShapeHasRoleDisplayOrder), "FactTypeShape", FactTypeShapeHasRoleDisplayOrder.FactTypeShapeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(FactTypeShapeHasRoleDisplayOrder), "RoleDisplayOrder", FactTypeShapeHasRoleDisplayOrder.RoleDisplayOrderDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ORMDiagramHasExtensionElement), "ExtendedElement", ORMDiagramHasExtensionElement.ExtendedElementDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ORMDiagramHasExtensionElement), "Extension", ORMDiagramHasExtensionElement.ExtensionDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ORMBaseShapeHasExtensionElement), "ExtendedElement", ORMBaseShapeHasExtensionElement.ExtendedElementDomainRoleId),
+				new DomainRolePlayerInfo(typeof(ORMBaseShapeHasExtensionElement), "Extension", ORMBaseShapeHasExtensionElement.ExtensionDomainRoleId),
 			};
 		}
 		#endregion
@@ -253,8 +259,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	
 			if (createElementLinkMap == null)
 			{
-				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(1);
+				createElementLinkMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(3);
 				createElementLinkMap.Add(typeof(FactTypeShapeHasRoleDisplayOrder), 0);
+				createElementLinkMap.Add(typeof(ORMDiagramHasExtensionElement), 1);
+				createElementLinkMap.Add(typeof(ORMBaseShapeHasExtensionElement), 2);
 			}
 			int index;
 			if (!createElementLinkMap.TryGetValue(elementLinkType, out index))
@@ -270,6 +278,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			switch (index)
 			{
 				case 0: return new FactTypeShapeHasRoleDisplayOrder(partition, roleAssignments, propertyAssignments);
+				case 1: return new ORMDiagramHasExtensionElement(partition, roleAssignments, propertyAssignments);
+				case 2: return new ORMBaseShapeHasExtensionElement(partition, roleAssignments, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -438,6 +448,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public ORMShapeDeleteClosureBase()
 		{
 			#region Initialize DomainData Table
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.ExtensionDomainRoleId, true);
+			DomainRoles.Add(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.ExtensionDomainRoleId, true);
 			#endregion
 		}
 		/// <summary>

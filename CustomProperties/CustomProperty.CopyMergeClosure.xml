@@ -18,12 +18,14 @@
 	<cmc:Model modelFile="CustomProperties.dsl">
 		<cmc:ModelReferences>
 			<cmc:ModelReference modelFile="../ORMModel/ObjectModel/ORMCore.dsl"/>
+			<cmc:ModelReference modelFile="../ORMModel/ShapeModel/ORMShape.dsl"/>
 		</cmc:ModelReferences>
 		<cmc:EmbeddingDirectives>
 			<cmc:EmbeddingDirective relationship="CustomPropertyGroupContainsCustomPropertyDefinition" order="Unordered"/>
 		</cmc:EmbeddingDirectives>
 		<cmc:ClosureRoles>
 			<cmc:ClosureRole relationship="ORMModelElementHasExtensionElement" relationshipNamespace="ORMSolutions.ORMArchitect.Core.ObjectModel" role="Extension" explicitToRoleClass="CustomProperty" closureBehavior="ContainedPart"/>
+			<cmc:ClosureRole relationship="ORMDiagramHasExtensionElement" relationshipNamespace="ORMSolutions.ORMArchitect.Core.ShapeModel" role="Extension" explicitToRoleClass="CustomProperty" closureBehavior="ContainedPart"/>
 			<cmc:ClosureRole relationship="CustomPropertyHasCustomPropertyDefinition" role="CustomPropertyDefinition" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="CustomPropertyGroupContainsCustomPropertyDefinition" role="CustomPropertyGroup" closureBehavior="ContainedPart">
 				<!-- Override the default embedding behavior. We only need property definitions that we're currently referencing, not the full group. -->

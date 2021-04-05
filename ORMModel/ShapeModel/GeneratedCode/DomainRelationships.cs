@@ -246,3 +246,485 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		#endregion
 	}
 }
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
+	/// DomainRelationship ORMDiagramHasExtensionElement
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("118c4b88-867a-4d78-a8b0-e794929e2138")]
+	public partial class ORMDiagramHasExtensionElement : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ORMDiagramHasExtensionElement domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x118c4b88, 0x867a, 0x4d78, 0xa8, 0xb0, 0xe7, 0x94, 0x92, 0x9e, 0x21, 0x38);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ORMDiagramHasExtensionElement link in the same Partition as the given ORMDiagram
+		/// </summary>
+		/// <param name="source">ORMDiagram to use as the source of the relationship.</param>
+		/// <param name="target">ModelElement to use as the target of the relationship.</param>
+		public ORMDiagramHasExtensionElement(ORMDiagram source, global::Microsoft.VisualStudio.Modeling.ModelElement target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ORMDiagramHasExtensionElement.ExtendedElementDomainRoleId, source), new DslModeling::RoleAssignment(ORMDiagramHasExtensionElement.ExtensionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ORMDiagramHasExtensionElement(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ORMDiagramHasExtensionElement(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ORMDiagramHasExtensionElement(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ORMDiagramHasExtensionElement(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ExtendedElement domain role code
+		
+		/// <summary>
+		/// ExtendedElement domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExtendedElementDomainRoleId = new global::System.Guid(0xe639a997, 0x5c8b, 0x4a11, 0xa6, 0x14, 0xaf, 0x31, 0x64, 0xc5, 0x0e, 0x96);
+		
+		/// <summary>
+		/// DomainRole ExtendedElement
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.ExtendedElement
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/ExtendedElement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/ExtendedElement.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExtensionCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/ExtendedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("e639a997-5c8b-4a11-a614-af3164c50e96")]
+		public virtual ORMDiagram ExtendedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ORMDiagram)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExtendedElementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExtendedElementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExtendedElement of a ModelElement
+		/// <summary>
+		/// Gets ExtendedElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ORMDiagram GetExtendedElement(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ExtensionDomainRoleId) as ORMDiagram;
+		}
+		
+		/// <summary>
+		/// Sets ExtendedElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetExtendedElement(global::Microsoft.VisualStudio.Modeling.ModelElement element, ORMDiagram newExtendedElement)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ExtensionDomainRoleId, newExtendedElement);
+		}
+		#endregion
+		#region Extension domain role code
+		
+		/// <summary>
+		/// Extension domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExtensionDomainRoleId = new global::System.Guid(0x1220e077, 0xf7b4, 0x4d04, 0x91, 0x4d, 0xc3, 0x25, 0x11, 0x60, 0xd2, 0x98);
+		
+		/// <summary>
+		/// DomainRole Extension
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.Extension
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/Extension.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/Extension.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ExtendedElement", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/Extension.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("1220e077-f7b4-4d04-914d-c3251160d298")]
+		public virtual global::Microsoft.VisualStudio.Modeling.ModelElement Extension
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExtensionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExtensionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExtensionCollection of a ORMDiagram
+		/// <summary>
+		/// Gets a list of ExtensionCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> GetExtensionCollection(ORMDiagram element)
+		{
+			return new DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(element, ExtendedElementDomainRoleId);
+		}
+		#endregion
+		#region ExtendedElement link accessor
+		/// <summary>
+		/// Get the list of ORMDiagramHasExtensionElement links to a ORMDiagram.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement> GetLinksToExtensionCollection ( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram extendedElementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement>(extendedElementInstance, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.ExtendedElementDomainRoleId);
+		}
+		#endregion
+		#region Extension link accessor
+		/// <summary>
+		/// Get the ORMDiagramHasExtensionElement link to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement GetLinkToExtendedElement (global::Microsoft.VisualStudio.Modeling.ModelElement extensionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement>(extensionInstance, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.ExtensionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Extension not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ORMDiagramHasExtensionElement instance accessors
+		
+		/// <summary>
+		/// Get any ORMDiagramHasExtensionElement links between a given ORMDiagram and a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement> GetLinks( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement>(source, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.ExtendedElementDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement link in links )
+			{
+				if ( target.Equals(link.Extension) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ORMDiagramHasExtensionElement link between a given ORMDiagramand a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement GetLink( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement>(source, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.ExtendedElementDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement link in links )
+			{
+				if ( target.Equals(link.Extension) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
+	/// DomainRelationship ORMBaseShapeHasExtensionElement
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("805a3c84-5c28-4a34-acbb-741ea63dab6a")]
+	public partial class ORMBaseShapeHasExtensionElement : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// ORMBaseShapeHasExtensionElement domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x805a3c84, 0x5c28, 0x4a34, 0xac, 0xbb, 0x74, 0x1e, 0xa6, 0x3d, 0xab, 0x6a);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a ORMBaseShapeHasExtensionElement link in the same Partition as the given ORMBaseShape
+		/// </summary>
+		/// <param name="source">ORMBaseShape to use as the source of the relationship.</param>
+		/// <param name="target">ModelElement to use as the target of the relationship.</param>
+		public ORMBaseShapeHasExtensionElement(ORMBaseShape source, global::Microsoft.VisualStudio.Modeling.ModelElement target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ORMBaseShapeHasExtensionElement.ExtendedElementDomainRoleId, source), new DslModeling::RoleAssignment(ORMBaseShapeHasExtensionElement.ExtensionDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ORMBaseShapeHasExtensionElement(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ORMBaseShapeHasExtensionElement(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public ORMBaseShapeHasExtensionElement(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public ORMBaseShapeHasExtensionElement(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region ExtendedElement domain role code
+		
+		/// <summary>
+		/// ExtendedElement domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExtendedElementDomainRoleId = new global::System.Guid(0xc7ddd772, 0x092f, 0x4431, 0xa5, 0x73, 0x3b, 0x8e, 0xcf, 0xce, 0x34, 0xb9);
+		
+		/// <summary>
+		/// DomainRole ExtendedElement
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.ExtendedElement
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/ExtendedElement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/ExtendedElement.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ExtensionCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/ExtendedElement.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("c7ddd772-092f-4431-a573-3b8ecfce34b9")]
+		public virtual ORMBaseShape ExtendedElement
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ORMBaseShape)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExtendedElementDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExtendedElementDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExtendedElement of a ModelElement
+		/// <summary>
+		/// Gets ExtendedElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ORMBaseShape GetExtendedElement(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ExtensionDomainRoleId) as ORMBaseShape;
+		}
+		
+		/// <summary>
+		/// Sets ExtendedElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetExtendedElement(global::Microsoft.VisualStudio.Modeling.ModelElement element, ORMBaseShape newExtendedElement)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ExtensionDomainRoleId, newExtendedElement);
+		}
+		#endregion
+		#region Extension domain role code
+		
+		/// <summary>
+		/// Extension domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ExtensionDomainRoleId = new global::System.Guid(0xaf2d566b, 0x972c, 0x4f6d, 0x9e, 0x5a, 0x34, 0xb5, 0x44, 0xdc, 0x8b, 0x56);
+		
+		/// <summary>
+		/// DomainRole Extension
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.Extension
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/Extension.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/Extension.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ExtendedElement", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/Extension.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("af2d566b-972c-4f6d-9e5a-34b544dc8b56")]
+		public virtual global::Microsoft.VisualStudio.Modeling.ModelElement Extension
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, ExtensionDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ExtensionDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access ExtensionCollection of a ORMBaseShape
+		/// <summary>
+		/// Gets a list of ExtensionCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement> GetExtensionCollection(ORMBaseShape element)
+		{
+			return new DslModeling::LinkedElementCollection<global::Microsoft.VisualStudio.Modeling.ModelElement>(element, ExtendedElementDomainRoleId);
+		}
+		#endregion
+		#region ExtendedElement link accessor
+		/// <summary>
+		/// Get the list of ORMBaseShapeHasExtensionElement links to a ORMBaseShape.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement> GetLinksToExtensionCollection ( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape extendedElementInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement>(extendedElementInstance, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.ExtendedElementDomainRoleId);
+		}
+		#endregion
+		#region Extension link accessor
+		/// <summary>
+		/// Get the ORMBaseShapeHasExtensionElement link to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement GetLinkToExtendedElement (global::Microsoft.VisualStudio.Modeling.ModelElement extensionInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement>(extensionInstance, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.ExtensionDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Extension not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region ORMBaseShapeHasExtensionElement instance accessors
+		
+		/// <summary>
+		/// Get any ORMBaseShapeHasExtensionElement links between a given ORMBaseShape and a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement> GetLinks( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement>(source, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.ExtendedElementDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement link in links )
+			{
+				if ( target.Equals(link.Extension) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one ORMBaseShapeHasExtensionElement link between a given ORMBaseShapeand a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement GetLink( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement>(source, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.ExtendedElementDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement link in links )
+			{
+				if ( target.Equals(link.Extension) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}

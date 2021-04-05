@@ -61,6 +61,38 @@
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
+		<DomainRelationship Name="ORMDiagramHasExtensionElement" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" IsEmbedding="true" Id="118C4B88-867A-4D78-A8B0-E794929E2138">
+			<Source>
+				<DomainRole Name="ExtendedElement" PropertyName="ExtensionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExtendedElement" Id="E639A997-5C8B-4A11-A614-AF3164C50E96">
+					<RolePlayer>
+						<DiagramMoniker Name="ORMDiagram"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Extension" PropertyName="ExtendedElement" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Extension" Id="1220E077-F7B4-4D04-914D-C3251160D298">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+		<DomainRelationship Name="ORMBaseShapeHasExtensionElement" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" IsEmbedding="true" Id="805A3C84-5C28-4A34-ACBB-741EA63DAB6A">
+			<Source>
+				<DomainRole Name="ExtendedElement" PropertyName="ExtensionCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="ExtendedElement" Id="C7DDD772-092F-4431-A573-3B8ECFCE34B9">
+					<RolePlayer>
+						<GeometryShapeMoniker Name="ORMBaseShape"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Extension" PropertyName="ExtendedElement" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="false" DisplayName="Extension" Id="AF2D566B-972C-4F6D-9E5A-34B544DC8B56">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
 	</Relationships>
 
 	<Types>

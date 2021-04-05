@@ -194,8 +194,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			CustomSerializedContainerElementInfo[] ret = ORMDiagram.myCustomSerializedChildElementInfo;
 			if (ret == null)
 			{
-				ret = new CustomSerializedContainerElementInfo[1];
+				ret = new CustomSerializedContainerElementInfo[2];
 				ret[0] = new CustomSerializedContainerElementInfo(null, "Shapes", null, CustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId);
+				ret[1] = new CustomSerializedContainerElementInfo("ormDiagram", "Extensions", null, CustomSerializedElementWriteStyle.Element, null, ORMDiagramHasExtensionElement.ExtensionDomainRoleId);
 				ORMDiagram.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -283,6 +284,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 0;
 				domainRole = domainDataDirectory.FindDomainRole(PresentationViewsSubject.SubjectDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
+				domainRole = domainDataDirectory.FindDomainRole(ORMDiagramHasExtensionElement.ExtensionDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -334,6 +337,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|Subject", match);
 				match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|Shapes||", match);
+				match.InitializeRoles(ORMDiagramHasExtensionElement.ExtensionDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|Extensions||", match);
 				ORMDiagram.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;
@@ -389,9 +394,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			CustomSerializedContainerElementInfo[] ret = ORMBaseShape.myCustomSerializedChildElementInfo;
 			if (ret == null)
 			{
-				ret = new CustomSerializedContainerElementInfo[2];
+				ret = new CustomSerializedContainerElementInfo[3];
 				ret[0] = new CustomSerializedContainerElementInfo(null, "RelativeShapes", null, CustomSerializedElementWriteStyle.Element, null, ParentShapeHasRelativeChildShapes.RelativeChildShapesDomainRoleId);
 				ret[1] = new CustomSerializedContainerElementInfo(null, "NestedShapes", null, CustomSerializedElementWriteStyle.Element, null, ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId);
+				ret[2] = new CustomSerializedContainerElementInfo("ormDiagram", "Extensions", null, CustomSerializedElementWriteStyle.Element, null, ORMBaseShapeHasExtensionElement.ExtensionDomainRoleId);
 				ORMBaseShape.myCustomSerializedChildElementInfo = ret;
 			}
 			return ret;
@@ -461,6 +467,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 1;
 				domainRole = domainDataDirectory.FindDomainRole(PresentationViewsSubject.SubjectDomainRoleId).OppositeDomainRole;
 				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 2;
+				domainRole = domainDataDirectory.FindDomainRole(ORMBaseShapeHasExtensionElement.ExtensionDomainRoleId).OppositeDomainRole;
+				roleOrderDictionary[string.Concat(domainRole.DomainRelationship.ImplementationClass.FullName, ".", domainRole.Name)] = 3;
 				this.myRoleOrderDictionary = roleOrderDictionary;
 			}
 			int IComparer<DomainRoleInfo>.Compare(DomainRoleInfo x, DomainRoleInfo y)
@@ -514,6 +522,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|RelativeShapes||", match);
 				match.InitializeRoles(ParentShapeContainsNestedChildShapes.NestedChildShapesDomainRoleId);
 				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|NestedShapes||", match);
+				match.InitializeRoles(ORMBaseShapeHasExtensionElement.ExtensionDomainRoleId);
+				childElementMappings.Add("||http://schemas.neumont.edu/ORM/2006-04/ORMDiagram|Extensions||", match);
 				ORMBaseShape.myChildElementMappings = childElementMappings;
 			}
 			CustomSerializedElementMatch rVal;

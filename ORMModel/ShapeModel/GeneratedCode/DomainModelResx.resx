@@ -157,6 +157,70 @@
     <value>Fact Type Shape Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;RoleDisplayOrder&apos; on DomainRelationship &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement</value>
+    <comment>Description for DomainClass &apos;ORMDiagramHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.DisplayName" xml:space="preserve">
+    <value>ORMDiagram Has Extension Element</value>
+    <comment>DisplayName for DomainClass &apos;ORMDiagramHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/ExtendedElement.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.ExtendedElement</value>
+    <comment>Description for DomainRole &apos;ExtendedElement&apos; on DomainRelationship &apos;ORMDiagramHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/ExtendedElement.DisplayName" xml:space="preserve">
+    <value>ExtendedElement</value>
+    <comment>DisplayName for DomainRole &apos;ExtendedElement&apos; on DomainRelationship &apos;ORMDiagramHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/ExtendedElement.PropertyDisplayName" xml:space="preserve">
+    <value>Extension Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExtendedElement&apos; on DomainRelationship &apos;ORMDiagramHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/Extension.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement.Extension</value>
+    <comment>Description for DomainRole &apos;Extension&apos; on DomainRelationship &apos;ORMDiagramHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/Extension.DisplayName" xml:space="preserve">
+    <value>Extension</value>
+    <comment>DisplayName for DomainRole &apos;Extension&apos; on DomainRelationship &apos;ORMDiagramHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramHasExtensionElement/Extension.PropertyDisplayName" xml:space="preserve">
+    <value>Extended Element</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Extension&apos; on DomainRelationship &apos;ORMDiagramHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement</value>
+    <comment>Description for DomainClass &apos;ORMBaseShapeHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.DisplayName" xml:space="preserve">
+    <value>ORMBase Shape Has Extension Element</value>
+    <comment>DisplayName for DomainClass &apos;ORMBaseShapeHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/ExtendedElement.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.ExtendedElement</value>
+    <comment>Description for DomainRole &apos;ExtendedElement&apos; on DomainRelationship &apos;ORMBaseShapeHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/ExtendedElement.DisplayName" xml:space="preserve">
+    <value>ExtendedElement</value>
+    <comment>DisplayName for DomainRole &apos;ExtendedElement&apos; on DomainRelationship &apos;ORMBaseShapeHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/ExtendedElement.PropertyDisplayName" xml:space="preserve">
+    <value>Extension Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;ExtendedElement&apos; on DomainRelationship &apos;ORMBaseShapeHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/Extension.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement.Extension</value>
+    <comment>Description for DomainRole &apos;Extension&apos; on DomainRelationship &apos;ORMBaseShapeHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/Extension.DisplayName" xml:space="preserve">
+    <value>Extension</value>
+    <comment>DisplayName for DomainRole &apos;Extension&apos; on DomainRelationship &apos;ORMBaseShapeHasExtensionElement&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShapeHasExtensionElement/Extension.PropertyDisplayName" xml:space="preserve">
+    <value>Extended Element</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Extension&apos; on DomainRelationship &apos;ORMBaseShapeHasExtensionElement&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ConstraintDisplayPosition/Top.DisplayName" xml:space="preserve">
     <value>Top</value>
     <comment>Display name for EnumerationLiteral &apos;Top&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>

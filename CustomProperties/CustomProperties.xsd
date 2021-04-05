@@ -191,6 +191,7 @@
 					</xs:annotation>
 					<xs:restriction base="xs:token">
 						<xs:enumeration value="Model"/>
+						<xs:enumeration value="ORMDiagram"/>
 						<xs:enumeration value="ElementGrouping"/>
 						<xs:enumeration value="EntityType"/>
 						<xs:enumeration value="ValueType"/>

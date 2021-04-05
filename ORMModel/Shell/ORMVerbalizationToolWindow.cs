@@ -343,16 +343,26 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						ModelElement mel = melIter as ModelElement;
 						PresentationElement pel = mel as PresentationElement;
+						ModelElement secondMel = null;
 						if (pel != null)
 						{
 							IRedirectVerbalization shapeRedirect = pel as IRedirectVerbalization;
-							if (null == (shapeRedirect = pel as IRedirectVerbalization) ||
-								null == (mel = shapeRedirect.SurrogateVerbalizer as ModelElement))
+							bool redirected = null != (shapeRedirect = pel as IRedirectVerbalization) &&
+								null != (mel = shapeRedirect.SurrogateVerbalizer as ModelElement);
+
+							if (!redirected)
 							{
 								mel = pel.ModelElement;
 							}
+
+							if (pel is IVerbalizeCustomChildren ||
+								(!redirected && pel is IVerbalize || pel is IVerbalizeChildren))
+							{
+								secondMel = mel;
+								mel = pel;
+							}
 						}
-						if (mel != null && !mel.IsDeleted)
+						while (mel != null && !mel.IsDeleted)
 						{
 							if (snippetsDictionary == null)
 							{
@@ -381,6 +391,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								callbackWriter,
 								true,
 								ref firstCallPending);
+
+							if (secondMel != null)
+							{
+								mel = secondMel;
+								secondMel = null;
+							}
+							else
+							{
+								mel = null;
+							}
 						}
 					}
 				}

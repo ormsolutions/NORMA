@@ -166,6 +166,20 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 					return retVal;
 				}
 			}
+			private IORMExtendableElementService myExtendableElementService;
+			IORMExtendableElementService IORMToolServices.ExtendableElementService
+			{
+				get
+				{
+					// Implemented on a per-store basis, do not defer to myServices
+					IORMExtendableElementService retVal = myExtendableElementService;
+					if (retVal == null)
+					{
+						myExtendableElementService = retVal = ExtendableElementUtility.CreateExtendableElementService(this);
+					}
+					return retVal;
+				}
+			}
 			IORMToolTaskProvider IORMToolServices.TaskProvider
 			{
 				get

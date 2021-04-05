@@ -17,6 +17,7 @@
 using System;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Framework;
+using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
@@ -46,6 +47,18 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				FactTypeShape.ManageEventHandlers(store, eventManager, action);
 				SubtypeLink.ManageEventHandlers(store, eventManager, action);
 			}
+
+			if (0 != (reasons & EventSubscriberReasons.DocumentLoaded))
+			{
+				IORMToolServices services;
+				IORMExtendableElementService extendableElementService;
+				if (null != (services = Store as IORMToolServices) &&
+					null != (extendableElementService = services.ExtendableElementService))
+				{
+					extendableElementService.RegisterExtensionRoles(new Guid[] { ORMDiagramHasExtensionElement.ExtensionDomainRoleId, ORMBaseShapeHasExtensionElement.ExtensionDomainRoleId });
+				}
+			}
+
 		}
 		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)
 		{

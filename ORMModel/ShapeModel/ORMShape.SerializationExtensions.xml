@@ -64,6 +64,9 @@
 			<se:Embed RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
 		</se:Container>
 		<se:Link Name="Subject" RelationshipName="PresentationViewsSubject" RoleName="Subject"/>
+		<se:Container Name="Extensions" Prefix="ormDiagram">
+			<se:Embed RelationshipName="ORMDiagramHasExtensionElement" RoleName="Extension"/>
+		</se:Container>
 	</se:Element>
 	<se:Element Class="ORMBaseShape" SortChildElements="true">
 		<se:Attribute ID="IsExpanded" WriteCustomStorage="true"/>
@@ -79,6 +82,9 @@
 		shape does not add explicit serialization information, then the Subject element writes with the parent's namespace
 		and we cannot resolve the link. Explicitly mark the prefix for this relationship to handle the extension case. -->
 		<se:Link Name="Subject" RelationshipName="PresentationViewsSubject" RoleName="Subject" Prefix="ormDiagram"/>
+		<se:Container Name="Extensions" Prefix="ormDiagram">
+			<se:Embed RelationshipName="ORMBaseShapeHasExtensionElement" RoleName="Extension"/>
+		</se:Container>
 	</se:Element>
 	<se:Element Class="ObjectTypeShape" Override="true">
 		<se:Attribute ID="ExpandRefMode" WriteCustomStorage="true">
