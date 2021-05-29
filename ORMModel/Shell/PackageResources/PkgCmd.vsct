@@ -995,7 +995,10 @@
 		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidDelete" priority="0x0010">
 			<Parent guid="guidORMDesignerCommandSet" id="groupIdDeleteContext"/>
 		</CommandPlacement>
-		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidPropertiesWindow" priority="0x0010">
+		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidErrorListWindow" priority="0x0010">
+			<Parent guid="guidORMDesignerCommandSet" id="groupIdProperties"/>
+		</CommandPlacement>
+		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidPropertiesWindow" priority="0x0020">
 			<Parent guid="guidORMDesignerCommandSet" id="groupIdProperties"/>
 		</CommandPlacement>
 	</CommandPlacements>
@@ -1307,6 +1310,7 @@
 		<GuidSymbol name="CMDSETID_StandardCommandSet97" value="Extern">
 			<IDSymbol value="Extern" name="cmdidDelete"/>
 			<IDSymbol value="Extern" name="cmdidPropertiesWindow"/>
+			<IDSymbol value="Extern" name="cmdidErrorListWindow"/>
 		</GuidSymbol>
 		<GuidSymbol name="CMDSETID_StandardCommandSet2K" value="Extern"/>
 		<GuidSymbol name="guidCommandIcons" value="{E590BC32-4910-429C-BFA7-24EB2FD63E0D}">
