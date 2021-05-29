@@ -126,7 +126,7 @@
 		<xs:attribute name="id" type="xs:ID" use="required"/>
 		<xs:attribute name="NamingChoice" default="ModelDefault">
 		</xs:attribute>
-		<xs:attribute name="PrimaryIdentifierNamingChoice" type="NamingChoiceType" default="ValueTypeName"/>
+		<xs:attribute name="PrimaryIdentifierNamingChoice" type="NamingChoiceType" default="ModelDefault"/>
 		<xs:attribute name="CustomFormat" type="xs:string">
 			<xs:annotation>
 				<xs:documentation>May be set if NamingChoice is CustomFormat. The replacement field {0} is the ValueTypeName, {1} is the EntityTypeName, and {2} is the ReferenceModeName.</xs:documentation>
