@@ -150,12 +150,22 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// Given a <see cref="ConceptTypeAssimilatesConceptType"/> relationship, determine the current
 		/// <see cref="AssimilationAbsorptionChoice"/> for that assimilation
 		/// </summary>
-		public static AssimilationAbsorptionChoice GetAbsorptionChoiceFromAssimilation(ConceptTypeAssimilatesConceptType assimilation)
+		public static AssimilationAbsorptionChoice GetAbsorptionChoiceFromAssimilation(ConceptTypeAssimilatesConceptType assimilation, bool blockGhostAbsorption)
 		{
 			LinkedElementCollection<FactType> factTypes = ConceptTypeChildHasPathFactType.GetPathFactTypeCollection(assimilation);
-			return (factTypes.Count == 1) ?
-				GetAbsorptionChoiceFromFactType(factTypes[0]) :
-				AssimilationAbsorptionChoice.Absorb;
+			AssimilationAbsorptionChoice retVal = AssimilationAbsorptionChoice.Absorb;
+			if (factTypes.Count == 1)
+			{
+				retVal = GetAbsorptionChoiceFromFactType(factTypes[0]);
+				if (blockGhostAbsorption &&
+					retVal == AssimilationAbsorptionChoice.Absorb &&
+					ConceptTypeChild.GetLinksToTargetCollection(assimilation.AssimilatedConceptType).Count == 0)
+				{
+					// Ignore the absorb request if there will be no evidence of the assimilated concept type after absorption
+					retVal = AssimilationAbsorptionChoice.Separate;
+				}
+			}
+			return retVal;
 		}
 		/// <summary>
 		/// Given a <see cref="ConceptTypeAssimilatesConceptType"/> relationship, determine the current
@@ -465,7 +475,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						{
 							foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
 							{
-								switch (GetAbsorptionChoiceFromAssimilation(assimilation))
+								switch (GetAbsorptionChoiceFromAssimilation(assimilation, false))
 								{
 									case AssimilationAbsorptionChoice.Absorb:
 										seenAbsorb = true;
@@ -594,7 +604,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					// anthing else upstream
 					ReadOnlyCollection<ConceptTypeAssimilatesConceptType> assimilations = ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType);
 					if (assimilations.Count != 0 &&
-						GetAbsorptionChoiceFromAssimilation(assimilations[0]) == AssimilationAbsorptionChoice.Partition)
+						GetAbsorptionChoiceFromAssimilation(assimilations[0], false) == AssimilationAbsorptionChoice.Partition)
 					{
 						return ObjectTypeAbsorptionChoice.Partitioned;
 					}
@@ -610,7 +620,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						{
 							foreach (ConceptTypeAssimilatesConceptType assimilation in assimilations)
 							{
-								switch (GetAbsorptionChoiceFromAssimilation(assimilation))
+								switch (GetAbsorptionChoiceFromAssimilation(assimilation, false))
 								{
 									case AssimilationAbsorptionChoice.Absorb:
 										seenAbsorb = true;
@@ -777,7 +787,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						{
 							if (firstAbsorbedAssimilation == null)
 							{
-								if (GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
+								if (GetAbsorptionChoiceFromAssimilation(assimilation, false) == AssimilationAbsorptionChoice.Absorb)
 								{
 									firstAbsorbedAssimilation = assimilation;
 								}
@@ -863,7 +873,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				{
 					return true;
 				}
-				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation);
+				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation, true);
 				return myIgnoreInitialAbsorptionChoices ?
 					choice != AssimilationAbsorptionChoice.Partition :
 					choice == AssimilationAbsorptionChoice.Absorb;
@@ -877,7 +887,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				{
 					return true;
 				}
-				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation);
+				AssimilationAbsorptionChoice choice = GetAbsorptionChoiceFromAssimilation(assimilation, true);
 				return myIgnoreAllAbsorptionChoices ?
 					choice != AssimilationAbsorptionChoice.Partition :
 					choice == AssimilationAbsorptionChoice.Absorb;
@@ -1262,7 +1272,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			ConceptType assimilatedConceptType = assimilation.AssimilatedConceptType;
 			foreach (ConceptTypeAssimilatesConceptType childAssimilation in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(assimilatedConceptType))
 			{
-				if (GetAbsorptionChoiceFromAssimilation(childAssimilation) == AssimilationAbsorptionChoice.Partition)
+				if (GetAbsorptionChoiceFromAssimilation(childAssimilation, false) == AssimilationAbsorptionChoice.Partition) // Partition is not overridden, do not do the extra work to check ghosts
 				{
 					if (!throwOnFailure)
 					{
@@ -1549,7 +1559,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		{
 			if (assimilationsDictionary == null || !assimilationsDictionary.ContainsKey(assimilation))
 			{
-				if (topLevel || GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
+				if (topLevel || GetAbsorptionChoiceFromAssimilation(assimilation, true) == AssimilationAbsorptionChoice.Absorb)
 				{
 					ConceptType assimilatedConceptType = assimilation.AssimilatedConceptType;
 					if (!topLevel)
@@ -1571,7 +1581,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		{
 			foreach (ConceptTypeAssimilatesConceptType assimilator in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
-				if (GetAbsorptionChoiceFromAssimilation(assimilator) == AssimilationAbsorptionChoice.Absorb)
+				if (GetAbsorptionChoiceFromAssimilation(assimilator, true) == AssimilationAbsorptionChoice.Absorb)
 				{
 					if (upstreamConceptTypesDictionary == null)
 					{
@@ -1737,7 +1747,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			if (null != (assimilation = GetAssimilationFromFactType(factType)) &&
 				null != (customizationModel = MappingCustomizationModel.GetMappingCustomizationModel(factType.Store, false)))
 			{
-				if (GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
+				if (GetAbsorptionChoiceFromAssimilation(assimilation, true) == AssimilationAbsorptionChoice.Absorb)
 				{
 					SetPrimaryAbsorptionChoice(factType, AssimilationAbsorptionChoice.Separate);
 				}

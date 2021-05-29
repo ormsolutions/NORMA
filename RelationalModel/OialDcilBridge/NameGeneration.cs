@@ -2153,7 +2153,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									{
 										// Keep going forward
 										if (0 != (stepFlags & ColumnPathStepFlags.AssimilationIsSubtype) &&
-											AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb &&
+											AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true) != AssimilationAbsorptionChoice.Absorb &&
 											comingFromConceptType == (0 == (stepFlags & ColumnPathStepFlags.AssimilationTowardsSubtype) ? assimilation.AssimilatedConceptType : assimilation.AssimilatorConceptType))
 										{
 											forwardToReverseTransition = true;
@@ -2167,12 +2167,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									else
 									{
 										// Figure it out from this step
-										reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb;
+										reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true) != AssimilationAbsorptionChoice.Absorb;
 									}
 								}
 								else
 								{
-									reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb;
+									reverseAssimilation = AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true) != AssimilationAbsorptionChoice.Absorb;
 								}
 							}
 							else

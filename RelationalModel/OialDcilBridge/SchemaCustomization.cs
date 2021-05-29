@@ -758,7 +758,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					ConceptTypeAssimilatesConceptType assimilation;
 					if (uniqueUseIndex != -1 &&
 						null != (assimilation = child as ConceptTypeAssimilatesConceptType) &&
-						AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) != AssimilationAbsorptionChoice.Absorb)
+						AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true) != AssimilationAbsorptionChoice.Absorb)
 					{
 						uniqueUseIndex = idList.Count - 1;
 					}

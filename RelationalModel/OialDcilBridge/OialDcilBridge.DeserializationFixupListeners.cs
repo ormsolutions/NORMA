@@ -47,7 +47,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// The algorithm version written to the file for the core algorithm
 		/// </summary>
-		public const string CurrentCoreAlgorithmVersion = "1.004";
+		public const string CurrentCoreAlgorithmVersion = "1.005";
 		/// <summary>
 		/// The algorithm version written to the file for the name generation algorithm
 		/// </summary>
@@ -188,7 +188,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				foreach (ConceptTypeAssimilatesConceptType assimilation
 					in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 				{
-					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Absorb)
+					if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true) == AssimilationAbsorptionChoice.Absorb)
 					{
 						// If we find any absorb assimilation that this concept type is the target of, we don't need a table.
 						needsTable = false;
@@ -200,7 +200,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					foreach (ConceptTypeAssimilatesConceptType assimilation
 						in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
 					{
-						if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation) == AssimilationAbsorptionChoice.Partition)
+						if (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, false) == AssimilationAbsorptionChoice.Partition) // Partition is not overridden, do not do the extra work to check ghosts
 						{
 							// If we find any partition assimilation that this concept type is the parent of, we don't need a table.
 							needsTable = false;
@@ -424,7 +424,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
 			{
 				conceptTypeChildPath.Push(assimilation);
-				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation))
+				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true))
 				{
 					case AssimilationAbsorptionChoice.Absorb:
 						if (TableIsAlsoForConceptType.GetLink(table, assimilation.AssimilatedConceptType) != null)
@@ -488,7 +488,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
 				conceptTypeChildPath.Push(assimilation);
-				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation))
+				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true))
 				{
 					case AssimilationAbsorptionChoice.Absorb:
 						// We don't need to do anything for this case,
@@ -728,7 +728,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatedConceptTypeCollection(conceptType))
 			{
 				conceptTypeChildPath.Push(assimilation);
-				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation))
+				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true))
 				{
 					case AssimilationAbsorptionChoice.Absorb:
 						// Recurse and let the assimilated concept type handle any
@@ -765,7 +765,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				in ConceptTypeAssimilatesConceptType.GetLinksToAssimilatorConceptTypeCollection(conceptType))
 			{
 				conceptTypeChildPath.Push(assimilation);
-				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation))
+				switch (AssimilationMapping.GetAbsorptionChoiceFromAssimilation(assimilation, true))
 				{
 					case AssimilationAbsorptionChoice.Absorb:
 						// We don't need to do anything for this case,

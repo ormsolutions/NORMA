@@ -178,7 +178,7 @@
     <comment>The category for relational mapping customizations. Displays as a grouping category in the Properties Window.</comment>
   </data>
   <data name="ObjectTypeAbsorptionChoiceProperty.Description" xml:space="preserve">
-    <value>Absorption state for an ObjectType involved in Subtyping and some other one-to-one FactType relationships.</value>
+    <value>Absorption state for an ObjectType involved in Subtyping and some other one-to-one FactType relationships. The choice to absorb is ignored if absorbing removes all evidence of the absorbed ObjectType.</value>
     <comment>The description for the AbsorptionChoice property on an ObjectType. Displays as a detailed description in the Properties Window.</comment>
   </data>
   <data name="ObjectTypeAbsorptionChoiceProperty.DisplayName" xml:space="preserve">
