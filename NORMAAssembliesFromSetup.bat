@@ -1,5 +1,5 @@
 @ECHO OFF
-SETLOCAL
+SETLOCAL EnableDelayedExpansion
 
 if '%~1'=='?' GOTO:_Instructions
 if '%~1'=='-?' GOTO:_Instructions
@@ -29,7 +29,7 @@ IF "%VSSideBySide%"=="true" (
 	FOR /F "usebackq skip=2 tokens=2*" %%A IN (`REG QUERY "HKLM\VSHive%TargetVisualStudioInstallSuffix%Exp\Software\Microsoft\VisualStudio\%TargetVisualStudioMajorMinorVersion%_%TargetVisualStudioInstallSuffix%Exp_Config\Packages\{efddc549-1646-4451-8a51-e5a5e94d647c}" /v "CodeBase"`) DO CALL:_GetDirectory "%%B" NORMAInstallRoot
 	REG UNLOAD HKLM\VSHive%TargetVisualStudioInstallSuffix%Exp 1>NUL 2>&1
 
-	IF "%NORMAInstallRoot%"=="" (
+	IF "!NORMAInstallRoot!"=="" (
 		ECHO NORMA is not installed in the Experimental Visual Studio instance.
 		GOTO:EOF
 	)
