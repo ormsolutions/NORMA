@@ -1032,13 +1032,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ValueConstraint valueConstraint = (ValueConstraint)e.ModelElement;
 				//Set the new definition
 				string newText = (string)e.NewValue;
-				if (newText.Length == 0)
+				if (newText.Length == 0 || !valueConstraint.ParseDefinition(newText))
 				{
 					valueConstraint.Delete();
-				}
-				else
-				{
-					valueConstraint.ParseDefinition((string)e.NewValue);
 				}
 			}
 		}
@@ -1596,11 +1592,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				if (!element.IsDeleted)
 				{
+					LinkedElementCollection<ValueRange> ranges = element.ValueRangeCollection;
+					if (ranges.Count == 0)
+					{
+						// Sanity check
+						element.Delete();
+						return;
+					}
+
 					DataType dataType;
 					if (null != (dataType = element.DataType) &&
 						dataType.IsCultureSensitive)
 					{
-						foreach (ValueRange valueRange in element.ValueRangeCollection)
+						foreach (ValueRange valueRange in ranges)
 						{
 							string value;
 							string invariantValue;
@@ -1702,12 +1706,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// to the ValueRangeCollection.
 		/// </summary>
 		/// <param name="newDefinition">The string containing a value range definition.</param>
-		protected void ParseDefinition(string newDefinition)
+		/// <returns>True if one or more value ranges were extracted from <paramref name="newDefinition"/>, otherwise false.</returns>
+		protected bool ParseDefinition(string newDefinition)
 		{
 			// First, remove the container strings from the ends of the definition string
 			newDefinition = TrimDefinitionMarkers(newDefinition);
 			// UNDONE: Can we preserve this collection instead of clearing it?
-			ValueRangeCollection.Clear();
+			LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
+			ranges.Clear();
 			// Second, find the value ranges in the definition string
 			// and add them to the collection
 			if (newDefinition.Length != 0)
@@ -1724,6 +1730,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					match = match.NextMatch();
 				}
 			}
+			return ranges.Count != 0;
 		}
 		/// <summary>
 		/// Helper method for matching value ranges. Called after an

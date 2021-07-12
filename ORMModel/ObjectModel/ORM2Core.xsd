@@ -3852,7 +3852,7 @@
 		<xs:sequence>
 			<xs:element name="Definitions" type="DefinitionsType" minOccurs="0"/>
 			<xs:element name="Notes" type="NotesType" minOccurs="0"/>
-			<xs:element name="ValueRanges" type="ValueRangesType"/>
+			<xs:element name="ValueRanges" type="ValueRangesType" minOccurs="0"/>
 			<xs:element name="Extensions" type="ExtensionsType" minOccurs="0"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
