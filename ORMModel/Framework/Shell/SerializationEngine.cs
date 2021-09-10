@@ -1886,6 +1886,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			return;
 		}
 		/// <summary>
+		/// Used to defer writing custom elements. This can return false to force unwind of the calling function.
+		/// </summary>
+		/// <returns>True to continue processing</returns>
+		private delegate bool DeferWriteCallback();
+		/// <summary>
 		/// Writes a customized begin element tag.
 		/// </summary>
 		/// <param name="file">The file to write to.</param>
@@ -1893,8 +1898,9 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// <param name="containerInfo">The customized tag info for a container element.</param>
 		/// <param name="defaultPrefix">The default prefix.</param>
 		/// <param name="defaultName">The default tag name.</param>
+		/// <param name="deferWrite">Callback for delayed writing. This will be set to null after first use.</param>
 		/// <returns>true if the begin element tag was written.</returns>
-		private static bool WriteCustomizedStartElement(XmlWriter file, CustomSerializedElementInfo customInfo, CustomSerializedElementInfo containerInfo, string defaultPrefix, string defaultName)
+		private static bool WriteCustomizedStartElement(XmlWriter file, CustomSerializedElementInfo customInfo, CustomSerializedElementInfo containerInfo, string defaultPrefix, string defaultName, ref DeferWriteCallback deferWrite)
 		{
 			if (customInfo != null)
 			{
@@ -1911,7 +1917,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 
 							if (containerInfo != null)
 							{
-								WriteCustomizedStartElement(file, containerInfo, null, defaultPrefix, "");
+								if (!WriteCustomizedStartElement(file, containerInfo, null, defaultPrefix, "", ref deferWrite))
+								{
+									return false;
+								}
+							}
+
+							if (null != deferWrite)
+							{
+								bool deferFailed = !deferWrite();
+								deferWrite = null;
+								if (deferFailed)
+								{
+									return false;
+								}
 							}
 							file.WriteStartElement
 							(
@@ -1932,7 +1951,20 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 
 				if (containerInfo != null)
 				{
-					WriteCustomizedStartElement(file, containerInfo, null, defaultPrefix, "");
+					if (!WriteCustomizedStartElement(file, containerInfo, null, defaultPrefix, "", ref deferWrite))
+					{
+						return false;
+					}
+				}
+
+				if (null != deferWrite)
+				{
+					bool deferFailed = !deferWrite();
+					deferWrite = null;
+					if (deferFailed)
+					{
+						return false;
+					}
 				}
 				file.WriteStartElement
 				(
@@ -1944,6 +1976,15 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			else
 			{
 				Debug.Assert(containerInfo == null, "Should not have an outer container if an inner container is not supplied");
+				if (null != deferWrite)
+				{
+					bool deferFailed = !deferWrite();
+					deferWrite = null;
+					if (deferFailed)
+					{
+						return false;
+					}
+				}
 				file.WriteStartElement(defaultPrefix, defaultName, null);
 			}
 			return true;
@@ -2157,7 +2198,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// <param name="rolePlayer">The role player. Should be verified with <see cref="ShouldSerializeElement(ModelElement)"/> before this call.</param>
 		/// <param name="oppositeRolePlayer">The opposite role player.</param>
 		/// <param name="rolePlayedInfo">The role being played.</param>
-		private void SerializeLink(XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, DomainRoleInfo rolePlayedInfo)
+		/// <param name="deferWrite">Code to run before this function writes any output. This is cleared on first write.</param>
+		private void SerializeLink(XmlWriter file, ElementLink link, ModelElement rolePlayer, ModelElement oppositeRolePlayer, DomainRoleInfo rolePlayedInfo, ref DeferWriteCallback deferWrite)
 		{
 			CustomSerializedElementSupportedOperations supportedOperations = CustomSerializedElementSupportedOperations.None;
 			CustomSerializedElementInfo customInfo = CustomSerializedElementInfo.Default;
@@ -2240,7 +2282,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 #endif // WRITE_ALL_DEFAULT_LINKS
 			}
 			// UNDONE: Write start element off roleplayer, not link, for standalone primary link element
-			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, standaloneLink ? link.GetDomainClass().Name : string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name)))
+			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, standaloneLink ? link.GetDomainClass().Name : string.Concat(rolePlayedInfo.DomainRelationship.Name, ".", rolePlayedInfo.OppositeDomainRole.Name), ref deferWrite))
 			{
 				return;
 			}
@@ -2370,15 +2412,21 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 
 						if (ShouldSerializeElement(link) && ShouldSerializeElement(oppositeRolePlayer))
 						{
-							if (writeBeginElement && !ret && customInfo != null)
-							{
-								if (!WriteCustomizedStartElement(file, customInfo, containerInfo, defaultPrefix, customInfo.CustomName))
+							DeferWriteCallback deferWrite = (writeBeginElement && !ret && customInfo != null) ?
+								(DeferWriteCallback)delegate ()
 								{
-									return false;
+									DeferWriteCallback dummyDefer = null;
+									if (!WriteCustomizedStartElement(file, customInfo, containerInfo, defaultPrefix, customInfo.CustomName, ref dummyDefer))
+									{
+										// Don't change ret from true to false
+										return false;
+									}
+									ret = true;
+									return true;
 								}
-								ret = true;
-							}
-							SerializeLink(file, link, childElement, oppositeRolePlayer, rolePlayedInfo);
+							:
+								null;
+							SerializeLink(file, link, childElement, oppositeRolePlayer, rolePlayedInfo, ref deferWrite);
 						}
 					}
 				}
@@ -2590,12 +2638,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 
 			// Support fully customized write of element
 			IXmlSerializable fullyCustomElement = element as IXmlSerializable;
+			DeferWriteCallback dummyDefer = null;
 			if (fullyCustomElement != null)
 			{
 				//write container begin element
 				if (containerName != null)
 				{
-					if (!WriteCustomizedStartElement(file, containerCustomInfo, null, containerPrefix, containerName))
+					if (!WriteCustomizedStartElement(file, containerCustomInfo, null, containerPrefix, containerName, ref dummyDefer))
 					{
 						return false;
 					}
@@ -2651,7 +2700,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			//write container begin element
 			if (containerName != null)
 			{
-				if (!WriteCustomizedStartElement(file, containerCustomInfo, null, containerPrefix, containerName))
+				if (!WriteCustomizedStartElement(file, containerCustomInfo, null, containerPrefix, containerName, ref dummyDefer))
 				{
 					return false;
 				}
@@ -2659,7 +2708,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			}
 
 			//write begin element tag
-			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, classInfo.Name))
+			if (!WriteCustomizedStartElement(file, customInfo, null, defaultPrefix, classInfo.Name, ref dummyDefer))
 			{
 				return true;
 			}
