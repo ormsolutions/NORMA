@@ -677,7 +677,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid
 				// ElementReferenceDeleted, except that there are no notifications
 				// and the element context is ignored.
 				object referencedElement = reference.ReferencedElement;
-				if (referenceDictionary.TryGetValue(referencedElement, out startHeadLinkNode))
+				// The referenced element can be null if the target is no longer available, usually due to deletion. If that is the case then
+				// the expectation is that the target itself will also be notified as deleted, which will also clear out the reference as well,
+				// so we don't stress about a failure in this case.
+				if (referencedElement != null && 
+					referenceDictionary.TryGetValue(referencedElement, out startHeadLinkNode))
 				{
 					linkNode = headLinkNode = startHeadLinkNode;
 					object referenceReason = reference.SurveyNodeReferenceReason;

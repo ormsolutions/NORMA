@@ -71,6 +71,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			retVal[dataDir.FindDomainRelationship(ModelHasModelErrorDisplayFilter.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(ElementAssociatedWithModelError.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(ElementHasAlias.DomainClassId)] = null;
+			retVal[dataDir.FindDomainRelationship(NameGeneratorRefinesInstance.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(ObjectTypeHasObjectTypeInstance.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(RolePathOwnerHasSingleLeadRolePath.DomainClassId)] = null;
 			retVal[dataDir.FindDomainRelationship(RolePathOwnerHasSingleOwnedLeadRolePath.DomainClassId)] = null;
@@ -336,6 +337,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("Group", ElementGrouping.DomainClassId);
 				classNameMap.Add("GroupDuplicateNameError", ElementGroupingDuplicateNameError.DomainClassId);
 				classNameMap.Add("GroupMembershipContradictionError", ElementGroupingMembershipContradictionError.DomainClassId);
+				classNameMap.Add("ReferenceModeNamingBase", ReferenceModeNaming.DomainClassId);
+				classNameMap.Add("DefaultReferenceModeNamingBase", DefaultReferenceModeNaming.DomainClassId);
 				ORMCoreDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -1172,7 +1175,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -1221,6 +1224,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			Guid roleId = rolePlayedInfo.Id;
+			if (roleId == NameAliasRefinesInstance.RefinedInstanceDomainRoleId)
+			{
+				return new CustomSerializedElementInfo(null, "RefinedInstance", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.LinkInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+			}
+			return CustomSerializedElementInfo.Default;
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		private static Dictionary<string, CustomSerializedElementMatch> myChildElementMappings;
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected new CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			Dictionary<string, CustomSerializedElementMatch> childElementMappings = NameAlias.myChildElementMappings;
+			if (childElementMappings == null)
+			{
+				childElementMappings = new Dictionary<string, CustomSerializedElementMatch>();
+				CustomSerializedElementMatch match = new CustomSerializedElementMatch();
+				match.InitializeRoles(NameAliasRefinesInstance.RefinedInstanceDomainRoleId);
+				childElementMappings.Add("||||http://schemas.neumont.edu/ORM/2006-04/ORMCore|RefinedInstance", match);
+				NameAlias.myChildElementMappings = childElementMappings;
+			}
+			CustomSerializedElementMatch rVal;
+			if (!childElementMappings.TryGetValue(string.Concat(outerContainerNamespace, "|", outerContainerName, "|", (object)containerNamespace != (object)outerContainerNamespace ? containerNamespace : null, "|", containerName, "|", (object)elementNamespace != (object)containerNamespace ? elementNamespace : null, "|", elementName), out rVal))
+			{
+				rVal = base.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+			}
+			return rVal;
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
 		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
@@ -1306,7 +1351,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (domainPropertyInfo.Id == NameGenerator.SpacingFormatDomainPropertyId)
 			{
-				if (this.SpacingFormat == NameGeneratorSpacingFormat.Retain)
+				if (this.SpacingFormat == NameGeneratorSpacingFormat.Retain || this.IsIgnoredAttributeId(NameGenerator.SpacingFormatDomainPropertyId))
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -1314,7 +1359,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (domainPropertyInfo.Id == NameGenerator.CasingOptionDomainPropertyId)
 			{
-				if (this.CasingOption == NameGeneratorCasingOption.None)
+				if (this.CasingOption == NameGeneratorCasingOption.None || this.IsIgnoredAttributeId(NameGenerator.CasingOptionDomainPropertyId))
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -1322,7 +1367,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			if (domainPropertyInfo.Id == NameGenerator.SpacingReplacementDomainPropertyId)
 			{
-				if (this.SpacingFormat != NameGeneratorSpacingFormat.ReplaceWith)
+				if (this.SpacingFormat != NameGeneratorSpacingFormat.ReplaceWith || this.IsIgnoredAttributeId(NameGenerator.SpacingFormatDomainPropertyId))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == NameGenerator.AutomaticallyShortenNamesDomainPropertyId)
+			{
+				if (this.IsIgnoredAttributeId(NameGenerator.AutomaticallyShortenNamesDomainPropertyId))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == NameGenerator.UserDefinedMaximumDomainPropertyId)
+			{
+				if (this.IsIgnoredAttributeId(NameGenerator.UserDefinedMaximumDomainPropertyId))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == NameGenerator.UseTargetDefaultMaximumDomainPropertyId)
+			{
+				if (this.IsIgnoredAttributeId(NameGenerator.UseTargetDefaultMaximumDomainPropertyId))
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -1445,6 +1514,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				customSerializedAttributes.Add("SpacingFormat", NameGenerator.SpacingFormatDomainPropertyId);
 				customSerializedAttributes.Add("CasingOption", NameGenerator.CasingOptionDomainPropertyId);
 				customSerializedAttributes.Add("SpacingReplacement", NameGenerator.SpacingReplacementDomainPropertyId);
+				customSerializedAttributes.Add("AutomaticallyShortenNames", NameGenerator.AutomaticallyShortenNamesDomainPropertyId);
+				customSerializedAttributes.Add("UserDefinedMaximum", NameGenerator.UserDefinedMaximumDomainPropertyId);
+				customSerializedAttributes.Add("UseTargetDefaultMaximum", NameGenerator.UseTargetDefaultMaximumDomainPropertyId);
 				customSerializedAttributes.Add("NameUsage", NameGenerator.NameUsageDomainPropertyId);
 				NameGenerator.myCustomSerializedAttributes = customSerializedAttributes;
 			}
@@ -16620,4 +16692,291 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // ElementGroupingHasMembershipContradictionError serialization
+	#region ReferenceModeNaming serialization
+	partial class ReferenceModeNaming : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		protected CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected CustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				return new CustomSerializedElementInfo(null, "ReferenceModeNamingBase", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == ReferenceModeNaming.NamingChoiceDomainPropertyId)
+			{
+				if (this.NamingChoice == ReferenceModeNamingChoice.ModelDefault)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ReferenceModeNaming.PrimaryIdentifierNamingChoiceDomainPropertyId)
+			{
+				if (this.PrimaryIdentifierNamingChoice == ReferenceModeNamingChoice.ModelDefault)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ReferenceModeNaming.CustomFormatDomainPropertyId)
+			{
+				if (!this.UsesCustomFormat(ReferenceModeNamingUse.ReferenceToEntityType, true))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ReferenceModeNaming.PrimaryIdentifierCustomFormatDomainPropertyId)
+			{
+				if (!this.UsesCustomFormat(ReferenceModeNamingUse.PrimaryIdentifier, true))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return default(CustomSerializedElementMatch);
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = ReferenceModeNaming.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("NamingChoice", ReferenceModeNaming.NamingChoiceDomainPropertyId);
+				customSerializedAttributes.Add("PrimaryIdentifierNamingChoice", ReferenceModeNaming.PrimaryIdentifierNamingChoiceDomainPropertyId);
+				customSerializedAttributes.Add("CustomFormat", ReferenceModeNaming.CustomFormatDomainPropertyId);
+				customSerializedAttributes.Add("PrimaryIdentifierCustomFormat", ReferenceModeNaming.PrimaryIdentifierCustomFormatDomainPropertyId);
+				ReferenceModeNaming.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected bool ShouldSerialize()
+		{
+			ObjectType objectType;
+			return this.UsesCustomFormat(ReferenceModeNamingUse.ReferenceToEntityType, true) || this.UsesCustomFormat(ReferenceModeNamingUse.PrimaryIdentifier, true) || (this.NamingChoice != ReferenceModeNamingChoice.ModelDefault || this.PrimaryIdentifierNamingChoice != ReferenceModeNamingChoice.ModelDefault) && (objectType = this.ResolvedObjectType) != null && objectType.ReferenceModePattern != null;
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
+	}
+	#endregion // ReferenceModeNaming serialization
+	#region DefaultReferenceModeNaming serialization
+	partial class DefaultReferenceModeNaming : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		protected CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected CustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				return new CustomSerializedElementInfo(null, "DefaultReferenceModeNamingBase", null, CustomSerializedElementWriteStyle.Element, null);
+			}
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId)
+			{
+				return new CustomSerializedPropertyInfo(null, "TargetKind", null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == DefaultReferenceModeNaming.CustomFormatDomainPropertyId)
+			{
+				if (string.IsNullOrEmpty(this.CustomFormat))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return default(CustomSerializedElementMatch);
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = DefaultReferenceModeNaming.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("TargetKind", DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId);
+				customSerializedAttributes.Add("CustomFormat", DefaultReferenceModeNaming.CustomFormatDomainPropertyId);
+				DefaultReferenceModeNaming.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return ShouldSerialize();
+		}
+	}
+	#endregion // DefaultReferenceModeNaming serialization
 }

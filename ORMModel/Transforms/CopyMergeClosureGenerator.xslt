@@ -380,6 +380,7 @@
 													</xsl:if>
 													<plx:anonymousFunction>
 														<plx:param name="link" dataTypeName="ElementLink"/>
+														<plx:param name="targetState" dataTypeName="ICopyClosureTargetState"/>
 														<plx:returns dataTypeName="CopyClosureBehavior"/>
 														<xsl:copy-of select="$delegateBody"/>
 													</plx:anonymousFunction>

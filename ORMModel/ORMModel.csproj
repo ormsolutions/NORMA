@@ -153,6 +153,8 @@
     <Compile Include="ObjectModel\Design\Editors\ReferenceModePickers.cs" />
     <Compile Include="ObjectModel\Design\Editors\ObjectificationPickers.cs" />
     <Compile Include="ObjectModel\HierarchyContext.cs" />
+    <Compile Include="ObjectModel\NamePart.cs" />
+    <Compile Include="ObjectModel\ReferenceModeNaming.cs" />
     <Compile Include="ObjectModel\UnaryBinarization.cs" />
     <Compile Include="ShapeModel\Design\ObjectifiedFactTypeNameShapeTypeDescriptor.cs" />
     <Compile Include="ShapeModel\Design\ORMBaseShapeTypeDescriptor.cs" />

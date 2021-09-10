@@ -287,6 +287,10 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 			{
 				return myServices.NavigateTo(element, window);
 			}
+			bool IORMToolServices.NavigateTo(object element, NavigateToWindow window, NavigateToOptions options)
+			{
+				return myServices.NavigateTo(element, window, options);
+			}
 			#endregion // IORMToolServices Implementation
 			#region IModelingEventManagerProvider Implementation
 			ModelingEventManager IModelingEventManagerProvider.ModelingEventManager

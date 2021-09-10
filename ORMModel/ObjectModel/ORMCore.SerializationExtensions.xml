@@ -82,6 +82,7 @@
 			<se:OmitRelationship Class="ModelHasModelErrorDisplayFilter"/>
 			<se:OmitRelationship Class="ElementAssociatedWithModelError"/>
 			<se:OmitRelationship Class="ElementHasAlias"/>
+			<se:OmitRelationship Class="NameGeneratorRefinesInstance"/>
 			<se:OmitRelationship Class="ObjectTypeHasObjectTypeInstance"/>
 			<se:OmitRelationship Class="RolePathOwnerHasSingleLeadRolePath"/>
 			<se:OmitRelationship Class="RolePathOwnerHasSingleOwnedLeadRolePath"/>
@@ -200,6 +201,7 @@
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
+		<se:Link Name="RefinedInstance" RelationshipName="NameAliasRefinesInstance" RoleName="RefinedInstance"/>
 	</se:Element>
 	<se:Element Class="NameGenerator" SortChildElements="true" UnsortedElementsFirst="true" Override="true">
 		<se:ConditionalSerialization>
@@ -209,38 +211,98 @@
 		</se:ConditionalSerialization>
 		<se:Attribute ID="SpacingFormat">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="equality">
+				<plx:binaryOperator type="booleanOr">
 					<plx:left>
-						<plx:callThis name="SpacingFormat" type="property"/>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="SpacingFormat" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="Retain" dataTypeName="NameGeneratorSpacingFormat" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="Retain" dataTypeName="NameGeneratorSpacingFormat" type="field"/>
+						<plx:callThis name="IsIgnoredAttributeId">
+							<plx:passParam>
+								<plx:callStatic name="SpacingFormatDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
+							</plx:passParam>
+						</plx:callThis>
 					</plx:right>
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="CasingOption">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="equality">
+				<plx:binaryOperator type="booleanOr">
 					<plx:left>
-						<plx:callThis name="CasingOption" type="property"/>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="CasingOption" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="None" dataTypeName="NameGeneratorCasingOption" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="None" dataTypeName="NameGeneratorCasingOption" type="field"/>
+						<plx:callThis name="IsIgnoredAttributeId">
+							<plx:passParam>
+								<plx:callStatic name="CasingOptionDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
+							</plx:passParam>
+						</plx:callThis>
 					</plx:right>
 				</plx:binaryOperator>
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="SpacingReplacement">
 			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="inequality">
+				<plx:binaryOperator type="booleanOr">
 					<plx:left>
-						<plx:callThis name="SpacingFormat" type="property"/>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callThis name="SpacingFormat" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="ReplaceWith" dataTypeName="NameGeneratorSpacingFormat" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic name="ReplaceWith" dataTypeName="NameGeneratorSpacingFormat" type="field"/>
+						<plx:callThis name="IsIgnoredAttributeId">
+							<plx:passParam>
+								<plx:callStatic name="SpacingFormatDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
+							</plx:passParam>
+						</plx:callThis>
 					</plx:right>
 				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="AutomaticallyShortenNames">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callThis name="IsIgnoredAttributeId">
+					<plx:passParam>
+						<plx:callStatic name="AutomaticallyShortenNamesDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
+					</plx:passParam>
+				</plx:callThis>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="UserDefinedMaximum">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callThis name="IsIgnoredAttributeId">
+					<plx:passParam>
+						<plx:callStatic name="UserDefinedMaximumDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
+					</plx:passParam>
+				</plx:callThis>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="UseTargetDefaultMaximum">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callThis name="IsIgnoredAttributeId">
+					<plx:passParam>
+						<plx:callStatic name="UseTargetDefaultMaximumDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
+					</plx:passParam>
+				</plx:callThis>
 			</se:Condition>
 		</se:Attribute>
 		<se:Attribute ID="NameUsage" WriteCustomStorage="true">
@@ -2112,5 +2174,168 @@
 	</se:Element>
 	<se:Element Class="ElementGroupingHasMembershipContradictionError" LinkOnly="true">
 		<se:Link RelationshipName="GroupingMembershipContradictionErrorIsForElement" RoleName="Element" Name="Element"/>
+	</se:Element>
+	<se:Element Class="ReferenceModeNaming" Name="ReferenceModeNamingBase">
+		<se:ConditionalSerialization>
+			<plx:local name="objectType" dataTypeName="ObjectType"/>
+			<plx:return>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="booleanOr">
+							<plx:left>
+								<plx:callThis name="UsesCustomFormat">
+									<plx:passParam>
+										<plx:callStatic name="ReferenceToEntityType" dataTypeName="ReferenceModeNamingUse" type="field"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:trueKeyword/>
+									</plx:passParam>
+								</plx:callThis>
+							</plx:left>
+							<plx:right>
+								<plx:callThis name="UsesCustomFormat">
+									<plx:passParam>
+										<plx:callStatic name="PrimaryIdentifier" dataTypeName="ReferenceModeNamingUse" type="field"/>
+									</plx:passParam>
+									<plx:passParam>
+										<plx:trueKeyword/>
+									</plx:passParam>
+								</plx:callThis>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="booleanOr">
+									<plx:left>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callThis name="NamingChoice" type="property"/>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callThis name="PrimaryIdentifierNamingChoice" type="property"/>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="booleanAnd">
+									<plx:left>
+										<plx:binaryOperator type="identityInequality">
+											<plx:left>
+												<plx:inlineStatement dataTypeName="ObjectType">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="objectType"/>
+														</plx:left>
+														<plx:right>
+															<plx:callThis name="ResolvedObjectType" type="property"/>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:left>
+											<plx:right>
+												<plx:nullKeyword/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="identityInequality">
+											<plx:left>
+												<plx:callInstance name="ReferenceModePattern" type="property">
+													<plx:callObject>
+														<plx:nameRef name="objectType"/>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:left>
+											<plx:right>
+												<plx:nullKeyword/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
+		<se:Attribute ID="NamingChoice">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="NamingChoice" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="PrimaryIdentifierNamingChoice">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="PrimaryIdentifierNamingChoice" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="ReferenceModeNamingChoice" name="ModelDefault" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="CustomFormat">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="UsesCustomFormat">
+						<plx:passParam>
+							<plx:callStatic name="ReferenceToEntityType" dataTypeName="ReferenceModeNamingUse" type="field"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:trueKeyword/>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="PrimaryIdentifierCustomFormat">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="UsesCustomFormat">
+						<plx:passParam>
+							<plx:callStatic name="PrimaryIdentifier" dataTypeName="ReferenceModeNamingUse" type="field"/>
+						</plx:passParam>
+						<plx:passParam>
+							<plx:trueKeyword/>
+						</plx:passParam>
+					</plx:callThis>
+				</plx:unaryOperator>
+			</se:Condition>
+		</se:Attribute>
+	</se:Element>
+	<se:Element Class="DefaultReferenceModeNaming" Name="DefaultReferenceModeNamingBase">
+		<!--<se:Attribute ID="NamingChoice"/> not needed for default serialization-->
+		<se:Attribute ID="ReferenceModeTargetKind" Name="TargetKind"/>
+		<se:Attribute ID="CustomFormat">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+					<plx:passParam>
+						<plx:callThis name="CustomFormat" type="property"/>
+					</plx:passParam>
+				</plx:callStatic>
+			</se:Condition>
+		</se:Attribute>
 	</se:Element>
 </se:CustomSerializedElements>

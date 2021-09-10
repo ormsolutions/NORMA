@@ -1790,13 +1790,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="reading">The reading to use</param>
 		/// <param name="role">The role to get a string for</param>
-		/// <param name="unaryRoleIndex">Treat as a unary role if this index is set.</param>
+		/// <param name="isUnary">Treat as a unary role if set.</param>
 		/// <returns>A format string with a single replacement field if the role is hyphen bound, or <see langword="null"/> otherwise.</returns>
-		public static string GetFormatStringForHyphenBoundRole(IReading reading, RoleBase role, int? unaryRoleIndex)
+		public static string GetFormatStringForHyphenBoundRole(IReading reading, RoleBase role, bool isUnary)
 		{
 			IList<RoleBase> roles = reading.RoleCollection;
 			int roleCount = roles.Count;
-			bool isUnary = unaryRoleIndex.HasValue;
 			IFormatProvider formatProvider = CultureInfo.CurrentCulture;
 			Match match = MainRegex.Match(reading.Text);
 			while (match.Success)

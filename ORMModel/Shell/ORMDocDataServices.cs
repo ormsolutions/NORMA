@@ -591,7 +591,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			/// <summary>
 			/// Defer to NavigateTo on the document. Implements
-			/// <see cref="IORMToolServices.NavigateTo"/>
+			/// <see cref="IORMToolServices.NavigateTo(object,NavigateToWindow)"/>
 			/// </summary>
 			protected bool NavigateTo(object target, NavigateToWindow window)
 			{
@@ -600,6 +600,18 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			bool IORMToolServices.NavigateTo(object target, NavigateToWindow window)
 			{
 				return NavigateTo(target, window);
+			}
+			/// <summary>
+			/// Defer to NavigateTo on the document. Implements
+			/// <see cref="IORMToolServices.NavigateTo(object,NavigateToWindow,NavigateToOptions)"/>
+			/// </summary>
+			protected bool NavigateTo(object target, NavigateToWindow window, NavigateToOptions options)
+			{
+				return myServices.NavigateTo(target, window, options);
+			}
+			bool IORMToolServices.NavigateTo(object target, NavigateToWindow window, NavigateToOptions options)
+			{
+				return NavigateTo(target, window, options);
 			}
 			#endregion // IORMToolServices Implementation
 			#region IModelingEventManagerProvider Implementation
@@ -2291,16 +2303,23 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			return ActivateShape(shape, window);
 		}
 		/// <summary>
-		/// Implements <see cref="IORMToolServices.NavigateTo"/>
+		/// Implements <see cref="IORMToolServices.NavigateTo(object,NavigateToWindow)"/>
 		/// </summary>
 		protected bool NavigateTo(object target, NavigateToWindow window)
+		{
+			return NavigateTo(target, window, NavigateToOptions.None);
+		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.NavigateTo(object,NavigateToWindow,NavigateToOptions)"/>
+		/// </summary>
+		protected bool NavigateTo(object target, NavigateToWindow window, NavigateToOptions options)
 		{
 			if (target == null)
 			{
 				return false;
 			}
 			ModelElement element = null;
-			IRepresentModelElements elementRep = target as IRepresentModelElements;
+			IRepresentModelElements elementRep = (0 != (options & NavigateToOptions.IgnoreRepresentedElements)) ? null : target as IRepresentModelElements;
 			if (elementRep != null)
 			{
 				ModelElement[] elements = elementRep.GetRepresentedElements();
@@ -2687,6 +2706,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		bool IORMToolServices.NavigateTo(object target, NavigateToWindow window)
 		{
 			return NavigateTo(target, window);
+		}
+		bool IORMToolServices.NavigateTo(object target, NavigateToWindow window, NavigateToOptions options)
+		{
+			return NavigateTo(target, window, options);
 		}
 		#endregion // IORMToolServices Implementation
 		#region TaskProvider implementation

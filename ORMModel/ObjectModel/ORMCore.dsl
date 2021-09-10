@@ -2492,6 +2492,60 @@
 			</BaseClass>
 		</DomainClass>
 
+		<!-- Utility Helper Classes -->
+		<DomainClass Name="ReferenceModeNaming" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B49AE46D-1551-4477-A2EB-C56415059912" DisplayName="ReferenceModeNamingBase" InheritanceModifier="Abstract" Description="">
+			<Properties>
+				<DomainProperty Name="NamingChoice" DefaultValue="ModelDefault" DisplayName="NamingChoice" Id="3E60BEBC-05E3-4D6E-8662-66C04FF27B8F" Description="The naming pattern used for references to this EntityType.">
+					<Type>
+						<DomainEnumerationMoniker Name="ReferenceModeNamingChoice"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="CustomFormat" Id="24265C6B-8058-43AE-91A3-D04968CA7C32" Description="The custom naming format used for references to this EntityType.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="PrimaryIdentifierNamingChoice" DefaultValue="ModelDefault" DisplayName="PrimaryIdentifierNamingChoice" Id="BAD8149A-DB92-4C8E-B646-4D6D7BDBC3BC" Description="The naming pattern used for simple primary identification of this EntityType.">
+					<Type>
+						<DomainEnumerationMoniker Name="ReferenceModeNamingChoice"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="PrimaryIdentifierCustomFormat" DefaultValue="" DisplayName="PrimaryIdentifierCustomFormat" Id="E7C711BD-9687-4FC8-96C9-FE314C47099D" Description="The custom naming format used for simple primary identification of this EntityType.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+		<DomainClass Name="DefaultReferenceModeNaming" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="443F27D8-44D6-4D4D-A918-2B9E7F613157" DisplayName="DefaultReferenceModeNamingBase" InheritanceModifier="Abstract" Description="">
+			<Properties>
+				<DomainProperty Name="NamingChoice" DefaultValue="ValueTypeName" DisplayName="DefaultReferenceModeNaming" Id="178450CE-A301-4022-9CA7-ADC28F59D7C9" Description="The default naming pattern used for references to EntityTypes with this kind of reference mode.">
+					<Type>
+						<DomainEnumerationMoniker Name="EffectiveReferenceModeNamingChoice"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="NamingChoice" Id="D0266C9E-C95E-43A6-A874-A0EBE08F5E28" Description="The default custom naming format used for references to EntityTypes with custom naming formats.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="PrimaryIdentifierNamingChoice" DefaultValue="ValueTypeName" DisplayName="DefaultPrimaryIdentifierReferenceModeNaming" Id="63DDCAA0-330F-4BB6-8FCA-8273FA3AAAE4" Description="The default naming pattern used for simple primary identification of EntityTypes with this kind of reference mode.">
+					<Type>
+						<DomainEnumerationMoniker Name="EffectiveReferenceModeNamingChoice"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="PrimaryIdentifierCustomFormat" DefaultValue="" DisplayName="DefaultPrimaryIdentifierReferenceModeCustomFormat" Id="B393F62E-E784-488C-BD72-3A4C69A7FE97" Description="The default custom naming format used for simple primary identification of EntityTypes with custom naming formats.">
+					<Type>
+						<ExternalTypeMoniker Name="/System/String"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="ReferenceModeTargetKind" DefaultValue="Popular" DisplayName="ReferenceModeTargetKind" Id="1699FA2A-D247-4D5B-9B4C-7E147B2459AF">
+					<Type>
+						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ReferenceModeType"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
 	</Classes>
 
 	<Relationships>
@@ -2969,6 +3023,40 @@
 				<DomainRole Name="Alias" PropertyName="Element" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Alias" Id="DAE4D333-A8B3-448F-94C2-56286FB60A1F">
 					<RolePlayer>
 						<DomainClassMoniker Name="NameAlias"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="NameAliasRefinesInstance" InheritanceModifier="Sealed" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="93B52186-B6A2-4363-A0D6-65D963786834">
+			<Source>
+				<DomainRole Name="Alias" PropertyName="RefinedInstance" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="Alias" Id="8C78B44C-C3EB-4DD0-908C-3681467A35A3">
+					<RolePlayer>
+						<DomainClassMoniker Name="NameAlias"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="RefinedInstance" PropertyName="RefiningAliasCollection" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="UsedByInstance" Id="319FB87B-A3DD-436E-A221-FD2F706EDF38">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="NameGeneratorRefinesInstance" InheritanceModifier="Abstract" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Description="This generator applies to a specific instance. This will be a refinement of a global name generator of the same type." Id="17E29F53-0F1F-4E01-933A-F42A500602C6">
+			<Source>
+				<DomainRole Name="NameGenerator" PropertyName="RefinedInstance" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="NameGenerator" Id="86B7F502-8C72-4BEB-8D7E-1D4DD6CC9640">
+					<RolePlayer>
+						<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/NameGenerator"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Instance" PropertyName="RefiningNameGenerators" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Instance" Id="B6BFBF71-6BC7-488D-BAA8-BD7CDC3CA12E">
+					<RolePlayer>
+						<DomainClassMoniker Name="/Microsoft.VisualStudio.Modeling/ModelElement"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -7396,6 +7484,37 @@
 				<EnumerationLiteral Name="Error" Value="0" Description="Error is fully enabled."/>
 				<EnumerationLiteral Name="Ignored" Value="1" Description="Error state is tracked, but ignored."/>
 			</Literals>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="ReferenceModeNamingChoice" Description="Specify how reference mode names are used in generated names for an &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType&quot;/&gt;, including an option for deferring to the model.">
+			<Literals>
+				<EnumerationLiteral Name="ValueTypeName" Value="0" Description="Use the name of the identifying value type as the item name."/>
+				<EnumerationLiteral Name="EntityTypeName" Value="1" Description="Use the name of the entity type as the item name."/>
+				<EnumerationLiteral Name="ReferenceModeName" Value="2" Description="Use the name of the reference mode as the item name."/>
+				<EnumerationLiteral Name="CustomFormat" Value="3" Description="Use a custom format string using the other three values as replacement fields."/>
+				<EnumerationLiteral Name="ModelDefault" Value="4" Description="Use the default setting from the model."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;ReferenceModeNamingChoice, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="EffectiveReferenceModeNamingChoice" Description="Specify how reference mode names are used in generated names for an &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType&quot;/&gt;.">
+			<Literals>
+				<EnumerationLiteral Name="ValueTypeName" Value="0" Description="Use the name of the identifying value type as the item name."/>
+				<EnumerationLiteral Name="EntityTypeName" Value="1" Description="Use the name of the entity type as the item name."/>
+				<EnumerationLiteral Name="ReferenceModeName" Value="2" Description="Use a custom format string using the other three values as replacement fields."/>
+				<EnumerationLiteral Name="CustomFormat" Value="3" Description="Use a custom format with the other three values as replacement fields."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;EffectiveReferenceModeNamingChoice, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
 		</DomainEnumeration>
 	</Types>
 

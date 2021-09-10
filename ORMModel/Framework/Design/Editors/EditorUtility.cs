@@ -302,6 +302,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 												items = currentItem.GridItems;
 												moveDown = true;
 											}
+											else
+											{
+												currentItem = currentItem.Parent;
+											}
 											break;
 										case GridItemType.Root:
 											items = currentItem.GridItems;
@@ -321,12 +325,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 									}
 								}
 							}
-							if (activateItem == null && items != null)
+							while (activateItem == null && items != null)
 							{
-								currentItem = null;
-								foreach (GridItem item in items)
+								currentItem = null; // Break outer loop
+								GridItemCollection iterateItems = items;
+								items = null;
+								foreach (GridItem item in iterateItems)
 								{
-									items = null;
 									GridItemType itemType = item.GridItemType;
 									if (itemType == GridItemType.Category)
 									{

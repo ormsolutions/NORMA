@@ -2798,6 +2798,94 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>Sample Population Value Invalid for DataType</value>
     <comment>DisplayName for DomainClass &apos;CompatibleValueTypeInstanceValueError&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>ReferenceModeNamingBase</value>
+    <comment>DisplayName for DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming/NamingChoice.Description" xml:space="preserve">
+    <value>The naming pattern used for references to this EntityType.</value>
+    <comment>Description for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming/NamingChoice.DisplayName" xml:space="preserve">
+    <value>NamingChoice</value>
+    <comment>DisplayName for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming/CustomFormat.Description" xml:space="preserve">
+    <value>The custom naming format used for references to this EntityType.</value>
+    <comment>Description for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming/CustomFormat.DisplayName" xml:space="preserve">
+    <value>CustomFormat</value>
+    <comment>DisplayName for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming/PrimaryIdentifierNamingChoice.Description" xml:space="preserve">
+    <value>The naming pattern used for simple primary identification of this EntityType.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName" xml:space="preserve">
+    <value>PrimaryIdentifierNamingChoice</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming/PrimaryIdentifierCustomFormat.Description" xml:space="preserve">
+    <value>The custom naming format used for simple primary identification of this EntityType.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName" xml:space="preserve">
+    <value>PrimaryIdentifierCustomFormat</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>DefaultReferenceModeNamingBase</value>
+    <comment>DisplayName for DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/NamingChoice.Description" xml:space="preserve">
+    <value>The default naming pattern used for references to EntityTypes with this kind of reference mode.</value>
+    <comment>Description for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/NamingChoice.DisplayName" xml:space="preserve">
+    <value>DefaultReferenceModeNaming</value>
+    <comment>DisplayName for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/CustomFormat.Description" xml:space="preserve">
+    <value>The default custom naming format used for references to EntityTypes with custom naming formats.</value>
+    <comment>Description for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/CustomFormat.DisplayName" xml:space="preserve">
+    <value>NamingChoice</value>
+    <comment>DisplayName for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.Description" xml:space="preserve">
+    <value>The default naming pattern used for simple primary identification of EntityTypes with this kind of reference mode.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName" xml:space="preserve">
+    <value>DefaultPrimaryIdentifierReferenceModeNaming</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.Description" xml:space="preserve">
+    <value>The default custom naming format used for simple primary identification of EntityTypes with custom naming formats.</value>
+    <comment>Description for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName" xml:space="preserve">
+    <value>DefaultPrimaryIdentifierReferenceModeCustomFormat</value>
+    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/ReferenceModeTargetKind.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming.ReferenceModeTargetKind</value>
+    <comment>Description for DomainProperty &apos;ReferenceModeTargetKind&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming/ReferenceModeTargetKind.DisplayName" xml:space="preserve">
+    <value>ReferenceModeTargetKind</value>
+    <comment>DisplayName for DomainProperty &apos;ReferenceModeTargetKind&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint</value>
     <comment>Description for DomainClass &apos;FactConstraint&apos;</comment>
@@ -3509,6 +3597,70 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ElementHasAlias/Alias.PropertyDisplayName" xml:space="preserve">
     <value>Element</value>
     <comment>PropertyDisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;ElementHasAlias&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance</value>
+    <comment>Description for DomainClass &apos;NameAliasRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.DisplayName" xml:space="preserve">
+    <value>Name Alias Refines Instance</value>
+    <comment>DisplayName for DomainClass &apos;NameAliasRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/Alias.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.Alias</value>
+    <comment>Description for DomainRole &apos;Alias&apos; on DomainRelationship &apos;NameAliasRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/Alias.DisplayName" xml:space="preserve">
+    <value>Alias</value>
+    <comment>DisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;NameAliasRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/Alias.PropertyDisplayName" xml:space="preserve">
+    <value>Refined Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Alias&apos; on DomainRelationship &apos;NameAliasRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/RefinedInstance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.RefinedInstance</value>
+    <comment>Description for DomainRole &apos;RefinedInstance&apos; on DomainRelationship &apos;NameAliasRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/RefinedInstance.DisplayName" xml:space="preserve">
+    <value>UsedByInstance</value>
+    <comment>DisplayName for DomainRole &apos;RefinedInstance&apos; on DomainRelationship &apos;NameAliasRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/RefinedInstance.PropertyDisplayName" xml:space="preserve">
+    <value>Refining Alias Collection</value>
+    <comment>PropertyDisplayName for DomainRole &apos;RefinedInstance&apos; on DomainRelationship &apos;NameAliasRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.Description" xml:space="preserve">
+    <value>This generator applies to a specific instance. This will be a refinement of a global name generator of the same type.</value>
+    <comment>Description for DomainClass &apos;NameGeneratorRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.DisplayName" xml:space="preserve">
+    <value>Name Generator Refines Instance</value>
+    <comment>DisplayName for DomainClass &apos;NameGeneratorRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/NameGenerator.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.NameGenerator</value>
+    <comment>Description for DomainRole &apos;NameGenerator&apos; on DomainRelationship &apos;NameGeneratorRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/NameGenerator.DisplayName" xml:space="preserve">
+    <value>NameGenerator</value>
+    <comment>DisplayName for DomainRole &apos;NameGenerator&apos; on DomainRelationship &apos;NameGeneratorRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/NameGenerator.PropertyDisplayName" xml:space="preserve">
+    <value>Refined Instance</value>
+    <comment>PropertyDisplayName for DomainRole &apos;NameGenerator&apos; on DomainRelationship &apos;NameGeneratorRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/Instance.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.Instance</value>
+    <comment>Description for DomainRole &apos;Instance&apos; on DomainRelationship &apos;NameGeneratorRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/Instance.DisplayName" xml:space="preserve">
+    <value>Instance</value>
+    <comment>DisplayName for DomainRole &apos;Instance&apos; on DomainRelationship &apos;NameGeneratorRefinesInstance&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/Instance.PropertyDisplayName" xml:space="preserve">
+    <value>Refining Name Generators</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Instance&apos; on DomainRelationship &apos;NameGeneratorRefinesInstance&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseHasAbbreviation.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseHasAbbreviation</value>
@@ -11125,6 +11277,78 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelErrorState/Ignored.Description" xml:space="preserve">
     <value>Error state is tracked, but ignored.</value>
     <comment>Description for EnumerationLiteral &apos;Ignored&apos; on DomainEnumeration &apos;ModelErrorState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/ValueTypeName.DisplayName" xml:space="preserve">
+    <value>ValueTypeName</value>
+    <comment>Display name for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/ValueTypeName.Description" xml:space="preserve">
+    <value>Use the name of the identifying value type as the item name.</value>
+    <comment>Description for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/EntityTypeName.DisplayName" xml:space="preserve">
+    <value>EntityTypeName</value>
+    <comment>Display name for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/EntityTypeName.Description" xml:space="preserve">
+    <value>Use the name of the entity type as the item name.</value>
+    <comment>Description for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/ReferenceModeName.DisplayName" xml:space="preserve">
+    <value>ReferenceModeName</value>
+    <comment>Display name for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/ReferenceModeName.Description" xml:space="preserve">
+    <value>Use the name of the reference mode as the item name.</value>
+    <comment>Description for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/CustomFormat.DisplayName" xml:space="preserve">
+    <value>CustomFormat</value>
+    <comment>Display name for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/CustomFormat.Description" xml:space="preserve">
+    <value>Use a custom format string using the other three values as replacement fields.</value>
+    <comment>Description for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/ModelDefault.DisplayName" xml:space="preserve">
+    <value>ModelDefault</value>
+    <comment>Display name for EnumerationLiteral &apos;ModelDefault&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNamingChoice/ModelDefault.Description" xml:space="preserve">
+    <value>Use the default setting from the model.</value>
+    <comment>Description for EnumerationLiteral &apos;ModelDefault&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EffectiveReferenceModeNamingChoice/ValueTypeName.DisplayName" xml:space="preserve">
+    <value>ValueTypeName</value>
+    <comment>Display name for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EffectiveReferenceModeNamingChoice/ValueTypeName.Description" xml:space="preserve">
+    <value>Use the name of the identifying value type as the item name.</value>
+    <comment>Description for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EffectiveReferenceModeNamingChoice/EntityTypeName.DisplayName" xml:space="preserve">
+    <value>EntityTypeName</value>
+    <comment>Display name for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EffectiveReferenceModeNamingChoice/EntityTypeName.Description" xml:space="preserve">
+    <value>Use the name of the entity type as the item name.</value>
+    <comment>Description for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EffectiveReferenceModeNamingChoice/ReferenceModeName.DisplayName" xml:space="preserve">
+    <value>ReferenceModeName</value>
+    <comment>Display name for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EffectiveReferenceModeNamingChoice/ReferenceModeName.Description" xml:space="preserve">
+    <value>Use a custom format string using the other three values as replacement fields.</value>
+    <comment>Description for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EffectiveReferenceModeNamingChoice/CustomFormat.DisplayName" xml:space="preserve">
+    <value>CustomFormat</value>
+    <comment>Display name for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.EffectiveReferenceModeNamingChoice/CustomFormat.Description" xml:space="preserve">
+    <value>Use a custom format with the other three values as replacement fields.</value>
+    <comment>Description for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>

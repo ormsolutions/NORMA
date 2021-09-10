@@ -63,58 +63,16 @@
 				</DomainProperty>
 			</Properties>
 		</DomainClass>
-		<DomainClass Name="ReferenceModeNaming" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" Id="B49AE46D-1551-4477-A2EB-C56415059912" DisplayName="ReferenceModeNaming" Description="">
-			<Properties>
-				<DomainProperty Name="NamingChoice" DefaultValue="ModelDefault" DisplayName="NamingChoice" Id="3E60BEBC-05E3-4D6E-8662-66C04FF27B8F" Description="The naming pattern used for references to this EntityType.">
-					<Type>
-						<DomainEnumerationMoniker Name="ReferenceModeNamingChoice"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="CustomFormat" Id="24265C6B-8058-43AE-91A3-D04968CA7C32" Description="The custom naming format used for references to this EntityType.">
-					<Type>
-						<ExternalTypeMoniker Name="/System/String"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="PrimaryIdentifierNamingChoice" DefaultValue="ModelDefault" DisplayName="PrimaryIdentifierNamingChoice" Id="BAD8149A-DB92-4C8E-B646-4D6D7BDBC3BC" Description="The naming pattern used for simple primary identification of this EntityType.">
-					<Type>
-						<DomainEnumerationMoniker Name="ReferenceModeNamingChoice"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="PrimaryIdentifierCustomFormat" DefaultValue="" DisplayName="PrimaryIdentifierCustomFormat" Id="E7C711BD-9687-4FC8-96C9-FE314C47099D" Description="The custom naming format used for simple primary identification of this EntityType.">
-					<Type>
-						<ExternalTypeMoniker Name="/System/String"/>
-					</Type>
-				</DomainProperty>
-			</Properties>
+
+		<DomainClass Name="RelationalReferenceModeNaming" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" Id="8153232D-54BD-4CFE-9B2F-9E20FACEB688" DisplayName="ReferenceModeNaming" InheritanceModifier="Sealed" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ReferenceModeNaming"/>
+			</BaseClass>
 		</DomainClass>
-		<DomainClass Name="DefaultReferenceModeNaming" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" Id="443F27D8-44D6-4D4D-A918-2B9E7F613157" DisplayName="DefaultReferenceModeNaming" Description="">
-			<Properties>
-				<DomainProperty Name="NamingChoice" DefaultValue="ValueTypeName" DisplayName="DefaultReferenceModeNaming" Id="178450CE-A301-4022-9CA7-ADC28F59D7C9" Description="The default naming pattern used for references to EntityTypes with this kind of reference mode.">
-					<Type>
-						<DomainEnumerationMoniker Name="EffectiveReferenceModeNamingChoice"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="CustomFormat" DefaultValue="" DisplayName="NamingChoice" Id="D0266C9E-C95E-43A6-A874-A0EBE08F5E28" Description="The default custom naming format used for references to EntityTypes with custom naming formats.">
-					<Type>
-						<ExternalTypeMoniker Name="/System/String"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="PrimaryIdentifierNamingChoice" DefaultValue="ValueTypeName" DisplayName="DefaultPrimaryIdentifierReferenceModeNaming" Id="63DDCAA0-330F-4BB6-8FCA-8273FA3AAAE4" Description="The default naming pattern used for simple primary identification of EntityTypes with this kind of reference mode.">
-					<Type>
-						<DomainEnumerationMoniker Name="EffectiveReferenceModeNamingChoice"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="PrimaryIdentifierCustomFormat" DefaultValue="" DisplayName="DefaultPrimaryIdentifierReferenceModeCustomFormat" Id="B393F62E-E784-488C-BD72-3A4C69A7FE97" Description="The default custom naming format used for simple primary identification of EntityTypes with custom naming formats.">
-					<Type>
-						<ExternalTypeMoniker Name="/System/String"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="ReferenceModeTargetKind" DefaultValue="Popular" DisplayName="ReferenceModeTargetKind" Id="1699FA2A-D247-4D5B-9B4C-7E147B2459AF">
-					<Type>
-						<DomainEnumerationMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ReferenceModeType"/>
-					</Type>
-				</DomainProperty>
-			</Properties>
+		<DomainClass Name="RelationalDefaultReferenceModeNaming" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" Id="953A051C-B190-4BCA-9EB9-6BDCE8EC5D7C" DisplayName="DefaultReferenceModeNaming" InheritanceModifier="Sealed" Description="">
+			<BaseClass>
+				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/DefaultReferenceModeNaming"/>
+			</BaseClass>
 		</DomainClass>
 
 		<DomainClass Name="RelationalNameGenerator" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" HasCustomConstructor="true" Id="A2D24E49-1B2F-42C0-B1CE-1F7F3B193E26" DisplayName="Relational Names" Description="">
@@ -222,12 +180,12 @@
 			<Source>
 				<DomainRole Id="D83F7C4D-F955-4EC8-BDBC-0E7CDC480A79" Description="" Name="ReferenceModeNaming" PropertyName="ObjectType" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true">
 					<RolePlayer>
-						<DomainClassMoniker Name="ReferenceModeNaming"/>
+						<DomainClassMoniker Name="RelationalReferenceModeNaming"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Id="67C2B3CD-F276-411B-980D-13D94970D604" Description="" Name="ObjectType" PropertyName="ReferenceModeNaming" Multiplicity="One" IsPropertyGenerator="false">
+				<DomainRole Id="67C2B3CD-F276-411B-980D-13D94970D604" Description="" Name="ObjectType" PropertyName="ReferenceModeNaming" Multiplicity="ZeroOne" IsPropertyGenerator="false">
 					<RolePlayer>
 						<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ObjectType"/>
 					</RolePlayer>
@@ -245,23 +203,23 @@
 			<Target>
 				<DomainRole Id="219A1852-9896-4303-BF8F-2696BAA25962" Description="" Name="ReferenceModeNaming" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true">
 					<RolePlayer>
-						<DomainClassMoniker Name="ReferenceModeNaming"/>
+						<DomainClassMoniker Name="RelationalReferenceModeNaming"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
 		</DomainRelationship>
 		<DomainRelationship Id="0B75DB0C-3196-4C80-884B-2ADDA04DE8B0" Name="DefaultReferenceModeNamingCustomizesORMModel" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge">
 			<Source>
-				<DomainRole Id="5C4580AD-BC05-4691-A9CE-E54952DB1EF9" Description="" Name="DefaultReferenceModeNaming" PropertyName="ORMModel" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true">
+				<DomainRole Id="341C7C8A-D168-4D09-B02D-6A79BC3F34C8" Description="" Name="ORMModel" PropertyName="DefaultReferenceModeNamingCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false">
 					<RolePlayer>
-						<DomainClassMoniker Name="DefaultReferenceModeNaming"/>
+						<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ORMModel"/>
 					</RolePlayer>
 				</DomainRole>
 			</Source>
 			<Target>
-				<DomainRole Id="341C7C8A-D168-4D09-B02D-6A79BC3F34C8" Description="" Name="ORMModel" PropertyName="DefaultReferenceModeNamingCollection" Multiplicity="ZeroMany" IsPropertyGenerator="false">
+				<DomainRole Id="5C4580AD-BC05-4691-A9CE-E54952DB1EF9" Description="" Name="DefaultReferenceModeNaming" PropertyName="ORMModel" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true">
 					<RolePlayer>
-						<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/ORMModel"/>
+						<DomainClassMoniker Name="RelationalDefaultReferenceModeNaming"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -277,7 +235,7 @@
 			<Target>
 				<DomainRole Id="32C09A1C-8139-489A-8A4E-2E35A5C31D7C" Description="" Name="DefaultReferenceModeNaming" PropertyName="Model" Multiplicity="One" PropagatesDelete="true" IsPropertyGenerator="true">
 					<RolePlayer>
-						<DomainClassMoniker Name="DefaultReferenceModeNaming"/>
+						<DomainClassMoniker Name="RelationalDefaultReferenceModeNaming"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>
@@ -424,37 +382,6 @@
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
 						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;AssimilationAbsorptionChoice, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel&gt;)"/>
-					</Parameters>
-				</ClrAttribute>
-			</Attributes>
-		</DomainEnumeration>
-		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" Name="ReferenceModeNamingChoice" Description="Specify how reference mode names are used when generating relational information for an &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType&quot;/&gt;, including an option for deferring to the model.">
-			<Literals>
-				<EnumerationLiteral Name="ValueTypeName" Value="0" Description="Use the name of the identifying value type for the column."/>
-				<EnumerationLiteral Name="EntityTypeName" Value="1" Description="Use the name of the entity type for the related column."/>
-				<EnumerationLiteral Name="ReferenceModeName" Value="2" Description="Use the name of the reference mode for the related column."/>
-				<EnumerationLiteral Name="CustomFormat" Value="3" Description="Use a custom format string using the other three values as replacement fields."/>
-				<EnumerationLiteral Name="ModelDefault" Value="4" Description="Use the default setting from the model."/>
-			</Literals>
-			<Attributes>
-				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
-					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;ReferenceModeNamingChoice, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel&gt;)"/>
-					</Parameters>
-				</ClrAttribute>
-			</Attributes>
-		</DomainEnumeration>
-		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" Name="EffectiveReferenceModeNamingChoice" Description="Specify how reference mode names are used when generating relational information for an &lt;see cref=&quot;ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType&quot;/&gt;.">
-			<Literals>
-				<EnumerationLiteral Name="ValueTypeName" Value="0" Description="Use the name of the identifying value type for the column."/>
-				<EnumerationLiteral Name="EntityTypeName" Value="1" Description="Use the name of the entity type for the related column."/>
-				<EnumerationLiteral Name="ReferenceModeName" Value="2" Description="Use a custom format string using the other three values as replacement fields."/>
-				<EnumerationLiteral Name="CustomFormat" Value="3" Description="Use a custom format with the other three values as replacement fields."/>
-			</Literals>
-			<Attributes>
-				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
-					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;EffectiveReferenceModeNamingChoice, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel&gt;)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>

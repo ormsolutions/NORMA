@@ -66,7 +66,7 @@
 				<arg:RuleOn targetType="DefaultReferenceModeNamingCustomizesORMModel"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="DefaultReferenceModeNamingChangedRule">
-				<arg:RuleOn targetType="DefaultReferenceModeNaming"/>
+				<arg:RuleOn targetType="RelationalDefaultReferenceModeNaming"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="FactTypeNameChangedRule">
 				<arg:RuleOn targetType="FactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
@@ -80,6 +80,19 @@
 			<arg:ChangeRule methodName="NameGeneratorSettingsChangedRule">
 				<arg:RuleOn targetType="NameGenerator" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>
+			<arg:ChangeRule methodName="ReferenceModeChangedRule">
+				<arg:RuleOn targetType="ReferenceModeKind" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<arg:RuleOn targetType="CustomReferenceMode" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
+			<arg:AddRule methodName="ReferenceModeKindAddedRule">
+				<arg:RuleOn targetType="ReferenceModeHasReferenceModeKind" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:AddRule>
+			<arg:DeleteRule methodName="ReferenceModeKindDeletedRule">
+				<arg:RuleOn targetType="ReferenceModeHasReferenceModeKind" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="ReferenceModeKindRolePlayerChangedRule">
+				<arg:RuleOn targetType="ReferenceModeHasReferenceModeKind" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:RolePlayerChangeRule>
 			<arg:DeletingRule methodName="RecognizedPhraseDeletingRule">
 				<arg:RuleOn targetType="ModelContainsRecognizedPhrase" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeletingRule>
@@ -87,7 +100,7 @@
 				<arg:RuleOn targetType="ReferenceModeNamingCustomizesObjectType"/>
 			</arg:AddRule>
 			<arg:ChangeRule methodName="ReferenceModeNamingChangedRule">
-				<arg:RuleOn targetType="ReferenceModeNaming"/>
+				<arg:RuleOn targetType="RelationalReferenceModeNaming"/>
 			</arg:ChangeRule>
 			<arg:ChangeRule methodName="RoleNameChangedRule">
 				<arg:RuleOn targetType="Role" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>

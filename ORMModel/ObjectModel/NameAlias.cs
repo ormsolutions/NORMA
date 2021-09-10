@@ -55,7 +55,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			myUsageDomainClass = ObjectModel.NameUsage.TranslateFromNameUsageIdentifier(Store, value);
 		}
 		/// <summary>
-		/// Return the <see cref="Type"/> assocatiated with the <see cref="NameUsage"/> property.
+		/// Return the <see cref="Type"/> associated with the <see cref="NameUsage"/> property.
 		/// Returns <see langword="null"/> if NameUsage is not set.
 		/// </summary>
 		public Type NameUsageType
@@ -67,7 +67,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 		}
 		/// <summary>
-		/// Return the <see cref="DomainClassInfo"/> assocatiated with the <see cref="NameConsumer"/> property.
+		/// Return the <see cref="DomainClassInfo"/> associated with the <see cref="NameConsumer"/> property.
 		/// Will not return <see langword="null"/>
 		/// </summary>
 		public DomainClassInfo NameConsumerDomainClass
@@ -539,6 +539,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // NameUsageAttribute class
+	#region RefinedNameGeneratorInstanceAttribute class
+	/// <summary>
+	/// Provide custom creation information for <see cref="NameGenerator"/> subtypes that
+	/// support per-instance refinement.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+	public sealed class RefinedNameGeneratorInstanceAttribute : Attribute
+	{
+		private Guid myAutoCreateRelationshipRole;
+
+		/// <summary>
+		/// Create a new <see cref="RefinedNameGeneratorInstanceAttribute"/>. This indicates that a name
+		/// generator is allowed to have instance-specific refinements of the same type as a parent element.
+		/// </summary>
+		/// <param name="autoCreateRelationshipRole">The string form of a <see cref="Guid"/> representing
+		/// the role played by the alias owner in an aggregating relationship with a singleton container. If this
+		/// is set, then the assumption is made that the element has a formal name.</param>
+		public RefinedNameGeneratorInstanceAttribute(string autoCreateRelationshipRole)
+		{
+			myAutoCreateRelationshipRole = new Guid(autoCreateRelationshipRole);
+		}
+
+		/// <summary>
+		/// A <see cref="Guid"/> representing the role played by this name generator class that links to the
+		/// refined instance that uses the generated names. If this is set, then both a general (not instance bound)
+		/// and the instance-bound refinements are created for the type.
+		/// </summary>
+		public Guid AutoCreateRelationshipRole
+		{
+			get { return myAutoCreateRelationshipRole; }
+		}
+	}
+	#endregion // RefinedNameGeneratorInstanceAttribute class
 	#region RecognizedPhrase class
 	partial class RecognizedPhrase
 	{

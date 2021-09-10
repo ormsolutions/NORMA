@@ -414,7 +414,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			/// </summary>
 			private static void DefaultReferenceModeNamingChangedRule(ElementPropertyChangedEventArgs e)
 			{
-				ValidateDefaultReferenceModeNamingChanged(DefaultReferenceModeNamingCustomizesORMModel.GetLinkToORMModel(e.ModelElement as DefaultReferenceModeNaming));
+				ValidateDefaultReferenceModeNamingChanged(DefaultReferenceModeNamingCustomizesORMModel.GetLinkToORMModel(e.ModelElement as RelationalDefaultReferenceModeNaming));
 			}
 			/// <summary>
 			/// AddRule: typeof(ReferenceModeNamingCustomizesObjectType)
@@ -428,7 +428,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			/// </summary>
 			private static void ReferenceModeNamingChangedRule(ElementPropertyChangedEventArgs e)
 			{
-				ValidateReferenceModeNamingChanged(ReferenceModeNamingCustomizesObjectType.GetLinkToObjectType(e.ModelElement as ReferenceModeNaming));
+				ValidateReferenceModeNamingChanged(ReferenceModeNamingCustomizesObjectType.GetLinkToObjectType(e.ModelElement as RelationalReferenceModeNaming));
 			}
 			private static void ValidateDefaultReferenceModeNamingChanged(DefaultReferenceModeNamingCustomizesORMModel defaultReferenceModeNamingCustomizesORMModel)
 			{
@@ -468,6 +468,50 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							ValidateConceptTypeNameChanged(conceptType);
 						}
 					}
+				}
+			}
+			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeKind)
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.CustomReferenceModeKind)
+			/// </summary>
+			private static void ReferenceModeChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				Guid propertyId = e.DomainProperty.Id;
+				if (propertyId == ORMCore.ReferenceModeKind.FormatStringDomainPropertyId ||
+					propertyId == ORMCore.CustomReferenceMode.CustomFormatStringDomainPropertyId)
+				{
+					ReferenceModeSettingsChanged(e.ModelElement.Store);
+				}
+			}
+			/// <summary>
+			/// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind)
+			/// </summary>
+			private static void ReferenceModeKindAddedRule(ElementAddedEventArgs e)
+			{
+				ReferenceModeSettingsChanged(e.ModelElement.Store);
+			}
+			/// <summary>
+			/// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind)
+			/// </summary>
+			private static void ReferenceModeKindDeletedRule(ElementDeletedEventArgs e)
+			{
+				ReferenceModeSettingsChanged(e.ModelElement.Store);
+			}
+			/// <summary>
+			/// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind)
+			/// </summary>
+			private static void ReferenceModeKindRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+			{
+				if (e.DomainRole.Id == ORMCore.ReferenceModeHasReferenceModeKind.KindDomainRoleId)
+				{
+					ReferenceModeSettingsChanged(e.ElementLink.Store);
+				}
+			}
+			private static void ReferenceModeSettingsChanged(Store store)
+			{
+				foreach (Schema schema in store.ElementDirectory.FindElements<Schema>(true))
+				{
+					ValidateSchemaNamesChanged(schema);
 				}
 			}
 			private static void ValidateConceptTypeNameChanged(ConceptType conceptType)
@@ -535,7 +579,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			private static void AbbreviationDeletedRule(ElementDeletedEventArgs e)
 			{
 				ORMCore.ElementHasAlias link = (ORMCore.ElementHasAlias)e.ModelElement;
-				if (!link.Element.IsDeleted)
+				ORMCore.NameAlias alias;
+				if (!link.Element.IsDeleted &&
+					null == (alias = ((ORMCore.ElementHasAlias)link).Alias).RefinedInstance)
 				{
 					Store store = link.Store;
 					if (store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId).IsDerivedFrom(link.Alias.NameConsumerDomainClass))

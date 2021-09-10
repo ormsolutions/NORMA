@@ -443,7 +443,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				bool crossStoreCopy;
 				if ((crossStoreCopy = store != sourceStore) &&
 					(null == (closureManager = ((IFrameworkServices)sourceStore).CopyClosureManager) ||
-					null == (copyClosure = closureManager.GetCopyClosure(closureElements))))
+					null == (copyClosure = closureManager.GetCopyClosure(closureElements, crossStoreCopy ? store : null))))
 				{
 					return false;
 				}
@@ -3400,7 +3400,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 										sourceBackingElements.Add(sourceBackingElement);
 									}
 								}
-								closure = closureManager.GetCopyClosure(sourceBackingElements);
+								closure = closureManager.GetCopyClosure(sourceBackingElements, targetStore);
 								sourceContextInfo["BackingElementCopyClosure"] = closure;
 							}
 							CopyClosureIntegrationResult integrationResult = closureManager.IntegrateCopyClosure(closure, sourceStore, targetStore, new ModelElement[] { diagram.ModelElement }, true);

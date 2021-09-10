@@ -56,6 +56,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
 			Guid attributeId = domainProperty.Id;
+			if (ModelElement.IsIgnoredAttributeId(attributeId))
+			{
+				return false;
+			}
+
 			if (attributeId == NameGenerator.SpacingReplacementDomainPropertyId)
 			{
 				return ((NameGenerator)requestor).SpacingFormat == NameGeneratorSpacingFormat.ReplaceWith;

@@ -1138,20 +1138,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					customReferenceMode.CustomFormatString = "";
 
-					//List<ObjectType> entityTypes = null; // Snapshot all entities before walking any of them
-					//foreach (ObjectType entity in customReferenceMode.AssociatedEntityTypeCollection(oldFormatString, null))
-					//{
-					//    (entityTypes ?? (entityTypes = new List<ObjectType>())).Add(entity);
-					//}
-					//if (entityTypes != null)
-					//{
-					//    bool canShareValueType = newKind.ReferenceModeType != ReferenceModeType.Popular;
-					//    foreach (ObjectType entity in entityTypes)
-					//    {
-					//        entity.RenameReferenceMode(customReferenceMode.GenerateValueTypeName(entity.Name), canShareValueType);
-					//    }
-					//}
-
 					bool canShareValueType = newKind.ReferenceModeType != ReferenceModeType.Popular;
 					foreach (ObjectType entity in customReferenceMode.AssociatedEntityTypeCollection(oldFormatString, null))
 					{
