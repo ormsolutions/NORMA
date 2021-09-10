@@ -78,12 +78,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets a list of ReferenceModeNamingCollection.
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<ReferenceModeNaming> ReferenceModeNamingCollection
+		public virtual DslModeling::LinkedElementCollection<RelationalReferenceModeNaming> ReferenceModeNamingCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<ReferenceModeNaming>(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId);
+				return new DslModeling::LinkedElementCollection<RelationalReferenceModeNaming>(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId);
 			}
 		}
 		#endregion
@@ -91,12 +91,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets a list of DefaultReferenceModeNamingCollection.
 		/// </summary>
-		public virtual DslModeling::LinkedElementCollection<DefaultReferenceModeNaming> DefaultReferenceModeNamingCollection
+		public virtual DslModeling::LinkedElementCollection<RelationalDefaultReferenceModeNaming> DefaultReferenceModeNamingCollection
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return new DslModeling::LinkedElementCollection<DefaultReferenceModeNaming>(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId);
+				return new DslModeling::LinkedElementCollection<RelationalDefaultReferenceModeNaming>(this, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId);
 			}
 		}
 		#endregion
@@ -281,26 +281,26 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
-	/// DomainClass ReferenceModeNaming
+	/// DomainClass RelationalReferenceModeNaming
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("b49ae46d-1551-4477-a2eb-c56415059912")]
-	public partial class ReferenceModeNaming : DslModeling::ModelElement
+	[DslModeling::DomainObjectId("8153232d-54bd-4cfe-9b2f-9e20faceb688")]
+	public sealed partial class RelationalReferenceModeNaming : global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeNaming
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// ReferenceModeNaming domain class Id.
+		/// RelationalReferenceModeNaming domain class Id.
 		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xb49ae46d, 0x1551, 0x4477, 0xa2, 0xeb, 0xc5, 0x64, 0x15, 0x05, 0x99, 0x12);
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8153232d, 0x54bd, 0x4cfe, 0x9b, 0x2f, 0x9e, 0x20, 0xfa, 0xce, 0xb6, 0x88);
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="store">Store where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ReferenceModeNaming(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public RelationalReferenceModeNaming(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
@@ -310,367 +310,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public ReferenceModeNaming(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public RelationalReferenceModeNaming(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
-		#endregion
-		#region NamingChoice domain property code
-		
-		/// <summary>
-		/// NamingChoice domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid NamingChoiceDomainPropertyId = new global::System.Guid(0x3e60bebc, 0x05e3, 0x4d6e, 0x86, 0x62, 0x66, 0xc0, 0x4f, 0xf2, 0x7b, 0x8f);
-		
-		/// <summary>
-		/// Storage for NamingChoice
-		/// </summary>
-		private ReferenceModeNamingChoice namingChoicePropertyStorage = ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault;
-		
-		/// <summary>
-		/// Gets or sets the value of NamingChoice domain property.
-		/// The naming pattern used for references to this EntityType.
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault)]
-		[DslModeling::DomainObjectId("3e60bebc-05e3-4d6e-8662-66c04ff27b8f")]
-		public ReferenceModeNamingChoice NamingChoice
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return namingChoicePropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				NamingChoicePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ReferenceModeNaming.NamingChoice domain property.
-		/// </summary>
-		internal sealed partial class NamingChoicePropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceModeNaming, ReferenceModeNamingChoice>
-		{
-			private NamingChoicePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ReferenceModeNaming.NamingChoice domain property value handler.
-			/// </summary>
-			public static readonly NamingChoicePropertyHandler Instance = new NamingChoicePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ReferenceModeNaming.NamingChoice domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return NamingChoiceDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed ReferenceModeNamingChoice GetValue(ReferenceModeNaming element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.namingChoicePropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ReferenceModeNaming element, ReferenceModeNamingChoice newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				ReferenceModeNamingChoice oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.namingChoicePropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region CustomFormat domain property code
-		
-		/// <summary>
-		/// CustomFormat domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid CustomFormatDomainPropertyId = new global::System.Guid(0x24265c6b, 0x8058, 0x43ae, 0x91, 0xa3, 0xd0, 0x49, 0x68, 0xca, 0x7c, 0x32);
-		
-		/// <summary>
-		/// Storage for CustomFormat
-		/// </summary>
-		private global::System.String customFormatPropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// Gets or sets the value of CustomFormat domain property.
-		/// The custom naming format used for references to this EntityType.
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainObjectId("24265c6b-8058-43ae-91a3-d04968ca7c32")]
-		public global::System.String CustomFormat
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return customFormatPropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				CustomFormatPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ReferenceModeNaming.CustomFormat domain property.
-		/// </summary>
-		internal sealed partial class CustomFormatPropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceModeNaming, global::System.String>
-		{
-			private CustomFormatPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ReferenceModeNaming.CustomFormat domain property value handler.
-			/// </summary>
-			public static readonly CustomFormatPropertyHandler Instance = new CustomFormatPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ReferenceModeNaming.CustomFormat domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return CustomFormatDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ReferenceModeNaming element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.customFormatPropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ReferenceModeNaming element, global::System.String newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.String oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.customFormatPropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region PrimaryIdentifierNamingChoice domain property code
-		
-		/// <summary>
-		/// PrimaryIdentifierNamingChoice domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid PrimaryIdentifierNamingChoiceDomainPropertyId = new global::System.Guid(0xbad8149a, 0xdb92, 0x4c8e, 0xb6, 0x46, 0x4d, 0x6d, 0x7b, 0xdb, 0xc3, 0xbc);
-		
-		/// <summary>
-		/// Storage for PrimaryIdentifierNamingChoice
-		/// </summary>
-		private ReferenceModeNamingChoice primaryIdentifierNamingChoicePropertyStorage = ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault;
-		
-		/// <summary>
-		/// Gets or sets the value of PrimaryIdentifierNamingChoice domain property.
-		/// The naming pattern used for simple primary identification of this EntityType.
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice.ModelDefault)]
-		[DslModeling::DomainObjectId("bad8149a-db92-4c8e-b646-4d6d7bdbc3bc")]
-		public ReferenceModeNamingChoice PrimaryIdentifierNamingChoice
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return primaryIdentifierNamingChoicePropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				PrimaryIdentifierNamingChoicePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ReferenceModeNaming.PrimaryIdentifierNamingChoice domain property.
-		/// </summary>
-		internal sealed partial class PrimaryIdentifierNamingChoicePropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceModeNaming, ReferenceModeNamingChoice>
-		{
-			private PrimaryIdentifierNamingChoicePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ReferenceModeNaming.PrimaryIdentifierNamingChoice domain property value handler.
-			/// </summary>
-			public static readonly PrimaryIdentifierNamingChoicePropertyHandler Instance = new PrimaryIdentifierNamingChoicePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ReferenceModeNaming.PrimaryIdentifierNamingChoice domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return PrimaryIdentifierNamingChoiceDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed ReferenceModeNamingChoice GetValue(ReferenceModeNaming element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.primaryIdentifierNamingChoicePropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ReferenceModeNaming element, ReferenceModeNamingChoice newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				ReferenceModeNamingChoice oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.primaryIdentifierNamingChoicePropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region PrimaryIdentifierCustomFormat domain property code
-		
-		/// <summary>
-		/// PrimaryIdentifierCustomFormat domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid PrimaryIdentifierCustomFormatDomainPropertyId = new global::System.Guid(0xe7c711bd, 0x9687, 0x4fc8, 0x96, 0xc9, 0xfe, 0x31, 0x4c, 0x47, 0x09, 0x9d);
-		
-		/// <summary>
-		/// Storage for PrimaryIdentifierCustomFormat
-		/// </summary>
-		private global::System.String primaryIdentifierCustomFormatPropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// Gets or sets the value of PrimaryIdentifierCustomFormat domain property.
-		/// The custom naming format used for simple primary identification of this
-		/// EntityType.
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainObjectId("e7c711bd-9687-4fc8-96c9-fe314c47099d")]
-		public global::System.String PrimaryIdentifierCustomFormat
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return primaryIdentifierCustomFormatPropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				PrimaryIdentifierCustomFormatPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the ReferenceModeNaming.PrimaryIdentifierCustomFormat domain property.
-		/// </summary>
-		internal sealed partial class PrimaryIdentifierCustomFormatPropertyHandler : DslModeling::DomainPropertyValueHandler<ReferenceModeNaming, global::System.String>
-		{
-			private PrimaryIdentifierCustomFormatPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the ReferenceModeNaming.PrimaryIdentifierCustomFormat domain property value handler.
-			/// </summary>
-			public static readonly PrimaryIdentifierCustomFormatPropertyHandler Instance = new PrimaryIdentifierCustomFormatPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the ReferenceModeNaming.PrimaryIdentifierCustomFormat domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return PrimaryIdentifierCustomFormatDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(ReferenceModeNaming element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.primaryIdentifierCustomFormatPropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(ReferenceModeNaming element, global::System.String newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.String oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.primaryIdentifierCustomFormatPropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
 		#endregion
 		#region ObjectType opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ObjectType.
 		/// </summary>
-		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ObjectType
+		public global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ObjectType
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -700,7 +349,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets or sets Model.
 		/// </summary>
-		public virtual MappingCustomizationModel Model
+		public MappingCustomizationModel Model
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -719,26 +368,26 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 {
 	/// <summary>
-	/// DomainClass DefaultReferenceModeNaming
+	/// DomainClass RelationalDefaultReferenceModeNaming
 	/// </summary>
-	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 	[global::System.CLSCompliant(true)]
-	[DslModeling::DomainObjectId("443f27d8-44d6-4d4d-a918-2b9e7f613157")]
-	public partial class DefaultReferenceModeNaming : DslModeling::ModelElement
+	[DslModeling::DomainObjectId("953a051c-b190-4bca-9eb9-6bdce8ec5d7c")]
+	public sealed partial class RelationalDefaultReferenceModeNaming : global::ORMSolutions.ORMArchitect.Core.ObjectModel.DefaultReferenceModeNaming
 	{
 		#region Constructors, domain class Id
 	
 		/// <summary>
-		/// DefaultReferenceModeNaming domain class Id.
+		/// RelationalDefaultReferenceModeNaming domain class Id.
 		/// </summary>
-		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x443f27d8, 0x44d6, 0x4d4d, 0xa9, 0x18, 0x2b, 0x9e, 0x7f, 0x61, 0x31, 0x57);
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x953a051c, 0xb190, 0x4bca, 0x9e, 0xb9, 0x6b, 0xdc, 0xe8, 0xec, 0x5d, 0x7c);
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		/// <param name="store">Store where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public DefaultReferenceModeNaming(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public RelationalDefaultReferenceModeNaming(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
 		{
 		}
@@ -748,459 +397,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		/// <param name="partition">Partition where new element is to be created.</param>
 		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public DefaultReferenceModeNaming(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+		public RelationalDefaultReferenceModeNaming(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
 			: base(partition, propertyAssignments)
 		{
 		}
-		#endregion
-		#region NamingChoice domain property code
-		
-		/// <summary>
-		/// NamingChoice domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid NamingChoiceDomainPropertyId = new global::System.Guid(0x178450ce, 0xa301, 0x4022, 0x9c, 0xa7, 0xad, 0xc2, 0x8f, 0x59, 0xd7, 0xc9);
-		
-		/// <summary>
-		/// Storage for NamingChoice
-		/// </summary>
-		private EffectiveReferenceModeNamingChoice namingChoicePropertyStorage = ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName;
-		
-		/// <summary>
-		/// Gets or sets the value of NamingChoice domain property.
-		/// The default naming pattern used for references to EntityTypes with this kind of
-		/// reference mode.
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName)]
-		[DslModeling::DomainObjectId("178450ce-a301-4022-9ca7-adc28f59d7c9")]
-		public EffectiveReferenceModeNamingChoice NamingChoice
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return namingChoicePropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				NamingChoicePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the DefaultReferenceModeNaming.NamingChoice domain property.
-		/// </summary>
-		internal sealed partial class NamingChoicePropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, EffectiveReferenceModeNamingChoice>
-		{
-			private NamingChoicePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the DefaultReferenceModeNaming.NamingChoice domain property value handler.
-			/// </summary>
-			public static readonly NamingChoicePropertyHandler Instance = new NamingChoicePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the DefaultReferenceModeNaming.NamingChoice domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return NamingChoiceDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed EffectiveReferenceModeNamingChoice GetValue(DefaultReferenceModeNaming element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.namingChoicePropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(DefaultReferenceModeNaming element, EffectiveReferenceModeNamingChoice newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				EffectiveReferenceModeNamingChoice oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.namingChoicePropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region CustomFormat domain property code
-		
-		/// <summary>
-		/// CustomFormat domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid CustomFormatDomainPropertyId = new global::System.Guid(0xd0266c9e, 0xc95e, 0x43a6, 0xa8, 0x74, 0xa0, 0xeb, 0xe0, 0x8f, 0x5e, 0x28);
-		
-		/// <summary>
-		/// Storage for CustomFormat
-		/// </summary>
-		private global::System.String customFormatPropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// Gets or sets the value of CustomFormat domain property.
-		/// The default custom naming format used for references to EntityTypes with custom
-		/// naming formats.
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainObjectId("d0266c9e-c95e-43a6-a874-a0ebe08f5e28")]
-		public global::System.String CustomFormat
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return customFormatPropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				CustomFormatPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the DefaultReferenceModeNaming.CustomFormat domain property.
-		/// </summary>
-		internal sealed partial class CustomFormatPropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, global::System.String>
-		{
-			private CustomFormatPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the DefaultReferenceModeNaming.CustomFormat domain property value handler.
-			/// </summary>
-			public static readonly CustomFormatPropertyHandler Instance = new CustomFormatPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the DefaultReferenceModeNaming.CustomFormat domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return CustomFormatDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(DefaultReferenceModeNaming element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.customFormatPropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(DefaultReferenceModeNaming element, global::System.String newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.String oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.customFormatPropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region PrimaryIdentifierNamingChoice domain property code
-		
-		/// <summary>
-		/// PrimaryIdentifierNamingChoice domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid PrimaryIdentifierNamingChoiceDomainPropertyId = new global::System.Guid(0x63ddcaa0, 0x330f, 0x4bb6, 0x8f, 0xca, 0x82, 0x73, 0xfa, 0x3a, 0xaa, 0xe4);
-		
-		/// <summary>
-		/// Storage for PrimaryIdentifierNamingChoice
-		/// </summary>
-		private EffectiveReferenceModeNamingChoice primaryIdentifierNamingChoicePropertyStorage = ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName;
-		
-		/// <summary>
-		/// Gets or sets the value of PrimaryIdentifierNamingChoice domain property.
-		/// The default naming pattern used for simple primary identification of EntityTypes
-		/// with this kind of reference mode.
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice.ValueTypeName)]
-		[DslModeling::DomainObjectId("63ddcaa0-330f-4bb6-8fca-8273fa3aaae4")]
-		public EffectiveReferenceModeNamingChoice PrimaryIdentifierNamingChoice
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return primaryIdentifierNamingChoicePropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				PrimaryIdentifierNamingChoicePropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the DefaultReferenceModeNaming.PrimaryIdentifierNamingChoice domain property.
-		/// </summary>
-		internal sealed partial class PrimaryIdentifierNamingChoicePropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, EffectiveReferenceModeNamingChoice>
-		{
-			private PrimaryIdentifierNamingChoicePropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the DefaultReferenceModeNaming.PrimaryIdentifierNamingChoice domain property value handler.
-			/// </summary>
-			public static readonly PrimaryIdentifierNamingChoicePropertyHandler Instance = new PrimaryIdentifierNamingChoicePropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the DefaultReferenceModeNaming.PrimaryIdentifierNamingChoice domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return PrimaryIdentifierNamingChoiceDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed EffectiveReferenceModeNamingChoice GetValue(DefaultReferenceModeNaming element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.primaryIdentifierNamingChoicePropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(DefaultReferenceModeNaming element, EffectiveReferenceModeNamingChoice newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				EffectiveReferenceModeNamingChoice oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.primaryIdentifierNamingChoicePropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region PrimaryIdentifierCustomFormat domain property code
-		
-		/// <summary>
-		/// PrimaryIdentifierCustomFormat domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid PrimaryIdentifierCustomFormatDomainPropertyId = new global::System.Guid(0xb393f62e, 0xe784, 0x488c, 0xbd, 0x72, 0x3a, 0x4c, 0x69, 0xa7, 0xfe, 0x97);
-		
-		/// <summary>
-		/// Storage for PrimaryIdentifierCustomFormat
-		/// </summary>
-		private global::System.String primaryIdentifierCustomFormatPropertyStorage = string.Empty;
-		
-		/// <summary>
-		/// Gets or sets the value of PrimaryIdentifierCustomFormat domain property.
-		/// The default custom naming format used for simple primary identification of
-		/// EntityTypes with custom naming formats.
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainObjectId("b393f62e-e784-488c-bd72-3a4c69a7fe97")]
-		public global::System.String PrimaryIdentifierCustomFormat
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return primaryIdentifierCustomFormatPropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				PrimaryIdentifierCustomFormatPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the DefaultReferenceModeNaming.PrimaryIdentifierCustomFormat domain property.
-		/// </summary>
-		internal sealed partial class PrimaryIdentifierCustomFormatPropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, global::System.String>
-		{
-			private PrimaryIdentifierCustomFormatPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the DefaultReferenceModeNaming.PrimaryIdentifierCustomFormat domain property value handler.
-			/// </summary>
-			public static readonly PrimaryIdentifierCustomFormatPropertyHandler Instance = new PrimaryIdentifierCustomFormatPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the DefaultReferenceModeNaming.PrimaryIdentifierCustomFormat domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return PrimaryIdentifierCustomFormatDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::System.String GetValue(DefaultReferenceModeNaming element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.primaryIdentifierCustomFormatPropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(DefaultReferenceModeNaming element, global::System.String newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::System.String oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.primaryIdentifierCustomFormatPropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
-		#endregion
-		#region ReferenceModeTargetKind domain property code
-		
-		/// <summary>
-		/// ReferenceModeTargetKind domain property Id.
-		/// </summary>
-		public static readonly global::System.Guid ReferenceModeTargetKindDomainPropertyId = new global::System.Guid(0x1699fa2a, 0xd247, 0x4d5b, 0x9b, 0x4c, 0x7e, 0x14, 0x7b, 0x24, 0x59, 0xaf);
-		
-		/// <summary>
-		/// Storage for ReferenceModeTargetKind
-		/// </summary>
-		private global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType referenceModeTargetKindPropertyStorage = ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType.Popular;
-		
-		/// <summary>
-		/// Gets or sets the value of ReferenceModeTargetKind domain property.
-		/// Description for
-		/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.ReferenceModeTargetKind
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType.Popular)]
-		[DslModeling::DomainObjectId("1699fa2a-d247-4d5b-9b4c-7e147b2459af")]
-		public global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType ReferenceModeTargetKind
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return referenceModeTargetKindPropertyStorage;
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				ReferenceModeTargetKindPropertyHandler.Instance.SetValue(this, value);
-			}
-		}
-		/// <summary>
-		/// Value handler for the DefaultReferenceModeNaming.ReferenceModeTargetKind domain property.
-		/// </summary>
-		internal sealed partial class ReferenceModeTargetKindPropertyHandler : DslModeling::DomainPropertyValueHandler<DefaultReferenceModeNaming, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType>
-		{
-			private ReferenceModeTargetKindPropertyHandler() { }
-		
-			/// <summary>
-			/// Gets the singleton instance of the DefaultReferenceModeNaming.ReferenceModeTargetKind domain property value handler.
-			/// </summary>
-			public static readonly ReferenceModeTargetKindPropertyHandler Instance = new ReferenceModeTargetKindPropertyHandler();
-		
-			/// <summary>
-			/// Gets the Id of the DefaultReferenceModeNaming.ReferenceModeTargetKind domain property.
-			/// </summary>
-			public sealed override global::System.Guid DomainPropertyId
-			{
-				[global::System.Diagnostics.DebuggerStepThrough]
-				get
-				{
-					return ReferenceModeTargetKindDomainPropertyId;
-				}
-			}
-			
-			/// <summary>
-			/// Gets a strongly-typed value of the property on specified element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <returns>Property value.</returns>
-			public override sealed global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType GetValue(DefaultReferenceModeNaming element)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.referenceModeTargetKindPropertyStorage;
-			}
-		
-			/// <summary>
-			/// Sets property value on an element.
-			/// </summary>
-			/// <param name="element">Element which owns the property.</param>
-			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(DefaultReferenceModeNaming element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType newValue)
-			{
-				if (element == null) throw new global::System.ArgumentNullException("element");
-		
-				global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeType oldValue = GetValue(element);
-				if (newValue != oldValue)
-				{
-					ValueChanging(element, oldValue, newValue);
-					element.referenceModeTargetKindPropertyStorage = newValue;
-					ValueChanged(element, oldValue, newValue);
-				}
-			}
-		}
-		
 		#endregion
 		#region ORMModel opposite domain role accessor
 		/// <summary>
 		/// Gets or sets ORMModel.
 		/// </summary>
-		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel ORMModel
+		public global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel ORMModel
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -1218,7 +424,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// Gets or sets Model.
 		/// </summary>
-		public virtual MappingCustomizationModel Model
+		public MappingCustomizationModel Model
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get

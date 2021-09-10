@@ -88,8 +88,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			{
 				typeof(MappingCustomizationModel),
 				typeof(AssimilationMapping),
-				typeof(ReferenceModeNaming),
-				typeof(DefaultReferenceModeNaming),
+				typeof(RelationalReferenceModeNaming),
+				typeof(RelationalDefaultReferenceModeNaming),
 				typeof(RelationalNameGenerator),
 				typeof(ColumnNameUsage),
 				typeof(TableNameUsage),
@@ -120,15 +120,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			return new DomainMemberInfo[]
 			{
 				new DomainMemberInfo(typeof(AssimilationMapping), "AbsorptionChoice", AssimilationMapping.AbsorptionChoiceDomainPropertyId, typeof(AssimilationMapping.AbsorptionChoicePropertyHandler)),
-				new DomainMemberInfo(typeof(ReferenceModeNaming), "NamingChoice", ReferenceModeNaming.NamingChoiceDomainPropertyId, typeof(ReferenceModeNaming.NamingChoicePropertyHandler)),
-				new DomainMemberInfo(typeof(ReferenceModeNaming), "CustomFormat", ReferenceModeNaming.CustomFormatDomainPropertyId, typeof(ReferenceModeNaming.CustomFormatPropertyHandler)),
-				new DomainMemberInfo(typeof(ReferenceModeNaming), "PrimaryIdentifierNamingChoice", ReferenceModeNaming.PrimaryIdentifierNamingChoiceDomainPropertyId, typeof(ReferenceModeNaming.PrimaryIdentifierNamingChoicePropertyHandler)),
-				new DomainMemberInfo(typeof(ReferenceModeNaming), "PrimaryIdentifierCustomFormat", ReferenceModeNaming.PrimaryIdentifierCustomFormatDomainPropertyId, typeof(ReferenceModeNaming.PrimaryIdentifierCustomFormatPropertyHandler)),
-				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "NamingChoice", DefaultReferenceModeNaming.NamingChoiceDomainPropertyId, typeof(DefaultReferenceModeNaming.NamingChoicePropertyHandler)),
-				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "CustomFormat", DefaultReferenceModeNaming.CustomFormatDomainPropertyId, typeof(DefaultReferenceModeNaming.CustomFormatPropertyHandler)),
-				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "PrimaryIdentifierNamingChoice", DefaultReferenceModeNaming.PrimaryIdentifierNamingChoiceDomainPropertyId, typeof(DefaultReferenceModeNaming.PrimaryIdentifierNamingChoicePropertyHandler)),
-				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "PrimaryIdentifierCustomFormat", DefaultReferenceModeNaming.PrimaryIdentifierCustomFormatDomainPropertyId, typeof(DefaultReferenceModeNaming.PrimaryIdentifierCustomFormatPropertyHandler)),
-				new DomainMemberInfo(typeof(DefaultReferenceModeNaming), "ReferenceModeTargetKind", DefaultReferenceModeNaming.ReferenceModeTargetKindDomainPropertyId, typeof(DefaultReferenceModeNaming.ReferenceModeTargetKindPropertyHandler)),
 				new DomainMemberInfo(typeof(SchemaGenerationSetting), "CoreAlgorithmVersion", SchemaGenerationSetting.CoreAlgorithmVersionDomainPropertyId, typeof(SchemaGenerationSetting.CoreAlgorithmVersionPropertyHandler)),
 				new DomainMemberInfo(typeof(SchemaGenerationSetting), "NameAlgorithmVersion", SchemaGenerationSetting.NameAlgorithmVersionDomainPropertyId, typeof(SchemaGenerationSetting.NameAlgorithmVersionPropertyHandler)),
 			};
@@ -149,8 +140,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				new DomainRolePlayerInfo(typeof(ReferenceModeNamingCustomizesObjectType), "ObjectType", ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId),
 				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasReferenceModeNaming), "Model", MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasReferenceModeNaming), "ReferenceModeNaming", MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId),
-				new DomainRolePlayerInfo(typeof(DefaultReferenceModeNamingCustomizesORMModel), "DefaultReferenceModeNaming", DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId),
 				new DomainRolePlayerInfo(typeof(DefaultReferenceModeNamingCustomizesORMModel), "ORMModel", DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId),
+				new DomainRolePlayerInfo(typeof(DefaultReferenceModeNamingCustomizesORMModel), "DefaultReferenceModeNaming", DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId),
 				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasDefaultReferenceModeNaming), "Model", MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId),
 				new DomainRolePlayerInfo(typeof(MappingCustomizationModelHasDefaultReferenceModeNaming), "DefaultReferenceModeNaming", MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId),
 				new DomainRolePlayerInfo(typeof(SchemaIsForAbstractionModel), "Schema", SchemaIsForAbstractionModel.SchemaDomainRoleId),
@@ -193,8 +184,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(8);
 				createElementMap.Add(typeof(MappingCustomizationModel), 0);
 				createElementMap.Add(typeof(AssimilationMapping), 1);
-				createElementMap.Add(typeof(ReferenceModeNaming), 2);
-				createElementMap.Add(typeof(DefaultReferenceModeNaming), 3);
+				createElementMap.Add(typeof(RelationalReferenceModeNaming), 2);
+				createElementMap.Add(typeof(RelationalDefaultReferenceModeNaming), 3);
 				createElementMap.Add(typeof(RelationalNameGenerator), 4);
 				createElementMap.Add(typeof(SchemaGenerationSetting), 5);
 			}
@@ -212,8 +203,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			{
 				case 0: return new MappingCustomizationModel(partition, propertyAssignments);
 				case 1: return new AssimilationMapping(partition, propertyAssignments);
-				case 2: return new ReferenceModeNaming(partition, propertyAssignments);
-				case 3: return new DefaultReferenceModeNaming(partition, propertyAssignments);
+				case 2: return new RelationalReferenceModeNaming(partition, propertyAssignments);
+				case 3: return new RelationalDefaultReferenceModeNaming(partition, propertyAssignments);
 				// A constructor was not generated for RelationalNameGenerator because it had HasCustomConstructor
 				// set to true. Please provide the constructor below.
 				case 4: return new RelationalNameGenerator(partition, propertyAssignments);
@@ -533,87 +524,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Separate.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		Separate = 2,
-	}
-}
-namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
-{
-	/// <summary>
-	/// DomainEnumeration: ReferenceModeNamingChoice
-	/// Specify how reference mode names are used when generating relational information
-	/// for an <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>,
-	/// including an option for deferring to the model.
-	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<ReferenceModeNamingChoice, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel>))]
-	[global::System.CLSCompliant(true)]
-	public enum ReferenceModeNamingChoice
-	{
-		/// <summary>
-		/// ValueTypeName
-		/// Use the name of the identifying value type for the column.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ValueTypeName.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		ValueTypeName = 0,
-		/// <summary>
-		/// EntityTypeName
-		/// Use the name of the entity type for the related column.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/EntityTypeName.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		EntityTypeName = 1,
-		/// <summary>
-		/// ReferenceModeName
-		/// Use the name of the reference mode for the related column.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ReferenceModeName.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		ReferenceModeName = 2,
-		/// <summary>
-		/// CustomFormat
-		/// Use a custom format string using the other three values as replacement fields.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/CustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		CustomFormat = 3,
-		/// <summary>
-		/// ModelDefault
-		/// Use the default setting from the model.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ModelDefault.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		ModelDefault = 4,
-	}
-}
-namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
-{
-	/// <summary>
-	/// DomainEnumeration: EffectiveReferenceModeNamingChoice
-	/// Specify how reference mode names are used when generating relational information
-	/// for an <see cref="ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType"/>.
-	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<EffectiveReferenceModeNamingChoice, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel>))]
-	[global::System.CLSCompliant(true)]
-	public enum EffectiveReferenceModeNamingChoice
-	{
-		/// <summary>
-		/// ValueTypeName
-		/// Use the name of the identifying value type for the column.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ValueTypeName.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		ValueTypeName = 0,
-		/// <summary>
-		/// EntityTypeName
-		/// Use the name of the entity type for the related column.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/EntityTypeName.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		EntityTypeName = 1,
-		/// <summary>
-		/// ReferenceModeName
-		/// Use a custom format string using the other three values as replacement fields.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ReferenceModeName.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		ReferenceModeName = 2,
-		/// <summary>
-		/// CustomFormat
-		/// Use a custom format with the other three values as replacement fields.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/CustomFormat.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		CustomFormat = 3,
 	}
 }
 

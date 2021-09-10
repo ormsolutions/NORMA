@@ -54,6 +54,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						typeof(ModificationTracker).GetNestedType("InformationTypeFormatAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("InformationTypeFormatDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("NameGeneratorSettingsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModificationTracker).GetNestedType("ReferenceModeChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModificationTracker).GetNestedType("ReferenceModeKindAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModificationTracker).GetNestedType("ReferenceModeKindDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ModificationTracker).GetNestedType("ReferenceModeKindRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("RecognizedPhraseDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("ReferenceModeNamingCustomizesObjectTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ModificationTracker).GetNestedType("ReferenceModeNamingChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -102,7 +106,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMAbstractionToConceptualDatabaseBridgeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 35; ++i)
+			for (int i = 0; i < 39; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -509,7 +513,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.DefaultReferenceModeNamingCustomizesORMModelAddedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(DefaultReferenceModeNaming), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RelationalDefaultReferenceModeNaming), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class DefaultReferenceModeNamingChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -521,7 +525,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				/// Provide the following method in class: 
 				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
 				/// /// <summary>
-				/// /// ChangeRule: typeof(DefaultReferenceModeNaming)
+				/// /// ChangeRule: typeof(RelationalDefaultReferenceModeNaming)
 				/// /// </summary>
 				/// private static void DefaultReferenceModeNamingChangedRule(ElementPropertyChangedEventArgs e)
 				/// {
@@ -639,6 +643,112 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.NameGeneratorSettingsChangedRule");
 				}
 			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeKind), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.CustomReferenceMode), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class ReferenceModeChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public ReferenceModeChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
+				/// /// <summary>
+				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeKind)
+				/// /// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.CustomReferenceMode)
+				/// /// </summary>
+				/// private static void ReferenceModeChangedRule(ElementPropertyChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ReferenceModeChangedRule");
+					ModificationTracker.ReferenceModeChangedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ReferenceModeChangedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class ReferenceModeKindAddedRuleClass : Microsoft.VisualStudio.Modeling.AddRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public ReferenceModeKindAddedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
+				/// /// <summary>
+				/// /// AddRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind)
+				/// /// </summary>
+				/// private static void ReferenceModeKindAddedRule(ElementAddedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ReferenceModeKindAddedRule");
+					ModificationTracker.ReferenceModeKindAddedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ReferenceModeKindAddedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class ReferenceModeKindDeletedRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public ReferenceModeKindDeletedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
+				/// /// <summary>
+				/// /// DeleteRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind)
+				/// /// </summary>
+				/// private static void ReferenceModeKindDeletedRule(ElementDeletedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ReferenceModeKindDeletedRule");
+					ModificationTracker.ReferenceModeKindDeletedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ReferenceModeKindDeletedRule");
+				}
+			}
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			private sealed class ReferenceModeKindRolePlayerChangedRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+			{
+				[System.Diagnostics.DebuggerStepThrough()]
+				public ReferenceModeKindRolePlayerChangedRuleClass()
+				{
+					base.IsEnabled = false;
+				}
+				/// <summary>
+				/// Provide the following method in class: 
+				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
+				/// /// <summary>
+				/// /// RolePlayerChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ReferenceModeHasReferenceModeKind)
+				/// /// </summary>
+				/// private static void ReferenceModeKindRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+				/// {
+				/// }
+				/// </summary>
+				[System.Diagnostics.DebuggerStepThrough()]
+				public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+				{
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ReferenceModeKindRolePlayerChangedRule");
+					ModificationTracker.ReferenceModeKindRolePlayerChangedRule(e);
+					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ReferenceModeKindRolePlayerChangedRule");
+				}
+			}
 			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.ModelContainsRecognizedPhrase), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class RecognizedPhraseDeletingRuleClass : Microsoft.VisualStudio.Modeling.DeletingRule
 			{
@@ -691,7 +801,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker.ReferenceModeNamingCustomizesObjectTypeAddedRule");
 				}
 			}
-			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ReferenceModeNaming), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+			[Microsoft.VisualStudio.Modeling.RuleOn(typeof(RelationalReferenceModeNaming), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 			private sealed class ReferenceModeNamingChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 			{
 				[System.Diagnostics.DebuggerStepThrough()]
@@ -703,7 +813,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				/// Provide the following method in class: 
 				/// ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel.ModificationTracker
 				/// /// <summary>
-				/// /// ChangeRule: typeof(ReferenceModeNaming)
+				/// /// ChangeRule: typeof(RelationalReferenceModeNaming)
 				/// /// </summary>
 				/// private static void ReferenceModeNamingChangedRule(ElementPropertyChangedEventArgs e)
 				/// {

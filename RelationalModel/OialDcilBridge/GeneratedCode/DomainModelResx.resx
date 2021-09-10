@@ -149,93 +149,21 @@
     <value>AbsorptionChoice</value>
     <comment>DisplayName for DomainProperty &apos;AbsorptionChoice&apos; on DomainClass &apos;AssimilationMapping&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;ReferenceModeNaming&apos;</comment>
+    <comment>Description for DomainClass &apos;RelationalReferenceModeNaming&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming.DisplayName" xml:space="preserve">
     <value>ReferenceModeNaming</value>
-    <comment>DisplayName for DomainClass &apos;ReferenceModeNaming&apos;</comment>
+    <comment>DisplayName for DomainClass &apos;RelationalReferenceModeNaming&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.Description" xml:space="preserve">
-    <value>The naming pattern used for references to this EntityType.</value>
-    <comment>Description for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/NamingChoice.DisplayName" xml:space="preserve">
-    <value>NamingChoice</value>
-    <comment>DisplayName for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.Description" xml:space="preserve">
-    <value>The custom naming format used for references to this EntityType.</value>
-    <comment>Description for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/CustomFormat.DisplayName" xml:space="preserve">
-    <value>CustomFormat</value>
-    <comment>DisplayName for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.Description" xml:space="preserve">
-    <value>The naming pattern used for simple primary identification of this EntityType.</value>
-    <comment>Description for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName" xml:space="preserve">
-    <value>PrimaryIdentifierNamingChoice</value>
-    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.Description" xml:space="preserve">
-    <value>The custom naming format used for simple primary identification of this EntityType.</value>
-    <comment>Description for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName" xml:space="preserve">
-    <value>PrimaryIdentifierCustomFormat</value>
-    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;ReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming.Description" xml:space="preserve">
     <value></value>
-    <comment>Description for DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+    <comment>Description for DomainClass &apos;RelationalDefaultReferenceModeNaming&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming.DisplayName" xml:space="preserve">
     <value>DefaultReferenceModeNaming</value>
-    <comment>DisplayName for DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.Description" xml:space="preserve">
-    <value>The default naming pattern used for references to EntityTypes with this kind of reference mode.</value>
-    <comment>Description for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/NamingChoice.DisplayName" xml:space="preserve">
-    <value>DefaultReferenceModeNaming</value>
-    <comment>DisplayName for DomainProperty &apos;NamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.Description" xml:space="preserve">
-    <value>The default custom naming format used for references to EntityTypes with custom naming formats.</value>
-    <comment>Description for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/CustomFormat.DisplayName" xml:space="preserve">
-    <value>NamingChoice</value>
-    <comment>DisplayName for DomainProperty &apos;CustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.Description" xml:space="preserve">
-    <value>The default naming pattern used for simple primary identification of EntityTypes with this kind of reference mode.</value>
-    <comment>Description for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierNamingChoice.DisplayName" xml:space="preserve">
-    <value>DefaultPrimaryIdentifierReferenceModeNaming</value>
-    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierNamingChoice&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.Description" xml:space="preserve">
-    <value>The default custom naming format used for simple primary identification of EntityTypes with custom naming formats.</value>
-    <comment>Description for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/PrimaryIdentifierCustomFormat.DisplayName" xml:space="preserve">
-    <value>DefaultPrimaryIdentifierReferenceModeCustomFormat</value>
-    <comment>DisplayName for DomainProperty &apos;PrimaryIdentifierCustomFormat&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.Description" xml:space="preserve">
-    <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming.ReferenceModeTargetKind</value>
-    <comment>Description for DomainProperty &apos;ReferenceModeTargetKind&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming/ReferenceModeTargetKind.DisplayName" xml:space="preserve">
-    <value>ReferenceModeTargetKind</value>
-    <comment>DisplayName for DomainProperty &apos;ReferenceModeTargetKind&apos; on DomainClass &apos;DefaultReferenceModeNaming&apos;</comment>
+    <comment>DisplayName for DomainClass &apos;RelationalDefaultReferenceModeNaming&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalNameGenerator.Description" xml:space="preserve">
     <value></value>
@@ -421,18 +349,6 @@
     <value>Default Reference Mode Naming Customizes ORMModel</value>
     <comment>DisplayName for DomainClass &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.Description" xml:space="preserve">
-    <value></value>
-    <comment>Description for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.DisplayName" xml:space="preserve">
-    <value>Default Reference Mode Naming</value>
-    <comment>DisplayName for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.PropertyDisplayName" xml:space="preserve">
-    <value>ORMModel</value>
-    <comment>PropertyDisplayName for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
-  </data>
   <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
@@ -444,6 +360,18 @@
   <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.PropertyDisplayName" xml:space="preserve">
     <value>Default Reference Mode Naming Collection</value>
     <comment>PropertyDisplayName for DomainRole &apos;ORMModel&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.Description" xml:space="preserve">
+    <value></value>
+    <comment>Description for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.DisplayName" xml:space="preserve">
+    <value>Default Reference Mode Naming</value>
+    <comment>DisplayName for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.PropertyDisplayName" xml:space="preserve">
+    <value>ORMModel</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DefaultReferenceModeNaming&apos; on DomainRelationship &apos;DefaultReferenceModeNamingCustomizesORMModel&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming</value>
@@ -756,78 +684,6 @@
   <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.AssimilationAbsorptionChoice/Separate.Description" xml:space="preserve">
     <value>Each subtype is given its own table, data from the supertype is stored in a separate referenced table.</value>
     <comment>Description for EnumerationLiteral &apos;Separate&apos; on DomainEnumeration &apos;AssimilationAbsorptionChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ValueTypeName.DisplayName" xml:space="preserve">
-    <value>ValueTypeName</value>
-    <comment>Display name for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ValueTypeName.Description" xml:space="preserve">
-    <value>Use the name of the identifying value type for the column.</value>
-    <comment>Description for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/EntityTypeName.DisplayName" xml:space="preserve">
-    <value>EntityTypeName</value>
-    <comment>Display name for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/EntityTypeName.Description" xml:space="preserve">
-    <value>Use the name of the entity type for the related column.</value>
-    <comment>Description for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ReferenceModeName.DisplayName" xml:space="preserve">
-    <value>ReferenceModeName</value>
-    <comment>Display name for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ReferenceModeName.Description" xml:space="preserve">
-    <value>Use the name of the reference mode for the related column.</value>
-    <comment>Description for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/CustomFormat.DisplayName" xml:space="preserve">
-    <value>CustomFormat</value>
-    <comment>Display name for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/CustomFormat.Description" xml:space="preserve">
-    <value>Use a custom format string using the other three values as replacement fields.</value>
-    <comment>Description for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ModelDefault.DisplayName" xml:space="preserve">
-    <value>ModelDefault</value>
-    <comment>Display name for EnumerationLiteral &apos;ModelDefault&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingChoice/ModelDefault.Description" xml:space="preserve">
-    <value>Use the default setting from the model.</value>
-    <comment>Description for EnumerationLiteral &apos;ModelDefault&apos; on DomainEnumeration &apos;ReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ValueTypeName.DisplayName" xml:space="preserve">
-    <value>ValueTypeName</value>
-    <comment>Display name for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ValueTypeName.Description" xml:space="preserve">
-    <value>Use the name of the identifying value type for the column.</value>
-    <comment>Description for EnumerationLiteral &apos;ValueTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/EntityTypeName.DisplayName" xml:space="preserve">
-    <value>EntityTypeName</value>
-    <comment>Display name for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/EntityTypeName.Description" xml:space="preserve">
-    <value>Use the name of the entity type for the related column.</value>
-    <comment>Description for EnumerationLiteral &apos;EntityTypeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ReferenceModeName.DisplayName" xml:space="preserve">
-    <value>ReferenceModeName</value>
-    <comment>Display name for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/ReferenceModeName.Description" xml:space="preserve">
-    <value>Use a custom format string using the other three values as replacement fields.</value>
-    <comment>Description for EnumerationLiteral &apos;ReferenceModeName&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/CustomFormat.DisplayName" xml:space="preserve">
-    <value>CustomFormat</value>
-    <comment>Display name for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.EffectiveReferenceModeNamingChoice/CustomFormat.Description" xml:space="preserve">
-    <value>Use a custom format with the other three values as replacement fields.</value>
-    <comment>Description for EnumerationLiteral &apos;CustomFormat&apos; on DomainEnumeration &apos;EffectiveReferenceModeNamingChoice&apos;</comment>
   </data>
   <data name="AmbiguousSchema" xml:space="preserve">
     <value>More than one schema found for target namespace &apos;{0}&apos;, use the first one at &apos;{1}&apos;.</value>

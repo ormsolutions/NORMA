@@ -575,13 +575,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 							else if ((ItemFlags.ExistingAlias | ItemFlags.ExistingOnBase) == (flags & (ItemFlags.ExistingAlias | ItemFlags.ExistingOnBase)))
 							{
 								// An existing alias and a base alias
-								if (string.IsNullOrEmpty(value) || value == myBaseAlias.Name)
+								if (value == myBaseAlias.Name)
 								{
 									myAliasName = myBaseAlias.Name;
+									flags |= ItemFlags.DeletedEntry | ItemFlags.ModifiedEntry;
+									flags &= ~ItemFlags.DirectAlias;
+								}
+								else if (string.IsNullOrEmpty(value))
+								{
 									if (0 == (flags & ItemFlags.AllowEmpty))
 									{
-										flags |= ItemFlags.DeletedEntry | ItemFlags.ModifiedEntry;
+										myAliasName = myBaseAlias.Name;
+										flags |= ItemFlags.DeletedEntry;
 									}
+									else
+									{
+										myAliasName = value;
+									}
+									flags |= ItemFlags.ModifiedEntry;
 									flags &= ~ItemFlags.DirectAlias;
 								}
 								else if (value == myAlias.Name)
@@ -887,6 +898,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					Type contextNameUsageType = generator.NameUsageType;
 					DomainClassInfo contextGeneratorClass = generator.GetDomainClass();
 					Dictionary<ModelElement, GeneratorClassAndAlias> elementMap = null;
+					bool checkRefinedInstance = generator.AllowsRefinedInstances;
+					ModelElement refinedInstance = checkRefinedInstance ? generator.RefinedInstance : null;
+
 					foreach (ElementHasAlias link in store.ElementDirectory.FindElements(ownerRoleInfo.DomainRelationship, false))
 					{
 						NameAlias alias = link.Alias;
@@ -897,10 +911,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						Type currentNameUsageType = alias.NameUsageType;
 						if ((contextNameUsageType == null) ? (currentNameUsageType == null) : (currentNameUsageType == null || currentNameUsageType == contextNameUsageType))
 						{
+							ModelElement aliasRefinedInstance = null;
+							if (checkRefinedInstance)
+							{
+								aliasRefinedInstance = alias.RefinedInstance;
+								if (refinedInstance != null ?
+										(aliasRefinedInstance != null && aliasRefinedInstance != refinedInstance) :
+										(aliasRefinedInstance != null))
+								{
+									continue;
+								}
+							}
+
 							DomainClassInfo currentGeneratorClass = alias.NameConsumerDomainClass;
 							if (currentGeneratorClass.IsDerivedFrom(NameGenerator.DomainClassId))
 							{
-								bool directGenerator = currentGeneratorClass == contextGeneratorClass && contextNameUsageType == currentNameUsageType;
+								bool directGenerator = currentGeneratorClass == contextGeneratorClass && contextNameUsageType == currentNameUsageType && refinedInstance == aliasRefinedInstance;
 								if (directGenerator ||
 									contextGeneratorClass.IsDerivedFrom(currentGeneratorClass))
 								{
@@ -928,24 +954,46 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 												// than the current generator, then the current one wins
 												int existingDepth = 0;
 												int newDepth = 0;
-												if (iterateClass != currentGeneratorClass)
+												bool replaceBase = false;
+												bool testSecondary = false; // Look at name usage and refined instance.
+
+												if (iterateClass == currentGeneratorClass)
+												{
+													testSecondary = true;
+												}
+												else
 												{
 													do
 													{
 														++existingDepth;
 														iterateClass = iterateClass.BaseDomainClass;
 													} while (iterateClass != null);
+
 													iterateClass = currentGeneratorClass;
 													do
 													{
 														++newDepth;
 														iterateClass = iterateClass.BaseDomainClass;
 													} while (iterateClass != null);
-													if (newDepth > existingDepth ||
-														(currentGeneratorClass == existingGeneratorClass.BaseGeneratorClass && currentNameUsageType != null))
+
+													if (newDepth > existingDepth)
 													{
-														elementMap[owner] = new GeneratorClassAndAlias(existingGeneratorClass.GeneratorClass, existingGeneratorClass.Alias, currentGeneratorClass, alias);
+														replaceBase = true;
 													}
+													else if (currentGeneratorClass == existingGeneratorClass.BaseGeneratorClass)
+													{
+														testSecondary = true;
+													}
+												}
+
+												if (testSecondary)
+												{
+													replaceBase = aliasRefinedInstance != null || (existingGeneratorClass.Alias.RefinedInstance == null && currentNameUsageType != null);
+												}
+
+												if (replaceBase)
+												{
+													elementMap[owner] = new GeneratorClassAndAlias(existingGeneratorClass.GeneratorClass, existingGeneratorClass.Alias, currentGeneratorClass, alias);
 												}
 											}
 											else
@@ -968,7 +1016,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					{
 						List<ItemInfo> items = new List<ItemInfo>();
 						DomainPropertyInfo nameProperty = ownerRoleInfo.RolePlayer.NameDomainProperty;
-						DomainClassInfo localGeneratorClass = generator.GetDomainClass();
 						foreach (KeyValuePair<ModelElement, GeneratorClassAndAlias> pair in elementMap)
 						{
 							GeneratorClassAndAlias value = pair.Value;
@@ -994,6 +1041,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						PropertyAssignment consumerProperty = null;
 						PropertyAssignment usageProperty = null;
 						Store store = generator.Store;
+						ModelElement refinedInstance = generator.AllowsRefinedInstances ? generator.RefinedInstance : null;
 						for (int i = 0; i < itemCount; ++i)
 						{
 							ItemInfo currentItem = items[i];
@@ -1022,6 +1070,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 										alias = (usageProperty != null) ?
 											new NameAlias(store, nameAssignment, consumerProperty, usageProperty) :
 											new NameAlias(store, nameAssignment, consumerProperty);
+										if (refinedInstance != null)
+										{
+											// If the order here is changed then other rules may have to be updated.
+											// The current tracking assumption is that the alias is refined before it is attached to its owner.
+											// This means that the act of refining the alias while it is attached to its owner does not have to
+											// be tracked separately. The recommendation is to maintain this order of attaching links.
+											alias.RefinedInstance = refinedInstance;
+										}
+
 										DomainRoleInfo roleInfo = myOwnerRoleInfo;
 										ModelElement owner = currentItem.Owner;
 										if (owner == null)
@@ -1098,9 +1155,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						ItemInfo info = myItems[row];
 						if (info.Alias == null)
 						{
-							// Lose the row, we created it for this instance of the dialog
-							myItems.RemoveAt(row);
-							args = BranchModificationEventArgs.DeleteItems(this, row, 1);
+							if (info.BaseAlias != null)
+							{
+								// This will revert to the base alias
+								info.AliasName = null;
+							}
+							else
+							{
+								// Lose the row, we created it for this instance of the dialog
+								myItems.RemoveAt(row);
+								args = BranchModificationEventArgs.DeleteItems(this, row, 1);
+							}
 						}
 						else
 						{

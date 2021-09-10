@@ -165,6 +165,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				propertyInfo = directory.FindDomainProperty(ModelNote.TextDomainPropertyId);
 				eventManager.AddOrRemoveHandler(propertyInfo, standardNameChangedHandler, action);
 
+				// Name generator
+				classInfo = directory.FindDomainRelationship(NameGeneratorRefinesNameGenerator.DomainClassId);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(RefinedNameGeneratorAddedEvent), action);
+				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(RefinedNameGeneratorDeletedEvent), action);
+
 				// Derivation display (* after derived fact type and subtype names)
 				classInfo = directory.FindDomainClass(FactTypeHasDerivationRule.DomainClassId);
 				eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(FactTypeDerivationRuleAddedEvent), action);
@@ -707,6 +712,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					eventNotify.ElementReferenceDeleted(factType, link, constraint);
 				}
+			}
+		}
+		/// <summary>
+		/// Survey event handler for addition of a <see cref="NameGenerator"/>
+		/// </summary>
+		private static void RefinedNameGeneratorAddedEvent(object sender, ElementAddedEventArgs e)
+		{
+			// The instance refinements are the only things that will trigger her. The type-level name generators
+			// do not dynamically add and remove.
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				NameGeneratorRefinesNameGenerator link = (NameGeneratorRefinesNameGenerator)element;
+				NameGenerator generator = link.Refinement;
+				if (!generator.IsDeleted)
+				{
+					eventNotify.ElementAdded(generator, link.Parent);
+				}
+			}
+		}
+		/// <summary>
+		/// Survey event handler for deletion of a <see cref="NameGenerator"/>
+		/// </summary>
+		private static void RefinedNameGeneratorDeletedEvent(object sender, ElementDeletedEventArgs e)
+		{
+			// The instance refinements are the only things that will trigger her. The type-level name generators
+			// do not dynamically add and remove.
+			INotifySurveyElementChanged eventNotify;
+			ModelElement element = e.ModelElement;
+			if (null != (eventNotify = (element.Store as IORMToolServices).NotifySurveyElementChanged))
+			{
+				eventNotify.ElementDeleted(((NameGeneratorRefinesNameGenerator)element).Refinement);
 			}
 		}
 		/// <summary>

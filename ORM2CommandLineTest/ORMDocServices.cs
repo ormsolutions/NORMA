@@ -204,6 +204,10 @@ namespace ORMSolutions.ORMArchitectSDK.TestEngine
 			{
 				return false;
 			}
+			bool IORMToolServices.NavigateTo(object element, NavigateToWindow window, NavigateToOptions options)
+			{
+				return false;
+			}
 			#endregion // IORMToolServices Implementation
 			#region IORMFontAndColorService Implementation
 			Color IORMFontAndColorService.GetBackColor(ORMDesignerColor colorIndex)

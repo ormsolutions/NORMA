@@ -68,9 +68,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				IPropertyProviderService propertyProvider = ((IFrameworkServices)Store).PropertyProviderService;
 				propertyProvider.AddOrRemovePropertyProvider(typeof(FactType), AssimilationMapping.PopulateAssimilationMappingExtensionProperties, true, action);
 				propertyProvider.AddOrRemovePropertyProvider(typeof(ObjectType), AssimilationMapping.PopulateObjectTypeAbsorptionExtensionProperties, false, action);
-				propertyProvider.AddOrRemovePropertyProvider(typeof(ObjectType), ReferenceModeNaming.PopulateReferenceModeNamingExtensionProperties, false, action);
-				propertyProvider.AddOrRemovePropertyProvider(typeof(ORMModel), ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel, false, action);
-				propertyProvider.AddOrRemovePropertyProvider(typeof(RelationalNameGenerator), ReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator, false, action);
+				propertyProvider.AddOrRemovePropertyProvider(typeof(ObjectType), RelationalReferenceModeNaming.PopulateReferenceModeNamingExtensionProperties, false, action);
+				propertyProvider.AddOrRemovePropertyProvider(typeof(ORMModel), RelationalReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnORMModel, false, action);
+				propertyProvider.AddOrRemovePropertyProvider(typeof(RelationalNameGenerator), RelationalReferenceModeNaming.PopulateDefaultReferenceModeNamingExtensionPropertiesOnColumnNameGenerator, false, action);
 
 				if (0 != (reasons & EventSubscriberReasons.ModelStateEvents))
 				{

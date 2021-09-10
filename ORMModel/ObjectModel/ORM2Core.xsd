@@ -123,6 +123,9 @@
 		<xs:annotation>
 			<xs:documentation>An alternative name for the containing named element</xs:documentation>
 		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" name="RefinedInstance" type="RefinedInstanceType"/>
+		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attribute name="Name" type="xs:string" use="required">
 			<xs:annotation>
@@ -140,6 +143,13 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:complexType name="RefinedInstanceType">
+		<xs:annotation>
+			<xs:documentation>Bind an Alias or NameGenerator to a specific generated instance.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="refAttribute"/>
+	</xs:complexType>
+	<xs:element name="RefinesGeneratedInstance" type="RefinedInstanceType" abstract="true"/>
 	<xs:complexType name="NotesType">
 		<xs:annotation>
 			<xs:documentation>The container for note elements.</xs:documentation>
@@ -4048,6 +4058,7 @@
 					</xs:sequence>
 				</xs:complexType>
 			</xs:element>
+			<xs:element minOccurs="0" ref="RefinesGeneratedInstance"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 		<xs:attribute name="CasingOption" default="None">
@@ -4134,6 +4145,141 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:complexType name="ReferenceModeNamingType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Reference mode naming options for a specific object type. Used by extension models, which must add their own reference to the modified object type.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="NamingChoice" type="NamingChoiceType" default="ModelDefault">
+			<xs:annotation>
+				<xs:documentation>Specify how a reference to a reference-mode identified instance is to be represented.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PrimaryIdentifierNamingChoice" type="NamingChoiceType" default="ModelDefault">
+			<xs:annotation>
+				<xs:documentation>Specify how the primary identifier of a reference-mode identified instance is to be represented.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="CustomFormat" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>May be set if NamingChoice is CustomFormat. The replacement field {0} is the ValueTypeName, {1} is the EntityTypeName, and {2} is the ReferenceModeName.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PrimaryIdentifierCustomFormat" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>May be set if PrimaryIdentifierNamingChoice is CustomFormat. The replacement field {0} is the ValueTypeName, {1} is the EntityTypeName, and {2} is the ReferenceModeName.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="NamingChoiceType">
+		<xs:annotation>
+			<xs:documentation>Specify how a reference mode is to be represented in a generated name. Includes and option to use context default settings.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="ModelDefault">
+				<xs:annotation>
+					<xs:documentation>Use the default setting for the model</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ValueTypeName">
+				<xs:annotation>
+					<xs:documentation>The name of the ValueType is used for naming.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EntityTypeName">
+				<xs:annotation>
+					<xs:documentation>The name of the EntityType is used for naming.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReferenceModeName">
+				<xs:annotation>
+					<xs:documentation>The name of the ReferenceMode is used for naming.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CustomFormat">
+				<xs:annotation>
+					<xs:documentation>A custom format string with any combination of the ValueTypeName/EntityTypeName/ReferenceModeName values is allowed. Use CustomFormat if specified or the default CustomFormat for the corresponding reference mode kind.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DefaultReferenceModeNamingType" abstract="true">
+		<xs:annotation>
+			<xs:documentation>Represent a set of defaults for how reference modes should be used in generated code. This type must be extended in extension models to associate another element as the owning context for this default.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+		<xs:attribute name="TargetKind" use="required">
+			<xs:annotation>
+				<xs:documentation>Specify if these are the defaults for popular, unit based, or general reference modes.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="General">
+						<xs:annotation>
+							<xs:documentation>The naming conventions correspond to general reference modes.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Popular">
+						<xs:annotation>
+							<xs:documentation>The naming conventions correspond to popular reference modes.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="UnitBased">
+						<xs:annotation>
+							<xs:documentation>The naming conventions correspond to unit based reference modes.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="NamingChoice" type="EffectiveNamingChoiceType" default="ValueTypeName">
+			<xs:annotation>
+				<xs:documentation>Specify how a reference to a reference-mode identified instance is to be represented.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PrimaryIdentifierNamingChoice" type="EffectiveNamingChoiceType" default="ValueTypeName">
+			<xs:annotation>
+				<xs:documentation>Specify how the primary identifier of a reference-mode identified instance is to be represented.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="CustomFormat" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>May be set if NamingChoice is CustomFormat. The replacement field {0} is the ValueTypeName, {1} is the EntityTypeName, and {2} is the ReferenceModeName.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PrimaryIdentifierCustomFormat" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>May be set if PrimaryIdentifierNamingChoice is CustomFormat. The replacement field {0} is the ValueTypeName, {1} is the EntityTypeName, and {2} is the ReferenceModeName.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:simpleType name="EffectiveNamingChoiceType">
+		<xs:annotation>
+			<xs:documentation>Specify default settings for how a reference mode is to be represented in a generated name.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="ValueTypeName">
+				<xs:annotation>
+					<xs:documentation>The name of the ValueType is used for naming.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EntityTypeName">
+				<xs:annotation>
+					<xs:documentation>The name of the EntityType is used for naming.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ReferenceModeName">
+				<xs:annotation>
+					<xs:documentation>The name of the ReferenceMode is used for naming.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CustomFormat">
+				<xs:annotation>
+					<xs:documentation>A custom format string with any combination of the ValueTypeName/EntityTypeName/ReferenceModeName values is allowed. Use CustomFormat if specified or the default CustomFormat for the corresponding reference mode kind.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:complexType name="RecognizedPhrasesType">
 		<xs:annotation>
 			<xs:documentation>Container for recognized phrases.</xs:documentation>

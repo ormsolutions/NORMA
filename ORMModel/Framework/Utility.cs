@@ -793,6 +793,271 @@ namespace ORMSolutions.ORMArchitect.Framework
 			return SplitOnUpperAndNumberRegex.Match(name);
 		}
 		#endregion // MatchNameParts method
+		#region GenerateUniqueNames Method
+		#region Unique name generation algorithm
+		/// <summary>
+		/// Generate a candidate name for the given <paramref name="element"/>. Used with <see cref="GenerateUniqueNames"/> function.
+		/// </summary>
+		/// <param name="element">The element to generate a candidate name for</param>
+		/// <param name="phase">The current phase of the name to generate. As the phase number goes
+		/// higher the returned name should be more complex. The initial request will be 0, with additional
+		/// requested incremented 1 from the previous name request.</param>
+		/// <returns>The candidate name, or <see langword="null"/> if a name is not available for the specified phase.</returns>
+		public delegate string GenerateCandidateElementNameCallback<T>(T element, int phase);
+		/// <summary>
+		/// Set the name for the given element. Used by <see cref="GenerateUniqueNames"/>
+		/// </summary>
+		public delegate void SetElementNameCallback<T>(T element, string elementName);
+		private struct UniqueNameGenerator<T> where T : class
+		{
+			#region ElementPhase structure
+			/// <summary>
+			/// A structure to hold an element coupled with a phase number.
+			/// Used to determine the phase that was used to generate a name.
+			/// </summary>
+			private struct ElementPhase
+			{
+				private readonly T myElement;
+				private readonly int myPhase;
+				/// <summary>
+				/// Create a new <see cref="ElementPhase"/>
+				/// </summary>
+				/// <param name="element">The element involved</param>
+				/// <param name="phase">The phase the name was generated with</param>
+				public ElementPhase(T element, int phase)
+				{
+					myElement = element;
+					myPhase = phase;
+				}
+				/// <summary>
+				/// The element passed to the constructor
+				/// </summary>
+				public T Element
+				{
+					get
+					{
+						return myElement;
+					}
+				}
+				/// <summary>
+				/// The phase passed to the constructor
+				/// </summary>
+				public int Phase
+				{
+					get
+					{
+						return myPhase;
+					}
+				}
+			}
+			#endregion // ElementPhase structure
+			#region Fields
+			/// <summary>
+			/// Map already generated names into a dictionary that contains either one of the element
+			/// objects or a linked list of objects. Linked lists contain duplicate nodes
+			/// </summary>
+			private Dictionary<string, object> myNameMappingDictionary;
+			/// <summary>
+			/// A dictionary of unresolved names, corresponds to keys in the nameMappingDictionary
+			/// </summary>
+			Dictionary<string, string> myUnresolvedNames;
+			#endregion // Fields
+			#region Public methods
+			public void GenerateUniqueElementNames(IEnumerable<T> elements, GenerateCandidateElementNameCallback<T> generateName, Predicate<T> isFixedName, SetElementNameCallback<T> setName)
+			{
+				if (myNameMappingDictionary != null)
+				{
+					myNameMappingDictionary.Clear();
+				}
+				else
+				{
+					myNameMappingDictionary = new Dictionary<string, object>();
+				}
+				if (myUnresolvedNames != null)
+				{
+					myUnresolvedNames.Clear();
+				}
+				// Generate initial names
+				foreach (T element in elements)
+				{
+					string elementName = generateName(element, 0);
+					if (elementName != null)
+					{
+						AddElement(element, elementName, 0);
+					}
+				}
+
+				Dictionary<string, object> nameMappingDictionary = myNameMappingDictionary;
+				while (myUnresolvedNames != null && 0 != myUnresolvedNames.Count)
+				{
+					// Walk the existing unresolved names and attempt to resolve them further.
+					// Iterate until we can't resolve any more
+					Dictionary<string, string> unresolvedNames = myUnresolvedNames;
+					myUnresolvedNames = null;
+
+					foreach (string currentName in unresolvedNames.Values)
+					{
+						// If we've added this name as unresolved during this pass, then take it back out
+						// We'll pick it up again if it doesn't resolve
+						if (myUnresolvedNames != null && myUnresolvedNames.ContainsKey(currentName))
+						{
+							myUnresolvedNames.Remove(currentName);
+						}
+						LinkedNode<ElementPhase> startHeadNode = (LinkedNode<ElementPhase>)nameMappingDictionary[currentName];
+						LinkedNode<ElementPhase> headNode = startHeadNode;
+						LinkedNode<ElementPhase> nextNode = headNode;
+						while (nextNode != null)
+						{
+							LinkedNode<ElementPhase> currentNode = nextNode;
+							nextNode = currentNode.Next;
+
+							ElementPhase elementPhase = currentNode.Value;
+							T element = elementPhase.Element;
+							// The next phase to request is based on the last phase requested for this element,
+							// not the number of times we've passed through the loop
+							int phase = elementPhase.Phase + 1;
+							string newName = generateName(element, phase);
+							// Name generation can return null if the phase is not supported be satisfied
+							if (newName != null)
+							{
+								if (0 == string.CompareOrdinal(newName, currentName))
+								{
+									currentNode.Value = new ElementPhase(element, phase);
+								}
+								else
+								{
+									currentNode.Detach(ref headNode);
+									AddElement(element, newName, phase);
+								}
+							}
+						}
+
+						// Manage the remains of the list in the dictionary
+						if (headNode == null)
+						{
+							// Everything detached from this name, remove the key
+							nameMappingDictionary.Remove(currentName);
+						}
+						else if (headNode != startHeadNode)
+						{
+							if (headNode.Next == null)
+							{
+								nameMappingDictionary[currentName] = headNode.Value;
+							}
+							else
+							{
+								nameMappingDictionary[currentName] = headNode;
+								Dictionary<string, string> currentUnresolvedNames = myUnresolvedNames;
+								if (currentUnresolvedNames == null)
+								{
+									myUnresolvedNames = currentUnresolvedNames = new Dictionary<string, string>();
+								}
+								currentUnresolvedNames[currentName] = currentName;
+							}
+						}
+					}
+				}
+
+				// Walk the set, appending additional numbers as needed, and set the names
+				foreach (KeyValuePair<string, object> pair in nameMappingDictionary)
+				{
+					object value = pair.Value;
+					LinkedNode<ElementPhase> node = value as LinkedNode<ElementPhase>;
+					if (node != null)
+					{
+						// We added these in reverse order, so walk backwards to number them
+						LinkedNode<ElementPhase> tail = node.GetTail();
+						if (node == tail)
+						{
+							setName(node.Value.Element, pair.Key);
+						}
+						else
+						{
+							// We need to resolve farther
+							string baseName = pair.Key;
+							int currentIndex = 0;
+							LinkedNode<ElementPhase> nextNode = tail;
+							while (nextNode != null)
+							{
+								T element = nextNode.Value.Element;
+								nextNode = nextNode.Previous; // We started at the tail, walk backwards
+								string candidateName;
+								if (isFixedName != null && isFixedName(element))
+								{
+									// Set names (including duplicates) for fixed names
+									candidateName = baseName;
+								}
+								else
+								{
+									do
+									{
+										++currentIndex;
+										candidateName = baseName + currentIndex.ToString();
+									} while (nameMappingDictionary.ContainsKey(candidateName));
+									// If we get out of the loop, then we finally have a unique name
+								}
+
+								setName(element, candidateName);
+							}
+						}
+					}
+					else
+					{
+						setName(((ElementPhase)value).Element, pair.Key);
+					}
+				}
+			}
+			#endregion // Public methods
+			#region Helper methods
+			private void AddElement(T element, string elementName, int phase)
+			{
+				object existing;
+				Dictionary<string, object> nameMappingDictionary = myNameMappingDictionary;
+				if (nameMappingDictionary.TryGetValue(elementName, out existing))
+				{
+					// Note: We use LinkedListNode here directly instead of a LinkedList
+					// to facilitate dynamically adding/removing elements during iteration
+					LinkedNode<ElementPhase> node = existing as LinkedNode<ElementPhase>;
+					if (node == null)
+					{
+						// Record the unresolvedName
+						if (myUnresolvedNames == null)
+						{
+							myUnresolvedNames = new Dictionary<string, string>();
+						}
+						myUnresolvedNames[elementName] = elementName;
+
+						// Create a node for the original element
+						node = new LinkedNode<ElementPhase>((ElementPhase)existing);
+					}
+
+					LinkedNode<ElementPhase> newNode = new LinkedNode<ElementPhase>(new ElementPhase(element, phase));
+					newNode.SetNext(node, ref node);
+					nameMappingDictionary[elementName] = newNode;
+				}
+				else
+				{
+					nameMappingDictionary[elementName] = new ElementPhase(element, phase);
+				}
+			}
+			#endregion // Helper methods
+		}
+		/// <summary>
+		/// Given an enumeration of elements of a given type, produce a set of unique names
+		/// with requests for increasing precision in the name.
+		/// </summary>
+		/// <typeparam name="T">The type of element to produce names for.</typeparam>
+		/// <param name="elements">The elements to name.</param>
+		/// <param name="generateName">Callback to produce a name with a requested phase (complexity).</param>
+		/// <param name="isFixedName">Callback to determine if the name is fixed (pinned to a specific value) by the user.</param>
+		/// <param name="setName">Callback to store the finished names on the elements.</param>
+		public static void GenerateUniqueNames<T>(IEnumerable<T> elements, GenerateCandidateElementNameCallback<T> generateName, Predicate<T> isFixedName, SetElementNameCallback<T> setName)
+			where T: class
+		{
+			new UniqueNameGenerator<T>().GenerateUniqueElementNames(elements, generateName, isFixedName, setName);
+		}
+		#endregion // Unique name generation algorithm
+		#endregion // GenerateUniqueNames Method
 	}
 	#region LinkedNode class
 	/// <summary>

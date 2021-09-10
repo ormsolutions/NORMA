@@ -43,6 +43,12 @@
 			<cmc:EmbeddingDirective relationship="RolePathOwnerOwnsLeadRolePath" ignore="true"/>
 			<cmc:EmbeddingDirective relationship="RolePathOwnerOwnsSubquery" ignore="true"/>
 
+			<!-- Name generators and abbreviations can be refined, leading them to be created from the refined
+			element, not the natural container. Ignore embedding here so we can handle with custom directional code -->
+			<cmc:EmbeddingDirective relationship="ObjectTypeHasAbbreviation" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="RecognizedPhraseHasAbbreviation" ignore="true"/>
+			<cmc:EmbeddingDirective relationship="NameGeneratorRefinesNameGenerator" ignore="true"/>
+
 			<!-- Unordered top-level relationships -->
 			<cmc:EmbeddingDirective relationship="ModelHasFactType" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ModelHasObjectType" order="Unordered"/>
@@ -51,8 +57,6 @@
 			<cmc:EmbeddingDirective relationship="ModelHasModelNote" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ModelHasReferenceMode" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ModelHasReferenceModeKind" order="Unordered"/>
-			<cmc:EmbeddingDirective relationship="ObjectTypeHasAbbreviation" order="Unordered"/>
-			<cmc:EmbeddingDirective relationship="RecognizedPhraseHasAbbreviation" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ElementGroupingSetContainsElementGrouping" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ElementGroupingIsOfElementGroupingType" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="GenerationStateHasGenerationSetting" order="Unordered"/>
@@ -193,7 +197,7 @@
 			</cmc:ClosureRole>
 			<cmc:ClosureRole relationship="EntityTypeHasPreferredIdentifier" role="PreferredIdentifier" closureBehavior="ExternalCompositePart">
 				<!-- Make the preferred identifier a composite part instead of an external reference to
-				enforce the 1-1	nature of the relationship. -->
+				enforce the 1-1 nature of the relationship. -->
 			</cmc:ClosureRole>
 			<cmc:ClosureRole relationship="ObjectificationImpliesFactType" role="ImpliedFactType" closureBehavior="ExternalCompositePart"/>
 			<cmc:ClosureRole relationship="ObjectificationImpliesFactType" role="ImpliedByObjectification" closureBehavior="ExternalCompositePart"/>
@@ -205,6 +209,186 @@
 			<cmc:ClosureRole relationship="ValueTypeHasDataType" role="DataType" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="ReferenceModeHasReferenceModeKind" role="Kind" closureBehavior="ExternalReferencedPart"/>
 			<cmc:ClosureRole relationship="ReadingOrderHasRole" role="Role" closureBehavior="InternalReferencedPart" order="From"/>
+			<cmc:ClosureRole relationship="NameGeneratorRefinesNameGenerator" role="Refinement" closureBehavior="Custom">
+				<cmc:CustomBehavior>
+					<plx:comment>Name generators are included with the parent generator if they are unrefined and the matching domain model is already loaded in the target store.</plx:comment>
+					<plx:local name="refinement" dataTypeName="NameGenerator">
+						<plx:initialize>
+							<plx:callInstance name="Refinement" type="property">
+								<plx:callObject>
+									<plx:cast type="exceptionCast" dataTypeName="NameGeneratorRefinesNameGenerator">
+										<plx:nameRef name="link" type="parameter"/>
+									</plx:cast>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:return>
+						<plx:inlineStatement dataTypeName="CopyClosureBehavior">
+							<plx:conditionalOperator>
+								<plx:condition>
+									<plx:binaryOperator type="booleanAnd">
+										<plx:left>
+											<plx:binaryOperator type="booleanOr">
+												<plx:left>
+													<plx:unaryOperator type="booleanNot">
+														<plx:callInstance name="AllowsRefinedInstances" type="property">
+															<plx:callObject>
+																<plx:nameRef name="refinement"/>
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:unaryOperator>
+												</plx:left>
+												<plx:right>
+													<plx:binaryOperator type="identityEquality">
+														<plx:left>
+															<plx:callInstance name="RefinedInstance" type="property">
+																<plx:callObject>
+																	<plx:nameRef name="refinement"/>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:left>
+														<plx:right>
+															<plx:nullKeyword/>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="booleanAnd">
+												<plx:left>
+													<plx:binaryOperator type="identityInequality">
+														<plx:left>
+															<plx:nameRef name="targetState" type="parameter"/>
+														</plx:left>
+														<plx:right>
+															<plx:nullKeyword/>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:left>
+												<plx:right>
+													<plx:callInstance name="SupportsDomainModel">
+														<plx:callObject>
+															<plx:nameRef name="targetState" type="parameter"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:callInstance name="Id" type="property">
+																<plx:callObject>
+																	<plx:callInstance name="GetDomainClass">
+																		<plx:callObject>
+																			<plx:nameRef name="refinement"/>
+																		</plx:callObject>
+																	</plx:callInstance>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:left>
+									<plx:callStatic name="ContainedPart" dataTypeName="CopyClosureBehavior" type="field"/>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic name="Ignored" dataTypeName="CopyClosureBehavior" type="field"/>
+								</plx:right>
+							</plx:conditionalOperator>
+						</plx:inlineStatement>
+					</plx:return>
+				</cmc:CustomBehavior>
+			</cmc:ClosureRole>
+			<cmc:ClosureRole relationship="NameGeneratorRefinesNameGenerator" role="Parent" closureBehavior="Container"/>
+			<cmc:ClosureRole relationship="NameGeneratorRefinesInstance" role="NameGenerator" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="NameAliasRefinesInstance" role="Alias" closureBehavior="ExternalReferencedPart"/>
+			<cmc:ClosureRole relationship="ObjectTypeHasAbbreviation" role="ObjectType" closureBehavior="Container"/>
+			<cmc:ClosureRole relationship="ObjectTypeHasAbbreviation" role="Abbreviation" closureBehavior="Custom">
+				<cmc:CustomBehavior>
+					<plx:comment>Refined aliases are only included if the refined instance is included. Unrefined aliases are contained as part of the owning element.</plx:comment>
+					<plx:local name="alias" dataTypeName="NameAlias">
+						<plx:initialize>
+							<plx:callInstance name="Abbreviation" type="property">
+								<plx:callObject>
+									<plx:cast type="exceptionCast" dataTypeName="ObjectTypeHasAbbreviation">
+										<plx:nameRef name="link" type="parameter"/>
+									</plx:cast>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:return>
+						<plx:inlineStatement dataTypeName="CopyClosureBehavior">
+							<plx:conditionalOperator>
+								<plx:condition>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:callInstance name="RefinedInstance" type="property">
+												<plx:callObject>
+													<plx:nameRef name="alias"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:left>
+									<plx:callStatic name="ContainedPart" dataTypeName="CopyClosureBehavior" type="field"/>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic name="Ignored" dataTypeName="CopyClosureBehavior" type="field"/>
+								</plx:right>
+							</plx:conditionalOperator>
+						</plx:inlineStatement>
+					</plx:return>
+				</cmc:CustomBehavior>
+			</cmc:ClosureRole>
+			<cmc:ClosureRole relationship="RecognizedPhraseHasAbbreviation" role="RecognizedPhrase" closureBehavior="Container"/>
+			<cmc:ClosureRole relationship="RecognizedPhraseHasAbbreviation" role="Abbreviation" closureBehavior="Custom">
+				<cmc:CustomBehavior>
+					<plx:comment>Refined aliases are only included if the refined instance is included. Unrefined aliases are contained automatically.</plx:comment>
+					<plx:local name="alias" dataTypeName="NameAlias">
+						<plx:initialize>
+							<plx:callInstance name="Abbreviation" type="property">
+								<plx:callObject>
+									<plx:cast type="exceptionCast" dataTypeName="RecognizedPhraseHasAbbreviation">
+										<plx:nameRef name="link" type="parameter"/>
+									</plx:cast>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+					</plx:local>
+					<plx:return>
+						<plx:inlineStatement dataTypeName="CopyClosureBehavior">
+							<plx:conditionalOperator>
+								<plx:condition>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:callInstance name="RefinedInstance" type="property">
+												<plx:callObject>
+													<plx:nameRef name="alias"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:nullKeyword/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:left>
+									<plx:callStatic name="ContainedPart" dataTypeName="CopyClosureBehavior" type="field"/>
+								</plx:left>
+								<plx:right>
+									<plx:callStatic name="Ignored" dataTypeName="CopyClosureBehavior" type="field"/>
+								</plx:right>
+							</plx:conditionalOperator>
+						</plx:inlineStatement>
+					</plx:return>
+				</cmc:CustomBehavior>
+			</cmc:ClosureRole>
 			<!-- UNDONE: COPYMERGE This is temporary for notes (bring in the note with a referencing element). We actually
 			want a weak relationship, where the ModelNote reference is pulled in only if both role players are pulled in for other
 			reasons. We need a notion of a MatchOnly element (match, but do not create) and a non-propagating relationship. -->

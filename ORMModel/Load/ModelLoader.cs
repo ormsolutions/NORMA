@@ -780,7 +780,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			return ActivateShape(shape, window);
 		}
 		/// <summary>
-		/// Implements <see cref="IORMToolServices.NavigateTo"/>
+		/// Implements <see cref="IORMToolServices.NavigateTo(object,NavigateToWindow)"/>
 		/// </summary>
 		protected static bool NavigateTo(object element, NavigateToWindow window)
 		{
@@ -789,6 +789,17 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		bool IORMToolServices.NavigateTo(object element, NavigateToWindow window)
 		{
 			return NavigateTo(element, window);
+		}
+		/// <summary>
+		/// Implements <see cref="IORMToolServices.NavigateTo(object,NavigateToWindow,NavigateToOptions)"/>
+		/// </summary>
+		protected static bool NavigateTo(object element, NavigateToWindow window, NavigateToOptions options)
+		{
+			return false;
+		}
+		bool IORMToolServices.NavigateTo(object element, NavigateToWindow window, NavigateToOptions options)
+		{
+			return NavigateTo(element, window, options);
 		}
 		#endregion // IORMToolServices Implementation
 		#region IModelingEventManagerProvider Implementation

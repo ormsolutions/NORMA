@@ -5565,6 +5565,429 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship NameAliasRefinesInstance
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("93b52186-b6a2-4363-a0d6-65d963786834")]
+	public sealed partial class NameAliasRefinesInstance : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// NameAliasRefinesInstance domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x93b52186, 0xb6a2, 0x4363, 0xa0, 0xd6, 0x65, 0xd9, 0x63, 0x78, 0x68, 0x34);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a NameAliasRefinesInstance link in the same Partition as the given NameAlias
+		/// </summary>
+		/// <param name="source">NameAlias to use as the source of the relationship.</param>
+		/// <param name="target">ModelElement to use as the target of the relationship.</param>
+		public NameAliasRefinesInstance(NameAlias source, global::Microsoft.VisualStudio.Modeling.ModelElement target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(NameAliasRefinesInstance.AliasDomainRoleId, source), new DslModeling::RoleAssignment(NameAliasRefinesInstance.RefinedInstanceDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public NameAliasRefinesInstance(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public NameAliasRefinesInstance(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public NameAliasRefinesInstance(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public NameAliasRefinesInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Alias domain role code
+		
+		/// <summary>
+		/// Alias domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid AliasDomainRoleId = new global::System.Guid(0x8c78b44c, 0xc3eb, 0x4dd0, 0x90, 0x8c, 0x36, 0x81, 0x46, 0x7a, 0x35, 0xa3);
+		
+		/// <summary>
+		/// DomainRole Alias
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.Alias
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/Alias.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/Alias.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RefinedInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/Alias.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("8c78b44c-c3eb-4dd0-908c-3681467a35a3")]
+		public NameAlias Alias
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (NameAlias)DslModeling::DomainRoleInfo.GetRolePlayer(this, AliasDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, AliasDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RefiningAliasCollection of a ModelElement
+		/// <summary>
+		/// Gets a list of RefiningAliasCollection.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<NameAlias> GetRefiningAliasCollection(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return new DslModeling::LinkedElementCollection<NameAlias>(element, RefinedInstanceDomainRoleId);
+		}
+		#endregion
+		#region RefinedInstance domain role code
+		
+		/// <summary>
+		/// RefinedInstance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid RefinedInstanceDomainRoleId = new global::System.Guid(0x319fb87b, 0xa3dd, 0x436e, 0xa2, 0x21, 0xfd, 0x2f, 0x70, 0x6e, 0xdf, 0x38);
+		
+		/// <summary>
+		/// DomainRole RefinedInstance
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.RefinedInstance
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/RefinedInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/RefinedInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RefiningAliasCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance/RefinedInstance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("319fb87b-a3dd-436e-a221-fd2f706edf38")]
+		public global::Microsoft.VisualStudio.Modeling.ModelElement RefinedInstance
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (global::Microsoft.VisualStudio.Modeling.ModelElement)DslModeling::DomainRoleInfo.GetRolePlayer(this, RefinedInstanceDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, RefinedInstanceDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access RefinedInstance of a NameAlias
+		/// <summary>
+		/// Gets RefinedInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Microsoft.VisualStudio.Modeling.ModelElement GetRefinedInstance(NameAlias element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, AliasDomainRoleId) as global::Microsoft.VisualStudio.Modeling.ModelElement;
+		}
+		
+		/// <summary>
+		/// Sets RefinedInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetRefinedInstance(NameAlias element, global::Microsoft.VisualStudio.Modeling.ModelElement newRefinedInstance)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, AliasDomainRoleId, newRefinedInstance);
+		}
+		#endregion
+		#region Alias link accessor
+		/// <summary>
+		/// Get the NameAliasRefinesInstance link to a NameAlias.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance GetLinkToRefinedInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAlias aliasInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance>(aliasInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.AliasDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Alias not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region RefinedInstance link accessor
+		/// <summary>
+		/// Get the list of NameAliasRefinesInstance links to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance> GetLinksToRefiningAliasCollection ( global::Microsoft.VisualStudio.Modeling.ModelElement refinedInstanceInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance>(refinedInstanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.RefinedInstanceDomainRoleId);
+		}
+		#endregion
+		#region NameAliasRefinesInstance instance accessors
+		
+		/// <summary>
+		/// Get any NameAliasRefinesInstance links between a given NameAlias and a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAlias source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.AliasDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance link in links )
+			{
+				if ( target.Equals(link.RefinedInstance) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one NameAliasRefinesInstance link between a given NameAliasand a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAlias source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance.AliasDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameAliasRefinesInstance link in links )
+			{
+				if ( target.Equals(link.RefinedInstance) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship NameGeneratorRefinesInstance
+	/// This generator applies to a specific instance. This will be a refinement of a
+	/// global name generator of the same type.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("17e29f53-0f1f-4e01-933a-f42a500602c6")]
+	public abstract partial class NameGeneratorRefinesInstance : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// NameGeneratorRefinesInstance domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x17e29f53, 0x0f1f, 0x4e01, 0x93, 0x3a, 0xf4, 0x2a, 0x50, 0x06, 0x02, 0xc6);
+	
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">The Partition instance containing this ElementLink</param>
+		/// <param name="roleAssignments">A set of role assignments for roleplayer initialization</param>
+		/// <param name="propertyAssignments">A set of attribute assignments for attribute initialization</param>
+		protected NameGeneratorRefinesInstance(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region NameGenerator domain role code
+		
+		/// <summary>
+		/// NameGenerator domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid NameGeneratorDomainRoleId = new global::System.Guid(0x86b7f502, 0x8c72, 0x4beb, 0x8d, 0x7e, 0x1d, 0x4d, 0xd6, 0xcc, 0x96, 0x40);
+		
+		/// <summary>
+		/// DomainRole NameGenerator
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.NameGenerator
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/NameGenerator.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/NameGenerator.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "RefinedInstance", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/NameGenerator.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("86b7f502-8c72-4beb-8d7e-1d4dd6cc9640")]
+		public abstract NameGenerator NameGenerator
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access RefiningNameGenerators of a ModelElement
+		/// <summary>
+		/// Gets a list of RefiningNameGenerators.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::ReadOnlyLinkedElementCollection<NameGenerator> GetRefiningNameGenerators(global::Microsoft.VisualStudio.Modeling.ModelElement element)
+		{
+			return new DslModeling::ReadOnlyLinkedElementCollection<NameGenerator>(element, InstanceDomainRoleId);
+		}
+		#endregion
+		#region Instance domain role code
+		
+		/// <summary>
+		/// Instance domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid InstanceDomainRoleId = new global::System.Guid(0xb6bfbf71, 0x6bc7, 0x488d, 0xba, 0xa8, 0xbd, 0x7c, 0xdc, 0x3c, 0xa1, 0x2e);
+		
+		/// <summary>
+		/// DomainRole Instance
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.Instance
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/Instance.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/Instance.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "RefiningNameGenerators", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance/Instance.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("b6bfbf71-6bc7-488d-baa8-bd7cdc3ca12e")]
+		public abstract global::Microsoft.VisualStudio.Modeling.ModelElement Instance
+		{
+			get;
+			set;
+		}
+				
+		#endregion
+		#region Static methods to access RefinedInstance of a NameGenerator
+		/// <summary>
+		/// Gets RefinedInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::Microsoft.VisualStudio.Modeling.ModelElement GetRefinedInstance(NameGenerator element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, NameGeneratorDomainRoleId) as global::Microsoft.VisualStudio.Modeling.ModelElement;
+		}
+		
+		/// <summary>
+		/// Sets RefinedInstance.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetRefinedInstance(NameGenerator element, global::Microsoft.VisualStudio.Modeling.ModelElement newInstance)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, NameGeneratorDomainRoleId, newInstance);
+		}
+		#endregion
+		#region NameGenerator link accessor
+		/// <summary>
+		/// Get the NameGeneratorRefinesInstance link to a NameGenerator.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance GetLinkToRefinedInstance (global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator nameGeneratorInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance>(nameGeneratorInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.NameGeneratorDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of NameGenerator not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Instance link accessor
+		/// <summary>
+		/// Get the list of NameGeneratorRefinesInstance links to a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance> GetLinksToRefiningNameGenerators ( global::Microsoft.VisualStudio.Modeling.ModelElement instanceInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance>(instanceInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.InstanceDomainRoleId);
+		}
+		#endregion
+		#region NameGeneratorRefinesInstance instance accessors
+		
+		/// <summary>
+		/// Get any NameGeneratorRefinesInstance links between a given NameGenerator and a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.NameGeneratorDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance link in links )
+			{
+				if ( target.Equals(link.Instance) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one NameGeneratorRefinesInstance link between a given NameGeneratorand a ModelElement.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator source, global::Microsoft.VisualStudio.Modeling.ModelElement target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance.NameGeneratorDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesInstance link in links )
+			{
+				if ( target.Equals(link.Instance) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship RecognizedPhraseHasAbbreviation
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhraseHasAbbreviation

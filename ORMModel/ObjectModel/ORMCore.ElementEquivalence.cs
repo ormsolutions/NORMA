@@ -2951,8 +2951,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			ModelElement aliasOwner;
 			ModelElement otherAliasOwner;
+			ModelElement refinedInstance;
+			ModelElement otherRefinedInstance = null;
 			if (null != (aliasOwner = Element) &&
-				null != (otherAliasOwner = CopyMergeUtility.GetEquivalentElement(aliasOwner, foreignStore, elementTracker)))
+				null != (otherAliasOwner = CopyMergeUtility.GetEquivalentElement(aliasOwner, foreignStore, elementTracker)) &&
+				(null == (refinedInstance = RefinedInstance) ||
+				null != (otherRefinedInstance = CopyMergeUtility.GetEquivalentElement(refinedInstance, foreignStore, elementTracker))))
 			{
 				// Match by consumer and usage classes. Use the internal class information
 				// instead of the serialized string forms. If we end up copying one of these
@@ -2967,13 +2971,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classInfo = myUsageDomainClass;
 				bool hasUsage = classInfo != null;
 				Guid usageId = hasUsage ? classInfo.Id : Guid.Empty;
-				foreach (NameAlias otherAlias in ElementHasAlias.GetAliasCollection(otherAliasOwner))
+				bool skipInstanceCheck = otherRefinedInstance == null;
+				if (otherRefinedInstance != null)
 				{
-					if (consumerId == (null != (classInfo = otherAlias.myConsumerDomainClass) ? classInfo.Id : Guid.Empty) &&
-						usageId == (null != (classInfo = otherAlias.myUsageDomainClass) ? classInfo.Id : Guid.Empty))
+					// Use the smaller collection if available
+					foreach (NameAliasRefinesInstance otherAliasLink in NameAliasRefinesInstance.GetLinksToRefiningAliasCollection(otherRefinedInstance))
 					{
-						elementTracker.AddEquivalentElement(this, otherAlias);
-						return true;
+						NameAlias otherAlias = otherAliasLink.Alias;
+						if (consumerId == (null != (classInfo = otherAlias.myConsumerDomainClass) ? classInfo.Id : Guid.Empty) &&
+							usageId == (null != (classInfo = otherAlias.myUsageDomainClass) ? classInfo.Id : Guid.Empty) &&
+							otherAlias.Element == otherAliasOwner)
+						{
+							elementTracker.AddEquivalentElement(this, otherAlias);
+							return true;
+						}
+					}
+				}
+				else
+				{
+					foreach (NameAlias otherAlias in ElementHasAlias.GetAliasCollection(otherAliasOwner))
+					{
+						if (consumerId == (null != (classInfo = otherAlias.myConsumerDomainClass) ? classInfo.Id : Guid.Empty) &&
+							usageId == (null != (classInfo = otherAlias.myUsageDomainClass) ? classInfo.Id : Guid.Empty) &&
+							otherAlias.RefinedInstance == null)
+						{
+							elementTracker.AddEquivalentElement(this, otherAlias);
+							return true;
+						}
 					}
 				}
 			}
@@ -2985,6 +3009,60 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // NameAlias class
+	#region NameGenerator class
+	partial class NameGenerator : IElementEquivalence
+	{
+		/// <summary>
+		/// Implements <see cref="IElementEquivalence.MapEquivalentElements"/>
+		/// </summary>
+		protected bool MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			NameGenerator parentGenerator;
+			NameGenerator otherParentGenerator;
+			if (this.GetType() == typeof(NameGenerator))
+			{
+				// This is the root name generator, which is a singleton.
+				foreach (NameGenerator otherRootGenerator in foreignStore.ElementDirectory.FindElements<NameGenerator>(false))
+				{
+					elementTracker.AddEquivalentElement(this, otherRootGenerator);
+					return true;
+				}
+			}
+			else if (null != (parentGenerator = this.RefinesGenerator) &&
+				null != (otherParentGenerator = CopyMergeUtility.GetEquivalentElement(parentGenerator, foreignStore, elementTracker)))
+			{
+				Guid? refiningRoleId = GetResolvedAttributeData().RefinedAutoCreateRelationshipRoleId;
+				ModelElement refiningInstance;
+				ModelElement otherRefiningInstance = null;
+				bool checkRefiningInstance = !refiningRoleId.HasValue;
+				if (!checkRefiningInstance ||
+					null == (refiningInstance = this.RefinedInstance) ||
+					(null != foreignStore.DomainDataDirectory.FindDomainRole(refiningRoleId.Value) &&
+					null != (otherRefiningInstance = CopyMergeUtility.GetEquivalentElement(refiningInstance, foreignStore, elementTracker))))
+				{
+					Type generatorType = this.GetType();
+					Type usageType = this.NameUsageType;
+					foreach (NameGenerator otherGenerator in otherParentGenerator.RefinedByGeneratorCollection)
+					{
+						if (otherGenerator.GetType() == generatorType &&
+							otherGenerator.NameUsageType == usageType &&
+							(!checkRefiningInstance || (otherGenerator.RefinedInstance == otherRefiningInstance)))
+						{
+							elementTracker.AddEquivalentElement(this, otherGenerator);
+							return true;
+						}
+					}
+				}
+			}
+			elementTracker.AddFailedEquivalentElement(this);
+			return false;
+		}
+		bool IElementEquivalence.MapEquivalentElements(Store foreignStore, IEquivalentElementTracker elementTracker)
+		{
+			return MapEquivalentElements(foreignStore, elementTracker);
+		}
+	}
+	#endregion // NameGenerator class
 	#region ModelNote class
 	partial class ModelNote : IElementEquivalence
 	{

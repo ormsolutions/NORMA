@@ -53,107 +53,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		string GenerateConstraintName(Constraint constraint, int phase);
 	}
 	#endregion // IDatabaseNameGenerator interface
-	#region NamePart struct
-	/// <summary>
-	/// Options used with the <see cref="NamePart"/> structure
-	/// </summary>
-	[Flags]
-	public enum NamePartOptions
-	{
-		/// <summary>
-		/// No special options
-		/// </summary>
-		None = 0,
-		/// <summary>
-		/// The element should not be cased
-		/// </summary>
-		ExplicitCasing = 1,
-		/// <summary>
-		/// Stop a name part that was added as a single-word expansion
-		/// from being split again into multiple parts. Used to
-		/// block recursive expansion of a phrase containing a single
-		/// word it was expanded from.
-		/// </summary>
-		ReplacementOfSelf = 2,
-	}
-	/// <summary>
-	/// A callback delegate for adding a <see cref="NamePart"/>
-	/// </summary>
-	/// <param name="part">The <see cref="NamePart"/> to add</param>
-	/// <param name="insertIndex">The index to insert the name part at.</param>
-	public delegate void AddNamePart(NamePart part, int? insertIndex);
-	/// <summary>
-	/// Represent a single string with options
-	/// </summary>
-	public struct NamePart
-	{
-		private string myString;
-		private NamePartOptions myOptions;
-		/// <summary>
-		/// Create a new NamePart with default options
-		/// </summary>
-		/// <param name="value">The string value for this <see cref="NamePart"/></param>
-		public NamePart(string value)
-		{
-			myString = value;
-			myOptions = NamePartOptions.None;
-		}
-		/// <summary>
-		/// Create a new NamePart with explicit options
-		/// </summary>
-		/// <param name="value">The string value for this <see cref="NamePart"/></param>
-		/// <param name="options">Values from <see cref="NamePartOptions"/></param>
-		public NamePart(string value, NamePartOptions options)
-		{
-			myString = value;
-			myOptions = options;
-		}
-		/// <summary>
-		/// Is the structure populated?
-		/// </summary>
-		public bool IsEmpty
-		{
-			get
-			{
-				return string.IsNullOrEmpty(myString);
-			}
-		}
-		/// <summary>
-		/// Return the <see cref="NamePartOptions"/> passed to the constructor
-		/// </summary>
-		public NamePartOptions Options
-		{
-			get
-			{
-				return myOptions;
-			}
-		}
-		/// <summary>
-		/// If <see langword="true"/>, then the casing of the string should not be changed
-		/// </summary>
-		public bool ExplicitCasing
-		{
-			get
-			{
-				return 0 != (myOptions & NamePartOptions.ExplicitCasing);
-			}
-		}
-		/// <summary>
-		/// Implicitly cast the <see cref="NamePart"/> to its string value
-		/// </summary>
-		public static implicit operator string(NamePart part)
-		{
-			return part.myString;
-		}
-		/// <summary>
-		/// Implicitly cast the <see cref="NamePart"/> to its string value
-		/// </summary>
-		public static implicit operator NamePart(string value)
-		{
-			return new NamePart(value);
-		}
-	}
-	#endregion // NamePart struct
 	#region ORMAbstractionToConceptualDatabaseBridgeDomainModel.NameGeneration class
 	partial class ORMAbstractionToConceptualDatabaseBridgeDomainModel
 	{
@@ -179,7 +78,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 
 				IDatabaseNameGenerator nameGenerator = new DefaultDatabaseNameGenerator(schema.Store);
-				UniqueNameGenerator uniqueChecker = new UniqueNameGenerator();
 				if (customization != null &&
 					!customization.CustomizesTablesOrColumns)
 				{
@@ -189,11 +87,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				LinkedElementCollection<Table> tables = schema.TableCollection;
 
 				// Generate table names
-				uniqueChecker.GenerateUniqueElementNames(
+				Utility.GenerateUniqueNames<Table>(
 					tables,
-					delegate(object element, int phase)
+					delegate(Table table, int phase)
 					{
-						Table table = (Table)element;
 						string tableName;
 						if (customization != null &&
 							null != (tableName = customization.GetCustomizedTableName(table)))
@@ -210,13 +107,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						}
 						return nameGenerator.GenerateTableName(table, phase);
 					},
-					delegate(object element)
+					delegate(Table table)
 					{
-						return customization != null && customization.GetCustomizedTableName((Table)element) != null;
+						return customization != null && customization.GetCustomizedTableName(table) != null;
 					},
-					delegate(object element, string elementName)
+					delegate(Table table, string elementName)
 					{
-						((Table)element).Name = elementName;
+						table.Name = elementName;
 					});
 
 				foreach (Table table in tables)
@@ -225,11 +122,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					LinkedElementCollection<Column> columns = table.ColumnCollection;
 					AutomaticColumnOrdering orderingAlgorithm = ResolveOrderingAlgorithm(table, schema);
 					bool isCustomized;
-					uniqueChecker.GenerateUniqueElementNames(
+					Utility.GenerateUniqueNames<Column>(
 						SortColumns(table, columns, orderingAlgorithm, true, customization, out isCustomized),
-						delegate(object element, int phase)
+						delegate(Column column, int phase)
 						{
-							Column column = (Column)element;
 							string columnName;
 							if (customization != null &&
 								null != (columnName = customization.GetCustomizedColumnName(column)))
@@ -246,13 +142,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 							}
 							return nameGenerator.GenerateColumnName(column, phase);
 						},
-						delegate(object element)
+						delegate(Column column)
 						{
-							return customization != null && customization.GetCustomizedColumnName((Column)element) != null;
+							return customization != null && customization.GetCustomizedColumnName(column) != null;
 						},
-						delegate(object element, string elementName)
+						delegate(Column column, string elementName)
 						{
-							((Column)element).Name = elementName;
+							column.Name = elementName;
 						});
 					if (isCustomized && table.ColumnOrder != ColumnOrdering.Custom)
 					{
@@ -271,16 +167,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 
 				// Constraint names, unique across the schema
-				uniqueChecker.GenerateUniqueElementNames(
+				Utility.GenerateUniqueNames<Constraint>(
 					IterateConstraints(schema),
-					delegate(object element, int phase)
+					delegate(Constraint constraint, int phase)
 					{
-						return nameGenerator.GenerateConstraintName((Constraint)element, phase);
+						return nameGenerator.GenerateConstraintName(constraint, phase);
 					},
 					null,
-					delegate(object element, string elementName)
+					delegate(Constraint constraint, string elementName)
 					{
-						((Constraint)element).Name = elementName;
+						constraint.Name = elementName;
 					});
 			}
 			private sealed class ColumnSorter : IComparer<int>
@@ -515,7 +411,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				// In the second case, we want the preferred ordering to be prioritized after grouping.
 				return new ColumnSorter(startColumns, preferredOrder, orderingAlgorithm, preferredSortSecondary, ignoreNames).Apply();
 			}
-			private static IEnumerable IterateConstraints(Schema schema)
+			private static IEnumerable<Constraint> IterateConstraints(Schema schema)
 			{
 				foreach (Table table in schema.TableCollection)
 				{
@@ -526,255 +422,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			#endregion // GenerateAllNames method
-			#region Unique name generation algorithm
-			/// <summary>
-			/// Generate a candidate name for the given <paramref name="element"/>
-			/// </summary>
-			/// <param name="element">The element to generate a candidate name for</param>
-			/// <param name="phase">The current phase of the name to generate. As the phase number goes
-			/// higher the returned name should be more complex. The initial request will be 0, with additional
-			/// requested incremented 1 from the previous name request.</param>
-			/// <returns>The candidate name, or <see langword="null"/> if a name is not available for the specified phase.</returns>
-			private delegate string GenerateCandidateElementNameCallback(object element, int phase);
-			/// <summary>
-			/// Set the name for the given element. Used by GenerateUniqueElementNames
-			/// </summary>
-			private delegate void SetElementNameCallback(object element, string elementName);
-			private struct UniqueNameGenerator
-			{
-				#region ElementPhase structure
-				/// <summary>
-				/// A structure to hold an element coupled with a phase number.
-				/// Used to determine the phase that was used to generate a name.
-				/// </summary>
-				private struct ElementPhase
-				{
-					private readonly object myElement;
-					private readonly int myPhase;
-					/// <summary>
-					/// Create a new <see cref="ElementPhase"/>
-					/// </summary>
-					/// <param name="element">The element involved</param>
-					/// <param name="phase">The phase the name was generated with</param>
-					public ElementPhase(object element, int phase)
-					{
-						myElement = element;
-						myPhase = phase;
-					}
-					/// <summary>
-					/// The element passed to the constructor
-					/// </summary>
-					public object Element
-					{
-						get
-						{
-							return myElement;
-						}
-					}
-					/// <summary>
-					/// The phase passed to the constructor
-					/// </summary>
-					public int Phase
-					{
-						get
-						{
-							return myPhase;
-						}
-					}
-				}
-				#endregion // ElementPhase structure
-				#region Fields
-				/// <summary>
-				/// Map already generated names into a dictionary that contains either one of the element
-				/// objects or a linked list of objects. Linked lists contain duplicate nodes
-				/// </summary>
-				private Dictionary<string, object> myNameMappingDictionary;
-				/// <summary>
-				/// A dictionary of unresolved names, corresponds to keys in the nameMappingDictionary
-				/// </summary>
-				Dictionary<string, string> myUnresolvedNames;
-				#endregion // Fields
-				#region Public methods
-				public void GenerateUniqueElementNames(IEnumerable elements, GenerateCandidateElementNameCallback generateName, Predicate<object> isFixedName, SetElementNameCallback setName)
-				{
-					if (myNameMappingDictionary != null)
-					{
-						myNameMappingDictionary.Clear();
-					}
-					else
-					{
-						myNameMappingDictionary = new Dictionary<string, object>();
-					}
-					if (myUnresolvedNames != null)
-					{
-						myUnresolvedNames.Clear();
-					}
-					// Generate initial names
-					foreach (object element in elements)
-					{
-						string elementName = generateName(element, 0);
-						if (elementName != null)
-						{
-							AddElement(element, elementName, 0);
-						}
-					}
-
-					Dictionary<string, object> nameMappingDictionary = myNameMappingDictionary;
-					while (myUnresolvedNames != null && 0 != myUnresolvedNames.Count)
-					{
-						// Walk the existing unresolved names and attempt to resolve them further.
-						// Iterate until we can't resolve any more
-						Dictionary<string, string> unresolvedNames = myUnresolvedNames;
-						myUnresolvedNames = null;
-
-						foreach (string currentName in unresolvedNames.Values)
-						{
-							// If we've added this name as unresolved during this pass, then take it back out
-							// We'll pick it up again if it doesn't resolve
-							if (myUnresolvedNames != null && myUnresolvedNames.ContainsKey(currentName))
-							{
-								myUnresolvedNames.Remove(currentName);
-							}
-							LinkedNode<ElementPhase> startHeadNode = (LinkedNode<ElementPhase>)nameMappingDictionary[currentName];
-							LinkedNode<ElementPhase> headNode = startHeadNode;
-							LinkedNode<ElementPhase> nextNode = headNode;
-							while (nextNode != null)
-							{
-								LinkedNode<ElementPhase> currentNode = nextNode;
-								nextNode = currentNode.Next;
-
-								ElementPhase elementPhase = currentNode.Value;
-								object element = elementPhase.Element;
-								// The next phase to request is based on the last phase requested for this element,
-								// not the number of times we've passed through the loop
-								int phase = elementPhase.Phase + 1;
-								string newName = generateName(element, phase);
-								// Name generation can return null if the phase is not supported be satisfied
-								if (newName != null)
-								{
-									if (0 == string.CompareOrdinal(newName, currentName))
-									{
-										currentNode.Value = new ElementPhase(element, phase);
-									}
-									else
-									{
-										currentNode.Detach(ref headNode);
-										AddElement(element, newName, phase);
-									}
-								}
-							}
-
-							// Manage the remains of the list in the dictionary
-							if (headNode == null)
-							{
-								// Everything detached from this name, remove the key
-								nameMappingDictionary.Remove(currentName);
-							}
-							else if (headNode != startHeadNode)
-							{
-								if (headNode.Next == null)
-								{
-									nameMappingDictionary[currentName] = headNode.Value;
-								}
-								else
-								{
-									nameMappingDictionary[currentName] = headNode;
-									Dictionary<string, string> currentUnresolvedNames = myUnresolvedNames;
-									if (currentUnresolvedNames == null)
-									{
-										myUnresolvedNames = currentUnresolvedNames = new Dictionary<string, string>();
-									}
-									currentUnresolvedNames[currentName] = currentName;
-								}
-							}
-						}
-					}
-
-					// Walk the set, appending additional numbers as needed, and set the names
-					foreach (KeyValuePair<string, object> pair in nameMappingDictionary)
-					{
-						object element = pair.Value;
-						LinkedNode<ElementPhase> node = element as LinkedNode<ElementPhase>;
-						if (node != null)
-						{
-							// We added these in reverse order, so walk backwards to number them
-							LinkedNode<ElementPhase> tail = node.GetTail();
-							if (node == tail)
-							{
-								setName(node.Value.Element, pair.Key);
-							}
-							else
-							{
-								// We need to resolve farther
-								string baseName = pair.Key;
-								int currentIndex = 0;
-								LinkedNode<ElementPhase> nextNode = tail;
-								while (nextNode != null)
-								{
-									element = nextNode.Value.Element;
-									nextNode = nextNode.Previous; // We started at the tail, walk backwards
-									string candidateName;
-									if (isFixedName != null && isFixedName(element))
-									{
-										// Set names (including duplicates) for fixed names
-										candidateName = baseName;
-									}
-									else
-									{
-										do
-										{
-											++currentIndex;
-											candidateName = baseName + currentIndex.ToString();
-										} while (nameMappingDictionary.ContainsKey(candidateName));
-										// If we get out of the loop, then we finally have a unique name
-									}
-
-									setName(element, candidateName);
-								}
-							}
-						}
-						else
-						{
-							setName(((ElementPhase)element).Element, pair.Key);
-						}
-					}
-				}
-				#endregion // Public methods
-				#region Helper methods
-				private void AddElement(object element, string elementName, int phase)
-				{
-					object existing;
-					Dictionary<string, object> nameMappingDictionary = myNameMappingDictionary;
-					if (nameMappingDictionary.TryGetValue(elementName, out existing))
-					{
-						// Note: We use LinkedListNode here directly instead of a LinkedList
-						// to facilitate dynamically adding/removing elements during iteration
-						LinkedNode<ElementPhase> node = existing as LinkedNode<ElementPhase>;
-						if (node == null)
-						{
-							// Record the unresolvedName
-							if (myUnresolvedNames == null)
-							{
-								myUnresolvedNames = new Dictionary<string, string>();
-							}
-							myUnresolvedNames[elementName] = elementName;
-
-							// Create a node for the original element
-							node = new LinkedNode<ElementPhase>((ElementPhase)existing);
-						}
-
-						LinkedNode<ElementPhase> newNode = new LinkedNode<ElementPhase>(new ElementPhase(element, phase));
-						newNode.SetNext(node, ref node);
-						nameMappingDictionary[elementName] = newNode;
-					}
-					else
-					{
-						nameMappingDictionary[elementName] = new ElementPhase(element, phase);
-					}
-				}
-				#endregion // Helper methods
-			}
-			#endregion // Unique name generation algorithm
 			#region DefaultDatabaseNameGenerator class
 			private class DefaultDatabaseNameGenerator : IDatabaseNameGenerator
 			{
@@ -816,7 +463,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						NameGenerator retVal = myColumnGenerator;
 						if (retVal == null)
 						{
-							myColumnGenerator = retVal = NameGenerator.GetGenerator(myStore, typeof(RelationalNameGenerator), typeof(ColumnNameUsage));
+							myColumnGenerator = retVal = NameGenerator.GetGenerator(myStore, typeof(RelationalNameGenerator), typeof(ColumnNameUsage), null);
 						}
 						return retVal;
 					}
@@ -828,7 +475,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						NameGenerator retVal = myTableGenerator;
 						if (retVal == null)
 						{
-							myTableGenerator = retVal = NameGenerator.GetGenerator(myStore, typeof(RelationalNameGenerator), typeof(TableNameUsage));
+							myTableGenerator = retVal = NameGenerator.GetGenerator(myStore, typeof(RelationalNameGenerator), typeof(TableNameUsage), null);
 						}
 						return retVal;
 					}
@@ -849,24 +496,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						return retVal;
 					}
 				}
-				private static string GetSpacingReplacement(NameGenerator generator)
-				{
-					string retVal;
-					switch (generator.SpacingFormat)
-					{
-						case NameGeneratorSpacingFormat.ReplaceWith:
-							retVal = generator.SpacingReplacement;
-							break;
-						case NameGeneratorSpacingFormat.Retain:
-							retVal = " ";
-							break;
-						// case NameGeneratorSpacingFormat.Remove:
-						default:
-							retVal = "";
-							break;
-					}
-					return retVal;
-				}
 				#endregion // Accessor properties
 				#region Name generation methods
 				private string GenerateTableName(Table table, int phase)
@@ -884,10 +513,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						nameGenerator,
 						delegate(NamePart newPart, int? insertIndex)
 						{
-							AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1, true);
+							NamePart.AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1, true);
 						});
 
-					string finalName = GetFinalName(singleName, nameCollection, nameGenerator);
+					string finalName = NamePart.GetFinalName(singleName, nameCollection, nameGenerator, ContextModel);
 					return string.IsNullOrEmpty(finalName) ? "TABLE" : finalName;
 				}
 				private string GenerateColumnName(Column column, int phase)
@@ -903,7 +532,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 
 					if (currentNode == null)
 					{
-						return GetFinalName(ResourceStrings.NameGenerationValueTypeValueColumn, null, generator);
+						return NamePart.GetFinalName(ResourceStrings.NameGenerationValueTypeValueColumn, null, generator, ContextModel);
 					}
 
 					// Prepare for adding name parts. The single NamePart string is used when
@@ -912,7 +541,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					List<NamePart> nameCollection = null;
 					AddNamePart addPart = delegate(NamePart newPart, int? insertIndex)
 						{
-							AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1, true);
+							NamePart.AddToNameCollection(ref singleName, ref nameCollection, newPart, insertIndex.HasValue ? insertIndex.Value : -1, true);
 						};
 					ObjectType previousResolvedSupertype = null;
 					ObjectType previousResolvedObjectType = null;
@@ -1002,8 +631,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 								string explicitFarRoleName = farRole.Name;
 								FactType factType = nearRole.FactType;
 								LinkedElementCollection<RoleBase> factTypeRoles = factType.RoleCollection;
-								int? unaryRoleIndex = FactType.GetUnaryRoleIndex(factTypeRoles);
-								bool isUnary = unaryRoleIndex.HasValue;
+								bool isUnary = FactType.GetUnaryRoleIndex(factTypeRoles).HasValue;
 								LinkedElementCollection<ReadingOrder> readingOrders = null;
 								IReading reading = null;
 								if ((decorate && decorateWithPredicateText) || (isUnary && string.IsNullOrEmpty(explicitFarRoleName)))
@@ -1035,7 +663,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 												// Note that this does not interfere with the earlier 'back up one step'
 												// because the checked flags are different.
 												nextLoopNode = nextNode.Next;
-												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
+												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
+													null, // If multiple schemas were possible the schema would be passed here
 													nextStep.ResolvedObjectType,
 													(nextLoopNode != null) ? nextLoopNode.Value.TargetObjectType : null,
 													nextStep.ResolvedSupertypeVerifyPreferred,
@@ -1046,7 +675,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 											}
 											else
 											{
-												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
+												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
+													null, // If multiple schemas were possible the schema would be passed here
 													step.ResolvedObjectType,
 													nextNode.Value.TargetObjectType,
 													step.ResolvedSupertypeVerifyPreferred,
@@ -1058,7 +688,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 										}
 										else
 										{
-											ReferenceModeNaming.ResolveObjectTypeName(
+											ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
+												null, // If multiple schemas were possible the schema would be passed here
 												(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousResolvedSupertype : null,
 												step.TargetObjectType,
 												previousResolvedObjectType,
@@ -1082,17 +713,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 								{
 									// Find an appropriate hyphen bind in the available readings
 									string hyphenBoundFormatString = null;
-									if (readingOrders == null)
-									{
-										readingOrders = factType.ReadingOrderCollection;
-									}
 									ReadingOrder readingOrder;
 									if (0 != (readingOrders ?? (readingOrders = factType.ReadingOrderCollection)).Count &&
 										null != (readingOrder = isUnary ? readingOrders[0] : FactType.FindMatchingReadingOrder(readingOrders, new RoleBase[] { nearRole, farRole })))
 									{
 										foreach (Reading testReading in readingOrder.ReadingCollection)
 										{
-											hyphenBoundFormatString = VerbalizationHyphenBinder.GetFormatStringForHyphenBoundRole(testReading, farRole, unaryRoleIndex);
+											hyphenBoundFormatString = VerbalizationHyphenBinder.GetFormatStringForHyphenBoundRole(testReading, farRole, isUnary);
 											if (hyphenBoundFormatString != null)
 											{
 												break;
@@ -1128,7 +755,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 												previousResolvedObjectType = step.ResolvedObjectTypeVerifyPreferred;
 												nextLoopNode = nextNode.Next;
 												step = nextStep;
-												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
+												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
+													null, // If multiple schemas were possible the schema would be passed here
 													nextStep.ResolvedObjectType,
 													(nextLoopNode != null) ? nextLoopNode.Value.TargetObjectType : null,
 													nextStep.ResolvedSupertypeVerifyPreferred,
@@ -1139,7 +767,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 											}
 											else
 											{
-												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName(
+												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
+													null, // If multiple schemas were possible the schema would be passed here
 													step.ResolvedObjectType,
 													nextNode.Value.TargetObjectType,
 													step.ResolvedSupertypeVerifyPreferred,
@@ -1151,7 +780,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									}
 									else
 									{
-										ReferenceModeNaming.ResolveObjectTypeName(
+										ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
+											null, // If multiple schemas were possible the schema would be passed here
 											(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousResolvedObjectType : null,
 											step.TargetObjectType,
 											previousResolvedSupertype,
@@ -1180,7 +810,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						currentNode = nextLoopNode;
 						firstPass = false;
 					} while (currentNode != null);
-					string finalName = GetFinalName(singleName, nameCollection, generator);
+					string finalName = NamePart.GetFinalName(singleName, nameCollection, generator, ContextModel);
 					if (string.IsNullOrEmpty(finalName))
 					{
 						return (phase == 0) ? "COLUMN" : null;
@@ -1231,588 +861,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					return constraint.Name;
 				}
 				#endregion // Name generation methods
-				#region NameCollection helpers
-				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, NamePart newNamePart)
-				{
-					AddToNameCollection(ref singleName, ref  nameCollection, newNamePart, -1, true);
-				}
-				private static readonly char[] NameDelimiterArray = new char[] { ' ', '-' };
-				private void AddToNameCollection(ref NamePart singleName, ref List<NamePart> nameCollection, NamePart newNamePart, int index, bool collapseAdjacentName)
-				{
-					string newName = newNamePart;
-					newName = newName.Trim();
-					NamePartOptions options = newNamePart.Options;
-					int startNameCount = GetNameCount(ref singleName, ref nameCollection);
-					int endNameCount;
-					// Test for space separated and pattern based multi-part names
-					if (newName.IndexOfAny(NameDelimiterArray) != -1)
-					{
-						string[] individualEntries = newName.Split(NameDelimiterArray, StringSplitOptions.RemoveEmptyEntries);
-						// We don't know at this point if the names are single or will split further with
-						// the next call. Test how many items are added by tracking the count at each stage.
-						for (int i = 0; i < individualEntries.Length; ++i)
-						{
-							// Add each space separated name individually
-							AddToNameCollection(ref singleName, ref nameCollection, new NamePart(individualEntries[i], options), index == -1 ? -1 : index + (i == 0 ? 0 : GetNameCount(ref singleName, ref nameCollection) - startNameCount), false);
-						}
-						endNameCount = GetNameCount(ref singleName, ref nameCollection);
-					}
-					else if (0 == (options & NamePartOptions.ExplicitCasing) &&
-						Utility.IsMultiPartName(newName))
-					{
-						Match match = Utility.MatchNameParts(newName);
-						int matchIndex = 0;
-						while (match.Success)
-						{
-							// Using the match index as an increment is sufficient
-							// because we know the names will not split further and
-							// adjacent names will not collapse.
-							GroupCollection groups = match.Groups;
-							AddToNameCollection(ref singleName, ref nameCollection, new NamePart(match.Value, groups["TrailingUpper"].Success || groups["Numeric"].Success ? NamePartOptions.ExplicitCasing : NamePartOptions.None), index == -1 ? -1 : index + matchIndex, false);
-							++matchIndex;
-							match = match.NextMatch();
-						}
-						endNameCount = startNameCount + matchIndex;
-					}
-					else if (singleName.IsEmpty)
-					{
-						// We only have one name so far, so just use the string
-						singleName = new NamePart(newName, options);
-						endNameCount = 1;
-					}
-					else
-					{
-						// We need to now use the collection
-						if (null == nameCollection)
-						{
-							nameCollection = new List<NamePart>();
-							// First add the previously added element
-							nameCollection.Add(singleName);
-						}
-						if (index == -1)
-						{
-							nameCollection.Add(new NamePart(newName, options));
-						}
-						else
-						{
-							nameCollection.Insert(index, new NamePart(newName, options));
-						}
-						endNameCount = startNameCount + 1;
-					}
-
-					int newNameCount;
-					if (collapseAdjacentName &&
-						0 != (newNameCount = (endNameCount - startNameCount))) // A name was added
-					{
-						// Remove duplicate names, treating the multiple parts as a split
-						// name as a single name.
-						if (index == -1)
-						{
-							index = startNameCount;
-						}
-
-						NamePart firstPart;
-						NamePart secondPart;
-						if (newNameCount <= startNameCount) // There are sufficient adjacent names to collapse a single or multi-part name
-						{
-							// Check for preceding name matches on all parts of the name
-							while (index >= newNameCount)
-							{
-								int i = 0;
-								for (; i < newNameCount; ++i)
-								{
-									firstPart = nameCollection[index + i];
-									secondPart = nameCollection[index - newNameCount + i];
-									if (!((string)firstPart).Equals((string)secondPart, firstPart.ExplicitCasing || secondPart.ExplicitCasing ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
-									{
-										break;
-									}
-								}
-								if (i < newNameCount)
-								{
-									break;
-								}
-								nameCollection.RemoveRange(index, newNameCount);
-								index -= newNameCount;
-								endNameCount -= newNameCount;
-							}
-
-							// Check for following name matches on all parts of the name
-							while ((endNameCount - (index + newNameCount)) >= newNameCount)
-							{
-								int i = 0;
-								for (; i < newNameCount; ++i)
-								{
-									firstPart = nameCollection[index + i];
-									secondPart = nameCollection[index + newNameCount + i];
-									if (!((string)firstPart).Equals((string)secondPart, firstPart.ExplicitCasing || secondPart.ExplicitCasing ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
-									{
-										break;
-									}
-								}
-								if (i < newNameCount)
-								{
-									break;
-								}
-								nameCollection.RemoveRange(index + newNameCount, newNameCount);
-								index -= newNameCount;
-								endNameCount -= newNameCount;
-							}
-						}
-
-						if (newNameCount != 1)
-						{
-							// Enhance the multi-part collapse semantics by checking the
-							// leading and trailing name parts.
-
-							// Compare the parts preceding the first word
-							while (index > 0 && ((string)(firstPart = nameCollection[index])).Equals((string)(secondPart = nameCollection[index - 1]), firstPart.ExplicitCasing || secondPart.ExplicitCasing ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
-							{
-								nameCollection.RemoveAt(index);
-								--index;
-								--endNameCount;
-							}
-
-							// Compare the parts following the last word
-							while ((index + newNameCount) < endNameCount &&
-								((string)(firstPart = nameCollection[index + newNameCount - 1])).Equals((string)(secondPart = nameCollection[index + newNameCount]), firstPart.ExplicitCasing || secondPart.ExplicitCasing ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase))
-							{
-								nameCollection.RemoveAt(index + newNameCount - 1);
-								--endNameCount;
-							}
-						}
-					}
-				}
-				private static int GetNameCount(ref NamePart singleName, ref List<NamePart> nameCollection)
-				{
-					if (singleName.IsEmpty)
-					{
-						return 0;
-					}
-					else if (nameCollection == null)
-					{
-						return 1;
-					}
-					return nameCollection.Count;
-				}
-				private string GetFinalName(NamePart singleName, List<NamePart> nameCollection, NameGenerator generator)
-				{
-					ResolveRecognizedPhrases(ref singleName, ref nameCollection, generator);
-					NameGeneratorCasingOption casing = generator.CasingOption;
-					string space = GetSpacingReplacement(generator);
-					string finalName;
-					if (null == nameCollection)
-					{
-						if (singleName.IsEmpty)
-						{
-							return "";
-						}
-						if (casing == NameGeneratorCasingOption.None)
-						{
-							finalName = singleName;
-						}
-						else
-						{
-							finalName = DoFirstWordCasing(singleName, casing, CultureInfo.CurrentCulture.TextInfo);
-						}
-					}
-					else
-					{
-						TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-
-						string name;
-						if (casing == NameGeneratorCasingOption.None)
-						{
-							name = nameCollection[0];
-						}
-						else
-						{
-							name = DoFirstWordCasing(nameCollection[0], casing, textInfo);
-						}
-
-						//we already know there are at least two name entries, so use a string builder
-						StringBuilder builder = new StringBuilder(name);
-
-						//we already have the first entry, so mark camel as pascal
-						NameGeneratorCasingOption tempCasing = casing;
-						if (tempCasing == NameGeneratorCasingOption.Camel)
-						{
-							tempCasing = NameGeneratorCasingOption.Pascal;
-						}
-
-						//add each entry with proper spaces and casing
-						int count = nameCollection.Count;
-						for (int i = 1; i < count; ++i)
-						{
-							builder.Append(space);
-							if (casing == NameGeneratorCasingOption.None)
-							{
-								name = nameCollection[i];
-							}
-							else
-							{
-								name = DoFirstWordCasing(nameCollection[i], tempCasing, textInfo);
-							}
-							builder.Append(name);
-						}
-						finalName = builder.ToString();
-					}
-
-					return finalName;
-				}
-				private struct RecognizedPhraseData
-				{
-					private static readonly char[] SpaceCharArray = new char[] { ' ' };
-					private string[] myOriginalNames;
-					private string myUnparsedReplacement;
-					public static bool Populate(NameAlias alias, int remainingParts, out RecognizedPhraseData phraseData)
-					{
-						phraseData = new RecognizedPhraseData();
-						string matchPhrase = ((RecognizedPhrase)alias.Element).Name;
-						string replacePhrase = alias.Name;
-						if (0 == string.Compare(matchPhrase, replacePhrase, StringComparison.CurrentCultureIgnoreCase))
-						{
-							// Sanity check, don't process these
-							return false;
-						}
-						if (matchPhrase.IndexOf(' ') != -1)
-						{
-							if (replacePhrase.IndexOf(matchPhrase, StringComparison.CurrentCultureIgnoreCase) != -1)
-							{
-								// UNDONE: We handle expanding single words to a phrase containing the word, but not
-								// multi-word phrases doing the same thing. However, make sure we don't recurse in this
-								// situation.
-								return false;
-							}
-							string[] parts = matchPhrase.Split(SpaceCharArray, StringSplitOptions.RemoveEmptyEntries);
-							if (parts.Length > remainingParts)
-							{
-								return false;
-							}
-							phraseData.myOriginalNames = parts;
-						}
-						else
-						{
-							phraseData.myOriginalNames = new string[] { matchPhrase };
-						}
-						phraseData.myUnparsedReplacement = replacePhrase;
-						return true;
-					}
-					public bool IsEmpty
-					{
-						get
-						{
-							return myOriginalNames == null;
-						}
-					}
-					public string[] OriginalNames
-					{
-						get
-						{
-							return myOriginalNames;
-						}
-					}
-					/// <summary>
-					/// Get the replacement names. The assumption is that this is rarely called,
-					/// and the results are not cached.
-					/// </summary>
-					public string[] ReplacementNames
-					{
-						get
-						{
-							string name = myUnparsedReplacement;
-							return string.IsNullOrEmpty(name) ?
-								new string[0] :
-								(name.IndexOf(' ') != -1) ? name.Split(SpaceCharArray, StringSplitOptions.RemoveEmptyEntries) : new string[] { name };
-						}
-					}
-				}
-				private void ResolveRecognizedPhrases(ref NamePart singleName, ref List<NamePart> nameCollection, NameGenerator generator)
-				{
-					ORMModel model = ContextModel;
-					if (model != null)
-					{
-						if (nameCollection != null)
-						{
-							int nameCount = nameCollection.Count;
-							int remainingParts = nameCount;
-							for (int i = 0; i < nameCount; ++i, --remainingParts)
-							{
-								// For each part, collection possible replacement phrases beginning with that name
-								NamePart currentPart = nameCollection[i];
-								RecognizedPhraseData singlePhrase = new RecognizedPhraseData();
-								List<RecognizedPhraseData> phraseList = null;
-								bool possibleReplacement = false;
-								foreach (NameAlias alias in model.GetRecognizedPhrasesStartingWith(currentPart, generator))
-								{
-									RecognizedPhraseData phraseData;
-									if (RecognizedPhraseData.Populate(alias, remainingParts, out phraseData))
-									{
-										if (phraseList == null)
-										{
-											possibleReplacement = true;
-											if (singlePhrase.IsEmpty)
-											{
-												singlePhrase = phraseData;
-											}
-											else
-											{
-												phraseList = new List<RecognizedPhraseData>();
-												phraseList.Add(singlePhrase);
-												phraseList.Add(phraseData);
-												singlePhrase = new RecognizedPhraseData();
-											}
-										}
-										else
-										{
-											phraseList.Add(phraseData);
-										}
-									}
-								}
-								// If we have possible replacements, then look farther to see
-								// if the multi-part phrases match. Start by searching the longest
-								// match possible.
-								if (possibleReplacement)
-								{
-									if (phraseList != null)
-									{
-										phraseList.Sort(delegate(RecognizedPhraseData left, RecognizedPhraseData right)
-										{
-											return right.OriginalNames.Length.CompareTo(left.OriginalNames.Length);
-										});
-										int phraseCount = phraseList.Count;
-										for (int j = 0; j < phraseCount; ++j)
-										{
-											if (TestResolvePhraseDataForCollection(phraseList[j], ref singleName, ref nameCollection, i, generator))
-											{
-												return;
-											}
-										}
-									}
-									else
-									{
-										if (TestResolvePhraseDataForCollection(singlePhrase, ref singleName, ref nameCollection, i, generator))
-										{
-											return;
-										}
-									}
-								}
-							}
-						}
-						else if (!singleName.IsEmpty)
-						{
-							LocatedElement element = model.RecognizedPhrasesDictionary.GetElement(singleName);
-							RecognizedPhrase phrase;
-							NameAlias alias;
-							if (null != (phrase = element.SingleElement as RecognizedPhrase) &&
-								null != (alias = generator.FindMatchingAlias(phrase.AbbreviationCollection)))
-							{
-								RecognizedPhraseData phraseData;
-								if (RecognizedPhraseData.Populate(alias, 1, out phraseData))
-								{
-									string[] replacements = phraseData.ReplacementNames;
-									int replacementLength = replacements.Length;
-									NamePart startingPart = singleName;
-									singleName = new NamePart();
-									if (replacementLength == 0)
-									{
-										// Highly unusual, but possible with collapsing phrases and omitted readings
-										singleName = new NamePart();
-									}
-									else
-									{
-										string testForEqual = singleName;
-										bool caseIfEqual = 0 != (singleName.Options & NamePartOptions.ExplicitCasing);
-										singleName = new NamePart();
-										if (replacementLength == 1)
-										{
-											string replacement = replacements[0];
-											NamePartOptions options = NamePartOptions.None;
-											if ((caseIfEqual && 0 == string.Compare(testForEqual, replacement, StringComparison.CurrentCulture)) ||
-												(0 == string.Compare(testForEqual, replacement, StringComparison.CurrentCultureIgnoreCase)))
-											{
-												// Single replacement for same string
-												return;
-											}
-											AddToNameCollection(ref singleName, ref nameCollection, new NamePart(replacement, options));
-										}
-										else
-										{
-											for (int i = 0; i < replacementLength; ++i)
-											{
-												string replacement = replacements[i];
-												NamePartOptions options = NamePartOptions.None;
-												if (caseIfEqual && 0 == string.Compare(testForEqual, replacement, StringComparison.CurrentCulture))
-												{
-													options |= NamePartOptions.ExplicitCasing | NamePartOptions.ReplacementOfSelf;
-												}
-												else if (0 == string.Compare(testForEqual, replacement, StringComparison.CurrentCultureIgnoreCase))
-												{
-													options |= NamePartOptions.ReplacementOfSelf;
-												}
-												AddToNameCollection(ref singleName, ref nameCollection, new NamePart(replacement, options));
-											}
-										}
-										ResolveRecognizedPhrases(ref singleName, ref nameCollection, generator);
-									}
-									return;
-								}
-							}
-						}
-					}
-				}
-				/// <summary>
-				/// Helper for ResolveRecognizedPhrases. Returns true is parent processing is complete.
-				/// </summary>
-				private bool TestResolvePhraseDataForCollection(RecognizedPhraseData phraseData, ref NamePart singleName, ref List<NamePart> nameCollection, int collectionIndex, NameGenerator generator)
-				{
-					Debug.Assert(nameCollection != null);
-					string[] matchNames = phraseData.OriginalNames;
-					int matchLength = matchNames.Length;
-					int i = 0;
-					int firstExplicitPart = -1;
-					int explicitPartCount = 0;
-					for (; i < matchLength; ++i) // Note the bound on this is already verified by RecognizedPhraseData.Populate
-					{
-						NamePart testPart = nameCollection[collectionIndex + i];
-						bool currentPartExplicit = 0 != (testPart.Options & NamePartOptions.ExplicitCasing);
-						if (0 != string.Compare(testPart, matchNames[i], currentPartExplicit ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase) ||
-							(matchLength == 1 && 0 != (testPart.Options & NamePartOptions.ReplacementOfSelf)))
-						{
-							break;
-						}
-						if (currentPartExplicit && firstExplicitPart == -1)
-						{
-							++explicitPartCount;
-							firstExplicitPart = i;
-						}
-					}
-					if (i == matchLength)
-					{
-						// We have a valid replacement, apply it and recurse
-						string[] explicitlyCasedNames = null;
-						string singleMatchName = (matchLength == 1) ? matchNames[0] : null;
-						if (explicitPartCount != 0)
-						{
-							explicitlyCasedNames = new string[explicitPartCount];
-							int nextExplicitName = 0;
-							for (int j = collectionIndex + firstExplicitPart; ; ++j)
-							{
-								NamePart testPart = nameCollection[j];
-								if (0 != (testPart.Options & NamePartOptions.ExplicitCasing))
-								{
-									explicitlyCasedNames[nextExplicitName] = testPart;
-									if (++nextExplicitName == explicitPartCount)
-									{
-										break;
-									}
-								}
-							}
-							if (explicitPartCount > 1)
-							{
-								Array.Sort<string>(explicitlyCasedNames, StringComparer.CurrentCulture);
-							}
-						}
-						nameCollection.RemoveRange(collectionIndex, matchLength);
-						int startingCollectionSize = nameCollection.Count;
-						string[] replacements = phraseData.ReplacementNames;
-						for (i = 0; i < replacements.Length; ++i)
-						{
-							// Recognized phrases do not record casing priority and phrases are
-							// generally treated as case insensitive. However, if any replacement
-							// word exactly matches an explicitly cased word in the original names
-							// then case the replacement as well.
-							NamePartOptions options = NamePartOptions.None;
-							string replacement = replacements[i];
-							if (explicitlyCasedNames != null && 0 <= Array.BinarySearch<string>(explicitlyCasedNames, replacement, StringComparer.CurrentCulture))
-							{
-								options |= NamePartOptions.ExplicitCasing;
-								if (matchLength == 1)
-								{
-									options |= NamePartOptions.ReplacementOfSelf;
-								}
-							}
-							else if (singleMatchName != null && 0 == string.Compare(singleMatchName, replacement, StringComparison.CurrentCultureIgnoreCase))
-							{
-								options |= NamePartOptions.ExplicitCasing;
-							}
-							AddToNameCollection(ref singleName, ref nameCollection, new NamePart(replacement, options), collectionIndex + nameCollection.Count - startingCollectionSize, true);
-						}
-						ResolveRecognizedPhrases(ref singleName, ref nameCollection, generator);
-						return true;
-					}
-					return false;
-				}
-				#endregion // NameCollection helpers
-				#region Casing helpers
-				private string DoFirstWordCasing(NamePart name, NameGeneratorCasingOption casing, TextInfo textInfo)
-				{
-					if (name.ExplicitCasing) return name;
-					switch (casing)
-					{
-						case NameGeneratorCasingOption.Camel:
-							return TestHasAdjacentUpperCase(name) ? (string)name : DoFirstLetterCase(name, false, textInfo);
-						case NameGeneratorCasingOption.Pascal:
-							return TestHasAdjacentUpperCase(name) ? (string)name : DoFirstLetterCase(name, true, textInfo);
-						case NameGeneratorCasingOption.Lower:
-							return TestHasAdjacentUpperCase(name) ? (string)name : textInfo.ToLower(name);
-						case NameGeneratorCasingOption.Upper:
-							return textInfo.ToUpper(name);
-					}
-
-					return null;
-				}
-				private bool TestHasAdjacentUpperCase(string name)
-				{
-					if (!string.IsNullOrEmpty(name))
-					{
-						int length = name.Length;
-						bool previousCharUpper = false;
-						for (int i = 0; i < length; ++i)
-						{
-							if (Char.IsUpper(name, i))
-							{
-								if (previousCharUpper)
-								{
-									return true;
-								}
-								previousCharUpper = true;
-							}
-							else
-							{
-								previousCharUpper = false;
-							}
-						}
-					}
-					return false;
-				}
-				private string DoFirstLetterCase(NamePart name, bool upper, TextInfo textInfo)
-				{
-					string nameValue = name;
-					if (string.IsNullOrEmpty(nameValue))
-					{
-						return nameValue;
-					}
-					char c = nameValue[0];
-					if (upper)
-					{
-						c = textInfo.ToUpper(c);
-					}
-					else
-					{
-						c = textInfo.ToLower(c);
-					}
-					if (nameValue.Length > 1)
-					{
-						nameValue = c.ToString() + nameValue.Substring(1);
-					}
-					else
-					{
-						nameValue = c.ToString();
-					}
-					return nameValue;
-				}
-				#endregion // Casing helpers
 				#region Column analysis
 				/// <summary>
 				/// Flag values for <see cref="ColumnPathStep"/> elements
@@ -2374,8 +1422,10 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						}
 						columnSteps.Add(currentColumn, headNode);
 					}
+#if DEBUGCOLUMNPATH
 					Debug.Unindent();
 					Debug.Unindent();
+#endif // DEBUGCOLUMNPATH
 					return columnSteps[column];
 				}
 				private static void ProcessTailNode(LinkedNode<ColumnPathStep> tailNode, Dictionary<ObjectType, LinkedNode<LinkedNode<ColumnPathStep>>> objectTypeToSteps)
@@ -2500,7 +1550,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		}
 	}
 	#endregion // ORMAbstractionToConceptualDatabaseBridgeDomainModel.NameGeneration class
-
 	#region ORMAbstractionToConceptualDatabaseBridgeDomainModel.RelationalNameGenerator Class
 	partial class RelationalNameGenerator
 	{

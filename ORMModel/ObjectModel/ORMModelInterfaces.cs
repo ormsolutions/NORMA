@@ -30,7 +30,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region IORMToolServices interface
 	/// <summary>
-	/// Specify which window <see cref="IORMToolServices.NavigateTo"/>
+	/// Specify which window <see cref="IORMToolServices.NavigateTo(object, NavigateToWindow)"/>
 	/// or <see cref="IORMToolServices.ActivateShape"/> should jump to.
 	/// </summary>
 	public enum NavigateToWindow
@@ -52,6 +52,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Select the specified element in the model browser
 		/// </summary>
 		ModelBrowser,
+	}
+	/// <summary>
+	/// Specify options for <see cref="IORMToolServices.NavigateTo(object, NavigateToWindow,NavigateToOptions)"/>
+	/// </summary>
+	[Flags]
+	public enum NavigateToOptions
+	{
+		/// <summary>
+		/// Use default behavior
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// Do not resolve <see cref="IRepresentModelElements"/> for the target object.
+		/// </summary>
+		IgnoreRepresentedElements = 1,
 	}
 	/// <summary>
 	/// An interface that should be implemented by any
@@ -143,6 +158,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="window">The type of window to select the element in.</param>
 		/// <returns>Returns <see langword="true"/> if activate succeeds</returns>
 		bool NavigateTo(object target, NavigateToWindow window);
+		/// <summary>
+		/// Find the most convenient activation target for specified element, with additional options.
+		/// </summary>
+		/// <param name="target">The element to activate. Must either be a 
+		/// <see cref="ModelElement"/> or implement <see cref="IRepresentModelElements"/>.</param>
+		/// <param name="window">The type of window to select the element in.</param>
+		/// <param name="options">Specify additional options for navigation behavior.</param>
+		/// <returns>Returns <see langword="true"/> if activate succeeds</returns>
+		bool NavigateTo(object target, NavigateToWindow window, NavigateToOptions options);
 	}
 	#endregion // IORMToolServices interface
 	#region IShapeFreeDataObjectProvider interface

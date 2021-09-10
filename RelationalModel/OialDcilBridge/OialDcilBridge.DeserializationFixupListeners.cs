@@ -1175,7 +1175,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			{
 				yield return new GenerateConceptualDatabaseFixupListener();
 				yield return AssimilationMapping.FixupListener;
-				yield return ReferenceModeNaming.FixupListener;
+				yield return RelationalReferenceModeNaming.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection

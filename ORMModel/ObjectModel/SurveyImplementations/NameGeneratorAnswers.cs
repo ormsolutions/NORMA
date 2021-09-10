@@ -64,7 +64,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return DomainTypeDescriptor.GetDisplayName(NameUsageType ?? this.GetType());
+				ISurveyNode refinedInstance = RefinedInstance as ISurveyNode;
+				return refinedInstance != null ?
+					// Note that it is up to the extension to notify that the display of
+					// this node has updated if the name changes.
+					refinedInstance.SurveyName :
+					DomainTypeDescriptor.GetDisplayName(NameUsageType ?? this.GetType());
 			}
 		}
 		string ISurveyNode.EditableSurveyName
@@ -110,12 +115,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Implements <see cref="ISurveyNode.SurveyNodeExpansionKey"/>
-		/// </summary>		
+		/// </summary>
 		protected object SurveyNodeExpansionKey
 		{
 			get
 			{
-				return (NameUsageType == null && (NameUsageTypes.Length != 0 || GetDomainClass().LocalDescendants.Count != 0)) ? SurveyExpansionKey : null;
+				return ((NameUsageType == null && (NameUsageTypes.Length != 0 || GetDomainClass().LocalDescendants.Count != 0)) ||
+					(AllowsRefinedInstances && RefinedInstance == null)) ? SurveyExpansionKey : null;
 			}
 		}
 		object ISurveyNode.SurveyNodeExpansionKey

@@ -545,11 +545,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a ReferenceModeNamingCustomizesObjectType link in the same Partition as the given ReferenceModeNaming
+		/// Creates a ReferenceModeNamingCustomizesObjectType link in the same Partition as the given RelationalReferenceModeNaming
 		/// </summary>
-		/// <param name="source">ReferenceModeNaming to use as the source of the relationship.</param>
+		/// <param name="source">RelationalReferenceModeNaming to use as the source of the relationship.</param>
 		/// <param name="target">ObjectType to use as the target of the relationship.</param>
-		public ReferenceModeNamingCustomizesObjectType(ReferenceModeNaming source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target)
+		public ReferenceModeNamingCustomizesObjectType(RelationalReferenceModeNaming source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId, source), new DslModeling::RoleAssignment(ReferenceModeNamingCustomizesObjectType.ObjectTypeDomainRoleId, target)}, null)
 		{
 		}
@@ -610,12 +610,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ObjectType", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ReferenceModeNaming.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("d83f7c4d-f955-4ec8-bdbc-0e7cdc480a79")]
-		public virtual ReferenceModeNaming ReferenceModeNaming
+		public virtual RelationalReferenceModeNaming ReferenceModeNaming
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, ReferenceModeNamingDomainRoleId);
+				return (RelationalReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, ReferenceModeNamingDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -631,9 +631,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static ReferenceModeNaming GetReferenceModeNaming(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element)
+		public static RelationalReferenceModeNaming GetReferenceModeNaming(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element)
 		{
-			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as ReferenceModeNaming;
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ObjectTypeDomainRoleId) as RelationalReferenceModeNaming;
 		}
 		
 		/// <summary>
@@ -641,7 +641,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetReferenceModeNaming(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element, ReferenceModeNaming newReferenceModeNaming)
+		public static void SetReferenceModeNaming(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType element, RelationalReferenceModeNaming newReferenceModeNaming)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ObjectTypeDomainRoleId, newReferenceModeNaming);
 		}
@@ -658,7 +658,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceModeNaming", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ReferenceModeNaming", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType/ObjectType.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
 		[DslModeling::DomainObjectId("67c2b3cd-f276-411b-980d-13d94970d604")]
 		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType ObjectType
 		{
@@ -675,13 +675,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		}
 				
 		#endregion
-		#region Static methods to access ObjectType of a ReferenceModeNaming
+		#region Static methods to access ObjectType of a RelationalReferenceModeNaming
 		/// <summary>
 		/// Gets ObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType GetObjectType(ReferenceModeNaming element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType GetObjectType(RelationalReferenceModeNaming element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ReferenceModeNamingDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType;
 		}
@@ -691,18 +691,18 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetObjectType(ReferenceModeNaming element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType newObjectType)
+		public static void SetObjectType(RelationalReferenceModeNaming element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType newObjectType)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReferenceModeNamingDomainRoleId, newObjectType);
 		}
 		#endregion
 		#region ReferenceModeNaming link accessor
 		/// <summary>
-		/// Get the ReferenceModeNamingCustomizesObjectType link to a ReferenceModeNaming.
+		/// Get the ReferenceModeNamingCustomizesObjectType link to a RelationalReferenceModeNaming.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType GetLinkToObjectType (global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming referenceModeNamingInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType GetLinkToObjectType (global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming referenceModeNamingInstance)
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType>(referenceModeNamingInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ReferenceModeNaming not obeyed.");
@@ -739,11 +739,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		#region ReferenceModeNamingCustomizesObjectType instance accessors
 		
 		/// <summary>
-		/// Get any ReferenceModeNamingCustomizesObjectType links between a given ReferenceModeNaming and a ObjectType.
+		/// Get any ReferenceModeNamingCustomizesObjectType links between a given RelationalReferenceModeNaming and a ObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType>();
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId);
@@ -757,11 +757,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one ReferenceModeNamingCustomizesObjectType link between a given ReferenceModeNamingand a ObjectType.
+		/// Get the one ReferenceModeNamingCustomizesObjectType link between a given RelationalReferenceModeNamingand a ObjectType.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType GetLink( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType GetLink( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType target )
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType.ReferenceModeNamingDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNamingCustomizesObjectType link in links )
@@ -805,8 +805,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// Creates a MappingCustomizationModelHasReferenceModeNaming link in the same Partition as the given MappingCustomizationModel
 		/// </summary>
 		/// <param name="source">MappingCustomizationModel to use as the source of the relationship.</param>
-		/// <param name="target">ReferenceModeNaming to use as the target of the relationship.</param>
-		public MappingCustomizationModelHasReferenceModeNaming(MappingCustomizationModel source, ReferenceModeNaming target)
+		/// <param name="target">RelationalReferenceModeNaming to use as the target of the relationship.</param>
+		public MappingCustomizationModelHasReferenceModeNaming(MappingCustomizationModel source, RelationalReferenceModeNaming target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId, source), new DslModeling::RoleAssignment(MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId, target)}, null)
 		{
 		}
@@ -882,13 +882,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		}
 				
 		#endregion
-		#region Static methods to access Model of a ReferenceModeNaming
+		#region Static methods to access Model of a RelationalReferenceModeNaming
 		/// <summary>
 		/// Gets Model.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static MappingCustomizationModel GetModel(ReferenceModeNaming element)
+		public static MappingCustomizationModel GetModel(RelationalReferenceModeNaming element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ReferenceModeNamingDomainRoleId) as MappingCustomizationModel;
 		}
@@ -898,7 +898,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetModel(ReferenceModeNaming element, MappingCustomizationModel newModel)
+		public static void SetModel(RelationalReferenceModeNaming element, MappingCustomizationModel newModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, ReferenceModeNamingDomainRoleId, newModel);
 		}
@@ -917,12 +917,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/ReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming/ReferenceModeNaming.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("219a1852-9896-4303-bf8f-2696baa25962")]
-		public virtual ReferenceModeNaming ReferenceModeNaming
+		public virtual RelationalReferenceModeNaming ReferenceModeNaming
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (ReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, ReferenceModeNamingDomainRoleId);
+				return (RelationalReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, ReferenceModeNamingDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -938,9 +938,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<ReferenceModeNaming> GetReferenceModeNamingCollection(MappingCustomizationModel element)
+		public static DslModeling::LinkedElementCollection<RelationalReferenceModeNaming> GetReferenceModeNamingCollection(MappingCustomizationModel element)
 		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<ReferenceModeNaming>, ReferenceModeNaming>(element, ModelDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<RelationalReferenceModeNaming>, RelationalReferenceModeNaming>(element, ModelDomainRoleId);
 		}
 		#endregion
 		#region Model link accessor
@@ -956,11 +956,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		#endregion
 		#region ReferenceModeNaming link accessor
 		/// <summary>
-		/// Get the MappingCustomizationModelHasReferenceModeNaming link to a ReferenceModeNaming.
+		/// Get the MappingCustomizationModelHasReferenceModeNaming link to a RelationalReferenceModeNaming.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming GetLinkToModel (global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming referenceModeNamingInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming GetLinkToModel (global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming referenceModeNamingInstance)
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming>(referenceModeNamingInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ReferenceModeNamingDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of ReferenceModeNaming not obeyed.");
@@ -977,11 +977,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		#region MappingCustomizationModelHasReferenceModeNaming instance accessors
 		
 		/// <summary>
-		/// Get any MappingCustomizationModelHasReferenceModeNaming links between a given MappingCustomizationModel and a ReferenceModeNaming.
+		/// Get any MappingCustomizationModelHasReferenceModeNaming links between a given MappingCustomizationModel and a RelationalReferenceModeNaming.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming>();
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId);
@@ -995,11 +995,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one MappingCustomizationModelHasReferenceModeNaming link between a given MappingCustomizationModeland a ReferenceModeNaming.
+		/// Get the one MappingCustomizationModelHasReferenceModeNaming link between a given MappingCustomizationModeland a RelationalReferenceModeNaming.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming GetLink( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ReferenceModeNaming target )
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming GetLink( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalReferenceModeNaming target )
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming.ModelDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasReferenceModeNaming link in links )
@@ -1040,12 +1040,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				
 		/// <summary>
 		/// Constructor
-		/// Creates a DefaultReferenceModeNamingCustomizesORMModel link in the same Partition as the given DefaultReferenceModeNaming
+		/// Creates a DefaultReferenceModeNamingCustomizesORMModel link in the same Partition as the given ORMModel
 		/// </summary>
-		/// <param name="source">DefaultReferenceModeNaming to use as the source of the relationship.</param>
-		/// <param name="target">ORMModel to use as the target of the relationship.</param>
-		public DefaultReferenceModeNamingCustomizesORMModel(DefaultReferenceModeNaming source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target)
-			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId, source), new DslModeling::RoleAssignment(DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId, target)}, null)
+		/// <param name="source">ORMModel to use as the source of the relationship.</param>
+		/// <param name="target">RelationalDefaultReferenceModeNaming to use as the target of the relationship.</param>
+		public DefaultReferenceModeNamingCustomizesORMModel(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel source, RelationalDefaultReferenceModeNaming target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId, source), new DslModeling::RoleAssignment(DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId, target)}, null)
 		{
 		}
 		
@@ -1091,46 +1091,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		{
 		}
 		#endregion
-		#region DefaultReferenceModeNaming domain role code
-		
-		/// <summary>
-		/// DefaultReferenceModeNaming domain role Id.
-		/// </summary>
-		public static readonly global::System.Guid DefaultReferenceModeNamingDomainRoleId = new global::System.Guid(0x5c4580ad, 0xbc05, 0x4691, 0xa9, 0xce, 0xe5, 0x49, 0x52, 0xdb, 0x1e, 0xf9);
-		
-		/// <summary>
-		/// DomainRole DefaultReferenceModeNaming
-		/// </summary>
-		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "ORMModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
-		[DslModeling::DomainObjectId("5c4580ad-bc05-4691-a9ce-e54952db1ef9")]
-		public virtual DefaultReferenceModeNaming DefaultReferenceModeNaming
-		{
-			[global::System.Diagnostics.DebuggerStepThrough]
-			get
-			{
-				return (DefaultReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId);
-			}
-			[global::System.Diagnostics.DebuggerStepThrough]
-			set
-			{
-				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId, value);
-			}
-		}
-				
-		#endregion
-		#region Static methods to access DefaultReferenceModeNamingCollection of a ORMModel
-		/// <summary>
-		/// Gets a list of DefaultReferenceModeNamingCollection.
-		/// </summary>
-		[global::System.Diagnostics.DebuggerStepThrough]
-		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<DefaultReferenceModeNaming> GetDefaultReferenceModeNamingCollection(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel element)
-		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<DefaultReferenceModeNaming>, DefaultReferenceModeNaming>(element, ORMModelDomainRoleId);
-		}
-		#endregion
 		#region ORMModel domain role code
 		
 		/// <summary>
@@ -1143,7 +1103,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
-		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DefaultReferenceModeNamingCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DefaultReferenceModeNamingCollection", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/ORMModel.PropertyDisplayName",  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroMany)]
 		[DslModeling::DomainObjectId("341c7c8a-d168-4d09-b02d-6a79bc3f34c8")]
 		public virtual global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel ORMModel
 		{
@@ -1160,13 +1120,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		}
 				
 		#endregion
-		#region Static methods to access ORMModel of a DefaultReferenceModeNaming
+		#region Static methods to access ORMModel of a RelationalDefaultReferenceModeNaming
 		/// <summary>
 		/// Gets ORMModel.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel GetORMModel(DefaultReferenceModeNaming element)
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel GetORMModel(RelationalDefaultReferenceModeNaming element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefaultReferenceModeNamingDomainRoleId) as global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel;
 		}
@@ -1176,29 +1136,49 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetORMModel(DefaultReferenceModeNaming element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel newORMModel)
+		public static void SetORMModel(RelationalDefaultReferenceModeNaming element, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel newORMModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefaultReferenceModeNamingDomainRoleId, newORMModel);
 		}
 		#endregion
-		#region DefaultReferenceModeNaming link accessor
+		#region DefaultReferenceModeNaming domain role code
+		
 		/// <summary>
-		/// Get the DefaultReferenceModeNamingCustomizesORMModel link to a DefaultReferenceModeNaming.
+		/// DefaultReferenceModeNaming domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DefaultReferenceModeNamingDomainRoleId = new global::System.Guid(0x5c4580ad, 0xbc05, 0x4691, 0xa9, 0xce, 0xe5, 0x49, 0x52, 0xdb, 0x1e, 0xf9);
+		
+		/// <summary>
+		/// DomainRole DefaultReferenceModeNaming
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.DisplayName", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "ORMModel", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel/DefaultReferenceModeNaming.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("5c4580ad-bc05-4691-a9ce-e54952db1ef9")]
+		public virtual RelationalDefaultReferenceModeNaming DefaultReferenceModeNaming
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (RelationalDefaultReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DefaultReferenceModeNamingCollection of a ORMModel
+		/// <summary>
+		/// Gets a list of DefaultReferenceModeNamingCollection.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel GetLinkToORMModel (global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming defaultReferenceModeNamingInstance)
+		public static DslModeling::LinkedElementCollection<RelationalDefaultReferenceModeNaming> GetDefaultReferenceModeNamingCollection(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel element)
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(defaultReferenceModeNamingInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId);
-			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DefaultReferenceModeNaming not obeyed.");
-			if ( links.Count == 0 )
-			{
-				return null;
-			}
-			else
-			{
-				return links[0];
-			}
+			return GetRoleCollection<DslModeling::LinkedElementCollection<RelationalDefaultReferenceModeNaming>, RelationalDefaultReferenceModeNaming>(element, ORMModelDomainRoleId);
 		}
 		#endregion
 		#region ORMModel link accessor
@@ -1212,20 +1192,40 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(oRMModelInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId);
 		}
 		#endregion
-		#region DefaultReferenceModeNamingCustomizesORMModel instance accessors
-		
+		#region DefaultReferenceModeNaming link accessor
 		/// <summary>
-		/// Get any DefaultReferenceModeNamingCustomizesORMModel links between a given DefaultReferenceModeNaming and a ORMModel.
+		/// Get the DefaultReferenceModeNamingCustomizesORMModel link to a RelationalDefaultReferenceModeNaming.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target )
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel GetLinkToORMModel (global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming defaultReferenceModeNamingInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(defaultReferenceModeNamingInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DefaultReferenceModeNaming not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DefaultReferenceModeNamingCustomizesORMModel instance accessors
+		
+		/// <summary>
+		/// Get any DefaultReferenceModeNamingCustomizesORMModel links between a given ORMModel and a RelationalDefaultReferenceModeNaming.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>();
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel link in links )
 			{
-				if ( target.Equals(link.ORMModel) )
+				if ( target.Equals(link.DefaultReferenceModeNaming) )
 				{
 					outLinks.Add(link);
 				}
@@ -1233,16 +1233,16 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one DefaultReferenceModeNamingCustomizesORMModel link between a given DefaultReferenceModeNamingand a ORMModel.
+		/// Get the one DefaultReferenceModeNamingCustomizesORMModel link between a given ORMModeland a RelationalDefaultReferenceModeNaming.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel GetLink( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target )
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming target )
 		{
-			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.DefaultReferenceModeNamingDomainRoleId);
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel.ORMModelDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNamingCustomizesORMModel link in links )
 			{
-				if ( target.Equals(link.ORMModel) )
+				if ( target.Equals(link.DefaultReferenceModeNaming) )
 				{
 					return link;
 				}
@@ -1281,8 +1281,8 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// Creates a MappingCustomizationModelHasDefaultReferenceModeNaming link in the same Partition as the given MappingCustomizationModel
 		/// </summary>
 		/// <param name="source">MappingCustomizationModel to use as the source of the relationship.</param>
-		/// <param name="target">DefaultReferenceModeNaming to use as the target of the relationship.</param>
-		public MappingCustomizationModelHasDefaultReferenceModeNaming(MappingCustomizationModel source, DefaultReferenceModeNaming target)
+		/// <param name="target">RelationalDefaultReferenceModeNaming to use as the target of the relationship.</param>
+		public MappingCustomizationModelHasDefaultReferenceModeNaming(MappingCustomizationModel source, RelationalDefaultReferenceModeNaming target)
 			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId, source), new DslModeling::RoleAssignment(MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId, target)}, null)
 		{
 		}
@@ -1358,13 +1358,13 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		}
 				
 		#endregion
-		#region Static methods to access Model of a DefaultReferenceModeNaming
+		#region Static methods to access Model of a RelationalDefaultReferenceModeNaming
 		/// <summary>
 		/// Gets Model.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static MappingCustomizationModel GetModel(DefaultReferenceModeNaming element)
+		public static MappingCustomizationModel GetModel(RelationalDefaultReferenceModeNaming element)
 		{
 			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DefaultReferenceModeNamingDomainRoleId) as MappingCustomizationModel;
 		}
@@ -1374,7 +1374,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static void SetModel(DefaultReferenceModeNaming element, MappingCustomizationModel newModel)
+		public static void SetModel(RelationalDefaultReferenceModeNaming element, MappingCustomizationModel newModel)
 		{
 			DslModeling::DomainRoleInfo.SetLinkedElement(element, DefaultReferenceModeNamingDomainRoleId, newModel);
 		}
@@ -1393,12 +1393,12 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/DefaultReferenceModeNaming.Description", typeof(global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.ORMAbstractionToConceptualDatabaseBridgeDomainModel), "ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.GeneratedCode.DomainModelResx")]
 		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming/DefaultReferenceModeNaming.PropertyDisplayName", PropagatesDelete = true,  PropagatesCopy = DslModeling::PropagatesCopyOption.DoNotPropagateCopy, Multiplicity = DslModeling::Multiplicity.One)]
 		[DslModeling::DomainObjectId("32c09a1c-8139-489a-8a4e-2e35a5c31d7c")]
-		public virtual DefaultReferenceModeNaming DefaultReferenceModeNaming
+		public virtual RelationalDefaultReferenceModeNaming DefaultReferenceModeNaming
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return (DefaultReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId);
+				return (RelationalDefaultReferenceModeNaming)DslModeling::DomainRoleInfo.GetRolePlayer(this, DefaultReferenceModeNamingDomainRoleId);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -1414,9 +1414,9 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static DslModeling::LinkedElementCollection<DefaultReferenceModeNaming> GetDefaultReferenceModeNamingCollection(MappingCustomizationModel element)
+		public static DslModeling::LinkedElementCollection<RelationalDefaultReferenceModeNaming> GetDefaultReferenceModeNamingCollection(MappingCustomizationModel element)
 		{
-			return GetRoleCollection<DslModeling::LinkedElementCollection<DefaultReferenceModeNaming>, DefaultReferenceModeNaming>(element, ModelDomainRoleId);
+			return GetRoleCollection<DslModeling::LinkedElementCollection<RelationalDefaultReferenceModeNaming>, RelationalDefaultReferenceModeNaming>(element, ModelDomainRoleId);
 		}
 		#endregion
 		#region Model link accessor
@@ -1432,11 +1432,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		#endregion
 		#region DefaultReferenceModeNaming link accessor
 		/// <summary>
-		/// Get the MappingCustomizationModelHasDefaultReferenceModeNaming link to a DefaultReferenceModeNaming.
+		/// Get the MappingCustomizationModelHasDefaultReferenceModeNaming link to a RelationalDefaultReferenceModeNaming.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming GetLinkToModel (global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming defaultReferenceModeNamingInstance)
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming GetLinkToModel (global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming defaultReferenceModeNamingInstance)
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming>(defaultReferenceModeNamingInstance, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.DefaultReferenceModeNamingDomainRoleId);
 			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DefaultReferenceModeNaming not obeyed.");
@@ -1453,11 +1453,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		#region MappingCustomizationModelHasDefaultReferenceModeNaming instance accessors
 		
 		/// <summary>
-		/// Get any MappingCustomizationModelHasDefaultReferenceModeNaming links between a given MappingCustomizationModel and a DefaultReferenceModeNaming.
+		/// Get any MappingCustomizationModelHasDefaultReferenceModeNaming links between a given MappingCustomizationModel and a RelationalDefaultReferenceModeNaming.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming target )
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> GetLinks( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming target )
 		{
 			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming>();
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId);
@@ -1471,11 +1471,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			return outLinks.AsReadOnly();
 		}
 		/// <summary>
-		/// Get the one MappingCustomizationModelHasDefaultReferenceModeNaming link between a given MappingCustomizationModeland a DefaultReferenceModeNaming.
+		/// Get the one MappingCustomizationModelHasDefaultReferenceModeNaming link between a given MappingCustomizationModeland a RelationalDefaultReferenceModeNaming.
 		/// </summary>
 		[global::System.Diagnostics.DebuggerStepThrough]
 		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
-		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming GetLink( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.DefaultReferenceModeNaming target )
+		public static global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming GetLink( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModel source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.RelationalDefaultReferenceModeNaming target )
 		{
 			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming>(source, global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming.ModelDomainRoleId);
 			foreach ( global::ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge.MappingCustomizationModelHasDefaultReferenceModeNaming link in links )
