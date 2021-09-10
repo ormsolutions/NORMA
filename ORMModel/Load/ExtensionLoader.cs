@@ -268,10 +268,10 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			if (0 == (options & ExtensionModelOptions.AutoLoad))
 			{
 				object[] namespaceAttributes = type.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
-				bool foundMatch = false;
 				int count;
 				if (namespaceAttributes != null && (count = namespaceAttributes.Length) != 0)
 				{
+					bool foundMatch = false;
 					for (int i = 0; i < count; ++i)
 					{
 						if (((CustomSerializedXmlSchemaAttribute)namespaceAttributes[i]).XmlNamespace == namespaceUri)
@@ -280,14 +280,15 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 							break;
 						}
 					}
+
+					if (!foundMatch)
+					{
+						// Bogus request, return and leave IsValidExtension false
+						this = default(ExtensionModelBinding);
+						return;
+					}
 				}
 
-				if (!foundMatch)
-				{
-					// Bogus request, return and leave IsValidExtension false
-					this = default(ExtensionModelBinding);
-					return;
-				}
 			}
 			this.myNamespaceUri = namespaceUri;
 			this.myType = type;
