@@ -559,43 +559,50 @@
 					<plx:returns dataTypeName="CustomSerializedPropertyInfo"/>
 					<xsl:choose>
 						<xsl:when test="$haveCustomPropertyInfo">
-							<xsl:for-each select="se:Attribute">
-								<plx:branch>
-									<plx:condition>
-										<plx:binaryOperator type="equality">
-											<plx:left>
-												<plx:callInstance type="property" name="Id">
-													<plx:callObject>
-														<plx:nameRef name="domainPropertyInfo" type="parameter"/>
-													</plx:callObject>
-												</plx:callInstance>
-											</plx:left>
-											<plx:right>
-												<plx:callStatic type="field" name="{@ID}DomainPropertyId" dataTypeName="{$ClassName}" />
-											</plx:right>
-										</plx:binaryOperator>
-									</plx:condition>
-									<xsl:for-each select="se:RolePlayed">
+							<xsl:for-each select="se:Attribute|se:SharedAttributeCode">
+								<xsl:choose>
+									<xsl:when test="self::se:Attribute">
 										<plx:branch>
 											<plx:condition>
 												<plx:binaryOperator type="equality">
 													<plx:left>
 														<plx:callInstance type="property" name="Id">
 															<plx:callObject>
-																<plx:nameRef name="rolePlayedInfo" type="parameter"/>
+																<plx:nameRef name="domainPropertyInfo" type="parameter"/>
 															</plx:callObject>
 														</plx:callInstance>
 													</plx:left>
 													<plx:right>
-														<plx:callStatic type="field" name="{@ID}DomainRoleId" dataTypeName="{$ClassName}" />
+														<plx:callStatic type="field" name="{@ID}DomainPropertyId" dataTypeName="{$ClassName}" />
 													</plx:right>
 												</plx:binaryOperator>
 											</plx:condition>
+											<xsl:for-each select="se:RolePlayed">
+												<plx:branch>
+													<plx:condition>
+														<plx:binaryOperator type="equality">
+															<plx:left>
+																<plx:callInstance type="property" name="Id">
+																	<plx:callObject>
+																		<plx:nameRef name="rolePlayedInfo" type="parameter"/>
+																	</plx:callObject>
+																</plx:callInstance>
+															</plx:left>
+															<plx:right>
+																<plx:callStatic type="field" name="{@ID}DomainRoleId" dataTypeName="{$ClassName}" />
+															</plx:right>
+														</plx:binaryOperator>
+													</plx:condition>
+													<xsl:call-template name="ReturnCustomSerializedPropertyInfo"/>
+												</plx:branch>
+											</xsl:for-each>
 											<xsl:call-template name="ReturnCustomSerializedPropertyInfo"/>
 										</plx:branch>
-									</xsl:for-each>
-									<xsl:call-template name="ReturnCustomSerializedPropertyInfo"/>
-								</plx:branch>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:copy-of select="child::plx:*"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:for-each>
 							<xsl:if test="$ClassOverride">
 								<plx:branch>
@@ -3366,13 +3373,18 @@
 	</xsl:template>
 	<xsl:template name="ReturnCustomSerializedPropertyInfo">
 		<xsl:for-each select="se:Condition">
-			<xsl:copy-of select="child::*[position()!=last()]"/>
-			<plx:branch>
-				<plx:condition>
-					<xsl:copy-of select="child::*[last()]"/>
-				</plx:condition>
-				<xsl:call-template name="ReturnCustomSerializedPropertyInfo"/>
-			</plx:branch>
+			<xsl:variable name="plxChildren" select="child::*"/>
+			<!-- Don't generate anything here if the condition is explicitly false. This is used to support reading
+			an alternate (likely deprecated) old argument name and will not be written. -->
+			<xsl:if test="not(count($plxChildren)=1 and $plxChildren[self::plx:falseKeyword])">
+				<xsl:copy-of select="$plxChildren[position()!=last()]"/>
+				<plx:branch>
+					<plx:condition>
+						<xsl:copy-of select="$plxChildren[last()]"/>
+					</plx:condition>
+					<xsl:call-template name="ReturnCustomSerializedPropertyInfo"/>
+				</plx:branch>
+			</xsl:if>
 		</xsl:for-each>
 		<plx:return>
 			<plx:callNew dataTypeName="CustomSerializedPropertyInfo">
