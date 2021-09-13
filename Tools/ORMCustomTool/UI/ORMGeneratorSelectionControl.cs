@@ -744,12 +744,18 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 						{
 							allGenerators = null;
 						}
-						IORMGenerator generator = generators[primaryGenerator];
-						string outputFormat = generator.ProvidesOutputFormat;
+
+						IORMGenerator generator = null;
+						string outputFormat = null;
 						ORMCustomToolUtility.GeneratorTargetSet targetSet = null;
-						if (targetSetsByFormatName != null)
+						if (null != primaryGenerator)
 						{
-							targetSetsByFormatName.TryGetValue(outputFormat, out targetSet);
+							generator = generators[primaryGenerator];
+							outputFormat = generator.ProvidesOutputFormat;
+							if (targetSetsByFormatName != null)
+							{
+								targetSetsByFormatName.TryGetValue(outputFormat, out targetSet);
+							}
 						}
 
 						if (targetSet != null)
