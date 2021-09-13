@@ -999,11 +999,15 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 					foreach (Guid recurseExtensionId in recurseExtensions)
 					{
 						string recurseExtensionNamespace;
+						ExtensionModelBinding boundRecursion;
 						if (extensionModelMap.TryGetValue(recurseExtensionId, out recurseExtensionNamespace) &&
 							!standardModelMap.ContainsKey(recurseExtensionId) &&
-							!targetExtensions.ContainsKey(recurseExtensionNamespace))
+							!targetExtensions.ContainsKey(recurseExtensionNamespace) &&
+							// If this is a reduced loader (such as the non-generative case) then secondary 'also load'
+							// namespace may not be available. Ignore the secondary extension if it is not available.
+							availableExtensions.TryGetValue(recurseExtensionNamespace, out boundRecursion))
 						{
-							targetExtensions.Add(recurseExtensionNamespace, availableExtensions[recurseExtensionNamespace]);
+							targetExtensions.Add(recurseExtensionNamespace, boundRecursion);
 							VerifyExtensions(recurseExtensionNamespace, targetExtensions, availableExtensions, extensionModelMap, standardModelMap);
 						}
 					}
