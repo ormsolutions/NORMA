@@ -1193,6 +1193,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 						while (remainingBuildItemCount != 0 && iBuildItem < buildItemCount)
 						{
 							bool canMoveMin = iBuildItem == iMinBuildItem; // If items are skipped in the original list then the min item may be higher than it currently is.
+							bool restartLoop = false;
 							while (buildItemProcessed[iBuildItem])
 							{
 								++iBuildItem;
@@ -1200,6 +1201,16 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 								{
 									++iMinBuildItem;
 								}
+								if (iBuildItem == buildItemCount)
+								{
+									restartLoop = true;
+									break;
+								}
+							}
+
+							if (restartLoop)
+							{
+								break;
 							}
 
 							BoundBuildItem boundBuildItem = boundBuildItems[iBuildItem];
