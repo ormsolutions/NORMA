@@ -162,11 +162,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 			LinkedElementCollection<Table> tables = schema.TableCollection;
 			LinkedElementCollection<ConceptType> conceptTypes = sourceModel.ConceptTypeCollection;
 			Partition partition = schema.Partition;
-			if (customization != null &&
-				!customization.CustomizesTablesOrColumns)
-			{
-				customization = null;
-			}
 
 			// Map all InformationTypeFormats to domains in the schema
 			// UNDONE: (Phase 2 when we care about datatypes). There is not currently
