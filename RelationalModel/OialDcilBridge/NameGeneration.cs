@@ -529,10 +529,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 					LinkedNode<ColumnPathStep> currentNode = GetColumnPath(column);
 
 					NameGenerator generator = ColumnNameGenerator;
+					ORMModel contextModel = ContextModel;
 
 					if (currentNode == null)
 					{
-						return NamePart.GetFinalName(ResourceStrings.NameGenerationValueTypeValueColumn, null, generator, ContextModel);
+						return NamePart.GetFinalName(ResourceStrings.NameGenerationValueTypeValueColumn, null, generator, contextModel);
 					}
 
 					// Prepare for adding name parts. The single NamePart string is used when
@@ -664,7 +665,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 												// because the checked flags are different.
 												nextLoopNode = nextNode.Next;
 												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
-													null, // If multiple schemas were possible the schema would be passed here
+													contextModel, // If multiple schemas were possible the schema would be passed here. As is, any element will do.
 													nextStep.ResolvedObjectType,
 													(nextLoopNode != null) ? nextLoopNode.Value.TargetObjectType : null,
 													nextStep.ResolvedSupertypeVerifyPreferred,
@@ -676,7 +677,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 											else
 											{
 												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
-													null, // If multiple schemas were possible the schema would be passed here
+													contextModel, // If multiple schemas were possible the schema would be passed here. As is, any element will do.
 													step.ResolvedObjectType,
 													nextNode.Value.TargetObjectType,
 													step.ResolvedSupertypeVerifyPreferred,
@@ -689,7 +690,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 										else
 										{
 											ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
-												null, // If multiple schemas were possible the schema would be passed here
+												contextModel, // If multiple schemas were possible the schema would be passed here. As is, any element will do.
 												(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousResolvedSupertype : null,
 												step.TargetObjectType,
 												previousResolvedObjectType,
@@ -756,7 +757,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 												nextLoopNode = nextNode.Next;
 												step = nextStep;
 												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
-													null, // If multiple schemas were possible the schema would be passed here
+													contextModel, // If multiple schemas were possible the schema would be passed here. As is, any element will do.
 													nextStep.ResolvedObjectType,
 													(nextLoopNode != null) ? nextLoopNode.Value.TargetObjectType : null,
 													nextStep.ResolvedSupertypeVerifyPreferred,
@@ -768,7 +769,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 											else
 											{
 												lastStepConsumedNextNode = ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
-													null, // If multiple schemas were possible the schema would be passed here
+													contextModel, // If multiple schemas were possible the schema would be passed here. As is, any element will do.
 													step.ResolvedObjectType,
 													nextNode.Value.TargetObjectType,
 													step.ResolvedSupertypeVerifyPreferred,
@@ -781,7 +782,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 									else
 									{
 										ReferenceModeNaming.ResolveObjectTypeName<ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>(
-											null, // If multiple schemas were possible the schema would be passed here
+											contextModel, // If multiple schemas were possible the schema would be passed here. As is, any element will do.
 											(!firstPass || 0 != (stepFlags & ColumnPathStepFlags.IsIdentifier)) ? previousResolvedObjectType : null,
 											step.TargetObjectType,
 											previousResolvedSupertype,
@@ -810,7 +811,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 						currentNode = nextLoopNode;
 						firstPass = false;
 					} while (currentNode != null);
-					string finalName = NamePart.GetFinalName(singleName, nameCollection, generator, ContextModel);
+					string finalName = NamePart.GetFinalName(singleName, nameCollection, generator, contextModel);
 					if (string.IsNullOrEmpty(finalName))
 					{
 						return (phase == 0) ? "COLUMN" : null;
