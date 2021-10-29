@@ -209,102 +209,6 @@
 				<plx:callThis name="RequiresSerialization"/>
 			</plx:return>
 		</se:ConditionalSerialization>
-		<se:Attribute ID="SpacingFormat">
-			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="booleanOr">
-					<plx:left>
-						<plx:binaryOperator type="equality">
-							<plx:left>
-								<plx:callThis name="SpacingFormat" type="property"/>
-							</plx:left>
-							<plx:right>
-								<plx:callStatic name="Retain" dataTypeName="NameGeneratorSpacingFormat" type="field"/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:left>
-					<plx:right>
-						<plx:callThis name="IsIgnoredAttributeId">
-							<plx:passParam>
-								<plx:callStatic name="SpacingFormatDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
-							</plx:passParam>
-						</plx:callThis>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:Condition>
-		</se:Attribute>
-		<se:Attribute ID="CasingOption">
-			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="booleanOr">
-					<plx:left>
-						<plx:binaryOperator type="equality">
-							<plx:left>
-								<plx:callThis name="CasingOption" type="property"/>
-							</plx:left>
-							<plx:right>
-								<plx:callStatic name="None" dataTypeName="NameGeneratorCasingOption" type="field"/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:left>
-					<plx:right>
-						<plx:callThis name="IsIgnoredAttributeId">
-							<plx:passParam>
-								<plx:callStatic name="CasingOptionDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
-							</plx:passParam>
-						</plx:callThis>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:Condition>
-		</se:Attribute>
-		<se:Attribute ID="SpacingReplacement">
-			<se:Condition WriteStyle="NotWritten">
-				<plx:binaryOperator type="booleanOr">
-					<plx:left>
-						<plx:binaryOperator type="inequality">
-							<plx:left>
-								<plx:callThis name="SpacingFormat" type="property"/>
-							</plx:left>
-							<plx:right>
-								<plx:callStatic name="ReplaceWith" dataTypeName="NameGeneratorSpacingFormat" type="field"/>
-							</plx:right>
-						</plx:binaryOperator>
-					</plx:left>
-					<plx:right>
-						<plx:callThis name="IsIgnoredAttributeId">
-							<plx:passParam>
-								<plx:callStatic name="SpacingFormatDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
-							</plx:passParam>
-						</plx:callThis>
-					</plx:right>
-				</plx:binaryOperator>
-			</se:Condition>
-		</se:Attribute>
-		<se:Attribute ID="AutomaticallyShortenNames">
-			<se:Condition WriteStyle="NotWritten">
-				<plx:callThis name="IsIgnoredAttributeId">
-					<plx:passParam>
-						<plx:callStatic name="AutomaticallyShortenNamesDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
-					</plx:passParam>
-				</plx:callThis>
-			</se:Condition>
-		</se:Attribute>
-		<se:Attribute ID="UserDefinedMaximum">
-			<se:Condition WriteStyle="NotWritten">
-				<plx:callThis name="IsIgnoredAttributeId">
-					<plx:passParam>
-						<plx:callStatic name="UserDefinedMaximumDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
-					</plx:passParam>
-				</plx:callThis>
-			</se:Condition>
-		</se:Attribute>
-		<se:Attribute ID="UseTargetDefaultMaximum">
-			<se:Condition WriteStyle="NotWritten">
-				<plx:callThis name="IsIgnoredAttributeId">
-					<plx:passParam>
-						<plx:callStatic name="UseTargetDefaultMaximumDomainPropertyId" type="field" dataTypeName="NameGenerator"/>
-					</plx:passParam>
-				</plx:callThis>
-			</se:Condition>
-		</se:Attribute>
 		<se:Attribute ID="NameUsage" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:binaryOperator type="identityEquality">
@@ -313,6 +217,354 @@
 					</plx:left>
 					<plx:right>
 						<plx:nullKeyword/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:SharedAttributeCode>
+			<plx:local name="ignoredProperties" dataTypeName="StandardNameGeneratorProperty">
+				<plx:initialize>
+					<plx:callThis name="CurrentIgnoredStandardProperties" type="property"/>
+				</plx:initialize>
+			</plx:local>
+			<plx:local name="refinedGenerator" dataTypeName="NameGenerator">
+				<plx:initialize>
+					<plx:callThis name="RefinesGenerator" type="property"/>
+				</plx:initialize>
+			</plx:local>
+		</se:SharedAttributeCode>
+		<se:Attribute ID="SpacingFormat" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:value data="0" type="i4"/>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="bitwiseAnd">
+									<plx:left>
+										<plx:nameRef name="ignoredProperties"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="SpacingFormat" type="field" dataTypeName="StandardNameGeneratorProperty"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="SpacingFormat" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:inlineStatement dataTypeName="NameGeneratorSpacingFormat">
+									<plx:conditionalOperator>
+										<plx:condition>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:left>
+											<plx:callInstance name="SpacingFormat" type="property">
+												<plx:callObject>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callStatic name="Retain" dataTypeName="NameGeneratorSpacingFormat" type="field"/>
+										</plx:right>
+									</plx:conditionalOperator>
+								</plx:inlineStatement>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="CasingOption" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:value data="0" type="i4"/>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="bitwiseAnd">
+									<plx:left>
+										<plx:nameRef name="ignoredProperties"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="CasingOption" type="field" dataTypeName="StandardNameGeneratorProperty"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="CasingOption" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:inlineStatement dataTypeName="NameGeneratorCasingOption">
+									<plx:conditionalOperator>
+										<plx:condition>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:left>
+											<plx:callInstance name="CasingOption" type="property">
+												<plx:callObject>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callStatic name="None" dataTypeName="NameGeneratorCasingOption" type="field"/>
+										</plx:right>
+									</plx:conditionalOperator>
+								</plx:inlineStatement>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="SpacingReplacement" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:value data="0" type="i4"/>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="bitwiseAnd">
+									<plx:left>
+										<plx:nameRef name="ignoredProperties"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="SpacingReplacement" type="field" dataTypeName="StandardNameGeneratorProperty"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="SpacingReplacement" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:inlineStatement dataTypeName=".string">
+									<plx:conditionalOperator>
+										<plx:condition>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:left>
+											<plx:callInstance name="SpacingReplacement" type="property">
+												<plx:callObject>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:callStatic name="Empty" dataTypeName=".string" type="field"/>
+										</plx:right>
+									</plx:conditionalOperator>
+								</plx:inlineStatement>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="AutomaticallyShortenNamesInitializer" Name="AutomaticallyShortenNames" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:value data="0" type="i4"/>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="bitwiseAnd">
+									<plx:left>
+										<plx:nameRef name="ignoredProperties"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="AutomaticallyShortenNames" type="field" dataTypeName="StandardNameGeneratorProperty"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="AutomaticallyShortenNames" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:inlineStatement dataTypeName=".boolean">
+									<plx:conditionalOperator>
+										<plx:condition>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:left>
+											<plx:callInstance name="AutomaticallyShortenNames" type="property">
+												<plx:callObject>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:trueKeyword/>
+										</plx:right>
+									</plx:conditionalOperator>
+								</plx:inlineStatement>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="UserDefinedMaximum" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:value data="0" type="i4"/>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="bitwiseAnd">
+									<plx:left>
+										<plx:nameRef name="ignoredProperties"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="UserDefinedMaximum" type="field" dataTypeName="StandardNameGeneratorProperty"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="UserDefinedMaximum" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:inlineStatement dataTypeName=".i4">
+									<plx:conditionalOperator>
+										<plx:condition>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:left>
+											<plx:callInstance name="UserDefinedMaximum" type="property">
+												<plx:callObject>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:value data="128" type="i4"/>
+										</plx:right>
+									</plx:conditionalOperator>
+								</plx:inlineStatement>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="UseTargetDefaultMaximumInitializer" Name="UseTargetDefaultMaximum" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:value data="0" type="i4"/>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="bitwiseAnd">
+									<plx:left>
+										<plx:nameRef name="ignoredProperties"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="UseTargetDefaultMaximum" type="field" dataTypeName="StandardNameGeneratorProperty"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="UseTargetDefaultMaximum" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:inlineStatement dataTypeName=".boolean">
+									<plx:conditionalOperator>
+										<plx:condition>
+											<plx:binaryOperator type="identityInequality">
+												<plx:left>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:condition>
+										<plx:left>
+											<plx:callInstance name="UseTargetDefaultMaximum" type="property">
+												<plx:callObject>
+													<plx:nameRef name="refinedGenerator"/>
+												</plx:callObject>
+											</plx:callInstance>
+										</plx:left>
+										<plx:right>
+											<plx:trueKeyword/>
+										</plx:right>
+									</plx:conditionalOperator>
+								</plx:inlineStatement>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:right>
 				</plx:binaryOperator>
 			</se:Condition>

@@ -75,7 +75,7 @@
 			</BaseClass>
 		</DomainClass>
 
-		<DomainClass Name="RelationalNameGenerator" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" HasCustomConstructor="true" Id="A2D24E49-1B2F-42C0-B1CE-1F7F3B193E26" DisplayName="Relational Names" Description="">
+		<DomainClass Name="RelationalNameGenerator" Namespace="ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge" Id="A2D24E49-1B2F-42C0-B1CE-1F7F3B193E26" DisplayName="Relational Names" Description="">
 			<Attributes>
 				<ClrAttribute Name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameConsumerIdentifier">
 					<Parameters>

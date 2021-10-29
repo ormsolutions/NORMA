@@ -4061,9 +4061,9 @@
 			<xs:element minOccurs="0" ref="RefinesGeneratedInstance"/>
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
-		<xs:attribute name="CasingOption" default="None">
+		<xs:attribute name="CasingOption" use="optional">
 			<xs:annotation>
-				<xs:documentation>Specify casing modifications for name parts and combinations.</xs:documentation>
+				<xs:documentation>Specify casing modifications for name parts and combinations. If not specified, the default CasingOption is the value from the nearest refining parent with this attribute. The root default is None.</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="xs:token">
@@ -4095,9 +4095,9 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
-		<xs:attribute name="SpacingFormat" default="Retain">
+		<xs:attribute name="SpacingFormat" use="optional">
 			<xs:annotation>
-				<xs:documentation>Specify how name spaces are treated during name generation.</xs:documentation>
+				<xs:documentation>Specify how name spaces are treated during name generation. If not specified, the default SpacingFormat is the value from the nearest refining parent with this attribute. The root default is Retain.</xs:documentation>
 			</xs:annotation>
 			<xs:simpleType>
 				<xs:restriction base="xs:token">
@@ -4119,9 +4119,9 @@
 				</xs:restriction>
 			</xs:simpleType>
 		</xs:attribute>
-		<xs:attribute name="SpacingReplacement" default="" type="xs:string">
+		<xs:attribute name="SpacingReplacement" type="xs:string" use="optional">
 			<xs:annotation>
-				<xs:documentation>The string used in place of spaces when the SpacingFormat attribute is ReplaceWith</xs:documentation>
+				<xs:documentation>The string used in place of spaces when the SpacingFormat attribute is ReplaceWith. If not specified, the default SpacingReplacement is the value from the nearest refining parent with this attribute. The root default is an empty string.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="NameUsage" type="xs:string" use="optional">
@@ -4129,19 +4129,19 @@
 				<xs:documentation>The usage associated with this Name Generator</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="AutomaticallyShortenNames" default="true" type="xs:boolean">
+		<xs:attribute name="AutomaticallyShortenNames" type="xs:boolean" use="optional">
 			<xs:annotation>
-				<xs:documentation>Whether the namegeneration system should automatically shorten names if they exceed the max length</xs:documentation>
+				<xs:documentation>Whether the name generation system should automatically shorten names if they exceed the max length. If not specified, the default AutomaticallyShortenNames is the value from the nearest refining parent with this attribute. The root default is true.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="UserDefinedMaximum" default="128" type="xs:integer">
+		<xs:attribute name="UserDefinedMaximum" type="xs:integer" use="optional">
 			<xs:annotation>
-				<xs:documentation>The maximum name length set by user</xs:documentation>
+				<xs:documentation>The maximum name length set by user if UseTargetDefaultMaximum is false. If not specified, the default UserDefinedMaximum is the value from the nearest refining parent with this attribute. The root default is 128.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="UseTargetDefaultMaximum" default="true" type="xs:boolean">
+		<xs:attribute name="UseTargetDefaultMaximum" type="xs:boolean" use="optional">
 			<xs:annotation>
-				<xs:documentation>The maximum name length set by user</xs:documentation>
+				<xs:documentation>The maximum name length set by user if AutomaticallyShortenNames is set. If not specified, the default UseTargetDefaultMaximum is the value from the nearest refining parent with this attribute. The root default is true.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

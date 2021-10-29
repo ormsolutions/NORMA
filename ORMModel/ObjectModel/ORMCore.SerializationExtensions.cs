@@ -1349,54 +1349,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
 		protected new CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
-			if (domainPropertyInfo.Id == NameGenerator.SpacingFormatDomainPropertyId)
-			{
-				if (this.SpacingFormat == NameGeneratorSpacingFormat.Retain || this.IsIgnoredAttributeId(NameGenerator.SpacingFormatDomainPropertyId))
-				{
-					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
-				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
-			}
-			if (domainPropertyInfo.Id == NameGenerator.CasingOptionDomainPropertyId)
-			{
-				if (this.CasingOption == NameGeneratorCasingOption.None || this.IsIgnoredAttributeId(NameGenerator.CasingOptionDomainPropertyId))
-				{
-					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
-				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
-			}
-			if (domainPropertyInfo.Id == NameGenerator.SpacingReplacementDomainPropertyId)
-			{
-				if (this.SpacingFormat != NameGeneratorSpacingFormat.ReplaceWith || this.IsIgnoredAttributeId(NameGenerator.SpacingFormatDomainPropertyId))
-				{
-					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
-				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
-			}
-			if (domainPropertyInfo.Id == NameGenerator.AutomaticallyShortenNamesDomainPropertyId)
-			{
-				if (this.IsIgnoredAttributeId(NameGenerator.AutomaticallyShortenNamesDomainPropertyId))
-				{
-					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
-				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
-			}
-			if (domainPropertyInfo.Id == NameGenerator.UserDefinedMaximumDomainPropertyId)
-			{
-				if (this.IsIgnoredAttributeId(NameGenerator.UserDefinedMaximumDomainPropertyId))
-				{
-					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
-				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
-			}
-			if (domainPropertyInfo.Id == NameGenerator.UseTargetDefaultMaximumDomainPropertyId)
-			{
-				if (this.IsIgnoredAttributeId(NameGenerator.UseTargetDefaultMaximumDomainPropertyId))
-				{
-					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
-				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
-			}
 			if (domainPropertyInfo.Id == NameGenerator.NameUsageDomainPropertyId)
 			{
 				if (this.NameUsageType == null)
@@ -1404,6 +1356,56 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			StandardNameGeneratorProperty ignoredProperties = this.CurrentIgnoredStandardProperties;
+			NameGenerator refinedGenerator = this.RefinesGenerator;
+			if (domainPropertyInfo.Id == NameGenerator.SpacingFormatDomainPropertyId)
+			{
+				if (0 != (ignoredProperties & StandardNameGeneratorProperty.SpacingFormat) || this.SpacingFormat == (refinedGenerator != null ? refinedGenerator.SpacingFormat : NameGeneratorSpacingFormat.Retain))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == NameGenerator.CasingOptionDomainPropertyId)
+			{
+				if (0 != (ignoredProperties & StandardNameGeneratorProperty.CasingOption) || this.CasingOption == (refinedGenerator != null ? refinedGenerator.CasingOption : NameGeneratorCasingOption.None))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == NameGenerator.SpacingReplacementDomainPropertyId)
+			{
+				if (0 != (ignoredProperties & StandardNameGeneratorProperty.SpacingReplacement) || this.SpacingReplacement == (refinedGenerator != null ? refinedGenerator.SpacingReplacement : string.Empty))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == NameGenerator.AutomaticallyShortenNamesInitializerDomainPropertyId)
+			{
+				if (0 != (ignoredProperties & StandardNameGeneratorProperty.AutomaticallyShortenNames) || this.AutomaticallyShortenNames == (refinedGenerator != null ? refinedGenerator.AutomaticallyShortenNames : true))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, "AutomaticallyShortenNames", null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == NameGenerator.UserDefinedMaximumDomainPropertyId)
+			{
+				if (0 != (ignoredProperties & StandardNameGeneratorProperty.UserDefinedMaximum) || this.UserDefinedMaximum == (refinedGenerator != null ? refinedGenerator.UserDefinedMaximum : 128))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == NameGenerator.UseTargetDefaultMaximumInitializerDomainPropertyId)
+			{
+				if (0 != (ignoredProperties & StandardNameGeneratorProperty.UseTargetDefaultMaximum) || this.UseTargetDefaultMaximum == (refinedGenerator != null ? refinedGenerator.UseTargetDefaultMaximum : true))
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, "UseTargetDefaultMaximum", null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -1511,13 +1513,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (customSerializedAttributes == null)
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("NameUsage", NameGenerator.NameUsageDomainPropertyId);
 				customSerializedAttributes.Add("SpacingFormat", NameGenerator.SpacingFormatDomainPropertyId);
 				customSerializedAttributes.Add("CasingOption", NameGenerator.CasingOptionDomainPropertyId);
 				customSerializedAttributes.Add("SpacingReplacement", NameGenerator.SpacingReplacementDomainPropertyId);
-				customSerializedAttributes.Add("AutomaticallyShortenNames", NameGenerator.AutomaticallyShortenNamesDomainPropertyId);
+				customSerializedAttributes.Add("AutomaticallyShortenNames", NameGenerator.AutomaticallyShortenNamesInitializerDomainPropertyId);
 				customSerializedAttributes.Add("UserDefinedMaximum", NameGenerator.UserDefinedMaximumDomainPropertyId);
-				customSerializedAttributes.Add("UseTargetDefaultMaximum", NameGenerator.UseTargetDefaultMaximumDomainPropertyId);
-				customSerializedAttributes.Add("NameUsage", NameGenerator.NameUsageDomainPropertyId);
+				customSerializedAttributes.Add("UseTargetDefaultMaximum", NameGenerator.UseTargetDefaultMaximumInitializerDomainPropertyId);
 				NameGenerator.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;

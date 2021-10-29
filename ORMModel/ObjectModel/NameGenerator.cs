@@ -28,9 +28,200 @@ using System.Collections.ObjectModel;
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	#region NameGenerator class
+	/// <summary>
+	/// Flag enum for user-settable properties defined on the <see cref="NameGenerator"/> class.
+	/// This allows bitfields to be used in virtual methods instead of lists of domain
+	/// property id guids.
+	/// </summary>
+	[Flags]
+	public enum StandardNameGeneratorProperty
+	{
+		/// <summary>
+		/// No attributes
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// Corresponds to the <see cref="NameGenerator.CasingOption"/> domain property
+		/// </summary>
+		CasingOption = 1,
+		/// <summary>
+		/// Corresponds to the <see cref="NameGenerator.SpacingFormat"/> domain property
+		/// </summary>
+		SpacingFormat = 2,
+		/// <summary>
+		/// Corresponds to the <see cref="NameGenerator.SpacingReplacement"/> domain property
+		/// </summary>
+		SpacingReplacement = 4,
+		/// <summary>
+		/// Corresponds to the <see cref="NameGenerator.AutomaticallyShortenNames"/> domain property
+		/// </summary>
+		AutomaticallyShortenNames = 8,
+		/// <summary>
+		/// Corresponds to the <see cref="NameGenerator.UserDefinedMaximum"/> domain property
+		/// </summary>
+		UserDefinedMaximum = 0x10,
+		/// <summary>
+		/// Corresponds to the <see cref="NameGenerator.UseTargetDefaultMaximum"/> domain property
+		/// </summary>
+		UseTargetDefaultMaximum = 0x20
+		// If this is changed, also change myStandardPropertyIds below
+	}
 	partial class NameGenerator
 	{
 		#region CustomStorage handlers
+		[Flags]
+		private enum NameGeneratorFlags
+		{
+			CasingOptionInit = 1, // If these bits change adjust the InitializedProperties getter. These obviously line up with StandardNameGeneratorProperty values
+			SpacingFormatInit = 2,
+			SpacingReplacementInit = 4,
+			AutomaticallyShortenNamesInit = 8,
+			UserDefinedMaximumInit = 0x10,
+			UseTargetDefaultMaximumInit = 0x20,
+			CasingOptionBit1 = 0x40, // If these bits change adjust bit shift of 6 in GetCasingOption and SetCasingOption
+			CasingOptionBit2 = 0x80,
+			CasingOptionBit3 = 0x100,
+			SpacingFormatBit1 = 0x200, // If these bits change adjust bit shift of 9 in GetSpacingFormat and SetSpacingFormat
+			SpacingFormatBit2 = 0x400,
+			AutomaticallyShortenNames = 0x800,
+			UseTargetDefaultMaximum = 0x1000,
+		}
+		private NameGeneratorFlags myFlags;
+		private bool GetFlag(NameGeneratorFlags flags)
+		{
+			return 0 != (myFlags & flags);
+		}
+		private void SetFlag(NameGeneratorFlags flags, bool value)
+		{
+			if (value)
+			{
+				myFlags |= flags;
+			}
+			else
+			{
+				myFlags &= ~flags;
+			}
+		}
+		/// <summary>
+		/// Return a <see cref="StandardNameGeneratorProperty"/> indicating which values have been explicitly set.
+		/// </summary>
+		/// <remarks>This is virtual so that subtypes can add additional properties. The recommendation is to do this
+		/// in an enum with bit fields that do no conflict with the standard properties, then downcast the combination.
+		/// If additional properties are not used then no override is required for this property.</remarks>
+		protected virtual StandardNameGeneratorProperty InitializedProperties
+		{
+			get
+			{
+				return (StandardNameGeneratorProperty)((int)(myFlags & (NameGeneratorFlags.CasingOptionInit | NameGeneratorFlags.SpacingFormatInit | NameGeneratorFlags.SpacingReplacementInit | NameGeneratorFlags.AutomaticallyShortenNamesInit | NameGeneratorFlags.UserDefinedMaximumInit | NameGeneratorFlags.UseTargetDefaultMaximumInit)) /*>> 0*/);
+			}
+		}
+		private NameGeneratorCasingOption GetCasingOptionValue()
+		{
+			return GetFlag(NameGeneratorFlags.CasingOptionInit) ?
+				(NameGeneratorCasingOption)((int)(myFlags & (NameGeneratorFlags.CasingOptionBit1 | NameGeneratorFlags.CasingOptionBit2 | NameGeneratorFlags.CasingOptionBit3)) >> 6) :
+				NameGeneratorCasingOption.Uninitialized;
+		}
+		private void SetCasingOptionValue(NameGeneratorCasingOption value)
+		{
+			Debug.Assert(value != NameGeneratorCasingOption.Uninitialized, "Do not set CasingOption to Uninitialized");
+			myFlags = (NameGeneratorFlags)(((int)myFlags & ~(int)(NameGeneratorFlags.CasingOptionInit | NameGeneratorFlags.CasingOptionBit1 | NameGeneratorFlags.CasingOptionBit2 | NameGeneratorFlags.CasingOptionBit3)) | ((int)value << 6) | (int)NameGeneratorFlags.CasingOptionInit);
+		}
+		private NameGeneratorSpacingFormat GetSpacingFormatValue()
+		{
+			return GetFlag(NameGeneratorFlags.SpacingFormatInit) ?
+				(NameGeneratorSpacingFormat)((int)(myFlags & (NameGeneratorFlags.SpacingFormatBit1 | NameGeneratorFlags.SpacingFormatBit2)) >> 9) :
+				NameGeneratorSpacingFormat.Uninitialized;
+		}
+		private void SetSpacingFormatValue(NameGeneratorSpacingFormat value)
+		{
+			Debug.Assert(value != NameGeneratorSpacingFormat.Uninitialized, "Do not set SpacingFormat to Uninitialized");
+			myFlags = (NameGeneratorFlags)(((int)myFlags & ~(int)(NameGeneratorFlags.SpacingFormatInit | NameGeneratorFlags.SpacingFormatBit1 | NameGeneratorFlags.SpacingFormatBit2)) | ((int)value << 9) | (int)NameGeneratorFlags.SpacingFormatInit);
+		}
+		private NameGeneratorUninitializedBoolean GetAutomaticallyShortenNamesInitializerValue()
+		{
+			return GetFlag(NameGeneratorFlags.AutomaticallyShortenNamesInit) ?
+				GetFlag(NameGeneratorFlags.AutomaticallyShortenNames) ? NameGeneratorUninitializedBoolean.@true : NameGeneratorUninitializedBoolean.@false :
+				NameGeneratorUninitializedBoolean.Uninitialized;
+		}
+		private void SetAutomaticallyShortenNamesInitializerValue(NameGeneratorUninitializedBoolean value)
+		{
+			Debug.Assert(value != NameGeneratorUninitializedBoolean.Uninitialized, "Do not set AutomaticallyShortenNamesInitializer to Uninitialized");
+			if (value == NameGeneratorUninitializedBoolean.@true)
+			{
+				SetFlag(NameGeneratorFlags.AutomaticallyShortenNames | NameGeneratorFlags.AutomaticallyShortenNamesInit, true);
+			}
+			else
+			{
+				SetFlag(NameGeneratorFlags.AutomaticallyShortenNamesInit, true);
+				SetFlag(NameGeneratorFlags.AutomaticallyShortenNames, false);
+			}
+		}
+		private bool GetAutomaticallyShortenNamesValue()
+		{
+			return GetFlag(NameGeneratorFlags.AutomaticallyShortenNames);
+		}
+		private void SetAutomaticallyShortenNamesValue(bool value)
+		{
+			Debug.Assert(GetFlag(NameGeneratorFlags.AutomaticallyShortenNamesInit));
+			SetFlag(NameGeneratorFlags.AutomaticallyShortenNames, value);
+		}
+		private NameGeneratorUninitializedBoolean GetUseTargetDefaultMaximumInitializerValue()
+		{
+			return GetFlag(NameGeneratorFlags.UseTargetDefaultMaximumInit) ?
+				GetFlag(NameGeneratorFlags.UseTargetDefaultMaximum) ? NameGeneratorUninitializedBoolean.@true : NameGeneratorUninitializedBoolean.@false :
+				NameGeneratorUninitializedBoolean.Uninitialized;
+		}
+		private void SetUseTargetDefaultMaximumInitializerValue(NameGeneratorUninitializedBoolean value)
+		{
+			Debug.Assert(value != NameGeneratorUninitializedBoolean.Uninitialized, "Do not set UseTargetDefaultMaximumInitializer to Uninitialized");
+			if (value == NameGeneratorUninitializedBoolean.@true)
+			{
+				SetFlag(NameGeneratorFlags.UseTargetDefaultMaximum | NameGeneratorFlags.UseTargetDefaultMaximumInit, true);
+			}
+			else
+			{
+				SetFlag(NameGeneratorFlags.UseTargetDefaultMaximumInit, true);
+				SetFlag(NameGeneratorFlags.UseTargetDefaultMaximum, false);
+			}
+		}
+		private bool GetUseTargetDefaultMaximumValue()
+		{
+			return GetFlag(NameGeneratorFlags.UseTargetDefaultMaximum);
+		}
+		private void SetUseTargetDefaultMaximumValue(bool value)
+		{
+			Debug.Assert(GetFlag(NameGeneratorFlags.UseTargetDefaultMaximumInit));
+			SetFlag(NameGeneratorFlags.UseTargetDefaultMaximum, value);
+		}
+
+		private int myUserDefinedMaximum = int.MinValue;
+		private int GetUserDefinedMaximumValue()
+		{
+			return myUserDefinedMaximum;
+		}
+		private void SetUserDefinedMaximumValue(int value)
+		{
+			if (myUserDefinedMaximum == int.MinValue)
+			{
+				SetFlag(NameGeneratorFlags.UserDefinedMaximumInit, true);
+			}
+			myUserDefinedMaximum = value;
+		}
+
+		private string mySpacingReplacement = null;
+		private string GetSpacingReplacementValue()
+		{
+			return mySpacingReplacement;
+		}
+		private void SetSpacingReplacementValue(string value)
+		{
+			if (mySpacingReplacement == null)
+			{
+				SetFlag(NameGeneratorFlags.SpacingReplacementInit, true);
+			}
+			mySpacingReplacement = value ?? string.Empty;
+		}
+
 		private DomainClassInfo myUsageDomainClass;
 		private string GetNameUsageValue()
 		{
@@ -68,88 +259,198 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#region Serialization support
 		/// <summary>
 		/// Return <see langword="true"/> if the <see cref="NameGenerator"/>
-		/// contains non-default attributes, or refinements that should serialize.
+		/// is top-level, or the first of its type in the hierarchy, or has settings
+		/// that differ from its parent.
 		/// </summary>
-		protected bool RequiresSerialization()
+		/// <remarks>This is virtual, but only needs to be overridden if subtypes introduce
+		/// additional properties to the standard name generator properties.</remarks>
+		protected virtual bool RequiresSerialization()
 		{
-			Guid[] ignoredIds = IgnoredAttributeIds;
-			bool retVal = !HasDefaultAttributeValues(ignoredIds);
-			NameGenerator refinesGenerator;
-			if (retVal &&
-				null != (refinesGenerator = RefinesGenerator))
+			// We always serialize the first of the typed generators. The top level does not exist without these subtypes,
+			// so it is always serialized regardless of default attribute settings (see comment in FullyPopulateRefinements
+			// for reasoning on why the highest of the subtypes is always serialized).
+			// Lower levels are serialized only if they have settings that differ from the parents, or if they have children
+			// that require serialization. Note that this means 'alternate defaults' are serialized if they differ from the
+			// parent settings, but not otherwise.
+			NameGenerator refinedGenerator = RefinesGenerator; // No refined generator means the top-level NameGenerator
+			bool allPropertiesDefault;
+			if (refinedGenerator == null || (myUsageDomainClass == null && RefinedInstance == null))
 			{
-				retVal = ignoredIds == null ?
-					(refinesGenerator.CasingOption != CasingOption ||
-					refinesGenerator.SpacingFormat != SpacingFormat ||
-					refinesGenerator.SpacingReplacement != SpacingReplacement ||
-					refinesGenerator.AutomaticallyShortenNames != AutomaticallyShortenNames ||
-					refinesGenerator.UserDefinedMaximum != UserDefinedMaximum ||
-					refinesGenerator.UseTargetDefaultMaximum != UseTargetDefaultMaximum) :
-					((refinesGenerator.CasingOption != CasingOption && Array.IndexOf<Guid>(ignoredIds, CasingOptionDomainPropertyId) == -1) ||
-					(refinesGenerator.SpacingFormat != SpacingFormat && Array.IndexOf<Guid>(ignoredIds, SpacingFormatDomainPropertyId) == -1) ||
-					(refinesGenerator.SpacingReplacement != SpacingReplacement && Array.IndexOf<Guid>(ignoredIds, SpacingReplacementDomainPropertyId) == -1) ||
-					(refinesGenerator.AutomaticallyShortenNames != AutomaticallyShortenNames && Array.IndexOf<Guid>(ignoredIds, AutomaticallyShortenNamesDomainPropertyId) == -1) ||
-					(refinesGenerator.UserDefinedMaximum != UserDefinedMaximum && Array.IndexOf<Guid>(ignoredIds, UserDefinedMaximumDomainPropertyId) == -1) ||
-					(refinesGenerator.UseTargetDefaultMaximum != UseTargetDefaultMaximum && Array.IndexOf<Guid>(ignoredIds, UseTargetDefaultMaximumDomainPropertyId) == -1));
+				return true;
+				// All generators except the top level one (this class itself with no subtype) refine
+				// another generator. We know this level has no ignored properties or alternate defaults,
+				// so use the basic check.
 			}
-			if (!retVal)
+
+			// Save is not needed for an individual property if:
+			// 1) The the property is ignored (including both the fixed ignored properties and the dynamic additions)
+			// 2) The property matches the nearest refining instance that does not ignore it. Note that dynamic ignorable
+			//    property values are initialized and propagated, just not displayed. This means that the nearest refined
+			//    generator will have the same value for a dynamically ignored property as the nearest generator that does
+			//    not ignore the setting. Downstream generators should always ignore a superset of the parent's ignored properties.
+			StandardNameGeneratorProperty ignoredProperties = CurrentIgnoredStandardProperties;
+			allPropertiesDefault = (0 != (ignoredProperties & StandardNameGeneratorProperty.CasingOption) || CasingOption == refinedGenerator.CasingOption) &&
+				(0 != (ignoredProperties & StandardNameGeneratorProperty.SpacingFormat) || SpacingFormat == refinedGenerator.SpacingFormat) &&
+				(0 != (ignoredProperties & StandardNameGeneratorProperty.SpacingReplacement) || SpacingReplacement == refinedGenerator.SpacingReplacement) &&
+				(0 != (ignoredProperties & StandardNameGeneratorProperty.AutomaticallyShortenNames) || AutomaticallyShortenNames == refinedGenerator.AutomaticallyShortenNames) &&
+				(0 != (ignoredProperties & StandardNameGeneratorProperty.UserDefinedMaximum) || UserDefinedMaximum == refinedGenerator.UserDefinedMaximum) &&
+				(0 != (ignoredProperties & StandardNameGeneratorProperty.UseTargetDefaultMaximum) || UseTargetDefaultMaximum == refinedGenerator.UseTargetDefaultMaximum);
+
+			if (allPropertiesDefault)
 			{
 				foreach (NameGenerator refinement in RefinedByGeneratorCollection)
 				{
 					if (refinement.RequiresSerialization())
 					{
-						retVal = true;
-						break;
+						return true;
 					}
 				}
+				return false;
 			}
-			return retVal;
+			return true;
 		}
 		/// <summary>
-		/// Allow a derived name generator to ignore one or more stock attributes. Returns null by default.
-		/// Ignored ids are not displayed, serialized or automatically modified in response to parent changes.
+		/// Allow a derived name generator to ignore one or more stock properties. Returns <see cref="StandardNameGeneratorProperty.None"/> by default.
+		/// Ignored properties are not displayed, serialized or automatically modified in response to parent changes.
 		/// </summary>
-		/// <remarks>No runtime effort is made to reconcile ignored ids between parents and children.
-		/// A derived item should include all ignored items on the base.</remarks>
-		protected virtual Guid[] IgnoredAttributeIds
+		/// <remarks>No runtime effort is made to reconcile ignored properties between parents and children.
+		/// A child item should include all ignored items on the refined instance.</remarks>
+		public virtual StandardNameGeneratorProperty IgnoredStandardProperties
 		{
 			get
 			{
-				return null;
+				return StandardNameGeneratorProperty.None;
 			}
 		}
 		/// <summary>
-		/// Is a stock attribute id ignored for this type of name generator?
+		/// Combines <see cref="IgnoredStandardProperties"/> with other properties that are hidden because
+		/// other properties must be set to see them.
 		/// </summary>
-		public bool IsIgnoredAttributeId(Guid attributeId)
+		/// <remarks>Temporarily ignored properties are as follows:
+		/// -If SpacingFormat is ignored or not Replace, then SpacingReplacement is hidden.</remarks>
+		/// -If AutomaticallyShortenNames is ignored or false, then UseTargetDefaultMaximum and UserDefinedMaximum are ignored.
+		/// -If UseTargetDefaultMaximum not ignored and true then UserDefinedMaximum is hidden.
+		private StandardNameGeneratorProperty CurrentIgnoredStandardProperties
 		{
-			Guid[] ignoredIds = IgnoredAttributeIds;
-			return ignoredIds != null &&
-				Array.IndexOf<Guid>(ignoredIds, attributeId) != -1;
-		}
-		/// <summary>
-		/// Verify if this instance has fully default values
-		/// </summary>
-		/// <param name="ignorePropertyIds">Domain property identifiers that should not be checked. Designed
-		/// to be called by a derived class that overrides specific properties.</param>
-		/// <returns><see langword="true"/> if all values are default</returns>
-		protected virtual bool HasDefaultAttributeValues(Guid[] ignorePropertyIds)
-		{
-			if (ignorePropertyIds == null || ignorePropertyIds.Length == 0)
+			get
 			{
-				return CasingOption == NameGeneratorCasingOption.None &&
-					SpacingFormat == NameGeneratorSpacingFormat.Retain &&
-					SpacingReplacement.Length == 0 &&
-					AutomaticallyShortenNames &&
-					UserDefinedMaximum == 128 &&
-					UseTargetDefaultMaximum;
+				StandardNameGeneratorProperty ignoredProperties = IgnoredStandardProperties;
+				if (0 == (ignoredProperties & StandardNameGeneratorProperty.SpacingReplacement) &&
+					(0 != (ignoredProperties & StandardNameGeneratorProperty.SpacingFormat) || GetSpacingFormatValue() != NameGeneratorSpacingFormat.ReplaceWith))
+				{
+					ignoredProperties |= StandardNameGeneratorProperty.SpacingReplacement;
+				}
+
+				if (0 != (ignoredProperties & StandardNameGeneratorProperty.AutomaticallyShortenNames) ||
+					!GetAutomaticallyShortenNamesValue())
+				{
+					ignoredProperties |= StandardNameGeneratorProperty.UseTargetDefaultMaximum | StandardNameGeneratorProperty.UserDefinedMaximum;
+				}
+				else if (0 == (ignoredProperties & StandardNameGeneratorProperty.UseTargetDefaultMaximum) || GetUseTargetDefaultMaximumValue())
+				{
+					ignoredProperties |= StandardNameGeneratorProperty.UserDefinedMaximum;
+				}
+				return ignoredProperties;
 			}
-			return (CasingOption == NameGeneratorCasingOption.None || Array.IndexOf<Guid>(ignorePropertyIds, CasingOptionDomainPropertyId) != -1) &&
-				(SpacingFormat == NameGeneratorSpacingFormat.Retain || Array.IndexOf<Guid>(ignorePropertyIds, SpacingFormatDomainPropertyId) != -1) &&
-				(SpacingReplacement.Length == 0 || Array.IndexOf<Guid>(ignorePropertyIds, SpacingReplacementDomainPropertyId) != -1) &&
-				(AutomaticallyShortenNames || Array.IndexOf<Guid>(ignorePropertyIds, AutomaticallyShortenNamesDomainPropertyId) != -1) &&
-				(UserDefinedMaximum == 128 || Array.IndexOf<Guid>(ignorePropertyIds, UserDefinedMaximumDomainPropertyId) != -1) &&
-				(UseTargetDefaultMaximum || Array.IndexOf<Guid>(ignorePropertyIds, UseTargetDefaultMaximumDomainPropertyId) != -1);
+		}
+		/// <summary>
+		/// Specify the properties that are given alternative default settings when
+		/// the NameGenerator subtype is initialized. Individual property fields
+		/// will be sent to <see cref="GetAlternateDefaultStandardPropertyValue"/> to
+		/// resolve the alternate value.
+		/// </summary>
+		protected virtual StandardNameGeneratorProperty AlternateDefaultStandardProperties
+		{
+			get
+			{
+				return StandardNameGeneratorProperty.None;
+			}
+		}
+		/// <summary>
+		/// Companion function to <see cref="AlternateDefaultStandardProperties"/> used to get
+		/// the alternate default value for a property listed by the other function.
+		/// </summary>
+		/// <param name="property">A standard property value representing the property to return.</param>
+		/// <returns>Alternate default value</returns>
+		/// <remarks>Alternates for <see cref="AutomaticallyShortenNames"/> and <see cref="UseTargetDefaultMaximum"/> should return
+		/// values of type <see cref="NameGeneratorUninitializedBoolean"/> instead of <see cref="System.Boolean"/>.</remarks>
+		protected virtual object GetAlternateDefaultStandardPropertyValue(StandardNameGeneratorProperty property)
+		{
+			return null;
+		}
+		/// <summary>
+		/// Is a stock property id always ignored for this type of name generator?
+		/// </summary>
+		public bool IsIgnoredStandardPropertyId(Guid propertyId, bool includeCurrent)
+		{
+			StandardNameGeneratorProperty ignoredProperties = includeCurrent ? CurrentIgnoredStandardProperties : IgnoredStandardProperties;
+			if (0 == ignoredProperties)
+			{
+				return false;
+			}
+
+			return IsMatchedPropertyId(ignoredProperties, propertyId);
+		}
+		private static Guid[] myStandardPropertyIds;
+		private static Guid[] StandardPropertyIds
+		{
+			get
+			{
+				Guid[] standardPropertyIds = myStandardPropertyIds;
+				if (standardPropertyIds == null)
+				{
+					standardPropertyIds = new Guid[] { CasingOptionDomainPropertyId, SpacingFormatDomainPropertyId, SpacingReplacementDomainPropertyId, AutomaticallyShortenNamesDomainPropertyId, UserDefinedMaximumDomainPropertyId, UseTargetDefaultMaximumDomainPropertyId };
+					if (null != System.Threading.Interlocked.CompareExchange<Guid[]>(ref myStandardPropertyIds, standardPropertyIds, null))
+					{
+						// Some other thread beat us, use the prior values
+						standardPropertyIds = myStandardPropertyIds;
+					}
+				}
+				return standardPropertyIds;
+			}
+		}
+		private static bool IsMatchedPropertyId(StandardNameGeneratorProperty standardProperties, Guid domainPropertyId)
+		{
+			Guid[] standardPropertyIds = StandardPropertyIds;
+			int i = 0;
+			int remainingProps = (int)standardProperties;
+			do
+			{
+				if (0 != (remainingProps & 1))
+				{
+					if (domainPropertyId == standardPropertyIds[i])
+					{
+						return true;
+					}
+				}
+				remainingProps = remainingProps >> 1;
+				++i;
+			} while (remainingProps != 0 && i < 6);
+			return false;
+		}
+		/// <summary>
+		/// Get the top-level default value for a standard property.
+		/// </summary>
+		/// <returns>An instance, or null if the requested property id is not a standard value.</returns>
+		public static object GetStandardPropertyDefaultValue(Guid domainPropertyId)
+		{
+			switch (Array.IndexOf<Guid>(StandardPropertyIds, domainPropertyId))
+			{
+				case 0: // CasingOptionDomainPropertyId
+					return NameGeneratorCasingOption.None;
+				case 1: // SpacingFormatDomainPropertyId
+					return NameGeneratorSpacingFormat.Retain;
+				case 2: // SpacingReplacementDomainPropertyId
+					return string.Empty;
+				case 3: // AutomaticallyShortenNamesDomainPropertyId
+					return true;
+				case 4: // UserDefinedMaximumDomainPropertyId
+					return 128;
+				case 5: // UseTargetDefaultMaximumDomainPropertyId
+					return true;
+				default:
+					return null;
+			}
 		}
 		partial class SynchronizedRefinementsPropertyChangedRuleClass
 		{
@@ -200,9 +501,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 
-					Guid[] ignoredAttributeIds = refinement.IgnoredAttributeIds;
-					if (ignoredAttributeIds != null &&
-						Array.IndexOf<Guid>(ignoredAttributeIds, propertyInfo.Id) != -1)
+					if (refinement.IsIgnoredStandardPropertyId(propertyInfo.Id, false)) // The current skipped settings are not reliable until the current settings are propagated
 					{
 						continue;
 					}
@@ -253,22 +552,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				ReadOnlyCollection<NameGenerator> topGenerators = store.ElementDirectory.FindElements<NameGenerator>(false);
 				NameGenerator topGenerator = null;
-				if (topGenerators.Count == 0 &&
-					store.DomainDataDirectory.GetDomainClass(NameGenerator.DomainClassId).LocalDescendants.Count != 0)
+				bool hasDescendants = store.DomainDataDirectory.GetDomainClass(NameGenerator.DomainClassId).LocalDescendants.Count != 0;
+				if (topGenerators.Count == 0)
 				{
-					topGenerator = new NameGenerator(store);
+					if (hasDescendants)
+					{
+						topGenerator = new NameGenerator(store);
+					}
 				}
 				else
 				{
 					foreach (NameGenerator generator in topGenerators)
 					{
-						topGenerator = generator;
+						if (hasDescendants)
+						{
+							topGenerator = generator;
+						}
+						else
+						{
+							// Removing extensions with generators will remove elements with
+							// those xml namespaces but not the root element, which will load
+							// but not be used.
+							generator.Delete();
+						}
 						break;
 					}
 				}
 				if (topGenerator != null)
 				{
-					topGenerator.FullyPopulateRefinements(true, false);
+					StandardNameGeneratorProperty preInitializedProperties = topGenerator.InitializedProperties;
+					topGenerator.FinishPropertyInitialization(null, StandardNameGeneratorProperty.None); // Second argument not used with root generator, which has no parent
+					topGenerator.FullyPopulateRefinements(true, false, preInitializedProperties);
 				}
 			}
 			#region INotifyElementAdded Implementation
@@ -280,11 +594,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // Deserialization Fixup
 		// Helpers for FullyPopulateRefinements
-		private delegate NameGeneratorRefinesInstance GetRefinedInstance(NameGenerator owner, ModelElement refinedInstance, ref PropertyAssignment[] propertyAssignments, ref int nameUsagePropertyIndex);
+		private delegate void LinkRefinedInstance(NameGenerator owner, ModelElement refinedInstance);
 		/// <summary>
-		/// This guarantees that we have an instance for every possible Name Generator type.
+		/// This guarantees that we have an instance for every possible Name Generator type and that properties that were not
+		/// deserialized (and hence not initialized) have the correct default values filled in.
 		/// </summary>
-		private void FullyPopulateRefinements(bool topLevel, bool newInstance)
+		private void FullyPopulateRefinements(bool topLevel, bool newInstance, StandardNameGeneratorProperty originalInitialized)
 		{
 			LinkedElementCollection<NameGenerator> currentChildren = RefinedByGeneratorCollection;
 			DomainClassInfo contextDomainClass = GetDomainClass();
@@ -295,7 +610,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			Store store = Store;
 			int refinedInstancesCount = 0;
 			IList<ModelElement> refinedInstances = null;
-			GetRefinedInstance getRefinedInstanceCallback = null;
+			LinkRefinedInstance linkRefinedInstanceCallback = null;
 			if (!topLevel)
 			{
 				DomainRoleInfo refinedGeneratorRole = RefiningAutoCreateRelationshipRole;
@@ -313,33 +628,31 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					refinedInstancesCount = refinedInstances.Count;
 					if (refinedInstances.Count != 0)
 					{
-						getRefinedInstanceCallback = delegate (NameGenerator refinementParent, ModelElement refinedInstance, ref PropertyAssignment[] refinementPropertyAssignments, ref int nameUsagePropertyIndex)
+						linkRefinedInstanceCallback = delegate (NameGenerator refinementParent, ModelElement refinedInstance)
 						{
-							NameGeneratorRefinesInstance typedLink;
 							foreach (ElementLink link in refinedInstanceRole.GetElementLinks(refinedInstance))
 							{
-								typedLink = (NameGeneratorRefinesInstance)link;
-								if (typedLink.NameGenerator.RefinesGenerator == refinementParent)
+								NameGenerator linkedGenerator = ((NameGeneratorRefinesInstance)link).NameGenerator;
+								if (linkedGenerator.RefinesGenerator == refinementParent)
 								{
-									return typedLink;
+									linkedGenerator.FinishPropertyInitialization(refinementParent, (StandardNameGeneratorProperty)(-1));
+									return;
 								}
 							}
 
-							NameGenerator refinedGenerator = refinementParent.CreateRefinement(contextDomainClass, refinementParent.NameUsageType, ref refinementPropertyAssignments, ref nameUsagePropertyIndex);
-							typedLink = (NameGeneratorRefinesInstance)store.ElementFactory.CreateElementLink(refiningRelationship, new RoleAssignment(refinedGeneratorRole.Id, refinedGenerator), new RoleAssignment(refinedInstanceRole.Id, refinedInstance));
-							return typedLink;
+							NameGenerator refinedGenerator = refinementParent.CreateRefinement(contextDomainClass, refinementParent.NameUsageType);
+							NameGeneratorRefinesInstance typedLink = (NameGeneratorRefinesInstance)store.ElementFactory.CreateElementLink(refiningRelationship, new RoleAssignment(refinedGeneratorRole.Id, refinedGenerator), new RoleAssignment(refinedInstanceRole.Id, refinedInstance));
+							refinedGenerator.FinishPropertyInitialization(refinementParent, (StandardNameGeneratorProperty)(-1));
 						};
 					}
 				}
 			}
 
-			if (getRefinedInstanceCallback != null && (requiredUsageCount == 0 || NameUsageType != null))
+			if (linkRefinedInstanceCallback != null && (requiredUsageCount == 0 || NameUsageType != null))
 			{
-				PropertyAssignment[] propertyAssignments = null;
-				int nameUsagePropertyIndex = -1;
 				for (int j = 0; j < refinedInstancesCount; ++j)
 				{
-					getRefinedInstanceCallback(this, refinedInstances[j], ref propertyAssignments, ref nameUsagePropertyIndex);
+					linkRefinedInstanceCallback(this, refinedInstances[j]);
 				}
 			}
 
@@ -362,17 +675,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					Type nameUsage = currentChild.NameUsageType;
 					if (nameUsage == null)
 					{
-						currentChild.FullyPopulateRefinements(false, false);
+						StandardNameGeneratorProperty preInitializedProperties = currentChild.InitializedProperties;
+						currentChild.FinishPropertyInitialization(this, originalInitialized);
+						currentChild.FullyPopulateRefinements(false, false, preInitializedProperties);
 					}
 					else
 					{
-						if (getRefinedInstanceCallback != null)
+						currentChild.FinishPropertyInitialization(this, originalInitialized);
+						if (linkRefinedInstanceCallback != null)
 						{
-							PropertyAssignment[] propertyAssignments = null;
-							int nameUsagePropertyIndex = -1;
 							for (int j = 0; j < refinedInstancesCount; ++j)
 							{
-								getRefinedInstanceCallback(currentChild, refinedInstances[j], ref propertyAssignments, ref nameUsagePropertyIndex);
+								linkRefinedInstanceCallback(currentChild, refinedInstances[j]);
 							}
 						}
 
@@ -393,15 +707,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						DomainClassInfo classInfo = requiredDescendants[i];
 						if (classInfo != null)
 						{
-							PropertyAssignment[] propertyAssignments = null;
-							int nameUsagePropertyIndex = -1;
-							NameGenerator newGenerator = CreateRefinement(classInfo, null, ref propertyAssignments, ref nameUsagePropertyIndex);
-							newGenerator.FullyPopulateRefinements(false, true);
-							if (getRefinedInstanceCallback != null)
+							NameGenerator newGenerator = CreateRefinement(classInfo, null);
+							// This is a new creation of the highest instance of a given type of
+							// generator. Other refinements for name usage and refined instances
+							// use the earlier codepaths. If the top-level generator was added because
+							// the first extension with a NameGenerator subtype was added then the
+							// originalInitialized settings here will be empty. However, if the root
+							// generator was already in use for a different extension then we want to
+							// see the new defaults for this new type, even if they differ from the
+							// established root. After this point when the user resets a property value
+							// the defaults (default or alternate) are ignored in favor of the refined
+							// NamedGenerator, so this is the only chance the user has to see the defaults
+							// intended for this type.
+							// To accomodate this design, we do 3 things:
+							// 1) Default properties at the root are not serialized.
+							// 2) The type transition (this element) is always saved even if there are no
+							//    non-default properties. This prevents this reinitialization of original
+							//    defaults for the type.
+							// 3) This instance (no usage or refined instances) is saved even if none of the
+							//    generation defaults differ.
+							// 4) Properties are serialized at top-level if they are not default and at
+							//    every other level if they differ from the parent.
+							// 5) At this point (initial creation of the general case for this generator with
+							//    no name usage or refined instance) we reset the original initialized properties
+							//    to not initialized to allow the initial creation to use its own defaults.
+							newGenerator.FinishPropertyInitialization(this, StandardNameGeneratorProperty.None);
+							newGenerator.FullyPopulateRefinements(false, true, StandardNameGeneratorProperty.None);
+							if (linkRefinedInstanceCallback != null)
 							{
 								for (int j = 0; j < refinedInstancesCount; ++j)
 								{
-									getRefinedInstanceCallback(newGenerator, refinedInstances[j], ref propertyAssignments, ref nameUsagePropertyIndex);
+									linkRefinedInstanceCallback(newGenerator, refinedInstances[j]);
 								}
 							}
 						}
@@ -414,14 +750,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						Type usageType = requiredUsageTypes[i];
 						if (usageType != null)
 						{
-							PropertyAssignment[] propertyAssignments = null;
-							int nameUsagePropertyIndex = -1;
-							NameGenerator newGenerator = CreateRefinement(contextDomainClass, usageType, ref propertyAssignments, ref nameUsagePropertyIndex);
-							if (getRefinedInstanceCallback != null)
+							NameGenerator newGenerator = CreateRefinement(contextDomainClass, usageType);
+							newGenerator.FinishPropertyInitialization(this, originalInitialized);
+							if (linkRefinedInstanceCallback != null)
 							{
 								for (int j = 0; j < refinedInstancesCount; ++j)
 								{
-									getRefinedInstanceCallback(newGenerator, refinedInstances[j], ref propertyAssignments, ref nameUsagePropertyIndex);
+									linkRefinedInstanceCallback(newGenerator, refinedInstances[j]);
 								}
 							}
 						}
@@ -437,8 +772,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				NameGeneratorRefinesInstance link = links[i];
 				if (link.NameGenerator.RefinedInstance != null)
 				{
-					link.Delete(); // Deletes propagate to refining generator
-					// UNDONE: NOW Not sure this is a good idea. Just get the name consumer for this generator and get rid of these dangling aliases on load.
+					link.Delete(); // Delete propagates to refining generator
 
 					// Note that matching instances (if any) are kept alive, but will not bind to anything or save.
 					// This is a cleanup path that should only trigger if the NameUsage settings changed.
@@ -568,76 +902,97 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // NameUsage and RefinedNameGeneratorInstance Attribute Caching
 		#region Refinement management
 		/// <summary>
-		/// Get the property assignments for this name generator
-		/// </summary>
-		/// <param name="nameUsageType">The type to associate with the <see cref="NameUsage"/> property. Can be <see langword="null"/></param>
-		/// <param name="nameGeneratorClass">The class information to use. This can be null and can be populated automaticall.</param>
-		/// <param name="nameUsagePropertyIndex">Return the index for the name usage property so it can be updated later with <see cref="UpdateNameUsageTypeProperty"/></param>
-		/// <returns>Current property assignments, suitable for initializing a new child instance with the parent property settings.</returns>
-		private PropertyAssignment[] ExtractPropertyAssignments(Type nameUsageType, DomainClassInfo nameGeneratorClass, out int nameUsagePropertyIndex)
-		{
-			if (nameGeneratorClass == null)
-			{
-				nameGeneratorClass = GetDomainClass();
-			}
-			ReadOnlyCollection<DomainPropertyInfo> properties = nameGeneratorClass.AllDomainProperties;
-			PropertyAssignment[] propertyAssignments = new PropertyAssignment[properties.Count + (nameUsageType == null ? -1 : 0)];
-			Partition partition = Partition;
-			int i = 0;
-			nameUsagePropertyIndex = -1;
-			foreach (DomainPropertyInfo property in properties)
-			{
-				if (property.Id != NameUsageDomainPropertyId)
-				{
-					propertyAssignments[i] = new PropertyAssignment(property.Id, property.GetValue(this));
-					++i;
-				}
-				else if (nameUsageType != null)
-				{
-					nameUsagePropertyIndex = i;
-					propertyAssignments[i] = new PropertyAssignment(property.Id, ObjectModel.NameUsage.TranslateToNameUsageIdentifier(partition.DomainDataDirectory.FindDomainClass(nameUsageType)));
-					++i;
-				}
-			}
-			return propertyAssignments;
-		}
-		private void UpdateNameUsageTypeProperty(PropertyAssignment[] propertyAssignments, int nameUsageIndex, Type nameUsageType)
-		{
-			if (nameUsageIndex == -1)
-			{
-				return;
-			}
-			PropertyAssignment existingAssignment = propertyAssignments[nameUsageIndex];
-			propertyAssignments[nameUsageIndex] = new PropertyAssignment(existingAssignment.PropertyId, ObjectModel.NameUsage.TranslateToNameUsageIdentifier(Partition.DomainDataDirectory.FindDomainClass(nameUsageType)));
-		}
-		/// <summary>
 		/// Create a refinement of the specified type
 		/// </summary>
 		/// <param name="childType">A <see cref="DomainClassInfo"/> of the current type if <paramref name="nameUsageType"/> is set.
 		/// Otherwise, the <see cref="DomainClassInfo.BaseDomainClass"/> must equal the current <see cref="ModelElement.GetDomainClass">DomainClass</see>.</param>
 		/// <param name="nameUsageType">The type to associate with the <see cref="NameUsage"/> property. Can be <see langword="null"/></param>
-		/// <param name="propertyAssignments">The initial property assignments for a new instance.</param>
-		/// <param name="nameUsagePropertyIndex">If properties were created during a previous call, the index of the name usage property in the array.
-		/// This property needs to be updated on each call instead of using the cached value.</param>
 		/// <returns>A new <see cref="NameGenerator"/> of the specified type</returns>
-		private NameGenerator CreateRefinement(DomainClassInfo childType, Type nameUsageType, ref PropertyAssignment[] propertyAssignments, ref int nameUsagePropertyIndex)
+		private NameGenerator CreateRefinement(DomainClassInfo childType, Type nameUsageType)
 		{
-			if (propertyAssignments == null)
-			{
-				DomainClassInfo nameGeneratorClass = GetDomainClass();
-				Debug.Assert(childType == nameGeneratorClass || childType.BaseDomainClass == nameGeneratorClass);
-				propertyAssignments = ExtractPropertyAssignments(nameUsageType, nameGeneratorClass, out nameUsagePropertyIndex);
-			}
-			else
-			{
-				if (nameUsagePropertyIndex != -1)
-				{
-					UpdateNameUsageTypeProperty(propertyAssignments, nameUsagePropertyIndex, nameUsageType);
-				}
-			}
-			NameGenerator retVal = (NameGenerator)Store.GetDomainModel(childType.DomainModel.Id).CreateElement(Partition, childType.ImplementationClass, propertyAssignments);
+			NameGenerator retVal = (NameGenerator)Store.GetDomainModel(childType.DomainModel.Id).CreateElement(Partition, childType.ImplementationClass, nameUsageType != null ? new PropertyAssignment[] { new PropertyAssignment(NameUsageDomainPropertyId, ObjectModel.NameUsage.TranslateToNameUsageIdentifier(Partition.DomainDataDirectory.FindDomainClass(nameUsageType))) } : new PropertyAssignment[0]);
 			retVal.RefinesGenerator = this;
 			return retVal;
+		}
+		/// <summary>
+		/// Update any uninitialized properties. This is called after the element is otherwise constructed and attached,
+		/// so the refining generator, refining instance and NameUsage properties are all set.
+		/// </summary>
+		/// <param name="parent">The refining generator (known to caller, saves a call)</param>
+		/// <param name="parentOriginalInitialized">The original initialized state of the parent generator. If the
+		/// parent property was not originally initialized, then the same property here will use an alternate default
+		/// if available. If an alternate default is not available the local uninitialized properties will be copied
+		/// from the parent. Pass in (StandardNameGeneratorProperty)(-1) to indicate all properties are initialized.</param>
+		/// <remarks>This will only be overridden if the subtype adds additional properties. In this case, the recommendation is
+		/// to represent these properties as flags with higher bits than the standard properties and downcast the resulting
+		/// enum to the standard. This will also need to be done with <see cref="InitializedProperties"/>, which is
+		/// where the initialized setting is retrieved from.</remarks>
+		protected virtual void FinishPropertyInitialization(NameGenerator parent, StandardNameGeneratorProperty parentOriginalInitialized)
+		{
+			// We'll assume that refined instances will have stronger Ignored settings. This is a reasonable assumption since
+			// in all expected cases the descendant refinements all of the same type and differ by NameUsage and RefiningInstance.
+
+			// Treat ignored as initialized
+			StandardNameGeneratorProperty initialized = InitializedProperties | IgnoredStandardProperties;
+
+			// Do not use the alternate default if the parent value was initialized before this routine was applied to it
+			StandardNameGeneratorProperty alternateDefaults = AlternateDefaultStandardProperties & ~parentOriginalInitialized;
+
+			// Note that we set uninitialized properties unless they are always ignored. Dynamically
+			// ignored properties may be turned on later and must be initialized at that time.
+			if (0 == (initialized & StandardNameGeneratorProperty.CasingOption))
+			{
+				CasingOption = parent != null ?
+					(0 != (alternateDefaults & StandardNameGeneratorProperty.CasingOption) ?
+						(NameGeneratorCasingOption)GetAlternateDefaultStandardPropertyValue(StandardNameGeneratorProperty.CasingOption) :
+						parent.CasingOption) :
+					NameGeneratorCasingOption.None;
+			}
+
+			if (0 == (initialized & StandardNameGeneratorProperty.SpacingFormat))
+			{
+				SpacingFormat = parent != null ?
+					(0 != (alternateDefaults & StandardNameGeneratorProperty.SpacingFormat) ?
+						(NameGeneratorSpacingFormat)GetAlternateDefaultStandardPropertyValue(StandardNameGeneratorProperty.SpacingFormat) :
+						parent.SpacingFormat) :
+					NameGeneratorSpacingFormat.Retain;
+			}
+
+			if (0 == (initialized & StandardNameGeneratorProperty.SpacingReplacement))
+			{
+				SpacingReplacement = parent != null ?
+					(0 != (alternateDefaults & StandardNameGeneratorProperty.SpacingReplacement) ?
+						(string)GetAlternateDefaultStandardPropertyValue(StandardNameGeneratorProperty.SpacingReplacement) :
+						parent.SpacingReplacement) :
+					string.Empty;
+			}
+
+			if (0 == (initialized & StandardNameGeneratorProperty.AutomaticallyShortenNames))
+			{
+				AutomaticallyShortenNamesInitializer = parent != null ?
+					(0 != (alternateDefaults & StandardNameGeneratorProperty.AutomaticallyShortenNames) ?
+						(NameGeneratorUninitializedBoolean)GetAlternateDefaultStandardPropertyValue(StandardNameGeneratorProperty.AutomaticallyShortenNames) :
+						parent.AutomaticallyShortenNamesInitializer) :
+					NameGeneratorUninitializedBoolean.@true;
+			}
+
+			if (0 == (initialized & StandardNameGeneratorProperty.UseTargetDefaultMaximum))
+			{
+				UseTargetDefaultMaximumInitializer = parent != null ?
+					(0 != (alternateDefaults & StandardNameGeneratorProperty.UseTargetDefaultMaximum) ?
+						(NameGeneratorUninitializedBoolean)GetAlternateDefaultStandardPropertyValue(StandardNameGeneratorProperty.UseTargetDefaultMaximum) :
+						parent.UseTargetDefaultMaximumInitializer) :
+					NameGeneratorUninitializedBoolean.@true;
+			}
+
+			if (0 == (initialized & StandardNameGeneratorProperty.UserDefinedMaximum))
+			{
+				UserDefinedMaximum = parent != null ?
+					(0 != (alternateDefaults & StandardNameGeneratorProperty.UserDefinedMaximum) ?
+						(int)GetAlternateDefaultStandardPropertyValue(StandardNameGeneratorProperty.UserDefinedMaximum) :
+						parent.UserDefinedMaximum) :
+					128;
+			}
 		}
 		/// <summary>
 		/// Create new generators for a refined instance.
@@ -651,17 +1006,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if (primaryGenerator != null)
 			{
 				DomainClassInfo domainClass = store.DomainDataDirectory.GetDomainClass(generatorType);
-				PropertyAssignment[] propertyAssignments = null;
-				int nameUsagePropertyIndex = -1;
+				NameGenerator refinement;
 				if (primaryGenerator.NameUsageTypes.Length == 0)
 				{
-					onCreated(primaryGenerator.CreateRefinement(domainClass, null, ref propertyAssignments, ref nameUsagePropertyIndex));
+					onCreated(refinement = primaryGenerator.CreateRefinement(domainClass, null));
+					refinement.FinishPropertyInitialization(primaryGenerator, (StandardNameGeneratorProperty)(-1));
 				}
 				else
 				{
 					foreach (NameGenerator generatorWithUsageType in primaryGenerator.RefinedByGeneratorCollection)
 					{
-						onCreated(generatorWithUsageType.CreateRefinement(domainClass, generatorWithUsageType.NameUsageType, ref propertyAssignments, ref nameUsagePropertyIndex));
+						onCreated(refinement = generatorWithUsageType.CreateRefinement(domainClass, generatorWithUsageType.NameUsageType));
+						refinement.FinishPropertyInitialization(primaryGenerator, (StandardNameGeneratorProperty)(-1));
 					}
 				}
 			}

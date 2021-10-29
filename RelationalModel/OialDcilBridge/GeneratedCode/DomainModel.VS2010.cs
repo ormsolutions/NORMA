@@ -205,8 +205,6 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				case 1: return new AssimilationMapping(partition, propertyAssignments);
 				case 2: return new RelationalReferenceModeNaming(partition, propertyAssignments);
 				case 3: return new RelationalDefaultReferenceModeNaming(partition, propertyAssignments);
-				// A constructor was not generated for RelationalNameGenerator because it had HasCustomConstructor
-				// set to true. Please provide the constructor below.
 				case 4: return new RelationalNameGenerator(partition, propertyAssignments);
 				case 5: return new SchemaGenerationSetting(partition, propertyAssignments);
 				default: return null;

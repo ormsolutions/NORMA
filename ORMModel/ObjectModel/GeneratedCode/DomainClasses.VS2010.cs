@@ -298,24 +298,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid CasingOptionDomainPropertyId = new global::System.Guid(0x30950747, 0x68e7, 0x4a64, 0x8e, 0xd7, 0xba, 0xce, 0xda, 0xaf, 0xd4, 0xa2);
 		
 		/// <summary>
-		/// Storage for CasingOption
-		/// </summary>
-		private NameGeneratorCasingOption casingOptionPropertyStorage = NameGeneratorCasingOption.None;
-		
-		/// <summary>
 		/// Gets or sets the value of CasingOption domain property.
 		/// Specify upper/lower case settings of names generated for this context.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/CasingOption.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/CasingOption.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(NameGeneratorCasingOption.None)]
+		[global::System.ComponentModel.DefaultValue(NameGeneratorCasingOption.Uninitialized)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("30950747-68e7-4a64-8ed7-bacedaafd4a2")]
 		public NameGeneratorCasingOption CasingOption
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return casingOptionPropertyStorage;
+				return CasingOptionPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -355,7 +351,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed NameGeneratorCasingOption GetValue(NameGenerator element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.casingOptionPropertyStorage;
+				// There is no storage for CasingOption because its Kind is
+				// set to CustomStorage. Please provide the GetCasingOptionValue()
+				// method on the domain class.
+				return element.GetCasingOptionValue();
 			}
 		
 			/// <summary>
@@ -371,7 +370,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.casingOptionPropertyStorage = newValue;
+					// There is no storage for CasingOption because its Kind is
+					// set to CustomStorage. Please provide the SetCasingOptionValue()
+					// method on the domain class.
+					element.SetCasingOptionValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -386,25 +389,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid SpacingFormatDomainPropertyId = new global::System.Guid(0xcfd3e74c, 0xde51, 0x4fd9, 0xad, 0xdb, 0x01, 0xb0, 0xf5, 0x41, 0x4b, 0xfd);
 		
 		/// <summary>
-		/// Storage for SpacingFormat
-		/// </summary>
-		private NameGeneratorSpacingFormat spacingFormatPropertyStorage = NameGeneratorSpacingFormat.Retain;
-		
-		/// <summary>
 		/// Gets or sets the value of SpacingFormat domain property.
 		/// Specify if whitespace is preserved, removed, or replaced in names generated for
 		/// this context.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/SpacingFormat.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/SpacingFormat.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(NameGeneratorSpacingFormat.Retain)]
+		[global::System.ComponentModel.DefaultValue(NameGeneratorSpacingFormat.Uninitialized)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("cfd3e74c-de51-4fd9-addb-01b0f5414bfd")]
 		public NameGeneratorSpacingFormat SpacingFormat
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return spacingFormatPropertyStorage;
+				return SpacingFormatPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -444,7 +443,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed NameGeneratorSpacingFormat GetValue(NameGenerator element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.spacingFormatPropertyStorage;
+				// There is no storage for SpacingFormat because its Kind is
+				// set to CustomStorage. Please provide the GetSpacingFormatValue()
+				// method on the domain class.
+				return element.GetSpacingFormatValue();
 			}
 		
 			/// <summary>
@@ -460,7 +462,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.spacingFormatPropertyStorage = newValue;
+					// There is no storage for SpacingFormat because its Kind is
+					// set to CustomStorage. Please provide the SetSpacingFormatValue()
+					// method on the domain class.
+					element.SetSpacingFormatValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -475,25 +481,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid SpacingReplacementDomainPropertyId = new global::System.Guid(0x0e203acb, 0x3611, 0x4180, 0x93, 0x24, 0x7f, 0xd7, 0xd3, 0x0a, 0x5a, 0xe4);
 		
 		/// <summary>
-		/// Storage for SpacingReplacement
-		/// </summary>
-		private global::System.String spacingReplacementPropertyStorage = string.Empty;
-		
-		/// <summary>
 		/// Gets or sets the value of SpacingReplacement domain property.
 		/// Specify the characters used instead of spaces in names generated for this
 		/// context.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/SpacingReplacement.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/SpacingReplacement.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue("")]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("0e203acb-3611-4180-9324-7fd7d30a5ae4")]
 		public global::System.String SpacingReplacement
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return spacingReplacementPropertyStorage;
+				return SpacingReplacementPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -533,7 +534,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.String GetValue(NameGenerator element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.spacingReplacementPropertyStorage;
+				// There is no storage for SpacingReplacement because its Kind is
+				// set to CustomStorage. Please provide the GetSpacingReplacementValue()
+				// method on the domain class.
+				return element.GetSpacingReplacementValue();
 			}
 		
 			/// <summary>
@@ -549,7 +553,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.spacingReplacementPropertyStorage = newValue;
+					// There is no storage for SpacingReplacement because its Kind is
+					// set to CustomStorage. Please provide the SetSpacingReplacementValue()
+					// method on the domain class.
+					element.SetSpacingReplacementValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -564,25 +572,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid AutomaticallyShortenNamesDomainPropertyId = new global::System.Guid(0x6a3526d9, 0xafb3, 0x417e, 0xa9, 0x88, 0xa4, 0x46, 0x44, 0xaa, 0x09, 0x4e);
 		
 		/// <summary>
-		/// Storage for AutomaticallyShortenNames
-		/// </summary>
-		private global::System.Boolean automaticallyShortenNamesPropertyStorage = true;
-		
-		/// <summary>
 		/// Gets or sets the value of AutomaticallyShortenNames domain property.
 		/// Specify if names generated for this context should be automatically shortened if
 		/// they are too long for the generation target.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/AutomaticallyShortenNames.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/AutomaticallyShortenNames.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(true)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("6a3526d9-afb3-417e-a988-a44644aa094e")]
 		public global::System.Boolean AutomaticallyShortenNames
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return automaticallyShortenNamesPropertyStorage;
+				return AutomaticallyShortenNamesPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -622,7 +625,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.Boolean GetValue(NameGenerator element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.automaticallyShortenNamesPropertyStorage;
+				// There is no storage for AutomaticallyShortenNames because its Kind is
+				// set to CustomStorage. Please provide the GetAutomaticallyShortenNamesValue()
+				// method on the domain class.
+				return element.GetAutomaticallyShortenNamesValue();
 			}
 		
 			/// <summary>
@@ -638,7 +644,105 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.automaticallyShortenNamesPropertyStorage = newValue;
+					// There is no storage for AutomaticallyShortenNames because its Kind is
+					// set to CustomStorage. Please provide the SetAutomaticallyShortenNamesValue()
+					// method on the domain class.
+					element.SetAutomaticallyShortenNamesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region AutomaticallyShortenNamesInitializer domain property code
+		
+		/// <summary>
+		/// AutomaticallyShortenNamesInitializer domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid AutomaticallyShortenNamesInitializerDomainPropertyId = new global::System.Guid(0x896c28dd, 0x567b, 0x40fd, 0x8d, 0xce, 0x8b, 0x31, 0x08, 0x0f, 0x32, 0x7f);
+		
+		/// <summary>
+		/// Gets or sets the value of AutomaticallyShortenNamesInitializer domain property.
+		/// Alternate storage for AutomaticallyShortenNames boolean so we can track whether
+		/// the value has been initialized or not.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/AutomaticallyShortenNamesInitializer.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/AutomaticallyShortenNamesInitializer.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(NameGeneratorUninitializedBoolean.Uninitialized)]
+		[global::System.ComponentModel.Browsable(false)]
+		[global::System.ComponentModel.ReadOnly(true)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("896c28dd-567b-40fd-8dce-8b31080f327f")]
+		private NameGeneratorUninitializedBoolean AutomaticallyShortenNamesInitializer
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return AutomaticallyShortenNamesInitializerPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				AutomaticallyShortenNamesInitializerPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameGenerator.AutomaticallyShortenNamesInitializer domain property.
+		/// </summary>
+		internal sealed partial class AutomaticallyShortenNamesInitializerPropertyHandler : DslModeling::DomainPropertyValueHandler<NameGenerator, NameGeneratorUninitializedBoolean>
+		{
+			private AutomaticallyShortenNamesInitializerPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameGenerator.AutomaticallyShortenNamesInitializer domain property value handler.
+			/// </summary>
+			public static readonly AutomaticallyShortenNamesInitializerPropertyHandler Instance = new AutomaticallyShortenNamesInitializerPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameGenerator.AutomaticallyShortenNamesInitializer domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return AutomaticallyShortenNamesInitializerDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed NameGeneratorUninitializedBoolean GetValue(NameGenerator element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for AutomaticallyShortenNamesInitializer because its Kind is
+				// set to CustomStorage. Please provide the GetAutomaticallyShortenNamesInitializerValue()
+				// method on the domain class.
+				return element.GetAutomaticallyShortenNamesInitializerValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameGenerator element, NameGeneratorUninitializedBoolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				NameGeneratorUninitializedBoolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for AutomaticallyShortenNamesInitializer because its Kind is
+					// set to CustomStorage. Please provide the SetAutomaticallyShortenNamesInitializerValue()
+					// method on the domain class.
+					element.SetAutomaticallyShortenNamesInitializerValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -653,25 +757,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid UseTargetDefaultMaximumDomainPropertyId = new global::System.Guid(0x67b83b76, 0x394f, 0x4702, 0xa9, 0x84, 0x60, 0x09, 0xdc, 0x51, 0xd2, 0x24);
 		
 		/// <summary>
-		/// Storage for UseTargetDefaultMaximum
-		/// </summary>
-		private global::System.Boolean useTargetDefaultMaximumPropertyStorage = true;
-		
-		/// <summary>
 		/// Gets or sets the value of UseTargetDefaultMaximum domain property.
 		/// Specify if the default maximum name length for this name generation context
 		/// should be used when shortening names.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/UseTargetDefaultMaximum.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/UseTargetDefaultMaximum.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(true)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("67b83b76-394f-4702-a984-6009dc51d224")]
 		public global::System.Boolean UseTargetDefaultMaximum
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return useTargetDefaultMaximumPropertyStorage;
+				return UseTargetDefaultMaximumPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -711,7 +810,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.Boolean GetValue(NameGenerator element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.useTargetDefaultMaximumPropertyStorage;
+				// There is no storage for UseTargetDefaultMaximum because its Kind is
+				// set to CustomStorage. Please provide the GetUseTargetDefaultMaximumValue()
+				// method on the domain class.
+				return element.GetUseTargetDefaultMaximumValue();
 			}
 		
 			/// <summary>
@@ -727,7 +829,105 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.useTargetDefaultMaximumPropertyStorage = newValue;
+					// There is no storage for UseTargetDefaultMaximum because its Kind is
+					// set to CustomStorage. Please provide the SetUseTargetDefaultMaximumValue()
+					// method on the domain class.
+					element.SetUseTargetDefaultMaximumValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region UseTargetDefaultMaximumInitializer domain property code
+		
+		/// <summary>
+		/// UseTargetDefaultMaximumInitializer domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid UseTargetDefaultMaximumInitializerDomainPropertyId = new global::System.Guid(0x12ba0152, 0x03c5, 0x4db7, 0x8d, 0x09, 0x2a, 0x66, 0x89, 0xba, 0x4f, 0xd1);
+		
+		/// <summary>
+		/// Gets or sets the value of UseTargetDefaultMaximumInitializer domain property.
+		/// Alternate storage for UseTargetDefaultMaximum boolean so we can track whether
+		/// the value has been initialized or not.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/UseTargetDefaultMaximumInitializer.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/UseTargetDefaultMaximumInitializer.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(NameGeneratorUninitializedBoolean.Uninitialized)]
+		[global::System.ComponentModel.Browsable(false)]
+		[global::System.ComponentModel.ReadOnly(true)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("12ba0152-03c5-4db7-8d09-2a6689ba4fd1")]
+		private NameGeneratorUninitializedBoolean UseTargetDefaultMaximumInitializer
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return UseTargetDefaultMaximumInitializerPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				UseTargetDefaultMaximumInitializerPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the NameGenerator.UseTargetDefaultMaximumInitializer domain property.
+		/// </summary>
+		internal sealed partial class UseTargetDefaultMaximumInitializerPropertyHandler : DslModeling::DomainPropertyValueHandler<NameGenerator, NameGeneratorUninitializedBoolean>
+		{
+			private UseTargetDefaultMaximumInitializerPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the NameGenerator.UseTargetDefaultMaximumInitializer domain property value handler.
+			/// </summary>
+			public static readonly UseTargetDefaultMaximumInitializerPropertyHandler Instance = new UseTargetDefaultMaximumInitializerPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the NameGenerator.UseTargetDefaultMaximumInitializer domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return UseTargetDefaultMaximumInitializerDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed NameGeneratorUninitializedBoolean GetValue(NameGenerator element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for UseTargetDefaultMaximumInitializer because its Kind is
+				// set to CustomStorage. Please provide the GetUseTargetDefaultMaximumInitializerValue()
+				// method on the domain class.
+				return element.GetUseTargetDefaultMaximumInitializerValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(NameGenerator element, NameGeneratorUninitializedBoolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				NameGeneratorUninitializedBoolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for UseTargetDefaultMaximumInitializer because its Kind is
+					// set to CustomStorage. Please provide the SetUseTargetDefaultMaximumInitializerValue()
+					// method on the domain class.
+					element.SetUseTargetDefaultMaximumInitializerValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -742,24 +942,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public static readonly global::System.Guid UserDefinedMaximumDomainPropertyId = new global::System.Guid(0xfc154ad5, 0xab52, 0x4ac8, 0x85, 0x6c, 0x28, 0xb0, 0x03, 0x95, 0xab, 0xf4);
 		
 		/// <summary>
-		/// Storage for UserDefinedMaximum
-		/// </summary>
-		private global::System.Int32 userDefinedMaximumPropertyStorage = 128;
-		
-		/// <summary>
 		/// Gets or sets the value of UserDefinedMaximum domain property.
 		/// Specify a custom maximum name length for this name generation context.
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/UserDefinedMaximum.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGenerator/UserDefinedMaximum.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(128)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("fc154ad5-ab52-4ac8-856c-28b00395abf4")]
 		public global::System.Int32 UserDefinedMaximum
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return userDefinedMaximumPropertyStorage;
+				return UserDefinedMaximumPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -799,7 +994,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			public override sealed global::System.Int32 GetValue(NameGenerator element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.userDefinedMaximumPropertyStorage;
+				// There is no storage for UserDefinedMaximum because its Kind is
+				// set to CustomStorage. Please provide the GetUserDefinedMaximumValue()
+				// method on the domain class.
+				return element.GetUserDefinedMaximumValue();
 			}
 		
 			/// <summary>
@@ -815,7 +1013,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.userDefinedMaximumPropertyStorage = newValue;
+					// There is no storage for UserDefinedMaximum because its Kind is
+					// set to CustomStorage. Please provide the SetUserDefinedMaximumValue()
+					// method on the domain class.
+					element.SetUserDefinedMaximumValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}

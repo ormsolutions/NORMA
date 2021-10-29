@@ -1634,15 +1634,6 @@
 	<data name="NameGeneratorSpacingFormat.ReplaceWith" xml:space="preserve">
 		<value>ReplaceWith</value>
 	</data>
-	<data name="NameGeneratorSubjectArea.None" xml:space="preserve">
-		<value>None</value>
-	</data>
-	<data name="NameGeneratorSubjectArea.Prefix" xml:space="preserve">
-		<value>Prefix</value>
-	</data>
-	<data name="NameGeneratorSubjectArea.Suffix" xml:space="preserve">
-		<value>Suffix</value>
-	</data>
 	<data name="ObjectModel.Constraint.Name.Description" xml:space="preserve">
 		<value>The name of the Constraint. Constraint names must be unique within the ORM model.</value>
 		<comment>The description for the Name property of a constraint.</comment>

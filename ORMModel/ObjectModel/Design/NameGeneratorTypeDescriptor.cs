@@ -50,26 +50,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		#endregion // Constructor
 		#region Base overrides
 		/// <summary>
-		/// Don't create property descriptors for properties that are
-		/// modifiers for other settings.
+		/// Don't create property descriptors for properties that are currently ignored, either
+		/// because they are permanently ignored of if they have other necessary settings that are
+		/// prerequisites.
 		/// </summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
-			Guid attributeId = domainProperty.Id;
-			if (ModelElement.IsIgnoredAttributeId(attributeId))
-			{
-				return false;
-			}
-
-			if (attributeId == NameGenerator.SpacingReplacementDomainPropertyId)
-			{
-				return ((NameGenerator)requestor).SpacingFormat == NameGeneratorSpacingFormat.ReplaceWith;
-			}
-			else if (attributeId == NameGenerator.UserDefinedMaximumDomainPropertyId)
-			{
-				return !((NameGenerator)requestor).UseTargetDefaultMaximum;
-			}
-			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
+			return !ModelElement.IsIgnoredStandardPropertyId(domainProperty.Id, true) && base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}
 		/// <summary>
 		/// Create a custom property descriptor for all properties to
@@ -108,7 +95,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			{
 				NameGenerator generator = (NameGenerator)component;
 				NameGenerator parentGenerator = generator.RefinesGenerator;
-				return (parentGenerator != null) ? !DomainPropertyInfo.GetValue(parentGenerator).Equals(DomainPropertyInfo.GetValue(generator)) : base.ShouldSerializeValue(component);
+				DomainPropertyInfo propInfo = DomainPropertyInfo;
+				object defaultDefaultValue;
+				return (parentGenerator != null) ?
+					!propInfo.GetValue(parentGenerator).Equals(propInfo.GetValue(generator)) :
+					null != (defaultDefaultValue = NameGenerator.GetStandardPropertyDefaultValue(propInfo.Id)) ?
+						!defaultDefaultValue.Equals(propInfo.GetValue(generator)) :
+						base.ShouldSerializeValue(component);
+			}
+			/// <summary>
+			/// Determine if the value can be reset
+			/// </summary>
+			public override bool CanResetValue(object component)
+			{
+				NameGenerator generator = (NameGenerator)component;
+				NameGenerator parentGenerator = generator.RefinesGenerator;
+				DomainPropertyInfo propInfo = DomainPropertyInfo;
+				object restoreDefault = parentGenerator != null ? propInfo.GetValue(parentGenerator) : NameGenerator.GetStandardPropertyDefaultValue(propInfo.Id);
+				if (restoreDefault != null)
+				{
+					// This gives a different transaction name that the default ResetValue, but
+					// the correct string is not accessible and the duplication is not worth the effort
+					return !restoreDefault.Equals(base.GetValue(component));
+				}
+				else
+				{
+					return base.CanResetValue(component);
+				}
 			}
 			/// <summary>
 			/// Reset the value to the value of the refined generator
@@ -117,11 +130,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 			{
 				NameGenerator generator = (NameGenerator)component;
 				NameGenerator parentGenerator = generator.RefinesGenerator;
-				if (parentGenerator != null)
+				DomainPropertyInfo propInfo = DomainPropertyInfo;
+				object restoreDefault = parentGenerator != null ? propInfo.GetValue(parentGenerator) : NameGenerator.GetStandardPropertyDefaultValue(propInfo.Id);
+				if (restoreDefault != null)
 				{
 					// This gives a different transaction name that the default ResetValue, but
 					// the correct string is not accessible and the duplication is not worth the effort
-					base.SetValue(component, DomainPropertyInfo.GetValue(parentGenerator));
+					base.SetValue(component, restoreDefault);
 				}
 				else
 				{

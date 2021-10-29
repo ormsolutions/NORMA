@@ -460,27 +460,25 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// RelationalNameGenerator domain class Id.
 		/// </summary>
 		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa2d24e49, 0x1b2f, 0x42c0, 0xb1, 0xce, 0x1f, 0x7f, 0x3b, 0x19, 0x3e, 0x26);
-		// Constructors were not generated for this class because it had HasCustomConstructor
-		// set to true. Please provide the constructors below in a partial class.
-		///// <summary>
-		///// Constructor
-		///// </summary>
-		///// <param name="store">Store where new element is to be created.</param>
-		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		//public RelationalNameGenerator(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
-		//	: this(store != null ? store.DefaultPartition : null, propertyAssignments)
-		//{
-		//}
-		//
-		///// <summary>
-		///// Constructor
-		///// </summary>
-		///// <param name="partition">Partition where new element is to be created.</param>
-		///// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		//public RelationalNameGenerator(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
-		//	: base(partition, propertyAssignments)
-		//{
-		//}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RelationalNameGenerator(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public RelationalNameGenerator(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
 		#endregion
 	}
 }
