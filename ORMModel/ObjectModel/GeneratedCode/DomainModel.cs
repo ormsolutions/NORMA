@@ -519,7 +519,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(NameGenerator), "SpacingFormat", NameGenerator.SpacingFormatDomainPropertyId, typeof(NameGenerator.SpacingFormatPropertyHandler)),
 				new DomainMemberInfo(typeof(NameGenerator), "SpacingReplacement", NameGenerator.SpacingReplacementDomainPropertyId, typeof(NameGenerator.SpacingReplacementPropertyHandler)),
 				new DomainMemberInfo(typeof(NameGenerator), "AutomaticallyShortenNames", NameGenerator.AutomaticallyShortenNamesDomainPropertyId, typeof(NameGenerator.AutomaticallyShortenNamesPropertyHandler)),
+				new DomainMemberInfo(typeof(NameGenerator), "AutomaticallyShortenNamesInitializer", NameGenerator.AutomaticallyShortenNamesInitializerDomainPropertyId, typeof(NameGenerator.AutomaticallyShortenNamesInitializerPropertyHandler)),
 				new DomainMemberInfo(typeof(NameGenerator), "UseTargetDefaultMaximum", NameGenerator.UseTargetDefaultMaximumDomainPropertyId, typeof(NameGenerator.UseTargetDefaultMaximumPropertyHandler)),
+				new DomainMemberInfo(typeof(NameGenerator), "UseTargetDefaultMaximumInitializer", NameGenerator.UseTargetDefaultMaximumInitializerDomainPropertyId, typeof(NameGenerator.UseTargetDefaultMaximumInitializerPropertyHandler)),
 				new DomainMemberInfo(typeof(NameGenerator), "UserDefinedMaximum", NameGenerator.UserDefinedMaximumDomainPropertyId, typeof(NameGenerator.UserDefinedMaximumPropertyHandler)),
 				new DomainMemberInfo(typeof(ModelErrorDisplayFilter), "ExcludedCategories", ModelErrorDisplayFilter.ExcludedCategoriesDomainPropertyId, typeof(ModelErrorDisplayFilter.ExcludedCategoriesPropertyHandler)),
 				new DomainMemberInfo(typeof(ModelErrorDisplayFilter), "IncludedErrors", ModelErrorDisplayFilter.IncludedErrorsDomainPropertyId, typeof(ModelErrorDisplayFilter.IncludedErrorsPropertyHandler)),
@@ -2893,6 +2895,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	public enum NameGeneratorCasingOption
 	{
 		/// <summary>
+		/// Uninitialized
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption.Uninitialized
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption/Uninitialized.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		Uninitialized = -1,
+		/// <summary>
 		/// None
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorCasingOption.None
@@ -2937,6 +2947,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	public enum NameGeneratorSpacingFormat
 	{
 		/// <summary>
+		/// Uninitialized
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSpacingFormat.Uninitialized
+		/// </summary>
+		[System.ComponentModel.Browsable(false)]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSpacingFormat/Uninitialized.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		Uninitialized = -1,
+		/// <summary>
 		/// Retain
 		/// Description for
 		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSpacingFormat.Retain
@@ -2960,33 +2978,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
-	/// DomainEnumeration: NameGeneratorSubjectArea
+	/// DomainEnumeration: NameGeneratorUninitializedBoolean
 	/// Description for
-	/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorUninitializedBoolean
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<NameGeneratorSubjectArea, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel>))]
 	[global::System.CLSCompliant(true)]
-	public enum NameGeneratorSubjectArea
+	public enum NameGeneratorUninitializedBoolean
 	{
 		/// <summary>
-		/// None
+		/// Uninitialized
 		/// Description for
-		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea.None
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorUninitializedBoolean.Uninitialized
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea/None.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		None = 0,
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorUninitializedBoolean/Uninitialized.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		Uninitialized = -1,
 		/// <summary>
-		/// Prefix
-		/// Indicates that the chosen subject will be prepended to the generated name.
+		/// @false
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorUninitializedBoolean.@false
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea/Prefix.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		Prefix = 1,
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorUninitializedBoolean/@false.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		@false = 0,
 		/// <summary>
-		/// Suffix
-		/// Indicates that the chosen subject will be appended to the generated name.
+		/// @true
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorUninitializedBoolean.@true
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorSubjectArea/Suffix.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
-		Suffix = 2,
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorUninitializedBoolean/@true.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		@true = 1,
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel

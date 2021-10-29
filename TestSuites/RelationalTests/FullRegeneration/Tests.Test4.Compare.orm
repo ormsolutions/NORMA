@@ -435,12 +435,12 @@
 			<orm:ReferenceModeKind FormatString="{1}Value" ReferenceModeType="UnitBased" id="_2CBF9C1B-A7D9-4BEB-8936-7E894F6A88F5" />
 		</orm:ReferenceModeKinds>
 	</orm:ORMModel>
-	<orm:NameGenerator AutomaticallyShortenNames="true" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_23ABDD20-4917-41F2-A9FB-A8CA3F37B424">
+	<orm:NameGenerator id="_23ABDD20-4917-41F2-A9FB-A8CA3F37B424">
 		<orm:Refinements>
-			<oialtocdb:RelationalNameGenerator AutomaticallyShortenNames="true" SpacingFormat="Remove" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_6A2C4635-C0E7-4A8B-972F-E5C7FE6C1045">
+			<oialtocdb:RelationalNameGenerator SpacingFormat="Remove" id="_6A2C4635-C0E7-4A8B-972F-E5C7FE6C1045">
 				<orm:Refinements>
-					<oialtocdb:RelationalNameGenerator AutomaticallyShortenNames="true" CasingOption="Pascal" NameUsage="RelationalTable" SpacingFormat="Remove" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_2CD6811B-0BAC-4134-AB85-34F62AFA2125" />
-					<oialtocdb:RelationalNameGenerator AutomaticallyShortenNames="true" CasingOption="Camel" NameUsage="RelationalColumn" SpacingFormat="Remove" UseTargetDefaultMaximum="true" UserDefinedMaximum="128" id="_A1BEDC76-B7F2-491E-8AD4-929C6128371E" />
+					<oialtocdb:RelationalNameGenerator CasingOption="Pascal" NameUsage="RelationalTable" id="_2CD6811B-0BAC-4134-AB85-34F62AFA2125" />
+					<oialtocdb:RelationalNameGenerator CasingOption="Camel" NameUsage="RelationalColumn" id="_A1BEDC76-B7F2-491E-8AD4-929C6128371E" />
 				</orm:Refinements>
 			</oialtocdb:RelationalNameGenerator>
 		</orm:Refinements>

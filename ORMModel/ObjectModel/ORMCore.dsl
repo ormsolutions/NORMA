@@ -64,46 +64,48 @@
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="CasingOption" DefaultValue="None" DisplayName="CasingOption" Id="30950747-68E7-4A64-8ED7-BACEDAAFD4A2" Description="Specify upper/lower case settings of names generated for this context.">
+				<DomainProperty Name="CasingOption" DefaultValue="Uninitialized" Kind="CustomStorage" DisplayName="CasingOption" Id="30950747-68E7-4A64-8ED7-BACEDAAFD4A2" Description="Specify upper/lower case settings of names generated for this context.">
 					<Type>
 						<DomainEnumerationMoniker Name="NameGeneratorCasingOption"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="SpacingFormat" DefaultValue="Retain" DisplayName="SpacingFormat" Id="CFD3E74C-DE51-4FD9-ADDB-01B0F5414BFD" Description="Specify if whitespace is preserved, removed, or replaced in names generated for this context.">
+				<DomainProperty Name="SpacingFormat" DefaultValue="Uninitialized" Kind="CustomStorage" DisplayName="SpacingFormat" Id="CFD3E74C-DE51-4FD9-ADDB-01B0F5414BFD" Description="Specify if whitespace is preserved, removed, or replaced in names generated for this context.">
 					<Type>
 						<DomainEnumerationMoniker Name="NameGeneratorSpacingFormat"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="SpacingReplacement" DefaultValue="" DisplayName="SpacingReplacement" Id="0E203ACB-3611-4180-9324-7FD7D30A5AE4" Description="Specify the characters used instead of spaces in names generated for this context.">
+				<DomainProperty Name="SpacingReplacement" DisplayName="SpacingReplacement" Kind="CustomStorage" Id="0E203ACB-3611-4180-9324-7FD7D30A5AE4" Description="Specify the characters used instead of spaces in names generated for this context.">
+					<!-- Use custom storage so we can distinguish between null (initialized) and an empty string. The normal generator will not produce a null-initialized string. -->
 					<Type>
 						<ExternalTypeMoniker Name="/System/String"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="AutomaticallyShortenNames" DefaultValue="true" DisplayName="AutomaticallyShortenNames" Id="6A3526D9-AFB3-417E-A988-A44644AA094E" Description="Specify if names generated for this context should be automatically shortened if they are too long for the generation target.">
+				<DomainProperty Name="AutomaticallyShortenNames" Kind="CustomStorage" DisplayName="AutomaticallyShortenNames" Id="6A3526D9-AFB3-417E-A988-A44644AA094E" Description="Specify if names generated for this context should be automatically shortened if they are too long for the generation target.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="UseTargetDefaultMaximum" DefaultValue="true" DisplayName="UseTargetDefaultMaximum" Id="67B83B76-394F-4702-A984-6009DC51D224" Description="Specify if the default maximum name length for this name generation context should be used when shortening names.">
+				<DomainProperty Name="AutomaticallyShortenNamesInitializer" GetterAccessModifier="Private" SetterAccessModifier="Private" DefaultValue="Uninitialized" Kind="CustomStorage" IsBrowsable="false" Id="896C28DD-567B-40FD-8DCE-8B31080F327F" Description="Alternate storage for AutomaticallyShortenNames boolean so we can track whether the value has been initialized or not.">
+					<Type>
+						<DomainEnumerationMoniker Name="NameGeneratorUninitializedBoolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="UseTargetDefaultMaximum" Kind="CustomStorage" DisplayName="UseTargetDefaultMaximum" Id="67B83B76-394F-4702-A984-6009DC51D224" Description="Specify if the default maximum name length for this name generation context should be used when shortening names.">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="UserDefinedMaximum" DefaultValue="128" DisplayName="UserDefinedMaximum" Id="FC154AD5-AB52-4AC8-856C-28B00395ABF4" Description="Specify a custom maximum name length for this name generation context.">
+				<DomainProperty Name="UseTargetDefaultMaximumInitializer" GetterAccessModifier="Private" SetterAccessModifier="Private"  DefaultValue="Uninitialized" Kind="CustomStorage" IsBrowsable="false" Id="12BA0152-03C5-4DB7-8D09-2A6689BA4FD1" Description="Alternate storage for UseTargetDefaultMaximum boolean so we can track whether the value has been initialized or not.">
+					<Type>
+						<DomainEnumerationMoniker Name="NameGeneratorUninitializedBoolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="UserDefinedMaximum" Kind="CustomStorage" DisplayName="UserDefinedMaximum" Id="FC154AD5-AB52-4AC8-856C-28B00395ABF4" Description="Specify a custom maximum name length for this name generation context.">
+					<!-- Use custom storage so we can have an 'unitialized' value without setting a DSL-visible default value. -->
 					<Type>
 						<ExternalTypeMoniker Name="/System/Int32"/>
 					</Type>
 				</DomainProperty>
-				<!--<DomainProperty Name="SubjectArea" DefaultValue="None" DisplayName="SubjectArea" Id="0C59CC43-FC54-44EE-9DBA-EE33648EC50C" Description="">
-					<Type>
-						<DomainEnumerationMoniker Name="NameGeneratorSubjectArea"/>
-					</Type>
-				</DomainProperty>
-				<DomainProperty Name="SubjectAreaText" DefaultValue="" DisplayName="SubjectAreaText" Id="69D57F4B-BDF0-44BD-A62B-0FF49E5D1D31" Description="">
-					<Type>
-						<ExternalTypeMoniker Name="/System/String"/>
-					</Type>
-				</DomainProperty>-->
 			</Properties>
 		</DomainClass>
 
@@ -7420,6 +7422,15 @@
 
 		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="NameGeneratorCasingOption">
 			<Literals>
+				<EnumerationLiteral Name="Uninitialized" Value="-1">
+					<Attributes>
+						<ClrAttribute Name="System.ComponentModel.Browsable">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+				</EnumerationLiteral>
 				<EnumerationLiteral Name="None" Value="0"/>
 				<EnumerationLiteral Name="Camel" Value="1" Description="Indicates the casing of the string is Camel"/>
 				<EnumerationLiteral Name="Pascal" Value="2" Description="Indicates the casing of the string is Pascal."/>
@@ -7437,6 +7448,15 @@
 
 		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="NameGeneratorSpacingFormat">
 			<Literals>
+				<EnumerationLiteral Name="Uninitialized" Value="-1">
+					<Attributes>
+						<ClrAttribute Name="System.ComponentModel.Browsable">
+							<Parameters>
+								<AttributeParameter Value="false"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+				</EnumerationLiteral>
 				<EnumerationLiteral Name="Retain" Value="0"/>
 				<EnumerationLiteral Name="Remove" Value="1" Description="Indicates that spaces are Removed"/>
 				<EnumerationLiteral Name="ReplaceWith" Value="2" Description="Indicates that spaces are ReplacedWith a different string."/>
@@ -7450,19 +7470,13 @@
 			</Attributes>
 		</DomainEnumeration>
 
-		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="NameGeneratorSubjectArea">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="NameGeneratorUninitializedBoolean">
 			<Literals>
-				<EnumerationLiteral Name="None" Value="0"/>
-				<EnumerationLiteral Name="Prefix" Value="1" Description="Indicates that the chosen subject will be prepended to the generated name."/>
-				<EnumerationLiteral Name="Suffix" Value="2" Description="Indicates that the chosen subject will be appended to the generated name."/>
+				<EnumerationLiteral Name="Uninitialized" Value="-1"/>
+				<!-- The false and true values are not displayed in the UI. The casing intentionally matches the xml casing, which is unaware of the Uninitialized value-->
+				<EnumerationLiteral Name="@false" Value="0"/>
+				<EnumerationLiteral Name="@true" Value="1"/>
 			</Literals>
-			<Attributes>
-				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
-					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;NameGeneratorSubjectArea, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel&gt;)"/>
-					</Parameters>
-				</ClrAttribute>
-			</Attributes>
 		</DomainEnumeration>
 
 		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Name="GroupingMembershipTypeCompliance">

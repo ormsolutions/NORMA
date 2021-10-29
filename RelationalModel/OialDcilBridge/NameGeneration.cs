@@ -1555,126 +1555,29 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 	partial class RelationalNameGenerator
 	{
 		/// <summary>
-		/// Constructor
+		/// Specify properties that are initialized with modified default properties.
 		/// </summary>
-		/// <param name="store">Store where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public RelationalNameGenerator(Store store, params PropertyAssignment[] propertyAssignments)
-			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		protected override StandardNameGeneratorProperty AlternateDefaultStandardProperties
 		{
-		}
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		/// <param name="partition">Partition where new element is to be created.</param>
-		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
-		public RelationalNameGenerator(Partition partition, params PropertyAssignment[] propertyAssignments)
-			: base(partition, GenerateDefaultValues(propertyAssignments))
-		{
-		}
-
-		/// <summary>
-		/// Override default values used to create the initial state of the object.
-		/// </summary>
-		private static PropertyAssignment[] GenerateDefaultValues(params PropertyAssignment[] propertyAssignments)
-		{
-			PropertyAssignment[] properties = propertyAssignments;
-			string nameUsage = null;
-			int casingOptionIndex = -1;
-			int spacingOptionIndex = -1;
-			for (int i = 0; i < properties.Length; ++i)
+			get
 			{
-				PropertyAssignment assignment = properties[i];
-				Guid propertyId = assignment.PropertyId;
-				if (propertyId == NameGenerator.CasingOptionDomainPropertyId)
-				{
-					casingOptionIndex = i;
-				}
-				else if (propertyId == NameGenerator.NameUsageDomainPropertyId)
-				{
-					nameUsage = (string)assignment.Value;
-				}
-				else if (propertyId == NameGenerator.SpacingFormatDomainPropertyId)
-				{
-					spacingOptionIndex = i;
-				}
+				return string.IsNullOrEmpty(NameUsage) ? StandardNameGeneratorProperty.SpacingFormat : StandardNameGeneratorProperty.CasingOption;
 			}
-			if (nameUsage == null)
-			{
-				if (spacingOptionIndex != -1)
-				{
-					properties[spacingOptionIndex] = new PropertyAssignment(NameGenerator.SpacingFormatDomainPropertyId, NameGeneratorSpacingFormat.Remove);
-				}
-			}
-			else if (casingOptionIndex != -1)
-			{
-				if (nameUsage == "RelationalColumn")
-				{
-					properties[casingOptionIndex] = new PropertyAssignment(NameGenerator.CasingOptionDomainPropertyId, NameGeneratorCasingOption.Camel);
-				}
-				else if (nameUsage == "RelationalTable")
-				{
-					properties[casingOptionIndex] = new PropertyAssignment(NameGenerator.CasingOptionDomainPropertyId, NameGeneratorCasingOption.Pascal);
-				}
-			}
-			return properties;
 		}
 		/// <summary>
-		/// Track default property values that differ from the default values on the base.
+		/// Provide values for alternate defaults of a fully constructed instance.
 		/// </summary>
-		protected override bool HasDefaultAttributeValues(Guid[] ignorePropertyIds)
+		protected override object GetAlternateDefaultStandardPropertyValue(StandardNameGeneratorProperty property)
 		{
-			bool retVal = true;
-			string nameUsage = NameUsage;
-			Guid ignoreNewPropertyId = Guid.Empty;
-			if (string.IsNullOrEmpty(nameUsage))
+			if (property == StandardNameGeneratorProperty.SpacingFormat)
 			{
-				// The default spacing format is modified
-				if (ignorePropertyIds == null || Array.IndexOf<Guid>(ignorePropertyIds, SpacingFormatDomainPropertyId) == -1)
-				{
-					retVal = SpacingFormat == NameGeneratorSpacingFormat.Remove;
-					ignoreNewPropertyId = SpacingFormatDomainPropertyId;
-				}
+				return NameGeneratorSpacingFormat.Remove;
 			}
-			else if (nameUsage == "RelationalColumn")
+			else if (property == StandardNameGeneratorProperty.CasingOption)
 			{
-				// The default casing option is modified
-				if (ignorePropertyIds == null || Array.IndexOf<Guid>(ignorePropertyIds, CasingOptionDomainPropertyId) == -1)
-				{
-					retVal = CasingOption == NameGeneratorCasingOption.Camel;
-					ignoreNewPropertyId = CasingOptionDomainPropertyId;
-				}
+				return NameUsage == "RelationalColumn" ? NameGeneratorCasingOption.Camel : NameGeneratorCasingOption.Pascal;
 			}
-			else if (nameUsage == "RelationalTable")
-			{
-				// The default casing option is modified
-				if (ignorePropertyIds == null || Array.IndexOf<Guid>(ignorePropertyIds, CasingOptionDomainPropertyId) == -1)
-				{
-					retVal = CasingOption == NameGeneratorCasingOption.Pascal;
-					ignoreNewPropertyId = CasingOptionDomainPropertyId;
-				}
-			}
-			if (retVal)
-			{
-				Guid[] forwardIgnorePropertyIds;
-				if (ignoreNewPropertyId == Guid.Empty)
-				{
-					forwardIgnorePropertyIds = ignorePropertyIds;
-				}
-				else if (ignorePropertyIds != null)
-				{
-					forwardIgnorePropertyIds = new Guid[ignorePropertyIds.Length + 1];
-					ignorePropertyIds.CopyTo(forwardIgnorePropertyIds, 0);
-					forwardIgnorePropertyIds[forwardIgnorePropertyIds.Length - 1] = ignoreNewPropertyId;
-				}
-				else
-				{
-					forwardIgnorePropertyIds = new Guid[] { ignoreNewPropertyId };
-				}
-				return base.HasDefaultAttributeValues(forwardIgnorePropertyIds);
-			}
-			return false;
+			return null;
 		}
 	}
 	#endregion // ORMAbstractionToConceptualDatabaseBridgeDomainModel.RelationalNameGenerator Class
