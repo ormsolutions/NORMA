@@ -475,7 +475,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal ?? String.Empty;
 		}
 		#endregion // Resource String Helper
-		#region ReferenceModeNamingPropertyDescriptor class
+		#region ReferenceToEntityTypeNamingChoicePropertyDescriptor class
 		/// <summary>
 		/// Property descriptor for the entity type reference mode naming choice.
 		/// </summary>
@@ -489,9 +489,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Use a single typed instance for this property descriptor.
 			/// </summary>
-			public static readonly ReferenceToEntityTypeNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> Instance = new ReferenceToEntityTypeNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>();
-			private ReferenceToEntityTypeNamingChoicePropertyDescriptor()
-				: base("ReferenceToEntityTypeNamingChoicePropertyDescriptor" + InstanceResolver<DRMN>.GetPropertySuffix(typeof(DefaultNamingLink), typeof(NamingLink)))
+			public static readonly ReferenceToEntityTypeNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> Instance = new ReferenceToEntityTypeNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(false);
+
+			/// <summary>
+			/// Use a single typed instance for this property descriptor displayed with other instances of this descriptor
+			/// </summary>
+			public static readonly ReferenceToEntityTypeNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> ExtensionSpecificInstance = new ReferenceToEntityTypeNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(true);
+			private ReferenceToEntityTypeNamingChoicePropertyDescriptor(bool displayExtensionSpecificName)
+				: base("ReferenceToEntityTypeNamingChoicePropertyDescriptor" + InstanceResolver<DRMN>.GetPropertySuffix(typeof(DefaultNamingLink), typeof(NamingLink)), displayExtensionSpecificName)
 			{
 			}
 			/// <summary>
@@ -508,6 +513,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return (editorBaseType == typeof(UITypeEditor)) ? ReferenceModeNamingEditor.Instance : base.GetEditor(editorBaseType);
 			}
+
+			/// <summary>
+			/// Standard override
+			/// </summary>
+			public override TypeConverter Converter
+			{
+				get
+				{
+					return ReferenceModeNamingEnumConverter.Instance;
+				}
+			}
 			private sealed class ReferenceModeNamingEditor : ReferenceModeNamingEditorBase
 			{
 				public static readonly ReferenceModeNamingEditor Instance = new ReferenceModeNamingEditor();
@@ -517,7 +533,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					get { return ReferenceModeNamingUse.ReferenceToEntityType; }
 				}
 			}
+
+			[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
+			private sealed class ReferenceModeNamingEnumConverter : ReferenceModeNamingEnumConverterBase
+			{
+				public static readonly ReferenceModeNamingEnumConverter Instance = new ReferenceModeNamingEnumConverter();
+				private ReferenceModeNamingEnumConverter() { }
+				protected override ReferenceModeNamingUse TargetUse
+				{
+					get { return ReferenceModeNamingUse.ReferenceToEntityType; }
+				}
+			}
 		}
+		#endregion // ReferenceToEntityTypeNamingChoicePropertyDescriptor class
+		#region // PrimaryIdentifierNamingChoicePropertyDescriptor class
 		/// <summary>
 		/// Property descriptor for the primary identifier reference mode naming choice.
 		/// </summary>
@@ -531,9 +560,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Use a single typed instance for this property descriptor.
 			/// </summary>
-			public static readonly PrimaryIdentifierNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> Instance = new PrimaryIdentifierNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>();
-			private PrimaryIdentifierNamingChoicePropertyDescriptor()
-				: base("PrimaryIdentifierNamingChoicePropertyDescriptor" + InstanceResolver<DRMN>.GetPropertySuffix(typeof(DefaultNamingLink), typeof(NamingLink)))
+			public static readonly PrimaryIdentifierNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> Instance = new PrimaryIdentifierNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(false);
+
+			/// <summary>
+			/// Use a single typed instance for this property descriptor displayed with other instances of this descriptor
+			/// </summary>
+			public static readonly PrimaryIdentifierNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> ExtensionSpecificInstance = new PrimaryIdentifierNamingChoicePropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(true);
+			private PrimaryIdentifierNamingChoicePropertyDescriptor(bool displayExtensionSpecificName)
+				: base("PrimaryIdentifierNamingChoicePropertyDescriptor" + InstanceResolver<DRMN>.GetPropertySuffix(typeof(DefaultNamingLink), typeof(NamingLink)), displayExtensionSpecificName)
 			{
 			}
 			/// <summary>
@@ -550,10 +584,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return (editorBaseType == typeof(UITypeEditor)) ? ReferenceModeNamingEditor.Instance : base.GetEditor(editorBaseType);
 			}
+			/// <summary>
+			/// Standard override
+			/// </summary>
+			public override TypeConverter Converter
+			{
+				get
+				{
+					return ReferenceModeNamingEnumConverter.Instance;
+				}
+			}
 			private sealed class ReferenceModeNamingEditor : ReferenceModeNamingEditorBase
 			{
 				public static readonly ReferenceModeNamingEditor Instance = new ReferenceModeNamingEditor();
 				private ReferenceModeNamingEditor() { }
+				protected override ReferenceModeNamingUse TargetUse
+				{
+					get { return ReferenceModeNamingUse.PrimaryIdentifier; }
+				}
+			}
+
+			[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
+			private sealed class ReferenceModeNamingEnumConverter : ReferenceModeNamingEnumConverterBase
+			{
+				public static readonly ReferenceModeNamingEnumConverter Instance = new ReferenceModeNamingEnumConverter();
+				private ReferenceModeNamingEnumConverter() { }
+
 				protected override ReferenceModeNamingUse TargetUse
 				{
 					get { return ReferenceModeNamingUse.PrimaryIdentifier; }
@@ -577,22 +633,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			where DefaultNamingLink : ElementLink
 			where TResourceOwner : class // Resource owner, must have all enum values with the requested names.
 		{
-			#region ReferenceModeNameEnumConverter
+			#region ReferenceModeNameEnumConverterBase
 			/// <summary>
-			/// A convering for the <see cref="ReferenceModeNamingChoice"/> enumeration values
+			/// A base converter for the <see cref="ReferenceModeNamingChoice"/> enumeration values
 			/// </summary>
-			[HostProtection(SecurityAction.LinkDemand, SharedState = true)]
 			[CLSCompliant(false)]
-			public class ReferenceModeNamingEnumConverter : EnumConverter<ReferenceModeNamingChoice, ORMModel>
+			protected abstract class ReferenceModeNamingEnumConverterBase : EnumConverter<ReferenceModeNamingChoice, ORMModel>
 			{
 				/// <summary>
-				/// Shared instance for the <see cref="ReferenceModeNamingChoice"/> enumeration converter
+				/// Get the target use for this editor
 				/// </summary>
-				public static readonly ReferenceModeNamingEnumConverter Instance = new ReferenceModeNamingEnumConverter();
+				protected abstract ReferenceModeNamingUse TargetUse { get; }
 
 				// Note that the values are explicitly ordered  and match the values listed in the ReferenceModeNamingEditor
 				private static readonly StandardValuesCollection OrderedValues = new StandardValuesCollection(new object[] { ReferenceModeNamingChoice.ModelDefault, ReferenceModeNamingChoice.EntityTypeName, ReferenceModeNamingChoice.ReferenceModeName, ReferenceModeNamingChoice.ValueTypeName, ReferenceModeNamingChoice.CustomFormat});
-				private ReferenceModeNamingEnumConverter()
+				protected ReferenceModeNamingEnumConverterBase()
 				{
 				}
 				/// <summary>
@@ -602,8 +657,68 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					return OrderedValues;
 				}
+
+				/// <summary>
+				/// Standard override
+				/// </summary>
+				public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+				{
+					ObjectType objectType;
+					IReferenceModePattern referenceMode;
+					if (context != null &&
+						destinationType == typeof(string) &&
+						value is ReferenceModeNamingChoice &&
+						null != (objectType = EditorUtility.ResolveContextInstance(context.Instance, true) as ObjectType) &&
+						null != (referenceMode = objectType.ReferenceModePattern))
+					{
+						string currentName = null;
+						string resourceId = null;
+						switch ((ReferenceModeNamingChoice)value)
+						{
+							case ReferenceModeNamingChoice.ValueTypeName:
+								resourceId = "ReferenceModeNaming.CurrentFormatString.ValueTypeName";
+								currentName = objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.Name;
+								break;
+							case ReferenceModeNamingChoice.EntityTypeName:
+								resourceId = "ReferenceModeNaming.CurrentFormatString.EntityTypeName";
+								currentName = objectType.Name;
+								break;
+							case ReferenceModeNamingChoice.ReferenceModeName:
+								resourceId = "ReferenceModeNaming.CurrentFormatString.ReferenceModeName";
+								currentName = referenceMode.Name;
+								break;
+							case ReferenceModeNamingChoice.CustomFormat:
+								resourceId = "ReferenceModeNaming.CurrentFormatString.CustomFormat";
+								currentName = ResolveObjectTypeName<NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(null, objectType, ReferenceModeNamingChoice.CustomFormat, TargetUse);
+								break;
+							case ReferenceModeNamingChoice.ModelDefault:
+								switch (GetNamingChoiceFromDefault(InstanceResolver<DRMN>.ResolveDefaultReferenceModeNamingFromObjectType(null, objectType, typeof(DefaultNamingLink), typeof(NamingLink)), referenceMode.ReferenceModeType, TargetUse))
+								{
+									case EffectiveReferenceModeNamingChoice.ValueTypeName:
+										resourceId = "ReferenceModeNaming.CurrentModelDefaultFormatString.ValueTypeName";
+										currentName = objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.Name;
+										break;
+									case EffectiveReferenceModeNamingChoice.ReferenceModeName:
+										resourceId = "ReferenceModeNaming.CurrentModelDefaultFormatString.ReferenceModeName";
+										currentName = referenceMode.Name;
+										break;
+									case EffectiveReferenceModeNamingChoice.EntityTypeName:
+										resourceId = "ReferenceModeNaming.CurrentModelDefaultFormatString.EntityTypeName";
+										currentName = objectType.Name;
+										break;
+									case EffectiveReferenceModeNamingChoice.CustomFormat:
+										resourceId = "ReferenceModeNaming.CurrentModelDefaultFormatString.CustomFormat";
+										currentName = ResolveObjectTypeName<NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(null, objectType, ReferenceModeNamingChoice.CustomFormat, TargetUse);
+										break;
+								}
+								break;
+						}
+						return string.Format(culture, GetResourceString<TResourceOwner>(resourceId), currentName);
+					}
+					return base.ConvertTo(context, culture, value, destinationType);
+				}
 			}
-			#endregion // ReferenceModeNamingEnumConverter
+			#endregion // ReferenceModeNamingEnumConverterBase
 			#region ReferenceModeNamingEditor class
 			/// <summary>
 			/// Base class for choosing <see cref="ReferenceModeNamingChoice"/> elements with customized names
@@ -669,58 +784,61 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (null != (objectType = EditorUtility.ResolveContextInstance(context.Instance, true) as ObjectType) &&
 						null != (referenceMode = objectType.ReferenceModePattern))
 					{
-						string currentModelDefault = null;
+						string currentModelDefaultResourceId = null;
+						string currentName = null;
+						string entityTypeName = objectType.Name;
+						string referenceModeName = referenceMode.Name;
+						string valueTypeName = objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.Name;
+						string customFormatName = ResolveObjectTypeName<NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(null, objectType, ReferenceModeNamingChoice.CustomFormat, TargetUse);
 						switch (GetNamingChoiceFromDefault(InstanceResolver<DRMN>.ResolveDefaultReferenceModeNamingFromObjectType(null, objectType, typeof(DefaultNamingLink), typeof(NamingLink)), referenceMode.ReferenceModeType, TargetUse))
 						{
 							case EffectiveReferenceModeNamingChoice.ValueTypeName:
-								currentModelDefault = GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentModelDefault.ValueTypeName");
+								currentModelDefaultResourceId = "ReferenceModeNaming.CurrentModelDefaultFormatString.ValueTypeName";
+								currentName = valueTypeName;
 								break;
 							case EffectiveReferenceModeNamingChoice.ReferenceModeName:
-								currentModelDefault = GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentModelDefault.ReferenceModeName");
+								currentModelDefaultResourceId = "ReferenceModeNaming.CurrentModelDefaultFormatString.ReferenceModeName";
+								currentName = referenceModeName;
 								break;
 							case EffectiveReferenceModeNamingChoice.EntityTypeName:
-								currentModelDefault = GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentModelDefault.EntityTypeName");
+								currentModelDefaultResourceId = "ReferenceModeNaming.CurrentModelDefaultFormatString.EntityTypeName";
+								currentName = entityTypeName;
 								break;
 							case EffectiveReferenceModeNamingChoice.CustomFormat:
-								currentModelDefault = GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentModelDefault.CustomFormat");
+								currentModelDefaultResourceId ="ReferenceModeNaming.CurrentModelDefaultFormatString.CustomFormat";
+								currentName = customFormatName;
 								break;
 						}
 						CultureInfo culture = CultureInfo.CurrentCulture;
 						return new string[]
 						{
-							currentModelDefault,
-							string.Format(culture, GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentFormatString.EntityTypeName"), objectType.Name),
-							string.Format(culture,GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentFormatString.ReferenceModeName"), referenceMode.Name),
-							string.Format(culture, GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentFormatString.ValueTypeName"), objectType.PreferredIdentifier.RoleCollection[0].RolePlayer.Name),
-							string.Format(culture, GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentFormatString.CustomFormat"), ResolveObjectTypeName<NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(null, objectType, ReferenceModeNamingChoice.CustomFormat, TargetUse)),
+							string.Format(GetResourceString<TResourceOwner>(currentModelDefaultResourceId), currentName),
+							string.Format(culture, GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentFormatString.EntityTypeName"), entityTypeName),
+							string.Format(culture,GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentFormatString.ReferenceModeName"), referenceModeName),
+							string.Format(culture, GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentFormatString.ValueTypeName"), valueTypeName),
+							string.Format(culture, GetResourceString<TResourceOwner>("ReferenceModeNaming.CurrentFormatString.CustomFormat"), customFormatName),
 						};
 					}
 					return null;
 				}
 			}
 			#endregion // ReferenceModeNamingEditor class
+			private readonly bool myDisplayExtensionSpecificName;
+
 			/// <summary>
 			/// Shared constructor
 			/// </summary>
 			/// <param name="name">The name used to distinguish this in the collection of object type properties.</param>
-			protected ReferenceModeNamingPropertyDescriptor(string name)
+			/// <param name="displayExtensionSpecificName">Set to true if this is to be displayed with like properties from other extensions.</param>
+			protected ReferenceModeNamingPropertyDescriptor(string name, bool displayExtensionSpecificName)
 				: base(name, null)
 			{
+				myDisplayExtensionSpecificName = displayExtensionSpecificName;
 			}
 			/// <summary>
 			/// Get the target use for this property descriptor
 			/// </summary>
 			protected abstract ReferenceModeNamingUse TargetUse { get;}
-			/// <summary>
-			/// Standard override
-			/// </summary>
-			public override TypeConverter Converter
-			{
-				get
-				{
-					return ReferenceModeNamingEnumConverter.Instance;
-				}
-			}
 			private static ObjectType GetObjectTypeFromComponent(object component)
 			{
 				return EditorUtility.ResolveContextInstance(component, false) as ObjectType;
@@ -755,9 +873,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				get
 				{
+					bool extensionSpecific = myDisplayExtensionSpecificName;
 					return (TargetUse == ReferenceModeNamingUse.ReferenceToEntityType) ?
-						GetResourceString<TResourceOwner>("ReferenceModeNaming.NamingChoiceProperty.DisplayName") :
-						GetResourceString<TResourceOwner>("ReferenceModeNaming.PrimaryIdentifierNamingChoiceProperty.DisplayName");
+						GetResourceString<TResourceOwner>(extensionSpecific ? "ReferenceModeNaming.NamingChoiceProperty.DisplayName.ExtensionSpecific" : "ReferenceModeNaming.NamingChoiceProperty.DisplayName") :
+						GetResourceString<TResourceOwner>(extensionSpecific ? "ReferenceModeNaming.PrimaryIdentifierNamingChoiceProperty.DisplayName.ExtensionSpecific" : "ReferenceModeNaming.PrimaryIdentifierNamingChoiceProperty.DisplayName");
 				}
 			}
 			/// <summary>
@@ -920,7 +1039,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		#endregion // ReferenceModeNamingPropertyDescriptor class
+		#endregion // PrimaryIdentifierNamingChoicePropertyDescriptor class
 		#region ReferenceModeNamingCustomFormatTypeConverter class
 		/// <summary>
 		/// Base class for displaying and parsing custom format properties.
@@ -1084,9 +1203,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Use a single typed instance for this property descriptor.
 			/// </summary>
-			public static readonly ReferenceToEntityTypeCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> Instance = new ReferenceToEntityTypeCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>();
-			private ReferenceToEntityTypeCustomFormatPropertyDescriptor()
-				: base("ReferenceToEntityTypeCustomFormatPropertyDescriptor" + InstanceResolver<DRMN>.GetPropertySuffix(typeof(DefaultNamingLink), typeof(NamingLink)))
+			public static readonly ReferenceToEntityTypeCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> Instance = new ReferenceToEntityTypeCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(false);
+
+			/// <summary>
+			/// Use a single typed instance for this property descriptor displayed with other instances of this descriptor
+			/// </summary>
+			public static readonly ReferenceToEntityTypeCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> ExtensionSpecificInstance = new ReferenceToEntityTypeCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(true);
+			private ReferenceToEntityTypeCustomFormatPropertyDescriptor(bool displayExtensionSpecificName)
+				: base("ReferenceToEntityTypeCustomFormatPropertyDescriptor" + InstanceResolver<DRMN>.GetPropertySuffix(typeof(DefaultNamingLink), typeof(NamingLink)), displayExtensionSpecificName)
 			{
 			}
 			/// <summary>
@@ -1134,9 +1258,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// <summary>
 			/// Use a single typed instance for this property descriptor.
 			/// </summary>
-			public static readonly PrimaryIdentifierCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> Instance = new PrimaryIdentifierCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>();
-			private PrimaryIdentifierCustomFormatPropertyDescriptor()
-				: base("PrimaryIdentifierCustomFormatPropertyDescriptor" + InstanceResolver<DRMN>.GetPropertySuffix(typeof(DefaultNamingLink), typeof(NamingLink)))
+			public static readonly PrimaryIdentifierCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> Instance = new PrimaryIdentifierCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(false);
+
+			/// <summary>
+			/// Use a single typed instance for this property descriptor displayed with other instances of this descriptor
+			/// </summary>
+			public static readonly PrimaryIdentifierCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner> ExtensionSpecificInstance = new PrimaryIdentifierCustomFormatPropertyDescriptor<RMN, NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(true);
+			private PrimaryIdentifierCustomFormatPropertyDescriptor(bool displayExtensionSpecificName)
+				: base("PrimaryIdentifierCustomFormatPropertyDescriptor" + InstanceResolver<DRMN>.GetPropertySuffix(typeof(DefaultNamingLink), typeof(NamingLink)), displayExtensionSpecificName)
 			{
 			}
 			/// <summary>
@@ -1250,13 +1379,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 			#endregion // DefaultAwareReferenceModeNamingCustomFormatTypeConverter class
+			private readonly bool myDisplayExtensionSpecificName;
 			/// <summary>
 			/// Protected constructor for abstract class
 			/// </summary>
-			protected ReferenceModeNamingCustomFormatPropertyDescriptor(string name)
+			protected ReferenceModeNamingCustomFormatPropertyDescriptor(string name, bool displayExtensionSpecificName)
 				: base(name, null)
 			{
+				myDisplayExtensionSpecificName = displayExtensionSpecificName;
 			}
+
 			/// <summary>
 			/// Get the target use for this property descriptor
 			/// </summary>
@@ -1308,9 +1440,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				get
 				{
+					bool extensionSpecific = myDisplayExtensionSpecificName;
 					return (TargetUse == ReferenceModeNamingUse.ReferenceToEntityType) ?
-						GetResourceString<TResourceOwner>("ReferenceModeNaming.CustomFormatProperty.DisplayName") :
-						GetResourceString<TResourceOwner>("ReferenceModeNaming.PrimaryIdentifierCustomFormatProperty.DisplayName");
+						GetResourceString<TResourceOwner>(extensionSpecific ? "ReferenceModeNaming.CustomFormatProperty.DisplayName.ExtensionSpecific" : "ReferenceModeNaming.CustomFormatProperty.DisplayName") :
+						GetResourceString<TResourceOwner>(extensionSpecific ? "ReferenceModeNaming.PrimaryIdentifierCustomFormatProperty.DisplayName.ExtensionSpecific" : "ReferenceModeNaming.PrimaryIdentifierCustomFormatProperty.DisplayName");
 				}
 			}
 			/// <summary>
@@ -2525,7 +2658,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <typeparam name="DefaultNamingLink">The type of a link from the <see cref="DefaultReferenceModeNaming"/> instance to an associated instance,
 		/// generally the parent of the instance. This is used as a reference by the callback, not the calling code.</typeparam>
 		/// <typeparam name="TResourceOwner">The resource owner. This must have all of the used resource strings.</typeparam>
-
 		private static string ResolveObjectTypeName<NamingLink, DRMN, DefaultNamingLink, TResourceOwner>(ModelElement contextInstance, ObjectType possibleEntityType, ObjectType possibleValueType, ObjectType alternateEntityType, bool preferEntityType, ReferenceModeNamingUse targetUse, ReferenceModeNamingChoice? forceNamingChoice, NameGenerator nameGenerator, AddNamePart addNamePartCallback, out bool consumedValueType)
 			where NamingLink : ElementLink
 			where DRMN : DefaultReferenceModeNaming
@@ -2940,6 +3072,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						return GetResourceString<TResourceOwner>("ReferenceModeNaming.DefaultPrimaryIdentifierCustomFormat.General");
 				}
 			}
+		}
+
+		/// <summary>
+		/// Determine if there are multiple implementations of ReferenceModeNaming in the store. If this
+		/// is the case then the extension properties attached to an object type need to be decorated names
+		/// to be distinguishable when categories are turned off in the properties window.
+		/// </summary>
+		/// <param name="store">Any element, used on first call to resolve type information.</param>
+		/// <returns>true if there are multiple loaded extensions that implement ReferenceModeNaming.</returns>
+		protected static bool HasMultipleObjectTypeExtensionSources(Store store)
+		{
+			// This is not a hard calculation and redoing it is easier than caching the results.
+			// This cannot be statically cached because the Store can be reloaded without touching the type.
+			return store.DomainDataDirectory.GetDomainClass(ReferenceModeNaming.DomainClassId).LocalDescendants.Count > 1;
 		}
 		#endregion // Static helper functions
 		#region Instance helper functions
