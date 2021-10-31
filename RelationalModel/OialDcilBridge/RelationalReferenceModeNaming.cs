@@ -105,7 +105,7 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 		/// <summary>
 		/// An <see cref="PropertyProvider"/> callback for adding extender properties to an <see cref="ObjectType"/>
 		/// </summary>
-		public static void PopulateReferenceModeNamingExtensionProperties(object extendableElement, PropertyDescriptorCollection properties)
+		public static void PopulateReferenceModeNamingExtensionPropertiesOnObjectType(object extendableElement, PropertyDescriptorCollection properties)
 		{
 			ObjectType objectType;
 			IReferenceModePattern referenceMode;
@@ -113,8 +113,11 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				!objectType.IsDeleted &&
 				null != (referenceMode = objectType.ReferenceModePattern))
 			{
+				bool extensionSpecific = HasMultipleObjectTypeExtensionSources(objectType.Store);
 				ReferenceModeType referenceModeType = referenceMode.ReferenceModeType;
-				properties.Add(ReferenceToEntityTypeNamingChoicePropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.Instance);
+				properties.Add(extensionSpecific ?
+					ReferenceToEntityTypeNamingChoicePropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.ExtensionSpecificInstance :
+					ReferenceToEntityTypeNamingChoicePropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.Instance);
 				ReferenceModeNaming naming = InstanceResolver<RelationalDefaultReferenceModeNaming>.ResolveReferenceModeNamingFromObjectType(null, objectType, false, typeof(ReferenceModeNamingCustomizesObjectType));
 				DefaultReferenceModeNaming defaultNaming = null;
 
@@ -122,15 +125,21 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				if (currentChoice == ReferenceModeNamingChoice.CustomFormat ||
 					(currentChoice == ReferenceModeNamingChoice.ModelDefault && GetNamingChoiceFromDefault(defaultNaming = InstanceResolver<RelationalDefaultReferenceModeNaming>.ResolveDefaultReferenceModeNamingFromObjectType(null, objectType, typeof(DefaultReferenceModeNamingCustomizesORMModel), typeof(ReferenceModeNamingCustomizesObjectType)), referenceModeType, ReferenceModeNamingUse.ReferenceToEntityType) == EffectiveReferenceModeNamingChoice.CustomFormat))
 				{
-					properties.Add(ReferenceToEntityTypeCustomFormatPropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.Instance);
+					properties.Add(extensionSpecific ?
+						ReferenceToEntityTypeCustomFormatPropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.ExtensionSpecificInstance :
+						ReferenceToEntityTypeCustomFormatPropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.Instance);
 				}
-				properties.Add(PrimaryIdentifierNamingChoicePropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.Instance);
+				properties.Add(extensionSpecific ?
+					PrimaryIdentifierNamingChoicePropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.ExtensionSpecificInstance :
+					PrimaryIdentifierNamingChoicePropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.Instance);
 
 				currentChoice = GetNamingChoice(naming, ReferenceModeNamingUse.PrimaryIdentifier);
 				if (currentChoice == ReferenceModeNamingChoice.CustomFormat ||
 					(currentChoice == ReferenceModeNamingChoice.ModelDefault && GetNamingChoiceFromDefault(defaultNaming ?? (defaultNaming = InstanceResolver<RelationalDefaultReferenceModeNaming>.ResolveDefaultReferenceModeNamingFromObjectType(null, objectType, typeof(DefaultReferenceModeNamingCustomizesORMModel), typeof(ReferenceModeNamingCustomizesObjectType))), referenceModeType, ReferenceModeNamingUse.PrimaryIdentifier) == EffectiveReferenceModeNamingChoice.CustomFormat))
 				{
-					properties.Add(PrimaryIdentifierCustomFormatPropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.Instance);
+					properties.Add(extensionSpecific ?
+						PrimaryIdentifierCustomFormatPropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.ExtensionSpecificInstance :
+						PrimaryIdentifierCustomFormatPropertyDescriptor<RelationalReferenceModeNaming, ReferenceModeNamingCustomizesObjectType, RelationalDefaultReferenceModeNaming, DefaultReferenceModeNamingCustomizesORMModel, MappingCustomizationModel>.Instance);
 				}
 			}
 		}
