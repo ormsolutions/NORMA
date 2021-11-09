@@ -303,7 +303,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						// that the fact editor will always be colorized, and that the named colors will
 						// show in the options dialog after the fact editor has been shown.
 						object[] customAttributes = this.GetType().Assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
-						int expectedRevisionNumber = customAttributes.Length != 0 ? new Version(((AssemblyFileVersionAttribute)customAttributes[0]).Version).Revision : 0;
+						int expectedRevisionNumber = 0;
+						if (customAttributes.Length != 0)
+						{
+							// Prior to git versioning the Revision field was strictly increasing between builds, but now
+							// just indicates the revision offset from the latest tag. The 'strictly increasing' notion
+							// now applies to the Build and Revision fields, which can be combined into one number so we
+							// can keep the rest of the existing code.
+							Version version = new Version(((AssemblyFileVersionAttribute)customAttributes[0]).Version);
+							expectedRevisionNumber = (int)((uint)version.Build << 16 | (uint)version.Revision);
+						}
+
 						if (null == (objVal = userKey.GetValue(REGISTRYVALUE_FACTEDITORCOLORSCHECKEDFORREVISION, 0)) ||
 							!(objVal is int) ||
 							expectedRevisionNumber != (int)objVal)

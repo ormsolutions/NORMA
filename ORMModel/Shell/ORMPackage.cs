@@ -861,7 +861,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				myResolvedType = providerType;
 				object[] customAttributes = providerType.Assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
-				myExpectedRevisionNumber = customAttributes.Length != 0 ? new Version(((AssemblyFileVersionAttribute)customAttributes[0]).Version).Revision : 0;
+				if (customAttributes.Length != 0)
+				{
+					// Prior to git versioning the Revision field was strictly increasing between builds, but now
+					// just indicates the revision offset from the latest tag. The 'strictly increasing' notion
+					// now applies to the Build and Revision fields, which can be combined into one number so we
+					// can keep the rest of the existing code.
+					Version version = new Version(((AssemblyFileVersionAttribute)customAttributes[0]).Version);
+					myExpectedRevisionNumber = (int)((uint)version.Build << 16 | (uint)version.Revision);
+				}
+				else
+				{
+					myExpectedRevisionNumber = 0;
+				}
 			}
 			/// <summary>
 			/// Create toolbox provider revision information for an extension type
