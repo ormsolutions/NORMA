@@ -647,6 +647,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 				// Note that the values are explicitly ordered  and match the values listed in the ReferenceModeNamingEditor
 				private static readonly StandardValuesCollection OrderedValues = new StandardValuesCollection(new object[] { ReferenceModeNamingChoice.ModelDefault, ReferenceModeNamingChoice.EntityTypeName, ReferenceModeNamingChoice.ReferenceModeName, ReferenceModeNamingChoice.ValueTypeName, ReferenceModeNamingChoice.CustomFormat});
+				/// <summary>
+				/// Limit constructor visibility for abstract class
+				/// </summary>
 				protected ReferenceModeNamingEnumConverterBase()
 				{
 				}
