@@ -428,6 +428,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnMenuLoadNORMASchemas),
 						ORMDesignerCommandIds.LoadNORMASchemas)
 #endif // VSIX_Per_User
+						,new OleMenuCommand(
+						new EventHandler(OnMenuORMDesignerOptions),
+						ORMDesignerCommandIds.ORMDesignerOptions)
 					}
 					#endregion
 				);
@@ -1112,6 +1115,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 			}
 #endif // VSIX_Per_User
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuORMDesignerOptions(object sender, EventArgs e)
+			{
+				ORMDesignerPackage.Singleton.ShowOptionPage(typeof(OptionsPage));
+			}
 			#region ReadingEditor context menu handlers
 			/// <summary>
 			/// Status callback
@@ -2135,6 +2145,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			public static readonly CommandID LoadNORMASchemas = new CommandID(guidORMDesignerCommandSet, cmdIdLoadNORMASchemas);
 #endif // VSIX_Per_User
+			/// <summary>
+			/// NORMA Options Page
+			/// </summary>
+			public static readonly CommandID ORMDesignerOptions = new CommandID(guidORMDesignerCommandSet, cmdIdORMDesignerOptions);
 			#endregion //CommandID objects for menus
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with PkgCmd.vsct
@@ -2469,6 +2483,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// </summary>
 			private const int cmdIdLoadNORMASchemas = 0x2942;
 #endif // VSIX_Per_User
+			/// <summary>
+			/// NORMA Options page
+			/// </summary>
+			private const int cmdIdORMDesignerOptions = 0x2943;
 			/// <summary>
 			/// The context menu item for related diagrams, targeted to the diagram spy
 			/// </summary>

@@ -613,7 +613,7 @@
 				<CommandFlag>DefaultInvisible</CommandFlag>
 				<CommandFlag>DynamicVisibility</CommandFlag>
 				<Strings>
-					<ButtonText>ORM &amp;Informal Description Editor</ButtonText>
+					<ButtonText>ORM Inf&amp;ormal Description Editor</ButtonText>
 				</Strings>
 			</Button>
 			<Button guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" priority="0x0400" type="Button">
@@ -988,6 +988,17 @@
 					<ButtonText>Load &amp;NORMA Schemas</ButtonText>
 				</Strings>
 			</Button>
+
+			<Button guid="guidORMDesignerCommandSet" id="cmdIdORMDesignerOptions" type="Button" priority="0x0030">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdProperties"/>
+				<!-- ShellCmdDef.vsct lists guidVsShellIcons/cmdidVsShellOptions as the icon for the Tools/Options page.
+				However, cmdidVsShellOptions is not defined in any files included in the VSSDK. The value is here is
+				obtained by inspection via trying batches of icons from guidVsShellIcons.-->
+				<Icon guid="guidVsShellIcons" id="69"/>
+				<Strings>
+					<ButtonText>ORM Designer Op&amp;tions</ButtonText>
+				</Strings>
+			</Button>
 		</Buttons>
 
 		<!--<Combos/>-->
@@ -1010,7 +1021,7 @@
 		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidToolbox" priority="0x0020">
 			<Parent guid="guidORMDesignerCommandSet" id="groupIdProperties"/>
 		</CommandPlacement>
-		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidPropertiesWindow" priority="0x0030">
+		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidPropertiesWindow" priority="0x0040">
 			<Parent guid="guidORMDesignerCommandSet" id="groupIdProperties"/>
 		</CommandPlacement>
 		<CommandPlacement Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="groupIdXmlSchemaCatalogs" priority="0x8000">
@@ -1027,15 +1038,16 @@
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewFactEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="F" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReadingEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="R" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewVerbalizationBrowser" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="V" mod2="Control"/>
-		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewInformalDescriptionWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="I" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewInformalDescriptionWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="O" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewSamplePopulationEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="S" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewNotesWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="N" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewReferenceModeEditor" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="E" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewContextWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="C" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdViewDiagramSpyWindow" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="D" mod2="Control"/>
+		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdORMDesignerOptions" editor="guidORMDesignerEditor" key1="W" mod1="Control" key2="T" mod2="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoom100" editor="guidORMDesignerEditor" key1="48" mod1="Control"/>
 		<!-- Note that Control-Shift-0 is a default windows hotkey in and after Windows 7. This was the original setting, but the control-only
-			versionts needed to be added so that Zoom100 would have a normal hotkey. -->
+			versions needed to be added so that Zoom100 would have a normal hotkey. -->
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoom100" editor="guidORMDesignerEditor" key1="48" mod1="Control Shift"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomIn" editor="guidORMDesignerEditor" key1="187" mod1="Control"/>
 		<KeyBinding guid="guidORMDesignerCommandSet" id="cmdIdZoomIn" editor="guidORMDesignerEditor" key1="187" mod1="Control Shift"/>
@@ -1209,7 +1221,7 @@
 			<IDSymbol value="0x1020" name="groupIdDisableErrorListTest"/>
 			<IDSymbol value="0x1021" name="groupIdEnableErrorListTest"/>
 			<IDSymbol value="0x1022" name="groupIdSelectInGroupListTest"/>
-			<IDSymbol Condition="Defined(VSIX_Per_User)" value="0x1023" name="groupIdXmlSchemaCatalogs"/>
+			<IDSymbol value="0x1023" name="groupIdXmlSchemaCatalogs"/>
 
 			<!-- Commands (0x2___) -->
 			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
@@ -1280,7 +1292,8 @@
 			<IDSymbol value="0x293f" name="cmdIdZoom400"/>
 			<IDSymbol value="0x2940" name="cmdIdZoomIn"/>
 			<IDSymbol value="0x2941" name="cmdIdZoomOut"/>
-			<IDSymbol Condition="Defined(VSIX_Per_User)" value="0x2942" name="cmdIdLoadNORMASchemas"/>
+			<IDSymbol value="0x2942" name="cmdIdLoadNORMASchemas"/>
+			<IDSymbol value="0x2943" name="cmdIdORMDesignerOptions"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
@@ -1338,7 +1351,9 @@
 			<IDSymbol value="0x0005" name="bmpIdLeftArrow"/>
 			<IDSymbol value="0x0006" name="bmpIdRightArrow"/>
 		</GuidSymbol>
-		<GuidSymbol Condition="Defined(VSIX_Per_User)" name="guidXmlGroup" value="{061317B2-F992-435E-A23D-9EAD4B972ED5}">
+		<!-- The XML values were obtained using the vsct.exe tool to decompile the CTMENU resource
+		extracted from the XML Editor localization assembly. I could not find them in the VSSDK. -->
+		<GuidSymbol name="guidXmlGroup" value="{061317B2-F992-435E-A23D-9EAD4B972ED5}">
 			<IDSymbol value="0x0101" name="IDM_XML_EDITOR"/>
 		</GuidSymbol>
 	</Symbols>
