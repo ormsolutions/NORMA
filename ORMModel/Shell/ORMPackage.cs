@@ -133,11 +133,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		// Key relative to the VS-provided application registry root
 		private const string REGISTRYROOT_PACKAGE_SETTINGS = @"ORM Solutions\Natural ORM Architect";
 #endif
-		private const string REGISTRYKEY_EXTENSIONS = @"Extensions";
-		private const string REGISTRYKEY_DESIGNERSETTINGS = @"DesignerSettings";
+		private const string REGISTRYKEY_EXTENSIONS = "Extensions";
+		private const string REGISTRYKEY_DESIGNERSETTINGS = "DesignerSettings";
 		private const string REGISTRYVALUE_VERBALIZATIONDIR = "VerbalizationDir";
 		private const string REGISTRYVALUE_TOOLBOXREVISION_OBSOLETESINGLEVALUE = "ToolboxRevision";
 		private const string REGISTRYKEY_TOOLBOXREVISIONS = "ToolboxRevisions";
+#if VISUALSTUDIO_15_0 && VSIX_Per_User
+		private const string REGISTRYKEY_SCHEMACATALOGS = "SchemaCatalogs";
+		private const string REGISTRYKEY_PLIX_FORMATTERS = @"Neumont\PLiX\Formatters"; // Used to deduce schema location
+#endif
 		#endregion
 		#region Member variables
 		/// <summary>
@@ -148,6 +152,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private ORMDesignerSettings myDesignerSettings;
 #if VISUALSTUDIO_15_0
 		private string[] myVerbalizationDirectories;
+#if VSIX_Per_User
+		private string[] mySchemaCatalogs;
+#endif // VSIX_Per_User
 #else
 		private string myVerbalizationDirectory;
 #endif
@@ -269,6 +276,75 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return null;
 			}
 		}
+#if VISUALSTUDIO_15_0 && VSIX_Per_User
+		/// <summary>
+		/// Read the schema cata locations from the registry
+		/// </summary>
+		public static string[] SchemaCatalogs
+		{
+			get
+			{
+				ORMDesignerPackage package = mySingleton;
+				if (package != null)
+				{
+					string[] retVal = package.mySchemaCatalogs;
+					if (retVal == null)
+					{
+						List<string> fileNames = null;
+						using (RegistryKey rootKey = package.PackageSettingsRegistryRoot)
+						{
+							if (rootKey != null)
+							{
+								using (RegistryKey settingsKey = rootKey.OpenSubKey(REGISTRYKEY_SCHEMACATALOGS, RegistryKeyPermissionCheck.ReadSubTree))
+								{
+									if (settingsKey != null)
+									{
+										fileNames = new List<string>();
+										string[] settingsKeyNames = settingsKey.GetSubKeyNames();
+										int settingsCount = (settingsKeyNames == null) ? 0 : settingsKeyNames.Length;
+										for (int i = 0; i < settingsCount; ++i)
+										{
+											using (RegistryKey settingKey = settingsKey.OpenSubKey(settingsKeyNames[i], RegistryKeyPermissionCheck.ReadSubTree))
+											{
+												if (settingKey != null)
+												{
+													string fileName = settingKey.GetValue(null, string.Empty, RegistryValueOptions.None) as string;
+													if (!string.IsNullOrEmpty(fileName))
+													{
+														fileNames.Add(fileName);
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+
+						// Pick up the schemas for the PLiX dependency, which must also install per-user to work with NORMA.
+						using (RegistryKey rootKey = package.ApplicationRegistryRoot)
+						{
+							if (rootKey != null)
+							{
+								using (RegistryKey formattersKey = rootKey.OpenSubKey(REGISTRYKEY_PLIX_FORMATTERS, RegistryKeyPermissionCheck.ReadSubTree))
+								{
+									string fileName = formattersKey.GetValue("cs", string.Empty, RegistryValueOptions.None) as string;
+									if (!string.IsNullOrEmpty(fileName))
+									{
+										(fileNames ?? (fileNames = new List<string>())).Add(new System.IO.FileInfo(fileName).Directory.Parent.FullName + @"\$Schemas\PLiXCatalog.xml");
+									}
+								}
+							}
+						}
+
+						package.mySchemaCatalogs = retVal = fileNames != null ? fileNames.ToArray() : Array.Empty<string>();
+					}
+					return retVal;
+				}
+				return null;
+			}
+		}
+#endif // VISUALSTUDIO_15_0 && VSIX_Per_User
 		/// <summary>
 		/// Retrieve the registry root for settings installed in the product directory.
 		/// </summary>

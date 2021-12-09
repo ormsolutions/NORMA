@@ -274,6 +274,7 @@
 			<Group guid="guidORMDesignerCommandSet" id="groupIdFactEditorCommitCommands" priority="0x0010">
 				<Parent guid="guidORMDesignerCommandSet" id="menuIdFactEditorContextMenu"/>
 			</Group>
+			<Group Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="groupIdXmlSchemaCatalogs"/>
 		</Groups>
 
 		<Buttons>
@@ -979,6 +980,14 @@
 				</Strings>
 			</Button>
 
+			<Button Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="cmdIdLoadNORMASchemas" type="Button" priority="0x0000">
+				<Parent guid="guidORMDesignerCommandSet" id="groupIdXmlSchemaCatalogs"/>
+				<CommandFlag>DefaultInvisible</CommandFlag>
+				<CommandFlag>DynamicVisibility</CommandFlag>
+				<Strings>
+					<ButtonText>Load &amp;NORMA Schemas</ButtonText>
+				</Strings>
+			</Button>
 		</Buttons>
 
 		<!--<Combos/>-->
@@ -1003,6 +1012,9 @@
 		</CommandPlacement>
 		<CommandPlacement guid="CMDSETID_StandardCommandSet97" id="cmdidPropertiesWindow" priority="0x0030">
 			<Parent guid="guidORMDesignerCommandSet" id="groupIdProperties"/>
+		</CommandPlacement>
+		<CommandPlacement Condition="Defined(VSIX_Per_User)" guid="guidORMDesignerCommandSet" id="groupIdXmlSchemaCatalogs" priority="0x8000">
+			<Parent guid="guidXmlGroup" id="IDM_XML_EDITOR"/>
 		</CommandPlacement>
 	</CommandPlacements>
 
@@ -1197,6 +1209,7 @@
 			<IDSymbol value="0x1020" name="groupIdDisableErrorListTest"/>
 			<IDSymbol value="0x1021" name="groupIdEnableErrorListTest"/>
 			<IDSymbol value="0x1022" name="groupIdSelectInGroupListTest"/>
+			<IDSymbol Condition="Defined(VSIX_Per_User)" value="0x1023" name="groupIdXmlSchemaCatalogs"/>
 
 			<!-- Commands (0x2___) -->
 			<IDSymbol value="0x28FE" name="cmdIdDebugViewTransactionLogs"/>
@@ -1267,6 +1280,7 @@
 			<IDSymbol value="0x293f" name="cmdIdZoom400"/>
 			<IDSymbol value="0x2940" name="cmdIdZoomIn"/>
 			<IDSymbol value="0x2941" name="cmdIdZoomOut"/>
+			<IDSymbol Condition="Defined(VSIX_Per_User)" value="0x2942" name="cmdIdLoadNORMASchemas"/>
 
 			<!-- Large ranges for dynamic commands, keep single commands in the 0x29__ range -->
 			<IDSymbol value="0x2A00" name="cmdIdErrorList"/>
@@ -1316,7 +1330,6 @@
 			<IDSymbol value="Extern" name="cmdidErrorListWindow"/>
 			<IDSymbol value="Extern" name="cmdidToolbox"/>
 		</GuidSymbol>
-		<GuidSymbol name="CMDSETID_StandardCommandSet2K" value="Extern"/>
 		<GuidSymbol name="guidCommandIcons" value="{E590BC32-4910-429C-BFA7-24EB2FD63E0D}">
 			<IDSymbol value="0x0001" name="bmpIdDelete"/>
 			<IDSymbol value="0x0002" name="bmpIdCamera"/>
@@ -1324,6 +1337,9 @@
 			<IDSymbol value="0x0004" name="bmpIdDownArrow"/>
 			<IDSymbol value="0x0005" name="bmpIdLeftArrow"/>
 			<IDSymbol value="0x0006" name="bmpIdRightArrow"/>
+		</GuidSymbol>
+		<GuidSymbol Condition="Defined(VSIX_Per_User)" name="guidXmlGroup" value="{061317B2-F992-435E-A23D-9EAD4B972ED5}">
+			<IDSymbol value="0x0101" name="IDM_XML_EDITOR"/>
 		</GuidSymbol>
 	</Symbols>
 </CommandTable>

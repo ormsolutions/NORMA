@@ -44,6 +44,10 @@
     <NORMACatalogFileSuffix>Local</NORMACatalogFileSuffix>
     <NORMASchemaSubpath>$Schemas\</NORMASchemaSubpath>
     <PerUserFileSuffix>.PerUser</PerUserFileSuffix>
+    <NORMASchemaCatalogValue>[$RootKey$\ORM Solutions\Natural ORM Architect\Designer\SchemaCatalogs\NORMACatalog]&#xd;&#xa;@="$PackageFolder$\$Schemas\NORMACatalog.xml"</NORMASchemaCatalogValue>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(VSIXPerUser)'!='1'">
+    <NORMASchemaCatalogValue>;PerUser Installation Only</NORMASchemaCatalogValue>
   </PropertyGroup>
   <Target Name="PkgDefPublicKeyToken">
     <ReplaceFileText 
@@ -51,6 +55,13 @@
       OutputFilename="$(ProjectDir)ORMDesigner.pkgdef" 
       MatchExpression="\$NORMAPublicKeyToken\$" 
       ReplacementText="$(NORMAPublicKeyToken)" />
+  </Target>
+  <Target Name="NORMASchemaCatalog">
+    <ReplaceFileText 
+      InputFilename="$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ORMDesigner.pkgdef" 
+      OutputFilename="$(ProjectDir)ORMDesigner.pkgdef" 
+      MatchExpression="\$NORMASchemaCatalog\$" 
+      ReplacementText="$(NORMASchemaCatalogValue)" />
   </Target>
   <Target Name="NORMAGitVerTarget">
     <Exec Command="$(ProjectDir)..\..\NORMAGitVer.bat" ConsoleToMSBuild="true">
@@ -126,7 +137,7 @@
       Namespaces="$(VSTemplateNamespace)"/>
   </Target>
   <PropertyGroup>
-    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);ManifestVersionPoke;AddDatabaseImportAssembly;PkgDefPublicKeyToken</CreateVsixContainerDependsOn>
+    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);ManifestVersionPoke;AddDatabaseImportAssembly;PkgDefPublicKeyToken;NORMASchemaCatalog</CreateVsixContainerDependsOn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(VSIXPerUser)'=='1'">
     <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);PerUserPoke;PLiXPerUserPoke;LocalSchemaTargets</CreateVsixContainerDependsOn>

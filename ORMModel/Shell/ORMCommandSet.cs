@@ -422,6 +422,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						new EventHandler(OnMenuZoom),
 						ORMDesignerCommandIds.ZoomOut,
 						float.MinValue)
+#if VSIX_Per_User
+						,new DynamicStatusMenuCommand(
+						new EventHandler(OnStatusLoadNORMASchemas),
+						new EventHandler(OnMenuLoadNORMASchemas),
+						ORMDesignerCommandIds.LoadNORMASchemas)
+#endif // VSIX_Per_User
 					}
 					#endregion
 				);
@@ -1066,6 +1072,46 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			}
+#if VSIX_Per_User
+			/// <summary>
+			/// Status callback
+			/// </summary>
+			private void OnStatusLoadNORMASchemas(object sender, EventArgs e)
+			{
+				IMonitorSelectionService monitorSelection;
+				object selectionContainer;
+				bool inXmlEditor =
+					null != (monitorSelection = MonitorSelection) &&
+					null != (selectionContainer = monitorSelection.CurrentSelectionContainer) &&
+					selectionContainer.GetType().FullName == "Microsoft.XmlEditor.XmlDocumentProperties";
+
+				MenuCommand command = (MenuCommand)sender;
+				command.Supported = true;
+				command.Enabled = inXmlEditor;
+				command.Visible = inXmlEditor;
+			}
+			/// <summary>
+			/// Menu handler
+			/// </summary>
+			protected void OnMenuLoadNORMASchemas(object sender, EventArgs e)
+			{
+				EnvDTE.DTE dte;
+				if (null != (dte = ORMDesignerPackage.Singleton.GetService<EnvDTE.DTE, EnvDTE.DTE>()))
+				{
+					EnvDTE.ItemOperations operations = dte.ItemOperations;
+					string[] catalogs = ORMDesignerPackage.SchemaCatalogs;
+
+					for (int i = 0; i < catalogs.Length; ++i)
+					{
+						string catalog = catalogs[i];
+						if (System.IO.File.Exists(catalog) && !dte.ItemOperations.IsFileOpen(catalog))
+						{
+							operations.OpenFile(catalog);
+						}
+					}
+				}
+			}
+#endif // VSIX_Per_User
 			#region ReadingEditor context menu handlers
 			/// <summary>
 			/// Status callback
@@ -2083,6 +2129,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Zoom Out.
 			/// </summary>
 			public static readonly CommandID ZoomOut = new CommandID(guidORMDesignerCommandSet, cmdIdZoomOut);
+#if VSIX_Per_User
+			/// <summary>
+			/// Load NORMA Schemas
+			/// </summary>
+			public static readonly CommandID LoadNORMASchemas = new CommandID(guidORMDesignerCommandSet, cmdIdLoadNORMASchemas);
+#endif // VSIX_Per_User
 			#endregion //CommandID objects for menus
 			#region cmdIds
 			// IMPORTANT: keep these constants in sync with PkgCmd.vsct
@@ -2411,6 +2463,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// Zoom Out.
 			/// </summary>
 			private const int cmdIdZoomOut = 0x2941;
+#if VSIX_Per_User
+			/// <summary>
+			/// Load NORMA Schemas
+			/// </summary>
+			private const int cmdIdLoadNORMASchemas = 0x2942;
+#endif // VSIX_Per_User
 			/// <summary>
 			/// The context menu item for related diagrams, targeted to the diagram spy
 			/// </summary>

@@ -290,6 +290,9 @@ Windows Registry Editor Version 5.00
 "CodeBase"="$PackageFolder$\Extensions\ORMSolutions.ORMArchitect.RelationalModels.VS2017.dll"
 "SecondaryNamespace"=dword:00000001
 
+;Schema catalog registration
+$NORMASchemaCatalog$
+
 ;Generator registration
 [$RootKey$\ORM Solutions\Natural ORM Architect\Generators\CLIPropertiesToPLiXAbstract]
 "Type"="XSLT"

@@ -22,6 +22,14 @@
 		</When>
 	</Choose>
 
+	<Choose>
+		<When Condition="!$(NORMAConstants.Contains(VSIX_Per_User)) AND ('$(VSIXPerUser)'=='1')">
+			<PropertyGroup>
+				<NORMAConstants>$(NORMAConstants);VSIX_Per_User</NORMAConstants>
+			</PropertyGroup>
+		</When>
+	</Choose>
+
 	<PropertyGroup>
 		<DefineConstants Condition="'$(NORMAConstants)'!=''">$(DefineConstants);$(NORMAConstants)</DefineConstants>
 		<MSBuildAllProjects>$(MSBuildAllProjects);$(NORMATrunkDir)\NORMACommon.targets</MSBuildAllProjects>
