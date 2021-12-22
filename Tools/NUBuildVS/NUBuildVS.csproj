@@ -32,8 +32,12 @@
     <DocumentationFile>bin\Neumont.Build.VisualStudio.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Framework, Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Build.Utilities$(ProjectToolsAssemblySuffix), Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Build.Framework, Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">$(VSInstallDir)MSBuild\Current\Bin\Microsoft.Build.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Build.Utilities$(ProjectToolsAssemblySuffix), Version=$(ProjectToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">$(VSInstallDir)MSBuild\Current\Bin\Microsoft.Build.Utilities$(ProjectToolsAssemblySuffix).dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>

@@ -56,13 +56,19 @@
     <Reference Include="EnvDTE80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=x86">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix).dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix).dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=$(TargetSpecificArchitecture)">
       <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 15.0">$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk.Diagrams.GraphObject$(TargetDslToolsVersionSuffix).dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Shell$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Shell$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk.Shell$(TargetDslToolsVersionSuffix).dll</HintPath>
+    </Reference>
     <Reference Condition=" '$(TargetVisualStudioVersion)' == 'v10.0' Or '$(TargetVisualStudioVersion)' == 'v11.0' Or '$(TargetVisualStudioVersion)' == 'v12.0' Or '$(TargetVisualStudioVersion)' == 'v14.0' " Include="Microsoft.VisualStudio.Shell.Immutable.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Condition=" $(TargetVisualStudioNumericVersion) &gt;= 11.0 " Include="Microsoft.VisualStudio.Shell.Immutable.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Condition=" $(TargetVisualStudioNumericVersion) &gt;= 12.0 " Include="Microsoft.VisualStudio.Shell.Immutable.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -71,6 +77,7 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.Package.LanguageService$(TargetVisualStudioFrameworkAssemblySuffix), Version=$(TargetVisualStudioFrameworkAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">$(VSInstallDir)Common7\IDE\Microsoft.VisualStudio.Package.LanguageService$(TargetVisualStudioFrameworkAssemblySuffix).dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <!-- As of Visual Studio 2008, Microsoft.VisualStudio.Shell.9.0 is still versioned as 2.0.0.0. -->
@@ -98,16 +105,19 @@
     <Reference Condition=" $(TargetVisualStudioNumericVersion) &gt;= 15.0 " Include="Microsoft.VisualStudio.Shell.Framework, Version=$(TargetVisualStudioAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Condition=" $(TargetVisualStudioNumericVersion) &gt;= 15.0 " Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime.dll, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Condition=" $(TargetVisualStudioNumericVersion) &gt;= 15.0 And $(TargetVisualStudioNumericVersion) &lt; 17.0 " Include="Microsoft.VisualStudio.Shell.Interop.15.3.DesignTime.dll, Version=15.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <Reference Condition=" $(TargetVisualStudioNumericVersion) &lt; 17.0 " Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Condition=" $(TargetVisualStudioNumericVersion) &lt; 17.0 " Include="Microsoft.VisualStudio.TextManager.Interop.8.0, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Condition=" $(TargetVisualStudioNumericVersion) &gt;= 17.0 " Include="Microsoft.VisualStudio.Interop, Version=$(TargetVisualStudioAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.VirtualTreeGrid, Version=$(TargetVisualStudioAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -919,11 +929,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CompileVsct Include="Shell\PackageResources\PkgCmd.vsct">
+    <CompileVsct Condition="$(TargetVisualStudioNumericVersion) &lt; 17.0" Include="Shell\PackageResources\PkgCmd.vsct">
       <ResourceName>1000</ResourceName>
       <MergeTarget>Shell\PackageResources\VSPackage.resx</MergeTarget>
       <SubType>Designer</SubType>
     </CompileVsct>
+    <VSCTCompile Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0" Include="Shell\PackageResources\PkgCmd.vsct">
+      <ResourceName>1000</ResourceName>
+    </VSCTCompile>
     <EmbeddedResource Include="Framework\FrameworkServices.resx">
       <LogicalName>ORMSolutions.ORMArchitect.Framework.IFrameworkServices.resources</LogicalName>
       <DependentUpon>FrameworkServices.cs</DependentUpon>
@@ -960,8 +973,9 @@
       <DependentUpon>ImportStepOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Shell\PackageResources\VSPackage.resx">
-      <LogicalName>VSPackage.resources</LogicalName>
-      <SubType>Designer</SubType>
+      <LogicalName Condition="$(TargetVisualStudioNumericVersion) &lt; 17.0">VSPackage.resources</LogicalName>
+      <ManifestResourceName Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">VSPackage</ManifestResourceName>
+      <MergeWithCTO Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">true</MergeWithCTO>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -971,6 +985,7 @@
   <!-- Properties for VSSDK/DSL Targets: Must be defined before importing the targets -->
   <PropertyGroup Condition="$(TargetVisualStudioNumericVersion) &gt;= 15.0">
     <GenerateVSIX>false</GenerateVSIX>
+    <CreateVsixContainer>false</CreateVsixContainer>
     <IncludePkgdefInVSIXContainer>false</IncludePkgdefInVSIXContainer>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <RegisterOutputPackage>false</RegisterOutputPackage>
@@ -979,13 +994,18 @@
     <TransformOnBuild>True</TransformOnBuild>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Condition="$(TargetVisualStudioNumericVersion) &gt;= 15.0 And '$(VSToolsPath)'!='' And '$(GenerateVSIX)'=='true'" Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" />
+  <Import Condition="($(TargetVisualStudioNumericVersion) &gt;= 15.0 And '$(VSToolsPath)'!='' And '$(GenerateVSIX)'=='true') Or $(TargetVisualStudioNumericVersion) &gt;=17.0" Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\Neumont.Build.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Neumont\VisualStudio\Neumont.Build.VisualStudio.targets" />
-  <ItemGroup Condition="$(TargetVisualStudioNumericVersion) &gt;= 15.0 And '$(GenerateVSIX)' != 'false'">
+  <ItemGroup Condition="($(TargetVisualStudioNumericVersion) &gt;= 15.0 And '$(GenerateVSIX)' != 'false') Or $(TargetVisualStudioNumericVersion) &gt;= 17.0">
+    <!-- This The SDK import fails if there is no source.extension.vsixmanifest. We need the VSSDK targets for
+    64-bit (VS2022 and higher) to enable the the VSCTCompile helper. With CreateVsixContainer false this file does not have to be there,
+    it just needs an item in the project file. -->
     <None Include="source.extension.vsixmanifest">
       <DesignTime>True</DesignTime>
     </None>
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetVisualStudioNumericVersion) &gt;= 15.0 And '$(GenerateVSIX)' != 'false'">
     <Content Include="..\VSIXInstall\$(TargetVisualStudioShortProductName)\ORMDesigner.pkgdef">
       <Link>ORMDesigner.pkgdef</Link>
       <IncludeInVSIX>true</IncludeInVSIX>

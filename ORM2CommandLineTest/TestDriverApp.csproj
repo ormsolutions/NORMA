@@ -40,7 +40,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <NoWarn>1607</NoWarn>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>$(TargetSpecificArchitecture)</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>false</DebugSymbols>
@@ -48,12 +48,19 @@
     <OutputPath>.\bin\Release\</OutputPath>
     <DefineConstants>$(DefineConstants);TRACE</DefineConstants>
     <NoWarn>1607</NoWarn>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>$(TargetSpecificArchitecture)</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix).dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk.Diagrams$(TargetDslToolsVersionSuffix).dll</HintPath>
+    </Reference>
+    <Reference Condition=" $(TargetVisualStudioNumericVersion) &lt; 17.0 " Include="Microsoft.VisualStudio.TextManager.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Condition=" $(TargetVisualStudioNumericVersion) &gt;= 17.0 " Include="Microsoft.VisualStudio.Interop, Version=$(TargetVisualStudioAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="ORMSolutions.ORMArchitect.Core.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=$(NORMAPublicKeyToken), processorArchitecture=MSIL">

@@ -58,7 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Oial\OialModel\$(OutDir)\ORMSolutions.ORMArchitect.ORMAbstraction.$(TargetVisualStudioShortProductName).dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix), Version=$(TargetDslToolsAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath Condition="$(TargetVisualStudioNumericVersion) &gt;= 17.0">$(VSInstallDir)Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Modeling.Sdk$(TargetDslToolsVersionSuffix).dll</HintPath>
+    </Reference>
     <Reference Include="ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName), Version=1.0.0.0, Culture=neutral, PublicKeyToken=$(NORMAPublicKeyToken), processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Oial\ORMOialBridge\$(OutDir)\ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge.$(TargetVisualStudioShortProductName).dll</HintPath>

@@ -1069,12 +1069,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// <summary>
 			/// Implements IVsFontAndColorEvents.OnFontChanged
 			/// </summary>
-			protected int OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
+			protected int OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT,
+#if VISUALSTUDIO_17_0
+				IntPtr HFONT
+#else
+				uint HFONT
+#endif
+				)
 			{
 				OnChange(ref rguidCategory);
 				return VSConstants.S_OK;
 			}
-			int IVsFontAndColorEvents.OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT, uint HFONT)
+			int IVsFontAndColorEvents.OnFontChanged(ref Guid rguidCategory, FontInfo[] pInfo, LOGFONTW[] pLOGFONT,
+#if VISUALSTUDIO_17_0
+				IntPtr HFONT
+#else
+				uint HFONT
+#endif
+				)
 			{
 				return OnFontChanged(ref rguidCategory, pInfo, pLOGFONT, HFONT);
 			}
@@ -1115,16 +1127,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				return OnResetToBaseCategory(ref rguidCategory);
 			}
-			#endregion // IVsFontAndColorEvents Implementation
+#endregion // IVsFontAndColorEvents Implementation
 		}
-		#endregion // SettingsCategory class
-		#region EditorColors class
+#endregion // SettingsCategory class
+#region EditorColors class
 		private sealed class EditorColors : SettingsCategory
 		{
-			#region Constructor
+#region Constructor
 			public EditorColors(IServiceProvider serviceProvider) : base(serviceProvider) { }
-			#endregion // Constructor
-			#region Base Overrides
+#endregion // Constructor
+#region Base Overrides
 			// Required overrides for SettingsCache
 			protected sealed override Guid CategoryGuid
 			{
@@ -1187,8 +1199,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					SendMessage(docView.CurrentDesigner.DiagramClientView.Handle, 0x15, IntPtr.Zero, IntPtr.Zero);
 				}
 			}
-			#endregion // Base Overrides
-			#region Index to name mapping
+#endregion // Base Overrides
+#region Index to name mapping
 			/// <summary>
 			/// Get the name of an item from its index
 			/// </summary>
@@ -1223,16 +1235,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return retVal;
 			}
-			#endregion // Index to name mapping
+#endregion // Index to name mapping
 		}
-		#endregion // EditorColors class
-		#region VerbalizerColors class
+#endregion // EditorColors class
+#region VerbalizerColors class
 		private sealed class VerbalizerColors : SettingsCategory
 		{
-			#region Constructor
+#region Constructor
 			public VerbalizerColors(IServiceProvider serviceProvider) : base(serviceProvider) { }
-			#endregion // Constructor
-			#region Base Overrides
+#endregion // Constructor
+#region Base Overrides
 			// Required overrides for SettingsCache
 			protected sealed override Guid CategoryGuid
 			{
@@ -1276,8 +1288,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				ORMDesignerPackage.VerbalizationWindowGlobalSettingsChanged();
 			}
-			#endregion // Base Overrides
-			#region Index to name mapping
+#endregion // Base Overrides
+#region Index to name mapping
 			/// <summary>
 			/// Get the name of an item from its index
 			/// </summary>
@@ -1312,8 +1324,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				}
 				return retVal;
 			}
-			#endregion // Index to name mapping
+#endregion // Index to name mapping
 		}
-		#endregion // VerbalizerColors class
+#endregion // VerbalizerColors class
 	}
 }

@@ -42,6 +42,7 @@
 				<TargetVisualStudioLongProductName Condition=" '$(TargetVisualStudioLongProductName)' == '' ">Visual Studio 2005</TargetVisualStudioLongProductName>
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2005</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">8.2.0.0</TargetDslToolsAssemblyVersion>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x86</TargetSpecificArchitecture>
 				<GeneratedDslFileSuffix Condition=" '$GeneratedDslFileSuffix)' == '' "></GeneratedDslFileSuffix>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">2.0</ProjectToolsVersion>
 				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">2.0.0.0</ProjectToolsAssemblyVersion>
@@ -61,6 +62,7 @@
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2008</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">9.0.0.0</TargetDslToolsAssemblyVersion>
 				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' "></GeneratedDslFileSuffix>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x86</TargetSpecificArchitecture>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">3.5</ProjectToolsVersion>
 				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.v3.5</ProjectToolsAssemblySuffix>
 				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">3.5.0.0</ProjectToolsAssemblyVersion>
@@ -80,6 +82,7 @@
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2010</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">10.0.0.0</TargetDslToolsAssemblyVersion>
 				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.10.0</TargetDslToolsVersionSuffix>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x86</TargetSpecificArchitecture>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">4.0</ProjectToolsVersion>
 				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.v4.0</ProjectToolsAssemblySuffix>
 				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">4.0.0.0</ProjectToolsAssemblyVersion>
@@ -101,6 +104,7 @@
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2012</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">11.0.0.0</TargetDslToolsAssemblyVersion>
 				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.11.0</TargetDslToolsVersionSuffix>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x86</TargetSpecificArchitecture>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">4.0</ProjectToolsVersion>
 				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.v4.0</ProjectToolsAssemblySuffix>
 				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">4.0.0.0</ProjectToolsAssemblyVersion>
@@ -122,6 +126,7 @@
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2013</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">12.0.0.0</TargetDslToolsAssemblyVersion>
 				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.12.0</TargetDslToolsVersionSuffix>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x86</TargetSpecificArchitecture>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">12.0</ProjectToolsVersion>
 				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.v12.0</ProjectToolsAssemblySuffix>
 				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">12.0.0.0</ProjectToolsAssemblyVersion>
@@ -143,6 +148,7 @@
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2015</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">14.0.0.0</TargetDslToolsAssemblyVersion>
 				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.14.0</TargetDslToolsVersionSuffix>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x86</TargetSpecificArchitecture>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">14.0</ProjectToolsVersion>
 				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.Core</ProjectToolsAssemblySuffix>
 				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">14.0.0.0</ProjectToolsAssemblyVersion>
@@ -164,6 +170,7 @@
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2017</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">15.0.0.0</TargetDslToolsAssemblyVersion>
 				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.15.0</TargetDslToolsVersionSuffix>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x86</TargetSpecificArchitecture>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">15.0</ProjectToolsVersion>
 				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.Core</ProjectToolsAssemblySuffix>
 				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">15.1.0.0</ProjectToolsAssemblyVersion>
@@ -187,6 +194,31 @@
 				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2019</TargetVisualStudioShortProductName>
 				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">16.0.0.0</TargetDslToolsAssemblyVersion>
 				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' ">.15.0</TargetDslToolsVersionSuffix>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x86</TargetSpecificArchitecture>
+				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">15.0</ProjectToolsVersion>
+				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.Core</ProjectToolsAssemblySuffix>
+				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">15.1.0.0</ProjectToolsAssemblyVersion>
+				<GeneratedDslFileSuffix Condition=" '$(GeneratedDslFileSuffix)' == '' ">.VS2010</GeneratedDslFileSuffix>
+				<VSToolsPath Condition="'$(VSToolsPath)'==''">$(MSBuildExtensionsPath)\Microsoft\VisualStudio\$(TargetVisualStudioVersion)</VSToolsPath>
+				<VSSideBySide Condition="'$(VSSideBySide)'==''">true</VSSideBySide>
+				<DefineConstants>$(DefineConstants);NO_SECURITYPERMISSIONATTRIBUTE</DefineConstants>
+			</PropertyGroup>
+		</When>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v17.0' ">
+			<PropertyGroup>
+				<TargetVisualStudioNumericVersion Condition=" '$(TargetVisualStudioNumericVersion)' == '' ">17.0</TargetVisualStudioNumericVersion>
+				<TargetFrameworkVersion Condition=" '$(TargetFrameworkVersion)' == '' ">v4.7.2</TargetFrameworkVersion>
+				<TargetVisualStudioAssemblyVersion Condition=" '$(TargetVisualStudioAssemblyVersion)' == '' ">17.0.0.0</TargetVisualStudioAssemblyVersion>
+				<TargetVisualStudioAssemblySuffix Condition=" '$(TargetVisualStudioAssemblySuffix)' == '' ">.17.0</TargetVisualStudioAssemblySuffix>
+				<TargetVisualStudioFrameworkAssemblyVersion Condition=" '$(TargetVisualStudioFrameworkAssemblyVersion)' == '' ">17.0.0.0</TargetVisualStudioFrameworkAssemblyVersion>
+				<TargetVisualStudioFrameworkAssemblySuffix Condition=" '$(TargetVisualStudioFrameworkAssemblySuffix)' == '' ">.15.0</TargetVisualStudioFrameworkAssemblySuffix>
+				<TargetVisualStudioLongProductYear Condition=" '$(TargetVisualStudioLongProductYear)' == '' ">2022</TargetVisualStudioLongProductYear>
+				<TargetVisualStudioShortProductYear Condition=" '$(TargetVisualStudioShortProductYear)' == '' ">22</TargetVisualStudioShortProductYear>
+				<TargetVisualStudioLongProductName Condition=" '$(TargetVisualStudioLongProductName)' == '' ">Visual Studio 2022</TargetVisualStudioLongProductName>
+				<TargetVisualStudioShortProductName Condition=" '$(TargetVisualStudioShortProductName)' == '' ">VS2022</TargetVisualStudioShortProductName>
+				<TargetDslToolsAssemblyVersion Condition=" '$(TargetDslToolsAssemblyVersion)' == '' ">17.0.0.0</TargetDslToolsAssemblyVersion>
+				<TargetDslToolsVersionSuffix Condition=" '$(TargetDslToolsVersionSuffix)' == '' "></TargetDslToolsVersionSuffix>
+				<TargetSpecificArchitecture Condition=" '$(TargetSpecificArchitecture)' == '' ">x64</TargetSpecificArchitecture>
 				<ProjectToolsVersion Condition=" '$(ProjectToolsVersion)' == '' ">15.0</ProjectToolsVersion>
 				<ProjectToolsAssemblySuffix Condition=" '$(ProjectToolsAssemblySuffix)' == '' ">.Core</ProjectToolsAssemblySuffix>
 				<ProjectToolsAssemblyVersion Condition=" '$(ProjectToolsAssemblyVersion)' == '' ">15.1.0.0</ProjectToolsAssemblyVersion>
@@ -241,6 +273,11 @@
 		<When Condition=" '$(TargetVisualStudioVersion)' == 'v16.0' ">
 			<PropertyGroup>
 				<DefineConstants>$(DefineConstants);VISUALSTUDIO_9_0;VISUALSTUDIO_10_0;VISUALSTUDIO_11_0;VISUALSTUDIO_12_0;VISUALSTUDIO_14_0;VISUALSTUDIO_15_0;VISUALSTUDIO_16_0</DefineConstants>
+			</PropertyGroup>
+		</When>
+		<When Condition=" '$(TargetVisualStudioVersion)' == 'v17.0' ">
+			<PropertyGroup>
+				<DefineConstants>$(DefineConstants);VISUALSTUDIO_9_0;VISUALSTUDIO_10_0;VISUALSTUDIO_11_0;VISUALSTUDIO_12_0;VISUALSTUDIO_14_0;VISUALSTUDIO_15_0;VISUALSTUDIO_16_0;VISUALSTUDIO_17_0</DefineConstants>
 			</PropertyGroup>
 		</When>
 	</Choose>

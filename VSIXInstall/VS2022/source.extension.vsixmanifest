@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
 	<Metadata>
-		<Identity Id="c5aebec2-5d8e-467f-ae59-cf8c37ad6dda" Version="1.0.0.0" Language="en-US" Publisher="ORM Solutions" />
+		<Identity Id="3c59a93e-bacf-4c46-b0a3-9063a8f66bfc" Version="1.0.0.0" Language="en-US" Publisher="ORM Solutions" />
 		<DisplayName>Natural ORM Architect</DisplayName>
 		<Description xml:space="preserve">Object-Role Modeling Designer</Description>
 		<MoreInfo>https://github.com/ormsolutions/NORMA</MoreInfo>
@@ -11,19 +11,21 @@
 		<Tags>NORMA;code generation;ORM;Object Role Modeling;Object-Role Modeling;ORM Solutions;Neumont University</Tags>
 	</Metadata>
 	<Installation InstalledByMsi="false" AllUsers="true">
-		<InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Community" />
+		<InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
+			<ProductArchitecture>amd64</ProductArchitecture>
+		</InstallationTarget>
 	</Installation>
 	<Dependencies>
-		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="[4.5,)" />
-		<Dependency d:Source="File" DisplayName="PLiX Code Generator" Id="dd5a2b87-2935-45d7-a01d-9f7c9f4d78a6" Version="[1.0.3017.3,2.0.0.0)" d:InstallSource="Embed" Location="PLiX.vsix" />
+		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="[4.7.2,)" />
+		<Dependency d:Source="File" DisplayName="PLiX Code Generator" Id="251928d1-61d1-4970-be0e-758788d0fd10" Version="[1.0.3017.3,2.0.0.0)" d:InstallSource="Embed" Location="PLiX.vsix" />
 	</Dependencies>
 	<Prerequisites>
-		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,17.0)" DisplayName="Visual Studio core editor" />
+		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,18.0)" DisplayName="Visual Studio core editor" />
 	</Prerequisites>
 	<Assets>
 		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="ORMDesigner.pkgdef" />
-		<Asset Type="Microsoft.VisualStudio.Assembly" Path="ORMSolutions.ORMArchitect.Core.VS2019.dll" />
-		<Asset Type="Microsoft.VisualStudio.Assembly" Path="ORMSolutions.ORMArchitect.DatabaseImport.VS2019.dll" />
+		<Asset Type="Microsoft.VisualStudio.Assembly" Path="ORMSolutions.ORMArchitect.Core.VS2022.dll" />
+		<Asset Type="Microsoft.VisualStudio.Assembly" Path="ORMSolutions.ORMArchitect.DatabaseImport.VS2022.dll" />
 		<Asset Type="Microsoft.VisualStudio.ItemTemplate" Path="ItemTemplates" />
 	</Assets>
 </PackageManifest>

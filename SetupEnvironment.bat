@@ -2,12 +2,18 @@
 
 IF "%~1"=="" (SET BuildOutDir=bin\Debug) ELSE (SET BuildOutDir=%~1.)
 
-IF "%ProgramFiles(X86)%"=="" (
+IF "%VS64bit%"=="1" (
 	SET ResolvedProgramFiles=%ProgramFiles%
 	SET ResolvedCommonProgramFiles=%CommonProgramFiles%
 	SET WOWRegistryAdjust=
 ) ELSE (
-	CALL:SET6432
+	IF "%ProgramFiles(X86)%"=="" (
+		SET ResolvedProgramFiles=%ProgramFiles%
+		SET ResolvedCommonProgramFiles=%CommonProgramFiles%
+		SET WOWRegistryAdjust=
+	) ELSE (
+		CALL:SET6432
+	)
 )
 
 FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0NORMAGitVer.bat" all "%~dps0."`) DO SET NORMAGitVer=%%i
@@ -35,6 +41,7 @@ FOR /F "usebackq delims= tokens=1" %%i in (`CALL "%~dp0GetPublicKeyToken.bat" "%
 ::  v14.0 = Visual Studio 2015
 ::  v15.0 = Visual Studio 2017
 ::  v16.0 = Visual Studio 2019
+::  v17.0 = Visual Studio 2022
 IF NOT DEFINED TargetVisualStudioVersion (SET TargetVisualStudioVersion=v8.0)
 
 :: Remove the value "Exp" on the next line if you want installations to be performed
@@ -310,6 +317,25 @@ IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortPr
 IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2019)
 IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2019)
 IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=16.0.0.0)
+IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=15.0)
+IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.Core)
+IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=15.1.0.0)
+IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
+IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
+IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
+GOTO:EOF
+
+:_SetupVersionVars_v17.0
+IF NOT DEFINED TargetFrameworkVersion (SET TargetFrameworkVersion=v4.7.2)
+IF NOT DEFINED TargetVisualStudioMajorMinorVersion (SET TargetVisualStudioMajorMinorVersion=17.0)
+IF NOT DEFINED TargetVisualStudioAssemblyVersion (SET TargetVisualStudioAssemblyVersion=17.0.0.0)
+IF NOT DEFINED TargetVisualStudioFrameworkAssemblyVersion (SET TargetVisualStudioFrameworkAssemblyVersion=4.7.2.0)
+IF NOT DEFINED TargetVisualStudioLongProductYear (SET TargetVisualStudioLongProductYear=2022)
+IF NOT DEFINED TargetVisualStudioShortProductYear (SET TargetVisualStudioShortProductYear=22)
+IF NOT DEFINED TargetVisualStudioShortProductName (SET TargetVisualStudioShortProductName=VS2022)
+IF NOT DEFINED TargetVisualStudioLongProductName (SET TargetVisualStudioLongProductName=Visual Studio 2022)
+IF NOT DEFINED TargetDslToolsAssemblyVersion (SET TargetDslToolsAssemblyVersion=17.0.0.0)
 IF NOT DEFINED ProjectToolsVersion (SET ProjectToolsVersion=15.0)
 IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.Core)
 IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=15.1.0.0)

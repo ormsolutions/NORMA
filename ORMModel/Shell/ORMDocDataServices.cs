@@ -43,6 +43,9 @@ using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Framework.Diagrams;
 using ORMSolutions.ORMArchitect.Framework.Shell;
 using ORMSolutions.ORMArchitect.Framework.Shell.DynamicSurveyTreeGrid;
+#if VISUALSTUDIO_17_0
+using Task = Microsoft.VisualStudio.Shell.TaskListItem;
+#endif
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {

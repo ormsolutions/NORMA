@@ -7,11 +7,16 @@ IF NOT "%~1"==""  (
 ::We want the TargetVisualStudioVersion to be available outside this batch
 ::file, so establish it before calling SETLOCAL
 SETLOCAL
-IF "%ProgramFiles(X86)%"=="" (
+IF "%VS64bit%"=="1" (
 	SET ResolvedProgramFiles=%ProgramFiles%
 	SET WOWRegistryAdjust=
 ) ELSE (
-	CALL:SET6432
+	IF "%ProgramFiles(X86)%"=="" (
+		SET ResolvedProgramFiles=%ProgramFiles%
+		SET WOWRegistryAdjust=
+	) ELSE (
+		CALL:SET6432
+	)
 )
 SET UseToolsVersion=
 CALL:_TOOLS_%TargetVisualStudioVersion%
@@ -140,6 +145,14 @@ GOTO:EOF
 CALL:SETVAR "TargetVisualStudioVersion" "v16.0"
 GOTO:EOF
 
+:_VER_2022
+:_VER_17.0
+:_VER_v17.0
+:_VER_17
+CALL:SETVAR "TargetVisualStudioVersion" "v17.0"
+CALL:SETVAR "VS64bit" "1"
+GOTO:EOF
+
 :_TOOLS_v8.0
 CALL:SETVAR "UseToolsVersion" "2.0"
 GOTO:EOF
@@ -176,5 +189,14 @@ CALL:SETVAR "TargetVisualStudioLongProductYear" "2019"
 CALL:SETVAR "TargetVisualStudioLongProductName" "Visual Studio 2019"
 CALL:SETVAR "TargetVisualStudioShortProductName" "VS2019"
 CALL:SETVAR "TargetVisualStudioMajorMinorVersion" "16.0"
+CALL:SETVAR "NotRegistryBased" "1"
+GOTO:EOF
+
+:_TOOLS_v17.0
+CALL:SETVAR "UseToolsVersion" "15.0"
+CALL:SETVAR "TargetVisualStudioLongProductYear" "2022"
+CALL:SETVAR "TargetVisualStudioLongProductName" "Visual Studio 2022"
+CALL:SETVAR "TargetVisualStudioShortProductName" "VS2022"
+CALL:SETVAR "TargetVisualStudioMajorMinorVersion" "17.0"
 CALL:SETVAR "NotRegistryBased" "1"
 GOTO:EOF

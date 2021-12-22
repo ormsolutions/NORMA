@@ -243,8 +243,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			public override int GetHashCode()
 			{
 				return Utility.GetCombinedHashCode(
-					(int)this.DeclaringType.Value,
-					(int)this.MemberType.Value,
+					this.DeclaringType.GetHashCode(),
+					this.MemberType.GetHashCode(),
 					this.Name.GetHashCode());
 			}
 		}
@@ -268,8 +268,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			public sealed override int GetHashCode(MemberInfoKey obj)
 			{
 				return Utility.GetCombinedHashCode(
-					(int)obj.DeclaringType.Value,
-					(int)obj.MemberType.Value,
+					obj.DeclaringType.GetHashCode(),
+					obj.MemberType.GetHashCode(),
 					obj.Name.GetHashCode());
 			}
 		}
