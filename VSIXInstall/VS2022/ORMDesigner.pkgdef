@@ -195,19 +195,17 @@ Windows Registry Editor Version 5.00
 
 ;ORMCustomTool Registration
 [$RootKey$\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}]
-@="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"
-[$RootKey$\CLSID\{6FDCC073-20C2-4435-9B2E-9E70451C81D8}\InprocServer32]
-@="$WinDir$\System32\mscoree.dll"
-"ThreadingModel"="Both"
+@="ORM Custom Tool Extender Provider"
 "Class"="ORMSolutions.ORMArchitect.ORMCustomTool.ExtenderProvider"
 "CodeBase"="$PackageFolder$\ORMSolutions.ORMArchitect.ORMCustomTool.VS2022.dll"
-[$RootKey$\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}]
-@="ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"
-[$RootKey$\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}\InprocServer32]
-@="$WinDir$\System32\mscoree.dll"
+"InprocServer32"="$WinDir$\System32\mscoree.dll"
 "ThreadingModel"="Both"
+[$RootKey$\CLSID\{977BD01E-F2B4-4341-9C47-459420624A20}]
+@="ORM Custom Tool Generator"
 "Class"="ORMSolutions.ORMArchitect.ORMCustomTool.ORMCustomTool"
 "CodeBase"="$PackageFolder$\ORMSolutions.ORMArchitect.ORMCustomTool.VS2022.dll"
+"InprocServer32"="$WinDir$\System32\mscoree.dll"
+"ThreadingModel"="Both"
 
 ;Microsoft Visual C# Package ORM Custom Tool
 [$RootKey$\Generators\{FAE04EC1-301F-11D3-BF4B-00C04F79EFBC}\ORMCustomTool]

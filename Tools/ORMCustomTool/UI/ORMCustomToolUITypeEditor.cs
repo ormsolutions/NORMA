@@ -66,7 +66,9 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 							IMoniker moniker;
 							ErrorHandler.ThrowOnFailure(CreateItemMoniker(
 								"!",
-#if VISUALSTUDIO_16_0
+#if VISUALSTUDIO_17_0
+								"VisualStudio.DTE.17.0:" +
+#elif VISUALSTUDIO_16_0
 								"VisualStudio.DTE.16.0:" +
 #elif VISUALSTUDIO_15_0
 								"VisualStudio.DTE.15.0:" +

@@ -56,9 +56,9 @@
       MatchExpression="\$NORMAPublicKeyToken\$" 
       ReplacementText="$(NORMAPublicKeyToken)" />
   </Target>
-  <Target Name="NORMASchemaCatalog">
+  <Target Name="NORMASchemaCatalog" DependsOnTargets="PkgDefPublicKeyToken">
     <ReplaceFileText 
-      InputFilename="$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ORMDesigner.pkgdef" 
+      InputFilename="$(ProjectDir)ORMDesigner.pkgdef" 
       OutputFilename="$(ProjectDir)ORMDesigner.pkgdef" 
       MatchExpression="\$NORMASchemaCatalog\$" 
       ReplacementText="$(NORMASchemaCatalogValue)" />
@@ -137,7 +137,7 @@
       Namespaces="$(VSTemplateNamespace)"/>
   </Target>
   <PropertyGroup>
-    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);ManifestVersionPoke;AddDatabaseImportAssembly;PkgDefPublicKeyToken;NORMASchemaCatalog</CreateVsixContainerDependsOn>
+    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);ManifestVersionPoke;AddDatabaseImportAssembly;NORMASchemaCatalog</CreateVsixContainerDependsOn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(VSIXPerUser)'=='1'">
     <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);PerUserPoke;PLiXPerUserPoke;LocalSchemaTargets</CreateVsixContainerDependsOn>

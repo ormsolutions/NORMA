@@ -475,10 +475,18 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			byte[] preamble = Encoding.UTF8.GetPreamble();
 			int bufferLength = bytes.Length + preamble.Length;
 			IntPtr pBuffer = Marshal.AllocCoTaskMem(bufferLength);
-			Marshal.Copy(preamble, 0, pBuffer, preamble.Length);
-			Marshal.Copy(bytes, 0, (IntPtr)((uint)pBuffer + preamble.Length), bytes.Length);
 			rgbOutputFileContents[0] = pBuffer;
 			pcbOutput = (uint)bufferLength;
+			Marshal.Copy(preamble, 0, pBuffer, preamble.Length);
+			if (IntPtr.Size == 8)
+			{
+				pBuffer = (IntPtr)((ulong)pBuffer + (ulong)preamble.Length);
+			}
+			else
+			{
+				pBuffer = (IntPtr)((uint)pBuffer + preamble.Length);
+			}
+			Marshal.Copy(bytes, 0, pBuffer, bytes.Length);
 			return VSConstants.S_OK;
 		}
 		private sealed class ItemPropertiesImpl : IORMGeneratorItemProperties
