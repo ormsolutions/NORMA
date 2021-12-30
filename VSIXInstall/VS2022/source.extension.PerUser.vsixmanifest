@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+	<Metadata>
+		<Identity Id="3c58bedd-dfd4-4910-80f8-5bc564257f05" Version="1.0.0.0" Language="en-US" Publisher="ORM Solutions" />
+		<DisplayName>Natural ORM Architect (Per User)</DisplayName>
+		<Description xml:space="preserve">Object-Role Modeling Designer</Description>
+		<MoreInfo>https://github.com/ormsolutions/NORMA</MoreInfo>
+		<ReleaseNotes>http://ORMSolutions.com/NORMA/Readme.htm</ReleaseNotes>
+		<Icon>Resources\ORMDesignerIcon.png</Icon>
+		<PreviewImage>Resources\ORMDesignerPreview.png</PreviewImage>
+		<Tags>NORMA;code generation;ORM;Object Role Modeling;Object-Role Modeling;ORM Solutions;Neumont University</Tags>
+	</Metadata>
+	<Installation InstalledByMsi="false" AllUsers="false">
+		<InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
+			<ProductArchitecture>amd64</ProductArchitecture>
+		</InstallationTarget>
+	</Installation>
+	<Dependencies>
+		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="[4.7.2,)" />
+		<Dependency d:Source="File" DisplayName="PLiX Code Generator" Id="251928d1-61d1-4970-be0e-758788d0fd10" Version="[1.0.3017.3,2.0.0.0)" d:InstallSource="Embed" Location="PLiX.PerUser.vsix" />
+	</Dependencies>
+	<Prerequisites>
+		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,18.0)" DisplayName="Visual Studio core editor" />
+	</Prerequisites>
+	<Assets>
+		<Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="ORMDesigner.pkgdef" />
+		<Asset Type="Microsoft.VisualStudio.Assembly" Path="ORMSolutions.ORMArchitect.Core.VS2022.dll" />
+		<Asset Type="Microsoft.VisualStudio.Assembly" Path="ORMSolutions.ORMArchitect.DatabaseImport.VS2022.dll" />
+		<Asset Type="Microsoft.VisualStudio.ItemTemplate" Path="ItemTemplates" />
+	</Assets>
+</PackageManifest>

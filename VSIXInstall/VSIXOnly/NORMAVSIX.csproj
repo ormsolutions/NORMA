@@ -75,20 +75,6 @@
       Query="/vsx:PackageManifest/vsx:Metadata/vsx:Identity/@Version"
       Namespaces="$(VSIXNamespace)"/>
   </Target>
-  <Target Name="PerUserPoke" Condition="'$(VSIXPerUser)'=='1'">
-    <XmlPoke
-      XmlInputPath="source.extension.vsixmanifest"
-      Value="false"
-      Query="/vsx:PackageManifest/vsx:Installation/@AllUsers"
-      Namespaces="$(VSIXNamespace)"/>
-  </Target>
-  <Target Name="PLiXPerUserPoke" Condition="'$(VSIXPerUser)'=='1'">
-    <XmlPoke
-      XmlInputPath="source.extension.vsixmanifest"
-      Value="PLiX.PerUser.vsix"
-      Query="/vsx:PackageManifest/vsx:Dependencies/vsx:Dependency[@Location='PLiX.vsix']/@Location"
-      Namespaces="$(VSIXNamespace)"/>
-  </Target>
   <Target Name="LocalSchemaTargets" Condition="'$(VSIXPerUser)'=='1'">
     <ReplaceFileText 
       InputFilename="$(ProjectDir)NORMACatalog.xml"
@@ -140,7 +126,7 @@
     <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);ManifestVersionPoke;AddDatabaseImportAssembly;NORMASchemaCatalog</CreateVsixContainerDependsOn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(VSIXPerUser)'=='1'">
-    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);PerUserPoke;PLiXPerUserPoke;LocalSchemaTargets</CreateVsixContainerDependsOn>
+    <CreateVsixContainerDependsOn>$(CreateVsixContainerDependsOn);LocalSchemaTargets</CreateVsixContainerDependsOn>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -901,7 +887,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup>
-    <PreBuildEvent>copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\source.extension.vsixmanifest" "$(ProjectDir)\source.extension.vsixmanifest"
+    <PreBuildEvent>copy /y "$(ProjectDir)..\$(TargetVisualStudioShortProductName)\source.extension$(PerUserFileSuffix).vsixmanifest" "$(ProjectDir)\source.extension.vsixmanifest"
 copy /y "$(ProjectDir)\NORMACatalog.xml" "$(ProjectDir)\NORMACatalogLocal.xml"
 copy /y "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\CSharp\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
 copy /y "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport_NoAssembly.vstemplate" "$(ProjectDir)\ItemTemplates\General\1033\ORMDatabaseImport\ORMDatabaseImport.vstemplate"
