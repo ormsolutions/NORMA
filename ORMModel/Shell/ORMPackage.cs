@@ -414,6 +414,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return mySingleton;
 			}
 		}
+#if VSIX_Per_User && VISUALSTUDIO_15_0 && !VISUALSTUDIO_16_0
+		/// <summary>
+		/// Expose package service provider
+		/// </summary>
+		/// <param name="serviceType"></param>
+		/// <returns></returns>
+		public new object GetService(Type serviceType)
+		{
+			return base.GetService(serviceType);
+		}
+#endif
 #endregion // Properties
 #region Base overrides
 		/// <summary>

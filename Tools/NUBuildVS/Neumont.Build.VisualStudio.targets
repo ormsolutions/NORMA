@@ -65,8 +65,8 @@
 	</PropertyGroup>
 
 	<!-- Compiles .vsct files into .cto files. -->
-	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 15.0" TaskName="VSCTCompiler_Custom" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
-	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 15.0 And $(TargetVisualStudioNumericVersion) &lt; 17.0" TaskName="VSCTCompiler_Custom" AssemblyFile="$(MSBuildExtensionsPath)\..\VSSDK\VisualStudioIntegration\Tools\bin\vsct.exe"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &lt; 15.0" TaskName="VSCTCompiler" AssemblyName="VSCT, Version=$(VsctAssemblyVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
+	<UsingTask Condition="$(TargetVisualStudioNumericVersion) &gt;= 15.0 And $(TargetVisualStudioNumericVersion) &lt; 17.0" TaskName="VSCTCompiler" AssemblyFile="$(MSBuildExtensionsPath)\..\VSSDK\VisualStudioIntegration\Tools\bin\vsct.exe"/>
 	<ItemGroup>
 		<!-- Add the CompileVsct Item name to the AvailableItemName item, so that it shows up in the Build Action drop-down menu in the properties windows in Visual Studio (and the equivalent in other IDEs). -->
 		<AvailableItemName Include="CompileVsct"/>
@@ -95,7 +95,7 @@
 		Condition="'@(CompileVsct)'!=''">
 
 		<!-- We need to include the $(MSBuildProjectDirectory) in the IntermediateDirectory below because the VSCT compiler changes the current directory while it is running. -->
-		<VSCTCompiler_Custom
+		<VSCTCompiler
 			NoLogo="true"
 			IntermediateDirectory="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)"
 			AdditionalIncludeDirectories="$(VsctIncludesDirs);$(VsSDKIncludesDir)"

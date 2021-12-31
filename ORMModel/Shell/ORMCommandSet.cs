@@ -1099,7 +1099,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			protected void OnMenuLoadNORMASchemas(object sender, EventArgs e)
 			{
 				EnvDTE.DTE dte;
+#if VISUALSTUDIO_16_0
 				if (null != (dte = ORMDesignerPackage.Singleton.GetService<EnvDTE.DTE, EnvDTE.DTE>()))
+#else
+				if (null != (dte = ORMDesignerPackage.Singleton.GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE))
+#endif
 				{
 					EnvDTE.ItemOperations operations = dte.ItemOperations;
 					string[] catalogs = ORMDesignerPackage.SchemaCatalogs;

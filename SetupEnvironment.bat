@@ -303,7 +303,11 @@ IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.Core)
 IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=15.1.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
+IF "%VSIXPerUser%"=="1" (
+IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
+) ELSE (
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+)
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
 GOTO:EOF
 
@@ -322,7 +326,11 @@ IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.Core)
 IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=15.1.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
+IF "%VSIXPerUser%"=="1" (
+IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
+) ELSE (
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+)
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
 GOTO:EOF
 
@@ -341,7 +349,11 @@ IF NOT DEFINED ProjectToolsAssemblySuffix (SET ProjectToolsAssemblySuffix=.Core)
 IF NOT DEFINED ProjectToolsAssemblyVersion (SET ProjectToolsAssemblyVersion=15.1.0.0)
 IF NOT DEFINED VSRegistryConfigDecorator (SET VSRegistryConfigDecorator=_Config)
 IF NOT DEFINED VSRegistryConfigHive (SET VSRegistryConfigHive=HKCU)
+IF "%VSIXPerUser%"=="1" (
+IF NOT DEFINED VSIXExtensionDir (CALL:SETVAR "VSIXExtensionDir" "Extensions\ORM Solutions\Natural ORM Architect (Per User)\%NORMAGitVer%")
+) ELSE (
 IF NOT DEFINED VSIXExtensionDir (SET VSIXExtensionDir=Extensions\ORM Solutions\Natural ORM Architect\%NORMAGitVer%)
+)
 IF NOT DEFINED VSSideBySide (SET VSSideBySide=true)
 GOTO:EOF
 
