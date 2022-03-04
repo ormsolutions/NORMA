@@ -140,7 +140,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <param name="localMachineRootKey">An alternate open key in the local machine hive. The provided
 		/// <paramref name="keyName"/> is relative to this key.</param>
 		/// <param name="userRootKey">An alternate open key in the current user hive. The provided
-		/// <paramref name="keyName"/> is relative to this key.</param>
+		/// <paramref name="keyName"/> is relative to this key. To iterate one key only provide the
+		/// same key for both arguments.</param>
 		/// <returns>List of unvalidated raw information. If the list contains duplicates,
 		/// then the last entry for a given namespace should be given priority.</returns>
 		public static IList<ExtensionModelData> LoadFromRegistry(string keyName, RegistryKey localMachineRootKey, RegistryKey userRootKey)
@@ -187,7 +188,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 						}
 					}
 				}
-				if (currentUserPass)
+				if (currentUserPass || (localMachineRootKey != null && (object)localMachineRootKey == userRootKey))
 				{
 					break;
 				}
@@ -510,9 +511,17 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 							domainModelType,
 							options = extensionData.Options)).IsValidExtension)
 					{
+						ExtensionModelBinding previouslyRegistered;
 						if (0 != (options & ExtensionModelOptions.AutoLoad))
 						{
-							++autoLoadCount;
+							if (!availableExtensions.TryGetValue(extensionNamespace, out previouslyRegistered) || !previouslyRegistered.IsAutoLoad)
+							{
+								++autoLoadCount;
+							}
+						}
+						else if (autoLoadCount != 0 && availableExtensions.TryGetValue(extensionNamespace, out previouslyRegistered) && previouslyRegistered.IsAutoLoad)
+						{
+							--autoLoadCount;
 						}
 
 						availableExtensions[extensionNamespace] = default(ExtensionModelBinding);

@@ -75,14 +75,102 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			myOptions = new Dictionary<string, object>();
 			mySnippetsIdentifiers = new List<VerbalizationSnippetsIdentifier>();
 		}
-		#endregion // Constructor
+		/// <summary>
+		/// Create a clean verbalization manager with the same system settings but
+		/// no customizations (custom options or custom snippet identifiers).
+		/// </summary>
+		/// <param name="basedOn">A previously created instance. Must not be null.</param>
+		public VerbalizationManager(VerbalizationManager basedOn) :
+#if VISUALSTUDIO_15_0
+			this(basedOn.myDirectories)
+#else
+			this(basedOn.myDirectory)
+#endif
+		{
+		}
+#endregion // Constructor
 		#region Static creation methods
 #if VISUALSTUDIO_15_0
-		// UNDONE: VS2017 We need something similar to LoadFromRegistry for VS2017. We will need to
-		// load the privateregistry.bin file from the VS directories to get this information, which should
-		// be reasonable unless VS is running, in which case the file is locked. This should be as seamless
-		// as possible, but will not have the same API as the pre-VS2017 versions.
-
+		/// <summary>
+		/// Create a <see cref="VerbalizationManager"/> with snippets loaded from registry-
+		/// specified directories. The loader chec The loader checks for information under this key at the given
+		/// value in both the local machine (HKEY_LOCAL_MACHINE) and user (HKEY_CURRENT_USER)
+		/// registry hives.
+		/// </summary>
+		/// <param name="parentKeyName">The registry key name from either the application and user roots
+		/// or the provided root keys. The <paramref name="keyValue"/> is read from each of the children
+		/// of this parent key.</param>
+		/// <param name="keyValue">The registry value to read the verbalization directory from. A
+		/// value of <see langword="null"/> corresponds to the default 'VerbalizationDir' value,
+		/// while an empty string corresponds to the default value for the registry key.</param>
+		/// <param name="localMachineRootKey">An alternate open key in the local machine hive. The provided
+		/// <paramref name="parentKeyName"/> is relative to this key.</param>
+		/// <param name="userRootKey">An alternate open key in the current user hive. The provided
+		/// <paramref name="parentKeyName"/> is relative to this key. To iterate one key only provide the
+		/// same key for both arguments.</param>
+		/// <returns>A new manager attached to this directory.</returns>
+		public static VerbalizationManager LoadFromRegistry(string parentKeyName, string keyValue, RegistryKey localMachineRootKey, RegistryKey userRootKey)
+		{
+			bool currentUserPass = userRootKey == null || (object)userRootKey != localMachineRootKey; // Check user first to allow override.
+			List<string> directories = null;
+			int directoryCount = 0;
+			for (; ; )
+			{
+				RegistryKey rootKey = currentUserPass ? (userRootKey ?? Registry.CurrentUser) : (localMachineRootKey ?? Registry.LocalMachine);
+				using (RegistryKey verbalizationKey = rootKey.OpenSubKey(parentKeyName, RegistryKeyPermissionCheck.ReadSubTree))
+				{
+					if (verbalizationKey != null)
+					{
+						string[] subKeyNames = verbalizationKey.GetSubKeyNames();
+						int subKeyCount = subKeyNames != null ? subKeyNames.Length : 0;
+						if (subKeyCount != 0)
+						{
+							for (int i = 0; i < subKeyCount; ++i)
+							{
+								using (RegistryKey subKey = verbalizationKey.OpenSubKey(subKeyNames[i], RegistryKeyPermissionCheck.ReadSubTree))
+								{
+									object valueObj;
+									string directory;
+									if (null != (valueObj = subKey.GetValue(keyValue ?? "VerbalizationDir")) &&
+										null != (directory = valueObj as string))
+									{
+										// Make sure there are no duplicates
+										if (directories != null)
+										{
+											int j = 0;
+											for (; j < directoryCount; ++j)
+											{
+												if (0 == string.Compare(directory, directories[i], StringComparison.OrdinalIgnoreCase))
+												{
+													break;
+												}
+											}
+											if (j == directoryCount)
+											{
+												directories.Add(directory);
+												++directoryCount;
+											}
+										}
+										else
+										{
+											directories = new List<string>();
+											directories.Add(directory);
+											++directoryCount;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				if (!currentUserPass)
+				{
+					break;
+				}
+				currentUserPass = false;
+			}
+			return directoryCount != 0 ? LoadFromDirectories(directories.ToArray()) : null;
+		}
 		/// <summary>
 		/// Load the verbalization manager using snippets from the given directory
 		/// </summary>
@@ -107,11 +195,12 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <param name="localMachineRootKey">An alternate open key in the local machine hive. The provided
 		/// <paramref name="keyName"/> is relative to this key.</param>
 		/// <param name="userRootKey">An alternate open key in the current user hive. The provided
-		/// <paramref name="keyName"/> is relative to this key.</param>
+		/// <paramref name="keyName"/> is relative to this key. To iterate one key only provide the
+		/// same key for both arguments.</param>
 		/// <returns>A new manager attached to this directory.</returns>
 		public static VerbalizationManager LoadFromRegistry(string keyName, string keyValue, RegistryKey localMachineRootKey, RegistryKey userRootKey)
 		{
-			bool currentUserPass = true; // Check user first to allow override.
+			bool currentUserPass = userRootKey == null || (object)localMachineRootKey != userRootKey; // Check user first to allow override.
 			for (; ; )
 			{
 				RegistryKey rootKey = currentUserPass ? (userRootKey ?? Registry.CurrentUser) : (localMachineRootKey ?? Registry.LocalMachine);
@@ -191,8 +280,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				return mySnippetsIdentifiers;
 			}
 		}
-#endregion // Accessor Properties
-#region Font and color management
+		#endregion // Accessor Properties
+		#region Font and color management
 		private string myFontFamilyName;
 		private float myFontSize = 8.0F;
 		private struct CategoryFontData
@@ -309,8 +398,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				dict[verbalizerColor] = new CategoryFontData(defaultColor ? defaultData.Color : color.Value, defaultBold ? defaultData.IsBold : isBold.Value);
 			}
 		}
-#endregion // Font and color management
-#region Verbalization Methods
+		#endregion // Font and color management
+		#region Verbalization Methods
 		/// <summary>
 		/// Using the current verbalization settings, verbalize the specified
 		/// elements into the output text writer.
@@ -321,8 +410,10 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// a known target as registered with the <see cref="VerbalizationTargetProviderAttribute"/> on
 		/// a loaded core or extension model.</param>
 		/// <param name="elements">One or more elements to verbalize.</param>
+		/// <param name="filter">A custom filter implementation to limit display. This is type as a child filter, but in this context
+		/// the external program is treated as the parent context, so this can also filter elements in the <paramref name="elements"/> collection.</param>
 		/// <param name="showNegative">Generate a negative verbalization if available.</param>
-		public void Verbalize(Store store, TextWriter writer, string target, ICollection elements, bool showNegative)
+		public void Verbalize(Store store, TextWriter writer, string target, ICollection elements, IVerbalizeFilterChildren filter = null, bool showNegative = false)
 		{
 			IDictionary<Type, IVerbalizationSets> snippetsDictionary = null;
 			IDictionary<string, object> options = null;
@@ -370,6 +461,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 							target,
 							alreadyVerbalized,
 							locallyVerbalized,
+							filter,
 							(showNegative ? VerbalizationSign.Negative : VerbalizationSign.Positive) | VerbalizationSign.AttemptOppositeSign,
 							callbackWriter,
 							true,
@@ -385,7 +477,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				alreadyVerbalized.Clear();
 			}
 		}
-#endregion // Verbalization Methods
+		#endregion // Verbalization Methods
 	}
-#endregion // VerbalizationManager class
+	#endregion // VerbalizationManager class
 }

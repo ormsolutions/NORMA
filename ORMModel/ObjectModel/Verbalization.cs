@@ -501,7 +501,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="child">A direct or indirect child object.</param>
 		/// <param name="sign">The preferred verbalization sign</param>
 		/// <returns>Return the provided childVerbalizer to verbalize normally, null to block verbalization, or an
-		/// alternate IVerbalize. The value is returned with a boolean option. The element will be disposed with
+		/// alternate IVerbalize. The value is returned with a boolean option. The element will be disposed if
 		/// this is true.</returns>
 		CustomChildVerbalizer FilterChildVerbalizer(object child, VerbalizationSign sign);
 	}
@@ -2354,11 +2354,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="verbalizationTarget">The verbalization target name, representing the container for the verbalization output.</param>
 		/// <param name="alreadyVerbalized">A dictionary of top-level (indentationLevel == 0) elements that have already been verbalized.</param>
 		/// <param name="locallyVerbalized">A dictionary of elements verbalized during the current top level verbalization.</param>
+		/// <param name="childFilter">An optional callback to limit children from being verbalized with the provided element.</param>
 		/// <param name="sign">The preferred verbalization sign</param>
 		/// <param name="writer">The VerbalizationCallbackWriter for verbalization output</param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
-		public static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
+		public static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalizeFilterChildren childFilter, VerbalizationSign sign, VerbalizationCallbackWriter writer, bool writeSecondaryLines, ref bool firstCallPending)
 		{
 			int lastLevel = 0;
 			bool firstWrite = true;
@@ -2371,7 +2372,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				verbalizationTarget,
 				alreadyVerbalized,
 				locallyVerbalized,
-				null,
+				childFilter,
 				writer,
 				new VerbalizationHandler(VerbalizeElement_VerbalizationResult),
 				sign,
@@ -2609,12 +2610,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (0 != (options & SurveyNodeReferenceOptions.SelectReferenceReason) &&
 							null != (deferToElement = surveyReference.SurveyNodeReferenceReason))
 						{
-							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
+							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, outerFilter, sign, writer, writeSecondaryLines, ref firstCallPending);
 							return;
 						}
 						if (null != (deferToElement = surveyReference.ReferencedElement))
 						{
-							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, sign, writer, writeSecondaryLines, ref firstCallPending);
+							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, outerFilter, sign, writer, writeSecondaryLines, ref firstCallPending);
 						}
 					}
 				}

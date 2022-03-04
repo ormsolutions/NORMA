@@ -387,6 +387,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								ORMCoreDomainModel.VerbalizationTargetName,
 								alreadyVerbalized,
 								locallyVerbalized,
+								null,
 								(showNegative ? VerbalizationSign.Negative : VerbalizationSign.Positive) | VerbalizationSign.AttemptOppositeSign,
 								callbackWriter,
 								true,
