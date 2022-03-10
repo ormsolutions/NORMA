@@ -4269,7 +4269,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						// Support object type cardinality when objectified
 						return objectTypeCardinalityConstraint.ObjectType == objectType;
 					}
-					else if (element is ObjectType || element is ReadingOrder || element is UnaryRoleCardinalityConstraint)
+					else if (element is ObjectType || element is ReadingOrder || element is UnaryRoleCardinalityConstraint || element is Role)
 					{
 						return false;
 					}
@@ -4297,7 +4297,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return false;
 				}
-				if (this.DisplayRoleNames == DisplayRoleNames.Off)
+				DisplayRoleNames display = this.DisplayRoleNames;
+				if (display == DisplayRoleNames.Off || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off))
 				{
 					return false;
 				}

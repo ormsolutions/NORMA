@@ -406,7 +406,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			DisplayRoleNames display = factTypeShape.DisplayRoleNames;
 			bool asObjectType = factTypeShape.DisplayAsObjectType;
-			bool shouldDisplay = !asObjectType && display == DisplayRoleNames.On || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On);
+			bool shouldDisplay = !asObjectType && (display == DisplayRoleNames.On || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On));
 			bool shouldRemove = asObjectType || display == DisplayRoleNames.Off;
 			foreach (RoleBase roleBase in factType.RoleCollection)
 			{
