@@ -60,7 +60,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		FactType FactType { get;}
 	}
 	#endregion // IFactConstraint interface
-	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteChild, INamedElementDictionaryParentNode, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled
+	public partial class FactType : INamedElementDictionaryChild, INamedElementDictionaryRemoteChild, INamedElementDictionaryParentNode, IModelErrorOwner, IHasIndirectModelErrorOwner, IModelErrorDisplayContext, IVerbalizeCustomChildren, IHierarchyContextEnabled, IVerbalizeFilterChildrenByRole
 	{
 		#region Public token values
 		/// <summary>
@@ -3236,6 +3236,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Equality Overrides
 		}
 		#endregion // FactTypeInstanceVerbalizer class
+		#region IVerbalizeFilterChildrenByRole Implementation
+		/// <summary>
+		/// Implements IVerbalizeFilterChildrenByRole.BlockEmbeddedVerbalization.
+		/// Roles are treated as custom children
+		/// </summary>
+		protected bool BlockEmbeddedVerbalization(DomainRoleInfo embeddingRole)
+		{
+			return embeddingRole.Id == FactTypeHasRole.FactTypeDomainRoleId;
+		}
+		bool IVerbalizeFilterChildrenByRole.BlockEmbeddedVerbalization(DomainRoleInfo embeddingRole)
+		{
+			return BlockEmbeddedVerbalization(embeddingRole);
+		}
+		#endregion // IVerbalizeFilterChildrenByRole Implementation
 		#region IVerbalizeCustomChildren Implementation
 		/// <summary>
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
@@ -3247,6 +3261,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				yield break;
 			}
+			IList<RoleBase> orderedRoles = GetDefaultReading().RoleCollection;
+			int readingRoleCount = orderedRoles.Count;
+			for (int iRole = 0; iRole < readingRoleCount; ++iRole)
+			{
+				yield return CustomChildVerbalizer.VerbalizeInstanceWithChildren(orderedRoles[iRole].Role, DeferVerbalizationOptions.None, null);
+			}
+
 			LinkedElementCollection<SetConstraint> setConstraints = SetConstraintCollection;
 			int setConstraintCount = setConstraints.Count;
 			if (setConstraintCount != 0)

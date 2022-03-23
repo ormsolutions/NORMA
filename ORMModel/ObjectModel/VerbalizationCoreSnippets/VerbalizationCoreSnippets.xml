@@ -37,9 +37,12 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="ObjectType"><![CDATA[<a class="objectType" href="elementid:{1}">{0}</a>]]></Snippet>
 			<Snippet type="ObjectTypeWithSubscript"><![CDATA[<a class="objectType" href="elementid:{1}">{0}<sub style="font-size:smaller;">{2}</sub></a>]]></Snippet>
 			<Snippet type="ObjectTypeMissing"><![CDATA[<span class="objectTypeMissing">Missing<sub style="font-size:smaller;">{0}</sub></span>]]></Snippet>
+			<Snippet type="ObjectTypeMissingWithIdentifier"><![CDATA[<span class="objectTypeMissing" href="elementid:{1}">Missing<sub style="font-size:smaller;">{0}</sub></span>]]></Snippet>
 			<Snippet type="HyphenBoundPredicatePart"><![CDATA[{0}{{0}}{1}]]></Snippet>
 			<Snippet type="PredicatePart"><![CDATA[<a class="predicateText" href="elementid:{1}">{{0}}</a>]]></Snippet>
 			<Snippet type="DefiniteArticle"><![CDATA[<span class="quantifier">that</span> {0}]]></Snippet>
+			<Snippet type="RoleHeader"><![CDATA[<span class="quantifier">role for</span> {0}]]></Snippet>
+			<Snippet type="RoleHeaderWithName"><![CDATA[<span class="quantifier">role for</span> {0}, <span class="quantifier">named</span> <span class="predicateText">{1}</span>]]></Snippet>
 
 			<Snippet type="ImpersonalPronoun"><![CDATA[<span class="quantifier">that</span>]]></Snippet>
 			<Snippet type="PersonalPronoun"><![CDATA[<span class="quantifier">who</span>]]></Snippet>

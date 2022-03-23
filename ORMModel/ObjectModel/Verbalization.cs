@@ -506,6 +506,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		CustomChildVerbalizer FilterChildVerbalizer(object child, VerbalizationSign sign);
 	}
 	#endregion // IVerbalizeFilterChildren interface
+	#region IVerbalizeFilterSelf interface
+	/// <summary>
+	/// Result of <see cref="IVerbalizeFilterSelf.VerbalizeSelfFilter"/>
+	/// </summary>
+	public enum VerbalizationSelfFilter
+	{
+		/// <summary>
+		/// Verbalization of the element is blocked. Children may still be rendered.
+		/// </summary>
+		Block,
+		/// <summary>
+		/// The element is verbalized only if one or more child elements are rendered.
+		/// </summary>
+		VerbalizeIfChildren,
+		/// <summary>
+		/// The element is verbalized normally with <see cref="IVerbalize.GetVerbalization"/>
+		/// </summary>
+		Verbalize
+	}
+	/// <summary>
+	/// Implement an on instance that also implements <see cref="IVerbalize"/> to conditionally
+	/// apply the verbalization. This allows an instance to be verbalized sometimes without taking
+	/// space or using indentations in the verbalization output. The option is also given to verbalize
+	/// only if a child is verbalized, which gives the opportunity to clearly group the child elements.
+	/// </summary>
+	public interface IVerbalizeFilterSelf : IVerbalize
+	{
+		/// <summary>
+		/// Determine when the verbalization for an optionally instanced item is verbalized.
+		/// </summary>
+		VerbalizationSelfFilter VerbalizeSelfFilter { get; }
+	}
+	#endregion // IVerbalizeFilterSelf interface
 	#region IVerbalizeFilterChildrenByRole
 	/// <summary>
 	/// Implement to block verbalization of embedded child
@@ -743,12 +776,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	/// A callback for the <see cref="FactType.PopulatePredicateText(IReading,IFormatProvider,String,RoleReplacementProvider)"/>
 	/// and <see cref="VerbalizationHyphenBinder.PopulatePredicateText(IReading,IFormatProvider,String,IList{RoleBase},RoleReplacementProvider)"/> methods.
 	/// </summary>
+	/// <param name="roleIndex">The index of this role in the set of reading order roles.</param>
 	/// <param name="roleBase">The <see cref="RoleBase"/> in the fact type to get a replacement field for.</param>
 	/// <param name="hyphenBindingFormatString">The hyphen bound format string for the replacement role. If this
 	/// is provided, then there is a single replacement field for the role player, and any additional quantification
 	/// should treat the hyphen-bound text as a single unit.</param>
 	/// <returns>Replacement string</returns>
-	public delegate string RoleReplacementProvider(RoleBase roleBase, string hyphenBindingFormatString);
+	public delegate string RoleReplacementProvider(int roleIndex, RoleBase roleBase, string hyphenBindingFormatString);
 	public partial class FactType
 	{
 		/// <summary>
@@ -1155,7 +1189,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						predicatePartDecorator,
 						delegate(int fieldIndex)
 						{
-							return replacementProvider(readingRoles[fieldIndex], null);
+							return replacementProvider(fieldIndex, readingRoles[fieldIndex], null);
 						});
 				}
 				catch (FormatException ex)
@@ -1663,7 +1697,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					(formatFields == null) ?
 						(ReadingTextFieldReplace)delegate(int fieldIndex)
 						{
-							return replacementProvider(defaultOrder[fieldIndex], null);
+							return replacementProvider(fieldIndex, defaultOrder[fieldIndex], null);
 						} :
 						delegate(int fieldIndex)
 						{
@@ -1671,7 +1705,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							// passed to the constructor. If the format is modified, then the
 							// replacement fields have been reordered in the format string to
 							// correspond to this order, so there is no translation needed here.
-							return replacementProvider(defaultOrder[fieldIndex], formatFields[fieldIndex]);
+							return replacementProvider(fieldIndex, defaultOrder[fieldIndex], formatFields[fieldIndex]);
 						});
 			}
 		}
@@ -2117,9 +2151,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // VerbalizationResult Enum
 		#region VerbalizationHandler Delegate
 		/// <summary>
+		/// Helper delegate to delay render parent verbalizations for <see cref="VerbalizationSelfFilter.VerbalizeIfChildren"/>.
+		/// All data is assumed to be available from the scope of this call.
+		/// </summary>
+		/// <returns>The adjustment needed to the current indent level. If this is not null then the callback produced output. A zero return just means the current indentation level did not change.</returns>
+		private delegate int? DelayVerbalizeParentHandler();
+		/// <summary>
 		/// Callback for child verbalizations
 		/// </summary>
-		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
+		private delegate VerbalizationResult VerbalizationHandler(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, DelayVerbalizeParentHandler delayVerbalizeParent, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel);
 		#endregion // VerbalizationHandler Delegate
 		#region VerbalizationContextImpl class
 		private sealed class VerbalizationContextImpl : IVerbalizationContext
@@ -2208,6 +2248,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="locallyVerbalized"></param>
 		/// <param name="verbalizer">The IVerbalize element to verbalize</param>
 		/// <param name="callback">The original callback handler.</param>
+		/// <param name="delayVerbalizeParent">The callback for delayed parent rendering.</param>
 		/// <param name="indentationLevel">The indentation level of the verbalization</param>
 		/// <param name="sign"></param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
@@ -2215,7 +2256,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
 		/// <returns></returns>
-		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static VerbalizationResult VerbalizeElement_VerbalizationResult(VerbalizationCallbackWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalize verbalizer, VerbalizationHandler callback, DelayVerbalizeParentHandler delayVerbalizeParent, int indentationLevel, VerbalizationSign sign, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			if (indentationLevel == 0 &&
 				alreadyVerbalized != null &&
@@ -2232,6 +2273,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new VerbalizationContextImpl(
 				delegate(VerbalizationContent content)
 				{
+					if (delayVerbalizeParent != null)
+					{
+						int? indentChange = delayVerbalizeParent();
+						if (indentChange.HasValue)
+						{
+							// The parent element(s) were delayed until a child began verbalization, which can
+							// change the indentation level. Also, writing the parent means that the first call
+							// is no longer pending.
+							localLastLevel += indentChange.Value;
+							localFirstCallPending = false;
+						}
+					}
+
 					// Prepare for verbalization on this element. Everything
 					// is delayed to this point in case the verbalization implementation
 					// does not callback to the text writer.
@@ -2287,6 +2341,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						childFilter,
 						writer,
 						callback,
+						delayVerbalizeParent,
 						sign,
 						indentationLevel,
 						(0 != (options & DeferVerbalizationOptions.AlwaysWriteLine)) ?
@@ -2375,6 +2430,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				childFilter,
 				writer,
 				new VerbalizationHandler(VerbalizeElement_VerbalizationResult),
+				null,
 				sign,
 				0,
 				writeSecondaryLines,
@@ -2425,6 +2481,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					customChildren,
 					writer,
 					handler,
+					null,
 					snippetsDictionary,
 					extensionVerbalizer,
 					verbalizationOptions,
@@ -2444,6 +2501,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					extensionChildren,
 					writer,
 					handler,
+					null,
 					snippetsDictionary,
 					extensionVerbalizer,
 					verbalizationOptions,
@@ -2482,16 +2540,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="outerFilter"></param>
 		/// <param name="writer"></param>
 		/// <param name="callback"></param>
+		/// <param name="delayVerbalizeParent"></param>
 		/// <param name="sign">The preferred verbalization sign</param>
 		/// <param name="indentLevel"></param>
 		/// <param name="writeSecondaryLines">True to automatically add a line between callbacks. Set to <see langword="true"/> for multi-select scenarios.</param>
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, VerbalizationSign sign, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeElement(object element, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, IVerbalizeFilterChildren outerFilter, VerbalizationCallbackWriter writer, VerbalizationHandler callback, DelayVerbalizeParentHandler delayVerbalizeParent, VerbalizationSign sign, int indentLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			IVerbalize parentVerbalize = null;
 			IRedirectVerbalization surrogateRedirect;
+			bool verbalizeParentIfChildren = false;
+			int parentIndentLevel;
+			DelayVerbalizeParentHandler localDelayVerbalize = delayVerbalizeParent;
+
+			// Copy ref parameters so we can use them in callback functions.
+			// These are copied back out in the finally block.
+			bool localFirstCallPending = firstCallPending;
+			bool localFirstWrite = firstWrite;
+			int localLastLevel = lastLevel;
+
 			if (indentLevel == 0 &&
 				null != (surrogateRedirect = element as IRedirectVerbalization) &&
 				null != (parentVerbalize = surrogateRedirect.SurrogateVerbalizer))
@@ -2501,6 +2570,50 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else
 			{
 				parentVerbalize = element as IVerbalize;
+				IVerbalizeFilterSelf selfFilter = parentVerbalize as IVerbalizeFilterSelf;
+				if (selfFilter != null)
+				{
+					switch (selfFilter.VerbalizeSelfFilter)
+					{
+						case VerbalizationSelfFilter.Block:
+							parentVerbalize = null;
+							break;
+						case VerbalizationSelfFilter.VerbalizeIfChildren:
+							verbalizeParentIfChildren = true;
+							parentIndentLevel = indentLevel;
+							localDelayVerbalize = delegate ()
+							{
+								if (localDelayVerbalize == null)
+								{
+									return 0;
+								}
+
+								// We only want to run this once, clear the local variable to signal.
+								localDelayVerbalize = null;
+
+								// Deferred verbalization can chain, defer
+								int startLevel = localLastLevel;
+								if (delayVerbalizeParent != null)
+								{
+									int? indentChange = delayVerbalizeParent();
+									if (indentChange.HasValue)
+									{
+										localFirstCallPending = false;
+										localLastLevel += indentChange.Value;
+									}
+								}
+
+								// Do the delayed parent verbalization
+								if (VerbalizationResult.Verbalized == callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, parentVerbalize, callback, null, parentIndentLevel, sign, writeSecondaryLines, ref localFirstCallPending, ref localFirstWrite, ref localLastLevel) ||
+									localLastLevel != startLevel)
+								{
+									return localLastLevel - startLevel;
+								}
+								return null;
+							};
+							break;
+					}
+				}
 			}
 			bool disposeVerbalizer = false;
 			if (outerFilter != null && parentVerbalize != null)
@@ -2511,7 +2624,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			try
 			{
-				VerbalizationResult result = (parentVerbalize != null) ? callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, parentVerbalize, callback, indentLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel) : VerbalizationResult.NotVerbalized;
+				VerbalizationResult result = (parentVerbalize != null && !verbalizeParentIfChildren) ? callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, parentVerbalize, callback, delayVerbalizeParent, indentLevel, sign, writeSecondaryLines, ref localFirstCallPending, ref localFirstWrite, ref localLastLevel) : VerbalizationResult.NotVerbalized;
 				if (result == VerbalizationResult.AlreadyVerbalized)
 				{
 					return;
@@ -2523,7 +2636,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				IVerbalizeExtensionChildren extensionChildren = extensionVerbalizer.GetExtensionVerbalizer(element);
 				if (verbalizeChildren || (customChildren != null) || (extensionChildren != null))
 				{
-					if (parentVerbalizeOK)
+					if (parentVerbalizeOK || verbalizeParentIfChildren)
 					{
 						++indentLevel;
 					}
@@ -2555,7 +2668,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								int childCount = children.Count;
 								for (int j = 0; j < childCount; ++j)
 								{
-									VerbalizeElement(children[j], snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, filter, writer, callback, sign, indentLevel, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+									VerbalizeElement(children[j], snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, filter, writer, callback, localDelayVerbalize, sign, indentLevel, writeSecondaryLines, ref localFirstCallPending, ref localFirstWrite, ref localLastLevel);
 								}
 							}
 						}
@@ -2567,6 +2680,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							customChildren.GetCustomChildVerbalizations(filter, verbalizationOptions, sign),
 							writer,
 							callback,
+							localDelayVerbalize,
 							snippetsDictionary,
 							extensionVerbalizer,
 							verbalizationOptions,
@@ -2576,9 +2690,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							sign,
 							indentLevel,
 							writeSecondaryLines,
-							ref firstCallPending,
-							ref firstWrite,
-							ref lastLevel);
+							ref localFirstCallPending,
+							ref localFirstWrite,
+							ref localLastLevel);
 					}
 					if (extensionChildren != null)
 					{
@@ -2586,6 +2700,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							extensionChildren.GetExtensionChildVerbalizations(element, filter, sign),
 							writer,
 							callback,
+							localDelayVerbalize,
 							snippetsDictionary,
 							extensionVerbalizer,
 							verbalizationOptions,
@@ -2595,9 +2710,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							sign,
 							indentLevel,
 							writeSecondaryLines,
-							ref firstCallPending,
-							ref firstWrite,
-							ref lastLevel);
+							ref localFirstCallPending,
+							ref localFirstWrite,
+							ref localLastLevel);
 					}
 				}
 				else if (!parentVerbalizeOK && indentLevel == 0)
@@ -2610,18 +2725,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						if (0 != (options & SurveyNodeReferenceOptions.SelectReferenceReason) &&
 							null != (deferToElement = surveyReference.SurveyNodeReferenceReason))
 						{
-							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, outerFilter, sign, writer, writeSecondaryLines, ref firstCallPending);
+							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, outerFilter, sign, writer, writeSecondaryLines, ref localFirstCallPending);
 							return;
 						}
 						if (null != (deferToElement = surveyReference.ReferencedElement))
 						{
-							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, outerFilter, sign, writer, writeSecondaryLines, ref firstCallPending);
+							VerbalizeElement(deferToElement, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, outerFilter, sign, writer, writeSecondaryLines, ref localFirstCallPending);
 						}
 					}
 				}
 			}
 			finally
 			{
+				firstCallPending = localFirstCallPending;
+				firstWrite = localFirstWrite;
+				lastLevel = localLastLevel;
 				if (disposeVerbalizer)
 				{
 					IDisposable dispose = parentVerbalize as IDisposable;
@@ -2672,6 +2790,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="customChildren">The CustomChildVerbalizer elements to verbalize</param>
 		/// <param name="writer">The target specific Writer to use</param>
 		/// <param name="callback">The delegate used to handle the verbalization</param>
+		/// <param name="delayVerbalizeParent">The delegate used to delay parent verbalization.</param>
 		/// <param name="snippetsDictionary"></param>
 		/// <param name="extensionVerbalizer"></param>
 		/// <param name="verbalizationOptions"></param>
@@ -2684,7 +2803,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <param name="firstCallPending"></param>
 		/// <param name="firstWrite"></param>
 		/// <param name="lastLevel"></param>
-		private static void VerbalizeCustomChildren(IEnumerable<CustomChildVerbalizer> customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
+		private static void VerbalizeCustomChildren(IEnumerable<CustomChildVerbalizer> customChildren, VerbalizationCallbackWriter writer, VerbalizationHandler callback, DelayVerbalizeParentHandler delayVerbalizeParent, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IExtensionVerbalizerService extensionVerbalizer, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, IDictionary<IVerbalize, IVerbalize> alreadyVerbalized, IDictionary<object, object> locallyVerbalized, VerbalizationSign sign, int indentationLevel, bool writeSecondaryLines, ref bool firstCallPending, ref bool firstWrite, ref int lastLevel)
 		{
 			if (customChildren == null)
 			{
@@ -2697,7 +2816,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				{
 					try
 					{
-						callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, childVerbalize, callback, indentationLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
+						callback(writer, snippetsDictionary, extensionVerbalizer, verbalizationOptions, verbalizationTarget, alreadyVerbalized, locallyVerbalized, childVerbalize, callback, delayVerbalizeParent, indentationLevel, sign, writeSecondaryLines, ref firstCallPending, ref firstWrite, ref lastLevel);
 					}
 					finally
 					{

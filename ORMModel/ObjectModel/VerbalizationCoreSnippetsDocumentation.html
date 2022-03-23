@@ -934,6 +934,9 @@
                 <a href="#ObjectTypeMissing">ObjectTypeMissing</a>
               </li>
               <li>
+                <a href="#ObjectTypeMissingWithIdentifier">ObjectTypeMissingWithIdentifier</a>
+              </li>
+              <li>
                 <a href="#ObjectTypeWithSubscript">ObjectTypeWithSubscript</a>
               </li>
               <li>
@@ -1009,6 +1012,12 @@
                 <a href="#PluralExistenceImplicationOperator">PluralExistenceImplicationOperator</a>
               </li>
               <li>
+                <a href="#PortableDataTypeLength">PortableDataTypeLength</a>
+              </li>
+              <li>
+                <a href="#PortableDataTypeLengthAndScale">PortableDataTypeLengthAndScale</a>
+              </li>
+              <li>
                 <a href="#PortableDataTypeVerbalization">PortableDataTypeVerbalization</a>
               </li>
               <li>
@@ -1040,6 +1049,12 @@
               </li>
               <li>
                 <a href="#ReflexiveQuantifier">ReflexiveQuantifier</a>
+              </li>
+              <li>
+                <a href="#RoleHeader">RoleHeader</a>
+              </li>
+              <li>
+                <a href="#RoleHeaderWithName">RoleHeaderWithName</a>
               </li>
               <li>
                 <a href="#RolePathBlockLeadCollapseForSnippetDirective">RolePathBlockLeadCollapseForSnippetDirective</a>
@@ -4442,7 +4457,7 @@ instances of this subtype are stored immediately after they are derived<br />
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">{0} is greather than or equal to {1}</pre>
+              <pre class="unformattedSnippetDecorator">{0} is greater than or equal to {1}</pre>
             </div>
           </div>
           <div classs="snippetContainedIn">
@@ -7100,6 +7115,22 @@ Note that VariableExistence can be used with a negated quantifier if the negated
             </div>
           </div>
         </div>
+        <div id="ObjectTypeMissingWithIdentifier" class="snippet">
+          <span class="snippetHeader">
+            <a name="ObjectTypeMissingWithIdentifier" id="ObjectTypeMissingWithIdentifier">ObjectTypeMissingWithIdentifier</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Verbalizes an object type as being missing with an identifier. Used for items that reference an object type but have their own id. {0} is the subscript, {1} is the identifier.<br />
+          </div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">Missing{0}</pre>
+            </div>
+          </div>
+        </div>
         <div id="ObjectTypeWithSubscript" class="snippet">
           <span class="snippetHeader">
             <a name="ObjectTypeWithSubscript" id="ObjectTypeWithSubscript">ObjectTypeWithSubscript</a>
@@ -7616,20 +7647,79 @@ different types that represent the same instance where the first variable is an 
             </p>
           </div>
         </div>
-        <div id="PortableDataTypeVerbalization" class="snippet">
+        <div id="PortableDataTypeLength" class="snippet">
           <span class="snippetHeader">
-            <a name="PortableDataTypeVerbalization" id="PortableDataTypeVerbalization">PortableDataTypeVerbalization</a>
+            <a name="PortableDataTypeLength" id="PortableDataTypeLength">PortableDataTypeLength</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Verbalizes an object's portable data type. <br />
-            <strong>Format: </strong> Portable data type: {0}</div>
+            <strong>Description: </strong> Verbalizes the length of a portable data type. <br />
+            <strong>Format: </strong> ({0})</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>1</div>
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">Portable data type: {0}</pre>
+              <pre class="unformattedSnippetDecorator"> ({0})</pre>
             </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>PortableDataTypeLength</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#PortableDataTypeVerbalization">PortableDataTypeVerbalization</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="PortableDataTypeLengthAndScale" class="snippet">
+          <span class="snippetHeader">
+            <a name="PortableDataTypeLengthAndScale" id="PortableDataTypeLengthAndScale">PortableDataTypeLengthAndScale</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Verbalizes the length (used here as precision) and scale of a portable data type. <br />
+            <strong>Format: </strong> ({0},{1})</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator"> ({0}, {1})</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>PortableDataTypeLengthAndScale</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#PortableDataTypeVerbalization">PortableDataTypeVerbalization</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="PortableDataTypeVerbalization" class="snippet">
+          <span class="snippetHeader">
+            <a name="PortableDataTypeVerbalization" id="PortableDataTypeVerbalization">PortableDataTypeVerbalization</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Verbalizes an object's portable data type, plus a suffix showing optional data type properties. <br />
+            <strong>Format: </strong> Data Type: {0}{1}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">Data Type: {0}{1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>PortableDataTypeVerbalization</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#PortableDataTypeLength">PortableDataTypeLength</a>
+                </li>
+                <li>
+                  <a href="#PortableDataTypeLengthAndScale">PortableDataTypeLengthAndScale</a>
+                </li>
+              </ul>
+            </p>
           </div>
         </div>
         <div id="PredicatePart" class="snippet">
@@ -7899,6 +7989,38 @@ different types that represent the same instance where the first variable is an 
             </p>
           </div>
         </div>
+        <div id="RoleHeader" class="snippet">
+          <span class="snippetHeader">
+            <a name="RoleHeader" id="RoleHeader">RoleHeader</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> A header for contained role data.  <br />
+            <strong>Format: </strong> role for {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">role for {0}</pre>
+            </div>
+          </div>
+        </div>
+        <div id="RoleHeaderWithName" class="snippet">
+          <span class="snippetHeader">
+            <a name="RoleHeaderWithName" id="RoleHeaderWithName">RoleHeaderWithName</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> A role header used to indicate a role name.  <br />
+            <strong>Format: </strong> role for {0}, named {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">role for {0}, named {1}</pre>
+            </div>
+          </div>
+        </div>
         <div id="RolePathBlockLeadCollapseForSnippetDirective" class="snippet">
           <span class="snippetHeader">
             <a name="RolePathBlockLeadCollapseForSnippetDirective" id="RolePathBlockLeadCollapseForSnippetDirective">RolePathBlockLeadCollapseForSnippetDirective</a>
@@ -7907,7 +8029,7 @@ different types that represent the same instance where the first variable is an 
             <strong>Description: </strong> Specify a space-separated list of snippet names to specify list snippets that
 would allow lead role collapsing based on the RolePathCollapsibleLeadDirective, but do not actually support this construct.
 This allows a final override to block the collapsing behavior for specific snippets. This is checked for the
-(Negated)[And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] snippets.
+(Negated)[Chained|And|Or|Xor][Tail|Nested]List[(Collapsed)Open|Separator] and the ChainedList*Restrction* snippets.
 <br />
             <strong>Format: </strong> AndTailListOpen OrTailListOpen</div>
           <div class="snippetReplacementFieldCount">
@@ -7915,7 +8037,7 @@ This allows a final override to block the collapsing behavior for specific snipp
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">AndTailListOpen OrTailListOpen</pre>
+              <pre class="unformattedSnippetDecorator">AndTailListOpen OrTailListOpen ChainedListLocalRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListComplexRestrictionSeparator ChainedListTopLevelComplexRestrictionSeparator</pre>
             </div>
           </div>
         </div>

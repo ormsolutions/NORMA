@@ -976,12 +976,17 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion Deserialization Fixup
 		#region IVerbalizeCustomChildren Implementation
 		/// <summary>
-		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Hides
+		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Hides all but roles of
 		/// implementation in <see cref="FactType"/>
 		/// </summary>
-		protected static new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		protected new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 		{
-			yield break;
+			IList<RoleBase> orderedRoles = GetDefaultReading().RoleCollection;
+			int readingRoleCount = orderedRoles.Count;
+			for (int iRole = 0; iRole < readingRoleCount; ++iRole)
+			{
+				yield return CustomChildVerbalizer.VerbalizeInstanceWithChildren(orderedRoles[iRole].Role, DeferVerbalizationOptions.None, null);
+			}
 		}
 		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
 		{

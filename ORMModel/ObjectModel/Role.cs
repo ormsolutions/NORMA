@@ -114,7 +114,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ImpliedObjectificationRole,
 	}
 	#endregion // ReferenceSchemePattern enum
-	partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, IVerbalizeCustomChildren, INamedElementDictionaryParent, INamedElementDictionaryRemoteChild, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
+	partial class Role : IModelErrorOwner, IRedirectVerbalization, IVerbalizeChildren, IVerbalizeCustomChildren, IVerbalizeFilterSelf, INamedElementDictionaryParent, INamedElementDictionaryRemoteChild, IHasIndirectModelErrorOwner, IHierarchyContextEnabled
 	{
 		#region Helper methods
 		#region IndexOf helper method for LinkedElementCollection<RoleBase>
@@ -1558,6 +1558,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		#endregion // ErrorReport verbalizer class
 		#endregion // IVerbalizeCustomChildren Implementation
+		#region IVerbalizeFilterSelf Implementation
+		/// <summary>
+		/// Implements <see cref="IVerbalizeFilterSelf.VerbalizeSelfFilter"/>
+		/// </summary>
+		protected VerbalizationSelfFilter VerbalizeSelfFilter
+		{
+			get
+			{
+				return !string.IsNullOrEmpty(this.Name) ?
+					VerbalizationSelfFilter.Verbalize :
+					VerbalizationSelfFilter.VerbalizeIfChildren;
+			}
+		}
+		VerbalizationSelfFilter IVerbalizeFilterSelf.VerbalizeSelfFilter
+		{
+			get
+			{
+				return VerbalizeSelfFilter;
+			}
+		}
+		#endregion // IVerbalizeFilterSelf Implementation
 		#region INamedElementDictionaryParent implementation
 		INamedElementDictionary INamedElementDictionaryParent.GetCounterpartRoleDictionary(Guid parentDomainRoleId, Guid childDomainRoleId)
 		{

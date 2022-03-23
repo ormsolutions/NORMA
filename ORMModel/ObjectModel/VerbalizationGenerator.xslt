@@ -831,6 +831,7 @@
 											</plx:passParam>
 											<plx:passParam>
 												<plx:anonymousFunction>
+													<plx:param name="replaceRoleIndex" dataTypeName=".i4"/>
 													<plx:param name="replaceRole" dataTypeName="RoleBase"/>
 													<plx:param name="hyphenBindingFormatString" dataTypeName=".string"/>
 													<plx:returns dataTypeName=".string"/>
@@ -889,6 +890,22 @@
 					</plx:callStatic>
 				</plx:branch>
 				<plx:fallbackBranch>
+					<!-- Use this variation to subscript all ring fact types.
+					This was the initial design to match role verbalizations that refer back to the role names
+					in the fact type reading, but we don't want to subscript for all cases to handle the occasional
+					back reference by a role verbalization -->
+					<!--
+					<xsl:variable name="subscriptConditionsFragment">
+						<plx:trueKeyword/>
+					</xsl:variable>
+					<xsl:call-template name="PopulateBasicRoleReplacements">
+						<xsl:with-param name="CustomSubscripts" select="true()"/>
+						<xsl:with-param name="SubscriptConditions" select="exsl:node-set($subscriptConditionsFragment)/child::*"/>
+					</xsl:call-template>
+					<xsl:variable name="factMockup">
+						<cvg:Fact useSubscripter="1"/>
+					</xsl:variable>
+					-->
 					<xsl:call-template name="PopulateBasicRoleReplacements"/>
 					<xsl:variable name="factMockup">
 						<cvg:Fact/>
@@ -967,6 +984,252 @@
 			</plx:function>
 		</plx:class>
 	</xsl:template>
+	<xsl:template match="cvg:Role" mode="GenerateClasses">
+		<plx:class name="Role" visibility="public" partial="true">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="Role verbalization"/>
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="Role verbalization"/>
+			</plx:trailingInfo>
+			<plx:implementsInterface dataTypeName="IVerbalize"/>
+			<plx:function name="GetVerbalization" visibility="protected">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
+				<plx:param name="writer" dataTypeName="TextWriter"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
+				</plx:param>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
+				<plx:param name="sign" dataTypeName="VerbalizationSign"/>
+				<plx:returns dataTypeName=".boolean"/>
+
+				<plx:pragma type="region" data="Preliminary"/>
+				<xsl:call-template name="DeclareIsNegative"/>
+				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
+					<plx:initialize>
+						<plx:falseKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="roleName" dataTypeName=".string">
+					<plx:initialize>
+						<plx:callThis name="Name" type="property"/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="rolePlayer" dataTypeName="ObjectType">
+					<plx:initialize>
+						<plx:callThis name="RolePlayer" type="property"/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="subscript" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:value data="0" type="i4"/>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="orderedRoles" dataTypeName="IList">
+					<plx:passTypeParam dataTypeName="RoleBase"/>
+					<plx:initialize>
+						<plx:callInstance name="RoleCollection" type="property">
+							<plx:callObject>
+								<plx:callInstance name="GetDefaultReading">
+									<plx:callObject>
+										<plx:callThis name="FactType" type="property"/>
+									</plx:callObject>
+								</plx:callInstance>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="roleCount" dataTypeName=".i4">
+					<plx:initialize>
+						<plx:callInstance name="Count" type="property">
+							<plx:callObject>
+								<plx:nameRef name="orderedRoles"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:initialize>
+				</plx:local>
+				<plx:local name="pastMatch" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:falseKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:loop>
+					<plx:initializeLoop>
+						<plx:local name="i" dataTypeName=".i4">
+							<plx:initialize>
+								<plx:value data="0" type="i4"/>
+							</plx:initialize>
+						</plx:local>
+					</plx:initializeLoop>
+					<plx:condition>
+						<plx:binaryOperator type="lessThan">
+							<plx:left>
+								<plx:nameRef name="i"/>
+							</plx:left>
+							<plx:right>
+								<plx:nameRef name="roleCount"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:beforeLoop>
+						<plx:increment>
+							<plx:nameRef name="i"/>
+						</plx:increment>
+					</plx:beforeLoop>
+					<plx:local name="testRole" dataTypeName="Role"/>
+					<plx:branch>
+						<plx:condition>
+							<plx:binaryOperator type="identityInequality">
+								<plx:left>
+									<plx:nullKeyword/>
+								</plx:left>
+								<plx:right>
+									<plx:inlineStatement dataTypeName="Role">
+										<plx:assign>
+											<plx:left>
+												<plx:nameRef name="testRole"/>
+											</plx:left>
+											<plx:right>
+												<plx:cast type="testCast" dataTypeName="Role">
+													<plx:callInstance name=".implied" type="indexerCall">
+														<plx:callObject>
+															<plx:nameRef name="orderedRoles"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:nameRef name="i"/>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:cast>
+											</plx:right>
+										</plx:assign>
+									</plx:inlineStatement>
+								</plx:right>
+							</plx:binaryOperator>
+						</plx:condition>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="identityEquality">
+									<plx:left>
+										<plx:cast type="exceptionCast" dataTypeName=".object">
+											<plx:nameRef name="testRole"/>
+										</plx:cast>
+									</plx:left>
+									<plx:right>
+										<plx:thisKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="booleanOr">
+										<plx:left>
+											<plx:binaryOperator type="identityEquality">
+												<plx:left>
+													<plx:nameRef name="rolePlayer"/>
+												</plx:left>
+												<plx:right>
+													<plx:nullKeyword/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:left>
+										<plx:right>
+											<plx:binaryOperator type="inequality">
+												<plx:left>
+													<plx:nameRef name="subscript"/>
+												</plx:left>
+												<plx:right>
+													<plx:value data="0" type="i4"/>
+												</plx:right>
+											</plx:binaryOperator>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:increment>
+									<plx:nameRef name="subscript"/>
+								</plx:increment>
+								<plx:break/>
+							</plx:branch>
+							<plx:fallbackBranch>
+								<plx:assign>
+									<plx:left>
+										<plx:nameRef name="pastMatch"/>
+									</plx:left>
+									<plx:right>
+										<plx:trueKeyword/>
+									</plx:right>
+								</plx:assign>
+							</plx:fallbackBranch>
+						</plx:branch>
+						<plx:fallbackBranch>
+							<plx:local name="testRolePlayer" dataTypeName="ObjectType">
+								<plx:initialize>
+									<plx:callInstance name="RolePlayer" type="property">
+										<plx:callObject>
+											<plx:nameRef name="testRole"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:initialize>
+							</plx:local>
+							<plx:branch>
+								<plx:condition>
+									<plx:binaryOperator type="identityEquality">
+										<plx:left>
+											<plx:cast type="exceptionCast" dataTypeName=".object">
+												<plx:nameRef name="testRolePlayer"/>
+											</plx:cast>
+										</plx:left>
+										<plx:right>
+											<plx:nameRef name="rolePlayer"/>
+										</plx:right>
+									</plx:binaryOperator>
+								</plx:condition>
+								<plx:increment>
+									<plx:nameRef name="subscript"/>
+								</plx:increment>
+								<plx:branch>
+									<plx:condition>
+										<plx:binaryOperator type="booleanAnd">
+											<plx:left>
+												<plx:nameRef name="pastMatch"/>
+											</plx:left>
+											<plx:right>
+												<plx:binaryOperator type="identityInequality">
+													<plx:left>
+														<plx:nameRef name="rolePlayer"/>
+													</plx:left>
+													<plx:right>
+														<plx:nullKeyword/>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:condition>
+									<plx:comment>The subscript will be 1</plx:comment>
+									<plx:break/>
+								</plx:branch>
+							</plx:branch>
+						</plx:fallbackBranch>
+					</plx:branch>
+				</plx:loop>
+				<plx:pragma type="closeRegion" data="Preliminary"/>
+				<plx:pragma type="region" data="Pattern Matches"/>
+				<xsl:apply-templates select="*" mode="ConstraintVerbalization">
+					<xsl:with-param name="TopLevel" select="true()"/>
+				</xsl:apply-templates>
+				<plx:pragma type="closeRegion" data="Pattern Matches"/>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+	</xsl:template>
 	<xsl:template match="cvg:ORMModel" mode="GenerateClasses">
 		<plx:class name="ORMModel" visibility="public" partial="true">
 			<plx:leadingInfo>
@@ -980,6 +1243,60 @@
 				<plx:leadingInfo>
 					<plx:docComment>
 						<summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+					</plx:docComment>
+				</plx:leadingInfo>
+				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
+				<plx:param name="writer" dataTypeName="TextWriter"/>
+				<plx:param name="snippetsDictionary" dataTypeName="IDictionary">
+					<plx:passTypeParam dataTypeName="Type"/>
+					<plx:passTypeParam dataTypeName="IVerbalizationSets"/>
+				</plx:param>
+				<plx:param name="verbalizationContext" dataTypeName="IVerbalizationContext"/>
+				<plx:param name="sign" dataTypeName="VerbalizationSign"/>
+				<plx:returns dataTypeName=".boolean"/>
+
+				<plx:pragma type="region" data="Preliminary"/>
+				<xsl:call-template name="DeclareIsNegative"/>
+				<xsl:call-template name="DeclareSnippetsLocal"/>
+				<!-- Don't proceed with verbalization if blocking errors are present -->
+				<xsl:call-template name="CheckErrorConditions"/>
+				<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
+					<plx:initialize>
+						<plx:falseKeyword/>
+					</plx:initialize>
+				</plx:local>
+				<plx:pragma type="closeRegion" data="Preliminary"/>
+				<plx:pragma type="region" data="Pattern Matches"/>
+				<xsl:apply-templates select="*" mode="ConstraintVerbalization">
+					<xsl:with-param name="TopLevel" select="true()"/>
+				</xsl:apply-templates>
+				<plx:pragma type="closeRegion" data="Pattern Matches"/>
+				<xsl:call-template name="CheckErrorConditions">
+					<xsl:with-param name="Primary" select="false()"/>
+					<xsl:with-param name="DeclareErrorOwner" select="false()"/>
+					<xsl:with-param name="BeginVerbalization" select="true()"/>
+				</xsl:call-template>
+				<plx:return>
+					<plx:trueKeyword/>
+				</plx:return>
+			</plx:function>
+		</plx:class>
+	</xsl:template>
+	<xsl:template match="cvg:ORMModel" mode="GenerateClasses">
+		<plx:class name="ORMModel" visibility="public" partial="true">
+			<plx:leadingInfo>
+				<plx:pragma type="region" data="ORMModel verbalization"/>
+			</plx:leadingInfo>
+			<plx:trailingInfo>
+				<plx:pragma type="closeRegion" data="ORMModel verbalization"/>
+			</plx:trailingInfo>
+			<plx:implementsInterface dataTypeName="IVerbalize"/>
+			<plx:function name="GetVerbalization" visibility="protected">
+				<plx:leadingInfo>
+					<plx:docComment>
+						<summary>
+							<see cref="IVerbalize.GetVerbalization"/> implementation
+						</summary>
 					</plx:docComment>
 				</plx:leadingInfo>
 				<plx:interfaceMember memberName="GetVerbalization" dataTypeName="IVerbalize"/>
@@ -4342,6 +4659,11 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:if>
+		<plx:local name="lastMissingRolePlayerIndex" dataTypeName=".i4">
+			<plx:initialize>
+				<plx:value data="0" type="i4"/>
+			</plx:initialize>
+		</plx:local>
 		<plx:loop>
 			<plx:initializeLoop>
 				<plx:local name="i" dataTypeName=".i4">
@@ -4709,14 +5031,11 @@
 								</xsl:call-template>
 							</plx:passParam>
 							<plx:passParam>
-								<plx:binaryOperator type="add">
-									<plx:left>
-										<plx:nameRef name="i"/>
-									</plx:left>
-									<plx:right>
-										<plx:value type="i4" data="1"/>
-									</plx:right>
-								</plx:binaryOperator>
+								<plx:inlineStatement dataTypeName=".i4">
+									<plx:increment type="pre">
+										<plx:nameRef name="lastMissingRolePlayerIndex"/>
+									</plx:increment>
+								</plx:inlineStatement>
 							</plx:passParam>
 						</plx:callStatic>
 					</plx:right>
@@ -6742,6 +7061,33 @@
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
+	<xsl:template match="cvg:Subscript" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator" select="position()"/>
+		<xsl:param name="VariablePrefix" select="''"/>
+		<xsl:param name="PatternGroup" select="''"/>
+		<xsl:variable name="useVariablePrefixFragment">
+			<xsl:choose>
+				<xsl:when test="$VariablePrefix">
+					<xsl:value-of select="$VariablePrefix"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>factText</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{string($useVariablePrefixFragment)}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callInstance name="ToString">
+					<plx:callObject>
+						<plx:nameRef name="subscript"/>
+					</plx:callObject>
+				</plx:callInstance>
+			</plx:right>
+		</plx:assign>
+	</xsl:template>
 	<xsl:template match="cvg:SubtypeName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
 		<xsl:param name="VariablePrefix" select="'subtypeNameText'"/>
@@ -6871,20 +7217,28 @@
 	<xsl:template match="cvg:RoleName" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator"/>
 		<xsl:param name="VariablePrefix"/>
+		<xsl:param name="PatternGroup" select="''"/>
 		<plx:assign>
 			<plx:left>
 				<plx:nameRef name="{$VariablePrefix}{$VariableDecorator}"/>
 			</plx:left>
 			<plx:right>
-				<plx:callInstance name="Name" type="property">
-					<plx:callObject>
-						<plx:callInstance name="Role" type="property">
+				<xsl:choose>
+					<xsl:when test="$PatternGroup='RoleValueConstraint'">
+						<plx:callInstance name="Name" type="property">
 							<plx:callObject>
-								<plx:nameRef name="primaryRole"/>
+								<plx:callInstance name="Role" type="property">
+									<plx:callObject>
+										<plx:nameRef name="primaryRole"/>
+									</plx:callObject>
+								</plx:callInstance>
 							</plx:callObject>
 						</plx:callInstance>
-					</plx:callObject>
-				</plx:callInstance>
+					</xsl:when>
+					<xsl:otherwise>
+						<plx:nameRef name="roleName"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</plx:right>
 		</plx:assign>
 	</xsl:template>
@@ -7154,6 +7508,40 @@
 				</xsl:choose>
 			</plx:passParam>
 		</plx:callInstance>
+	</xsl:template>
+	<xsl:template match="cvg:RolePlayerName" mode="ConstraintVerbalization">
+		<xsl:param name="VariableDecorator"/>
+		<xsl:param name="VariablePrefix"/>
+		<xsl:param name="PatternGroup"/>
+		<xsl:variable name="useVariablePrefixFragment">
+			<xsl:choose>
+				<xsl:when test="$VariablePrefix">
+					<xsl:value-of select="$VariablePrefix"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>factText</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<plx:assign>
+			<plx:left>
+				<plx:nameRef name="{string($useVariablePrefixFragment)}{$VariableDecorator}"/>
+			</plx:left>
+			<plx:right>
+				<plx:callStatic dataTypeName="VerbalizationHelper" name="NormalizeObjectTypeName">
+					<plx:passParam>
+						<plx:nameRef name="rolePlayer"/>
+					</plx:passParam>
+					<plx:passParam>
+						<plx:callInstance name="VerbalizationOptions" type="property">
+							<plx:callObject>
+								<plx:nameRef name="verbalizationContext" type="parameter"/>
+							</plx:callObject>
+						</plx:callInstance>
+					</plx:passParam>
+				</plx:callStatic>
+			</plx:right>
+		</plx:assign>
 	</xsl:template>
 	<xsl:template match="cvg:RolePlayerReferenceMode" mode="ConstraintVerbalization">
 		<xsl:param name="VariableDecorator" select="position()"/>
@@ -7498,6 +7886,7 @@
 						<xsl:when test="$callbackReplacements">
 							<plx:passParam>
 								<plx:anonymousFunction>
+									<plx:param name="replaceRoleIndex" dataTypeName=".i4"/>
 									<plx:param name="replaceRole" dataTypeName="RoleBase"/>
 									<plx:param name="hyphenBindingFormatString" dataTypeName=".string"/>
 									<plx:returns dataTypeName="string"/>
@@ -7641,6 +8030,72 @@
 											</xsl:call-template>
 										</xsl:otherwise>
 									</xsl:choose>
+								</plx:anonymousFunction>
+							</plx:passParam>
+						</xsl:when>
+						<xsl:when test="@useSubscripter">
+							<plx:passParam>
+								<plx:anonymousFunction>
+									<plx:param name="replaceRoleIndex" dataTypeName=".i4"/>
+									<plx:param name="replaceRole" dataTypeName="RoleBase"/>
+									<plx:param name="hyphenBindingFormatString" dataTypeName=".string"/>
+									<plx:returns dataTypeName="string"/>
+									<plx:return>
+										<plx:inlineStatement dataTypeName=".string">
+											<plx:conditionalOperator>
+												<plx:condition>
+													<plx:binaryOperator type="identityInequality">
+														<plx:left>
+															<plx:nameRef name="hyphenBindingFormatString"/>
+														</plx:left>
+														<plx:right>
+															<plx:nullKeyword/>
+														</plx:right>
+													</plx:binaryOperator>
+												</plx:condition>
+												<plx:left>
+													<plx:callStatic dataTypeName=".string" name="Format">
+														<plx:passParam>
+															<plx:callInstance name="FormatProvider" type="property">
+																<plx:callObject>
+																	<plx:nameRef name="writer"/>
+																</plx:callObject>
+															</plx:callInstance>
+														</plx:passParam>
+														<plx:passParam>
+															<plx:nameRef name="hyphenBindingFormatString"/>
+														</plx:passParam>
+														<plx:passParam>
+															<plx:callInstance name="GetSubscriptedName">
+																<plx:callObject>
+																	<plx:nameRef name="subscripter"/>
+																</plx:callObject>
+																<plx:passParam>
+																	<plx:nameRef name="replaceRoleIndex"/>
+																</plx:passParam>
+																<plx:passParam>
+																	<plx:nameRef name="basicRoleReplacements"/>
+																</plx:passParam>
+															</plx:callInstance>
+														</plx:passParam>
+													</plx:callStatic>
+												</plx:left>
+												<plx:right>
+													<plx:callInstance name="GetSubscriptedName">
+														<plx:callObject>
+															<plx:nameRef name="subscripter"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:nameRef name="replaceRoleIndex"/>
+														</plx:passParam>
+														<plx:passParam>
+															<plx:nameRef name="basicRoleReplacements"/>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:right>
+											</plx:conditionalOperator>
+										</plx:inlineStatement>
+									</plx:return>
 								</plx:anonymousFunction>
 							</plx:passParam>
 						</xsl:when>
@@ -9071,6 +9526,35 @@
 									<plx:nullKeyword/>
 								</plx:right>
 							</plx:binaryOperator>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='HasRoleName'">
+					<plx:unaryOperator type="booleanNot">
+						<plx:callStatic dataTypeName=".string" name="IsNullOrEmpty">
+							<plx:passParam>
+								<plx:nameRef name="roleName"/>
+							</plx:passParam>
+						</plx:callStatic>
+					</plx:unaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='HasRolePlayer'">
+					<plx:binaryOperator type="identityInequality">
+						<plx:left>
+							<plx:nameRef name="rolePlayer"/>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</xsl:when>
+				<xsl:when test="$ConditionalMatch='HasSubscript'">
+					<plx:binaryOperator type="inequality">
+						<plx:left>
+							<plx:nameRef name="subscript"/>
+						</plx:left>
+						<plx:right>
+							<plx:value data="0" type="i4"/>
 						</plx:right>
 					</plx:binaryOperator>
 				</xsl:when>

@@ -699,6 +699,21 @@
 							<xs:documentation>True if the current object type has a reference mode.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
+					<xs:enumeration value="HasRoleName">
+						<xs:annotation>
+							<xs:documentation>True for a Role if the roleName variable is not null.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasRolePlayer">
+						<xs:annotation>
+							<xs:documentation>True for a Role if the rolePlayer variable is not null.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="HasSubscript">
+						<xs:annotation>
+							<xs:documentation>The value of the subscript variable is positive.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
 					<xs:enumeration value="IsParameterized">
 						<xs:annotation>
 							<xs:documentation>True if the current query has parameters defined. Used with QueryBase construct.</xs:documentation>
@@ -982,9 +997,11 @@
 			<xs:element name="ProvidedRolePlayer" type="ProvidedRolePlayerType"/>
 			<xs:element name="RoleName" type="RoleNameType"/>
 			<xs:element name="RolePlayer" type="RolePlayerType"/>
+			<xs:element name="RolePlayerName" type="RolePlayerNameType"/>
 			<xs:element name="ParameterName" type="ParameterNameType"/>
 			<xs:element name="RolePlayerReferenceMode" type="RolePlayerReferenceModeType"/>
 			<xs:element name="SequenceJoinPath" type="SequenceJoinPathType"/>
+			<xs:element name="Subscript" type="SubscriptType"/>
 			<xs:element name="SubtypeName" type="SubtypeNameType"/>
 			<xs:element name="SubtypeId" type="ElementIdType"/>
 			<xs:element name="SupertypeName" type="SupertypeNameType"/>
@@ -1364,6 +1381,13 @@
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
+	<xs:complexType name="SubscriptType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the value of the local subscript variable.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="SubtypeNameType">
 		<xs:annotation>
 			<xs:documentation>
@@ -1457,6 +1481,13 @@
 		<xs:annotation>
 			<xs:documentation>
 				Returns the name of the current role player role.
+			</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="RolePlayerNameType">
+		<xs:annotation>
+			<xs:documentation>
+				Returns the normalized name of the current role player variable.
 			</xs:documentation>
 		</xs:annotation>
 	</xs:complexType>
@@ -1596,6 +1627,12 @@
 	</xs:attributeGroup>
 	<xs:complexType name="FactTypeConstructType">
 		<!-- Allow other secondary snippets to be included here. These come after the error reports. -->
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetTypeWithConditionalMatch" />
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="RoleConstructType">
 		<xs:choice maxOccurs="unbounded">
 			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
 			<xs:element name="ConditionalSnippet" type="ConditionalSnippetTypeWithConditionalMatch" />
@@ -2178,6 +2215,7 @@
 						<xs:all>
 							<xs:element name="FactType" type="FactTypeConstructType"/>
 							<xs:element name="SubtypeFact" type="SubtypeConstructType"/>
+							<xs:element name="Role" type="RoleConstructType"/>
 							<xs:element name="Constraints" type="ConstraintsConstructType"/>
 							<xs:element name="SampleInstances" type="SampleInstancesConstructType"/>
 							<xs:element name="ObjectType" type="ObjectConstructType" />

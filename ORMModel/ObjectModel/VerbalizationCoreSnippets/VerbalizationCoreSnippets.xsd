@@ -100,6 +100,11 @@
 						<xs:documentation>Description: Verbalizes an object type as being missing.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
+				<xs:enumeration value="ObjectTypeMissingWithIdentifier">
+					<xs:annotation>
+						<xs:documentation>Description: Verbalizes an object type as being missing with an identifier. Used for items that reference an object type but have their own id. {0} is the subscript, {1} is the identifier.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
 				<xs:enumeration value="HyphenBoundPredicatePart">
 					<xs:annotation>
 						<xs:documentation>Description: Format string to combine predicate text from hyphen binding with the replacement field. Format: {0}{{0}}{1}</xs:documentation>
@@ -133,6 +138,16 @@
 				<xs:enumeration value="DefiniteArticle">
 					<xs:annotation>
 						<xs:documentation>Description: Used for 'that' before an object name to signify a back reference to a uniquely qualified object type.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="RoleHeader">
+					<xs:annotation>
+						<xs:documentation>Description: A header for contained role data.  Format: role for {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="RoleHeaderWithName">
+					<xs:annotation>
+						<xs:documentation>Description: A role header used to indicate a role name.  Format: role for {0}, named {0}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="UniversalQuantifier">

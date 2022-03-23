@@ -72,6 +72,30 @@
 				<DerivationPath/>
 			</Snippet>
 		</QueryBase>
+		<Role>
+			<ConditionalSnippet>
+				<Snippet ref="RoleHeaderWithName" conditionalMatch="HasRoleName"/>
+				<Snippet ref="RoleHeader"/>
+				<SnippetReplacements>
+					<ConditionalReplacement>
+						<ConditionalSnippet conditionalMatch="HasRolePlayer">
+							<Snippet ref="ObjectTypeWithSubscript" conditionalMatch="HasSubscript"/>
+							<Snippet ref="ObjectType"/>
+							<SnippetReplacements>
+								<RolePlayerName/>
+								<ContextId/>
+								<Subscript/>
+							</SnippetReplacements>
+						</ConditionalSnippet>
+						<Snippet ref="ObjectTypeMissingWithIdentifier">
+							<Subscript/>
+							<ContextId/>
+						</Snippet>
+					</ConditionalReplacement>
+					<RoleName/>
+				</SnippetReplacements>
+			</ConditionalSnippet>
+		</Role>
 		<!-- Generate ObjectType verbalization along with constraints -->
 		<ObjectType>
 			<ConditionalSnippet>

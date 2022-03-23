@@ -2438,6 +2438,13 @@ Format: each population of {0} contains {1}</statement>
     <containedIn />
     <usedBy />
   </snippet>
+  <snippet name="ObjectTypeMissingWithIdentifier" replacementCount="2">
+    <statement>Description: Verbalizes an object type as being missing with an identifier. Used for items that reference an object type but have their own id. {0} is the subscript, {1} is the identifier.</statement>
+    <unformattedSnippet>Missing{0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
   <snippet name="ObjectTypeWithSubscript" replacementCount="3">
     <statement>Description: Verbalizes an object type with a subscript. {0} is the name, {1} is the guid id for the element, {2} is the subscript</statement>
     <unformattedSnippet>{0}{2}</unformattedSnippet>
@@ -2786,6 +2793,20 @@ Format:	{0}({1})</statement>
     <usedBy>
       <constraint name="ReflexiveRingVerbalizer" />
     </usedBy>
+  </snippet>
+  <snippet name="RoleHeader" replacementCount="1">
+    <statement>Description: A header for contained role data.  Format: role for {0}</statement>
+    <unformattedSnippet>role for {0}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="RoleHeaderWithName" replacementCount="2">
+    <statement>Description: A role header used to indicate a role name.  Format: role for {0}, named {0}</statement>
+    <unformattedSnippet>role for {0}, named {1}</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
   </snippet>
   <snippet name="RolePathBlockLeadCollapseForSnippetDirective" replacementCount="0">
     <statement>Description: Specify a space-separated list of snippet names to specify list snippets that
