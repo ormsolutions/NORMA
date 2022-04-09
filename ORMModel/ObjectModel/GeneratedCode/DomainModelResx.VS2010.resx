@@ -245,6 +245,22 @@
     <value>GenerationSetting</value>
     <comment>DisplayName for DomainClass &apos;GenerationSetting&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState.Description" xml:space="preserve">
+    <value>Container for display options global to this file.</value>
+    <comment>Description for DomainClass &apos;DisplayState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState.DisplayName" xml:space="preserve">
+    <value>DisplayState</value>
+    <comment>DisplayName for DomainClass &apos;DisplayState&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplaySetting.Description" xml:space="preserve">
+    <value>Base setting object for an individual model&apos;s global display options.</value>
+    <comment>Description for DomainClass &apos;DisplaySetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplaySetting.DisplayName" xml:space="preserve">
+    <value>DisplaySetting</value>
+    <comment>DisplayName for DomainClass &apos;DisplaySetting&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelErrorCategory.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ModelErrorCategory&apos;</comment>
@@ -3549,6 +3565,70 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.GenerationStateHasGenerationSetting/GenerationSetting.PropertyDisplayName" xml:space="preserve">
     <value>Generation State</value>
     <comment>PropertyDisplayName for DomainRole &apos;GenerationSetting&apos; on DomainRelationship &apos;GenerationStateHasGenerationSetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel</value>
+    <comment>Description for DomainClass &apos;DisplayStateRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayName" xml:space="preserve">
+    <value>Display State Relates To ORMModel</value>
+    <comment>DisplayName for DomainClass &apos;DisplayStateRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/DisplayState.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayState</value>
+    <comment>Description for DomainRole &apos;DisplayState&apos; on DomainRelationship &apos;DisplayStateRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/DisplayState.DisplayName" xml:space="preserve">
+    <value>DisplayState</value>
+    <comment>DisplayName for DomainRole &apos;DisplayState&apos; on DomainRelationship &apos;DisplayStateRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/DisplayState.PropertyDisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DisplayState&apos; on DomainRelationship &apos;DisplayStateRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/Model.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.Model</value>
+    <comment>Description for DomainRole &apos;Model&apos; on DomainRelationship &apos;DisplayStateRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/Model.DisplayName" xml:space="preserve">
+    <value>Model</value>
+    <comment>DisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;DisplayStateRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/Model.PropertyDisplayName" xml:space="preserve">
+    <value>Display State</value>
+    <comment>PropertyDisplayName for DomainRole &apos;Model&apos; on DomainRelationship &apos;DisplayStateRelatesToORMModel&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting</value>
+    <comment>Description for DomainClass &apos;DisplayStateHasDisplaySetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplayName" xml:space="preserve">
+    <value>Display State Has Display Setting</value>
+    <comment>DisplayName for DomainClass &apos;DisplayStateHasDisplaySetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplayState.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplayState</value>
+    <comment>Description for DomainRole &apos;DisplayState&apos; on DomainRelationship &apos;DisplayStateHasDisplaySetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplayState.DisplayName" xml:space="preserve">
+    <value>DisplayState</value>
+    <comment>DisplayName for DomainRole &apos;DisplayState&apos; on DomainRelationship &apos;DisplayStateHasDisplaySetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplayState.PropertyDisplayName" xml:space="preserve">
+    <value>Display Settings</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DisplayState&apos; on DomainRelationship &apos;DisplayStateHasDisplaySetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplaySetting.Description" xml:space="preserve">
+    <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplaySetting</value>
+    <comment>Description for DomainRole &apos;DisplaySetting&apos; on DomainRelationship &apos;DisplayStateHasDisplaySetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplaySetting.DisplayName" xml:space="preserve">
+    <value>DisplaySetting</value>
+    <comment>DisplayName for DomainRole &apos;DisplaySetting&apos; on DomainRelationship &apos;DisplayStateHasDisplaySetting&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplaySetting.PropertyDisplayName" xml:space="preserve">
+    <value>Display State</value>
+    <comment>PropertyDisplayName for DomainRole &apos;DisplaySetting&apos; on DomainRelationship &apos;DisplayStateHasDisplaySetting&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesNameGenerator.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesNameGenerator</value>

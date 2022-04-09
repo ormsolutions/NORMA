@@ -513,7 +513,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Causes the <see cref="ReadingShape"/> child shapes on a <see cref="FactTypeShape"/>
+		/// Causes the <see cref="ReadingShape"/> child shape on a <see cref="FactTypeShape"/> to be reset
 		/// </summary>
 		private static void InvalidateReadingShape(FactType factType)
 		{
@@ -530,6 +530,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							if (readShape != null)
 							{
 								readShape.InvalidateDisplayText();
+								break;
 							}
 						}
 					}
@@ -563,6 +564,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					LinkedElementCollection<RoleBase> orderedRoles = defaultOrder.RoleCollection;
 					int roleCount = orderedRoles.Count;
 					string readingFormatString = null;
+					CustomBinaryFactTypeReadingDisplay customReadingDisplay;
 					if (readingOrderCount == 1)
 					{
 						readingFormatString = defaultOrder.ReadingText;
@@ -622,12 +624,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							firstOrder = readingOrders[1];
 							secondOrder = defaultOrder;
 						}
+
 						firstFormatString = firstOrder.ReadingText;
-						secondFormatString = secondOrder.ReadingText;
-						retVal = string.Concat(
-							ReadingFormatStringHasEmbeddedEllipses(firstFormatString) ? NamedReplacementReadingText(factShape, firstOrder, null, firstFormatString) : EllipsizeReadingFormatString(firstFormatString, roleCount),
-							ResourceStrings.ReadingShapeReadingSeparator,
-							ReadingFormatStringHasEmbeddedEllipses(secondFormatString) ? NamedReplacementReadingText(factShape, secondOrder, null, secondFormatString) : EllipsizeReadingFormatString(secondFormatString, roleCount));
+						string forwardReadingText = ReadingFormatStringHasEmbeddedEllipses(firstFormatString) ? NamedReplacementReadingText(factShape, firstOrder, null, firstFormatString) : EllipsizeReadingFormatString(firstFormatString, roleCount);
+						if (BinaryFactTypeReadingDisplay.OnlyOneReading == ((customReadingDisplay = factShape.DisplayReverseReading) == CustomBinaryFactTypeReadingDisplay.Default ?
+							((customReadingDisplay = ((ORMDiagram)factShape.Diagram).DisplayReverseReadings) == CustomBinaryFactTypeReadingDisplay.Default ?
+								Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReverseReadings :
+								(BinaryFactTypeReadingDisplay)customReadingDisplay) :
+							(BinaryFactTypeReadingDisplay)customReadingDisplay))
+						{
+							retVal = forwardReadingText;
+						}
+						else
+						{
+							secondFormatString = secondOrder.ReadingText;
+							retVal = string.Concat(
+								forwardReadingText,
+								ResourceStrings.ReadingShapeReadingSeparator,
+								ReadingFormatStringHasEmbeddedEllipses(secondFormatString) ? NamedReplacementReadingText(factShape, secondOrder, null, secondFormatString) : EllipsizeReadingFormatString(secondFormatString, roleCount));
+						}
 					}
 					if (doNamedReplacement)
 					{
@@ -939,13 +954,28 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						bool continueArrowCheck = false;
 						bool isReverseReading = false;
+						ORMDiagram diagram = null;
+						ORMDiagramDisplayOptions displayOptions = null;
 						if (roleCount == 2)
 						{
 							LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
+							CustomBinaryFactTypeReadingDisplay customReadingDisplay;
 							if (orders.Count == 1)
 							{
 								roles = orders[0].RoleCollection;
-								isReverseReading = (orientation == DisplayOrientation.VerticalRotatedLeft) ? roles[0] == factTypeShape.DisplayedRoleOrder[0] : roles[0] != factTypeShape.DisplayedRoleOrder[0];
+								if (roles.Count != 1) // Pointless to indicate on a unary fact type
+								{
+									isReverseReading = (orientation == DisplayOrientation.VerticalRotatedLeft) ? roles[0] == factTypeShape.DisplayedRoleOrder[0] : roles[0] != factTypeShape.DisplayedRoleOrder[0];
+									continueArrowCheck = true;
+								}
+							}
+							else if (BinaryFactTypeReadingDisplay.OnlyOneReading == ((customReadingDisplay = factTypeShape.DisplayReverseReading) == CustomBinaryFactTypeReadingDisplay.Default ?
+								((customReadingDisplay = (diagram = (ORMDiagram)factTypeShape.Diagram).DisplayReverseReadings) == CustomBinaryFactTypeReadingDisplay.Default ?
+									(displayOptions = factTypeShape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0]).DisplayReverseReadings :
+									(BinaryFactTypeReadingDisplay)customReadingDisplay) :
+								(BinaryFactTypeReadingDisplay)customReadingDisplay))
+							{
+								// This will always be a forward reading if two orders are available. A vertical orientation change will switch to using the other reading.
 								continueArrowCheck = true;
 							}
 						}
@@ -962,11 +992,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							bool showForward = false;
 							if (!isReverseReading)
 							{
-								ReadingDirectionIndicatorDisplay displayOption = OptionsPage.CurrentReadingDirectionIndicatorDisplay;
+								CustomReadingDirectionIndicatorDisplay customDirection;
+								ReadingDirectionIndicatorDisplay displayOption = (customDirection = factTypeShape.DisplayReadingDirection) == CustomReadingDirectionIndicatorDisplay.Default ?
+									((null == (diagram ?? (diagram = (ORMDiagram)factTypeShape.Diagram)) || (customDirection = diagram.DisplayReadingDirection) == CustomReadingDirectionIndicatorDisplay.Default) ?
+										(displayOptions ?? (displayOptions = factTypeShape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0])).DisplayReadingDirection :
+										(ReadingDirectionIndicatorDisplay)customDirection) :
+									(ReadingDirectionIndicatorDisplay)customDirection;
 								switch (displayOption)
 								{
 									//case ReadingDirectionIndicatorDisplay.Reversed:
-									//case ReadingDirectionIndicatorDisplay.Separated:
 									case ReadingDirectionIndicatorDisplay.Rotated:
 										showForward = isVertical;
 										break;

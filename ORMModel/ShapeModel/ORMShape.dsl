@@ -44,6 +44,52 @@
 		</ClrAttribute>
 	</Attributes>
 
+	<Classes>
+		<DomainClass Name="ORMDiagramDisplayOptions" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="9CC147EE-D2A6-458C-A373-8D95CC29D144" DisplayName="ORMDiagramDisplayOptions" Description="Global display options for shapes on an ORM diagram">
+			<BaseClass>
+				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/DisplaySetting"/>
+			</BaseClass>
+			<Properties>
+				<DomainProperty Name="DisplayRoleNames" DisplayName="RoleNames" Id="BA6A4A9B-DE6B-4191-A810-4D6636079F17" DefaultValue="On" Description="Should role names be shown by default on ORM diagrams?">
+					<Attributes>
+						<ClrAttribute Name="ORMDiagramDisplayOption">
+							<Parameters>
+								<AttributeParameter Value="true"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<DomainEnumerationMoniker Name="RoleNameDisplay"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayReverseReadings" DisplayName="ReverseReadings" Id="AF309CEA-A9F5-4DA4-BB75-CE1B74E53716" DefaultValue="ShowReverseReading" Description="Should reverse readings be shown by default on an ORM diagram?">
+					<Attributes>
+						<ClrAttribute Name="ORMDiagramDisplayOption">
+							<Parameters>
+								<AttributeParameter Value="true"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<DomainEnumerationMoniker Name="BinaryFactTypeReadingDisplay"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayReadingDirection" DisplayName="ReadingDirectionIndicator" Id="996352C4-5254-42D4-9CB8-3A7200D80464" DefaultValue="Reversed" Description="When should reading direction be shown with a graphical indicator on an ORM diagram?">
+					<Attributes>
+						<ClrAttribute Name="ORMDiagramDisplayOption">
+							<Parameters>
+								<AttributeParameter Value="true"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ShapeModel/ReadingDirectionIndicatorDisplay"/>
+					</Type>
+				</DomainProperty>
+			</Properties>
+		</DomainClass>
+	</Classes>
+
 	<Relationships>
 		<DomainRelationship Name="FactTypeShapeHasRoleDisplayOrder" Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Id="94B3AEEF-4C8D-4D1A-A7CC-42F7EBDC68A2">
 			<Source>
@@ -109,16 +155,72 @@
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
-		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="DisplayRoleNames" Description="Determines whether RoleNameShapes will be drawn for the Roles in the FactType represented by the FactTypeShape using this enumeration, overriding the global setting.">
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="RoleNameDisplay" Description="Provide default options for showing and hiding role names on fact types.">
 			<Literals>
-				<EnumerationLiteral Name="UserDefault" Value="0" Description="Use the global setting."/>
-				<EnumerationLiteral Name="On" Value="1" Description="Always draw the RoleNameShapes."/>
-				<EnumerationLiteral Name="Off" Value="2" Description="Never draw the RoleNameShapes."/>
+				<EnumerationLiteral Name="On" Value="0" Description="Always draw the RoleNameShapes."/>
+				<EnumerationLiteral Name="Off" Value="1" Description="Never draw the RoleNameShapes."/>
 			</Literals>
 			<Attributes>
 				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
 					<Parameters>
-						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;DisplayRoleNames, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram&gt;)"/>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;RoleNameDisplay, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="CustomRoleNameDisplay" Description="Determines whether role name shapes will be drawn for the Roles in the FactType represented by the FactTypeShape using this enumeration. Also used on the diagram to provide a default, which can override the global display option.">
+			<Literals>
+				<EnumerationLiteral Name="Default" Value="-1" Description="Use the context default setting."/>
+				<EnumerationLiteral Name="On" Value="0" Description="Always draw the RoleNameShapes."/>
+				<EnumerationLiteral Name="Off" Value="1" Description="Never draw the RoleNameShapes."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(Design.CustomRoleNameDisplayTypeConverter)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="CustomReadingDirectionIndicatorDisplay" Description="Determines when a direction indicator is drawn for reading shapes by the FactTypeShape using this enumeration. Also used on the diagram to provide a default, which can override the global display option.">
+			<Literals>
+				<EnumerationLiteral Name="Default" Value="-1" Description="Use the context default setting."/>
+				<EnumerationLiteral Name="Reversed" Value="0" Description="Display indicator for reverse readings only."/>
+				<!--<EnumerationLiteral Name="Separated" Value="1" Description="Deprecated, but still listed in non-custom enum, so list value."/>-->
+				<EnumerationLiteral Name="Rotated" Value="2" Description="Display indicator if the fact type is rotated, even if the reading order is top-down."/>
+				<EnumerationLiteral Name="Always" Value="3" Description="Always display a reading direction indicator."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(Design.CustomReadingDirectionIndicatorDisplayTypeConverter)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="BinaryFactTypeReadingDisplay" Description="Provide default options for showing and hiding reverse readings on binary fact types.">
+			<Literals>
+				<EnumerationLiteral Name="ShowReverseReading" Value="0" Description="The reverse reading (if available) is shown with the forward reading for a binary fact type."/>
+				<EnumerationLiteral Name="OnlyOneReading" Value="1" Description="Only one reading is shown for a binary fact type."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;BinaryFactTypeReadingDisplay, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="CustomBinaryFactTypeReadingDisplay" Description="Determines whether the reading on a fact type shape for a binary fact type will display both the forward and reverse readings (when availalbe). Also used on the diagram to provide a default, which can override the global display option.">
+			<Literals>
+				<EnumerationLiteral Name="Default" Value="-1" Description="Use the context setting, either the global state for a diagram or the diagram for a shape."/>
+				<EnumerationLiteral Name="ShowReverseReading" Value="0" Description="The reverse reading (if available) is shown with the forward reading for a binary fact type."/>
+				<EnumerationLiteral Name="OnlyOneReading" Value="1" Description="Only one reading is shown for a binary fact type."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(Design.CustomBinaryFactTypeReadingDisplayTypeConverter)"/>
 					</Parameters>
 				</ClrAttribute>
 			</Attributes>
@@ -152,6 +254,8 @@
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
+		<!-- This is external so we can list additional attributes not supported by EnumerationLiteral -->
+		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="ReadingDirectionIndicatorDisplay"/>
 	</Types>
 
 	<Shapes>
@@ -212,9 +316,19 @@
 						<DomainEnumerationMoniker Name="ConstraintDisplayPosition"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="DisplayRoleNames" DisplayName="DisplayRoleNames" Id="9607AF0F-2E12-4215-B8A5-91B67C1A9F08" DefaultValue="UserDefault" Kind="CustomStorage" Description="Determines whether RoleNameShapes will be drawn for the Roles in the FactType represented by this FactTypeShape, overriding the global setting." >
+				<DomainProperty Name="DisplayRoleNames" DisplayName="DisplayRoleNames" Id="9607AF0F-2E12-4215-B8A5-91B67C1A9F08" DefaultValue="Default" Kind="CustomStorage" Description="Determines whether RoleNameShapes will be drawn for the Roles in the FactType represented by this FactTypeShape, overriding the global setting." >
 					<Type>
-						<DomainEnumerationMoniker Name="DisplayRoleNames"/>
+						<DomainEnumerationMoniker Name="CustomRoleNameDisplay"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayReverseReading" DisplayName="DisplayReverseReading" Id="507D64C1-E8C4-4116-B944-554D7EEBD9DC" DefaultValue="Default" Kind="CustomStorage" Description="Determines whether an available reverse reading is shown for a binary fact type." >
+					<Type>
+						<DomainEnumerationMoniker Name="CustomBinaryFactTypeReadingDisplay"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayReadingDirection" DisplayName="DisplayReadingDirection" Id="F0C6CA3F-87DC-4ECC-B95A-968D8FF38500" DefaultValue="Default" Kind="CustomStorage" Description="Determines when direction arrows are displayed.">
+					<Type>
+						<DomainEnumerationMoniker Name="CustomReadingDirectionIndicatorDisplay"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="RoleNameVisibilityChanged" Id="54C92810-43CF-4AED-AFAB-06CF329EAC77" GetterAccessModifier="Private" SetterAccessModifier="Private" Kind="CustomStorage" IsBrowsable="false">
@@ -435,7 +549,7 @@
 			</ClrAttribute>
 		</Attributes>
 		<Properties>
-			<DomainProperty Name="AutoPopulateShapes" Id="D3F7A171-CE39-4944-BE80-D55127423C83" DefaultValue="false" IsBrowsable="false">
+			<DomainProperty Name="AutoPopulateShapes" Id="D3F7A171-CE39-4944-BE80-D55127423C83" DefaultValue="false" Kind="CustomStorage" IsBrowsable="false">
 				<Type>
 					<ExternalTypeMoniker Name="/System/Boolean"/>
 				</Type>
@@ -443,6 +557,30 @@
 			<DomainProperty Name="UpdateCounter" Id="D3FBC03E-0A25-48E6-8D93-747E01C54E06" GetterAccessModifier="Family" SetterAccessModifier="Family" Kind="CustomStorage" IsBrowsable="false">
 				<Type>
 					<ExternalTypeMoniker Name="/System/Int64"/>
+				</Type>
+			</DomainProperty>
+			<DomainProperty Name="DisplayRoleNames" DisplayName="RoleNames" Id="4B2B22EC-1978-4255-9485-CA9A23A09826" DefaultValue="Default" Kind="CustomStorage" Description="Determines whether role name shapes will be drawn by default on this diagram.">
+				<Attributes>
+					<ClrAttribute Name="ORMDiagramDisplayOption"/>
+				</Attributes>
+				<Type>
+					<DomainEnumerationMoniker Name="CustomRoleNameDisplay"/>
+				</Type>
+			</DomainProperty>
+			<DomainProperty Name="DisplayReverseReadings" DisplayName="ReverseReadings" Id="CAE32C41-B699-49C9-B5C2-C3487B174A8E" DefaultValue="Default" Kind="CustomStorage" Description="Determines whether available reverse readings are shown for binary fact types on this diagram.">
+				<Attributes>
+					<ClrAttribute Name="ORMDiagramDisplayOption"/>
+				</Attributes>
+				<Type>
+					<DomainEnumerationMoniker Name="CustomBinaryFactTypeReadingDisplay"/>
+				</Type>
+			</DomainProperty>
+			<DomainProperty Name="DisplayReadingDirection" DisplayName="ReadingDirectionIndicator" Id="848CC6C6-B261-48B1-9409-A4F074FE733D" DefaultValue="Default" Kind="CustomStorage" Description="Determines when direction arrows are displayed with readings on this diagram.">
+				<Attributes>
+					<ClrAttribute Name="ORMDiagramDisplayOption"/>
+				</Attributes>
+				<Type>
+					<DomainEnumerationMoniker Name="CustomReadingDirectionIndicatorDisplay"/>
 				</Type>
 			</DomainProperty>
 		</Properties>

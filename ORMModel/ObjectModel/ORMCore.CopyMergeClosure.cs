@@ -34,6 +34,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			closureManager.AddRootEmbeddingRelationship(ModelHasSetComparisonConstraint.DomainClassId);
 			closureManager.AddRootEmbeddingRelationship(ModelHasDataType.DomainClassId);
 			closureManager.AddRootEmbeddingRelationship(GenerationStateHasGenerationSetting.DomainClassId);
+			closureManager.AddRootEmbeddingRelationship(DisplayStateRelatesToORMModel.DomainClassId);
+			closureManager.AddRootEmbeddingRelationship(DisplayStateHasDisplaySetting.DomainClassId);
 			closureManager.AddRootEmbeddingRelationship(ModelContainsRecognizedPhrase.DomainClassId);
 			closureManager.AddRootEmbeddingRelationship(ModelHasDefinition.DomainClassId);
 			closureManager.AddRootEmbeddingRelationship(ModelHasPrimaryNote.DomainClassId);

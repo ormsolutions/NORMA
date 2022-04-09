@@ -129,6 +129,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 			}
+			void IDeserializationFixupListener.LoadingNewFile()
+			{
+				// Empty implementation
+			}
 			#endregion // IDeserializationFixupListener Implementation
 			#region INotifyElementAdded Implementation
 			void INotifyElementAdded.ElementAdded(ModelElement element)

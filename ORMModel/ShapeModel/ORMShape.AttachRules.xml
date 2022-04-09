@@ -87,6 +87,15 @@
 			<arg:AddRule methodName="SwitchToNestedFactTypeRule">
 				<arg:RuleOn targetType="Objectification" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
+			<arg:ChangeRule methodName="GlobalDisplayOptionsChangedRule">
+				<arg:RuleOn targetType="ORMDiagramDisplayOptions" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="DiagramDisplayOptionsChangedRule">
+				<arg:RuleOn targetType="ORMDiagram" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+			</arg:ChangeRule>
+			<arg:ChangeRule methodName="ShapeDisplayOptionsChangedRule">
+				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
+			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="FrequencyConstraintShape">
 			<arg:AddRule methodName="ConstrainedFactTypeAddedRule">
@@ -216,9 +225,6 @@
 			<arg:AddRule methodName="FactTypedAddedRule">
 				<arg:RuleOn targetType="ModelHasFactType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
 			</arg:AddRule>
-			<arg:ChangeRule methodName="FactTypeShapeChangedRule">
-				<arg:RuleOn targetType="FactTypeShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority"/>
-			</arg:ChangeRule>
 			<arg:ChangeRule methodName="ForceClearViewFixupDataListRule" methodInRuleClass="true">
 				<arg:RuleOn targetType="Diagram" targetTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddShapeRulePriority">
 					<arg:PriorityAdjustment>

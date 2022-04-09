@@ -54,6 +54,9 @@
 		<xs:attribute name="Name" type="xs:string" use="required"/>
 		<xs:attribute name="BaseFontName" type="xs:string" use="required"/>
 		<xs:attribute name="BaseFontSize" type="xs:decimal" use="required"/>
+		<xs:attribute name="DisplayRoleNames" type="CustomDisplayRoleNamesType" default="Default"/>
+		<xs:attribute name="DisplayReverseReadings" type="CustomDisplayReverseReadingsType" default="Default"/>
+		<xs:attribute name="DisplayReadingDirection" type="CustomDisplayReadingDirectionType" default="Default"/>
 		<xs:attribute name="AutoPopulateShapes" type="xs:boolean" default="false">
 			<xs:annotation>
 				<xs:documentation>If this is set to true, then all shapes in the model will be loaded onto this diagram when the diagram is first loaded. AutoPopulateShapes is never written, but is useful for importing models with no diagram information.</xs:documentation>
@@ -120,15 +123,9 @@
 						</xs:complexType>
 					</xs:element>
 				</xs:sequence>
-				<xs:attribute name="DisplayRoleNames" default="UserDefault">
-					<xs:simpleType>
-						<xs:restriction base="xs:string">
-							<xs:enumeration value="UserDefault"/>
-							<xs:enumeration value="Off"/>
-							<xs:enumeration value="On"/>
-						</xs:restriction>
-					</xs:simpleType>
-				</xs:attribute>
+				<xs:attribute name="DisplayRoleNames" type="CustomDisplayRoleNamesType" default="Default"/>
+				<xs:attribute name="DisplayReverseReading" type="CustomDisplayReverseReadingsType" default="Default"/>
+				<xs:attribute name="DisplayReadingDirection" type="CustomDisplayReadingDirectionType" default="Default"/>
 				<xs:attribute name="ConstraintDisplayPosition" default="Top">
 					<xs:simpleType>
 						<xs:restriction base="xs:string">
@@ -152,6 +149,91 @@
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
+	<xs:simpleType name="CustomDisplayRoleNamesType">
+		<xs:annotation>
+			<xs:documentation>Determine if role names are shown on the current ORMDiagram or FactTypeShape.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Default">
+				<xs:annotation>
+					<xs:documentation>Use the context setting, either the global state for a diagram or the diagram for a shape.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Off">
+				<xs:annotation>
+					<xs:documentation>Role name display is turned off.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="On">
+				<xs:annotation>
+					<xs:documentation>Role name display is turned on.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CustomDisplayReverseReadingsType">
+		<xs:annotation>
+			<xs:documentation>For binary fact types, determine if reverse readings are shown on the current ORMDiagram or FactTypeShape.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Default">
+				<xs:annotation>
+					<xs:documentation>
+						<xs:documentation>Use the context setting, either the global state for a diagram or the diagram for a shape.</xs:documentation>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ShowReverseReading">
+				<xs:annotation>
+					<xs:documentation>
+						<xs:documentation>The reverse reading (if available) is shown with the forward reading for a binary fact type.</xs:documentation>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OnlyOneReading">
+				<xs:annotation>
+					<xs:documentation>
+						<xs:documentation>Only one reading is shown for a binary fact type.</xs:documentation>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="CustomDisplayReadingDirectionType">
+		<xs:annotation>
+			<xs:documentation>Determines when a direction indicator is drawn for reading shapes on the current ORMDiagram or FactTypeShape.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Default">
+				<xs:annotation>
+					<xs:documentation>
+						<xs:documentation>Use the context setting, either the global state for a diagram or the diagram for a shape.</xs:documentation>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Reversed">
+				<xs:annotation>
+					<xs:documentation>
+						<xs:documentation>Display indicator for reverse readings only.</xs:documentation>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Rotated">
+				<xs:annotation>
+					<xs:documentation>
+						<xs:documentation>Display indicator if the fact type is rotated, even if the reading order is top-down.</xs:documentation>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Always">
+				<xs:annotation>
+					<xs:documentation>
+						<xs:documentation>Always display a reading direction indicator.</xs:documentation>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
 	<xs:simpleType name="DisplayRelatedTypesType">
 		<xs:restriction base="xs:token">
 			<xs:enumeration value="AttachAllTypes">
@@ -270,4 +352,83 @@
 		<xs:attribute name="ref" type="xs:IDREF"/>
 	</xs:complexType>
 	<xs:element name="ORMDiagramDynamicColor" substitutionGroup="orm:DynamicColor"/>
+	<xs:element name="ORMDiagramDisplayOptions" type="DisplayOptionsType" substitutionGroup="orm:DisplaySetting"/>
+	<xs:complexType name="DisplayOptionsType">
+		<xs:complexContent>
+			<xs:extension base="orm:DisplaySettingType">
+				<xs:attribute name="DisplayRoleNames" default="On">
+					<xs:annotation>
+						<xs:documentation>Should role names be shown by default on ORM diagrams?</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Off">
+								<xs:annotation>
+									<xs:documentation>Role name display is turned off.</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="On">
+								<xs:annotation>
+									<xs:documentation>Role name display is turned on.</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="DisplayReverseReadings" default="ShowReverseReading">
+					<xs:annotation>
+						<xs:documentation>Should reverse readings be shown by default on ORM diagrams?</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="ShowReverseReading">
+								<xs:annotation>
+									<xs:documentation>
+										<xs:documentation>The reverse reading (if available) is shown with the forward reading for a binary fact type.</xs:documentation>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="OnlyOneReading">
+								<xs:annotation>
+									<xs:documentation>
+										<xs:documentation>Only one reading is shown for a binary fact type.</xs:documentation>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="DisplayReadingDirection" default="Reversed">
+					<xs:annotation>
+						<xs:documentation>When should reading direction be shown with a graphical indicator on an ORM diagram?</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Reversed">
+								<xs:annotation>
+									<xs:documentation>
+										<xs:documentation>Display indicator for reverse readings only.</xs:documentation>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Rotated">
+								<xs:annotation>
+									<xs:documentation>
+										<xs:documentation>Display indicator if the fact type is rotated, even if the reading order is top-down.</xs:documentation>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Always">
+								<xs:annotation>
+									<xs:documentation>
+										<xs:documentation>Always display a reading direction indicator.</xs:documentation>
+									</xs:documentation>
+								</xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 </xs:schema>

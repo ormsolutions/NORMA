@@ -54,6 +54,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(FactTypeShape).GetNestedType("RoleDisplayOrderChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("SwitchFromNestedFactTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FactTypeShape).GetNestedType("SwitchToNestedFactTypeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("GlobalDisplayOptionsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("DiagramDisplayOptionsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(FactTypeShape).GetNestedType("ShapeDisplayOptionsChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraintShape).GetNestedType("ConstrainedFactTypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraintShape).GetNestedType("ConstrainedFactTypeDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(FrequencyConstraintShape).GetNestedType("FrequencyConstraintPropertyChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -93,7 +96,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						typeof(FactConstraintDeletedRuleClass),
 						typeof(ExternalRoleConstraintDeletedRuleClass),
 						typeof(FactTypedAddedRuleClass),
-						typeof(FactTypeShapeChangedRuleClass),
 						typeof(ForceClearViewFixupDataListRuleClass),
 						typeof(ModelNoteAddedRuleClass),
 						typeof(ModelNoteReferenceAddedRuleClass),
@@ -163,7 +165,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMShapeDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 96; ++i)
+			for (int i = 0; i < 98; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -711,6 +713,84 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.SwitchToNestedFactTypeRule");
 				FactTypeShape.SwitchToNestedFactTypeRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.SwitchToNestedFactTypeRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMDiagramDisplayOptions), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class GlobalDisplayOptionsChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public GlobalDisplayOptionsChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ORMDiagramDisplayOptions), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void GlobalDisplayOptionsChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.GlobalDisplayOptionsChangedRule");
+				FactTypeShape.GlobalDisplayOptionsChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.GlobalDisplayOptionsChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ORMDiagram), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class DiagramDisplayOptionsChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DiagramDisplayOptionsChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(ORMDiagram), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void DiagramDisplayOptionsChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.DiagramDisplayOptionsChangedRule");
+				FactTypeShape.DiagramDisplayOptionsChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.DiagramDisplayOptionsChangedRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
+		private sealed class ShapeDisplayOptionsChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public ShapeDisplayOptionsChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape
+			/// /// <summary>
+			/// /// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+			/// /// </summary>
+			/// private static void ShapeDisplayOptionsChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.ShapeDisplayOptionsChangedRule");
+				FactTypeShape.ShapeDisplayOptionsChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.ShapeDisplayOptionsChangedRule");
 			}
 		}
 	}
@@ -1755,32 +1835,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.FactTypedAddedRule");
 				ORMShapeDomainModel.FactTypedAddedRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.FactTypedAddedRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(FactTypeShape), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority)]
-		private sealed class FactTypeShapeChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public FactTypeShapeChangedRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel
-			/// /// <summary>
-			/// /// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
-			/// /// </summary>
-			/// private static void FactTypeShapeChangedRule(ElementPropertyChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.FactTypeShapeChangedRule");
-				ORMShapeDomainModel.FactTypeShapeChangedRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel.FactTypeShapeChangedRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Microsoft.VisualStudio.Modeling.Diagrams.Diagram), FireTime=Microsoft.VisualStudio.Modeling.TimeToFire.TopLevelCommit, Priority=(Microsoft.VisualStudio.Modeling.Diagrams.DiagramFixupConstants.AddShapeRulePriority + 1))]

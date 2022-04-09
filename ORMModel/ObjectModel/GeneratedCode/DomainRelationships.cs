@@ -5144,6 +5144,507 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainRelationship DisplayStateRelatesToORMModel
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship()]
+	[DslModeling::DomainObjectId("8be24a17-b60e-4537-9e5d-32f56f1de2fa")]
+	public partial class DisplayStateRelatesToORMModel : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// DisplayStateRelatesToORMModel domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0x8be24a17, 0xb60e, 0x4537, 0x9e, 0x5d, 0x32, 0xf5, 0x6f, 0x1d, 0xe2, 0xfa);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a DisplayStateRelatesToORMModel link in the same Partition as the given DisplayState
+		/// </summary>
+		/// <param name="source">DisplayState to use as the source of the relationship.</param>
+		/// <param name="target">ORMModel to use as the target of the relationship.</param>
+		public DisplayStateRelatesToORMModel(DisplayState source, ORMModel target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DisplayStateRelatesToORMModel.DisplayStateDomainRoleId, source), new DslModeling::RoleAssignment(DisplayStateRelatesToORMModel.ModelDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DisplayStateRelatesToORMModel(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DisplayStateRelatesToORMModel(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DisplayStateRelatesToORMModel(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DisplayStateRelatesToORMModel(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DisplayState domain role code
+		
+		/// <summary>
+		/// DisplayState domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayStateDomainRoleId = new global::System.Guid(0xc7a4c8dd, 0x6f72, 0x496b, 0xa8, 0x98, 0xf6, 0x71, 0xc5, 0x42, 0x46, 0x4c);
+		
+		/// <summary>
+		/// DomainRole DisplayState
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayState
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/DisplayState.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/DisplayState.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "Model", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/DisplayState.PropertyDisplayName", PropagatesDelete = true, Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("c7a4c8dd-6f72-496b-a898-f671c542464c")]
+		public virtual DisplayState DisplayState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DisplayState)DslModeling::DomainRoleInfo.GetRolePlayer(this, DisplayStateDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DisplayStateDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DisplayState of a ORMModel
+		/// <summary>
+		/// Gets DisplayState.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DisplayState GetDisplayState(ORMModel element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, ModelDomainRoleId) as DisplayState;
+		}
+		
+		/// <summary>
+		/// Sets DisplayState.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDisplayState(ORMModel element, DisplayState newDisplayState)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, ModelDomainRoleId, newDisplayState);
+		}
+		#endregion
+		#region Model domain role code
+		
+		/// <summary>
+		/// Model domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid ModelDomainRoleId = new global::System.Guid(0x000d760f, 0x02c4, 0x4474, 0x98, 0x63, 0x54, 0xb7, 0x6d, 0x77, 0x75, 0xaa);
+		
+		/// <summary>
+		/// DomainRole Model
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.Model
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/Model.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/Model.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DisplayState", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel/Model.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("000d760f-02c4-4474-9863-54b76d7775aa")]
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (ORMModel)DslModeling::DomainRoleInfo.GetRolePlayer(this, ModelDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, ModelDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access Model of a DisplayState
+		/// <summary>
+		/// Gets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static ORMModel GetModel(DisplayState element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DisplayStateDomainRoleId) as ORMModel;
+		}
+		
+		/// <summary>
+		/// Sets Model.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetModel(DisplayState element, ORMModel newModel)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DisplayStateDomainRoleId, newModel);
+		}
+		#endregion
+		#region DisplayState link accessor
+		/// <summary>
+		/// Get the DisplayStateRelatesToORMModel link to a DisplayState.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel GetLinkToModel (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState displayStateInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel>(displayStateInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayStateDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DisplayState not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region Model link accessor
+		/// <summary>
+		/// Get the DisplayStateRelatesToORMModel link to a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel GetLinkToDisplayState (global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel modelInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel>(modelInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.ModelDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of Model not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DisplayStateRelatesToORMModel instance accessors
+		
+		/// <summary>
+		/// Get any DisplayStateRelatesToORMModel links between a given DisplayState and a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayStateDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel link in links )
+			{
+				if ( target.Equals(link.Model) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one DisplayStateRelatesToORMModel link between a given DisplayStateand a ORMModel.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMModel target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayStateDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel link in links )
+			{
+				if ( target.Equals(link.Model) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainRelationship DisplayStateHasDisplaySetting
+	/// Description for
+	/// ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainRelationship(IsEmbedding=true)]
+	[DslModeling::DomainObjectId("cecf2c73-cfbe-4cfb-850e-0bce3712388c")]
+	public partial class DisplayStateHasDisplaySetting : DslModeling::ElementLink
+	{
+		#region Constructors, domain class Id
+		
+		/// <summary>
+		/// DisplayStateHasDisplaySetting domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xcecf2c73, 0xcfbe, 0x4cfb, 0x85, 0x0e, 0x0b, 0xce, 0x37, 0x12, 0x38, 0x8c);
+	
+				
+		/// <summary>
+		/// Constructor
+		/// Creates a DisplayStateHasDisplaySetting link in the same Partition as the given DisplayState
+		/// </summary>
+		/// <param name="source">DisplayState to use as the source of the relationship.</param>
+		/// <param name="target">DisplaySetting to use as the target of the relationship.</param>
+		public DisplayStateHasDisplaySetting(DisplayState source, DisplaySetting target)
+			: base((source != null ? source.Partition : null), new DslModeling::RoleAssignment[]{new DslModeling::RoleAssignment(DisplayStateHasDisplaySetting.DisplayStateDomainRoleId, source), new DslModeling::RoleAssignment(DisplayStateHasDisplaySetting.DisplaySettingDomainRoleId, target)}, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DisplayStateHasDisplaySetting(DslModeling::Store store, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DisplayStateHasDisplaySetting(DslModeling::Store store, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(store != null ? store.DefaultPartition : null, roleAssignments, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		public DisplayStateHasDisplaySetting(DslModeling::Partition partition, params DslModeling::RoleAssignment[] roleAssignments)
+			: base(partition, roleAssignments, null)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new link is to be created.</param>
+		/// <param name="roleAssignments">List of relationship role assignments.</param>
+		/// <param name="propertyAssignments">List of properties assignments to set on the new link.</param>
+		public DisplayStateHasDisplaySetting(DslModeling::Partition partition, DslModeling::RoleAssignment[] roleAssignments, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, roleAssignments, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DisplayState domain role code
+		
+		/// <summary>
+		/// DisplayState domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayStateDomainRoleId = new global::System.Guid(0xc705a069, 0x1cee, 0x4d4e, 0xa4, 0xc9, 0xf0, 0x9c, 0xc3, 0xb9, 0xae, 0x21);
+		
+		/// <summary>
+		/// DomainRole DisplayState
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplayState
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplayState.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplayState.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Source, PropertyName = "DisplaySettings", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplayState.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroMany)]
+		[DslModeling::DomainObjectId("c705a069-1cee-4d4e-a4c9-f09cc3b9ae21")]
+		public virtual DisplayState DisplayState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DisplayState)DslModeling::DomainRoleInfo.GetRolePlayer(this, DisplayStateDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DisplayStateDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DisplayState of a DisplaySetting
+		/// <summary>
+		/// Gets DisplayState.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DisplayState GetDisplayState(DisplaySetting element)
+		{
+			return DslModeling::DomainRoleInfo.GetLinkedElement(element, DisplaySettingDomainRoleId) as DisplayState;
+		}
+		
+		/// <summary>
+		/// Sets DisplayState.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static void SetDisplayState(DisplaySetting element, DisplayState newDisplayState)
+		{
+			DslModeling::DomainRoleInfo.SetLinkedElement(element, DisplaySettingDomainRoleId, newDisplayState);
+		}
+		#endregion
+		#region DisplaySetting domain role code
+		
+		/// <summary>
+		/// DisplaySetting domain role Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplaySettingDomainRoleId = new global::System.Guid(0x1fc61742, 0xd4cb, 0x454d, 0x82, 0x38, 0x9b, 0x27, 0xca, 0x9a, 0x65, 0xab);
+		
+		/// <summary>
+		/// DomainRole DisplaySetting
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplaySetting
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplaySetting.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplaySetting.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslModeling::DomainRole(DslModeling::DomainRoleOrder.Target, PropertyName = "DisplayState", PropertyDisplayNameKey="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting/DisplaySetting.PropertyDisplayName", Multiplicity = DslModeling::Multiplicity.ZeroOne)]
+		[DslModeling::DomainObjectId("1fc61742-d4cb-454d-8238-9b27ca9a65ab")]
+		public virtual DisplaySetting DisplaySetting
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return (DisplaySetting)DslModeling::DomainRoleInfo.GetRolePlayer(this, DisplaySettingDomainRoleId);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetRolePlayer(this, DisplaySettingDomainRoleId, value);
+			}
+		}
+				
+		#endregion
+		#region Static methods to access DisplaySettings of a DisplayState
+		/// <summary>
+		/// Gets a list of DisplaySettings.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static DslModeling::LinkedElementCollection<DisplaySetting> GetDisplaySettings(DisplayState element)
+		{
+			return new DslModeling::LinkedElementCollection<DisplaySetting>(element, DisplayStateDomainRoleId);
+		}
+		#endregion
+		#region DisplayState link accessor
+		/// <summary>
+		/// Get the list of DisplayStateHasDisplaySetting links to a DisplayState.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting> GetLinksToDisplaySettings ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState displayStateInstance )
+		{
+			return DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting>(displayStateInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplayStateDomainRoleId);
+		}
+		#endregion
+		#region DisplaySetting link accessor
+		/// <summary>
+		/// Get the DisplayStateHasDisplaySetting link to a DisplaySetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting GetLinkToDisplayState (global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplaySetting displaySettingInstance)
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting>(displaySettingInstance, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplaySettingDomainRoleId);
+			global::System.Diagnostics.Debug.Assert(links.Count <= 1, "Multiplicity of DisplaySetting not obeyed.");
+			if ( links.Count == 0 )
+			{
+				return null;
+			}
+			else
+			{
+				return links[0];
+			}
+		}
+		#endregion
+		#region DisplayStateHasDisplaySetting instance accessors
+		
+		/// <summary>
+		/// Get any DisplayStateHasDisplaySetting links between a given DisplayState and a DisplaySetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::System.Collections.ObjectModel.ReadOnlyCollection<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting> GetLinks( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplaySetting target )
+		{
+			global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting> outLinks = new global::System.Collections.Generic.List<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting>();
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplayStateDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting link in links )
+			{
+				if ( target.Equals(link.DisplaySetting) )
+				{
+					outLinks.Add(link);
+				}
+			}
+			return outLinks.AsReadOnly();
+		}
+		/// <summary>
+		/// Get the one DisplayStateHasDisplaySetting link between a given DisplayStateand a DisplaySetting.
+		/// </summary>
+		[global::System.Diagnostics.DebuggerStepThrough]
+		[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011")]
+		public static global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting GetLink( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplaySetting target )
+		{
+			global::System.Collections.Generic.IList<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting> links = DslModeling::DomainRoleInfo.GetElementLinks<global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting>(source, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplayStateDomainRoleId);
+			foreach ( global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting link in links )
+			{
+				if ( target.Equals(link.DisplaySetting) )
+				{
+					return link;
+				}
+			}
+			return null;
+		}
+		
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainRelationship NameGeneratorRefinesNameGenerator
 	/// Description for
 	/// ORMSolutions.ORMArchitect.Core.ObjectModel.NameGeneratorRefinesNameGenerator

@@ -17,11 +17,13 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Design;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Windows.Forms;
@@ -931,6 +933,188 @@ namespace ORMSolutions.ORMArchitect.Framework.Design
 			return retVal;
 		}
 		#endregion // PropertyDescriptorAs
+		#region ConsolidatePropertyDescriptors
+		/// <summary>
+		/// Create a new property descriptor that expands to show the provided child properties.
+		/// </summary>
+		/// <typeparam name="TComponent">The component type expected by the child descriptors</typeparam>
+		/// <param name="childDescriptors">A list of child descriptors.</param>
+		/// <param name="descriptorName">The name of the consolidating descriptor in the containing collection.</param>
+		/// <param name="displayName">The display name of the consolidating property descriptor.</param>
+		/// <param name="description">The descriptor of the consolidating property descriptor.</param>
+		/// <param name="category">The category of the consolidating property descriptor.</param>
+		/// <param name="defaultState">The string displayed if all of the child properties have a default state.</param>
+		/// <param name="customState">The string displayed if at least one of the child properties has a non-default state.</param>
+		/// <returns><see cref="PropertyDescriptor"/> that expands to show the given properties.</returns>
+		/// <remarks>The calling code is responsible for managing the <see cref="PropertyDescriptorCollection"/> that contains the returned descriptors.</remarks>
+		public static PropertyDescriptor ConsolidatePropertyDescriptors<TComponent>(IList<PropertyDescriptor> childDescriptors, string descriptorName, string displayName, string description, string category, string defaultState, string customState)
+		{
+			return new ConsolidatedPropertyDescriptor<TComponent>(childDescriptors, descriptorName, displayName, description, category, defaultState, customState);
+		}
+		private sealed class ConsolidatedPropertyDescriptor<TComponent> : PropertyDescriptor
+		{
+			private PropertyDescriptorCollection myChildProperties;
+			private string myDisplayName;
+			private string myDescription;
+			private string myCategory;
+			private TypeConverter myConverter;
+			public ConsolidatedPropertyDescriptor(IList<PropertyDescriptor> childDescriptors, string descriptorName, string displayName, string description, string category, string defaultState, string customState)
+				: base(descriptorName, null)
+			{
+				PropertyDescriptor[] descriptorArray;
+				if (childDescriptors != null)
+				{
+					descriptorArray = new PropertyDescriptor[childDescriptors.Count];
+					childDescriptors.CopyTo(descriptorArray, 0);
+				}
+				else
+				{
+					descriptorArray = new PropertyDescriptor[0];
+				}
+				myChildProperties = new PropertyDescriptorCollection(descriptorArray);
+				myDisplayName = displayName;
+				myDescription = description;
+				myCategory = category;
+				myConverter = new ConsolidatedPropertyConverter(defaultState, customState);
+			}
+			public override string DisplayName
+			{
+				get
+				{
+					return myDisplayName;
+				}
+			}
+			public override string Category
+			{
+				get
+				{
+					return myCategory;
+				}
+			}
+			public override string Description
+			{
+				get
+				{
+					return myDescription;
+				}
+			}
+			public override TypeConverter Converter
+			{
+				get
+				{
+					return myConverter;
+				}
+			}
+			public override Type ComponentType
+			{
+				get
+				{
+					return typeof(TComponent);
+				}
+			}
+			public override bool IsReadOnly
+			{
+				get
+				{
+					return false;
+				}
+			}
+			public override Type PropertyType
+			{
+				get
+				{
+					return typeof(TComponent);
+				}
+			}
+			public override bool CanResetValue(object component)
+			{
+				foreach (PropertyDescriptor descriptor in myChildProperties)
+				{
+					if (descriptor.CanResetValue(component))
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			public override PropertyDescriptorCollection GetChildProperties(object instance, Attribute[] filter)
+			{
+				// This is called through the type converter
+				return myChildProperties;
+			}
+			public override object GetValue(object component)
+			{
+				// Component and property types match, Pass through the outer component
+				return component;
+			}
+			public override void ResetValue(object component)
+			{
+				foreach (PropertyDescriptor descriptor in myChildProperties)
+				{
+					if (descriptor.CanResetValue(component))
+					{
+						descriptor.ResetValue(component);
+					}
+				}
+			}
+			public override void SetValue(object component, object value)
+			{
+				// Intentionally empty
+			}
+			public override bool ShouldSerializeValue(object component)
+			{
+				foreach (PropertyDescriptor descriptor in myChildProperties)
+				{
+					if (descriptor.ShouldSerializeValue(component))
+					{
+						return true;
+					}
+				}
+				return false;
+			}
+			/// <summary>
+			/// Stop live editing of the consolidated property and show the
+			/// default and custom state strings.
+			/// </summary>
+			private sealed class ConsolidatedPropertyConverter : StringConverter
+			{
+				private string myDefaultState;
+				private string myCustomState;
+				public ConsolidatedPropertyConverter(string defaultState, string customState)
+				{
+					myDefaultState = defaultState;
+					myCustomState = customState;
+				}
+				public sealed override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+				{
+					if (context != null && context.Instance is TComponent && sourceType == typeof(string))
+					{
+						return false;
+					}
+					return base.CanConvertFrom(context, sourceType);
+				}
+				public sealed override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+				{
+					object retVal = base.ConvertTo(context, culture, value, destinationType);
+					object instance;
+					if (context != null && (instance = context.Instance) is TComponent && destinationType == typeof(string))
+					{
+						retVal = context.PropertyDescriptor.ShouldSerializeValue(instance) ? myCustomState : myDefaultState;
+					}
+					return retVal;
+				}
+				public override bool GetPropertiesSupported(ITypeDescriptorContext context)
+				{
+					return true;
+				}
+				public override PropertyDescriptorCollection GetProperties(ITypeDescriptorContext context, object value, Attribute[] attributes)
+				{
+					return context.PropertyDescriptor.GetChildProperties(context.Instance, attributes);
+				}
+			}
+		}
+
+		#endregion // ConsolidatePropertyDescriptors
 		#region AttachEscapeKeyPressedEventHandler
 		/// <summary>
 		/// Recursively test if a <paramref name="control"/> or its contained

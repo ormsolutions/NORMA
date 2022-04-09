@@ -229,6 +229,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// to load schemas for extensions skipped in this load.
 		/// </summary>
 		ResolveSkippedExtensions = 2,
+		/// <summary>
+		/// The file being loaded is a template with a "new" processing instruction.
+		/// </summary>
+		LoadingNewFile = 4,
 	}
 	#endregion // SerializationEngineLoadOptions enum
 	#endregion // Public Enumerations
@@ -3042,7 +3046,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			/// so that all subsequent edits run against a model in a known state.
 			/// </summary>
 			/// <param name="store">The store being deserialized to.</param>
-			public DeserializationFixupManager(Store store)
+			/// <param name="loadingNewFile">A new file is being loaded.</param>
+			public DeserializationFixupManager(Store store, bool loadingNewFile)
 			{
 				myStore = store;
 				List<IDeserializationFixupListener> listeners = new List<IDeserializationFixupListener>();
@@ -3053,6 +3058,10 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				{
 					foreach (IDeserializationFixupListener listener in provider.DeserializationFixupListenerCollection)
 					{
+						if (loadingNewFile)
+						{
+							listener.LoadingNewFile();
+						}
 						listeners.Add(listener);
 					}
 					Type phaseType = provider.DeserializationFixupPhaseType;
@@ -3555,7 +3564,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// <param name="options">Options to modify load behavior. Defaults to <see cref="SerializationEngineLoadOptions.None"/></param>
 		public void Load(Stream stream, SerializationEngineLoadOptions options)
 		{
-			DeserializationFixupManager fixupManager = new DeserializationFixupManager(myStore);
+			DeserializationFixupManager fixupManager = new DeserializationFixupManager(myStore, 0 != (options & SerializationEngineLoadOptions.LoadingNewFile));
 			myNotifyAdded = fixupManager as INotifyElementAdded;
 			XmlReaderSettings settings = new XmlReaderSettings();
 			XmlSchemaSet schemas = settings.Schemas;

@@ -71,6 +71,58 @@
 					</plx:return>
 				</se:ConditionalSerialization>
 			</se:RootElement>
+			<se:RootElement Class="DisplayState">
+				<se:ConditionalSerialization>
+					<plx:comment>Only serialize if there are children and at least one child is serialized.</plx:comment>
+					<plx:iterator localName="setting" dataTypeName="DisplaySetting">
+						<plx:initialize>
+							<plx:callInstance name="DisplaySettings" type="property">
+								<plx:callObject>
+									<plx:cast dataTypeName="DisplayState">
+										<plx:nameRef name="element" type="parameter"/>
+									</plx:cast>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:initialize>
+						<plx:local name="serializedSetting" dataTypeName="ICustomSerializedElement">
+							<plx:initialize>
+								<plx:cast dataTypeName="ICustomSerializedElement" type="testCast">
+									<plx:nameRef name="setting"/>
+								</plx:cast>
+							</plx:initialize>
+						</plx:local>
+						<plx:branch>
+							<plx:condition>
+								<plx:binaryOperator type="booleanAnd">
+									<plx:left>
+										<plx:binaryOperator type="identityInequality">
+											<plx:left>
+												<plx:nameRef name="serializedSetting"/>
+											</plx:left>
+											<plx:right>
+												<plx:nullKeyword/>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:callInstance name="ShouldSerialize">
+											<plx:callObject>
+												<plx:nameRef name="serializedSetting"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:condition>
+							<plx:return>
+								<plx:trueKeyword/>
+							</plx:return>
+						</plx:branch>
+					</plx:iterator>
+					<plx:return>
+						<plx:falseKeyword/>
+					</plx:return>
+				</se:ConditionalSerialization>
+			</se:RootElement>
 			<se:RootElement Class="ElementGroupingSet" Name="Grouping"/>
 		</se:RootElements>
 		<se:OmittedDomainElements>
@@ -162,6 +214,7 @@
 			<se:Embed RelationshipName="ModelContainsRecognizedPhrase" RoleName="RecognizedPhrase"/>
 		</se:Container>
 		<se:Link RelationshipName="ElementGroupingSetRelatesToORMModel" RoleName="GroupingSet" WriteStyle="NotWritten"/>
+		<se:Link RelationshipName="DisplayStateRelatesToORMModel" RoleName="DisplayState" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="Definition" Override="true">
 		<se:Attribute ID="Text" WriteStyle="Element"/>
@@ -180,6 +233,13 @@
 		<se:Link Name="ObjectType" RelationshipName="ModelNoteReferencesObjectType" RoleName="Element"/>
 		<se:Link Name="SetConstraint" RelationshipName="ModelNoteReferencesSetConstraint" RoleName="Element"/>
 		<se:Link Name="SetComparisonConstraint" RelationshipName="ModelNoteReferencesSetComparisonConstraint" RoleName="Element"/>
+	</se:Element>
+	<!--Display Settings-->
+	<se:Element Class="DisplayState">
+		<se:Link RelationshipName="DisplayStateRelatesToORMModel" RoleName="Model" Name="ORMModel"/>
+		<se:Container Name="GlobalDisplayOptions">
+			<se:Embed RelationshipName="DisplayStateHasDisplaySetting" RoleName="DisplaySetting"/>
+		</se:Container>
 	</se:Element>
 	<!--Generation Settings-->
 	<se:Element Class="GenerationState">

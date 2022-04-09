@@ -78,7 +78,31 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 			{
 				return false;
 			}
+			else if (domainPropertyId == FactTypeShape.DisplayReverseReadingDomainPropertyId)
+			{
+				return ResolveFactTypeArity(requestor as FactTypeShape) == 2;
+			}
+			else if (domainPropertyId == FactTypeShape.DisplayReadingDirectionDomainPropertyId)
+			{
+				return ResolveFactTypeArity(requestor as FactTypeShape) > 1;
+			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
+		}
+
+		private int ResolveFactTypeArity(FactTypeShape shape)
+		{
+			FactType factType;
+			IList<RoleBase> roles;
+			int arity = 0;
+			if (null != shape && null != (factType = shape.AssociatedFactType))
+			{
+				arity = (roles = factType.RoleCollection).Count;
+				if (arity == 2 && FactType.GetUnaryRoleIndex(roles).HasValue)
+				{
+					arity = 1;
+				}
+			}
+			return arity;
 		}
 
 		private static readonly object LockObject = new object();
@@ -87,6 +111,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		private static Attribute[] DisplayOrientationDomainPropertyAttributes;
 		private static Attribute[] DisplayRelatedTypesDomainPropertyAttributes;
 		private static Attribute[] DisplayRoleNamesDomainPropertyAttributes;
+		private static Attribute[] DisplayReverseReadingDomainPropertyAttributes;
+		private static Attribute[] DisplayReadingDirectionDomainPropertyAttributes;
 		private static Attribute[] NameDomainPropertyAttributes;
 		private static Attribute[] IsIndependentDomainPropertyAttributes;
 		private static Attribute[] DisplayAsObjectTypeDomainPropertyAttributes;
@@ -106,6 +132,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 						DisplayOrientationDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId));
 						DisplayRelatedTypesDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId));
 						DisplayRoleNamesDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId));
+						DisplayReverseReadingDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayReverseReadingDomainPropertyId));
+						DisplayReadingDirectionDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayReadingDirectionDomainPropertyId));
 						DisplayAsObjectTypeDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayAsObjectTypeDomainPropertyId));
 						ExpandRefModeDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.ExpandRefModeDomainPropertyId));
 						NameDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
@@ -173,7 +201,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 				}
 				else
 				{
-					PropertyDescriptor[] descriptors = new PropertyDescriptor[nestingTypeHasRelatedTypes ? 9 : 8];
+					int descriptorCount = 8;
+					int arity = ResolveFactTypeArity(factTypeShape);
+					if (nestingTypeHasRelatedTypes)
+					{
+						++descriptorCount;
+					}
+					if (arity > 1)
+					{
+						++descriptorCount;
+						if (arity == 2)
+						{
+							++descriptorCount;
+						}
+					}
+					PropertyDescriptor[] descriptors = new PropertyDescriptor[descriptorCount];
 					descriptors[0] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ConstraintDisplayPositionDomainPropertyId), ConstraintDisplayPositionDomainPropertyAttributes);
 					descriptors[1] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayOrientationDomainPropertyId), DisplayOrientationDomainPropertyAttributes);
 					descriptors[2] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRoleNamesDomainPropertyId), DisplayRoleNamesDomainPropertyAttributes);
@@ -185,6 +227,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 					if (nestingTypeHasRelatedTypes)
 					{
 						descriptors[8] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRelatedTypesDomainPropertyId), DisplayRelatedTypesDomainPropertyAttributes);
+					}
+					if (arity > 1)
+					{
+						descriptors[descriptorCount - (arity == 2 ? 2 : 1)] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayReadingDirectionDomainPropertyId), DisplayReadingDirectionDomainPropertyAttributes);
+						if (arity == 2)
+						{
+							descriptors[descriptorCount - 1] = CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayReverseReadingDomainPropertyId), DisplayReverseReadingDomainPropertyAttributes);
+						}
 					}
 					retVal = new PropertyDescriptorCollection(descriptors);
 				}

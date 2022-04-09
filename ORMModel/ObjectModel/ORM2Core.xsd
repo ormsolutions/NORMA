@@ -4308,6 +4308,37 @@
 		</xs:annotation>
 		<xs:attributeGroup ref="refAttribute"/>
 	</xs:complexType>
+	<xs:element name="DisplayState" type="DisplayStateType"/>
+	<xs:complexType name="DisplayStateType">
+		<xs:annotation>
+			<xs:documentation>State information relating to display options.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ORMModel" type="ORMModelRef">
+				<xs:annotation>
+					<xs:documentation>The ORMModel element associated with this display data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="GlobalDisplayOptions" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Container for extension-defined data relating to global display options.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+						<xs:element ref="DisplaySetting"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
+	<xs:element name="DisplaySetting" type="DisplaySettingType" abstract="true"/>
+	<xs:complexType name="DisplaySettingType">
+		<xs:annotation>
+			<xs:documentation>A setting element representing extension-defined global display settings.</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="idAttribute"/>
+	</xs:complexType>
 	<xs:element name="GenerationState" type="GenerationStateType"/>
 	<xs:complexType name="GenerationStateType">
 		<xs:annotation>

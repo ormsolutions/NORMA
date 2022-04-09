@@ -159,32 +159,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		SingleImpliedObjectifiedInternalConstraint,
 	}
 	/// <summary>
-	/// Determine when a reading direction indicator is displayed for
-	/// readings on binary fact types. These options are cumulative,
-	/// so any higher display option turns on all other displays.
-	/// </summary>
-	public enum ReadingDirectionIndicatorDisplay
-	{
-		/// <summary>
-		/// Display for reverse readings only
-		/// </summary>
-		Reversed,
-		/// <summary>
-		/// If the forward and reverse readings are split into
-		/// two shapes, then display for both of them.
-		/// </summary>
-		Separated,
-		/// <summary>
-		/// Display if the fact type is rotated, even if the
-		/// reading order is top-down.
-		/// </summary>
-		Rotated,
-		/// <summary>
-		/// Always display a reading direction indicator
-		/// </summary>
-		Always,
-	}
-	/// <summary>
 	/// Options for overlaying EntityRelationship (ER) multiplicity
 	/// display on top of ORM binary fact types. Meant as a temporary
 	/// help for users with ER experience who are learning ORM.
@@ -215,20 +189,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 	}
 	#endregion // Shape enums
 	#region Other Options Enums
-	/// <summary>
-	/// Provide options for showing and hiding role names on object types
-	/// </summary>
-	public enum RoleNameDisplay
-	{
-		/// <summary>
-		/// Show role names
-		/// </summary>
-		On,
-		/// <summary>
-		/// Hide role names
-		/// </summary>
-		Off,
-	}
 	/// <summary>
 	/// Provide options for the behavior of the Delete and Control-Delete keys
 	/// </summary>
@@ -351,6 +311,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private static RoleNameDisplay myCurrentRoleNameDisplay = RoleNameDisplay_Default;
 		private RoleNameDisplay myRoleNameDisplay = RoleNameDisplay_Default;
 
+		private const BinaryFactTypeReadingDisplay ReverseReadingDisplay_Default = BinaryFactTypeReadingDisplay.ShowReverseReading;
+		private static BinaryFactTypeReadingDisplay myCurrentReverseReadingDisplay = ReverseReadingDisplay_Default;
+		private BinaryFactTypeReadingDisplay myReverseReadingDisplay = ReverseReadingDisplay_Default;
+
 		private const bool DisplayShadows_Default = true;
 		private static bool myCurrentDisplayShadows = DisplayShadows_Default;
 		private bool myDisplayShadows = DisplayShadows_Default;
@@ -403,7 +367,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private static PreferredInternalUniquenessConstraintDisplay myCurrentPreferredInternalUniquenessConstraintDisplay = PreferredInternalUniquenessConstraintDisplay_Default;
 		private PreferredInternalUniquenessConstraintDisplay myPreferredInternalUniquenessConstraintDisplay = PreferredInternalUniquenessConstraintDisplay_Default;
 
-		private const ReadingDirectionIndicatorDisplay ReadingDirectionIndicatorDisplay_Default = ReadingDirectionIndicatorDisplay.Separated;
+		private const ReadingDirectionIndicatorDisplay ReadingDirectionIndicatorDisplay_Default = ReadingDirectionIndicatorDisplay.Reversed;
 		private static ReadingDirectionIndicatorDisplay myCurrentReadingDirectionIndicatorDisplay = ReadingDirectionIndicatorDisplay_Default;
 		private ReadingDirectionIndicatorDisplay myReadingDirectionIndicatorDisplay = ReadingDirectionIndicatorDisplay_Default;
 
@@ -452,11 +416,30 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// </summary>
 		public override void LoadSettingsFromStorage()
 		{
-			base.LoadSettingsFromStorage();
+			try
+			{
+				base.LoadSettingsFromStorage();
+			}
+			catch
+			{
+				// Intentionally blank
+			}
+
+#pragma warning disable 612, 618
+			// Separated value applied to a state (multiple reading shapes on one fact type shape) that
+			// was never implemented, so made no sense in the options page (especially as the default).
+			// However, as this has been serialized, we need to continue to read it back in.
+			if (myReadingDirectionIndicatorDisplay == ReadingDirectionIndicatorDisplay.Separated)
+			{
+				myReadingDirectionIndicatorDisplay = ReadingDirectionIndicatorDisplay.Reversed;
+			}
+#pragma warning restore 612, 618
+
 			myCurrentObjectTypeDisplayShape = myObjectTypeDisplayShape;
 			myCurrentObjectifiedFactDisplayShape = myObjectifiedFactDisplayShape;
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
+			myCurrentReverseReadingDisplay = myReverseReadingDisplay;
 			myCurrentDisplayShadows = myDisplayShadows;
 			myCurrentDefaultDataType = myDefaultDataType;
 			myCurrentExternalConstraintRoleBarDisplay = myExternalConstraintRoleBarDisplay;
@@ -487,6 +470,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myObjectifiedFactDisplayShape = myCurrentObjectifiedFactDisplayShape;
 			myMandatoryDotPlacement = myCurrentMandatoryDotPlacement;
 			myRoleNameDisplay = myCurrentRoleNameDisplay;
+			myReverseReadingDisplay = myCurrentReverseReadingDisplay;
 			myDisplayShadows = myCurrentDisplayShadows;
 			myDefaultDataType = myCurrentDefaultDataType;
 			myExternalConstraintRoleBarDisplay = myCurrentExternalConstraintRoleBarDisplay;
@@ -524,11 +508,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if (myCurrentMandatoryDotPlacement == myMandatoryDotPlacement &&
 				myCurrentObjectifiedFactDisplayShape == myObjectifiedFactDisplayShape &&
 				myCurrentObjectTypeDisplayShape == myObjectTypeDisplayShape &&
-				myCurrentRoleNameDisplay == myRoleNameDisplay &&
 				myCurrentDisplayShadows == myDisplayShadows &&
 				myCurrentExternalConstraintRoleBarDisplay == myExternalConstraintRoleBarDisplay &&
 				myCurrentPreferredInternalUniquenessConstraintDisplay == myPreferredInternalUniquenessConstraintDisplay &&
-				myCurrentReadingDirectionIndicatorDisplay == myReadingDirectionIndicatorDisplay &&
 				myCurrentEntityRelationshipBinaryMultiplicityDisplay == myEntityRelationshipBinaryMultiplicityDisplay)
 			{
 				// Non-displayed setting, don't notify
@@ -545,6 +527,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myCurrentShowDebugCommands = myShowDebugCommands;
 				myCurrentDisplayDefinitionTooltips = myDisplayDefinitionTooltips;
 				myCurrentDelayActivateModelBrowserLabelEdits = myDelayActivateModelBrowserLabelEdits;
+				myCurrentRoleNameDisplay = myRoleNameDisplay;
+				myCurrentReadingDirectionIndicatorDisplay = myReadingDirectionIndicatorDisplay;
+				myCurrentReverseReadingDisplay = myReverseReadingDisplay;
 				if (updateVerbalizer)
 				{
 					ORMDesignerPackage.VerbalizationWindowGlobalSettingsChanged();
@@ -552,16 +537,15 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				return;
 			}
 
-			// See if facts need resizing
+			// See if fact type shapes need resizing
 			bool resizeFactShapes = myCurrentExternalConstraintRoleBarDisplay != myExternalConstraintRoleBarDisplay;
-			bool updateRoleNames = myCurrentRoleNameDisplay != myRoleNameDisplay;
-			bool resizeReadingShapes = myCurrentReadingDirectionIndicatorDisplay != myReadingDirectionIndicatorDisplay;
 
 			// Set the new options
 			myCurrentMandatoryDotPlacement = myMandatoryDotPlacement;
 			myCurrentObjectifiedFactDisplayShape = myObjectifiedFactDisplayShape;
 			myCurrentObjectTypeDisplayShape = myObjectTypeDisplayShape;
 			myCurrentRoleNameDisplay = myRoleNameDisplay;
+			myCurrentReverseReadingDisplay = myReverseReadingDisplay;
 			myCurrentDisplayShadows = myDisplayShadows;
 			myCurrentExternalConstraintRoleBarDisplay = myExternalConstraintRoleBarDisplay;
 			myCurrentDefaultDataType = myDefaultDataType;
@@ -603,33 +587,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							foreach (FactTypeShape factShape in elementDirectory.FindElements<FactTypeShape>(true))
 							{
 								factShape.AutoResize();
-							}
-						}
-						if (updateRoleNames)
-						{
-							Dictionary<FactType, object> processedFactTypes = null;
-							foreach (Role role in elementDirectory.FindElements<Role>(true))
-							{
-								if (!string.IsNullOrEmpty(role.Name))
-								{
-									FactType factType = role.FactType;
-									if (processedFactTypes == null)
-									{
-										processedFactTypes = new Dictionary<FactType, object>();
-									}
-									else if (processedFactTypes.ContainsKey(factType))
-									{
-										continue;
-									}
-									FactTypeShape.UpdateRoleNameDisplay(factType);
-								}
-							}
-						}
-						if (resizeReadingShapes)
-						{
-							foreach (ReadingShape readingShape in elementDirectory.FindElements<ReadingShape>(true))
-							{
-								readingShape.InvalidateDisplayText();
 							}
 						}
 						if (t.HasPendingChanges)
@@ -735,7 +692,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// Display of role names
 		/// </summary>
 		[DefaultValue(RoleNameDisplay_Default)]
-		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryNewFileAppearanceDefaultsId)]
 		[LocalizedDescription(ResourceStrings.OptionsPagePropertyRoleNameDisplayDescriptionId)]
 		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyRoleNameDisplayDisplayNameId)]
 		public RoleNameDisplay RoleNameDisplay
@@ -745,11 +702,32 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		}
 
 		/// <summary>
+		/// Display of binary fact type reverse readings
+		/// </summary>
+		[DefaultValue(ReverseReadingDisplay_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryNewFileAppearanceDefaultsId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyReverseReadingDisplayDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyReverseReadingDisplayDisplayNameId)]
+		public BinaryFactTypeReadingDisplay ReverseReadingDisplay
+		{
+			get { return myReverseReadingDisplay; }
+			set { myReverseReadingDisplay = value; }
+		}
+
+		/// <summary>
 		/// Current VS session-wide setting for RoleNameDisplay
 		/// </summary>
 		public static RoleNameDisplay CurrentRoleNameDisplay
 		{
 			get { return myCurrentRoleNameDisplay; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for ReverseReadingDisplay
+		/// </summary>
+		public static BinaryFactTypeReadingDisplay CurrentReverseReadingDisplay
+		{
+			get { return myCurrentReverseReadingDisplay; }
 		}
 
 		/// <summary>
@@ -1038,7 +1016,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// Current setting for ReadingDirectionIndicatorDisplay
 		/// </summary>
 		[DefaultValue(ReadingDirectionIndicatorDisplay_Default)]
-		[LocalizedCategory(ResourceStrings.OptionsPageCategoryAppearanceId)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryNewFileAppearanceDefaultsId)]
 		[LocalizedDescription(ResourceStrings.OptionsPagePropertyReadingDirectionIndicatorDisplayDescriptionId)]
 		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyReadingDirectionIndicatorDisplayDisplayNameId)]
 		public ReadingDirectionIndicatorDisplay ReadingDirectionIndicatorDisplay

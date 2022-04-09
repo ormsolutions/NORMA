@@ -346,8 +346,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			FactTypeShape factTypeShape = (FactTypeShape)e.ModelElement;
 			if (!factTypeShape.IsDeleted)
 			{
-				DisplayRoleNames display = factTypeShape.DisplayRoleNames;
-				bool shouldBeVisible = display == DisplayRoleNames.On || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On);
+				bool shouldBeVisible = !factTypeShape.DisplayAsObjectType && IsRoleNameDisplayed(factTypeShape, null);
 				foreach (ShapeElement childShape in factTypeShape.RelativeChildShapes)
 				{
 					RoleNameShape roleNameShape;
@@ -367,27 +366,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		/// <summary>
-		/// Adjust the role name display for all shapes corresponding a given fact type
-		/// </summary>
-		public static void UpdateRoleNameDisplay(FactType factType)
-		{
-			foreach (PresentationElement element in PresentationViewsSubject.GetPresentation(factType))
-			{
-				FactTypeShape factTypeShape;
-				ORMDiagram diagram;
-				if (null != (factTypeShape = element as FactTypeShape) &&
-					null != (diagram = factTypeShape.Diagram as ORMDiagram))
-				{
-					UpdateRoleNameDisplay(factType, factTypeShape, diagram, false);
-				}
-			}
-		}
-		/// <summary>
 		/// Adjust the role name display for this shape.
 		/// </summary>
 		public void UpdateRoleNameDisplay()
 		{
 			UpdateRoleNameDisplay(false);
+		}
+		private static bool IsRoleNameDisplayed(FactTypeShape shape, ORMDiagram diagram)
+		{
+			CustomRoleNameDisplay customRoleNameDisplay;
+			return RoleNameDisplay.On == ((customRoleNameDisplay = shape.DisplayRoleNames) == CustomRoleNameDisplay.Default ?
+				((customRoleNameDisplay = (null != (diagram ?? (diagram = shape.Diagram as ORMDiagram)) ? diagram.DisplayRoleNames : CustomRoleNameDisplay.Default)) == CustomRoleNameDisplay.Default ?
+					shape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayRoleNames :
+					(RoleNameDisplay)customRoleNameDisplay) :
+				(RoleNameDisplay)customRoleNameDisplay);
 		}
 		private void UpdateRoleNameDisplay(bool immediateNotification)
 		{
@@ -404,10 +396,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void UpdateRoleNameDisplay(FactType factType, FactTypeShape factTypeShape, ORMDiagram diagram, bool immediateNotification)
 		{
-			DisplayRoleNames display = factTypeShape.DisplayRoleNames;
+			bool rawDisplay = IsRoleNameDisplayed(factTypeShape, diagram);
 			bool asObjectType = factTypeShape.DisplayAsObjectType;
-			bool shouldDisplay = !asObjectType && (display == DisplayRoleNames.On || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.On));
-			bool shouldRemove = asObjectType || display == DisplayRoleNames.Off;
+			bool shouldDisplay = !asObjectType && rawDisplay;
+			bool shouldRemove = asObjectType || factTypeShape.DisplayRoleNames == CustomRoleNameDisplay.Off;
 			foreach (RoleBase roleBase in factType.RoleCollection)
 			{
 				Role role = roleBase as Role;

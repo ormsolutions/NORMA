@@ -752,10 +752,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
-		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames.UserDefault)]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay.Default)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("9607af0f-2e12-4215-b8a5-91b67c1a9f08")]
-		public DisplayRoleNames DisplayRoleNames
+		public CustomRoleNameDisplay DisplayRoleNames
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
@@ -771,7 +771,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// Value handler for the FactTypeShape.DisplayRoleNames domain property.
 		/// </summary>
-		internal sealed partial class DisplayRoleNamesPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, DisplayRoleNames>
+		internal sealed partial class DisplayRoleNamesPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, CustomRoleNameDisplay>
 		{
 			private DisplayRoleNamesPropertyHandler() { }
 		
@@ -797,7 +797,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <returns>Property value.</returns>
-			public override sealed DisplayRoleNames GetValue(FactTypeShape element)
+			public override sealed CustomRoleNameDisplay GetValue(FactTypeShape element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 				// There is no storage for DisplayRoleNames because its Kind is
@@ -811,11 +811,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// </summary>
 			/// <param name="element">Element which owns the property.</param>
 			/// <param name="newValue">New property value.</param>
-			public override sealed void SetValue(FactTypeShape element, DisplayRoleNames newValue)
+			public override sealed void SetValue(FactTypeShape element, CustomRoleNameDisplay newValue)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
 		
-				DisplayRoleNames oldValue = GetValue(element);
+				CustomRoleNameDisplay oldValue = GetValue(element);
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
@@ -823,6 +823,188 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// set to CustomStorage. Please provide the SetDisplayRoleNamesValue()
 					// method on the domain class.
 					element.SetDisplayRoleNamesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayReverseReading domain property code
+		
+		/// <summary>
+		/// DisplayReverseReading domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayReverseReadingDomainPropertyId = new global::System.Guid(0x507d64c1, 0xe8c4, 0x4116, 0xb9, 0x44, 0x55, 0x4d, 0x7e, 0xeb, 0xd9, 0xdc);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayReverseReading domain property.
+		/// Determines whether an available reverse reading is shown for a binary fact type.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayReverseReading.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayReverseReading.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay.Default)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("507d64c1-e8c4-4116-b944-554d7eebd9dc")]
+		public CustomBinaryFactTypeReadingDisplay DisplayReverseReading
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayReverseReadingPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayReverseReadingPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeShape.DisplayReverseReading domain property.
+		/// </summary>
+		internal sealed partial class DisplayReverseReadingPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, CustomBinaryFactTypeReadingDisplay>
+		{
+			private DisplayReverseReadingPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeShape.DisplayReverseReading domain property value handler.
+			/// </summary>
+			public static readonly DisplayReverseReadingPropertyHandler Instance = new DisplayReverseReadingPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeShape.DisplayReverseReading domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayReverseReadingDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed CustomBinaryFactTypeReadingDisplay GetValue(FactTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayReverseReading because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayReverseReadingValue()
+				// method on the domain class.
+				return element.GetDisplayReverseReadingValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeShape element, CustomBinaryFactTypeReadingDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				CustomBinaryFactTypeReadingDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayReverseReading because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayReverseReadingValue()
+					// method on the domain class.
+					element.SetDisplayReverseReadingValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayReadingDirection domain property code
+		
+		/// <summary>
+		/// DisplayReadingDirection domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayReadingDirectionDomainPropertyId = new global::System.Guid(0xf0c6ca3f, 0x87dc, 0x4ecc, 0xb9, 0x5a, 0x96, 0x8d, 0x8f, 0xf3, 0x85, 0x00);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayReadingDirection domain property.
+		/// Determines when direction arrows are displayed.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayReadingDirection.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayReadingDirection.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay.Default)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("f0c6ca3f-87dc-4ecc-b95a-968d8ff38500")]
+		public CustomReadingDirectionIndicatorDisplay DisplayReadingDirection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayReadingDirectionPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayReadingDirectionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeShape.DisplayReadingDirection domain property.
+		/// </summary>
+		internal sealed partial class DisplayReadingDirectionPropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, CustomReadingDirectionIndicatorDisplay>
+		{
+			private DisplayReadingDirectionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeShape.DisplayReadingDirection domain property value handler.
+			/// </summary>
+			public static readonly DisplayReadingDirectionPropertyHandler Instance = new DisplayReadingDirectionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeShape.DisplayReadingDirection domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayReadingDirectionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed CustomReadingDirectionIndicatorDisplay GetValue(FactTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayReadingDirection because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayReadingDirectionValue()
+				// method on the domain class.
+				return element.GetDisplayReadingDirectionValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeShape element, CustomReadingDirectionIndicatorDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				CustomReadingDirectionIndicatorDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayReadingDirection because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayReadingDirectionValue()
+					// method on the domain class.
+					element.SetDisplayReadingDirectionValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}

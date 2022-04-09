@@ -142,6 +142,7 @@
     <Compile Include="Framework\Diagrams\Design\PresentationElementTypeDescriptionProvider.cs" />
     <Compile Include="Framework\HashSet.cs" />
     <Compile Include="ObjectModel\Design\FactTypeTypeDescriptor.cs" />
+    <Compile Include="ShapeModel\Design\DisplayOptionsTypeConverters.cs" />
     <Compile Include="ObjectModel\Design\RoleTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\DataTypeTypeDescriptor.cs" />
     <Compile Include="ObjectModel\Design\ObjectTypeTypeDescriptor.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="ObjectModel\Design\Editors\DataTypePicker.cs" />
     <Compile Include="ObjectModel\Design\Editors\ReferenceModePickers.cs" />
     <Compile Include="ObjectModel\Design\Editors\ObjectificationPickers.cs" />
+    <Compile Include="ObjectModel\DisplayState.cs" />
     <Compile Include="ObjectModel\HierarchyContext.cs" />
     <Compile Include="ObjectModel\NamePart.cs" />
     <Compile Include="ObjectModel\ReferenceModeNaming.cs" />
@@ -211,6 +213,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DomainRelationships$(GeneratedDslFileSuffix).tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShapeModel\GeneratedCode\DomainClasses$(GeneratedDslFileSuffix).cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DomainClasses$(GeneratedDslFileSuffix).tt</DependentUpon>
     </Compile>
     <Compile Include="ShapeModel\GeneratedCode\DomainModel$(GeneratedDslFileSuffix).cs">
       <DependentUpon>DomainModel$(GeneratedDslFileSuffix).tt</DependentUpon>
@@ -355,6 +362,7 @@
     <Compile Include="ShapeModel\ReadingShape.cs" />
     <Compile Include="ShapeModel\RolePlayerLink.cs" />
     <Compile Include="ShapeModel\ViewFixupRules.cs" />
+    <Compile Include="ShapeModel\ORMDiagramDisplayOptions.cs" />
     <Compile Include="Shell\OptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -839,6 +847,11 @@
     <None Include="ShapeModel\GeneratedCode\Connectors$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Connectors$(GeneratedDslFileSuffix).cs</LastGenOutput>
+    </None>
+    <None Include="ShapeModel\GeneratedCode\DomainClasses$(GeneratedDslFileSuffix).tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DomainClasses$(GeneratedDslFileSuffix).cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <None Include="ShapeModel\GeneratedCode\DomainModel$(GeneratedDslFileSuffix).tt">
       <Generator>TextTemplatingFileGenerator</Generator>

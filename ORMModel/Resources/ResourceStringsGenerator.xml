@@ -169,6 +169,13 @@
 	<ResourceString name="MoveRoleSequenceUpTransactionName" model="Diagram" resourceName="MoveRoleSequenceUp.TransactionName"/>
 	<ResourceString name="InterpretFactEditorLineTransactionName" model="Diagram" resourceName="InterpretFactEditorLine.TransactionName"/>
 	<ResourceString name="ModelBrowserWindowTitle" model="Diagram" resourceName="ORMModelBrowser.WindowTitle"/>
+	<ResourceString name="ORMDiagramDisplayOptionCategory" model="Diagram" resourceName="ORMDiagramDisplayOption.Category"/>
+	<ResourceString name="ORMDiagramDisplayOptionCustomState" model="Diagram" resourceName="ORMDiagramDisplayOption.CustomState"/>
+	<ResourceString name="ORMDiagramDisplayOptionDefaultState" model="Diagram" resourceName="ORMDiagramDisplayOption.DefaultState"/>
+	<ResourceString name="ORMDiagramDisplayOptionGlobalOptionsDescription" model="Diagram" resourceName="ORMDiagramDisplayOption.GlobalOptions.Description"/>
+	<ResourceString name="ORMDiagramDisplayOptionGlobalOptionsName" model="Diagram" resourceName="ORMDiagramDisplayOption.GlobalOptions.Name"/>
+	<ResourceString name="ORMDiagramDisplayOptionLocalOptionsDescription" model="Diagram" resourceName="ORMDiagramDisplayOption.LocalOptions.Description"/>
+	<ResourceString name="ORMDiagramDisplayOptionLocalOptionsName" model="Diagram" resourceName="ORMDiagramDisplayOption.LocalOptions.Name"/>
 	<ResourceString name="LoadExceptionIncompatibleAssembly" model="Model" resourceName="LoadException.IncompatibleAssembly"/>
 	<ResourceString name="LoadExceptionInvalidLoadKey" model="Model" resourceName="LoadException.InvalidLoadKey"/>
 	<ResourceString name="LoadExceptionExtensionSkippingNotSupportedByStore" model="Model" resourceName="LoadException.ExtensionSkippingNotSupportedByStore"/>

@@ -111,6 +111,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			/// full file name once it is known if the names are set to '$fileinputname$'.
 			/// </summary>
 			ReplaceFileInputNames = 0x200,
+			/// <summary>
+			/// A file with a "new" processing instruction is actively being loaded
+			/// </summary>
+			LoadingNewFile = 0x400,
 			// Other flags here, add instead of lots of bool variables
 		}
 		private PrivateFlags myFlags;
@@ -527,6 +531,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 					try
 					{
+						if (newFileItem)
+						{
+							SetFlag(PrivateFlags.LoadingNewFile, true);
+						}
 						retVal = base.LoadDocData(fileName, isReload);
 					}
 					catch (TypeInitializationException ex)
@@ -574,6 +582,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 						throw;
 					}
+					finally
+					{
+						if (newFileItem)
+						{
+							SetFlag(PrivateFlags.LoadingNewFile, false);
+						}
+					}
 
 					// HACK: After the file is loaded and the load transaction has committed, commit a new transaction.
 					// For some reason this seems to fix various line routing issues (including the lines not showing up).
@@ -596,7 +611,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 				}
 			}
-			if (dontSave && !newFileItem)
+			if (newFileItem)
+			{
+				SetFlag(PrivateFlags.ReplaceFileInputNames, true);
+			}
+			else if (dontSave)
 			{
 				string message;
 				CultureInfo culture = CultureInfo.CurrentCulture;
@@ -637,10 +656,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					SetFlag(PrivateFlags.SaveDisabled, true);
 					docTable.ModifyDocumentFlags(Cookie, (uint)_VSRDTFLAGS.RDT_DontSave, 1);
 				}
-			}
-			else if (newFileItem)
-			{
-				SetFlag(PrivateFlags.ReplaceFileInputNames, true);
 			}
 			this.AddPostDeserializationModelingEventHandlers(isReload);
 
@@ -753,12 +768,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			Store store = this.Store;
 
 			Debug.Assert(base.InLoad);
-			SerializationEngineLoadOptions loadOptions = SerializationEngineLoadOptions.None;
+			SerializationEngineLoadOptions loadOptions = GetFlag(PrivateFlags.LoadingNewFile) ? SerializationEngineLoadOptions.LoadingNewFile : SerializationEngineLoadOptions.None;
 #if DEBUG
 			// Skip validation when the shift key is down in debug mode
 			if ((System.Windows.Forms.Control.ModifierKeys & System.Windows.Forms.Keys.Shift) != 0)
 			{
-				loadOptions = SerializationEngineLoadOptions.SkipSchemaValidation;
+				loadOptions |= SerializationEngineLoadOptions.SkipSchemaValidation;
 			}
 #endif // DEBUG
 			if (stream.Length > 1)

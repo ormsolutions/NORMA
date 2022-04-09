@@ -27,11 +27,12 @@ using System.Windows.Forms;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
 using Microsoft.VisualStudio.Modeling.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using ORMSolutions.ORMArchitect.Framework.Shell;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using ORMSolutions.ORMArchitect.Framework;
-using Microsoft.VisualStudio.Shell.Interop;
+using ORMSolutions.ORMArchitect.Framework.Design;
 
 namespace ORMSolutions.ORMArchitect.Core.Shell
 {
@@ -718,6 +719,16 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if ((EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.UserInterfaceEvents) == (reasons & (EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.UserInterfaceEvents)))
 			{
 				eventManager.AddOrRemoveHandler(new EventHandler<ElementEventsEndedEventArgs>(OnElementEventsEnded), action);
+			}
+
+			if ((EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.ModelStateEvents) == (reasons & (EventSubscriberReasons.DocumentLoaded | EventSubscriberReasons.ModelStateEvents)))
+			{
+				// Attach global display properties
+				IPropertyProviderService providerService = ((IFrameworkServices)this.Store).PropertyProviderService;
+				if (providerService != null)
+				{
+					providerService.AddOrRemovePropertyProvider(typeof(Diagram), DisplayState.ProvideDiagramProperties, true, action);
+				}
 			}
 		}
 		void IModelingEventSubscriber.ManageModelingEventHandlers(ModelingEventManager eventManager, EventSubscriberReasons reasons, EventHandlerAction action)

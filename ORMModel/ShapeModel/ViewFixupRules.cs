@@ -335,18 +335,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // FactTypeAddedRule
-		#region FactTypeChangedRule
-		/// <summary>
-		/// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
-		/// </summary>
-		private static void FactTypeShapeChangedRule(ElementPropertyChangedEventArgs e)
-		{
-			if (e.DomainProperty.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
-			{
-				((FactTypeShape)e.ModelElement).UpdateRoleNameDisplay();
-			}
-		}
-		#endregion // FactTypeChangedRule
 		#endregion // ModelHasFactType fixup
 		#region ModelHasConstraint fixup
 		#region SetComparisonConstraintAddedRule

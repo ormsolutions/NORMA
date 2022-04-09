@@ -1208,6 +1208,144 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
 	/// <summary>
+	/// DomainClass DisplayState
+	/// Container for display options global to this file.
+	/// </summary>
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayState.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("a7286c4f-4bd8-4513-b91d-9b6dae31df11")]
+	public partial class DisplayState : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// DisplayState domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xa7286c4f, 0x4bd8, 0x4513, 0xb9, 0x1d, 0x9b, 0x6d, 0xae, 0x31, 0xdf, 0x11);
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="store">Store where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DisplayState(DslModeling::Store store, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: this(store != null ? store.DefaultPartition : null, propertyAssignments)
+		{
+		}
+		
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		public DisplayState(DslModeling::Partition partition, params DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region Model opposite domain role accessor
+		/// <summary>
+		/// Gets or sets Model.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayState
+		/// </summary>
+		public virtual ORMModel Model
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayStateDomainRoleId) as ORMModel;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::ModelElement existingSource;
+				if (null != value &&
+					null != (existingSource = DslModeling::DomainRoleInfo.GetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.ModelDomainRoleId)))
+				{
+					if (existingSource != value)
+					{
+						DslModeling::DomainRoleInfo.SetLinkedElement(value, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.ModelDomainRoleId, this);
+					}
+				}
+				else
+				{
+					DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateRelatesToORMModel.DisplayStateDomainRoleId, value);
+				}
+			}
+		}
+		#endregion
+		#region DisplaySettings opposite domain role accessor
+		/// <summary>
+		/// Gets a list of DisplaySettings.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplayState
+		/// </summary>
+		public virtual DslModeling::LinkedElementCollection<DisplaySetting> DisplaySettings
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return new DslModeling::LinkedElementCollection<DisplaySetting>(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplayStateDomainRoleId);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
+	/// DomainClass DisplaySetting
+	/// Base setting object for an individual model's global display options.
+	/// </summary>
+	[global::System.ComponentModel.TypeDescriptionProvider(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider<DisplaySetting, global::ORMSolutions.ORMArchitect.Framework.Design.BlockRelationshipPropertiesElementTypeDescriptor<DisplaySetting>>))]
+	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplaySetting.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.DisplaySetting.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+	[global::System.CLSCompliant(true)]
+	[DslModeling::DomainObjectId("c3509e1f-7a42-4cde-a168-ba782e808d7e")]
+	public abstract partial class DisplaySetting : DslModeling::ModelElement
+	{
+		#region Constructors, domain class Id
+	
+		/// <summary>
+		/// DisplaySetting domain class Id.
+		/// </summary>
+		public static readonly new global::System.Guid DomainClassId = new global::System.Guid(0xc3509e1f, 0x7a42, 0x4cde, 0xa1, 0x68, 0xba, 0x78, 0x2e, 0x80, 0x8d, 0x7e);
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="partition">Partition where new element is to be created.</param>
+		/// <param name="propertyAssignments">List of domain property id/value pairs to set once the element is created.</param>
+		protected DisplaySetting(DslModeling::Partition partition, DslModeling::PropertyAssignment[] propertyAssignments)
+			: base(partition, propertyAssignments)
+		{
+		}
+		#endregion
+		#region DisplayState opposite domain role accessor
+		/// <summary>
+		/// Gets or sets DisplayState.
+		/// Description for
+		/// ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplaySetting
+		/// </summary>
+		public virtual DisplayState DisplayState
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DslModeling::DomainRoleInfo.GetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplaySettingDomainRoleId) as DisplayState;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DslModeling::DomainRoleInfo.SetLinkedElement(this, global::ORMSolutions.ORMArchitect.Core.ObjectModel.DisplayStateHasDisplaySetting.DisplaySettingDomainRoleId, value);
+			}
+		}
+		#endregion
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ObjectModel
+{
+	/// <summary>
 	/// DomainClass ModelErrorCategory
 	/// </summary>
 	[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ModelErrorCategory.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]

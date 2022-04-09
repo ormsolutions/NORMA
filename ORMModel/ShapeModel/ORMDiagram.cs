@@ -744,7 +744,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			// settings do not survive a merge operation, so we need to check
 			// this explicitly regardless of merge state.
 			factTypeShape.UpdateRoleNameDisplay();
-			
+
 			// Handle other shapes related to roles.
 			LinkedElementCollection<RoleBase> roleCollection = factType.RoleCollection;
 			int roleCount = roleCollection.Count;
@@ -3775,6 +3775,76 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return this.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo.ContainsKey(CreatingRolePlayerProxyLinkKey) ? (LinkShape)new RolePlayerProxyLink(this.Partition) : new RolePlayerLink(this.Partition);
 		}
+		#region DisplayFlags
+		/// <summary>
+		/// Bitfield for display settings. All flags are assumed to default to false. 
+		/// </summary>
+		[Flags]
+		private enum DisplayFlags
+		{
+			/// <summary>
+			/// Corresponds to the AutoPopulateShapes property
+			/// </summary>
+			AutoPopulateShapes = 1,
+			/// <summary>
+			/// Corresponds to the On value of the DisplayRoleNames property
+			/// </summary>
+			RoleNamesOn = 2,
+			/// <summary>
+			/// Corresponds to the Off value of the DisplayRoleNames property
+			/// </summary>
+			RoleNamesOff = 4,
+			/// <summary>
+			/// Corresponds to the ShowReverseReading value of the DisplayReverseReadings property
+			/// </summary>
+			ReverseReadingOn = 8,
+			/// <summary>
+			/// Corresponds to the OnlyOneReading value of the DisplayReverseReadings property
+			/// </summary>
+			ReverseReadingOff = 0x10,
+			/// <summary>
+			/// Corresponds to the Reversed value of the DisplayReadingDirection property
+			/// </summary>
+			ReadingDirectionReversed = 0x20,
+			/// <summary>
+			/// Corresponds to the Rotated value of the DisplayReadingDirection property
+			/// </summary>
+			ReadingDirectionRotated = 0x40,
+			/// <summary>
+			/// Corresponds to the Always value of the DisplayReadingDirection property
+			/// </summary>
+			ReadingDirectionAlways = 0x80,
+		}
+		private DisplayFlags myDisplayFlags;
+		/// <summary>
+		/// Test if a display flag is set
+		/// </summary>
+		private bool GetDisplayFlag(DisplayFlags flag)
+		{
+			return 0 != (myDisplayFlags & flag);
+		}
+		/// <summary>
+		/// Set a value for a display flag. Returns true if the flag value changed.
+		/// </summary>
+		private bool SetDisplayFlag(DisplayFlags flag, bool value)
+		{
+			if (value)
+			{
+				if ((myDisplayFlags & flag) != flag)
+				{
+					myDisplayFlags |= flag;
+					return true;
+				}
+			}
+			else if (0 != (myDisplayFlags & flag))
+			{
+				myDisplayFlags &= ~flag;
+				return true;
+			}
+			return false;
+		}
+		#endregion // DisplayFlags
+		#region Custom property handlers
 		private long GetUpdateCounterValue()
 		{
 			return ORMShapeDomainModel.GetCurrentUpdateCounterValue(this);
@@ -3783,6 +3853,90 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			// Nothing to do, we're just trying to create a transaction log entry
 		}
+		private bool GetAutoPopulateShapesValue()
+		{
+			return GetDisplayFlag(DisplayFlags.AutoPopulateShapes);
+		}
+		private void SetAutoPopulateShapesValue(bool value)
+		{
+			SetDisplayFlag(DisplayFlags.AutoPopulateShapes, value);
+		}
+		private CustomRoleNameDisplay GetDisplayRoleNamesValue()
+		{
+			return GetDisplayFlag(DisplayFlags.RoleNamesOn) ?
+				CustomRoleNameDisplay.On :
+				(GetDisplayFlag(DisplayFlags.RoleNamesOff) ? CustomRoleNameDisplay.Off : CustomRoleNameDisplay.Default);
+		}
+		private void SetDisplayRoleNamesValue(CustomRoleNameDisplay value)
+		{
+			switch (value)
+			{
+				case CustomRoleNameDisplay.Default:
+					SetDisplayFlag(DisplayFlags.RoleNamesOn | DisplayFlags.RoleNamesOff, false);
+					break;
+				case CustomRoleNameDisplay.On:
+					SetDisplayFlag(DisplayFlags.RoleNamesOn, true);
+					SetDisplayFlag(DisplayFlags.RoleNamesOff, false);
+					break;
+				case CustomRoleNameDisplay.Off:
+					SetDisplayFlag(DisplayFlags.RoleNamesOff, true);
+					SetDisplayFlag(DisplayFlags.RoleNamesOn, false);
+					break;
+			}
+		}
+		private CustomBinaryFactTypeReadingDisplay GetDisplayReverseReadingsValue()
+		{
+			return GetDisplayFlag(DisplayFlags.ReverseReadingOn) ?
+				CustomBinaryFactTypeReadingDisplay.ShowReverseReading :
+				(GetDisplayFlag(DisplayFlags.ReverseReadingOff) ? CustomBinaryFactTypeReadingDisplay.OnlyOneReading : CustomBinaryFactTypeReadingDisplay.Default);
+		}
+		private void SetDisplayReverseReadingsValue(CustomBinaryFactTypeReadingDisplay value)
+		{
+			switch (value)
+			{
+				case CustomBinaryFactTypeReadingDisplay.Default:
+					SetDisplayFlag(DisplayFlags.ReverseReadingOn | DisplayFlags.ReverseReadingOff, false);
+					break;
+				case CustomBinaryFactTypeReadingDisplay.ShowReverseReading:
+					SetDisplayFlag(DisplayFlags.ReverseReadingOn, true);
+					SetDisplayFlag(DisplayFlags.ReverseReadingOff, false);
+					break;
+				case CustomBinaryFactTypeReadingDisplay.OnlyOneReading:
+					SetDisplayFlag(DisplayFlags.ReverseReadingOff, true);
+					SetDisplayFlag(DisplayFlags.ReverseReadingOn, false);
+					break;
+			}
+		}
+		private CustomReadingDirectionIndicatorDisplay GetDisplayReadingDirectionValue()
+		{
+			return GetDisplayFlag(DisplayFlags.ReadingDirectionReversed) ?
+				CustomReadingDirectionIndicatorDisplay.Reversed :
+				(GetDisplayFlag(DisplayFlags.ReadingDirectionRotated) ?
+					CustomReadingDirectionIndicatorDisplay.Rotated :
+					(GetDisplayFlag(DisplayFlags.ReadingDirectionAlways) ? CustomReadingDirectionIndicatorDisplay.Always : CustomReadingDirectionIndicatorDisplay.Default));
+		}
+		private void SetDisplayReadingDirectionValue(CustomReadingDirectionIndicatorDisplay value)
+		{
+			switch (value)
+			{
+				case CustomReadingDirectionIndicatorDisplay.Default:
+					SetDisplayFlag(DisplayFlags.ReadingDirectionReversed | DisplayFlags.ReadingDirectionRotated | DisplayFlags.ReadingDirectionAlways, false);
+					break;
+				case CustomReadingDirectionIndicatorDisplay.Reversed:
+					SetDisplayFlag(DisplayFlags.ReadingDirectionReversed, true);
+					SetDisplayFlag(DisplayFlags.ReadingDirectionRotated | DisplayFlags.ReadingDirectionAlways, false);
+					break;
+				case CustomReadingDirectionIndicatorDisplay.Rotated:
+					SetDisplayFlag(DisplayFlags.ReadingDirectionRotated, true);
+					SetDisplayFlag(DisplayFlags.ReadingDirectionReversed | DisplayFlags.ReadingDirectionAlways, false);
+					break;
+				case CustomReadingDirectionIndicatorDisplay.Always:
+					SetDisplayFlag(DisplayFlags.ReadingDirectionAlways, true);
+					SetDisplayFlag(DisplayFlags.ReadingDirectionReversed | DisplayFlags.ReadingDirectionRotated, false);
+					break;
+			}
+		}
+		#endregion // Custom property handlers
 	}
 	#endregion // ORMDiagramBase class
 	#region ZOrderLayer class

@@ -230,27 +230,33 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraint)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.RingConstraintShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint)
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint)
 			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape(this.Partition);
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueComparisonConstraintShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
@@ -263,18 +269,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueConstraintShape(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.CardinalityConstraintShape(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
-				return newShape;
-			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
@@ -299,6 +293,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.SubtypeLink(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteShape(this.Partition);
@@ -311,20 +311,20 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetComparisonConstraint)
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetConstraint)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink(this.Partition);
-				return newShape;
-			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
-			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape(this.Partition);
-				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape(this.Partition);
+				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
+				return newShape;
+			}
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
+			{
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape(this.Partition);
 				if(newShape != null) newShape.Size = newShape.DefaultSize; // set default shape size
 				return newShape;
 			}
@@ -338,14 +338,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink(this.Partition);
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetConstraint)
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetComparisonConstraint)
 			{
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ModelNoteLink(this.Partition);
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint)
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
 			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink(this.Partition);
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
 				return newShape;
 			}
 			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole)
@@ -367,9 +367,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
 				return newShape;
 			}
-			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole)
+			if(element is global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint)
 			{
-				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ExternalConstraintLink(this.Partition);
+				global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink newShape = new global::ORMSolutions.ORMArchitect.Core.ShapeModel.ValueRangeLink(this.Partition);
 				return newShape;
 			}
 			return base.CreateChildShape(element);
@@ -410,11 +410,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public static readonly global::System.Guid AutoPopulateShapesDomainPropertyId = new global::System.Guid(0xd3f7a171, 0xce39, 0x4944, 0xbe, 0x80, 0xd5, 0x51, 0x27, 0x42, 0x3c, 0x83);
 		
 		/// <summary>
-		/// Storage for AutoPopulateShapes
-		/// </summary>
-		private global::System.Boolean autoPopulateShapesPropertyStorage;
-		
-		/// <summary>
 		/// Gets or sets the value of AutoPopulateShapes domain property.
 		/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.Auto
 		/// Populate Shapes
@@ -422,13 +417,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/AutoPopulateShapes.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/AutoPopulateShapes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("d3f7a171-ce39-4944-be80-d55127423c83")]
 		public global::System.Boolean AutoPopulateShapes
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return autoPopulateShapesPropertyStorage;
+				return AutoPopulateShapesPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -468,7 +464,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public override sealed global::System.Boolean GetValue(ORMDiagramBase element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.autoPopulateShapesPropertyStorage;
+				// There is no storage for AutoPopulateShapes because its Kind is
+				// set to CustomStorage. Please provide the GetAutoPopulateShapesValue()
+				// method on the domain class.
+				return element.GetAutoPopulateShapesValue();
 			}
 		
 			/// <summary>
@@ -484,7 +483,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.autoPopulateShapesPropertyStorage = newValue;
+					// There is no storage for AutoPopulateShapes because its Kind is
+					// set to CustomStorage. Please provide the SetAutoPopulateShapesValue()
+					// method on the domain class.
+					element.SetAutoPopulateShapesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -584,6 +587,283 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		
 		#endregion
+		#region DisplayRoleNames domain property code
+		
+		/// <summary>
+		/// DisplayRoleNames domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayRoleNamesDomainPropertyId = new global::System.Guid(0x4b2b22ec, 0x1978, 0x4255, 0x94, 0x85, 0xca, 0x9a, 0x23, 0xa0, 0x98, 0x26);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayRoleNames domain property.
+		/// Determines whether role name shapes will be drawn by default on this diagram.
+		/// </summary>
+		[ORMDiagramDisplayOption()]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayRoleNames.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayRoleNames.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(CustomRoleNameDisplay.Default)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("4b2b22ec-1978-4255-9485-ca9a23a09826")]
+		public CustomRoleNameDisplay DisplayRoleNames
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayRoleNamesPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayRoleNamesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMDiagram.DisplayRoleNames domain property.
+		/// </summary>
+		internal sealed partial class DisplayRoleNamesPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMDiagramBase, CustomRoleNameDisplay>
+		{
+			private DisplayRoleNamesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMDiagram.DisplayRoleNames domain property value handler.
+			/// </summary>
+			public static readonly DisplayRoleNamesPropertyHandler Instance = new DisplayRoleNamesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMDiagram.DisplayRoleNames domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayRoleNamesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed CustomRoleNameDisplay GetValue(ORMDiagramBase element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayRoleNames because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayRoleNamesValue()
+				// method on the domain class.
+				return element.GetDisplayRoleNamesValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMDiagramBase element, CustomRoleNameDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				CustomRoleNameDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayRoleNames because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayRoleNamesValue()
+					// method on the domain class.
+					element.SetDisplayRoleNamesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayReverseReadings domain property code
+		
+		/// <summary>
+		/// DisplayReverseReadings domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayReverseReadingsDomainPropertyId = new global::System.Guid(0xcae32c41, 0xb699, 0x49c9, 0xb5, 0xc2, 0xc3, 0x48, 0x7b, 0x17, 0x4a, 0x8e);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayReverseReadings domain property.
+		/// Determines whether available reverse readings are shown for binary fact types on
+		/// this diagram.
+		/// </summary>
+		[ORMDiagramDisplayOption()]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReverseReadings.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReverseReadings.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(CustomBinaryFactTypeReadingDisplay.Default)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("cae32c41-b699-49c9-b5c2-c3487b174a8e")]
+		public CustomBinaryFactTypeReadingDisplay DisplayReverseReadings
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayReverseReadingsPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayReverseReadingsPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMDiagram.DisplayReverseReadings domain property.
+		/// </summary>
+		internal sealed partial class DisplayReverseReadingsPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMDiagramBase, CustomBinaryFactTypeReadingDisplay>
+		{
+			private DisplayReverseReadingsPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMDiagram.DisplayReverseReadings domain property value handler.
+			/// </summary>
+			public static readonly DisplayReverseReadingsPropertyHandler Instance = new DisplayReverseReadingsPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMDiagram.DisplayReverseReadings domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayReverseReadingsDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed CustomBinaryFactTypeReadingDisplay GetValue(ORMDiagramBase element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayReverseReadings because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayReverseReadingsValue()
+				// method on the domain class.
+				return element.GetDisplayReverseReadingsValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMDiagramBase element, CustomBinaryFactTypeReadingDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				CustomBinaryFactTypeReadingDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayReverseReadings because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayReverseReadingsValue()
+					// method on the domain class.
+					element.SetDisplayReverseReadingsValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayReadingDirection domain property code
+		
+		/// <summary>
+		/// DisplayReadingDirection domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayReadingDirectionDomainPropertyId = new global::System.Guid(0x848cc6c6, 0xb261, 0x48b1, 0x94, 0x09, 0xa4, 0xf0, 0x74, 0xfe, 0x73, 0x3d);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayReadingDirection domain property.
+		/// Determines when direction arrows are displayed with readings on this diagram.
+		/// </summary>
+		[ORMDiagramDisplayOption()]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReadingDirection.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReadingDirection.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(CustomReadingDirectionIndicatorDisplay.Default)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("848cc6c6-b261-48b1-9409-a4f074fe733d")]
+		public CustomReadingDirectionIndicatorDisplay DisplayReadingDirection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayReadingDirectionPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayReadingDirectionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMDiagram.DisplayReadingDirection domain property.
+		/// </summary>
+		internal sealed partial class DisplayReadingDirectionPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMDiagramBase, CustomReadingDirectionIndicatorDisplay>
+		{
+			private DisplayReadingDirectionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMDiagram.DisplayReadingDirection domain property value handler.
+			/// </summary>
+			public static readonly DisplayReadingDirectionPropertyHandler Instance = new DisplayReadingDirectionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMDiagram.DisplayReadingDirection domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayReadingDirectionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed CustomReadingDirectionIndicatorDisplay GetValue(ORMDiagramBase element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayReadingDirection because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayReadingDirectionValue()
+				// method on the domain class.
+				return element.GetDisplayReadingDirectionValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMDiagramBase element, CustomReadingDirectionIndicatorDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				CustomReadingDirectionIndicatorDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayReadingDirection because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayReadingDirectionValue()
+					// method on the domain class.
+					element.SetDisplayReadingDirectionValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region ExtensionCollection opposite domain role accessor
 		
 		/// <summary>
@@ -652,29 +932,29 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>
 		/// Rule that initiates view fixup when an element that has an associated shape is added to the model. 
 		/// </summary>
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.Role), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SubtypeFact), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesFactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesObjectType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNoteReferencesSetComparisonConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddShapeParentExistRulePriority, InitiallyDisabled=true)]
+		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ConstraintRoleSequenceHasRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleHasValueConstraint), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
-		[DslModeling::RuleOn(typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypePlaysRole), FireTime = DslModeling::TimeToFire.TopLevelCommit, Priority = DslDiagrams::DiagramFixupConstants.AddConnectionRulePriority, InitiallyDisabled=true)]
 		internal sealed partial class FixUpDiagram : FixUpDiagramBase
 		{
 			[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
@@ -690,6 +970,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					parentElement = GetParentForRelationship((DslModeling::ElementLink)childElement);
 				} else
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint)
+				{
+					parentElement = GetParentForFrequencyConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint)childElement);
+				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraint)
 				{
 					parentElement = GetParentForRingConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.RingConstraint)childElement);
@@ -698,29 +982,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					parentElement = GetParentForValueComparisonConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueComparisonConstraint)childElement);
 				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint)
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint)
 				{
-					parentElement = GetParentForFrequencyConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.FrequencyConstraint)childElement);
-				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)
-				{
-					parentElement = GetParentForValueTypeValueConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)childElement);
+					parentElement = GetParentForUnaryRoleCardinalityConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint)childElement);
 				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint)
 				{
 					parentElement = GetParentForObjectTypeCardinalityConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectTypeCardinalityConstraint)childElement);
 				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint)
-				{
-					parentElement = GetParentForRoleValueConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint)childElement);
-				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint)
 				{
 					parentElement = GetParentForSetConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetConstraint)childElement);
 				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint)
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint)
 				{
-					parentElement = GetParentForUnaryRoleCardinalityConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.UnaryRoleCardinalityConstraint)childElement);
+					parentElement = GetParentForRoleValueConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.RoleValueConstraint)childElement);
+				} else
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)
+				{
+					parentElement = GetParentForValueTypeValueConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ValueTypeValueConstraint)childElement);
 				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ModelNote)
 				{
@@ -742,13 +1022,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					parentElement = GetParentForSetComparisonConstraint((global::ORMSolutions.ORMArchitect.Core.ObjectModel.SetComparisonConstraint)childElement);
 				} else
-				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
-				{
-					parentElement = GetParentForFactType((global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)childElement);
-				} else
 				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder)
 				{
 					parentElement = GetParentForReadingOrder((global::ORMSolutions.ORMArchitect.Core.ObjectModel.ReadingOrder)childElement);
+				} else
+				if(childElement is global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)
+				{
+					parentElement = GetParentForFactType((global::ORMSolutions.ORMArchitect.Core.ObjectModel.FactType)childElement);
 				} else
 				{
 					parentElement = null;

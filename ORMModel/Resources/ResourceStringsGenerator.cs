@@ -956,6 +956,62 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMModelBrowser.WindowTitle");
 			}
 		}
+		/// <summary>The category name used for the orm diagram's global and local display options.</summary>
+		public static string ORMDiagramDisplayOptionCategory
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMDiagramDisplayOption.Category");
+			}
+		}
+		/// <summary>The value displayed for a consolidated display options property in a non-default state.</summary>
+		public static string ORMDiagramDisplayOptionCustomState
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMDiagramDisplayOption.CustomState");
+			}
+		}
+		/// <summary>The value displayed for a consolidated display options property in a default state.</summary>
+		public static string ORMDiagramDisplayOptionDefaultState
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMDiagramDisplayOption.DefaultState");
+			}
+		}
+		/// <summary>The description for the consolidated GlobalDisplayOptions property.</summary>
+		public static string ORMDiagramDisplayOptionGlobalOptionsDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMDiagramDisplayOption.GlobalOptions.Description");
+			}
+		}
+		/// <summary>The displayed property name for the consolidated GlobalDisplayOptions property.</summary>
+		public static string ORMDiagramDisplayOptionGlobalOptionsName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMDiagramDisplayOption.GlobalOptions.Name");
+			}
+		}
+		/// <summary>The description for the consolidated LocalDisplayOptions property.</summary>
+		public static string ORMDiagramDisplayOptionLocalOptionsDescription
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMDiagramDisplayOption.LocalOptions.Description");
+			}
+		}
+		/// <summary>The displayed property name for the consolidated LocalDisplayOptions property.</summary>
+		public static string ORMDiagramDisplayOptionLocalOptionsName
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Diagram, "ORMDiagramDisplayOption.LocalOptions.Name");
+			}
+		}
 		/// <summary>Exception text used when a NORMA extension fails a compatibility check.</summary>
 		public static string LoadExceptionIncompatibleAssembly
 		{

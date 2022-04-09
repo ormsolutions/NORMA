@@ -60,6 +60,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return NameAlias.FixupListener;
 				yield return NameGenerator.FixupListener;
 				yield return ModelErrorDisplayFilter.FixupListener;
+				yield return DisplayState.FixupListener;
 			}
 		}
 		IEnumerable<IDeserializationFixupListener> IDeserializationFixupListenerProvider.DeserializationFixupListenerCollection

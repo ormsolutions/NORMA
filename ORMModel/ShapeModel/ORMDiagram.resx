@@ -314,14 +314,59 @@
   <data name="DisplayOrientation.VerticalRotatedRight">
     <value xml:space="preserve">Rotated Right</value>
   </data>
-  <data name="DisplayRoleNames.Off">
+  <data name="BinaryFactTypeReadingDisplay.OnlyOneReading">
+    <value xml:space="preserve">Only One Reading</value>
+  </data>
+  <data name="BinaryFactTypeReadingDisplay.ShowReverseReading">
+    <value xml:space="preserve">Show Reverse Reading</value>
+  </data>
+  <data name="CustomBinaryFactTypeReadingDisplay.OnlyOneReading">
+    <value xml:space="preserve">Only One Reading</value>
+  </data>
+  <data name="CustomBinaryFactTypeReadingDisplay.ShowReverseReading">
+    <value xml:space="preserve">Show Reverse Reading</value>
+  </data>
+  <data name="CustomBinaryFactTypeReadingDisplay.Default">
+    <value xml:space="preserve">Default ({0})</value>
+  </data>
+  <data name="ReadingDirectionIndicatorDisplay.Reversed">
+    <value xml:space="preserve">Reversed</value>
+  </data>
+  <data name="ReadingDirectionIndicatorDisplay.Separated">
+    <value xml:space="preserve">Separated</value>
+  </data>
+  <data name="ReadingDirectionIndicatorDisplay.Rotated">
+    <value xml:space="preserve">Rotated</value>
+  </data>
+  <data name="ReadingDirectionIndicatorDisplay.Always">
+    <value xml:space="preserve">Always</value>
+  </data>
+  <data name="CustomReadingDirectionIndicatorDisplay.Default">
+    <value xml:space="preserve">Default ({0})</value>
+  </data>
+  <data name="CustomReadingDirectionIndicatorDisplay.Reversed">
+    <value xml:space="preserve">Reversed</value>
+  </data>
+  <data name="CustomReadingDirectionIndicatorDisplay.Rotated">
+    <value xml:space="preserve">Rotated</value>
+  </data>
+  <data name="CustomReadingDirectionIndicatorDisplay.Always">
+    <value xml:space="preserve">Always</value>
+  </data>
+  <data name="RoleNameDisplay.Off">
     <value xml:space="preserve">Off</value>
   </data>
-  <data name="DisplayRoleNames.On">
+  <data name="RoleNameDisplay.On">
     <value xml:space="preserve">On</value>
   </data>
-  <data name="DisplayRoleNames.UserDefault">
-    <value xml:space="preserve">User Default</value>
+  <data name="CustomRoleNameDisplay.Off">
+    <value xml:space="preserve">Off</value>
+  </data>
+  <data name="CustomRoleNameDisplay.On">
+    <value xml:space="preserve">On</value>
+  </data>
+  <data name="CustomRoleNameDisplay.Default">
+    <value xml:space="preserve">Default ({0})</value>
   </data>
   <data name="ExclusiveOrCoupler.TransactionName">
     <value xml:space="preserve">Combine Exclusive Or Constraint</value>
@@ -717,6 +762,10 @@ If a subtype is constrained use single-click to add and double-click to commit.<
     <value xml:space="preserve">Appearance</value>
     <comment xml:space="preserve">This is the title of the category on the options page (appearance).</comment>
   </data>
+  <data name="OptionsPage.Category.NewFileAppearanceDefaults">
+    <value xml:space="preserve">Appearance (New File Defaults)</value>
+    <comment xml:space="preserve">This is the title of the category on the options page (appearance defaults in new file).</comment>
+  </data>
   <data name="OptionsPage.Category.DataTypes">
     <value xml:space="preserve">Data Types</value>
     <comment xml:space="preserve">This is the title of the category on the options page (data types).</comment>
@@ -906,12 +955,20 @@ If a subtype is constrained use single-click to add and double-click to commit.<
     <comment xml:space="preserve">The display name for the Reading Direction Indicator Display option.</comment>
   </data>
   <data name="OptionsPage.Property.RoleNameDisplay.Description">
-    <value xml:space="preserve">The default value of the DisplayRoleNames property on a FactType shape.</value>
-    <comment xml:space="preserve">The description for the Display Role Names option.</comment>
+    <value xml:space="preserve">The default value of the DisplayRoleNamesDefault property in a new file.</value>
+    <comment xml:space="preserve">The description for the Display Role Names Default option.</comment>
   </data>
   <data name="OptionsPage.Property.RoleNameDisplay.DisplayName">
-    <value xml:space="preserve">Display Role Names Default</value>
+    <value xml:space="preserve">Display Role Names</value>
     <comment xml:space="preserve">The display name for the Display Role Names option.</comment>
+  </data>
+  <data name="OptionsPage.Property.ReverseReadingDisplay.Description">
+    <value xml:space="preserve">Control the default value of the DisplayReverseReadingsDefault property in a new file.</value>
+    <comment xml:space="preserve">The description for the Binary Fact Type Reading Display option.</comment>
+  </data>
+  <data name="OptionsPage.Property.ReverseReadingDisplay.DisplayName">
+    <value xml:space="preserve">Binary Reverse Readings</value>
+    <comment xml:space="preserve">The display name for the Binary Reverse Readings option.</comment>
   </data>
   <data name="OptionsPage.Property.PrimaryDeleteBehavior.Description">
     <value xml:space="preserve">The Delete key can either delete shapes or underlying model elements. Pressing Control-Delete will map to the alternate value.</value>
@@ -936,6 +993,34 @@ If a subtype is constrained use single-click to add and double-click to commit.<
   <data name="ORMBaseBinaryLinkShape.Accessible.ValueFormat">
     <value xml:space="preserve">{{{0}, {1}}}</value>
     <comment xml:space="preserve">Return the default format string for any link shape. Replacement field {0} is the accessible name for the from object, field {1} is the accessible name for the to object.</comment>
+  </data>
+  <data name="ORMDiagramDisplayOption.Category">
+    <value xml:space="preserve">Display Options</value>
+    <comment xml:space="preserve">The category name used for the orm diagram's global and local display options.</comment>
+  </data>
+  <data name="ORMDiagramDisplayOption.CustomState">
+    <value xml:space="preserve">(Custom)</value>
+    <comment xml:space="preserve">The value displayed for a consolidated display options property in a non-default state.</comment>
+  </data>
+  <data name="ORMDiagramDisplayOption.DefaultState">
+    <value xml:space="preserve">(Default)</value>
+    <comment xml:space="preserve">The value displayed for a consolidated display options property in a default state.</comment>
+  </data>
+  <data name="ORMDiagramDisplayOption.GlobalOptions.Description">
+    <value xml:space="preserve">Provide display defaults for all diagrams in this model.</value>
+    <comment xml:space="preserve">The description for the consolidated GlobalDisplayOptions property.</comment>
+  </data>
+  <data name="ORMDiagramDisplayOption.GlobalOptions.Name">
+    <value xml:space="preserve">GlobalDisplayOptions</value>
+    <comment xml:space="preserve">The displayed property name for the consolidated GlobalDisplayOptions property.</comment>
+  </data>
+  <data name="ORMDiagramDisplayOption.LocalOptions.Description">
+    <value xml:space="preserve">Override global display options for this diagram.</value>
+    <comment xml:space="preserve">The description for the consolidated LocalDisplayOptions property.</comment>
+  </data>
+  <data name="ORMDiagramDisplayOption.LocalOptions.Name">
+    <value xml:space="preserve">LocalDisplayOptions</value>
+    <comment xml:space="preserve">The displayed property name for the consolidated LocalDisplayOptions property.</comment>
   </data>
   <data name="ORMDiagramDynamicColor.Background">
     <value xml:space="preserve">Background</value>

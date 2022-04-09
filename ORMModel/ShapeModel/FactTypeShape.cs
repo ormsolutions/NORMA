@@ -4297,8 +4297,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return false;
 				}
-				DisplayRoleNames display = this.DisplayRoleNames;
-				if (display == DisplayRoleNames.Off || (display == DisplayRoleNames.UserDefault && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off))
+				CustomRoleNameDisplay display = this.DisplayRoleNames;
+				if (display == CustomRoleNameDisplay.Off || (display == CustomRoleNameDisplay.Default && OptionsPage.CurrentRoleNameDisplay == RoleNameDisplay.Off))
 				{
 					return false;
 				}
@@ -4449,6 +4449,26 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Corresponds to the ExpandRefMode property
 			/// </summary>
 			ExpandRefMode = 0x100,
+			/// <summary>
+			/// Corresponds to the ShowReverseReading value of the DisplayReverseReading property
+			/// </summary>
+			ReverseReadingOn = 0x200,
+			/// <summary>
+			/// Corresponds to the OnlyOneReading value of the DisplayReverseReading property
+			/// </summary>
+			ReverseReadingOff = 0x400,
+			/// <summary>
+			/// Corresponds to the Reversed value of the DisplayReadingDirection property
+			/// </summary>
+			ReadingDirectionReversed = 0x800,
+			/// <summary>
+			/// Corresponds to the Rotated value of the DisplayReadingDirection property
+			/// </summary>
+			ReadingDirectionRotated = 0x1000,
+			/// <summary>
+			/// Corresponds to the Always value of the DisplayReadingDirection property
+			/// </summary>
+			ReadingDirectionAlways = 0x2000,
 		}
 		private DisplayFlags myDisplayFlags;
 		/// <summary>
@@ -4488,26 +4508,78 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			SetDisplayFlag(DisplayFlags.ConstraintsOnBottom, value == ConstraintDisplayPosition.Bottom);
 		}
-		private DisplayRoleNames GetDisplayRoleNamesValue()
+		private CustomRoleNameDisplay GetDisplayRoleNamesValue()
 		{
 			return GetDisplayFlag(DisplayFlags.RoleNamesOn) ?
-				DisplayRoleNames.On :
-				(GetDisplayFlag(DisplayFlags.RoleNamesOff) ? DisplayRoleNames.Off : DisplayRoleNames.UserDefault);
+				CustomRoleNameDisplay.On :
+				(GetDisplayFlag(DisplayFlags.RoleNamesOff) ? CustomRoleNameDisplay.Off : CustomRoleNameDisplay.Default);
 		}
-		private void SetDisplayRoleNamesValue(DisplayRoleNames value)
+		private void SetDisplayRoleNamesValue(CustomRoleNameDisplay value)
 		{
 			switch (value)
 			{
-				case DisplayRoleNames.UserDefault:
+				case CustomRoleNameDisplay.Default:
 					SetDisplayFlag(DisplayFlags.RoleNamesOn | DisplayFlags.RoleNamesOff, false);
 					break;
-				case DisplayRoleNames.On:
+				case CustomRoleNameDisplay.On:
 					SetDisplayFlag(DisplayFlags.RoleNamesOn, true);
 					SetDisplayFlag(DisplayFlags.RoleNamesOff, false);
 					break;
-				case DisplayRoleNames.Off:
+				case CustomRoleNameDisplay.Off:
 					SetDisplayFlag(DisplayFlags.RoleNamesOff, true);
 					SetDisplayFlag(DisplayFlags.RoleNamesOn, false);
+					break;
+			}
+		}
+		private CustomBinaryFactTypeReadingDisplay GetDisplayReverseReadingValue()
+		{
+			return GetDisplayFlag(DisplayFlags.ReverseReadingOn) ?
+				CustomBinaryFactTypeReadingDisplay.ShowReverseReading :
+				(GetDisplayFlag(DisplayFlags.ReverseReadingOff) ? CustomBinaryFactTypeReadingDisplay.OnlyOneReading : CustomBinaryFactTypeReadingDisplay.Default);
+		}
+		private void SetDisplayReverseReadingValue(CustomBinaryFactTypeReadingDisplay value)
+		{
+			switch (value)
+			{
+				case CustomBinaryFactTypeReadingDisplay.Default:
+					SetDisplayFlag(DisplayFlags.ReverseReadingOn | DisplayFlags.ReverseReadingOff, false);
+					break;
+				case CustomBinaryFactTypeReadingDisplay.ShowReverseReading:
+					SetDisplayFlag(DisplayFlags.ReverseReadingOn, true);
+					SetDisplayFlag(DisplayFlags.ReverseReadingOff, false);
+					break;
+				case CustomBinaryFactTypeReadingDisplay.OnlyOneReading:
+					SetDisplayFlag(DisplayFlags.ReverseReadingOff, true);
+					SetDisplayFlag(DisplayFlags.ReverseReadingOn, false);
+					break;
+			}
+		}
+		private CustomReadingDirectionIndicatorDisplay GetDisplayReadingDirectionValue()
+		{
+			return GetDisplayFlag(DisplayFlags.ReadingDirectionReversed) ?
+				CustomReadingDirectionIndicatorDisplay.Reversed :
+				(GetDisplayFlag(DisplayFlags.ReadingDirectionRotated) ?
+					CustomReadingDirectionIndicatorDisplay.Rotated :
+					(GetDisplayFlag(DisplayFlags.ReadingDirectionAlways) ? CustomReadingDirectionIndicatorDisplay.Always : CustomReadingDirectionIndicatorDisplay.Default));
+		}
+		private void SetDisplayReadingDirectionValue(CustomReadingDirectionIndicatorDisplay value)
+		{
+			switch (value)
+			{
+				case CustomReadingDirectionIndicatorDisplay.Default:
+					SetDisplayFlag(DisplayFlags.ReadingDirectionReversed | DisplayFlags.ReadingDirectionRotated | DisplayFlags.ReadingDirectionAlways, false);
+					break;
+				case CustomReadingDirectionIndicatorDisplay.Reversed:
+					SetDisplayFlag(DisplayFlags.ReadingDirectionReversed, true);
+					SetDisplayFlag(DisplayFlags.ReadingDirectionRotated | DisplayFlags.ReadingDirectionAlways, false);
+					break;
+				case CustomReadingDirectionIndicatorDisplay.Rotated:
+					SetDisplayFlag(DisplayFlags.ReadingDirectionRotated, true);
+					SetDisplayFlag(DisplayFlags.ReadingDirectionReversed | DisplayFlags.ReadingDirectionAlways, false);
+					break;
+				case CustomReadingDirectionIndicatorDisplay.Always:
+					SetDisplayFlag(DisplayFlags.ReadingDirectionAlways, true);
+					SetDisplayFlag(DisplayFlags.ReadingDirectionReversed | DisplayFlags.ReadingDirectionRotated, false);
 					break;
 			}
 		}
@@ -6479,7 +6551,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								diagram.FixUpLocalDiagram(factTypeShape, order);
 								break;
 							}
-							bool testRoleNames = factTypeShape.DisplayRoleNames != DisplayRoleNames.Off;
+							bool testRoleNames = factTypeShape.DisplayRoleNames != CustomRoleNameDisplay.Off;
 							foreach (RoleBase roleBase in factTypeShape.DisplayedRoleOrder) // We keep displayed role order when collapsed
 							{
 								Role role = roleBase.Role;
@@ -6846,7 +6918,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								diagram.FixUpLocalDiagram(factTypeShape, order);
 								break;
 							}
-							bool testRoleNames = factTypeShape.DisplayRoleNames != DisplayRoleNames.Off;
+							bool testRoleNames = factTypeShape.DisplayRoleNames != CustomRoleNameDisplay.Off;
 							object allowMultipleShapesKey = null;
 							Dictionary<object, object> topLevelContextInfo = null;
 							bool containedAllowMultipleShapes = false;
@@ -7043,7 +7115,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						FactTypeShape factTypeShape;
 						if (null != (factTypeShape = pel as FactTypeShape) &&
-							factTypeShape.DisplayRoleNames == DisplayRoleNames.UserDefault)
+							factTypeShape.DisplayRoleNames == CustomRoleNameDisplay.Default)
 						{
 							factTypeShape.UpdateRoleNameDisplay();
 						}
@@ -7082,6 +7154,263 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 		}
 		#endregion // ImplicitBooleanValueTypeDeletedRule
+		#region Display options change rules
+		private static void UpdateDefaultReverseReadings(ORMDiagram diagram)
+		{
+			foreach (ShapeElement shape in diagram.NestedChildShapes)
+			{
+				FactTypeShape factTypeShape;
+				LinkedElementCollection<ReadingOrder> orders;
+				if (null != (factTypeShape = shape as FactTypeShape) &&
+					factTypeShape.DisplayReverseReading == CustomBinaryFactTypeReadingDisplay.Default &&
+					(orders = factTypeShape.AssociatedFactType.ReadingOrderCollection).Count == 2 &&
+					orders[0].RoleCollection.Count == 2)
+				{
+					foreach (ShapeElement childShape in factTypeShape.RelativeChildShapes)
+					{
+						ReadingShape readingShape;
+						if (null != (readingShape = childShape as ReadingShape))
+						{
+							readingShape.InvalidateDisplayText();
+							break;
+						}
+					}
+				}
+			}
+		}
+		private static void UpdateDefaultReadingDirection(ORMDiagram diagram)
+		{
+			foreach (ShapeElement shape in diagram.NestedChildShapes)
+			{
+				FactTypeShape factTypeShape;
+				if (null != (factTypeShape = shape as FactTypeShape) &&
+					factTypeShape.DisplayReadingDirection == CustomReadingDirectionIndicatorDisplay.Default)
+				{
+					foreach (ShapeElement childShape in factTypeShape.RelativeChildShapes)
+					{
+						ReadingShape readingShape;
+						if (null != (readingShape = childShape as ReadingShape))
+						{
+							readingShape.InvalidateDisplayText();
+							break;
+						}
+					}
+				}
+			}
+		}
+		private static void UpdateDefaultRoleNameDisplay(ORMDiagram diagram)
+		{
+			foreach (ShapeElement shape in diagram.NestedChildShapes)
+			{
+				FactType factType;
+				FactTypeShape factTypeShape;
+				if (null != (factTypeShape = shape as FactTypeShape) &&
+					factTypeShape.DisplayRoleNames == CustomRoleNameDisplay.Default &&
+					null != (factType = factTypeShape.AssociatedFactType))
+				{
+					UpdateRoleNameDisplay(factType, factTypeShape, diagram, false);
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(ORMDiagramDisplayOptions), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void GlobalDisplayOptionsChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid domainPropertyId = e.DomainProperty.Id;
+			Predicate<ORMDiagram> test = null;
+			Action<ORMDiagram> update = null;
+			if (domainPropertyId == ORMDiagramDisplayOptions.DisplayReverseReadingsDomainPropertyId)
+			{
+				test = delegate (ORMDiagram diagram) { return diagram.DisplayReverseReadings == CustomBinaryFactTypeReadingDisplay.Default; };
+				update = UpdateDefaultReverseReadings;
+			}
+			else if (domainPropertyId == ORMDiagramDisplayOptions.DisplayReadingDirectionDomainPropertyId)
+			{
+				test = delegate (ORMDiagram diagram) { return diagram.DisplayReadingDirection == CustomReadingDirectionIndicatorDisplay.Default; };
+				update = UpdateDefaultReadingDirection;
+			}
+			else if (domainPropertyId == ORMDiagramDisplayOptions.DisplayRoleNamesDomainPropertyId)
+			{
+				test = delegate (ORMDiagram diagram) { return diagram.DisplayRoleNames == CustomRoleNameDisplay.Default; };
+				update = UpdateDefaultRoleNameDisplay;
+			}
+
+			if (test != null)
+			{
+				foreach (ORMDiagram diagram in e.ModelElement.Store.ElementDirectory.FindElements<ORMDiagram>(false))
+				{
+					if (test(diagram))
+					{
+						update(diagram);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(ORMDiagram), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void DiagramDisplayOptionsChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid domainPropertyId = e.DomainProperty.Id;
+			ORMDiagram diagram;
+			if (domainPropertyId == ORMDiagram.DisplayReverseReadingsDomainPropertyId)
+			{
+				diagram = (ORMDiagram)e.ModelElement; ;
+				CustomBinaryFactTypeReadingDisplay oldValue = (CustomBinaryFactTypeReadingDisplay)e.OldValue;
+				CustomBinaryFactTypeReadingDisplay newValue = diagram.DisplayReverseReadings;
+				if (oldValue != newValue)
+				{
+					// Note that there is more compile time duplication here than run time hit. The values are different, so
+					// the default will be resolved at most once.
+					BinaryFactTypeReadingDisplay resolvedOldValue = oldValue == CustomBinaryFactTypeReadingDisplay.Default ?
+						diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayReverseReadings :
+						(BinaryFactTypeReadingDisplay)oldValue;
+					BinaryFactTypeReadingDisplay resolvedNewValue = newValue == CustomBinaryFactTypeReadingDisplay.Default ?
+						diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayReverseReadings :
+						(BinaryFactTypeReadingDisplay)newValue;
+					if (resolvedOldValue != resolvedNewValue)
+					{
+						UpdateDefaultReverseReadings(diagram);
+					}
+				}
+			}
+			else if (domainPropertyId == ORMDiagram.DisplayReadingDirectionDomainPropertyId)
+			{
+				diagram = (ORMDiagram)e.ModelElement; ;
+				CustomReadingDirectionIndicatorDisplay oldValue = (CustomReadingDirectionIndicatorDisplay)e.OldValue;
+				CustomReadingDirectionIndicatorDisplay newValue = diagram.DisplayReadingDirection;
+				if (oldValue != newValue)
+				{
+					// Note that there is more compile time duplication here than run time hit. The values are different, so
+					// the default will be resolved at most once.
+					ReadingDirectionIndicatorDisplay resolvedOldValue = oldValue == CustomReadingDirectionIndicatorDisplay.Default ?
+						diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayReadingDirection :
+						(ReadingDirectionIndicatorDisplay)oldValue;
+					ReadingDirectionIndicatorDisplay resolvedNewValue = newValue == CustomReadingDirectionIndicatorDisplay.Default ?
+						diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayReadingDirection :
+						(ReadingDirectionIndicatorDisplay)newValue;
+					if (resolvedOldValue != resolvedNewValue)
+					{
+						UpdateDefaultReverseReadings(diagram);
+					}
+				}
+			}
+			else if (domainPropertyId == ORMDiagram.DisplayRoleNamesDomainPropertyId)
+			{
+				diagram = (ORMDiagram)e.ModelElement;
+				CustomRoleNameDisplay oldValue = (CustomRoleNameDisplay)e.OldValue;
+				CustomRoleNameDisplay newValue = diagram.DisplayRoleNames;
+				if (oldValue != newValue)
+				{
+					// Note that there is more compile time duplication here than run time hit. The values are different, so
+					// the default will be resolved at most once.
+					RoleNameDisplay resolvedOldValue = oldValue == CustomRoleNameDisplay.Default ?
+						diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayRoleNames :
+						(RoleNameDisplay)oldValue;
+					RoleNameDisplay resolvedNewValue = newValue == CustomRoleNameDisplay.Default ?
+						diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayRoleNames :
+						(RoleNameDisplay)newValue;
+					if (resolvedOldValue != resolvedNewValue)
+					{
+						UpdateDefaultRoleNameDisplay(diagram);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// ChangeRule: typeof(FactTypeShape), FireTime=TopLevelCommit, Priority=DiagramFixupConstants.AddShapeRulePriority;
+		/// </summary>
+		private static void ShapeDisplayOptionsChangedRule(ElementPropertyChangedEventArgs e)
+		{
+			Guid domainPropertyId = e.DomainProperty.Id;
+			FactTypeShape shape = null;
+			bool invalidateReadings = false;
+			if (domainPropertyId == FactTypeShape.DisplayReverseReadingDomainPropertyId)
+			{
+				shape = (FactTypeShape)e.ModelElement;
+				CustomBinaryFactTypeReadingDisplay oldValue = (CustomBinaryFactTypeReadingDisplay)e.OldValue;
+				CustomBinaryFactTypeReadingDisplay newValue = shape.DisplayReverseReading;
+				if (oldValue != newValue)
+				{
+					// Note that there is more compile time duplication here than run time hit. The values are different, so
+					// the default will be resolved at most once.
+					BinaryFactTypeReadingDisplay resolvedOldValue = oldValue == CustomBinaryFactTypeReadingDisplay.Default ?
+						((oldValue = ((ORMDiagram)shape.Diagram).DisplayReverseReadings) == CustomBinaryFactTypeReadingDisplay.Default ?
+							shape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayReverseReadings :
+							(BinaryFactTypeReadingDisplay)oldValue) :
+						(BinaryFactTypeReadingDisplay)oldValue;
+					BinaryFactTypeReadingDisplay resolvedNewValue = newValue == CustomBinaryFactTypeReadingDisplay.Default ?
+						((newValue = ((ORMDiagram)shape.Diagram).DisplayReverseReadings) == CustomBinaryFactTypeReadingDisplay.Default ?
+							shape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayReverseReadings :
+							(BinaryFactTypeReadingDisplay)newValue) :
+						(BinaryFactTypeReadingDisplay)newValue;
+					invalidateReadings = resolvedOldValue != resolvedNewValue;
+				}
+			}
+			else if (domainPropertyId == FactTypeShape.DisplayReadingDirectionDomainPropertyId)
+			{
+				shape = (FactTypeShape)e.ModelElement;
+				CustomReadingDirectionIndicatorDisplay oldValue = (CustomReadingDirectionIndicatorDisplay)e.OldValue;
+				CustomReadingDirectionIndicatorDisplay newValue = shape.DisplayReadingDirection;
+				if (oldValue != newValue)
+				{
+					// Note that there is more compile time duplication here than run time hit. The values are different, so
+					// the default will be resolved at most once.
+					ReadingDirectionIndicatorDisplay resolvedOldValue = oldValue == CustomReadingDirectionIndicatorDisplay.Default ?
+						((oldValue = ((ORMDiagram)shape.Diagram).DisplayReadingDirection) == CustomReadingDirectionIndicatorDisplay.Default ?
+							shape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayReadingDirection :
+							(ReadingDirectionIndicatorDisplay)oldValue) :
+						(ReadingDirectionIndicatorDisplay)oldValue;
+					ReadingDirectionIndicatorDisplay resolvedNewValue = newValue == CustomReadingDirectionIndicatorDisplay.Default ?
+						((newValue = ((ORMDiagram)shape.Diagram).DisplayReadingDirection) == CustomReadingDirectionIndicatorDisplay.Default ?
+							shape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayReadingDirection :
+							(ReadingDirectionIndicatorDisplay)newValue) :
+						(ReadingDirectionIndicatorDisplay)newValue;
+					invalidateReadings = resolvedOldValue != resolvedNewValue;
+				}
+			}
+			else if (domainPropertyId == FactTypeShape.DisplayRoleNamesDomainPropertyId)
+			{
+				shape = (FactTypeShape)e.ModelElement;
+				CustomRoleNameDisplay oldValue = (CustomRoleNameDisplay)e.OldValue;
+				CustomRoleNameDisplay newValue = shape.DisplayRoleNames;
+				if (oldValue != newValue)
+				{
+					// Note that there is more compile time duplication here than run time hit. The values are different, so
+					// the default will be resolved at most once.
+					RoleNameDisplay resolvedOldValue = oldValue == CustomRoleNameDisplay.Default ?
+						((oldValue = ((ORMDiagram)shape.Diagram).DisplayRoleNames) == CustomRoleNameDisplay.Default ?
+							shape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayRoleNames :
+							(RoleNameDisplay)oldValue) :
+						(RoleNameDisplay)oldValue;
+					RoleNameDisplay resolvedNewValue = newValue == CustomRoleNameDisplay.Default ?
+						((newValue = ((ORMDiagram)shape.Diagram).DisplayRoleNames) == CustomRoleNameDisplay.Default ?
+							shape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)[0].DisplayRoleNames :
+							(RoleNameDisplay)newValue) :
+						(RoleNameDisplay)newValue;
+					if (resolvedOldValue != resolvedNewValue)
+					{
+						shape.UpdateRoleNameDisplay();
+					}
+				}
+				return;
+			}
+
+			if (invalidateReadings)
+			{
+				foreach (ShapeElement childShape in shape.RelativeChildShapes)
+				{
+					ReadingShape readingShape = childShape as ReadingShape;
+					if (readingShape != null)
+					{
+						readingShape.InvalidateDisplayText();
+						break;
+					}
+				}
+			}
+		}
+		#endregion // Display options change rules
 		#endregion // Shape display update rules
 		#region Store Event Handlers
 		/// <summary>

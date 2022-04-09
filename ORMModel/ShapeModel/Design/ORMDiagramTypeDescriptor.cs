@@ -15,11 +15,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Diagrams;
-using Microsoft.VisualStudio.Modeling.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
 using ORMSolutions.ORMArchitect.Framework;
@@ -59,6 +59,34 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 			{
 				properties.Add(EditorUtility.ModifyPropertyDescriptorDisplay(this.CreatePropertyDescriptor(diagram, store.DomainDataDirectory.GetDomainProperty(ORMDiagram.NameDomainPropertyId), attributes), "DiagramName", ResourceStrings.DiagramPropertiesDiagramNameDisplayName, ResourceStrings.DiagramPropertiesDiagramNameDescription, null));
 				properties = ExtendableElementUtility.GetExtensionProperties(diagram, properties, typeof(TPresentationElement));
+			}
+
+			// Break out global and local display options into expandable properties
+			List<PropertyDescriptor> localDisplayOptions = null;
+			List<PropertyDescriptor> globalDisplayOptions = null;
+			for (int i = properties.Count - 1; i >= 0; --i)
+			{
+				PropertyDescriptor descriptor = properties[i];
+				foreach (Attribute attr in descriptor.Attributes)
+				{
+					ORMDiagramDisplayOptionAttribute displayOption;
+					if (null != (displayOption = attr as ORMDiagramDisplayOptionAttribute))
+					{
+						(displayOption.IsGlobal ? (globalDisplayOptions ?? (globalDisplayOptions = new List<PropertyDescriptor>())) : (localDisplayOptions ?? (localDisplayOptions = new List<PropertyDescriptor>()))).Add(descriptor);
+						properties.RemoveAt(i);
+						break;
+					}
+				}
+			}
+
+			if (localDisplayOptions != null)
+			{
+				properties.Add(EditorUtility.ConsolidatePropertyDescriptors<ORMDiagram>(localDisplayOptions, "LocalDisplayOptions", ResourceStrings.ORMDiagramDisplayOptionLocalOptionsName, ResourceStrings.ORMDiagramDisplayOptionLocalOptionsDescription, ResourceStrings.ORMDiagramDisplayOptionCategory, ResourceStrings.ORMDiagramDisplayOptionDefaultState, ResourceStrings.ORMDiagramDisplayOptionCustomState));
+			}
+
+			if (globalDisplayOptions != null)
+			{
+				properties.Add(EditorUtility.ConsolidatePropertyDescriptors<ORMDiagram>(globalDisplayOptions, "GlobalDisplayOptions", ResourceStrings.ORMDiagramDisplayOptionGlobalOptionsName, ResourceStrings.ORMDiagramDisplayOptionGlobalOptionsDescription, ResourceStrings.ORMDiagramDisplayOptionCategory, ResourceStrings.ORMDiagramDisplayOptionDefaultState, ResourceStrings.ORMDiagramDisplayOptionCustomState));
 			}
 			return properties;
 		}

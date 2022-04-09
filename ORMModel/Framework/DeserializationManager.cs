@@ -85,6 +85,11 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// phase enum passed to the deserialization manager constructor.</param>
 		/// <param name="store">The context store</param>
 		void PhaseCompleted(int phase, Store store);
+		/// <summary>
+		/// If a new file is loading this will be called immediately after the fixup listener
+		/// is created. Most fixup listeners will safely ignore this directive.
+		/// </summary>
+		void LoadingNewFile();
 	}
 	#endregion // IDeserializationFixupListener interface
 	#region IDeserializationFixupListenerProvider interface
@@ -135,7 +140,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 		#endregion // Constructors
 		#region IDeserializationFixupListener Implementation
 		/// <summary>
-		/// Implements IDeserializationFixupListener.HasElements
+		/// Implements <see cref="IDeserializationFixupListener.HasElements"/>.
 		/// </summary>
 		/// <param name="phase">An integer pulled from the
 		/// phase enum passed to the DeserializationFixupManager constructor.</param>
@@ -150,7 +155,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			return HasElements(phase, store);
 		}
 		/// <summary>
-		/// Implements IDeserializationFixupListener.ProcessElements
+		/// Implements <see cref="IDeserializationFixupListener.ProcessElements"/>.
 		/// </summary>
 		/// <param name="phase">An integer pulled from the
 		/// phase enum passed to the DeserializationFixupManager constructor.</param>
@@ -177,7 +182,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			ProcessElements(phase, store, notifyAdded);
 		}
 		/// <summary>
-		/// Implements IDeserializationFixupListener.PhaseCompleted. The
+		/// Implements <see cref="IDeserializationFixupListener.PhaseCompleted"/>. The
 		/// default implementation does nothing.
 		/// </summary>
 		/// <param name="phase">An integer pulled from the
@@ -193,6 +198,18 @@ namespace ORMSolutions.ORMArchitect.Framework
 		void IDeserializationFixupListener.PhaseCompleted(int phase, Store store)
 		{
 			PhaseCompleted(phase, store);
+		}
+		/// <summary>
+		/// Implements <see cref="IDeserializationFixupListener.LoadingNewFile"/>.
+		/// Override to be notified if fixup changes for a new file.
+		/// </summary>
+		protected virtual void LoadingNewFile()
+		{
+			// No default behavior.
+		}
+		void IDeserializationFixupListener.LoadingNewFile()
+		{
+			LoadingNewFile();
 		}
 		#endregion // IDeserializationFixupListener implementation
 		#region INotifyElementAdded Implementation

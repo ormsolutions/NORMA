@@ -21,6 +21,7 @@
 			<cmc:RootElement class="ORMModel"/>
 			<cmc:RootElement class="ElementGroupingSet"/>
 			<cmc:RootElement class="GenerationState"/>
+			<cmc:RootElement class="DisplayState"/>
 		</cmc:RootElements>
 		<cmc:EmbeddingDirectives>
 			<!-- Ignored embeddings. These are deprecated on load and do not appear in a live model. -->
@@ -60,6 +61,7 @@
 			<cmc:EmbeddingDirective relationship="ElementGroupingSetContainsElementGrouping" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ElementGroupingIsOfElementGroupingType" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="GenerationStateHasGenerationSetting" order="Unordered"/>
+			<cmc:EmbeddingDirective relationship="DisplayStateHasDisplaySetting" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ModelContainsRecognizedPhrase" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ModelDefinesFunction" order="Unordered"/>
 			<cmc:EmbeddingDirective relationship="ModelHasDataType" order="Unordered"/>

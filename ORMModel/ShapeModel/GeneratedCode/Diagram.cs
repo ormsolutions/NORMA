@@ -406,11 +406,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public static readonly global::System.Guid AutoPopulateShapesDomainPropertyId = new global::System.Guid(0xd3f7a171, 0xce39, 0x4944, 0xbe, 0x80, 0xd5, 0x51, 0x27, 0x42, 0x3c, 0x83);
 		
 		/// <summary>
-		/// Storage for AutoPopulateShapes
-		/// </summary>
-		private global::System.Boolean autoPopulateShapesPropertyStorage;
-		
-		/// <summary>
 		/// Gets or sets the value of AutoPopulateShapes domain property.
 		/// Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram.Auto
 		/// Populate Shapes
@@ -418,13 +413,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/AutoPopulateShapes.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/AutoPopulateShapes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("d3f7a171-ce39-4944-be80-d55127423c83")]
 		public global::System.Boolean AutoPopulateShapes
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return autoPopulateShapesPropertyStorage;
+				return AutoPopulateShapesPropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -464,7 +460,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public override sealed global::System.Boolean GetValue(ORMDiagramBase element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.autoPopulateShapesPropertyStorage;
+				// There is no storage for AutoPopulateShapes because its Kind is
+				// set to CustomStorage. Please provide the GetAutoPopulateShapesValue()
+				// method on the domain class.
+				return element.GetAutoPopulateShapesValue();
 			}
 		
 			/// <summary>
@@ -480,7 +479,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.autoPopulateShapesPropertyStorage = newValue;
+					// There is no storage for AutoPopulateShapes because its Kind is
+					// set to CustomStorage. Please provide the SetAutoPopulateShapesValue()
+					// method on the domain class.
+					element.SetAutoPopulateShapesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}
@@ -573,6 +576,283 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// set to CustomStorage. Please provide the SetUpdateCounterValue()
 					// method on the domain class.
 					element.SetUpdateCounterValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayRoleNames domain property code
+		
+		/// <summary>
+		/// DisplayRoleNames domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayRoleNamesDomainPropertyId = new global::System.Guid(0x4b2b22ec, 0x1978, 0x4255, 0x94, 0x85, 0xca, 0x9a, 0x23, 0xa0, 0x98, 0x26);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayRoleNames domain property.
+		/// Determines whether role name shapes will be drawn by default on this diagram.
+		/// </summary>
+		[ORMDiagramDisplayOption()]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayRoleNames.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayRoleNames.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay.Default)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("4b2b22ec-1978-4255-9485-ca9a23a09826")]
+		public CustomRoleNameDisplay DisplayRoleNames
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayRoleNamesPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayRoleNamesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMDiagram.DisplayRoleNames domain property.
+		/// </summary>
+		internal sealed partial class DisplayRoleNamesPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMDiagramBase, CustomRoleNameDisplay>
+		{
+			private DisplayRoleNamesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMDiagram.DisplayRoleNames domain property value handler.
+			/// </summary>
+			public static readonly DisplayRoleNamesPropertyHandler Instance = new DisplayRoleNamesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMDiagram.DisplayRoleNames domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayRoleNamesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed CustomRoleNameDisplay GetValue(ORMDiagramBase element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayRoleNames because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayRoleNamesValue()
+				// method on the domain class.
+				return element.GetDisplayRoleNamesValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMDiagramBase element, CustomRoleNameDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				CustomRoleNameDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayRoleNames because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayRoleNamesValue()
+					// method on the domain class.
+					element.SetDisplayRoleNamesValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayReverseReadings domain property code
+		
+		/// <summary>
+		/// DisplayReverseReadings domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayReverseReadingsDomainPropertyId = new global::System.Guid(0xcae32c41, 0xb699, 0x49c9, 0xb5, 0xc2, 0xc3, 0x48, 0x7b, 0x17, 0x4a, 0x8e);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayReverseReadings domain property.
+		/// Determines whether available reverse readings are shown for binary fact types on
+		/// this diagram.
+		/// </summary>
+		[ORMDiagramDisplayOption()]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReverseReadings.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReverseReadings.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay.Default)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("cae32c41-b699-49c9-b5c2-c3487b174a8e")]
+		public CustomBinaryFactTypeReadingDisplay DisplayReverseReadings
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayReverseReadingsPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayReverseReadingsPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMDiagram.DisplayReverseReadings domain property.
+		/// </summary>
+		internal sealed partial class DisplayReverseReadingsPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMDiagramBase, CustomBinaryFactTypeReadingDisplay>
+		{
+			private DisplayReverseReadingsPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMDiagram.DisplayReverseReadings domain property value handler.
+			/// </summary>
+			public static readonly DisplayReverseReadingsPropertyHandler Instance = new DisplayReverseReadingsPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMDiagram.DisplayReverseReadings domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayReverseReadingsDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed CustomBinaryFactTypeReadingDisplay GetValue(ORMDiagramBase element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayReverseReadings because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayReverseReadingsValue()
+				// method on the domain class.
+				return element.GetDisplayReverseReadingsValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMDiagramBase element, CustomBinaryFactTypeReadingDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				CustomBinaryFactTypeReadingDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayReverseReadings because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayReverseReadingsValue()
+					// method on the domain class.
+					element.SetDisplayReverseReadingsValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayReadingDirection domain property code
+		
+		/// <summary>
+		/// DisplayReadingDirection domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayReadingDirectionDomainPropertyId = new global::System.Guid(0x848cc6c6, 0xb261, 0x48b1, 0x94, 0x09, 0xa4, 0xf0, 0x74, 0xfe, 0x73, 0x3d);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayReadingDirection domain property.
+		/// Determines when direction arrows are displayed with readings on this diagram.
+		/// </summary>
+		[ORMDiagramDisplayOption()]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReadingDirection.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReadingDirection.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay.Default)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("848cc6c6-b261-48b1-9409-a4f074fe733d")]
+		public CustomReadingDirectionIndicatorDisplay DisplayReadingDirection
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayReadingDirectionPropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayReadingDirectionPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMDiagram.DisplayReadingDirection domain property.
+		/// </summary>
+		internal sealed partial class DisplayReadingDirectionPropertyHandler : DslModeling::DomainPropertyValueHandler<ORMDiagramBase, CustomReadingDirectionIndicatorDisplay>
+		{
+			private DisplayReadingDirectionPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMDiagram.DisplayReadingDirection domain property value handler.
+			/// </summary>
+			public static readonly DisplayReadingDirectionPropertyHandler Instance = new DisplayReadingDirectionPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMDiagram.DisplayReadingDirection domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayReadingDirectionDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed CustomReadingDirectionIndicatorDisplay GetValue(ORMDiagramBase element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayReadingDirection because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayReadingDirectionValue()
+				// method on the domain class.
+				return element.GetDisplayReadingDirectionValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMDiagramBase element, CustomReadingDirectionIndicatorDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				CustomReadingDirectionIndicatorDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayReadingDirection because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayReadingDirectionValue()
+					// method on the domain class.
+					element.SetDisplayReadingDirectionValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}

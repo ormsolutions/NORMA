@@ -125,6 +125,38 @@
     <value>ORM Shape Domain Model</value>
     <comment>DisplayName for DslLibrary &apos;ORMShape&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions.Description" xml:space="preserve">
+    <value>Global display options for shapes on an ORM diagram</value>
+    <comment>Description for DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions.DisplayName" xml:space="preserve">
+    <value>ORMDiagramDisplayOptions</value>
+    <comment>DisplayName for DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/DisplayRoleNames.Description" xml:space="preserve">
+    <value>Should role names be shown by default on ORM diagrams?</value>
+    <comment>Description for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/DisplayRoleNames.DisplayName" xml:space="preserve">
+    <value>RoleNames</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/DisplayReverseReadings.Description" xml:space="preserve">
+    <value>Should reverse readings be shown by default on an ORM diagram?</value>
+    <comment>Description for DomainProperty &apos;DisplayReverseReadings&apos; on DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/DisplayReverseReadings.DisplayName" xml:space="preserve">
+    <value>ReverseReadings</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayReverseReadings&apos; on DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/DisplayReadingDirection.Description" xml:space="preserve">
+    <value>When should reading direction be shown with a graphical indicator on an ORM diagram?</value>
+    <comment>Description for DomainProperty &apos;DisplayReadingDirection&apos; on DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/DisplayReadingDirection.DisplayName" xml:space="preserve">
+    <value>ReadingDirectionIndicator</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayReadingDirection&apos; on DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder</value>
     <comment>Description for DomainClass &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
@@ -237,29 +269,117 @@
     <value>Draw the constraints below the bottom of the role boxes.</value>
     <comment>Description for EnumerationLiteral &apos;Bottom&apos; on DomainEnumeration &apos;ConstraintDisplayPosition&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/UserDefault.DisplayName" xml:space="preserve">
-    <value>UserDefault</value>
-    <comment>Display name for EnumerationLiteral &apos;UserDefault&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/UserDefault.Description" xml:space="preserve">
-    <value>Use the global setting.</value>
-    <comment>Description for EnumerationLiteral &apos;UserDefault&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
-  </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/On.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameDisplay/On.DisplayName" xml:space="preserve">
     <value>On</value>
-    <comment>Display name for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+    <comment>Display name for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;RoleNameDisplay&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/On.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameDisplay/On.Description" xml:space="preserve">
     <value>Always draw the RoleNameShapes.</value>
-    <comment>Description for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+    <comment>Description for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;RoleNameDisplay&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/Off.DisplayName" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameDisplay/Off.DisplayName" xml:space="preserve">
     <value>Off</value>
-    <comment>Display name for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+    <comment>Display name for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;RoleNameDisplay&apos;</comment>
   </data>
-  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/Off.Description" xml:space="preserve">
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameDisplay/Off.Description" xml:space="preserve">
     <value>Never draw the RoleNameShapes.</value>
-    <comment>Description for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;DisplayRoleNames&apos;</comment>
+    <comment>Description for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;RoleNameDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay/Default.DisplayName" xml:space="preserve">
+    <value>Default</value>
+    <comment>Display name for EnumerationLiteral &apos;Default&apos; on DomainEnumeration &apos;CustomRoleNameDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay/Default.Description" xml:space="preserve">
+    <value>Use the context default setting.</value>
+    <comment>Description for EnumerationLiteral &apos;Default&apos; on DomainEnumeration &apos;CustomRoleNameDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay/On.DisplayName" xml:space="preserve">
+    <value>On</value>
+    <comment>Display name for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;CustomRoleNameDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay/On.Description" xml:space="preserve">
+    <value>Always draw the RoleNameShapes.</value>
+    <comment>Description for EnumerationLiteral &apos;On&apos; on DomainEnumeration &apos;CustomRoleNameDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay/Off.DisplayName" xml:space="preserve">
+    <value>Off</value>
+    <comment>Display name for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;CustomRoleNameDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay/Off.Description" xml:space="preserve">
+    <value>Never draw the RoleNameShapes.</value>
+    <comment>Description for EnumerationLiteral &apos;Off&apos; on DomainEnumeration &apos;CustomRoleNameDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Default.DisplayName" xml:space="preserve">
+    <value>Default</value>
+    <comment>Display name for EnumerationLiteral &apos;Default&apos; on DomainEnumeration &apos;CustomReadingDirectionIndicatorDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Default.Description" xml:space="preserve">
+    <value>Use the context default setting.</value>
+    <comment>Description for EnumerationLiteral &apos;Default&apos; on DomainEnumeration &apos;CustomReadingDirectionIndicatorDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Reversed.DisplayName" xml:space="preserve">
+    <value>Reversed</value>
+    <comment>Display name for EnumerationLiteral &apos;Reversed&apos; on DomainEnumeration &apos;CustomReadingDirectionIndicatorDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Reversed.Description" xml:space="preserve">
+    <value>Display indicator for reverse readings only.</value>
+    <comment>Description for EnumerationLiteral &apos;Reversed&apos; on DomainEnumeration &apos;CustomReadingDirectionIndicatorDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Rotated.DisplayName" xml:space="preserve">
+    <value>Rotated</value>
+    <comment>Display name for EnumerationLiteral &apos;Rotated&apos; on DomainEnumeration &apos;CustomReadingDirectionIndicatorDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Rotated.Description" xml:space="preserve">
+    <value>Display indicator if the fact type is rotated, even if the reading order is top-down.</value>
+    <comment>Description for EnumerationLiteral &apos;Rotated&apos; on DomainEnumeration &apos;CustomReadingDirectionIndicatorDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Always.DisplayName" xml:space="preserve">
+    <value>Always</value>
+    <comment>Display name for EnumerationLiteral &apos;Always&apos; on DomainEnumeration &apos;CustomReadingDirectionIndicatorDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Always.Description" xml:space="preserve">
+    <value>Always display a reading direction indicator.</value>
+    <comment>Description for EnumerationLiteral &apos;Always&apos; on DomainEnumeration &apos;CustomReadingDirectionIndicatorDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.BinaryFactTypeReadingDisplay/ShowReverseReading.DisplayName" xml:space="preserve">
+    <value>ShowReverseReading</value>
+    <comment>Display name for EnumerationLiteral &apos;ShowReverseReading&apos; on DomainEnumeration &apos;BinaryFactTypeReadingDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.BinaryFactTypeReadingDisplay/ShowReverseReading.Description" xml:space="preserve">
+    <value>The reverse reading (if available) is shown with the forward reading for a binary fact type.</value>
+    <comment>Description for EnumerationLiteral &apos;ShowReverseReading&apos; on DomainEnumeration &apos;BinaryFactTypeReadingDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.BinaryFactTypeReadingDisplay/OnlyOneReading.DisplayName" xml:space="preserve">
+    <value>OnlyOneReading</value>
+    <comment>Display name for EnumerationLiteral &apos;OnlyOneReading&apos; on DomainEnumeration &apos;BinaryFactTypeReadingDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.BinaryFactTypeReadingDisplay/OnlyOneReading.Description" xml:space="preserve">
+    <value>Only one reading is shown for a binary fact type.</value>
+    <comment>Description for EnumerationLiteral &apos;OnlyOneReading&apos; on DomainEnumeration &apos;BinaryFactTypeReadingDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay/Default.DisplayName" xml:space="preserve">
+    <value>Default</value>
+    <comment>Display name for EnumerationLiteral &apos;Default&apos; on DomainEnumeration &apos;CustomBinaryFactTypeReadingDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay/Default.Description" xml:space="preserve">
+    <value>Use the context setting, either the global state for a diagram or the diagram for a shape.</value>
+    <comment>Description for EnumerationLiteral &apos;Default&apos; on DomainEnumeration &apos;CustomBinaryFactTypeReadingDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay/ShowReverseReading.DisplayName" xml:space="preserve">
+    <value>ShowReverseReading</value>
+    <comment>Display name for EnumerationLiteral &apos;ShowReverseReading&apos; on DomainEnumeration &apos;CustomBinaryFactTypeReadingDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay/ShowReverseReading.Description" xml:space="preserve">
+    <value>The reverse reading (if available) is shown with the forward reading for a binary fact type.</value>
+    <comment>Description for EnumerationLiteral &apos;ShowReverseReading&apos; on DomainEnumeration &apos;CustomBinaryFactTypeReadingDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay/OnlyOneReading.DisplayName" xml:space="preserve">
+    <value>OnlyOneReading</value>
+    <comment>Display name for EnumerationLiteral &apos;OnlyOneReading&apos; on DomainEnumeration &apos;CustomBinaryFactTypeReadingDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay/OnlyOneReading.Description" xml:space="preserve">
+    <value>Only one reading is shown for a binary fact type.</value>
+    <comment>Description for EnumerationLiteral &apos;OnlyOneReading&apos; on DomainEnumeration &apos;CustomBinaryFactTypeReadingDisplay&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayOrientation/Horizontal.DisplayName" xml:space="preserve">
     <value>Horizontal</value>
@@ -380,6 +500,22 @@
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRoleNames.DisplayName" xml:space="preserve">
     <value>DisplayRoleNames</value>
     <comment>DisplayName for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayReverseReading.Description" xml:space="preserve">
+    <value>Determines whether an available reverse reading is shown for a binary fact type.</value>
+    <comment>Description for DomainProperty &apos;DisplayReverseReading&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayReverseReading.DisplayName" xml:space="preserve">
+    <value>DisplayReverseReading</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayReverseReading&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayReadingDirection.Description" xml:space="preserve">
+    <value>Determines when direction arrows are displayed.</value>
+    <comment>Description for DomainProperty &apos;DisplayReadingDirection&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayReadingDirection.DisplayName" xml:space="preserve">
+    <value>DisplayReadingDirection</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayReadingDirection&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RoleNameVisibilityChanged.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Role Name Visibility Changed</value>
@@ -656,6 +792,30 @@
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/UpdateCounter.DisplayName" xml:space="preserve">
     <value>Update Counter</value>
     <comment>DisplayName for DomainProperty &apos;UpdateCounter&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayRoleNames.Description" xml:space="preserve">
+    <value>Determines whether role name shapes will be drawn by default on this diagram.</value>
+    <comment>Description for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayRoleNames.DisplayName" xml:space="preserve">
+    <value>RoleNames</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRoleNames&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReverseReadings.Description" xml:space="preserve">
+    <value>Determines whether available reverse readings are shown for binary fact types on this diagram.</value>
+    <comment>Description for DomainProperty &apos;DisplayReverseReadings&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReverseReadings.DisplayName" xml:space="preserve">
+    <value>ReverseReadings</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayReverseReadings&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReadingDirection.Description" xml:space="preserve">
+    <value>Determines when direction arrows are displayed with readings on this diagram.</value>
+    <comment>Description for DomainProperty &apos;DisplayReadingDirection&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram/DisplayReadingDirection.DisplayName" xml:space="preserve">
+    <value>ReadingDirectionIndicator</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayReadingDirection&apos; on DomainClass &apos;ORMDiagram&apos;</comment>
   </data>
   <data name="ORM DesignerToolboxTab" xml:space="preserve">
     <value>ORM Designer</value>

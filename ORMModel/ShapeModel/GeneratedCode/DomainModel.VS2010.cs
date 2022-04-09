@@ -84,6 +84,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return new global::System.Type[]
 			{
+				typeof(ORMDiagramDisplayOptions),
 				typeof(FactTypeShapeHasRoleDisplayOrder),
 				typeof(ORMDiagramHasExtensionElement),
 				typeof(ORMBaseShapeHasExtensionElement),
@@ -125,14 +126,22 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return new DomainMemberInfo[]
 			{
+				new DomainMemberInfo(typeof(ORMDiagramDisplayOptions), "DisplayRoleNames", ORMDiagramDisplayOptions.DisplayRoleNamesDomainPropertyId, typeof(ORMDiagramDisplayOptions.DisplayRoleNamesPropertyHandler)),
+				new DomainMemberInfo(typeof(ORMDiagramDisplayOptions), "DisplayReverseReadings", ORMDiagramDisplayOptions.DisplayReverseReadingsDomainPropertyId, typeof(ORMDiagramDisplayOptions.DisplayReverseReadingsPropertyHandler)),
+				new DomainMemberInfo(typeof(ORMDiagramDisplayOptions), "DisplayReadingDirection", ORMDiagramDisplayOptions.DisplayReadingDirectionDomainPropertyId, typeof(ORMDiagramDisplayOptions.DisplayReadingDirectionPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMDiagram), "AutoPopulateShapes", ORMDiagram.AutoPopulateShapesDomainPropertyId, typeof(ORMDiagram.AutoPopulateShapesPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMDiagram), "UpdateCounter", ORMDiagram.UpdateCounterDomainPropertyId, typeof(ORMDiagram.UpdateCounterPropertyHandler)),
+				new DomainMemberInfo(typeof(ORMDiagram), "DisplayRoleNames", ORMDiagram.DisplayRoleNamesDomainPropertyId, typeof(ORMDiagram.DisplayRoleNamesPropertyHandler)),
+				new DomainMemberInfo(typeof(ORMDiagram), "DisplayReverseReadings", ORMDiagram.DisplayReverseReadingsDomainPropertyId, typeof(ORMDiagram.DisplayReverseReadingsPropertyHandler)),
+				new DomainMemberInfo(typeof(ORMDiagram), "DisplayReadingDirection", ORMDiagram.DisplayReadingDirectionDomainPropertyId, typeof(ORMDiagram.DisplayReadingDirectionPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMBaseBinaryLinkShape), "UpdateCounter", ORMBaseBinaryLinkShape.UpdateCounterDomainPropertyId, typeof(ORMBaseBinaryLinkShape.UpdateCounterPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMBaseShape), "UpdateCounter", ORMBaseShape.UpdateCounterDomainPropertyId, typeof(ORMBaseShape.UpdateCounterPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectTypeShape), "ExpandRefMode", ObjectTypeShape.ExpandRefModeDomainPropertyId, typeof(ObjectTypeShape.ExpandRefModePropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectTypeShape), "DisplayRelatedTypes", ObjectTypeShape.DisplayRelatedTypesDomainPropertyId, typeof(ObjectTypeShape.DisplayRelatedTypesPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "ConstraintDisplayPosition", FactTypeShape.ConstraintDisplayPositionDomainPropertyId, typeof(FactTypeShape.ConstraintDisplayPositionPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRoleNames", FactTypeShape.DisplayRoleNamesDomainPropertyId, typeof(FactTypeShape.DisplayRoleNamesPropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeShape), "DisplayReverseReading", FactTypeShape.DisplayReverseReadingDomainPropertyId, typeof(FactTypeShape.DisplayReverseReadingPropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeShape), "DisplayReadingDirection", FactTypeShape.DisplayReadingDirectionDomainPropertyId, typeof(FactTypeShape.DisplayReadingDirectionPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "RoleNameVisibilityChanged", FactTypeShape.RoleNameVisibilityChangedDomainPropertyId, typeof(FactTypeShape.RoleNameVisibilityChangedPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayOrientation", FactTypeShape.DisplayOrientationDomainPropertyId, typeof(FactTypeShape.DisplayOrientationPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRelatedTypes", FactTypeShape.DisplayRelatedTypesDomainPropertyId, typeof(FactTypeShape.DisplayRelatedTypesPropertyHandler)),
@@ -179,28 +188,29 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 	
 			if (createElementMap == null)
 			{
-				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(25);
-				createElementMap.Add(typeof(ORMDiagram), 0);
-				createElementMap.Add(typeof(RolePlayerLink), 1);
-				createElementMap.Add(typeof(RolePlayerProxyLink), 2);
-				createElementMap.Add(typeof(ExternalConstraintLink), 3);
-				createElementMap.Add(typeof(ValueRangeLink), 4);
-				createElementMap.Add(typeof(ModelNoteLink), 5);
-				createElementMap.Add(typeof(ObjectTypeShape), 6);
-				createElementMap.Add(typeof(FactTypeShape), 7);
-				createElementMap.Add(typeof(SubtypeLink), 8);
-				createElementMap.Add(typeof(ExternalConstraintShape), 9);
-				createElementMap.Add(typeof(FrequencyConstraintShape), 10);
-				createElementMap.Add(typeof(RingConstraintShape), 11);
-				createElementMap.Add(typeof(ValueComparisonConstraintShape), 12);
-				createElementMap.Add(typeof(ObjectifiedFactTypeNameShape), 13);
-				createElementMap.Add(typeof(ReadingShape), 14);
-				createElementMap.Add(typeof(ValueConstraintShape), 15);
-				createElementMap.Add(typeof(RoleNameShape), 16);
-				createElementMap.Add(typeof(ModelNoteShape), 17);
-				createElementMap.Add(typeof(CardinalityConstraintShape), 18);
-				createElementMap.Add(typeof(LinkConnectorShape), 19);
-				createElementMap.Add(typeof(FactTypeLinkConnectorShape), 20);
+				createElementMap = new global::System.Collections.Generic.Dictionary<global::System.Type, int>(26);
+				createElementMap.Add(typeof(ORMDiagramDisplayOptions), 0);
+				createElementMap.Add(typeof(ORMDiagram), 1);
+				createElementMap.Add(typeof(RolePlayerLink), 2);
+				createElementMap.Add(typeof(RolePlayerProxyLink), 3);
+				createElementMap.Add(typeof(ExternalConstraintLink), 4);
+				createElementMap.Add(typeof(ValueRangeLink), 5);
+				createElementMap.Add(typeof(ModelNoteLink), 6);
+				createElementMap.Add(typeof(ObjectTypeShape), 7);
+				createElementMap.Add(typeof(FactTypeShape), 8);
+				createElementMap.Add(typeof(SubtypeLink), 9);
+				createElementMap.Add(typeof(ExternalConstraintShape), 10);
+				createElementMap.Add(typeof(FrequencyConstraintShape), 11);
+				createElementMap.Add(typeof(RingConstraintShape), 12);
+				createElementMap.Add(typeof(ValueComparisonConstraintShape), 13);
+				createElementMap.Add(typeof(ObjectifiedFactTypeNameShape), 14);
+				createElementMap.Add(typeof(ReadingShape), 15);
+				createElementMap.Add(typeof(ValueConstraintShape), 16);
+				createElementMap.Add(typeof(RoleNameShape), 17);
+				createElementMap.Add(typeof(ModelNoteShape), 18);
+				createElementMap.Add(typeof(CardinalityConstraintShape), 19);
+				createElementMap.Add(typeof(LinkConnectorShape), 20);
+				createElementMap.Add(typeof(FactTypeLinkConnectorShape), 21);
 			}
 			int index;
 			if (!createElementMap.TryGetValue(elementType, out index))
@@ -214,29 +224,30 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			switch (index)
 			{
+				case 0: return new ORMDiagramDisplayOptions(partition, propertyAssignments);
 				// A constructor was not generated for ORMDiagram because it had HasCustomConstructor
 				// set to true. Please provide the constructor below.
-				case 0: return new ORMDiagram(partition, propertyAssignments);
-				case 1: return new RolePlayerLink(partition, propertyAssignments);
-				case 2: return new RolePlayerProxyLink(partition, propertyAssignments);
-				case 3: return new ExternalConstraintLink(partition, propertyAssignments);
-				case 4: return new ValueRangeLink(partition, propertyAssignments);
-				case 5: return new ModelNoteLink(partition, propertyAssignments);
-				case 6: return new ObjectTypeShape(partition, propertyAssignments);
-				case 7: return new FactTypeShape(partition, propertyAssignments);
-				case 8: return new SubtypeLink(partition, propertyAssignments);
-				case 9: return new ExternalConstraintShape(partition, propertyAssignments);
-				case 10: return new FrequencyConstraintShape(partition, propertyAssignments);
-				case 11: return new RingConstraintShape(partition, propertyAssignments);
-				case 12: return new ValueComparisonConstraintShape(partition, propertyAssignments);
-				case 13: return new ObjectifiedFactTypeNameShape(partition, propertyAssignments);
-				case 14: return new ReadingShape(partition, propertyAssignments);
-				case 15: return new ValueConstraintShape(partition, propertyAssignments);
-				case 16: return new RoleNameShape(partition, propertyAssignments);
-				case 17: return new ModelNoteShape(partition, propertyAssignments);
-				case 18: return new CardinalityConstraintShape(partition, propertyAssignments);
-				case 19: return new LinkConnectorShape(partition, propertyAssignments);
-				case 20: return new FactTypeLinkConnectorShape(partition, propertyAssignments);
+				case 1: return new ORMDiagram(partition, propertyAssignments);
+				case 2: return new RolePlayerLink(partition, propertyAssignments);
+				case 3: return new RolePlayerProxyLink(partition, propertyAssignments);
+				case 4: return new ExternalConstraintLink(partition, propertyAssignments);
+				case 5: return new ValueRangeLink(partition, propertyAssignments);
+				case 6: return new ModelNoteLink(partition, propertyAssignments);
+				case 7: return new ObjectTypeShape(partition, propertyAssignments);
+				case 8: return new FactTypeShape(partition, propertyAssignments);
+				case 9: return new SubtypeLink(partition, propertyAssignments);
+				case 10: return new ExternalConstraintShape(partition, propertyAssignments);
+				case 11: return new FrequencyConstraintShape(partition, propertyAssignments);
+				case 12: return new RingConstraintShape(partition, propertyAssignments);
+				case 13: return new ValueComparisonConstraintShape(partition, propertyAssignments);
+				case 14: return new ObjectifiedFactTypeNameShape(partition, propertyAssignments);
+				case 15: return new ReadingShape(partition, propertyAssignments);
+				case 16: return new ValueConstraintShape(partition, propertyAssignments);
+				case 17: return new RoleNameShape(partition, propertyAssignments);
+				case 18: return new ModelNoteShape(partition, propertyAssignments);
+				case 19: return new CardinalityConstraintShape(partition, propertyAssignments);
+				case 20: return new LinkConnectorShape(partition, propertyAssignments);
+				case 21: return new FactTypeLinkConnectorShape(partition, propertyAssignments);
 				default: return null;
 			}
 		}
@@ -551,33 +562,156 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 {
 	/// <summary>
-	/// DomainEnumeration: DisplayRoleNames
-	/// Determines whether RoleNameShapes will be drawn for the Roles in the FactType
-	/// represented by the FactTypeShape using this enumeration, overriding the global
-	/// setting.
+	/// DomainEnumeration: RoleNameDisplay
+	/// Provide default options for showing and hiding role names on fact types.
 	/// </summary>
-	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<DisplayRoleNames, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram>))]
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<RoleNameDisplay, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram>))]
 	[global::System.CLSCompliant(true)]
-	public enum DisplayRoleNames
+	public enum RoleNameDisplay
 	{
-		/// <summary>
-		/// UserDefault
-		/// Use the global setting.
-		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/UserDefault.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
-		UserDefault = 0,
 		/// <summary>
 		/// On
 		/// Always draw the RoleNameShapes.
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/On.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
-		On = 1,
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameDisplay/On.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		On = 0,
 		/// <summary>
 		/// Off
 		/// Never draw the RoleNameShapes.
 		/// </summary>
-		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.DisplayRoleNames/Off.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
-		Off = 2,
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RoleNameDisplay/Off.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Off = 1,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
+	/// DomainEnumeration: CustomRoleNameDisplay
+	/// Determines whether role name shapes will be drawn for the Roles in the FactType
+	/// represented by the FactTypeShape using this enumeration. Also used on the
+	/// diagram to provide a default, which can override the global display option.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(Design.CustomRoleNameDisplayTypeConverter))]
+	[global::System.CLSCompliant(true)]
+	public enum CustomRoleNameDisplay
+	{
+		/// <summary>
+		/// Default
+		/// Use the context default setting.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay/Default.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Default = -1,
+		/// <summary>
+		/// On
+		/// Always draw the RoleNameShapes.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay/On.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		On = 0,
+		/// <summary>
+		/// Off
+		/// Never draw the RoleNameShapes.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomRoleNameDisplay/Off.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Off = 1,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
+	/// DomainEnumeration: CustomReadingDirectionIndicatorDisplay
+	/// Determines when a direction indicator is drawn for reading shapes by the
+	/// FactTypeShape using this enumeration. Also used on the diagram to provide a
+	/// default, which can override the global display option.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(Design.CustomReadingDirectionIndicatorDisplayTypeConverter))]
+	[global::System.CLSCompliant(true)]
+	public enum CustomReadingDirectionIndicatorDisplay
+	{
+		/// <summary>
+		/// Default
+		/// Use the context default setting.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Default.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Default = -1,
+		/// <summary>
+		/// Reversed
+		/// Display indicator for reverse readings only.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Reversed.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Reversed = 0,
+		/// <summary>
+		/// Rotated
+		/// Display indicator if the fact type is rotated, even if the reading order is
+		/// top-down.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Rotated.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Rotated = 2,
+		/// <summary>
+		/// Always
+		/// Always display a reading direction indicator.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomReadingDirectionIndicatorDisplay/Always.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Always = 3,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
+	/// DomainEnumeration: BinaryFactTypeReadingDisplay
+	/// Provide default options for showing and hiding reverse readings on binary fact
+	/// types.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<BinaryFactTypeReadingDisplay, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram>))]
+	[global::System.CLSCompliant(true)]
+	public enum BinaryFactTypeReadingDisplay
+	{
+		/// <summary>
+		/// ShowReverseReading
+		/// The reverse reading (if available) is shown with the forward reading for a
+		/// binary fact type.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.BinaryFactTypeReadingDisplay/ShowReverseReading.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		ShowReverseReading = 0,
+		/// <summary>
+		/// OnlyOneReading
+		/// Only one reading is shown for a binary fact type.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.BinaryFactTypeReadingDisplay/OnlyOneReading.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		OnlyOneReading = 1,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
+	/// DomainEnumeration: CustomBinaryFactTypeReadingDisplay
+	/// Determines whether the reading on a fact type shape for a binary fact type will
+	/// display both the forward and reverse readings (when availalbe). Also used on the
+	/// diagram to provide a default, which can override the global display option.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(Design.CustomBinaryFactTypeReadingDisplayTypeConverter))]
+	[global::System.CLSCompliant(true)]
+	public enum CustomBinaryFactTypeReadingDisplay
+	{
+		/// <summary>
+		/// Default
+		/// Use the context setting, either the global state for a diagram or the diagram
+		/// for a shape.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay/Default.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Default = -1,
+		/// <summary>
+		/// ShowReverseReading
+		/// The reverse reading (if available) is shown with the forward reading for a
+		/// binary fact type.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay/ShowReverseReading.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		ShowReverseReading = 0,
+		/// <summary>
+		/// OnlyOneReading
+		/// Only one reading is shown for a binary fact type.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.CustomBinaryFactTypeReadingDisplay/OnlyOneReading.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		OnlyOneReading = 1,
 	}
 }
 namespace ORMSolutions.ORMArchitect.Core.ShapeModel

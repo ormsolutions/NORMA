@@ -122,6 +122,17 @@
 		<DomainClass Name="GenerationState" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CD0749E6-DDB0-4890-A559-EB70D3F698E0" DisplayName="GenerationState" Description=""/>
 		<DomainClass Name="GenerationSetting" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="B707A1D2-87D1-43EA-93B0-92ED9308A0A5" InheritanceModifier="Abstract" DisplayName="GenerationSetting" Description=""/>
 
+		<DomainClass Name="DisplayState" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="A7286C4F-4BD8-4513-B91D-9B6DAE31DF11" DisplayName="DisplayState" Description="Container for display options global to this file."/>
+		<DomainClass Name="DisplaySetting" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C3509E1F-7A42-4CDE-A168-BA782E808D7E" InheritanceModifier="Abstract" DisplayName="DisplaySetting" Description="Base setting object for an individual model's global display options.">
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeDescriptionProvider">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.ElementTypeDescriptionProvider&lt;DisplaySetting, global::ORMSolutions.ORMArchitect.Framework.Design.BlockRelationshipPropertiesElementTypeDescriptor&lt;DisplaySetting&gt;&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainClass>
+
 		<DomainClass Name="ModelErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>
 		<DomainClass Name="ModelErrorDisplayFilter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="67CDCE7B-3D28-4A92-B9EB-00418152A13F" DisplayName="ModelErrorDisplayFilter" InheritanceModifier="Sealed" Description="">
 			<Properties>
@@ -2991,6 +3002,40 @@
 				<DomainRole Name="GenerationSetting" PropertyName="GenerationState" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="GenerationSetting" Id="AFE2FC08-6B47-40E6-9CC3-B943900A95B2">
 					<RolePlayer>
 						<DomainClassMoniker Name="GenerationSetting"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="DisplayStateRelatesToORMModel" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="8BE24A17-B60E-4537-9E5D-32F56F1DE2FA">
+			<Source>
+				<DomainRole Name="DisplayState" PropertyName="Model" Multiplicity="ZeroOne" PropagatesDelete="true" IsPropertyGenerator="true" DisplayName="DisplayState" Id="C7A4C8DD-6F72-496B-A898-F671C542464C">
+					<RolePlayer>
+						<DomainClassMoniker Name="DisplayState"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="Model" PropertyName="DisplayState" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="false" DisplayName="Model" Id="000D760F-02C4-4474-9863-54B76D7775AA">
+					<RolePlayer>
+						<DomainClassMoniker Name="ORMModel"/>
+					</RolePlayer>
+				</DomainRole>
+			</Target>
+		</DomainRelationship>
+
+		<DomainRelationship Name="DisplayStateHasDisplaySetting" IsEmbedding="true"  Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="CECF2C73-CFBE-4CFB-850E-0BCE3712388C">
+			<Source>
+				<DomainRole Name="DisplayState" PropertyName="DisplaySettings" Multiplicity="ZeroMany" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DisplayState" Id="C705A069-1CEE-4D4E-A4C9-F09CC3B9AE21">
+					<RolePlayer>
+						<DomainClassMoniker Name="DisplayState"/>
+					</RolePlayer>
+				</DomainRole>
+			</Source>
+			<Target>
+				<DomainRole Name="DisplaySetting" PropertyName="DisplayState" Multiplicity="ZeroOne" PropagatesDelete="false" IsPropertyGenerator="true" DisplayName="DisplaySetting" Id="1FC61742-D4CB-454D-8238-9B27CA9A65AB">
+					<RolePlayer>
+						<DomainClassMoniker Name="DisplaySetting"/>
 					</RolePlayer>
 				</DomainRole>
 			</Target>

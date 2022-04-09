@@ -233,6 +233,10 @@ namespace ORMSolutions.ORMArchitect.Core
 		/// </summary>
 		public const string OptionsPageCategoryAppearanceId = "OptionsPage.Category.Appearance";
 		/// <summary>
+		/// Category name for options page (Appearance (New File Defaults))
+		/// </summary>
+		public const string OptionsPageCategoryNewFileAppearanceDefaultsId = "OptionsPage.Category.NewFileAppearanceDefaults";
+		/// <summary>
 		/// Category name for options page (data type)
 		/// </summary>
 		public const string OptionsPageCategoryDataTypesId = "OptionsPage.Category.DataTypes";
@@ -352,6 +356,14 @@ namespace ORMSolutions.ORMArchitect.Core
 		/// Display Name of the Role Name Display option
 		/// </summary>
 		public const string OptionsPagePropertyRoleNameDisplayDisplayNameId = "OptionsPage.Property.RoleNameDisplay.DisplayName";
+		/// <summary>
+		/// Description of the Reverse Reading Display option
+		/// </summary>
+		public const string OptionsPagePropertyReverseReadingDisplayDescriptionId = "OptionsPage.Property.ReverseReadingDisplay.Description";
+		/// <summary>
+		/// Display Name of the Reverse Reading Display option
+		/// </summary>
+		public const string OptionsPagePropertyReverseReadingDisplayDisplayNameId = "OptionsPage.Property.ReverseReadingDisplay.DisplayName";
 		/// <summary>
 		/// Description of the Role Name Display option
 		/// </summary>

@@ -155,6 +155,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				classNameMap.Add("RoleNameShape", RoleNameShape.DomainClassId);
 				classNameMap.Add("FactTypeShape", FactTypeShape.DomainClassId);
 				classNameMap.Add("FactTypeShapeHasRoleDisplayOrder", FactTypeShapeHasRoleDisplayOrder.DomainClassId);
+				classNameMap.Add("ORMDiagramDisplayOptions", ORMDiagramDisplayOptions.DomainClassId);
 				ORMShapeDomainModel.myClassNameMap = classNameMap;
 			}
 			if (validNamespaces.Contains(xmlNamespace) && classNameMap.ContainsKey(elementName))
@@ -227,10 +228,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
-			if (domainPropertyInfo.Id == ORMDiagram.AutoPopulateShapesDomainPropertyId)
-			{
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
-			}
 			if (domainPropertyInfo.Id == ORMDiagram.DoLineRoutingDomainPropertyId)
 			{
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
@@ -250,6 +247,30 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (domainPropertyInfo.Id == ORMDiagram.PlaceUnplacedShapesDomainPropertyId)
 			{
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == ORMDiagram.DisplayRoleNamesDomainPropertyId)
+			{
+				if (this.DisplayRoleNames == CustomRoleNameDisplay.Default)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ORMDiagram.DisplayReverseReadingsDomainPropertyId)
+			{
+				if (this.DisplayReverseReadings == CustomBinaryFactTypeReadingDisplay.Default)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ORMDiagram.DisplayReadingDirectionDomainPropertyId)
+			{
+				if (this.DisplayReadingDirection == CustomReadingDirectionIndicatorDisplay.Default)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			return CustomSerializedPropertyInfo.Default;
 		}
@@ -349,10 +370,27 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
 		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
 		protected Guid MapAttribute(string xmlNamespace, string attributeName)
 		{
-			return default(Guid);
+			Dictionary<string, Guid> customSerializedAttributes = ORMDiagram.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("DisplayRoleNames", ORMDiagram.DisplayRoleNamesDomainPropertyId);
+				customSerializedAttributes.Add("DisplayReverseReadings", ORMDiagram.DisplayReverseReadingsDomainPropertyId);
+				customSerializedAttributes.Add("DisplayReadingDirection", ORMDiagram.DisplayReadingDirectionDomainPropertyId);
+				ORMDiagram.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
 		}
 		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
 		{
@@ -906,7 +944,31 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		{
 			if (domainPropertyInfo.Id == FactTypeShape.DisplayRoleNamesDomainPropertyId)
 			{
-				if (this.DisplayRoleNames == DisplayRoleNames.UserDefault)
+				if (this.DisplayRoleNames == CustomRoleNameDisplay.Default)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == FactTypeShape.DisplayReverseReadingDomainPropertyId)
+			{
+				ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factType;
+				IList<ORMSolutions.ORMArchitect.Core.ObjectModel.RoleBase> roles;
+				bool skipReverseReading = this.DisplayReverseReading == CustomBinaryFactTypeReadingDisplay.Default;
+				if (!skipReverseReading && (null == (factType = this.AssociatedFactType) || 2 != (roles = factType.RoleCollection).Count || ORMSolutions.ORMArchitect.Core.ObjectModel.FactType.GetUnaryRoleIndex(roles).HasValue))
+				{
+					skipReverseReading = true;
+				}
+				if (skipReverseReading)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == FactTypeShape.DisplayReadingDirectionDomainPropertyId)
+			{
+				ORMSolutions.ORMArchitect.Core.ObjectModel.FactType factType;
+				if (this.DisplayReadingDirection == CustomReadingDirectionIndicatorDisplay.Default || (factType = this.AssociatedFactType) != null && factType.UnaryRole != null)
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
@@ -1088,6 +1150,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				customSerializedAttributes = new Dictionary<string, Guid>();
 				customSerializedAttributes.Add("DisplayRoleNames", FactTypeShape.DisplayRoleNamesDomainPropertyId);
+				customSerializedAttributes.Add("DisplayReverseReading", FactTypeShape.DisplayReverseReadingDomainPropertyId);
+				customSerializedAttributes.Add("DisplayReadingDirection", FactTypeShape.DisplayReadingDirectionDomainPropertyId);
 				customSerializedAttributes.Add("DisplayOrientation", FactTypeShape.DisplayOrientationDomainPropertyId);
 				customSerializedAttributes.Add("ConstraintDisplayPosition", FactTypeShape.ConstraintDisplayPositionDomainPropertyId);
 				customSerializedAttributes.Add("DisplayRelatedTypes", FactTypeShape.DisplayRelatedTypesDomainPropertyId);
@@ -1217,4 +1281,149 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 	}
 	#endregion // FactTypeShapeHasRoleDisplayOrder serialization
+	#region ORMDiagramDisplayOptions serialization
+	partial class ORMDiagramDisplayOptions : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		protected CustomSerializedElementSupportedOperations SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return CustomSerializedElementSupportedOperations.PropertyInfo;
+			}
+		}
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return this.SupportedCustomSerializedOperations;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		protected CustomSerializedContainerElementInfo[] GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			return this.GetCustomSerializedChildElementInfo();
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		protected CustomSerializedElementInfo CustomSerializedElementInfo
+		{
+			get
+			{
+				throw new NotSupportedException();
+			}
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return this.CustomSerializedElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == ORMDiagramDisplayOptions.DisplayRoleNamesDomainPropertyId)
+			{
+				if (this.DisplayRoleNames == RoleNameDisplay.On)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ORMDiagramDisplayOptions.DisplayReverseReadingsDomainPropertyId)
+			{
+				if (this.DisplayReverseReadings == BinaryFactTypeReadingDisplay.ShowReverseReading)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (domainPropertyInfo.Id == ORMDiagramDisplayOptions.DisplayReadingDirectionDomainPropertyId)
+			{
+				if (this.DisplayReadingDirection == ReadingDirectionIndicatorDisplay.Reversed)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		protected CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			throw new NotSupportedException();
+		}
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			return this.GetCustomSerializedLinkInfo(rolePlayedInfo, elementLink);
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		protected IComparer<DomainRoleInfo> CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return this.CustomSerializedChildRoleComparer;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		protected CustomSerializedElementMatch MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return default(CustomSerializedElementMatch);
+		}
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
+		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = ORMDiagramDisplayOptions.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("DisplayRoleNames", ORMDiagramDisplayOptions.DisplayRoleNamesDomainPropertyId);
+				customSerializedAttributes.Add("DisplayReverseReadings", ORMDiagramDisplayOptions.DisplayReverseReadingsDomainPropertyId);
+				customSerializedAttributes.Add("DisplayReadingDirection", ORMDiagramDisplayOptions.DisplayReadingDirectionDomainPropertyId);
+				ORMDiagramDisplayOptions.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			customSerializedAttributes.TryGetValue(key, out rVal);
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected bool ShouldSerialize()
+		{
+			return this.DisplayReverseReadings != BinaryFactTypeReadingDisplay.ShowReverseReading || this.DisplayRoleNames != RoleNameDisplay.On || this.DisplayReadingDirection != ReadingDirectionIndicatorDisplay.Reversed;
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
+	}
+	#endregion // ORMDiagramDisplayOptions serialization
 }

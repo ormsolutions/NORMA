@@ -54,12 +54,47 @@
 			</plx:return>
 		</se:ConditionalSerialization>
 		<se:Attribute ID="DiagramId" WriteStyle="NotWritten"/>
-		<se:Attribute ID="AutoPopulateShapes" WriteStyle="NotWritten"/>
 		<se:Attribute ID="DoLineRouting" WriteStyle="NotWritten"/>
 		<se:Attribute ID="DoResizeParent" WriteStyle="NotWritten"/>
 		<se:Attribute ID="DoShapeAnchoring" WriteStyle="NotWritten"/>
 		<se:Attribute ID="DoViewFixup" WriteStyle="NotWritten"/>
 		<se:Attribute ID="PlaceUnplacedShapes" WriteStyle="NotWritten"/>
+		<se:Attribute ID="DisplayRoleNames" WriteStyle="Attribute" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DisplayRoleNames" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="CustomRoleNameDisplay" name="Default" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DisplayReverseReadings" WriteStyle="Attribute" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DisplayReverseReadings" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="CustomBinaryFactTypeReadingDisplay" name="Default" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DisplayReadingDirection" WriteStyle="Attribute" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DisplayReadingDirection" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic dataTypeName="CustomReadingDirectionIndicatorDisplay" name="Default" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="Shapes">
 			<se:Embed RelationshipName="ParentShapeContainsNestedChildShapes" RoleName="NestedChildShapes"/>
 		</se:Container>
@@ -166,7 +201,167 @@
 						<plx:callThis name="DisplayRoleNames" type="property"/>
 					</plx:left>
 					<plx:right>
-						<plx:callStatic dataTypeName="DisplayRoleNames" name="UserDefault" type="field"/>
+						<plx:callStatic dataTypeName="CustomRoleNameDisplay" name="Default" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DisplayReverseReading" WriteStyle="Attribute" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:local name="factType" dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:local name="roles" dataTypeName="IList">
+					<plx:passTypeParam dataTypeName="RoleBase" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				</plx:local>
+				<plx:local name="skipReverseReading" dataTypeName=".boolean">
+					<plx:initialize>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="DisplayReverseReading" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName="CustomBinaryFactTypeReadingDisplay" name="Default" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:initialize>
+				</plx:local>
+				<plx:branch>
+					<plx:condition>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:unaryOperator type="booleanNot">
+									<plx:nameRef name="skipReverseReading"/>
+								</plx:unaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="booleanOr">
+									<plx:left>
+										<plx:binaryOperator type="identityEquality">
+											<plx:left>
+												<plx:nullKeyword/>
+											</plx:left>
+											<plx:right>
+												<plx:inlineStatement dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+													<plx:assign>
+														<plx:left>
+															<plx:nameRef name="factType"/>
+														</plx:left>
+														<plx:right>
+															<plx:callThis name="AssociatedFactType" type="property"/>
+														</plx:right>
+													</plx:assign>
+												</plx:inlineStatement>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:left>
+									<plx:right>
+										<plx:binaryOperator type="booleanOr">
+											<plx:left>
+												<plx:binaryOperator type="inequality">
+													<plx:left>
+														<plx:value data="2" type="i4"/>
+													</plx:left>
+													<plx:right>
+														<plx:callInstance name="Count" type="property">
+															<plx:callObject>
+																<plx:inlineStatement dataTypeName="IList">
+																	<plx:parametrizedDataTypeQualifier dataTypeName="RoleBase" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+																	<plx:assign>
+																		<plx:left>
+																			<plx:nameRef name="roles"/>
+																		</plx:left>
+																		<plx:right>
+																			<plx:callInstance name="RoleCollection" type="property">
+																				<plx:callObject>
+																					<plx:nameRef name="factType"/>
+																				</plx:callObject>
+																			</plx:callInstance>
+																		</plx:right>
+																	</plx:assign>
+																</plx:inlineStatement>
+															</plx:callObject>
+														</plx:callInstance>
+													</plx:right>
+												</plx:binaryOperator>
+											</plx:left>
+											<plx:right>
+												<plx:callInstance name="HasValue" type="property">
+													<plx:callObject>
+														<plx:callStatic name="GetUnaryRoleIndex" dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+															<plx:passParam>
+																<plx:nameRef name="roles"/>
+															</plx:passParam>
+														</plx:callStatic>
+													</plx:callObject>
+												</plx:callInstance>
+											</plx:right>
+										</plx:binaryOperator>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:condition>
+					<plx:assign>
+						<plx:left>
+							<plx:nameRef name="skipReverseReading"/>
+						</plx:left>
+						<plx:right>
+							<plx:trueKeyword/>
+						</plx:right>
+					</plx:assign>
+				</plx:branch>
+				<plx:nameRef name="skipReverseReading"/>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DisplayReadingDirection" WriteStyle="Attribute" WriteCustomStorage="true">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:local name="factType" dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="equality">
+							<plx:left>
+								<plx:callThis name="DisplayReadingDirection" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic dataTypeName="CustomReadingDirectionIndicatorDisplay" name="Default" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="booleanAnd">
+							<plx:left>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:inlineStatement dataTypeName="FactType" dataTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel">
+											<plx:assign>
+												<plx:left>
+													<plx:nameRef name="factType"/>
+												</plx:left>
+												<plx:right>
+													<plx:callThis name="AssociatedFactType" type="property"/>
+												</plx:right>
+											</plx:assign>
+										</plx:inlineStatement>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="identityInequality">
+									<plx:left>
+										<plx:callInstance name="UnaryRole" type="property">
+											<plx:callObject>
+												<plx:nameRef name="factType"/>
+											</plx:callObject>
+										</plx:callInstance>
+									</plx:left>
+									<plx:right>
+										<plx:nullKeyword/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
 					</plx:right>
 				</plx:binaryOperator>
 			</se:Condition>
@@ -487,5 +682,83 @@
 				</plx:binaryOperator>
 			</plx:return>
 		</se:ConditionalSerialization>
+	</se:Element>
+	<se:Element Class="ORMDiagramDisplayOptions">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:binaryOperator type="booleanOr">
+					<plx:left>
+						<plx:binaryOperator type="booleanOr">
+							<plx:left>
+								<plx:binaryOperator type="inequality">
+									<plx:left>
+										<plx:callThis name="DisplayReverseReadings" type="property"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="ShowReverseReading" dataTypeName="BinaryFactTypeReadingDisplay" type="field"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:left>
+							<plx:right>
+								<plx:binaryOperator type="inequality">
+									<plx:left>
+										<plx:callThis name="DisplayRoleNames" type="property"/>
+									</plx:left>
+									<plx:right>
+										<plx:callStatic name="On" dataTypeName="RoleNameDisplay" type="field"/>
+									</plx:right>
+								</plx:binaryOperator>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:left>
+					<plx:right>
+						<plx:binaryOperator type="inequality">
+							<plx:left>
+								<plx:callThis name="DisplayReadingDirection" type="property"/>
+							</plx:left>
+							<plx:right>
+								<plx:callStatic name="Reversed" dataTypeName="ReadingDirectionIndicatorDisplay" type="field"/>
+							</plx:right>
+						</plx:binaryOperator>
+					</plx:right>
+				</plx:binaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
+		<se:Attribute ID="DisplayRoleNames">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DisplayRoleNames" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="On" dataTypeName="RoleNameDisplay" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DisplayReverseReadings">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DisplayReverseReadings" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="ShowReverseReading" dataTypeName="BinaryFactTypeReadingDisplay" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="DisplayReadingDirection">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callThis name="DisplayReadingDirection" type="property"/>
+					</plx:left>
+					<plx:right>
+						<plx:callStatic name="Reversed" dataTypeName="ReadingDirectionIndicatorDisplay" type="field"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 	</se:Element>
 </se:CustomSerializedElements>
