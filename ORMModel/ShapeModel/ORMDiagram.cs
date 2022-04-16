@@ -443,7 +443,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				bool crossStoreCopy;
 				if ((crossStoreCopy = store != sourceStore) &&
 					(null == (closureManager = ((IFrameworkServices)sourceStore).CopyClosureManager) ||
-					null == (copyClosure = closureManager.GetCopyClosure(closureElements, crossStoreCopy ? store : null))))
+					null == (copyClosure = closureManager.GetCopyClosure(closureElements, store))))
 				{
 					return false;
 				}

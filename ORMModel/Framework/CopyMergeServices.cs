@@ -1353,6 +1353,11 @@ namespace ORMSolutions.ORMArchitect.Framework
 			/// The element is a newly created element
 			/// </summary>
 			New,
+			/// <summary>
+			/// The copied element exists as a link with the wrong ultimate supertype.
+			/// The conflict needs to be resolve before the base link is created.
+			/// </summary>
+			BaseConflict,
 		}
 		#endregion // CopiedElementType enum
 		#region CopiedElement struct
@@ -1624,7 +1629,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 									}
 									else
 									{
-										PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(basedOnElement, null);
+										PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(basedOnElement, null, null);
 										// Note that we use the domain class id, not the domain class itself because the instance
 										// is different in different stores.
 										ModelElement newElement = propertyAssignments != null ?
@@ -1651,9 +1656,11 @@ namespace ORMSolutions.ORMArchitect.Framework
 						switch (closureElement.Action)
 						{
 							case CopyMergeAction.Link:
-								if (!resolvedElements.ContainsKey(pair.Key))
+								CopiedElement resolvedElement;
+								bool wrongLinkType = false;
+								if (!resolvedElements.TryGetValue(pair.Key, out resolvedElement) || (wrongLinkType = resolvedElement.CopyType == CopiedElementType.BaseConflict))
 								{
-									CreateLinkCopy((IClosureElementLink)pair.Value, targetDataDirectory, targetElementFactory, copyClosure, resolvedElements, ref missingExtensions, ref requiresOrdering);
+									CreateLinkCopy((IClosureElementLink)pair.Value, wrongLinkType ? (ElementLink)resolvedElement.Element : null, targetDataDirectory, targetElementFactory, copyClosure, resolvedElements, ref missingExtensions, ref requiresOrdering);
 								}
 								break;
 						}
@@ -1764,7 +1771,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 							// as long as we don't expect all resolved elements to be in the copy closure.
 							if (!copyElement.IsDeleted && copyClosure.TryGetValue(pair.Key, out closureElement))
 							{
-								PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(closureElement.Element, copyElement);
+								PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(closureElement.Element, copyElement, null);
 								if (propertyAssignments != null)
 								{
 									// Update the element with new property assignments
@@ -1867,21 +1874,40 @@ namespace ORMSolutions.ORMArchitect.Framework
 				(missingExtensions ?? (missingExtensions = new Dictionary<Guid, object>()))[relationshipInfo.DomainModel.Id] = null;
 				return null;
 			}
-			ReadOnlyCollection<DomainRoleInfo> domainRoles = resolvedRelationshipInfo.DomainRoles;
-			int getLinksFromRoleIndex = (domainRoles[0].IsOne || !domainRoles[1].IsOne) ? 0 : 1;
-			DomainRoleInfo fromRoleInfo = domainRoles[getLinksFromRoleIndex];
-			DomainRoleInfo toRoleInfo = domainRoles[1 - getLinksFromRoleIndex];
-			bool fromSource = fromRoleInfo.IsSource;
-			// Note that GetElementLinksToElement works only for source roles. It
-			// also creates an extra collection that is not needed for non-duplicate
-			// relationships. This is optimized to pull the role with the smallest
-			// collection if possible.
-			foreach (ElementLink link in fromRoleInfo.GetElementLinks(fromSource ? resolvedSourceElement : resolvedTargetElement))
+
+			bool baseLinkType = false;
+			while (resolvedRelationshipInfo != null)
 			{
-				if (toRoleInfo.GetRolePlayer(link) == (fromSource ? resolvedTargetElement : resolvedSourceElement))
+				ReadOnlyCollection<DomainRoleInfo> domainRoles = resolvedRelationshipInfo.DomainRoles;
+				int getLinksFromRoleIndex = (domainRoles[0].IsOne || !domainRoles[1].IsOne) ? 0 : 1;
+				DomainRoleInfo fromRoleInfo = domainRoles[getLinksFromRoleIndex];
+				DomainRoleInfo toRoleInfo = domainRoles[1 - getLinksFromRoleIndex];
+				bool fromSource = fromRoleInfo.IsSource;
+				// Note that GetElementLinksToElement works only for source roles. It
+				// also creates an extra collection that is not needed for non-duplicate
+				// relationships. This is optimized to pull the role with the smallest
+				// collection if possible.
+				foreach (ElementLink link in fromRoleInfo.GetElementLinks(fromSource ? resolvedSourceElement : resolvedTargetElement))
 				{
-					resolvedElements[closureElement.Id] = new CopiedElement(link, CopiedElementType.Existing);
-					return link; // There will only be one match because AllowDuplicates is false
+					if (toRoleInfo.GetRolePlayer(link) == (fromSource ? resolvedTargetElement : resolvedSourceElement))
+					{
+						resolvedElements[closureElement.Id] = new CopiedElement(link, baseLinkType ? CopiedElementType.BaseConflict : CopiedElementType.Existing);
+						return link; // There will only be one match because AllowDuplicates is false
+					}
+				}
+				if (null != (fromRoleInfo = fromRoleInfo.BaseDomainRole))
+				{
+					// These roles are already from the target store, no need to resolve further
+					baseLinkType = true;
+					resolvedRelationshipInfo = fromRoleInfo.DomainRelationship;
+					if (resolvedRelationshipInfo.AllowsDuplicates)
+					{
+						break;
+					}
+				}
+				else
+				{
+					break;
 				}
 			}
 			return null;
@@ -1898,12 +1924,14 @@ namespace ORMSolutions.ORMArchitect.Framework
 			Guid id = element.Id;
 			if (resolvedElements.TryGetValue(id, out resolvedElementCopy))
 			{
-				if (resolvedElementCopy.CopyType != CopiedElementType.Existing)
+				switch (resolvedElementCopy.CopyType)
 				{
-					// The endpoint is not existing node, cannot create the link
-					return null;
+					case CopiedElementType.Existing:
+					case CopiedElementType.BaseConflict:
+						retVal = resolvedElementCopy.Element;
+						break;
+					// Otherwise the endpoint is not an existing node, cannot create the link, use null return.
 				}
-				retVal = resolvedElementCopy.Element;
 			}
 			else if (null != (linkRolePlayer = element as ElementLink))
 			{
@@ -1914,8 +1942,82 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// <summary>
 		/// Helper method for <see cref="IntegrateCopyClosure"/>. Create a link based on an existing link.
 		/// </summary>
-		private bool CreateLinkCopy(IClosureElementLink closureLink, DomainDataDirectory targetDataDirectory, ElementFactory targetElementFactory, IDictionary<Guid, IClosureElement> copyClosure, IDictionary<Guid, CopiedElement> resolvedElements, ref Dictionary<Guid, object> missingExtensions, ref Dictionary<RoleAndElement, ModelElement> requiresOrdering)
+		private bool CreateLinkCopy(IClosureElementLink closureLink, ElementLink replaceLink, DomainDataDirectory targetDataDirectory, ElementFactory targetElementFactory, IDictionary<Guid, IClosureElement> copyClosure, IDictionary<Guid, CopiedElement> resolvedElements, ref Dictionary<Guid, object> missingExtensions, ref Dictionary<RoleAndElement, ModelElement> requiresOrdering)
 		{
+			ModelElement basedOnElement = closureLink.Element;
+			DomainRelationshipInfo sourceRelationshipInfo = (DomainRelationshipInfo)basedOnElement.GetDomainClass();
+			DomainRelationshipInfo targetRelationshipInfo = targetDataDirectory.FindDomainRelationship(sourceRelationshipInfo.Id);
+			if (targetRelationshipInfo == null)
+			{
+				(missingExtensions ?? (missingExtensions = new Dictionary<Guid, object>()))[sourceRelationshipInfo.DomainModel.Id] = null;
+				return false;
+			}
+
+			List<PropertyAssignment> replacedBaseProperties = null;
+			List<Action<ModelElement>> attachReplacedLinks = null;
+			Stack<ModelElement> tempInstances = null;
+			if (replaceLink != null && !replaceLink.IsDeleted)
+			{
+				// We have a matching link on a non-duplicate base relationship, which means creating a
+				// new link will throw. While we cannot preserve data attached to the link above the shared
+				// base class we can recreate properties and links at or below the shared base relationship,
+				// so cache this information before deleting the link. Note that this data may come from either
+				// the starting model or the merged model.
+
+				DomainRelationshipInfo replacedLinkInfo = replaceLink.GetDomainRelationship();
+				DomainRelationshipInfo baseRelationshipInfo = replacedLinkInfo;
+				while (baseRelationshipInfo != null)
+				{
+					// Note that IsDerivedFrom matches itself
+					if (targetRelationshipInfo.IsDerivedFrom(baseRelationshipInfo)) // Should always miss on first pass, defensive
+					{
+						break;
+					}
+					baseRelationshipInfo = baseRelationshipInfo.BaseDomainRelationship;
+				}
+
+				if (targetRelationshipInfo != baseRelationshipInfo) // Sanity check
+				{
+					if (baseRelationshipInfo != null)
+					{
+						// Get all properties and relationships from this instance for when we recreate.
+						// Note that these are all from the target model, so there is no filtering going
+						// based on the closure specification. We're just moving existing data to a new link instance.
+						foreach (DomainPropertyInfo copyProp in baseRelationshipInfo.AllDomainProperties)
+						{
+							object newValue = copyProp.GetValue(replaceLink);
+							if (newValue != null)
+							{
+								(replacedBaseProperties ?? (replacedBaseProperties = new List<PropertyAssignment>())).Add(new PropertyAssignment(copyProp.Id, newValue));
+							}
+						}
+
+						// If this replaced link plays other roles then create a temporary link instance so we can SetRolePlayer
+						// to keep the link (and downstream links to it) alive. Roles that are on the more refined types will automatically
+						// be deleted with the replaced link.
+						ModelElement tempInstance = null;
+						foreach (DomainRoleInfo attachedRole in baseRelationshipInfo.AllDomainRolesPlayed)
+						{
+							foreach (ElementLink existingLink in attachedRole.GetElementLinks(replaceLink))
+							{
+								if (tempInstance == null)
+								{
+									attachReplacedLinks = new List<Action<ModelElement>>();
+									tempInstances = new Stack<ModelElement>();
+									// Use the full link info, not the base, so we don't need to check for an abstract base. We know
+									// the replaced link type can be created because we found an instance of it.
+									tempInstance = CreateTempInstance(replaceLink.Partition, tempInstances, replacedLinkInfo);
+								}
+
+								Action<ModelElement> setter = SetRolePlayerAction(existingLink, attachedRole);
+								attachReplacedLinks.Add(setter);
+								setter(tempInstance);
+							}
+						}
+					}
+				}
+			}
+
 			// Resolve the role players, with recursive handling for role players
 			// that are themselves element links.
 			ModelElement sourceElement = closureLink.SourceRolePlayer;
@@ -1925,28 +2027,34 @@ namespace ORMSolutions.ORMArchitect.Framework
 			ElementLink linkRolePlayer;
 			IClosureElement rolePlayerClosure;
 			Guid elementId;
-			if ((!resolvedElements.TryGetValue(elementId = sourceElement.Id, out newSourceCopy) &&
+			bool wrongSourceLinkType = false;
+			bool wrongTargetLinkType = false;
+			if (((!resolvedElements.TryGetValue(elementId = sourceElement.Id, out newSourceCopy) || (wrongSourceLinkType = newSourceCopy.CopyType == CopiedElementType.BaseConflict)) &&
 					(null == (linkRolePlayer = sourceElement as ElementLink) ||
 					!(copyClosure.TryGetValue(elementId, out rolePlayerClosure) &&
-					CreateLinkCopy((IClosureElementLink)rolePlayerClosure, targetDataDirectory, targetElementFactory, copyClosure, resolvedElements, ref missingExtensions, ref requiresOrdering) &&
+					CreateLinkCopy((IClosureElementLink)rolePlayerClosure, wrongSourceLinkType ? (ElementLink)newSourceCopy.Element : null, targetDataDirectory, targetElementFactory, copyClosure, resolvedElements, ref missingExtensions, ref requiresOrdering) &&
 					resolvedElements.TryGetValue(elementId, out newSourceCopy)))) ||
-				(!resolvedElements.TryGetValue(elementId = targetElement.Id, out newTargetCopy) &&
+				((!resolvedElements.TryGetValue(elementId = targetElement.Id, out newTargetCopy) || (wrongTargetLinkType = newTargetCopy.CopyType == CopiedElementType.BaseConflict)) &&
 					(null == (linkRolePlayer = targetElement as ElementLink) ||
 					!(copyClosure.TryGetValue(elementId, out rolePlayerClosure) &&
-					CreateLinkCopy((IClosureElementLink)rolePlayerClosure, targetDataDirectory, targetElementFactory, copyClosure, resolvedElements, ref missingExtensions, ref requiresOrdering) &&
+					CreateLinkCopy((IClosureElementLink)rolePlayerClosure, wrongTargetLinkType ? (ElementLink)newTargetCopy.Element : null, targetDataDirectory, targetElementFactory, copyClosure, resolvedElements, ref missingExtensions, ref requiresOrdering) &&
 					resolvedElements.TryGetValue(elementId, out newTargetCopy)))))
 			{
+				// Restore anything temporary done in this function.
+				if (attachReplacedLinks != null)
+				{
+					FinalizeReplacedRoles(replaceLink, attachReplacedLinks, tempInstances);
+				}
 				return false;
 			}
 
-			ModelElement basedOnElement = closureLink.Element;
-			DomainRelationshipInfo sourceRelationshipInfo = (DomainRelationshipInfo)basedOnElement.GetDomainClass();
-			DomainRelationshipInfo targetRelationshipInfo = targetDataDirectory.FindDomainRelationship(sourceRelationshipInfo.Id);
-			if (targetRelationshipInfo == null)
+			if (replaceLink != null && !replaceLink.IsDeleted)
 			{
-				(missingExtensions ?? (missingExtensions = new Dictionary<Guid, object>()))[sourceRelationshipInfo.DomainModel.Id] = null;
-				return false;
+				// The item needs to be removed before it can be recreated. The resolveElements state is also
+				// out of date now, but will be updated below.
+				replaceLink.Delete();
 			}
+
 			ReadOnlyCollection<DomainRoleInfo> domainRoles = sourceRelationshipInfo.DomainRoles;
 			DomainRoleInfo sourceRoleInfo = domainRoles[0];
 			DomainRoleInfo targetRoleInfo;
@@ -2039,7 +2147,7 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 			else
 			{
-				PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(basedOnElement, copiedLink);
+				PropertyAssignment[] propertyAssignments = GetCopiedPropertyAssignments(basedOnElement, copiedLink, replacedBaseProperties);
 				copyType = CopiedElementType.New;
 				copiedLink = propertyAssignments != null ?
 					targetElementFactory.CreateElementLink(
@@ -2051,6 +2159,13 @@ namespace ORMSolutions.ORMArchitect.Framework
 						targetRelationshipInfo,
 						new RoleAssignment(sourceId, newSourceElement),
 						new RoleAssignment(targetId, newTargetElement));
+
+				// Reattached the new link to prior role players
+				if (attachReplacedLinks != null)
+				{
+					FinalizeReplacedRoles(copiedLink, attachReplacedLinks, tempInstances);
+				}
+
 				if (!InitializeNewElement(copiedLink, basedOnElement))
 				{
 					return false;
@@ -2064,6 +2179,92 @@ namespace ORMSolutions.ORMArchitect.Framework
 			}
 			resolvedElements[basedOnElement.Id] = new CopiedElement(copiedLink, copyType);
 			return true;
+		}
+		/// <summary>
+		/// Helper function for CreateLinkCopy
+		/// </summary>
+		/// <param name="partition">The partition to create the temporary element in</param>
+		/// <param name="tempInstances">A pre-initialized stack for pushing instance on. Elements should be popped and deleted when the instance is no longer needed.</param>
+		/// <param name="classInfo">The class information (possibly a DomainRelationshipInfo) for the instance to create.</param>
+		/// <returns>An instance of the specified type.</returns>
+		private static ModelElement CreateTempInstance(Partition partition, Stack<ModelElement> tempInstances, DomainClassInfo classInfo)
+		{
+			classInfo = AnyCreatableClass(classInfo);
+			ElementFactory factory = partition.ElementFactory;
+			DomainRelationshipInfo relInfo = classInfo as DomainRelationshipInfo;
+			ModelElement newElement;
+			if (relInfo != null)
+			{
+				ReadOnlyCollection<DomainRoleInfo> domainRoles = relInfo.DomainRoles;
+				DomainRoleInfo firstRole = domainRoles[0];
+				DomainRoleInfo secondRole = domainRoles[1];
+				newElement = factory.CreateElementLink(relInfo, new RoleAssignment(firstRole.Id, CreateTempInstance(partition, tempInstances, firstRole.RolePlayer)), new RoleAssignment(secondRole.Id, CreateTempInstance(partition, tempInstances, secondRole.RolePlayer)));
+			}
+			else
+			{
+				newElement = factory.CreateElement(classInfo);
+			}
+			tempInstances.Push(newElement);
+			return newElement;
+		}
+		private static DomainClassInfo AnyCreatableClass(DomainClassInfo classInfo)
+		{
+			Type implClass = classInfo.ImplementationClass;
+			if (implClass.IsAbstract || implClass == typeof(ModelElement)) // The class factory won't create a raw model element
+			{
+				classInfo = FindCreatableClass(classInfo.LocalDescendants) ?? FindCreatableClass(classInfo.AllDescendants); // Try the cheap search first
+			}
+			return classInfo;
+		}
+		private static DomainClassInfo FindCreatableClass(IList<DomainClassInfo> classInfos)
+		{
+			DomainClassInfo retVal = null;
+			int count = classInfos.Count;
+			if (count != 0)
+			{
+				for (int i = 0; i < count; ++i)
+				{
+					DomainClassInfo testInfo = classInfos[i];
+					if (!testInfo.ImplementationClass.IsAbstract)
+					{
+						retVal = testInfo;
+						break;
+					}
+				}
+			}
+			return retVal;
+		}
+		/// <summary>
+		/// Helper for CreateLinkCopy. Create a delegate to set a role player on a specific link.
+		/// </summary>
+		private static Action<ModelElement> SetRolePlayerAction(ElementLink link, DomainRoleInfo roleInfo)
+		{
+			return delegate (ModelElement rolePlayer)
+			{
+				if (!link.IsDeleted)
+				{
+					roleInfo.SetRolePlayer(link, rolePlayer);
+				}
+			};
+		}
+		/// <summary>
+		/// Helper for CreateLinkCopy, finalize roles played by replaced link.
+		/// </summary>
+		private static void FinalizeReplacedRoles(ElementLink link, IList<Action<ModelElement>> attachRoles, Stack<ModelElement> tempInstances)
+		{
+			foreach (Action<ModelElement> setRolePlayer in attachRoles)
+			{
+				setRolePlayer(link);
+			}
+
+			while (tempInstances.Count != 0)
+			{
+				ModelElement tempInst = tempInstances.Pop();
+				if (!tempInst.IsDeleted)
+				{
+					tempInst.Delete();
+				}
+			}
 		}
 		private static void TrackOrdering(Dictionary<Guid, MergeIntegrationOrder> orderedRoles, Guid domainRoleId, ModelElement basedOnRolePlayer, ModelElement newRolePlayer, ref Dictionary<RoleAndElement, ModelElement> requiresOrdering)
 		{
@@ -2715,17 +2916,19 @@ namespace ORMSolutions.ORMArchitect.Framework
 		/// </summary>
 		/// <param name="sourceElement">The element to retrieve properties from.</param>
 		/// <param name="targetElement">The element the properties will be copied to.</param>
+		/// <param name="originalProperties">If a property is not extracted from the source element then use
+		/// a matching property from this list instead of ommitting the property assignment.</param>
 		/// <returns>An array of properties, or <see langword="null"/></returns>
-		private PropertyAssignment[] GetCopiedPropertyAssignments(ModelElement sourceElement, ModelElement targetElement)
+		private PropertyAssignment[] GetCopiedPropertyAssignments(ModelElement sourceElement, ModelElement targetElement, IList<PropertyAssignment> originalProperties)
 		{
 			CopiedPropertiesCache copiedPropertiesInfo = GetCopiedProperties(sourceElement.GetDomainClass().Id);
 			Guid[] propertyIds = copiedPropertiesInfo.Identifiers;
 			int propertyCount = propertyIds.Length;
+			PropertyAssignment[] retVal = null;
 			if (propertyCount != 0)
 			{
 				ConditionalPropertyTest[][] allConditions = copiedPropertiesInfo.Conditions;
 				DomainDataDirectory dataDirectory = sourceElement.Store.DomainDataDirectory;
-				PropertyAssignment[] retVal;
 				if (allConditions != null)
 				{
 					int unblockedPropertyCount = propertyCount;
@@ -2765,16 +2968,56 @@ namespace ORMSolutions.ORMArchitect.Framework
 				}
 				else
 				{
-					retVal = new PropertyAssignment[propertyCount];
+					if (originalProperties != null)
+					{
+						int originalCount = originalProperties.Count;
+						int keepCount = 0;
+						BitTracker keepOriginals = new BitTracker(originalCount);
+						for (int i = 0; i < originalCount; ++i)
+						{
+							if (-1 == Array.IndexOf<Guid>(propertyIds, originalProperties[i].PropertyId))
+							{
+								keepOriginals[i] = true;
+								++keepCount;
+							}
+						}
+
+						if (keepCount != 0)
+						{
+							retVal = new PropertyAssignment[propertyCount + keepCount];
+							for (int i = 0, propIndex = propertyCount; i < originalCount; ++i)
+							{
+								if (keepOriginals[i])
+								{
+									// These are unordered. Put at end to simplify the common case loop below.
+									retVal[propIndex] = originalProperties[i];
+									if (--keepCount == 0)
+									{
+										break;
+									}
+									++propIndex;
+								}
+							}
+						}
+					}
+
+					if (retVal == null)
+					{
+						retVal = new PropertyAssignment[propertyCount];
+					}
 					for (int i = 0; i < propertyCount; ++i)
 					{
 						Guid propertyId = propertyIds[i];
 						retVal[i] = new PropertyAssignment(propertyId, dataDirectory.GetDomainProperty(propertyId).GetValue(sourceElement));
 					}
 				}
-				return retVal;
 			}
-			return null;
+			else if (originalProperties != null && 0 != (propertyCount = originalProperties.Count))
+			{
+				retVal = new PropertyAssignment[propertyCount];
+				originalProperties.CopyTo(retVal, 0);
+			}
+			return retVal;
 		}
 		#endregion // Closure Population Methods
 		#region Closure Directive Population Methods
