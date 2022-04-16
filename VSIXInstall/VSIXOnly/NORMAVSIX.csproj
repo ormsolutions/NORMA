@@ -49,6 +49,9 @@
   <PropertyGroup Condition="'$(VSIXPerUser)'!='1'">
     <NORMASchemaCatalogValue>;PerUser Installation Only</NORMASchemaCatalogValue>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(VSIXBuildOnly)'=='1'">
+    <DeployExtension>false</DeployExtension>
+  </PropertyGroup>
   <Target Name="PkgDefPublicKeyToken">
     <ReplaceFileText 
       InputFilename="$(ProjectDir)..\$(TargetVisualStudioShortProductName)\ORMDesigner.pkgdef" 
