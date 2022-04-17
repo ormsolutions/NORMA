@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageManifest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/VisualStudio/ImageManifestSchema/2014">
+	<Symbols>
+		<String Name="Resources" Value="/ORMSolutions.ORMArchitect.Core.$VSVersion$;Component/Icons" />
+		<Guid Name="MonikersGuid" Value="{47b7db2f-a4a5-4ee8-92a3-74ab45abb40d}" />
+		<ID Name="orm" Value="0" />
+	</Symbols>
+	<Images>
+		<Image Guid="$(MonikersGuid)" ID="$(orm)">
+			<Source Uri="$(Resources)/orm.png">
+				<Size Value="32" />
+			</Source>
+		</Image>
+	</Images>
+	<ImageLists />
+</ImageManifest>
