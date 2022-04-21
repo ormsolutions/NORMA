@@ -13839,20 +13839,38 @@
 	</xsl:template>
 	<xsl:template match="@verifyCanVerbalizeFactType" mode="IterateRolesFilterOperator">
 		<xsl:if test=".='true' or .='1'">
-			<plx:binaryOperator type="identityEquality">
+			<plx:binaryOperator type="booleanAnd">
 				<plx:left>
-					<plx:callInstance name="ReadingRequiredError" type="property">
-						<plx:callObject>
+					<plx:binaryOperator type="identityEquality">
+						<plx:left>
+							<plx:callInstance name="ReadingRequiredError" type="property">
+								<plx:callObject>
+									<plx:callInstance name="FactType" type="property">
+										<plx:callObject>
+											<plx:nameRef name="primaryRole"/>
+										</plx:callObject>
+									</plx:callInstance>
+								</plx:callObject>
+							</plx:callInstance>
+						</plx:left>
+						<plx:right>
+							<plx:nullKeyword/>
+						</plx:right>
+					</plx:binaryOperator>
+				</plx:left>
+				<plx:right>
+					<plx:binaryOperator type="typeInequality">
+						<plx:left>
 							<plx:callInstance name="FactType" type="property">
 								<plx:callObject>
 									<plx:nameRef name="primaryRole"/>
 								</plx:callObject>
 							</plx:callInstance>
-						</plx:callObject>
-					</plx:callInstance>
-				</plx:left>
-				<plx:right>
-					<plx:nullKeyword/>
+						</plx:left>
+						<plx:right>
+							<plx:directTypeReference dataTypeName="Subquery"/>
+						</plx:right>
+					</plx:binaryOperator>
 				</plx:right>
 			</plx:binaryOperator>
 		</xsl:if>

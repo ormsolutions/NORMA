@@ -3756,7 +3756,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				for (snippet10ReplaceFilteredIter1 = 0; snippet10ReplaceFilteredIter1 < playedRoleCount; ++snippet10ReplaceFilteredIter1)
 				{
 					RoleBase primaryRole = playedRoles[snippet10ReplaceFilteredIter1];
-					if (primaryRole.FactType.ReadingRequiredError == null && Array.IndexOf(snippet10ReplaceUniqueFactTypes1, snippet10ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					if (primaryRole.FactType.ReadingRequiredError == null && !(primaryRole.FactType is Subquery) && Array.IndexOf(snippet10ReplaceUniqueFactTypes1, snippet10ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
 					{
 						snippet10ReplaceUniqueFactTypes1[snippet10ReplaceFilteredIter1] = snippet10ReplaceTestUniqueFactType1;
 						++snippet10ReplaceFilteredCount1;
@@ -3796,7 +3796,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 						basicRoleReplacements[i] = basicReplacement;
 					}
-					if (primaryRole.FactType.ReadingRequiredError == null && Array.IndexOf(snippet10ReplaceUniqueFactTypes1, snippet10ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
+					if (primaryRole.FactType.ReadingRequiredError == null && !(primaryRole.FactType is Subquery) && Array.IndexOf(snippet10ReplaceUniqueFactTypes1, snippet10ReplaceTestUniqueFactType1 = primaryRole.FactType) == -1)
 					{
 						snippet10ReplaceUniqueFactTypes1[RoleIter1] = snippet10ReplaceTestUniqueFactType1;
 						CoreVerbalizationSnippetType listSnippet;
