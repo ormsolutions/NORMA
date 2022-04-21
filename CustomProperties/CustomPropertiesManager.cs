@@ -16,7 +16,6 @@ using ORMSolutions.ORMArchitect.Core.ObjectModel;
 
 namespace ORMSolutions.ORMArchitect.CustomProperties
 {
-	public delegate void NameChangedHandler(object sender, NameChangedEventArgs e);
 	public partial class CustomPropertiesManager : Form
 	{
 		#region Fields
@@ -168,7 +167,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			foreach (XmlNode def in definitions)
 			{
 				string groupName = def.ParentNode.Attributes["name"].Value;
-				if (!DefinitionEditor.ValidateDefaultValue(def))
+				if (!ValidateDefaultValue(def))
 				{
 					HighlightTreeNode(tvCustomProperties.Nodes, def);
 					error += string.Format("Definition named \"{0}\" in group \"{1}\" does not have a default value that conforms to the data type."
@@ -211,7 +210,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				}
 				foreach (CustomPropertyDefinition def in groupsAndDefs[group])
 				{
-					if (!DefinitionEditor.ValidateDefaultValue(def.DataType, (string)def.DefaultValue, def.CustomEnumValue))
+					if (!ValidateDefaultValue(def.DataType, (string)def.DefaultValue, def.CustomEnumValue))
 					{
 						HighlightTreeNode(tvCustomProperties.Nodes, def);
 						error += string.Format("Definition named \"{0}\" in group \"{1}\" does not have a default value that conforms to the data type."
@@ -248,16 +247,19 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.DialogResult = DialogResult.OK;
 			this.Close();
 		}
-		private void editor_NameChanged(object sender, NameChangedEventArgs e)
+		private void EditorNameChanged(string newName)
 		{
-			tvCustomProperties.SelectedNode.Text = e.NewName;
+			TreeNode selectedNode = tvCustomProperties.SelectedNode;
+			selectedNode.Text = newName;
 			//If this node was a group and default node make sure to append the "default" text after the group name
-			if (tvCustomProperties.SelectedNode.Tag is XmlNode && tvCustomProperties.SelectedNode.Level == _groupLevel)
+			XmlNode xmlGroup;
+			if (selectedNode.Level == _groupLevel &&
+				null != (xmlGroup = selectedNode.Tag as XmlNode))
 			{
-				XmlNode xmlGroup = tvCustomProperties.SelectedNode.Tag as XmlNode;
-				if (xmlGroup.Attributes["isDefault"] != null && xmlGroup.Attributes["isDefault"].Value == "true")
+				XmlAttribute isDefaultAttribute = xmlGroup.Attributes["isDefault"];
+				if (isDefaultAttribute != null && isDefaultAttribute.Value == "true")
 				{
-					tvCustomProperties.SelectedNode.Text += " (Default)";
+					selectedNode.Text += " (Default)";
 				}
 			}
 		}
@@ -493,24 +495,22 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		private void tsbDelete_Click(object sender, EventArgs e)
 		{
 			string message = "Are you sure you want to remove the ";
-			message += tvCustomProperties.SelectedNode.Level == _groupLevel ? "group " : "definition ";
-			XmlNode node = tvCustomProperties.SelectedNode.Tag as XmlNode;
-			ModelElement elem = tvCustomProperties.SelectedNode.Tag as ModelElement;
+			TreeNode selectedNode = tvCustomProperties.SelectedNode;
+			message += selectedNode.Level == _groupLevel ? "group " : "definition ";
+			object tag = selectedNode.Tag;
+			XmlNode xmlNode;
+			ModelElement elem = null;
 			string name = null;
-			if (node != null)
+			if (null != (xmlNode = tag as XmlNode))
 			{
-				name = node.Attributes["name"].Value;
+				name = xmlNode.Attributes["name"].Value;
 			}
-			if (elem != null)
+			else if (null != (elem = tag as ModelElement))
 			{
-				if (elem is CustomPropertyGroup)
-				{
-					name = ((CustomPropertyGroup)elem).Name;
-				}
-				else
-				{
-					name = ((CustomPropertyDefinition)elem).Name;
-				}
+				CustomPropertyGroup group;
+				name = null != (group = elem as CustomPropertyGroup) ?
+					group.Name:
+					((CustomPropertyDefinition)elem).Name;
 			}
 			message += "named \"" + name + "\"?";
 
@@ -518,57 +518,64 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			if (rslt == DialogResult.Yes)
 			{
 				TreeNode rootNode = null;
-				switch (tvCustomProperties.SelectedNode.Level)
+				switch (selectedNode.Level)
 				{
 					case _groupLevel:
-						rootNode = tvCustomProperties.SelectedNode.Parent;
+						rootNode = selectedNode.Parent;
 						break;
 					case _definitionLevel:
-						rootNode = tvCustomProperties.SelectedNode.Parent.Parent;
+						rootNode = selectedNode.Parent.Parent;
 						break;
 				}
 				if (rootNode == _machineNode)
 				{
-					node.ParentNode.RemoveChild(node);
+					xmlNode.ParentNode.RemoveChild(xmlNode);
 				}
 				else
 				{
 					elem.Delete();
 				}
-				tvCustomProperties.SelectedNode.Remove();
+				selectedNode.Remove();
 			}
 		}
 		private void tvCustomProperties_AfterSelect(object sender, TreeViewEventArgs e)
 		{
-			groupEditor1.Visible = false;
-			definitionEditor1.Visible = false;
+			groupPanel.Visible = false;
+			definitionPanel.Visible = false;
 
 			TreeNode rootNode = null;
-			int nodeLevel = e.Node.Level;
+			TreeNode node = e.Node;
+			int nodeLevel = node.Level;
+			XmlNode xmlNode;
+			CustomPropertyGroup propertyGroup;
+			CustomPropertyDefinition propertyDefinition;
+			object tag;
 			switch (nodeLevel)
 			{
 				case _groupLevel:
-					rootNode = e.Node.Parent;
-					groupEditor1.Visible = true;
-					if (e.Node.Tag is XmlNode)
+					rootNode = node.Parent;
+					tag = node.Tag;
+					groupPanel.Visible = true;
+					if (null != (xmlNode = tag as XmlNode))
 					{
-						groupEditor1.GroupNode = e.Node.Tag as XmlNode;
+						GroupNode = xmlNode;
 					}
-					if (e.Node.Tag is CustomPropertyGroup)
+					else if (null != (propertyGroup = tag as CustomPropertyGroup))
 					{
-						groupEditor1.GroupObject = e.Node.Tag as CustomPropertyGroup;
+						GroupObject = propertyGroup;
 					}
 					break;
 				case _definitionLevel:
 					rootNode = e.Node.Parent.Parent;
-					definitionEditor1.Visible = true;
-					if (e.Node.Tag is XmlNode)
+					tag = node.Tag;
+					definitionPanel.Visible = true;
+					if (null != (xmlNode = tag as XmlNode))
 					{
-						definitionEditor1.DefinitionNode = e.Node.Tag as XmlNode;
+						DefinitionNode = xmlNode;
 					}
-					if (e.Node.Tag is CustomPropertyDefinition)
+					else if (null != (propertyDefinition = tag as CustomPropertyDefinition))
 					{
-						definitionEditor1.DefinitionObject = e.Node.Tag as CustomPropertyDefinition;
+						DefinitionObject = propertyDefinition;
 					}
 					break;
 			}
@@ -587,6 +594,584 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			}
 		}
 		#endregion
+		#region Group Editor Panel
+		#region Fields
+		private XmlNode _groupNode;
+		private CustomPropertyGroup _groupObject;
+		private bool _loadingGroup;
+		#endregion // Fields
+		#region Properties
+		private XmlNode GroupNode
+		{
+			get
+			{
+				return _groupNode;
+			}
+			set
+			{
+				_groupNode = value;
+				_groupObject = null;
+				PopulateGroupBoxes();
+			}
+		}
+		private CustomPropertyGroup GroupObject
+		{
+			get
+			{
+				return _groupObject;
+			}
+			set
+			{
+				_groupObject = value;
+				_groupNode = null;
+				PopulateGroupBoxes();
+			}
+		}
+		#endregion // Properties
+		#region Event Handlers
+		private void tbxGroupTextChanged(object sender, EventArgs e)
+		{
+			TextBox tbox = sender as TextBox;
+			string attribName = (string)tbox.Tag;
+			UpdateGroupAttribute(attribName, tbox.Text);
+		}
+		private void btnEditGroupDescription_Click(object sender, EventArgs e)
+		{
+			string desc = tbxGroupDescription.Text;
+			if (EditCustomEnumOrDescription.EditDescription(ref desc))
+			{
+				tbxGroupDescription.Text = desc;
+			}
+		}
+		#endregion // Event Handlers
+		#region Methods
+		private void PopulateGroupBoxes()
+		{
+			_loadingGroup = true;
+
+			if (_groupNode != null)
+			{
+				tbxGroupName.Text = _groupNode.Attributes["name"].InnerText;
+				tbxGroupDescription.Text = _groupNode.Attributes["description"] == null ? string.Empty : _groupNode.Attributes["description"].InnerText;
+			}
+
+			if (_groupObject != null)
+			{
+				tbxGroupName.Text = _groupObject.Name;
+				tbxGroupDescription.Text = _groupObject.Description;
+			}
+
+			_loadingGroup = false;
+		}
+		private void UpdateGroupAttribute(string attributeName, string newValue)
+		{
+			if (_loadingGroup)
+			{
+				return;
+			}
+			if (_groupNode != null)
+			{
+				_groupNode.Attributes[attributeName].Value = newValue;
+			}
+			if (_groupObject != null)
+			{
+				switch (attributeName)
+				{
+					case "name":
+						_groupObject.Name = newValue;
+						break;
+					case "description":
+						_groupObject.Description = newValue;
+						break;
+				}
+			}
+			if (attributeName == "name")
+			{
+				EditorNameChanged(newValue);
+			}
+		}
+		#endregion // Methods
+		#endregion // Group Editor Panel
+		#region Definition Editor Panel
+		#region Fields
+		private XmlNode _definitionNode;
+		private CustomPropertyDefinition _definitionObject;
+		private bool _loadingDefinition;
+		private bool _alteringAllConstraintsCheck;
+		#endregion // Fields
+		#region Properties
+		private XmlNode DefinitionNode
+		{
+			get
+			{
+				return _definitionNode;
+			}
+			set
+			{
+				_definitionNode = value;
+				_definitionObject = null;
+				PopulateDefinitionBoxes();
+			}
+		}
+		private CustomPropertyDefinition DefinitionObject
+		{
+			get
+			{
+				return _definitionObject;
+			}
+			set
+			{
+				_definitionObject = value;
+				_definitionNode = null;
+				PopulateDefinitionBoxes();
+			}
+		}
+		#endregion // Properties
+		#region Event Handlers
+		private void btnEditCustomEnum_Click(object sender, EventArgs e)
+		{
+			if (_definitionNode != null)
+			{
+				List<string> enums = new List<string>();
+				XmlNodeList nodes = _definitionNode.SelectNodes("def:CustomEnumValues/def:CustomEnumValue", CustomPropertiesManager.NamespaceManager);
+				foreach (XmlNode customEnumValue in nodes)
+				{
+					enums.Add(customEnumValue.Attributes["value"].Value);
+				}
+				if (EditCustomEnumOrDescription.EditEnum(enums))
+				{
+					XmlNode valuesCol = _definitionNode.SelectSingleNode("def:CustomEnumValues", CustomPropertiesManager.NamespaceManager);
+					if (valuesCol == null)
+					{
+						valuesCol = CustomPropertiesManager.LoadedDocument.CreateElement("CustomEnumValues", CustomPropertiesDomainModel.XmlNamespace);
+						_definitionNode.AppendChild(valuesCol);
+					}
+					else
+					{
+						valuesCol.RemoveAll();
+					}
+
+					tbxDefinitionCustomEnum.Clear();
+					tbxDefinitionCustomEnum.Text = string.Join("; ", enums.ToArray());
+
+					foreach (string newValue in enums)
+					{
+						XmlNode newNode = CustomPropertiesManager.LoadedDocument.CreateElement("CustomEnumValue", CustomPropertiesDomainModel.XmlNamespace);
+						XmlAttribute valueAttrib = CustomPropertiesManager.LoadedDocument.CreateAttribute("value");
+						newNode.Attributes.Append(valueAttrib);
+
+						valueAttrib.Value = newValue;
+
+						valuesCol.AppendChild(newNode);
+					}
+				}
+			}
+
+			if (_definitionObject != null)
+			{
+				List<string> values = new List<string>();
+				values.AddRange(_definitionObject.CustomEnumValue.Split('\0'));
+				if (EditCustomEnumOrDescription.EditEnum(values))
+				{
+					_definitionObject.CustomEnumValue = string.Join("\0", values.ToArray());
+					tbxDefinitionCustomEnum.Text = string.Join("; ", values.ToArray());
+				}
+			}
+		}
+		private void btnEditDefinitionDescription_Click(object sender, EventArgs e)
+		{
+			string desc = tbxDefinitionDescription.Text;
+			if (EditCustomEnumOrDescription.EditDescription(ref desc))
+			{
+				tbxDefinitionDescription.Text = desc;
+			}
+		}
+		private void cmbxDataType_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (_loadingDefinition)
+			{
+				return;
+			}
+			int index = cmbxDefinitionDataType.FindString("CustomEnumeration");
+			bool customEnum = cmbxDefinitionDataType.SelectedIndex == index;
+
+			tbxDefinitionCustomEnum.Enabled = customEnum;
+			btnEditCustomEnum.Enabled = customEnum;
+
+			if (!customEnum)
+			{
+				if (_definitionNode != null)
+				{
+					XmlNode customEnumValues = _definitionNode.SelectSingleNode("def:CustomEnumValues", CustomPropertiesManager.NamespaceManager);
+					if (customEnumValues != null)
+					{
+						_definitionNode.RemoveChild(customEnumValues);
+					}
+					tbxDefinitionCustomEnum.Clear();
+				}
+			}
+
+			UpdateDefinitionAttribute("dataType", cmbxDefinitionDataType.Text);
+		}
+		private void tvModelElements_AfterCheck(object sender, TreeViewEventArgs e)
+		{
+			if (_loadingDefinition)
+			{
+				return;
+			}
+
+			TreeNode node = e.Node;
+			string tag = (string)node.Tag;
+			bool isChecked = node.Checked;
+			if (tag == "AllConstraints")
+			{
+				if (!_alteringAllConstraintsCheck)
+				{
+					_alteringAllConstraintsCheck = true;
+					foreach (TreeNode childNode in node.Nodes)
+					{
+						childNode.Checked = isChecked;
+					}
+					_alteringAllConstraintsCheck = false;
+				}
+			}
+			else if (!isChecked && !_alteringAllConstraintsCheck && tag.IndexOf("Constraint") > -1)
+			{
+				if (node.Parent.Checked)
+				{
+					_alteringAllConstraintsCheck = true;
+					node.Parent.Checked = false;
+					_alteringAllConstraintsCheck = false;
+				}
+			}
+
+
+			if (_definitionNode != null)
+			{
+				if (isChecked)
+				{
+					XmlNode newType = CustomPropertiesManager.LoadedDocument.CreateNode("element", "ORMType", CustomPropertiesDomainModel.XmlNamespace);
+					XmlAttribute nameAttrib = CustomPropertiesManager.LoadedDocument.CreateAttribute("name");
+					nameAttrib.Value = tag;
+					_definitionNode.SelectSingleNode("def:ORMTypes", CustomPropertiesManager.NamespaceManager).AppendChild(newType);
+					newType.Attributes.Append(nameAttrib);
+				}
+				else
+				{
+					XmlNode xmlNode = _definitionNode.SelectSingleNode("def:ORMTypes/def:ORMType[@name='" + tag + "']", CustomPropertiesManager.NamespaceManager);
+					xmlNode.ParentNode.RemoveChild(xmlNode);
+				}
+			}
+			else if (_definitionObject != null && !_alteringAllConstraintsCheck)
+			{
+				ORMTypes typeChanged = (ORMTypes)Enum.Parse(typeof(ORMTypes), tag);
+				if (isChecked)
+				{
+					_definitionObject.ORMTypes = _definitionObject.ORMTypes | typeChanged;
+				}
+				else
+				{
+					_definitionObject.ORMTypes = _definitionObject.ORMTypes & ~typeChanged;
+				}
+			}
+		}
+		private void tbx_DefinitionTextChanged(object sender, EventArgs e)
+		{
+			if (_loadingDefinition)
+			{
+				return;
+			}
+
+			TextBox tbox = sender as TextBox;
+			string attribName = (string)tbox.Tag;
+			string text = tbox.Text;
+			if (attribName == "defaultValue")
+			{
+				chkVerbalizeDefaultValue.Enabled = text.Length != 0;
+			}
+			UpdateDefinitionAttribute(attribName, text);
+		}
+		private void chkVerbalizeDefaultValue_CheckedChanged(object sender, EventArgs e)
+		{
+			if (_loadingDefinition)
+			{
+				return;
+			}
+			CheckBox checkbox = (CheckBox)sender;
+			UpdateDefinitionAttribute((string)checkbox.Tag, checkbox.Checked ? "true" : "false");
+		}
+		#endregion // Event Handlers
+		#region Methods
+		private void PopulateDefinitionBoxes()
+		{
+			if (_definitionNode == null && _definitionObject == null)
+			{
+				return;
+			}
+			PopulateElementTypeTreeView();
+			_loadingDefinition = true;
+
+			if (_definitionNode != null)
+			{
+				XmlAttributeCollection attributes = _definitionNode.Attributes;
+				tbxDefinitionName.Text = attributes["name"].Value;
+				tbxDefinitionDescription.Text = attributes["description"].Value;
+				cmbxDefinitionDataType.SelectedIndex = cmbxDefinitionDataType.FindString(attributes["dataType"].Value);
+
+				XmlAttribute defaultValueAttribute = attributes["defaultValue"];
+				if (defaultValueAttribute != null)
+				{
+					tbxDefinitionDefaultValue.Text = defaultValueAttribute.Value;
+					chkVerbalizeDefaultValue.Enabled = true;
+				}
+				else
+				{
+					tbxDefinitionDefaultValue.Clear();
+					chkVerbalizeDefaultValue.Enabled = false;
+				}
+
+				XmlAttribute verbalizeDefaultAttribute = attributes["verbalizeDefaultValue"];
+				if (verbalizeDefaultAttribute != null)
+				{
+					string verbalizeDefaultText = verbalizeDefaultAttribute.Value.Trim();
+					chkVerbalizeDefaultValue.Checked = verbalizeDefaultText == "true" || verbalizeDefaultText == "1";
+				}
+				else
+				{
+					chkVerbalizeDefaultValue.Checked = true;
+				}
+
+				tbxDefinitionCategory.Text = attributes["category"].Value;
+
+				tbxDefinitionCustomEnum.Clear();
+				XmlNodeList enums = _definitionNode.SelectNodes("def:CustomEnumValues/def:CustomEnumValue", CustomPropertiesManager.NamespaceManager);
+				foreach (XmlNode en in enums)
+				{
+					tbxDefinitionCustomEnum.Text += en.Attributes["value"].Value + "; ";
+				}
+
+				ClearCheckedItems(tvModelElements.Nodes);
+				XmlNodeList ormTypes = _definitionNode.SelectNodes("def:ORMTypes/def:ORMType", CustomPropertiesManager.NamespaceManager);
+				foreach (XmlNode ormType in ormTypes)
+				{
+					string typeName = ormType.Attributes["name"].Value;
+					CheckTreeNodeItem(tvModelElements.Nodes, typeName);
+				}
+			}
+			if (_definitionObject != null)
+			{
+				tbxDefinitionName.Text = _definitionObject.Name;
+				tbxDefinitionDescription.Text = _definitionObject.Description;
+				tbxDefinitionCategory.Text = _definitionObject.Category;
+				cmbxDefinitionDataType.SelectedIndex = cmbxDefinitionDataType.FindString(_definitionObject.DataType.ToString());
+				object defaultValue = _definitionObject.DefaultValue;
+				string defaultText = defaultValue == null ? string.Empty : defaultValue.ToString();
+				tbxDefinitionDefaultValue.Text = defaultText;
+				chkVerbalizeDefaultValue.Checked = _definitionObject.VerbalizeDefaultValue;
+				chkVerbalizeDefaultValue.Enabled = defaultText.Length != 0;
+				ClearCheckedItems(tvModelElements.Nodes);
+				CheckTypeIfNeeded(ORMTypes.Model);
+				CheckTypeIfNeeded(ORMTypes.ORMDiagram);
+				CheckTypeIfNeeded(ORMTypes.ElementGrouping);
+				CheckTypeIfNeeded(ORMTypes.EntityType);
+				CheckTypeIfNeeded(ORMTypes.FactType);
+				CheckTypeIfNeeded(ORMTypes.Role);
+				CheckTypeIfNeeded(ORMTypes.AllConstraints);
+				CheckTypeIfNeeded(ORMTypes.SubtypeFact);
+				CheckTypeIfNeeded(ORMTypes.ValueType);
+				CheckTypeIfNeeded(ORMTypes.CardinalityConstraint);
+				CheckTypeIfNeeded(ORMTypes.EqualityConstraint);
+				CheckTypeIfNeeded(ORMTypes.ExclusionConstraint);
+				CheckTypeIfNeeded(ORMTypes.FrequencyConstraint);
+				CheckTypeIfNeeded(ORMTypes.MandatoryConstraint);
+				CheckTypeIfNeeded(ORMTypes.RingConstraint);
+				CheckTypeIfNeeded(ORMTypes.SubsetConstraint);
+				CheckTypeIfNeeded(ORMTypes.UniquenessConstraint);
+				CheckTypeIfNeeded(ORMTypes.ValueComparisonConstraint);
+				CheckTypeIfNeeded(ORMTypes.ValueConstraint);
+			}
+
+			_loadingDefinition = false;
+		}
+		private void PopulateElementTypeTreeView()
+		{
+			TreeNodeCollection nodes = tvModelElements.Nodes;
+			nodes.Clear();
+
+			nodes.Add(CreateTreeNode("Entity Type", "EntityType"));
+			nodes.Add(CreateTreeNode("Value Type", "ValueType"));
+			nodes.Add(CreateTreeNode("Fact Type", "FactType"));
+			nodes.Add(CreateTreeNode("Subtype Fact", "SubtypeFact"));
+			nodes.Add(CreateTreeNode("Role", "Role"));
+			nodes.Add(CreateTreeNode("ORM Model", "Model"));
+			nodes.Add(CreateTreeNode("ORM Diagram", "ORMDiagram"));
+			nodes.Add(CreateTreeNode("Group", "ElementGrouping"));
+
+			TreeNode constraintsNode = CreateTreeNode("All Constraints", "AllConstraints");
+			nodes.Add(constraintsNode);
+
+			nodes = constraintsNode.Nodes;
+			nodes.Add(CreateTreeNode("Mandatory Constraint", "MandatoryConstraint"));
+			nodes.Add(CreateTreeNode("Uniqueness Constraint", "UniquenessConstraint"));
+			nodes.Add(CreateTreeNode("Frequency Constraint", "FrequencyConstraint"));
+			nodes.Add(CreateTreeNode("Ring Constraint", "RingConstraint"));
+			nodes.Add(CreateTreeNode("Value Comparison Constraint", "ValueComparisonConstraint"));
+			nodes.Add(CreateTreeNode("Equality Constraint", "EqualityConstraint"));
+			nodes.Add(CreateTreeNode("Exclusion Constraint", "ExclusionConstraint"));
+			nodes.Add(CreateTreeNode("Subset Constraint", "SubsetConstraint"));
+			nodes.Add(CreateTreeNode("Cardinality Constraint", "CardinalityConstraint"));
+			nodes.Add(CreateTreeNode("Value Constraint", "ValueConstraint"));
+		}
+		private TreeNode CreateTreeNode(string name, string tag)
+		{
+			TreeNode node = new TreeNode(name);
+			node.Tag = tag;
+			return node;
+		}
+		private void CheckTypeIfNeeded(ORMTypes typeToLookAt)
+		{
+			if ((_definitionObject.ORMTypes & typeToLookAt) == typeToLookAt)
+			{
+				CheckTreeNodeItem(tvModelElements.Nodes, typeToLookAt.ToString());
+			}
+		}
+		private void ClearCheckedItems(TreeNodeCollection nodes)
+		{
+			foreach (TreeNode node in nodes)
+			{
+				node.Checked = false;
+				ClearCheckedItems(node.Nodes);
+			}
+		}
+		private void CheckTreeNodeItem(TreeNodeCollection nodes, string typeName)
+		{
+			foreach (TreeNode node in nodes)
+			{
+				if ((string)node.Tag == typeName)
+				{
+					node.Checked = true;
+					return;
+				}
+				CheckTreeNodeItem(node.Nodes, typeName);
+			}
+		}
+		private void UpdateDefinitionAttribute(string attributeName, string newValue)
+		{
+			if (_loadingDefinition)
+			{
+				return;
+			}
+			if (_definitionNode != null)
+			{
+				XmlAttribute attrib = _definitionNode.Attributes[attributeName];
+				if (attrib == null)
+				{
+					attrib = CustomPropertiesManager.LoadedDocument.CreateAttribute(attributeName);
+					_definitionNode.Attributes.Append(attrib);
+				}
+				_definitionNode.Attributes[attributeName].Value = newValue;
+			}
+			if (_definitionObject != null)
+			{
+				switch (attributeName)
+				{
+					case "name":
+						_definitionObject.Name = newValue;
+						break;
+					case "description":
+						_definitionObject.Description = newValue;
+						break;
+					case "defaultValue":
+						_definitionObject.DefaultValue = newValue;
+						break;
+					case "dataType":
+						_definitionObject.DataType = (CustomPropertyDataType)Enum.Parse(typeof(CustomPropertyDataType), newValue, true);
+						break;
+					case "category":
+						_definitionObject.Category = newValue;
+						break;
+					case "verbalizeDefaultValue":
+						_definitionObject.VerbalizeDefaultValue = newValue == "true";
+						break;
+				}
+			}
+			if (attributeName == "name")
+			{
+				EditorNameChanged(newValue);
+			}
+		}
+		private static bool ValidateDefaultValue(XmlNode definitionNode)
+		{
+			XmlAttribute attrib = definitionNode.Attributes["defaultValue"];
+			if (attrib == null)
+			{
+				return true;
+			}
+			switch (definitionNode.Attributes["dataType"].Value)
+			{
+				case "string":
+				case "String":
+					return true;
+				case "integer":
+				case "Integer":
+					int i;
+					return int.TryParse(attrib.Value, out i);
+				case "decimal":
+				case "Decimal":
+					decimal d;
+					return decimal.TryParse(attrib.Value, out d);
+				case "datetime":
+				case "DateTime":
+					DateTime dt;
+					return DateTime.TryParse(attrib.Value, out dt);
+				case "CustomEnumeration":
+					XmlNodeList customEnumValues = definitionNode.SelectNodes("def:CustomEnumValues/def:CustomEnumValue", CustomPropertiesManager.NamespaceManager);
+					foreach (XmlNode value in customEnumValues)
+					{
+						if (value.Attributes["value"].Value == attrib.Value)
+						{
+							return true;
+						}
+					}
+					return false;
+			}
+			return false;
+		}
+		private static bool ValidateDefaultValue(CustomPropertyDataType dataType, string defaultValue, string customEnum)
+		{
+			if (string.IsNullOrEmpty(defaultValue))
+			{
+				return true;
+			}
+
+			switch (dataType)
+			{
+				case CustomPropertyDataType.String:
+					return true;
+				case CustomPropertyDataType.Integer:
+					int i;
+					return int.TryParse(defaultValue, out i);
+				case CustomPropertyDataType.Decimal:
+					decimal d;
+					return decimal.TryParse(defaultValue, out d);
+				case CustomPropertyDataType.DateTime:
+					DateTime dt;
+					return DateTime.TryParse(defaultValue, out dt);
+				case CustomPropertyDataType.CustomEnumeration:
+					string[] values = customEnum.Split('\0');
+					foreach (string value in values)
+					{
+						if (value == defaultValue)
+						{
+							return true;
+						}
+					}
+					return false;
+			}
+			return false;
+		}
+		#endregion // Methods
+		#endregion // Definition Editor Panel
 		#region Methods
 		/// <summary>
 		/// Loads the form and shows the custom groups that have been defined on the machine
@@ -1017,7 +1602,7 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 				}
 			}
 		}
-		#endregion
+		#endregion // Methods
 		#region Deserialization Fixup
 		/// <summary>
 		/// Return a deserialization fixup listener. The listener

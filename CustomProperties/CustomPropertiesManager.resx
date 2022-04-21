@@ -121,78 +121,1431 @@
   <data name="tsbAddDefinition.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAA
-        EnQB3mYfeAAAAH9JREFUOE9jYCAT3D016T+ZWhkYzp9Y9//l1Y7/V/Z0km7Ik01F/6dNmfB/1fwW0jV/
-        WRf8//vWgP9XVqSRr/nl2kjyNP8A2vx6XTh5mkHOJttmijSDnE22zSNN87vTDf+/744hL8BAOer5ycb/
-        j/bVkZ5IQJp3rJpGnkZoXgYAvfmAeQ5ow4sAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABySURBVDhPYyAX3D016T+USTo4f2Ld/5dXO/5f2dNJuiFP
+        NhX9nzZlwv9V81tI1/xlXfD/71sD/l9ZkUa+5pdrI8nT/AOo+fW68AGwmWJnj2omErw73fD/++4Y8jSD
+        wPOTjf8f7asjT/OOVdPI0wgGDAwAvfmAeXzRnKcAAAAASUVORK5CYII=
 </value>
+  </data>
+  <data name="tsbAddDefinition.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbAddDefinition.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="tsbAddDefinition.Text" xml:space="preserve">
+    <value>Add Property</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tsbDelete.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="tsbDelete.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAA
-        EnQB3mYfeAAAAUFJREFUOE+VUqmOAkEQHQQCBAbsJCgs4DBgQIDBolBAQoIg+PkVLAoSMhs2CMzuBLFZ
-        TgHhUHgMElXU66Q7PQyzO3Ty0kfVq351GAavfTZLx1iMdoUC4f7WAvkaCing/laApWHQTQuA875SCR4E
-        sqUCkCVO7bZvkFW5TCf2nXPaQu3ZNBXxzookXqXym0oRVP8wXPZDLqeIMgCU6U748ZvfpkzeWJZX4aFe
-        V0pAvsAxGqV1p6OIIDu12t81Qn4AAmCHXBCHjE9WGqhLmAu9uDg7yWQwMn7YJhJCgY7AgwbJkI5q6zvO
-        m0bDX8Wi1RL5PmOez4u3l+2TBVl0u6JQgGwV9mWvp36UNrx7CjmOx8lmso6vatXjCD8EmkQibpudydCA
-        DRK4+7Xrg6cRLZ0Vi26fUTpN/XCYJqXSv+1ymk3h8wAnavEyMK/7CwAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFBSURBVDhPlVKhbgJBEF0EAgQGLAkKCzgMGBBgsCgUkJAg
+        CJ5fwaIgITSQipr2gmgKLRUllCo8Blk1nbfZXfbuuOZ4ycvczsybfbu3AtgXCvSdSNBXuUwycQ8gPkci
+        hlirUjhshaCLNQDf+3o9/BDYtsWax14vcMh7rUZH7lnzsWXiJ502wl92pCmLHrxlswTXr976oVh0iUG4
+        UmUJ7PjCuUeu7UYj/waHVss4gfiExnicPvp9IwSdZvOmOwOcD8QARNiFcMpcsVPV9j/wLuzLRXQymXBi
+        4DOVkg5shn5osAzruG07grt2O3jIptuV5/VyXSrJePP3aWwGA3PL+sYRt8OhEegcqFJXzJNJWnCDzedG
+        w9eIPgxaxmLu2iKfpwkXNLFWJR8e+DXilz5VKu6eWS5H42iUltVqoFjD6XS4R4g/J2rxMldgtIgAAAAA
+        SUVORK5CYII=
 </value>
+  </data>
+  <data name="tsbDelete.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbDelete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="tsbDelete.Text" xml:space="preserve">
+    <value>Delete selected group or definition</value>
+  </data>
+  <data name="tsbDefaultToggle.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="tsbDefaultToggle.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAA
-        EnQB3mYfeAAAAn5JREFUOE+Fk2tIk1EYx8+ubbKwpBUorAuYWQOZH8pUpEFEXwrtxoogE29UtlUTWoWm
-        wgayXLZsyrxk4C20y1LIzMJyEGKpoWkpCyUlV5nUpD757z1H9rbloBf+vC/nPP/fc87zPK+AhHhMThN8
-        xEdEYYQIiYgs+giRC+XEkmURhIrn1wxVBlx4akDDt3q0zbWgY/4hun90wv2zB/0Lr3D9xTWccxgREnK0
-        TIcrHhPMMyWo8N5AlfcW6r/W4u5cI1zf7+H+TCscvRVwvq5EWmlaMIRmPvn+BM5Oncb5KT0Kpi8zUNnn
-        Ugarnq2Eo7sa84uL6Bp1Q9giQlZ59l9IYnsCDkyk4phHh4yP6Tg1mcODMoczcLDxCLycmQIej7khrlkB
-        sVm6BMhz5iF+RIOUsWTs+bAb+8f3MdDhkUOIbtwMSbEM/ZPvmJlC1DYNhFYRJDYZcm25IBq7BpvebsTW
-        4VgGShzdCU2XhhklBTJcbL7KzFTFLiukl+S8Ys7EgihuKhD+JhzrBtdi/ZAKUa0qSPPDmKLzt2D29y+W
-        eeTLJ6w2ruH36L7seBhIpFUFZUcka19RjxkRhUo++52XrXx2XV360nqAZJlyEK1lL7Kb9SxwAWD3pdB4
-        6w7+3l3jfeze4nKueAGiJyR0MHbVpcI18ITP1usZRHNfOzs6VdJtLUS1kmXKs+uXOqGuSICiZiXrsb9g
-        fnPD0CPW92XiTsRPJB0KQYcQq5oiQLP7zfS9rS0O4ufSINHYoEGipJSSFBZEu9A/PcEgzoEWiN2cOVBc
-        DI0N+T9QqtIZhfimZBg7i6B+sB0bnsXyons5dm54/vfQ4iQVaRFTGMdEv/mC/WP+A1VA+6tpyi/0AAAA
-        AElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJySURBVDhPhVJtSJNRFH7bV1MWlrQChfUBZtZAth9lKqNB
+        RH8K7QuLIBNTqdaWTWgV2hQWyHLZWlPmRwabLmYf5iBbFpaDkJUaLi1loaTkKpNC6pdPu3fubUOjAw9c
+        7jnP89x7zmGWCp1NB5VNBY1dhVK7Bpp6DcjdQvrfQQrPP9XA/q0F7TNOuGcfovtHF7w/e+Cbe4XrL67h
+        nFW7tNCRmjxcDuhgmKqCJXgD9cFbaPnahLszDnR8v4f7Uy5Yey2wva5DbnVurAhxPvH+OM5OnEbphBrl
+        k5eoUM3nairWMF0Ha3cDZufn4Rn2guPk4mRt0V+RzM4M7B/LwdFAHgo+5uPUeDErVDhUgAOOwwiGyETg
+        8YgXvMbl4BkEYQHSLLlfBsVINnZ/2IV9o3up0CH/QaQ4NoFfKYRv/B0lExGpSQaOkQu+SYgSUwkYmVmG
+        jW83YMtQGhXKHN4BmUdGifxyIS60XaFkgsoOIwQX41iknkkDI7opQsKbBKwdWIN1gxIkuyQQlMVTpJRt
+        xvTvX9TZ/+UTVmlXszkC4bF4MElGCcTuJDo+fY8BiRVi1v3OSxfrntecH76PgrAwDozy6h4Utalp0RxA
+        /0tE5cbt9I64e0b76L95taHmRYG8kCGLsbM5Bx39T1i33sAA2vo6KZkg67YS3Cb+IqjM6vAkpJYMiBpX
+        0BlHRCJk++AjOvdFCL2IkkmQpVjm5mBlayJ1j5AJtrang/dcEANSG7NIJBRVCpokU/BNjlGyrd8JnjdE
+        ikaohtQu0GKDqIptyZC3ZkPbpYf0wTasf5bGguSKzaHl+V+Q5mTplUitSKcgZ7ZhMcEwfwD+2ALE7P5j
+        rgAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="tsbDefaultToggle.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbDefaultToggle.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="tsbDefaultToggle.Text" xml:space="preserve">
+    <value>Toggle selected group's default status</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tvCustomProperties.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
+  </data>
+  <data name="tvCustomProperties.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 43</value>
+  </data>
+  <data name="tvCustomProperties.Nodes" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
+        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAA
+        AQABAAEICAgCAAAABgMAAAAHTWFjaGluZQYEAAAABU5vZGUwAP////8GBQAAAAD/////CQUAAAAAAAAA
+        Cw==
+</value>
+  </data>
+  <data name="tvCustomProperties.Nodes1" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
+        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAA
+        AQABAAEICAgCAAAABgMAAAAFTW9kZWwGBAAAAAVOb2RlMQD/////BgUAAAAA/////wkFAAAAAAAAAAs=
+</value>
+  </data>
+  <data name="tvCustomProperties.Size" type="System.Drawing.Size, System.Drawing">
+    <value>214, 322</value>
+  </data>
+  <data name="tvCustomProperties.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tvCustomProperties.Name" xml:space="preserve">
+    <value>tvCustomProperties</value>
+  </data>
+  <data name="&gt;&gt;tvCustomProperties.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tvCustomProperties.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;tvCustomProperties.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
+    <value>3, 16</value>
   </metadata>
+  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Name" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 2</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 370</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>&amp;Properties</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>3, 16</value>
+  </metadata>
+  <data name="toolStrip1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 16</value>
+  </data>
+  <data name="toolStrip1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>214, 25</value>
+  </data>
+  <data name="toolStrip1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="toolStrip1.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Name" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;toolStrip1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="tsbAddGroup.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAA
-        EnQB3mYfeAAAARdJREFUOE+dUz1rAkEQ3c/zYiPh9A/4m2xiesHmUiUgdmKhtXYhjUUqf4FYpkhtaWGv
-        IMFfMJk38U4wt8K68Lhhdt/cm7ezWgVWNsjop32S3cdDQx2HRx06W5nXK016f8a3pigyDrtlQmZjBSgW
-        XcC8OyHatSe1uKOAnXhyn4nAz9M4Bfk0J/dRE6JglBJylW3Abc0m/cOOc1vzp4AL+H5K7o3j/BI3n1qk
-        3KBG9svdRFEEBZLXegnbYX/0ixGTin6DX7TESuzYlzDPjlTWbYq0a4js6UOJcp8VQzUAbqUvMKzoWfrm
-        /oMmhgZEiFDBwN+iBwm9mpmVa8RMRBcAWczFSCOOXkyWB4V3cM8oZz0eML5iAHFIwC9BQL9FlsA9hAAA
-        AABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEISURBVDhPnVO7bsJAELynbdKe82dpgB4pjVMFyW0EEtRJ
+        F9FQUPEFiJKCOiVF+nzFZmc5XwTIkc1II632tHO7c3uqDaEOZD6dMMwDxXR36J0m/RN51P0F3DYj82WF
+        EIvp7kDrKLR7T2p9h4BdeHKbTOg/in4C1bIit8qlUPhWEHLx+BJwGybd8Jt5MucOWMA/F+SmHFd/cTl8
+        JOXqnOzB/ctGBEXZ60OifWJ/9IsRk5p5W4mRWMTOfKIZO1JhVIryNaXt5SAxnXHHDVEbnbgEDGvmFDGO
+        W01sQ+oCs/NtMd0dMuO7lWfETsR0d6BYzMVKI+4NLpYPhX9wzyqHCS8YPzGIOKavoNQvbi6+zBB4CvoA
+        AAAASUVORK5CYII=
 </value>
+  </data>
+  <data name="tsbAddGroup.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbAddGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="tsbAddGroup.Text" xml:space="preserve">
+    <value>Add Group</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 25</value>
   </data>
   <data name="tsbAddGroupToMachine.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAA
-        EnQB3mYfeAAAAP1JREFUOE9jYKAlEJvP8F+6m/8/WXYozRf4L7KE4b/ANIb/us0apBliuVD7v9QWBrgB
-        3K2M/wN7/IkzJHZZ8H/5IwwoBvD1MPxnq2AgzgDVs8wYBoBcADKAJZcJvyEgzSoXGbC6gL2W4T8Ii5Ti
-        CFTDE0L/NR4wQAw4jOoFkAtAmmG0ZjFaoJaszPsfvMfhf+BWh//+6x3A/kcORFAYgDSLNfD8Fyzi+c+X
-        xfM/uiUat3cUFvFgGADSTHR6QDcAlKDINgCUmECYLANA4SC+FqiZHBdI7wDmAyCWWE+GAcpreMBpAWSA
-        5AoyvOC2zBysEeR0UGYCRaNLtx3WWAAAQOK5OUSsg2UAAAAASUVORK5CYII=
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADwSURBVDhPY6ApEJvP8F+6m/8/lEsaUJov8F9kCcN/gWkM
+        /3WbNUgzxHKh9n+pLQxwA7hbGf8H9vgTZ0jssuD/8kcYUAzg62H4z1bBQJwBqmeZMQwAuQBkAEsuE35D
+        QJpVLjJgdQF7LQSLlOIIVMMTQv81HjBADDiM6QKQZhitWYwWqCUr8/4H73H4H7jV4b//egewZnQXgDSL
+        NfD8Fyzi+c+XxfM/uiUat3cUFvFgGADSDJUmDNANACUosg2AYbIMAGHxtWS6QHoHMB8AscR6MgxQXsMD
+        TgsgAyRXkOEFt2XmYI0gm2Gx4NJth8UABgYAQOK5OYQV1B0AAAAASUVORK5CYII=
 </value>
+  </data>
+  <data name="tsbAddGroupToMachine.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbAddGroupToMachine.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="tsbAddGroupToMachine.Text" xml:space="preserve">
+    <value>Add Group to Machine</value>
   </data>
   <data name="tsbAddGroupToModel.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAASdAAA
-        EnQB3mYfeAAAARFJREFUOE9jZMACLhcU/Of6+hVF5hs3N4PuhAmM2NRjiF2Njf3/prISBd9NTf1PlGaQ
-        oivh4f/f5ebC8Ucg/66MDPEG3HN0/P8xIgKM3zs5/X/Nyvr/rogI8QbcMjf//wWo8ZOZGVjzW0ZG0gy4
-        o6n5/5uWFlgzCD9nYCDNAJB/YZpBthN0wdnExP9PeXjgGKQBZjPMCyB5UNiA8AMHh/83iotRw+Q6yNlA
-        p8JshNEwA0B8kDwIPxMVxR6gVwUFwf5FNwSm8RfUALzp4R7Uz8g2gjQSpRlmMrKNMI0gA0EJjKjUeCMw
-        EG4jSCPIVad1dYnTDLMBFKggjReBzj8IDBuibEZXtJ+f//8WJibyNBNrIwD+Zdjcshj8EwAAAABJRU5E
-        rkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAD7SURBVDhPY8AGLhcU/L+bmoqCQWJQacLgamzs/zeVlSgY
+        ZAhUmjC4Eh7+/11uLhx/BPLvysgQb8A9R8f/HyMiwPi9k9P/16ys/++KiBBvwC1z8/9fgBo/mZmBNb9l
+        ZCTNgDuamv+/aWmBNYPwcwYG0gwA+RemGWQ7QRecTUz8/5SHB45BGmA2wwwBiYPCBoQfODj8v1FcjGrg
+        dZCzgRpgNsIwsitA8iD8TFQUu2uuCgqCbUU2AFnjLygNVY4d3MOhkSjNMIBNI8hAUAKDKsEPbgQGomgE
+        ueq0ri5xmmEAFKggjReBhhwEhg1UmDSwn5///xYmJvI0EwcYGABLc+HXPLXejQAAAABJRU5ErkJggg==
 </value>
+  </data>
+  <data name="tsbAddGroupToModel.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbAddGroupToModel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 22</value>
+  </data>
+  <data name="tsbAddGroupToModel.Text" xml:space="preserve">
+    <value>Add Group to Model</value>
+  </data>
+  <data name="btnSave.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="btnSave.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnSave.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 342</value>
+  </data>
+  <data name="btnSave.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="btnSave.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="btnSave.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="&gt;&gt;btnSave.Name" xml:space="preserve">
+    <value>btnSave</value>
+  </data>
+  <data name="&gt;&gt;btnSave.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSave.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnSave.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="btnCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>414, 342</value>
+  </data>
+  <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="btnCancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
+    <value>btnCancel</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="groupPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;btnEditGroupDescription.Name" xml:space="preserve">
+    <value>btnEditGroupDescription</value>
+  </data>
+  <data name="&gt;&gt;btnEditGroupDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnEditGroupDescription.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;btnEditGroupDescription.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupDescription.Name" xml:space="preserve">
+    <value>tbxGroupDescription</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupDescription.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupDescription.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;lblGroupName.Name" xml:space="preserve">
+    <value>lblGroupName</value>
+  </data>
+  <data name="&gt;&gt;lblGroupName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblGroupName.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;lblGroupName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;lblGroupDescription.Name" xml:space="preserve">
+    <value>lblGroupDescription</value>
+  </data>
+  <data name="&gt;&gt;lblGroupDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblGroupDescription.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;lblGroupDescription.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupName.Name" xml:space="preserve">
+    <value>tbxGroupName</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupName.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupName.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="groupPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>228, 2</value>
+  </data>
+  <data name="groupPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="groupPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>276, 332</value>
+  </data>
+  <data name="groupPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="groupPanel.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;groupPanel.Name" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;groupPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupPanel.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="btnEditGroupDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnEditGroupDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnEditGroupDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>250, 27</value>
+  </data>
+  <data name="btnEditGroupDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>25, 23</value>
+  </data>
+  <data name="btnEditGroupDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="btnEditGroupDescription.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="&gt;&gt;btnEditGroupDescription.Name" xml:space="preserve">
+    <value>btnEditGroupDescription</value>
+  </data>
+  <data name="&gt;&gt;btnEditGroupDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnEditGroupDescription.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;btnEditGroupDescription.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tbxGroupDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbxGroupDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>80, 29</value>
+  </data>
+  <data name="tbxGroupDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 20</value>
+  </data>
+  <data name="tbxGroupDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupDescription.Name" xml:space="preserve">
+    <value>tbxGroupDescription</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupDescription.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupDescription.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblGroupName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblGroupName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblGroupName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 6</value>
+  </data>
+  <data name="lblGroupName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 13</value>
+  </data>
+  <data name="lblGroupName.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="lblGroupName.Text" xml:space="preserve">
+    <value>&amp;Name</value>
+  </data>
+  <data name="&gt;&gt;lblGroupName.Name" xml:space="preserve">
+    <value>lblGroupName</value>
+  </data>
+  <data name="&gt;&gt;lblGroupName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblGroupName.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;lblGroupName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="lblGroupDescription.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblGroupDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblGroupDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 32</value>
+  </data>
+  <data name="lblGroupDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 13</value>
+  </data>
+  <data name="lblGroupDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="lblGroupDescription.Text" xml:space="preserve">
+    <value>&amp;Description</value>
+  </data>
+  <data name="&gt;&gt;lblGroupDescription.Name" xml:space="preserve">
+    <value>lblGroupDescription</value>
+  </data>
+  <data name="&gt;&gt;lblGroupDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblGroupDescription.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;lblGroupDescription.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tbxGroupName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbxGroupName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>80, 3</value>
+  </data>
+  <data name="tbxGroupName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>195, 20</value>
+  </data>
+  <data name="tbxGroupName.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupName.Name" xml:space="preserve">
+    <value>tbxGroupName</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupName.Parent" xml:space="preserve">
+    <value>groupPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxGroupName.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="definitionPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;chkVerbalizeDefaultValue.Name" xml:space="preserve">
+    <value>chkVerbalizeDefaultValue</value>
+  </data>
+  <data name="&gt;&gt;chkVerbalizeDefaultValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkVerbalizeDefaultValue.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;chkVerbalizeDefaultValue.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;cmbxDefinitionDataType.Name" xml:space="preserve">
+    <value>cmbxDefinitionDataType</value>
+  </data>
+  <data name="&gt;&gt;cmbxDefinitionDataType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbxDefinitionDataType.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;cmbxDefinitionDataType.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;btnEditDefinitionDescription.Name" xml:space="preserve">
+    <value>btnEditDefinitionDescription</value>
+  </data>
+  <data name="&gt;&gt;btnEditDefinitionDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnEditDefinitionDescription.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;btnEditDefinitionDescription.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionName.Name" xml:space="preserve">
+    <value>lblDefinitionName</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionName.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionName.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;groupBoxModelElements.Name" xml:space="preserve">
+    <value>groupBoxModelElements</value>
+  </data>
+  <data name="&gt;&gt;groupBoxModelElements.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBoxModelElements.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;groupBoxModelElements.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionName.Name" xml:space="preserve">
+    <value>tbxDefinitionName</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionName.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionName.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;btnEditCustomEnum.Name" xml:space="preserve">
+    <value>btnEditCustomEnum</value>
+  </data>
+  <data name="&gt;&gt;btnEditCustomEnum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnEditCustomEnum.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;btnEditCustomEnum.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDescription.Name" xml:space="preserve">
+    <value>lblDefinitionDescription</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDescription.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDescription.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCustomEnum.Name" xml:space="preserve">
+    <value>tbxDefinitionCustomEnum</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCustomEnum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCustomEnum.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCustomEnum.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDescription.Name" xml:space="preserve">
+    <value>tbxDefinitionDescription</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDescription.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDescription.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;lblCustomEnum.Name" xml:space="preserve">
+    <value>lblCustomEnum</value>
+  </data>
+  <data name="&gt;&gt;lblCustomEnum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCustomEnum.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblCustomEnum.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDataType.Name" xml:space="preserve">
+    <value>lblDefinitionDataType</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDataType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDataType.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDataType.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDefaultValue.Name" xml:space="preserve">
+    <value>tbxDefinitionDefaultValue</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDefaultValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDefaultValue.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDefaultValue.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionCategory.Name" xml:space="preserve">
+    <value>lblDefinitionCategory</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionCategory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionCategory.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionCategory.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDefaultValue.Name" xml:space="preserve">
+    <value>lblDefinitionDefaultValue</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDefaultValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDefaultValue.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDefaultValue.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCategory.Name" xml:space="preserve">
+    <value>tbxDefinitionCategory</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCategory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCategory.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCategory.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="definitionPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>228, 2</value>
+  </data>
+  <data name="definitionPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="definitionPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>276, 332</value>
+  </data>
+  <data name="definitionPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="definitionPanel.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;definitionPanel.Name" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;definitionPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;definitionPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;definitionPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lblDefinitionName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDefinitionName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDefinitionName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 6</value>
+  </data>
+  <data name="lblDefinitionName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="lblDefinitionName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 13</value>
+  </data>
+  <data name="lblDefinitionName.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="lblDefinitionName.Text" xml:space="preserve">
+    <value>&amp;Name</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionName.Name" xml:space="preserve">
+    <value>lblDefinitionName</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionName.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionName.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tbxDefinitionName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbxDefinitionName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 3</value>
+  </data>
+  <data name="tbxDefinitionName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tbxDefinitionName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 20</value>
+  </data>
+  <data name="tbxDefinitionName.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionName.Name" xml:space="preserve">
+    <value>tbxDefinitionName</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionName.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionName.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="lblDefinitionDescription.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDefinitionDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDefinitionDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 32</value>
+  </data>
+  <data name="lblDefinitionDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="lblDefinitionDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 13</value>
+  </data>
+  <data name="lblDefinitionDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="lblDefinitionDescription.Text" xml:space="preserve">
+    <value>&amp;Description</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDescription.Name" xml:space="preserve">
+    <value>lblDefinitionDescription</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDescription.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDescription.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="tbxDefinitionDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbxDefinitionDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 29</value>
+  </data>
+  <data name="tbxDefinitionDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tbxDefinitionDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 20</value>
+  </data>
+  <data name="tbxDefinitionDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDescription.Name" xml:space="preserve">
+    <value>tbxDefinitionDescription</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDescription.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDescription.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="lblDefinitionDataType.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDefinitionDataType.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDefinitionDataType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 84</value>
+  </data>
+  <data name="lblDefinitionDataType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="lblDefinitionDataType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 13</value>
+  </data>
+  <data name="lblDefinitionDataType.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="lblDefinitionDataType.Text" xml:space="preserve">
+    <value>Data &amp;Type</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDataType.Name" xml:space="preserve">
+    <value>lblDefinitionDataType</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDataType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDataType.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDataType.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="lblDefinitionCategory.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDefinitionCategory.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDefinitionCategory.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 58</value>
+  </data>
+  <data name="lblDefinitionCategory.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="lblDefinitionCategory.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 13</value>
+  </data>
+  <data name="lblDefinitionCategory.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="lblDefinitionCategory.Text" xml:space="preserve">
+    <value>&amp;Category</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionCategory.Name" xml:space="preserve">
+    <value>lblDefinitionCategory</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionCategory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionCategory.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionCategory.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="tbxDefinitionCategory.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbxDefinitionCategory.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 55</value>
+  </data>
+  <data name="tbxDefinitionCategory.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tbxDefinitionCategory.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 20</value>
+  </data>
+  <data name="tbxDefinitionCategory.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCategory.Name" xml:space="preserve">
+    <value>tbxDefinitionCategory</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCategory.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCategory.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCategory.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="cmbxDefinitionDataType.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="cmbxDefinitionDataType.Items" xml:space="preserve">
+    <value>String</value>
+  </data>
+  <data name="cmbxDefinitionDataType.Items1" xml:space="preserve">
+    <value>Integer</value>
+  </data>
+  <data name="cmbxDefinitionDataType.Items2" xml:space="preserve">
+    <value>Decimal</value>
+  </data>
+  <data name="cmbxDefinitionDataType.Items3" xml:space="preserve">
+    <value>DateTime</value>
+  </data>
+  <data name="cmbxDefinitionDataType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 81</value>
+  </data>
+  <data name="cmbxDefinitionDataType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="cmbxDefinitionDataType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 21</value>
+  </data>
+  <data name="cmbxDefinitionDataType.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;cmbxDefinitionDataType.Name" xml:space="preserve">
+    <value>cmbxDefinitionDataType</value>
+  </data>
+  <data name="&gt;&gt;cmbxDefinitionDataType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cmbxDefinitionDataType.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;cmbxDefinitionDataType.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lblDefinitionDefaultValue.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblDefinitionDefaultValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblDefinitionDefaultValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 111</value>
+  </data>
+  <data name="lblDefinitionDefaultValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="lblDefinitionDefaultValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 13</value>
+  </data>
+  <data name="lblDefinitionDefaultValue.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="lblDefinitionDefaultValue.Text" xml:space="preserve">
+    <value>Default &amp;Value</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDefaultValue.Name" xml:space="preserve">
+    <value>lblDefinitionDefaultValue</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDefaultValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDefaultValue.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblDefinitionDefaultValue.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="tbxDefinitionDefaultValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbxDefinitionDefaultValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 108</value>
+  </data>
+  <data name="tbxDefinitionDefaultValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tbxDefinitionDefaultValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 20</value>
+  </data>
+  <data name="tbxDefinitionDefaultValue.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDefaultValue.Name" xml:space="preserve">
+    <value>tbxDefinitionDefaultValue</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDefaultValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDefaultValue.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionDefaultValue.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="lblCustomEnum.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblCustomEnum.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblCustomEnum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 137</value>
+  </data>
+  <data name="lblCustomEnum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="lblCustomEnum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 13</value>
+  </data>
+  <data name="lblCustomEnum.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="lblCustomEnum.Text" xml:space="preserve">
+    <value>Custom Enum</value>
+  </data>
+  <data name="lblCustomEnum.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;lblCustomEnum.Name" xml:space="preserve">
+    <value>lblCustomEnum</value>
+  </data>
+  <data name="&gt;&gt;lblCustomEnum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblCustomEnum.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;lblCustomEnum.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="tbxDefinitionCustomEnum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="tbxDefinitionCustomEnum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 134</value>
+  </data>
+  <data name="tbxDefinitionCustomEnum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tbxDefinitionCustomEnum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 20</value>
+  </data>
+  <data name="tbxDefinitionCustomEnum.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="tbxDefinitionCustomEnum.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCustomEnum.Name" xml:space="preserve">
+    <value>tbxDefinitionCustomEnum</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCustomEnum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCustomEnum.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;tbxDefinitionCustomEnum.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="btnEditCustomEnum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnEditCustomEnum.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnEditCustomEnum.Location" type="System.Drawing.Point, System.Drawing">
+    <value>251, 132</value>
+  </data>
+  <data name="btnEditCustomEnum.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="btnEditCustomEnum.Size" type="System.Drawing.Size, System.Drawing">
+    <value>25, 23</value>
+  </data>
+  <data name="btnEditCustomEnum.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="btnEditCustomEnum.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="btnEditCustomEnum.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;btnEditCustomEnum.Name" xml:space="preserve">
+    <value>btnEditCustomEnum</value>
+  </data>
+  <data name="&gt;&gt;btnEditCustomEnum.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnEditCustomEnum.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;btnEditCustomEnum.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="groupBoxModelElements.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;tvModelElements.Name" xml:space="preserve">
+    <value>tvModelElements</value>
+  </data>
+  <data name="&gt;&gt;tvModelElements.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tvModelElements.Parent" xml:space="preserve">
+    <value>groupBoxModelElements</value>
+  </data>
+  <data name="&gt;&gt;tvModelElements.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBoxModelElements.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 160</value>
+  </data>
+  <data name="groupBoxModelElements.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="groupBoxModelElements.Size" type="System.Drawing.Size, System.Drawing">
+    <value>274, 169</value>
+  </data>
+  <data name="groupBoxModelElements.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="groupBoxModelElements.Text" xml:space="preserve">
+    <value>&amp;Model Elements</value>
+  </data>
+  <data name="&gt;&gt;groupBoxModelElements.Name" xml:space="preserve">
+    <value>groupBoxModelElements</value>
+  </data>
+  <data name="&gt;&gt;groupBoxModelElements.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBoxModelElements.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;groupBoxModelElements.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tvModelElements.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="tvModelElements.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 15</value>
+  </data>
+  <data name="tvModelElements.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tvModelElements.Nodes" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQoAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
+        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQJY2hp
+        bGRyZW4wCWNoaWxkcmVuMQEBAAABAAEABAQBCAgIHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2Rl
+        AgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQIAAAACAAAABgMAAAAFTm9kZTAGBAAAAAVO
+        b2RlMAD/////BgUAAAAA/////wkFAAAAAgAAAAkGAAAACQcAAAAFBgAAAB1TeXN0ZW0uV2luZG93cy5G
+        b3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4CEltYWdlS2V5ElNl
+        bGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAAAQABAAEICAgCAAAA
+        BggAAAAFTm9kZTUGCQAAAAVOb2RlNQD/////CQUAAAD/////CQUAAAAAAAAABQcAAAAdU3lzdGVtLldp
+        bmRvd3MuRm9ybXMuVHJlZU5vZGUIAAAABFRleHQETmFtZQlJc0NoZWNrZWQKSW1hZ2VJbmRleAhJbWFn
+        ZUtleRJTZWxlY3RlZEltYWdlSW5kZXgQU2VsZWN0ZWRJbWFnZUtleQpDaGlsZENvdW50AQEAAAEAAQAB
+        CAgIAgAAAAYLAAAABU5vZGU2BgwAAAAFTm9kZTYA/////wkFAAAA/////wkFAAAAAAAAAAs=
+</value>
+  </data>
+  <data name="tvModelElements.Nodes1" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQoAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
+        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQJY2hp
+        bGRyZW4wCWNoaWxkcmVuMQEBAAABAAEABAQBCAgIHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2Rl
+        AgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQIAAAACAAAABgMAAAAFTm9kZTkGBAAAAAVO
+        b2RlOQD/////BgUAAAAA/////wkFAAAAAgAAAAkGAAAACQcAAAAFBgAAAB1TeXN0ZW0uV2luZG93cy5G
+        b3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4CEltYWdlS2V5ElNl
+        bGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAAAQABAAEICAgCAAAA
+        BggAAAAGTm9kZTEwBgkAAAAGTm9kZTEwAP////8JBQAAAP////8JBQAAAAAAAAAFBwAAAB1TeXN0ZW0u
+        V2luZG93cy5Gb3Jtcy5UcmVlTm9kZQgAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4CElt
+        YWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQBAQAAAQAB
+        AAEICAgCAAAABgsAAAAGTm9kZTExBgwAAAAGTm9kZTExAP////8JBQAAAP////8JBQAAAAAAAAAL
+</value>
+  </data>
+  <data name="tvModelElements.Nodes2" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAAB1TeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQoAAAAEVGV4dAROYW1lCUlzQ2hlY2tlZApJbWFnZUluZGV4
+        CEltYWdlS2V5ElNlbGVjdGVkSW1hZ2VJbmRleBBTZWxlY3RlZEltYWdlS2V5CkNoaWxkQ291bnQJY2hp
+        bGRyZW4wCWNoaWxkcmVuMQEBAAABAAEABAQBCAgIHVN5c3RlbS5XaW5kb3dzLkZvcm1zLlRyZWVOb2Rl
+        AgAAAB1TeXN0ZW0uV2luZG93cy5Gb3Jtcy5UcmVlTm9kZQIAAAACAAAABgMAAAAGTm9kZTEyBgQAAAAG
+        Tm9kZTEyAP////8GBQAAAAD/////CQUAAAACAAAACQYAAAAJBwAAAAUGAAAAHVN5c3RlbS5XaW5kb3dz
+        LkZvcm1zLlRyZWVOb2RlCAAAAARUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgISW1hZ2VLZXkS
+        U2VsZWN0ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAAABAAEAAQgICAIA
+        AAAGCAAAAAZOb2RlMTMGCQAAAAZOb2RlMTMA/////wkFAAAA/////wkFAAAAAAAAAAUHAAAAHVN5c3Rl
+        bS5XaW5kb3dzLkZvcm1zLlRyZWVOb2RlCAAAAARUZXh0BE5hbWUJSXNDaGVja2VkCkltYWdlSW5kZXgI
+        SW1hZ2VLZXkSU2VsZWN0ZWRJbWFnZUluZGV4EFNlbGVjdGVkSW1hZ2VLZXkKQ2hpbGRDb3VudAEBAAAB
+        AAEAAQgICAIAAAAGCwAAAAZOb2RlMTQGDAAAAAZOb2RlMTQA/////wkFAAAA/////wkFAAAAAAAAAAs=
+</value>
+  </data>
+  <data name="tvModelElements.Size" type="System.Drawing.Size, System.Drawing">
+    <value>268, 150</value>
+  </data>
+  <data name="tvModelElements.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tvModelElements.Name" xml:space="preserve">
+    <value>tvModelElements</value>
+  </data>
+  <data name="&gt;&gt;tvModelElements.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tvModelElements.Parent" xml:space="preserve">
+    <value>groupBoxModelElements</value>
+  </data>
+  <data name="&gt;&gt;tvModelElements.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnEditDefinitionDescription.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnEditDefinitionDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnEditDefinitionDescription.Location" type="System.Drawing.Point, System.Drawing">
+    <value>251, 27</value>
+  </data>
+  <data name="btnEditDefinitionDescription.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="btnEditDefinitionDescription.Size" type="System.Drawing.Size, System.Drawing">
+    <value>25, 23</value>
+  </data>
+  <data name="btnEditDefinitionDescription.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="btnEditDefinitionDescription.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="&gt;&gt;btnEditDefinitionDescription.Name" xml:space="preserve">
+    <value>btnEditDefinitionDescription</value>
+  </data>
+  <data name="&gt;&gt;btnEditDefinitionDescription.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnEditDefinitionDescription.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;btnEditDefinitionDescription.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="chkVerbalizeDefaultValue.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="chkVerbalizeDefaultValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="chkVerbalizeDefaultValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 137</value>
+  </data>
+  <data name="chkVerbalizeDefaultValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="chkVerbalizeDefaultValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 17</value>
+  </data>
+  <data name="chkVerbalizeDefaultValue.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="chkVerbalizeDefaultValue.Text" xml:space="preserve">
+    <value>Ver&amp;balize Default Value</value>
+  </data>
+  <data name="&gt;&gt;chkVerbalizeDefaultValue.Name" xml:space="preserve">
+    <value>chkVerbalizeDefaultValue</value>
+  </data>
+  <data name="&gt;&gt;chkVerbalizeDefaultValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chkVerbalizeDefaultValue.Parent" xml:space="preserve">
+    <value>definitionPanel</value>
+  </data>
+  <data name="&gt;&gt;chkVerbalizeDefaultValue.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>508, 375</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>434, 356</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Custom Properties</value>
+  </data>
+  <data name="&gt;&gt;tsbAddDefinition.Name" xml:space="preserve">
+    <value>tsbAddDefinition</value>
+  </data>
+  <data name="&gt;&gt;tsbAddDefinition.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Name" xml:space="preserve">
+    <value>toolStripSeparator1</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbDelete.Name" xml:space="preserve">
+    <value>tsbDelete</value>
+  </data>
+  <data name="&gt;&gt;tsbDelete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbDefaultToggle.Name" xml:space="preserve">
+    <value>tsbDefaultToggle</value>
+  </data>
+  <data name="&gt;&gt;tsbDefaultToggle.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbAddGroup.Name" xml:space="preserve">
+    <value>tsbAddGroup</value>
+  </data>
+  <data name="&gt;&gt;tsbAddGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Name" xml:space="preserve">
+    <value>toolStripSeparator2</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbAddGroupToMachine.Name" xml:space="preserve">
+    <value>tsbAddGroupToMachine</value>
+  </data>
+  <data name="&gt;&gt;tsbAddGroupToMachine.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsbAddGroupToModel.Name" xml:space="preserve">
+    <value>tsbAddGroupToModel</value>
+  </data>
+  <data name="&gt;&gt;tsbAddGroupToModel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>CustomPropertiesManager</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

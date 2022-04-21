@@ -29,8 +29,6 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomPropertiesManager));
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Machine");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Model");
 			this.tsbAddDefinition = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbDelete = new System.Windows.Forms.ToolStripButton();
@@ -44,83 +42,81 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 			this.tsbAddGroupToModel = new System.Windows.Forms.ToolStripButton();
 			this.btnSave = new System.Windows.Forms.Button();
 			this.btnCancel = new System.Windows.Forms.Button();
-			this.definitionEditor1 = new ORMSolutions.ORMArchitect.CustomProperties.DefinitionEditor();
-			this.groupEditor1 = new ORMSolutions.ORMArchitect.CustomProperties.GroupEditor();
+			this.groupPanel = new System.Windows.Forms.Panel();
+			this.btnEditGroupDescription = new System.Windows.Forms.Button();
+			this.tbxGroupDescription = new System.Windows.Forms.TextBox();
+			this.lblGroupName = new System.Windows.Forms.Label();
+			this.lblGroupDescription = new System.Windows.Forms.Label();
+			this.tbxGroupName = new System.Windows.Forms.TextBox();
+			this.definitionPanel = new System.Windows.Forms.Panel();
+			this.lblDefinitionName = new System.Windows.Forms.Label();
+			this.tbxDefinitionName = new System.Windows.Forms.TextBox();
+			this.lblDefinitionDescription = new System.Windows.Forms.Label();
+			this.tbxDefinitionDescription = new System.Windows.Forms.TextBox();
+			this.lblDefinitionDataType = new System.Windows.Forms.Label();
+			this.lblDefinitionCategory = new System.Windows.Forms.Label();
+			this.tbxDefinitionCategory = new System.Windows.Forms.TextBox();
+			this.cmbxDefinitionDataType = new System.Windows.Forms.ComboBox();
+			this.lblDefinitionDefaultValue = new System.Windows.Forms.Label();
+			this.tbxDefinitionDefaultValue = new System.Windows.Forms.TextBox();
+			this.lblCustomEnum = new System.Windows.Forms.Label();
+			this.tbxDefinitionCustomEnum = new System.Windows.Forms.TextBox();
+			this.btnEditCustomEnum = new System.Windows.Forms.Button();
+			this.groupBoxModelElements = new System.Windows.Forms.GroupBox();
+			this.tvModelElements = new System.Windows.Forms.TreeView();
+			this.btnEditDefinitionDescription = new System.Windows.Forms.Button();
+			this.chkVerbalizeDefaultValue = new System.Windows.Forms.CheckBox();
 			this.groupBox1.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
+			this.groupPanel.SuspendLayout();
+			this.definitionPanel.SuspendLayout();
+			this.groupBoxModelElements.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tsbAddDefinition
 			// 
 			this.tsbAddDefinition.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.tsbAddDefinition.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddDefinition.Image")));
-			this.tsbAddDefinition.ImageTransparentColor = System.Drawing.Color.Magenta;
+			resources.ApplyResources(this.tsbAddDefinition, "tsbAddDefinition");
 			this.tsbAddDefinition.Name = "tsbAddDefinition";
-			this.tsbAddDefinition.Size = new System.Drawing.Size(23, 22);
-			this.tsbAddDefinition.Text = "Add Property";
 			this.tsbAddDefinition.Click += new System.EventHandler(this.tsbAddDefinition_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+			resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
 			// 
 			// tsbDelete
 			// 
 			this.tsbDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.tsbDelete.Enabled = false;
-			this.tsbDelete.Image = ((System.Drawing.Image)(resources.GetObject("tsbDelete.Image")));
-			this.tsbDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+			resources.ApplyResources(this.tsbDelete, "tsbDelete");
 			this.tsbDelete.Name = "tsbDelete";
-			this.tsbDelete.Size = new System.Drawing.Size(23, 22);
-			this.tsbDelete.Text = "Delete selected group or definition";
 			this.tsbDelete.Click += new System.EventHandler(this.tsbDelete_Click);
 			// 
 			// tsbDefaultToggle
 			// 
 			this.tsbDefaultToggle.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.tsbDefaultToggle.Enabled = false;
-			this.tsbDefaultToggle.Image = ((System.Drawing.Image)(resources.GetObject("tsbDefaultToggle.Image")));
-			this.tsbDefaultToggle.ImageTransparentColor = System.Drawing.Color.Magenta;
+			resources.ApplyResources(this.tsbDefaultToggle, "tsbDefaultToggle");
 			this.tsbDefaultToggle.Name = "tsbDefaultToggle";
-			this.tsbDefaultToggle.Size = new System.Drawing.Size(23, 22);
-			this.tsbDefaultToggle.Text = "Toggle selected group\'s default status";
 			this.tsbDefaultToggle.Click += new System.EventHandler(this.tsbDefaultToggle_Click);
 			// 
 			// tvCustomProperties
 			// 
-			this.tvCustomProperties.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)));
+			resources.ApplyResources(this.tvCustomProperties, "tvCustomProperties");
 			this.tvCustomProperties.HideSelection = false;
-			this.tvCustomProperties.Location = new System.Drawing.Point(4, 53);
-			this.tvCustomProperties.Margin = new System.Windows.Forms.Padding(4);
 			this.tvCustomProperties.Name = "tvCustomProperties";
-			treeNode1.Name = "Node0";
-			treeNode1.Text = "Machine";
-			treeNode2.Name = "Node1";
-			treeNode2.Text = "Model";
 			this.tvCustomProperties.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-			this.tvCustomProperties.Size = new System.Drawing.Size(284, 395);
-			this.tvCustomProperties.TabIndex = 1;
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("tvCustomProperties.Nodes"))),
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("tvCustomProperties.Nodes1")))});
 			this.tvCustomProperties.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvCustomProperties_AfterSelect);
 			this.tvCustomProperties.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tvCustomProperties_KeyUp);
 			// 
 			// groupBox1
 			// 
-			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)));
+			resources.ApplyResources(this.groupBox1, "groupBox1");
 			this.groupBox1.Controls.Add(this.tvCustomProperties);
 			this.groupBox1.Controls.Add(this.toolStrip1);
-			this.groupBox1.Location = new System.Drawing.Point(2, 3);
-			this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-			this.groupBox1.Size = new System.Drawing.Size(293, 456);
-			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "&Properties";
 			// 
 			// toolStrip1
 			// 
@@ -134,122 +130,252 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
             this.tsbAddGroupToModel,
             this.toolStripSeparator1,
             this.tsbDelete});
-			this.toolStrip1.Location = new System.Drawing.Point(4, 19);
+			resources.ApplyResources(this.toolStrip1, "toolStrip1");
 			this.toolStrip1.Name = "toolStrip1";
-			this.toolStrip1.Size = new System.Drawing.Size(285, 25);
-			this.toolStrip1.TabIndex = 0;
-			this.toolStrip1.Text = "toolStrip1";
 			// 
 			// tsbAddGroup
 			// 
 			this.tsbAddGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.tsbAddGroup.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddGroup.Image")));
-			this.tsbAddGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
+			resources.ApplyResources(this.tsbAddGroup, "tsbAddGroup");
 			this.tsbAddGroup.Name = "tsbAddGroup";
-			this.tsbAddGroup.Size = new System.Drawing.Size(23, 22);
-			this.tsbAddGroup.Text = "Add Group";
 			this.tsbAddGroup.Click += new System.EventHandler(this.tsbAddGroup_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
 			// 
 			// tsbAddGroupToMachine
 			// 
 			this.tsbAddGroupToMachine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.tsbAddGroupToMachine.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddGroupToMachine.Image")));
-			this.tsbAddGroupToMachine.ImageTransparentColor = System.Drawing.Color.Magenta;
+			resources.ApplyResources(this.tsbAddGroupToMachine, "tsbAddGroupToMachine");
 			this.tsbAddGroupToMachine.Name = "tsbAddGroupToMachine";
-			this.tsbAddGroupToMachine.Size = new System.Drawing.Size(23, 22);
-			this.tsbAddGroupToMachine.Text = "Add Group to Machine";
 			this.tsbAddGroupToMachine.Click += new System.EventHandler(this.tsbAddGroupToMachine_Click);
 			// 
 			// tsbAddGroupToModel
 			// 
 			this.tsbAddGroupToModel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.tsbAddGroupToModel.Image = ((System.Drawing.Image)(resources.GetObject("tsbAddGroupToModel.Image")));
-			this.tsbAddGroupToModel.ImageTransparentColor = System.Drawing.Color.Magenta;
+			resources.ApplyResources(this.tsbAddGroupToModel, "tsbAddGroupToModel");
 			this.tsbAddGroupToModel.Name = "tsbAddGroupToModel";
-			this.tsbAddGroupToModel.Size = new System.Drawing.Size(23, 22);
-			this.tsbAddGroupToModel.Text = "Add Group to Model";
 			this.tsbAddGroupToModel.Click += new System.EventHandler(this.tsbAddGroupToModel_Click);
 			// 
 			// btnSave
 			// 
-			this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSave.Location = new System.Drawing.Point(444, 421);
-			this.btnSave.Margin = new System.Windows.Forms.Padding(4);
+			resources.ApplyResources(this.btnSave, "btnSave");
 			this.btnSave.Name = "btnSave";
-			this.btnSave.Size = new System.Drawing.Size(100, 28);
-			this.btnSave.TabIndex = 3;
-			this.btnSave.Text = "Save";
 			this.btnSave.UseVisualStyleBackColor = true;
 			this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 			// 
 			// btnCancel
 			// 
-			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			resources.ApplyResources(this.btnCancel, "btnCancel");
 			this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnCancel.Location = new System.Drawing.Point(552, 421);
-			this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
 			this.btnCancel.Name = "btnCancel";
-			this.btnCancel.Size = new System.Drawing.Size(100, 28);
-			this.btnCancel.TabIndex = 4;
-			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
 			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
-			// definitionEditor1
+			// groupPanel
 			// 
-			this.definitionEditor1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
-			this.definitionEditor1.Location = new System.Drawing.Point(304, 3);
-			this.definitionEditor1.Margin = new System.Windows.Forms.Padding(5);
-			this.definitionEditor1.Name = "definitionEditor1";
-			this.definitionEditor1.Size = new System.Drawing.Size(368, 409);
-			this.definitionEditor1.TabIndex = 1;
-			this.definitionEditor1.Visible = false;
-			this.definitionEditor1.NameChanged += new ORMSolutions.ORMArchitect.CustomProperties.NameChangedHandler(this.editor_NameChanged);
+			resources.ApplyResources(this.groupPanel, "groupPanel");
+			this.groupPanel.Controls.Add(this.btnEditGroupDescription);
+			this.groupPanel.Controls.Add(this.tbxGroupDescription);
+			this.groupPanel.Controls.Add(this.lblGroupName);
+			this.groupPanel.Controls.Add(this.lblGroupDescription);
+			this.groupPanel.Controls.Add(this.tbxGroupName);
+			this.groupPanel.Name = "groupPanel";
 			// 
-			// groupEditor1
+			// btnEditGroupDescription
 			// 
-			this.groupEditor1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-						| System.Windows.Forms.AnchorStyles.Left)
-						| System.Windows.Forms.AnchorStyles.Right)));
-			this.groupEditor1.GroupNode = null;
-			this.groupEditor1.Location = new System.Drawing.Point(304, 3);
-			this.groupEditor1.Margin = new System.Windows.Forms.Padding(5);
-			this.groupEditor1.Name = "groupEditor1";
-			this.groupEditor1.Size = new System.Drawing.Size(368, 394);
-			this.groupEditor1.TabIndex = 2;
-			this.groupEditor1.Visible = false;
-			this.groupEditor1.NameChanged += new ORMSolutions.ORMArchitect.CustomProperties.NameChangedHandler(this.editor_NameChanged);
+			resources.ApplyResources(this.btnEditGroupDescription, "btnEditGroupDescription");
+			this.btnEditGroupDescription.Name = "btnEditGroupDescription";
+			this.btnEditGroupDescription.UseVisualStyleBackColor = true;
+			this.btnEditGroupDescription.Click += new System.EventHandler(this.btnEditGroupDescription_Click);
+			// 
+			// tbxGroupDescription
+			// 
+			resources.ApplyResources(this.tbxGroupDescription, "tbxGroupDescription");
+			this.tbxGroupDescription.Name = "tbxGroupDescription";
+			this.tbxGroupDescription.Tag = "description";
+			this.tbxGroupDescription.TextChanged += new System.EventHandler(this.tbxGroupTextChanged);
+			// 
+			// lblGroupName
+			// 
+			resources.ApplyResources(this.lblGroupName, "lblGroupName");
+			this.lblGroupName.Name = "lblGroupName";
+			// 
+			// lblGroupDescription
+			// 
+			resources.ApplyResources(this.lblGroupDescription, "lblGroupDescription");
+			this.lblGroupDescription.Name = "lblGroupDescription";
+			// 
+			// tbxGroupName
+			// 
+			resources.ApplyResources(this.tbxGroupName, "tbxGroupName");
+			this.tbxGroupName.Name = "tbxGroupName";
+			this.tbxGroupName.Tag = "name";
+			this.tbxGroupName.TextChanged += new System.EventHandler(this.tbxGroupTextChanged);
+			// 
+			// definitionPanel
+			// 
+			resources.ApplyResources(this.definitionPanel, "definitionPanel");
+			this.definitionPanel.Controls.Add(this.chkVerbalizeDefaultValue);
+			this.definitionPanel.Controls.Add(this.cmbxDefinitionDataType);
+			this.definitionPanel.Controls.Add(this.btnEditDefinitionDescription);
+			this.definitionPanel.Controls.Add(this.lblDefinitionName);
+			this.definitionPanel.Controls.Add(this.groupBoxModelElements);
+			this.definitionPanel.Controls.Add(this.tbxDefinitionName);
+			this.definitionPanel.Controls.Add(this.btnEditCustomEnum);
+			this.definitionPanel.Controls.Add(this.lblDefinitionDescription);
+			this.definitionPanel.Controls.Add(this.tbxDefinitionCustomEnum);
+			this.definitionPanel.Controls.Add(this.tbxDefinitionDescription);
+			this.definitionPanel.Controls.Add(this.lblCustomEnum);
+			this.definitionPanel.Controls.Add(this.lblDefinitionDataType);
+			this.definitionPanel.Controls.Add(this.tbxDefinitionDefaultValue);
+			this.definitionPanel.Controls.Add(this.lblDefinitionCategory);
+			this.definitionPanel.Controls.Add(this.lblDefinitionDefaultValue);
+			this.definitionPanel.Controls.Add(this.tbxDefinitionCategory);
+			this.definitionPanel.Name = "definitionPanel";
+			// 
+			// lblDefinitionName
+			// 
+			resources.ApplyResources(this.lblDefinitionName, "lblDefinitionName");
+			this.lblDefinitionName.Name = "lblDefinitionName";
+			// 
+			// tbxDefinitionName
+			// 
+			resources.ApplyResources(this.tbxDefinitionName, "tbxDefinitionName");
+			this.tbxDefinitionName.Name = "tbxDefinitionName";
+			this.tbxDefinitionName.Tag = "name";
+			this.tbxDefinitionName.TextChanged += new System.EventHandler(this.tbx_DefinitionTextChanged);
+			// 
+			// lblDefinitionDescription
+			// 
+			resources.ApplyResources(this.lblDefinitionDescription, "lblDefinitionDescription");
+			this.lblDefinitionDescription.Name = "lblDefinitionDescription";
+			// 
+			// tbxDefinitionDescription
+			// 
+			resources.ApplyResources(this.tbxDefinitionDescription, "tbxDefinitionDescription");
+			this.tbxDefinitionDescription.Name = "tbxDefinitionDescription";
+			this.tbxDefinitionDescription.Tag = "description";
+			this.tbxDefinitionDescription.TextChanged += new System.EventHandler(this.tbx_DefinitionTextChanged);
+			// 
+			// lblDefinitionDataType
+			// 
+			resources.ApplyResources(this.lblDefinitionDataType, "lblDefinitionDataType");
+			this.lblDefinitionDataType.Name = "lblDefinitionDataType";
+			// 
+			// lblDefinitionCategory
+			// 
+			resources.ApplyResources(this.lblDefinitionCategory, "lblDefinitionCategory");
+			this.lblDefinitionCategory.Name = "lblDefinitionCategory";
+			// 
+			// tbxDefinitionCategory
+			// 
+			resources.ApplyResources(this.tbxDefinitionCategory, "tbxDefinitionCategory");
+			this.tbxDefinitionCategory.Name = "tbxDefinitionCategory";
+			this.tbxDefinitionCategory.Tag = "category";
+			this.tbxDefinitionCategory.TextChanged += new System.EventHandler(this.tbx_DefinitionTextChanged);
+			// 
+			// cmbxDefinitionDataType
+			// 
+			resources.ApplyResources(this.cmbxDefinitionDataType, "cmbxDefinitionDataType");
+			this.cmbxDefinitionDataType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbxDefinitionDataType.FormattingEnabled = true;
+			this.cmbxDefinitionDataType.Items.AddRange(new object[] {
+            resources.GetString("cmbxDefinitionDataType.Items"),
+            resources.GetString("cmbxDefinitionDataType.Items1"),
+            resources.GetString("cmbxDefinitionDataType.Items2"),
+            resources.GetString("cmbxDefinitionDataType.Items3")});
+			this.cmbxDefinitionDataType.Name = "cmbxDefinitionDataType";
+			this.cmbxDefinitionDataType.SelectedIndexChanged += new System.EventHandler(this.cmbxDataType_SelectedIndexChanged);
+			// 
+			// lblDefinitionDefaultValue
+			// 
+			resources.ApplyResources(this.lblDefinitionDefaultValue, "lblDefinitionDefaultValue");
+			this.lblDefinitionDefaultValue.Name = "lblDefinitionDefaultValue";
+			// 
+			// tbxDefinitionDefaultValue
+			// 
+			resources.ApplyResources(this.tbxDefinitionDefaultValue, "tbxDefinitionDefaultValue");
+			this.tbxDefinitionDefaultValue.Name = "tbxDefinitionDefaultValue";
+			this.tbxDefinitionDefaultValue.Tag = "defaultValue";
+			this.tbxDefinitionDefaultValue.TextChanged += new System.EventHandler(this.tbx_DefinitionTextChanged);
+			// 
+			// lblCustomEnum
+			// 
+			resources.ApplyResources(this.lblCustomEnum, "lblCustomEnum");
+			this.lblCustomEnum.Name = "lblCustomEnum";
+			// 
+			// tbxDefinitionCustomEnum
+			// 
+			resources.ApplyResources(this.tbxDefinitionCustomEnum, "tbxDefinitionCustomEnum");
+			this.tbxDefinitionCustomEnum.Name = "tbxDefinitionCustomEnum";
+			// 
+			// btnEditCustomEnum
+			// 
+			resources.ApplyResources(this.btnEditCustomEnum, "btnEditCustomEnum");
+			this.btnEditCustomEnum.Name = "btnEditCustomEnum";
+			this.btnEditCustomEnum.UseVisualStyleBackColor = true;
+			this.btnEditCustomEnum.Click += new System.EventHandler(this.btnEditCustomEnum_Click);
+			// 
+			// groupBoxModelElements
+			// 
+			resources.ApplyResources(this.groupBoxModelElements, "groupBoxModelElements");
+			this.groupBoxModelElements.Controls.Add(this.tvModelElements);
+			this.groupBoxModelElements.Name = "groupBoxModelElements";
+			this.groupBoxModelElements.TabStop = false;
+			// 
+			// tvModelElements
+			// 
+			resources.ApplyResources(this.tvModelElements, "tvModelElements");
+			this.tvModelElements.CheckBoxes = true;
+			this.tvModelElements.Name = "tvModelElements";
+			this.tvModelElements.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("tvModelElements.Nodes"))),
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("tvModelElements.Nodes1"))),
+            ((System.Windows.Forms.TreeNode)(resources.GetObject("tvModelElements.Nodes2")))});
+			this.tvModelElements.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.tvModelElements_AfterCheck);
+			// 
+			// btnEditDefinitionDescription
+			// 
+			resources.ApplyResources(this.btnEditDefinitionDescription, "btnEditDefinitionDescription");
+			this.btnEditDefinitionDescription.Name = "btnEditDefinitionDescription";
+			this.btnEditDefinitionDescription.UseVisualStyleBackColor = true;
+			this.btnEditDefinitionDescription.Click += new System.EventHandler(this.btnEditDefinitionDescription_Click);
+			// 
+			// chkVerbalizeDefaultValue
+			// 
+			resources.ApplyResources(this.chkVerbalizeDefaultValue, "chkVerbalizeDefaultValue");
+			this.chkVerbalizeDefaultValue.Name = "chkVerbalizeDefaultValue";
+			this.chkVerbalizeDefaultValue.Tag = "verbalizeDefaultValue";
+			this.chkVerbalizeDefaultValue.UseVisualStyleBackColor = true;
+			this.chkVerbalizeDefaultValue.CheckedChanged += new System.EventHandler(this.chkVerbalizeDefaultValue_CheckedChanged);
 			// 
 			// CustomPropertiesManager
 			// 
 			this.AcceptButton = this.btnSave;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.btnCancel;
-			this.ClientSize = new System.Drawing.Size(677, 462);
-			this.Controls.Add(this.definitionEditor1);
-			this.Controls.Add(this.groupEditor1);
+			this.Controls.Add(this.definitionPanel);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.btnSave);
 			this.Controls.Add(this.btnCancel);
-			this.Margin = new System.Windows.Forms.Padding(4);
+			this.Controls.Add(this.groupPanel);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(574, 430);
 			this.Name = "CustomPropertiesManager";
 			this.ShowIcon = false;
-			this.Text = "Custom Properties";
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
+			this.groupPanel.ResumeLayout(false);
+			this.groupPanel.PerformLayout();
+			this.definitionPanel.ResumeLayout(false);
+			this.definitionPanel.PerformLayout();
+			this.groupBoxModelElements.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -266,10 +392,32 @@ namespace ORMSolutions.ORMArchitect.CustomProperties
 		private System.Windows.Forms.ToolStripButton tsbAddGroup;
 		private System.Windows.Forms.Button btnSave;
 		private System.Windows.Forms.Button btnCancel;
-		private DefinitionEditor definitionEditor1;
-		private GroupEditor groupEditor1;
 		private System.Windows.Forms.ToolStripButton tsbAddGroupToMachine;
 		private System.Windows.Forms.ToolStripButton tsbAddGroupToModel;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.Panel groupPanel;
+		private System.Windows.Forms.Button btnEditGroupDescription;
+		private System.Windows.Forms.TextBox tbxGroupDescription;
+		private System.Windows.Forms.Label lblGroupName;
+		private System.Windows.Forms.Label lblGroupDescription;
+		private System.Windows.Forms.TextBox tbxGroupName;
+		private System.Windows.Forms.Panel definitionPanel;
+		private System.Windows.Forms.CheckBox chkVerbalizeDefaultValue;
+		private System.Windows.Forms.ComboBox cmbxDefinitionDataType;
+		private System.Windows.Forms.Button btnEditDefinitionDescription;
+		private System.Windows.Forms.Label lblDefinitionName;
+		private System.Windows.Forms.GroupBox groupBoxModelElements;
+		private System.Windows.Forms.TreeView tvModelElements;
+		private System.Windows.Forms.TextBox tbxDefinitionName;
+		private System.Windows.Forms.Button btnEditCustomEnum;
+		private System.Windows.Forms.Label lblDefinitionDescription;
+		private System.Windows.Forms.TextBox tbxDefinitionCustomEnum;
+		private System.Windows.Forms.TextBox tbxDefinitionDescription;
+		private System.Windows.Forms.Label lblCustomEnum;
+		private System.Windows.Forms.Label lblDefinitionDataType;
+		private System.Windows.Forms.TextBox tbxDefinitionDefaultValue;
+		private System.Windows.Forms.Label lblDefinitionCategory;
+		private System.Windows.Forms.Label lblDefinitionDefaultValue;
+		private System.Windows.Forms.TextBox tbxDefinitionCategory;
 	}
 }
