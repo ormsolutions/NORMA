@@ -440,6 +440,7 @@
 			<xs:enumeration value="CompactSimpleList"/>
 			<xs:enumeration value="CompactSimpleOrList"/>
 			<xs:enumeration value="CompoundList"/>
+			<xs:enumeration value="DerivedFromList"/>
 			<xs:enumeration value="FactTypeList"/>
 			<xs:enumeration value="EqualsList"/>
 			<xs:enumeration value="IdentityEqualityList"/>
@@ -496,6 +497,11 @@
 			</xs:enumeration>
 			<xs:enumeration value="preferredIdentifier"/>
 			<xs:enumeration value="playedRoles"/>
+			<xs:enumeration value="providedFactType">
+				<xs:annotation>
+					<xs:documentation>Use the implementation of the role iterator to verbalize a single provided fact type. No iterator is generated when this is set and it should be used with a null listStyle.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:attributeGroup name="FactArityAttributes">
@@ -615,6 +621,16 @@
 					<xs:documentation>Retrieve the data type for an object type.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="DerivedFromTypes">
+				<xs:annotation>
+					<xs:documentation>Declare variables for each of the expected derived from types (fact type, object type, set constraint, set comparison role sequence)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JoinedSetComparisonConstraint">
+				<xs:annotation>
+					<xs:documentation>Declare a variable for the parent constraint of a joined set comparison sequence.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="ConditionalMatchPatternType">
@@ -667,6 +683,16 @@
 					<xs:enumeration value="DerivationRuleIsPartialAndStored">
 						<xs:annotation>
 							<xs:documentation>True if a path-based derivation rule has partial derivation completeness and is stored. Assumes that a derivation rule is already defined and in context.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DerivedFactType">
+						<xs:annotation>
+							<xs:documentation>True if the current derived from element (meaning element is derived using the current context item) is a fact type.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="DerivedSubtype">
+						<xs:annotation>
+							<xs:documentation>True if the current derived from element (meaning element is derived using the current context item) is an object type.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
 					<xs:enumeration value="HasPortableDataType">
@@ -742,6 +768,51 @@
 					<xs:enumeration value="IsPreferredIdentifier">
 						<xs:annotation>
 							<xs:documentation>True if the current constraint is a preferred identifier.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="JoinedSetComparisonSequence">
+						<xs:annotation>
+							<xs:documentation>True if the current derived from element (meaning element is derived using the current context item) is a sequence from a set comparison constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="JoinedEqualityConstraint">
+						<xs:annotation>
+							<xs:documentation>Refinement of JoinedSetComparisonSequence and JoinedSetComparisonConstraint block helper for an equality constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="JoinedExclusionConstraint">
+						<xs:annotation>
+							<xs:documentation>Refinement of JoinedSetComparisonSequence and JoinedSetComparisonConstraint block helper for an exclusion constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="JoinedSubsetConstraint">
+						<xs:annotation>
+							<xs:documentation>Refinement of JoinedSetComparisonSequence and JoinedSetComparisonConstraint block helper for a subset constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="JoinedSetConstraint">
+						<xs:annotation>
+							<xs:documentation>True if the current derived from element (meaning element is derived using the current context item) is a set constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="JoinedFrequencyConstraint">
+						<xs:annotation>
+							<xs:documentation>Refinement of JoinedSetConstraint for a frequency constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="JoinedRingConstraint">
+						<xs:annotation>
+							<xs:documentation>Refinement of JoinedSetConstraint for a ring constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="JoinedUniquenessConstraint">
+						<xs:annotation>
+							<xs:documentation>Refinement of JoinedSetConstraint for a uniqueness constraint.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="JoinedValueComparisonConstraint">
+						<xs:annotation>
+							<xs:documentation>Refinement of JoinedSetConstraint for a value comparison constraint.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
 					<xs:enumeration value="BinaryWithRoleName">
@@ -891,7 +962,7 @@
 					</xs:enumeration>
 					<xs:enumeration value="VerbalizeFactTypesWithBrowserObjectType">
 						<xs:annotation>
-							<xs:documentation>Verbalize only if we're writing to the verbalization browser and have the correct option set.</xs:documentation>
+							<xs:documentation>Verbalize the fact type list only if we're writing to the verbalization browser and have the correct option set.</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
 					<xs:enumeration value="HasPreProjectionKeys">
@@ -957,6 +1028,11 @@
 		<xs:complexContent>
 			<xs:extension base="SnippetLeafType">
 				<xs:group ref="ReplacementElementsGroup" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:attribute name="closeSentence" type="xs:boolean" default="true">
+					<xs:annotation>
+						<xs:documentation>Do not capitalize and punctuation a top-level snippet.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -967,6 +1043,7 @@
 			<xs:element name="ContextName" type="ContextNameType"/>
 			<xs:element name="ObjectifyingInstanceIdentifierName" type="ObjectifyingInstanceIdentifierNameType"/>
 			<xs:element name="ContextId" type="ElementIdType"/>
+			<xs:element name="ContextSequenceNumber" type="ContextSequenceNumberType"/>
 			<xs:element name="ExpressionBody" type="ExpressionBodyType"/>
 			<xs:element name="NoteText" type="NoteTextType"/>
 			<xs:element name="ReferenceMode" type="ReferenceModeType"/>
@@ -981,6 +1058,8 @@
 			<xs:element name="DerivationPath" type="DerivationPathType"/>
 			<xs:element name="Fact" type="FactType"/>
 			<xs:element name="IterateFacts" type="IterateFactsType"/>
+			<xs:element name="JoinedSetConstraintName" type="ContextNameType"/>
+			<xs:element name="JoinedSetComparisonSequenceConstraintName" type="ContextNameType"/>
 			<xs:element name="ReferenceScheme" type="ReferenceSchemeType"/>
 			<xs:element name="ConditionalReplacement" type="ConditionalReplacementType"/>
 			<xs:element name="IterateValueRanges" type="IterateValueRangesType"/>
@@ -989,6 +1068,7 @@
 			<xs:element name="MinFrequencyValue" type="MinFrequencyValueType"/>
 			<xs:element name="MaxFrequencyValue" type="MaxFrequencyValueType"/>
 			<xs:element name="IterateRanges" type="IterateRangesType"/>
+			<xs:element name="IterateDerivedFrom" type="IterateDerivedFromType"/>
 			<xs:element name="RangeLowerBound" type="RangeLowerBoundType"/>
 			<xs:element name="RangeUpperBound" type="RangeUpperBoundType"/>
 			<xs:element name="IterateContextRoles" type="IterateContextRolesType"/>
@@ -1308,6 +1388,18 @@
 		</xs:choice>
 		<xs:attribute name="listStyle" type="ListStyleEnum"/>
 	</xs:complexType>
+	<xs:complexType name="IterateDerivedFromType">
+		<xs:annotation>
+			<xs:documentation>
+				Iterates elementst that use the context instance as part of the derivation.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<!-- This will be a SelfReference with conditional replacements -->
+			<xs:element name="Snippet" type="SnippetType"/>
+		</xs:sequence>
+		<xs:attribute name="listStyle" type="ListStyleEnum"/>
+	</xs:complexType>
 	<xs:complexType name="PortableDataTypeType">
 		<xs:annotation>
 			<xs:documentation>
@@ -1342,7 +1434,7 @@
 				Returns the name of the context (this) element.
 			</xs:documentation>
 		</xs:annotation>
-		<xs:attribute name="isObjectType" use="optional" type="xs:boolean">
+		<xs:attribute name="normalize" use="optional" type="xs:boolean">
 			<xs:annotation>
 				<xs:documentation>Specify if object type name normalization should be applied.</xs:documentation>
 			</xs:annotation>
@@ -1895,6 +1987,11 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
+	<xs:complexType name="ContextSequenceNumberType">
+		<xs:annotation>
+			<xs:documentation>The 1-based sequence number of context set comparison sequence.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
 	<xs:complexType name="IterateSequencesType">
 		<xs:choice>
 			<xs:element name="Snippet" type="SnippetType"/>
@@ -2008,14 +2105,39 @@
 	</xs:complexType>
 	<xs:complexType name="SampleInstancesConstructType">
 		<xs:annotation>
-			<xs:documentation>
-				Allows for generation of Verbalizers for Instances
-			</xs:documentation>
+			<xs:documentation>Allows for generation of Verbalizers for Instances</xs:documentation>
 		</xs:annotation>
 		<xs:choice minOccurs="0" maxOccurs="unbounded">
 			<xs:element name="SampleInstance" type="SampleInstanceType"/>
 			<xs:element name="SingleSnippet" type="SingleSnippetType"/>
 		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ChildHelpersConstructType">
+		<xs:annotation>
+			<xs:documentation>Allows generation of custom child verbalizers.</xs:documentation>
+		</xs:annotation>
+		<xs:choice minOccurs="0" maxOccurs="unbounded">
+			<xs:element name="ChildVerbalizer" type="ChildVerbalizerType"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:complexType name="ChildVerbalizerType">
+		<xs:annotation>
+			<xs:documentation>Create a custom child helper, which is a partial class instantiated with an IVerbalizeCustomChildren implementation.</xs:documentation>
+		</xs:annotation>
+		<xs:choice maxOccurs="unbounded">
+			<xs:element name="Snippet" type="SnippetTypeWithConditionalMatch" />
+			<xs:element name="ConditionalSnippet" type="ConditionalSnippetTypeWithConditionalMatch" />
+		</xs:choice>
+		<xs:attribute name="type" use="required">
+			<xs:annotation>
+				<xs:documentation>The generated class name.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="childHelperFor" use="optional">
+			<xs:annotation>
+				<xs:documentation>The containing class that will instantiate this helper.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="EnableSubscriptsType">
 		<xs:attribute name="minFactArity" type="xs:positiveInteger"/>
@@ -2224,6 +2346,7 @@
 							<xs:element name="Note" type="NoteConstructType" />
 							<xs:element name="DerivationNote" type="DerivationExpressionConstructType"/>
 							<xs:element name="ORMModel" type="ModelConstructType"/>
+							<xs:element name="ChildHelpers" type="ChildHelpersConstructType"/>
 							<xs:element name="ErrorReports" type="ErrorReportsType"/>
 						</xs:all>
 					</xs:complexType>

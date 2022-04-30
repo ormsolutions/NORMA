@@ -684,13 +684,13 @@ Format negative: more than one {0}</xs:documentation>
 				<xs:enumeration value="PeriodSeparator">
 					<xs:annotation>
 						<xs:documentation>Description: Used to delimit two snippet replacements by a snippet.
-Format:	{0}.{1}</xs:documentation>
+Format: {0}.{1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ReferenceScheme">
 					<xs:annotation>
 						<xs:documentation>Description: Used to enclose and format a reference scheme replacement in brackets.
-Format:	{0}({1})</xs:documentation>
+Format: {0}({1})</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="SingleValueValueConstraint">
@@ -895,27 +895,52 @@ Format: Model Error: {0}</xs:documentation>
 				</xs:enumeration>
 				<xs:enumeration value="FactTypeListOpen">
 					<xs:annotation>
-						<xs:documentation>Description:  Text and formatting to begin a sample population verbalization basic predicate text.Format: FactTypes: &lt;br/&gt;</xs:documentation>
+						<xs:documentation>Description:  Text and formatting to begin a list of fact types represented by basic predicate text.Format: FactTypes: &lt;br/&gt;</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FactTypeListPairSeparator">
 					<xs:annotation>
-						<xs:documentation>Description: Text used to separate items in a sample population verbalization list. Format: &lt;br/&gt;</xs:documentation>
+						<xs:documentation>Description: Text used to separate items in a fact type verbalization list. Format: &lt;br/&gt;</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FactTypeListSeparator">
 					<xs:annotation>
-						<xs:documentation>Description: Text used to separate items in a sample population verbalization list. Format: &lt;br/&gt;</xs:documentation>
+						<xs:documentation>Description: Text used to separate items in a fact type verbalization list. Format: &lt;br/&gt;</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FactTypeListFinalSeparator">
 					<xs:annotation>
-						<xs:documentation>Description: Text used to separate the last two items in a sample population verbalization list. Format: &lt;br/&gt;</xs:documentation>
+						<xs:documentation>Description: Text used to separate the last two items in a fact type verbalization list. Format: &lt;br/&gt;</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FactTypeListClose">
 					<xs:annotation>
-						<xs:documentation>Description: Text used to close the sample population verbalization list.</xs:documentation>
+						<xs:documentation>Description: Text used to close the fact type verbalization list.</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DerivedFromListOpen">
+					<xs:annotation>
+						<xs:documentation>Description:  Text and formatting to begin a list of elements derived from the current selection.Format: Used by derivations: &lt;br/&gt;</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DerivedFromListPairSeparator">
+					<xs:annotation>
+						<xs:documentation>Description: Text used to separate items in a derived from list. Format: &lt;br/&gt;</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DerivedFromListSeparator">
+					<xs:annotation>
+						<xs:documentation>Description: Text used to separate items in a derived from list. Format: &lt;br/&gt;</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DerivedFromListFinalSeparator">
+					<xs:annotation>
+						<xs:documentation>Description: Text used to separate the last two items in a derived from list. Format: &lt;br/&gt;</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DerivedFromListClose">
+					<xs:annotation>
+						<xs:documentation>Description: Text used to close the derived from list.</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="ObjectTypeInstanceListOpen">
@@ -1233,6 +1258,66 @@ Format: *each {0} is by definition {1}</xs:documentation>
 					<xs:annotation>
 						<xs:documentation>Description: Used to specify a fully derived (and stored) subtype derivation rule.
 Format: **each {0} is by definition {1}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DerivedFactTypeReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference a derived fact type in a list of derived elements.
+Format: {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="DerivedSubtypeReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference a derived subtype in a list of derived elements.
+Format: subtype {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="JoinedFrequencyConstraintReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference a frequency constraint with a join path in a list of derived elements.
+Format: frequency constraint {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="JoinedRingConstraintReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference a ring constraint with a join path in a list of derived elements.
+Format: ring constraint {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="JoinedUniquenessConstraintReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference a ring constraint with a join path in a list of derived elements.
+Format: uniqueness constraint {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="JoinedValueComparisonConstraintReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference a value comparison constraint with a join path in a list of derived elements.
+Format: value comparison constraint {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="JoinedEqualityConstraintReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference an equality constraint with a sequence that has a join path in a list of derived elements.
+Format: equality constraint {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="JoinedExclusionConstraintReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference an exclusion constraint with a sequence that has a join path in a list of derived elements.
+Format: exclusion constraint {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="JoinedSubsetConstraintReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference a subset constraint with a sequence that has a join path in a list of derived elements.
+Format: subset constraint {0}</xs:documentation>
+					</xs:annotation>
+				</xs:enumeration>
+				<xs:enumeration value="JoinedSetComparisonSequenceReference">
+					<xs:annotation>
+						<xs:documentation>Description: used to reference a set comparison sequence that has a join path in a list of derived elements.
+Format: {0}, sequence {1}</xs:documentation>
 					</xs:annotation>
 				</xs:enumeration>
 				<xs:enumeration value="FullStoredSubtypeDescription">

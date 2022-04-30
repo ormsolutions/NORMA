@@ -801,6 +801,63 @@ Format: at most {1}</statement>
     <containedIn />
     <usedBy />
   </snippet>
+  <snippet name="DerivedFactTypeReference" replacementCount="1">
+    <statement>Description: used to reference a derived fact type in a list of derived elements.
+Format: {0}</statement>
+    <unformattedSnippet>{0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="SelfReference" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="DerivedFromListClose" replacementCount="0">
+    <statement>Description: Text used to close the derived from list.</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="DerivedFromListFinalSeparator" replacementCount="0">
+    <statement>Description: Text used to separate the last two items in a derived from list. Format: &lt;br/&gt;</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="DerivedFromListOpen" replacementCount="0">
+    <statement>Description:  Text and formatting to begin a list of elements derived from the current selection.Format: Used by derivations: &lt;br/&gt;</statement>
+    <unformattedSnippet>Used by derivations:</unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="DerivedFromListPairSeparator" replacementCount="0">
+    <statement>Description: Text used to separate items in a derived from list. Format: &lt;br/&gt;</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="DerivedFromListSeparator" replacementCount="0">
+    <statement>Description: Text used to separate items in a derived from list. Format: &lt;br/&gt;</statement>
+    <unformattedSnippet></unformattedSnippet>
+    <contains />
+    <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="DerivedSubtypeReference" replacementCount="1">
+    <statement>Description: used to reference a derived subtype in a list of derived elements.
+Format: subtype {0}</statement>
+    <unformattedSnippet>subtype {0}</unformattedSnippet>
+    <contains>
+      <snippet name="ObjectType" />
+    </contains>
+    <containedIn>
+      <snippet name="SelfReference" />
+    </containedIn>
+    <usedBy />
+  </snippet>
   <snippet name="DescriptionVerbalization" replacementCount="1">
     <statement>Description: Verbalizes the text specified for an element description. Format: Informal Description: {0}</statement>
     <unformattedSnippet>Informal Description: {0}</unformattedSnippet>
@@ -1050,35 +1107,35 @@ Format: No {0} the same {1}</statement>
     <usedBy />
   </snippet>
   <snippet name="FactTypeListClose" replacementCount="0">
-    <statement>Description: Text used to close the sample population verbalization list.</statement>
+    <statement>Description: Text used to close the fact type verbalization list.</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeListFinalSeparator" replacementCount="0">
-    <statement>Description: Text used to separate the last two items in a sample population verbalization list. Format: &lt;br/&gt;</statement>
+    <statement>Description: Text used to separate the last two items in a fact type verbalization list. Format: &lt;br/&gt;</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeListOpen" replacementCount="0">
-    <statement>Description:  Text and formatting to begin a sample population verbalization basic predicate text.Format: FactTypes: &lt;br/&gt;</statement>
+    <statement>Description:  Text and formatting to begin a list of fact types represented by basic predicate text.Format: FactTypes: &lt;br/&gt;</statement>
     <unformattedSnippet>Fact Types:</unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeListPairSeparator" replacementCount="0">
-    <statement>Description: Text used to separate items in a sample population verbalization list. Format: &lt;br/&gt;</statement>
+    <statement>Description: Text used to separate items in a fact type verbalization list. Format: &lt;br/&gt;</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
     <usedBy />
   </snippet>
   <snippet name="FactTypeListSeparator" replacementCount="0">
-    <statement>Description: Text used to separate items in a sample population verbalization list. Format: &lt;br/&gt;</statement>
+    <statement>Description: Text used to separate items in a fact type verbalization list. Format: &lt;br/&gt;</statement>
     <unformattedSnippet></unformattedSnippet>
     <contains />
     <containedIn />
@@ -1218,7 +1275,7 @@ Format: either no, or {0}</statement>
   <snippet name="FrequencyPopulation" replacementCount="3">
     <statement>Description: Used as for the main body text of a frequency constraint on one FactType.
 Format: each {0} in the population of {1} occurs there {2} times</statement>
-    <unformattedSnippet>each {0} in the population of “{1}” occurs there {2}</unformattedSnippet>
+    <unformattedSnippet>each {0} in the population of &amp;#8220;{1}&amp;#8221; occurs there {2}</unformattedSnippet>
     <contains>
       <snippet name="CombinationIdentifier" />
       <snippet name="CountRangeExact" />
@@ -1771,6 +1828,94 @@ Format: {0} is identified by {1}</statement>
     <unformattedSnippet>{0} is identified by {1}</unformattedSnippet>
     <contains />
     <containedIn />
+    <usedBy />
+  </snippet>
+  <snippet name="JoinedEqualityConstraintReference" replacementCount="1">
+    <statement>Description: used to reference an equality constraint with a sequence that has a join path in a list of derived elements.
+Format: equality constraint {0}</statement>
+    <unformattedSnippet>equality constraint {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="JoinedSetComparisonSequenceReference" />
+      <snippet name="SelfReference" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="JoinedExclusionConstraintReference" replacementCount="1">
+    <statement>Description: used to reference an exclusion constraint with a sequence that has a join path in a list of derived elements.
+Format: exclusion constraint {0}</statement>
+    <unformattedSnippet>exclusion constraint {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="JoinedSetComparisonSequenceReference" />
+      <snippet name="SelfReference" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="JoinedFrequencyConstraintReference" replacementCount="1">
+    <statement>Description: used to reference a frequency constraint with a join path in a list of derived elements.
+Format: frequency constraint {0}</statement>
+    <unformattedSnippet>frequency constraint {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="SelfReference" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="JoinedRingConstraintReference" replacementCount="1">
+    <statement>Description: used to reference a ring constraint with a join path in a list of derived elements.
+Format: ring constraint {0}</statement>
+    <unformattedSnippet>ring constraint {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="SelfReference" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="JoinedSetComparisonSequenceReference" replacementCount="2">
+    <statement>Description: used to reference a set comparison sequence that has a join path in a list of derived elements.
+Format: {0}, sequence {1}</statement>
+    <unformattedSnippet>{0}, sequence {1}</unformattedSnippet>
+    <contains>
+      <snippet name="JoinedEqualityConstraintReference" />
+      <snippet name="JoinedExclusionConstraintReference" />
+      <snippet name="JoinedSubsetConstraintReference" />
+      <snippet name="ObjectType" />
+    </contains>
+    <containedIn>
+      <snippet name="SelfReference" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="JoinedSubsetConstraintReference" replacementCount="1">
+    <statement>Description: used to reference a subset constraint with a sequence that has a join path in a list of derived elements.
+Format: subset constraint {0}</statement>
+    <unformattedSnippet>subset constraint {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="JoinedSetComparisonSequenceReference" />
+      <snippet name="SelfReference" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="JoinedUniquenessConstraintReference" replacementCount="1">
+    <statement>Description: used to reference a ring constraint with a join path in a list of derived elements.
+Format: uniqueness constraint {0}</statement>
+    <unformattedSnippet>uniqueness constraint {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="SelfReference" />
+    </containedIn>
+    <usedBy />
+  </snippet>
+  <snippet name="JoinedValueComparisonConstraintReference" replacementCount="1">
+    <statement>Description: used to reference a value comparison constraint with a join path in a list of derived elements.
+Format: value comparison constraint {0}</statement>
+    <unformattedSnippet>value comparison constraint {0}</unformattedSnippet>
+    <contains />
+    <containedIn>
+      <snippet name="SelfReference" />
+    </containedIn>
     <usedBy />
   </snippet>
   <snippet name="LessThanOrEqualValueComparator" replacementCount="2">
@@ -2348,7 +2493,7 @@ Format: {0} is not equal to {1}
   </snippet>
   <snippet name="ObjectifiesFactTypeVerbalization" replacementCount="2">
     <statement>Description: Verbalizes the objectification made for a FactType. Format: {0} objectifies "{1}"</statement>
-    <unformattedSnippet>{0} objectifies “{1}”</unformattedSnippet>
+    <unformattedSnippet>{0} objectifies &amp;#8220;{1}&amp;#8221;</unformattedSnippet>
     <contains>
       <snippet name="ObjectType" />
     </contains>
@@ -2361,10 +2506,13 @@ Format: {0} is not equal to {1}
     <contains />
     <containedIn>
       <snippet name="ConstraintProvidesPreferredIdentifier" />
+      <snippet name="DerivedSubtypeReference" />
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="IndependentVerbalization" />
+      <snippet name="JoinedSetComparisonSequenceReference" />
       <snippet name="ObjectifiesFactTypeVerbalization" />
       <snippet name="ObjectTypeCardinality" />
+      <snippet name="SelfReference" />
       <snippet name="SubtypeMetaReading" />
       <snippet name="UnaryRoleCardinality" />
     </containedIn>
@@ -2616,7 +2764,7 @@ Format: ++each derived {0} is by definition {1}</statement>
   </snippet>
   <snippet name="PeriodSeparator" replacementCount="2">
     <statement>Description: Used to delimit two snippet replacements by a snippet.
-Format:	{0}.{1}</statement>
+Format: {0}.{1}</statement>
     <unformattedSnippet>{0}.{1}</unformattedSnippet>
     <contains>
       <snippet name="ReferenceScheme" />
@@ -2753,7 +2901,7 @@ Format: {0}select {1} where {2}</statement>
   </snippet>
   <snippet name="ReferenceScheme" replacementCount="2">
     <statement>Description: Used to enclose and format a reference scheme replacement in brackets.
-Format:	{0}({1})</statement>
+Format: {0}({1})</statement>
     <unformattedSnippet>{0}({1})</unformattedSnippet>
     <contains />
     <containedIn>
@@ -2888,7 +3036,20 @@ Format: {0} is not {1}</statement>
   <snippet name="SelfReference" replacementCount="1">
     <statement>Description: Allows the snippet replacement to verbalize itself. Format: {0}</statement>
     <unformattedSnippet>{0}</unformattedSnippet>
-    <contains />
+    <contains>
+      <snippet name="DerivedFactTypeReference" />
+      <snippet name="DerivedSubtypeReference" />
+      <snippet name="JoinedEqualityConstraintReference" />
+      <snippet name="JoinedExclusionConstraintReference" />
+      <snippet name="JoinedFrequencyConstraintReference" />
+      <snippet name="JoinedRingConstraintReference" />
+      <snippet name="JoinedSetComparisonSequenceReference" />
+      <snippet name="JoinedSubsetConstraintReference" />
+      <snippet name="JoinedUniquenessConstraintReference" />
+      <snippet name="JoinedValueComparisonConstraintReference" />
+      <snippet name="ObjectType" />
+      <snippet name="SelfReference" />
+    </contains>
     <containedIn>
       <snippet name="ConditionalMultiLine" />
       <snippet name="ConditionalMultiLineIndented" />
@@ -2896,6 +3057,7 @@ Format: {0} is not {1}</statement>
       <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="LogicalAndOperator" />
       <snippet name="ModalPossibilityOperator" />
+      <snippet name="SelfReference" />
     </containedIn>
     <usedBy>
       <constraint name="AntisymmetricRingVerbalizer" />
@@ -3247,7 +3409,7 @@ Format: {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier</statement>
   <snippet name="UnaryRoleCardinality" replacementCount="3">
     <statement>Description: Used as the boiler plate for unary role cardinality.
 Format: for each population of '{0}', the number of {1} instances is {2}</statement>
-    <unformattedSnippet>for each population of “{0}”,the number of {1} instances is {2}</unformattedSnippet>
+    <unformattedSnippet>for each population of &amp;#8220;{0}&amp;#8221;,the number of {1} instances is {2}</unformattedSnippet>
     <contains>
       <snippet name="CountRangeExact" />
       <snippet name="CountRangeMaxUnbounded" />

@@ -111,8 +111,6 @@
 					{
 					position:absolute;
 					left:650px;
-					width:350px;
-
 					}
 					pre.unformattedSnippetDecorator
 					{
@@ -121,15 +119,13 @@
 					font-size: 12px;
 
 					}
-					.pmb1_b, .pmb1_s { font-size:1px; }
-					.pmb1_1, .pmb1_2, .pmb1_3, .pmb1_4, .pmb1_b, .pmb1_s {display:block; overflow:hidden;}
-					.pmb1_1, .pmb1_2, .pmb1_3, .pmb1_s {height:1px;}
-					.pmb1_2, .pmb1_3, .pmb1_4 {border-style: solid; border-width: 0 1px; }
-					.pmb1_1 {margin:0 5px; }
-					.pmb1_2 {margin:0 3px; border-width:0 2px;}
-					.pmb1_3 {margin:0 2px;}
-					.pmb1_4 {height:2px; margin:0 1px;}
-					.pmb1_c {display:block; border-style: solid ; border-width: 0 1px;}
+					.pmb1_c {display:block; border-style: solid ; border-width: 1px; border-radius: 6px; background:#DDEEFF; color: inherit; border-color: #9DCEFF;}
+					div#snippetLinks
+					{
+					margin-top:6px;
+					margin-bottom:6px;
+					margin-right:6px;
+					}
 					h4#snippetLinkHeader
 					{
 					text-align:center;
@@ -168,11 +164,11 @@
 						<h1>NORMA Verbalization Documentation</h1>
 					</div>
 					<div id="abstract">
-						<p>The Object Role Modeling verbalization implementation in NORMA allows for flexibility and customization. Snippets may be used in many different scenarios and it is possible that some snippets may be used inside of others. This document outlines the usage of each snippet to aide in the development of a full implementation for a new language.</p>
+						<p>The Object Role Modeling verbalization implementation in NORMA allows for flexibility and customization. Snippets may be used in many different scenarios and it is possible that some snippets may be used inside of others. This document outlines the usage of each snippet to aid in the development of a full implementation for a new language.</p>
 					</div>
 					<div id="examples">
 						<h2 id="examplesHeader">Examples</h2>
-						<p>To aide in the development of a new language implementation, the following example has been provided:</p>
+						<p>To aid in the development of a new language implementation, the following example has been provided:</p>
 						<div class="example">
 							<div class="exampleHeader">
 								<strong>Snippet:</strong> <a href="#Conditional">Conditional</a>
@@ -256,24 +252,7 @@
 						</div>
 					</div>
 					<div id="toc">
-						<b class="pmb1_b">
-							<b class="pmb1_1" style="background:#9DCEFF; color: inherit;">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
-							<b class="pmb1_2" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
-							<b class="pmb1_3" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
-							<b class="pmb1_4" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
-						</b>
-						<div class="pmb1_c" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;">
-							<b class="pmb1_s">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
+						<div class="pmb1_c">
 							<div id="snippetLinks">
 								<h4 id="snippetLinkHeader">Snippets</h4>
 								<ol>
@@ -286,24 +265,7 @@
 									</xsl:for-each>
 								</ol>
 							</div>
-							<b class="pmb1_s">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
 						</div>
-						<b class="pmb1_b">
-							<b class="pmb1_4" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
-							<b class="pmb1_3" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
-							<b class="pmb1_2" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
-							<b class="pmb1_1" style="background:#9DCEFF; color: inherit;">
-								<xsl:text disable-output-escaping="yes">&amp;nbsp;</xsl:text>
-							</b>
-						</b>
 					</div>
 					<div id="snippetContainer">
 						<xsl:for-each select="snippet">

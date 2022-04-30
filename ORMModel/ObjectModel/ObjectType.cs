@@ -5228,7 +5228,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
 		/// for instance verbalizations
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
 			ValueConstraint valueConstraint;
 			if (!IsValueType && null != (valueConstraint = NearestValueConstraint))
@@ -5258,9 +5258,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				yield return CustomChildVerbalizer.VerbalizeInstance(derivationNote, false);
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, verbalizationTarget, sign);
 		}
 
 		#endregion

@@ -435,9 +435,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <see cref="CustomChildVerbalizer.Block"/> for any constituent components used to create a <see cref="CustomChildVerbalizer"/>,
 		/// then that custom child should not be created</param>
 		/// <param name="verbalizationOptions">Current verbalization options</param>
+		/// <param name="verbalizationTarget">The current verbalization target</param>
 		/// <param name="sign">The preferred verbalization sign</param>
 		/// <returns>IEnumerable of CustomChildVerbalizer structures</returns>
-		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign);
+		IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign);
 	}
 	#endregion // IVerbalizeCustomChildren interface
 	#region IVerbalizeExtensionChildren interface
@@ -2105,6 +2106,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		public const string FactTypesWithObjectType = "FactTypesWithObjectType";
 		/// <summary>
+		/// The option name for determining if directly derived elements are listed with a fact type verbalization
+		/// </summary>
+		public const string DerivedFromWithFactType = "DerivedFromWithFactType";
+		/// <summary>
 		/// The option name to determine how object type names are displayed.
 		/// </summary>
 		public const string ObjectTypeNameDisplay = "ObjectTypeNameDisplay";
@@ -2677,7 +2682,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					if (customChildren != null)
 					{
 						VerbalizeCustomChildren(
-							customChildren.GetCustomChildVerbalizations(filter, verbalizationOptions, sign),
+							customChildren.GetCustomChildVerbalizations(filter, verbalizationOptions, verbalizationTarget, sign),
 							writer,
 							callback,
 							localDelayVerbalize,
@@ -4285,6 +4290,35 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public readonly bool IsNegative;
 	}
 	#endregion // CoreSnippetIdentifier struct
+	#region RolePathOwnerKind enum
+	/// <summary>
+	/// Specify the kind of role path owner to return with <see cref="RolePathVerbalizer.GetUsedByRolePathOwners"/>
+	/// </summary>
+	[Flags]
+	public enum RolePathOwnerKind
+	{
+		/// <summary>
+		/// No owner kind specified.
+		/// </summary>
+		None = 0,
+		/// <summary>
+		/// Return fact type derivation rules
+		/// </summary>
+		FactTypeDerivation = 1,
+		/// <summary>
+		/// Return subtype derivation rules
+		/// </summary>
+		SubtypeDerivation = 2,
+		/// <summary>
+		/// Return custom (non-automatic) join paths
+		/// </summary>
+		CustomJoinPath = 4,
+		/// <summary>
+		/// Return automatic join paths.
+		/// </summary>
+		AutomaticJoinPath = 8,
+	}
+	#endregion // RolePathOwnerKind enum
 	/// <summary>
 	/// A class to assist in verbalization of a role path
 	/// </summary>
@@ -12768,6 +12802,148 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return new RolePathNode(pathRoot);
 			}
 			return RolePathNode.Empty;
+		}
+
+		/// <summary>
+		/// Determine if this fact type is directly used in a derivation rule or join path.
+		/// This accounts for direct use only, not a recursive check to find other derivations
+		/// or join paths that use the returned owner in other derivations and join paths.
+		/// </summary>
+		/// <param name="factType">The fact type to check.</param>
+		/// <param name="ownerKind">Filter the types of returned owners.</param>
+		/// <returns>Array of unique matching fact types, subtypes, set constraints and set comparison role sequences. An empty array is returned if there is no match.</returns>
+		public static ORMModelElement[] GetUsedByRolePathOwners(FactType factType, RolePathOwnerKind ownerKind)
+		{
+			Dictionary<RolePathOwner, ORMModelElement> allowedOwners = null; // Value is null if blocked, fact type/object type/constraint otherwise
+			int validOwnersCount = 0;
+			Action<RolePathOwner> ownerCallback = delegate (RolePathOwner owner)
+			{
+				if (null == allowedOwners)
+				{
+					allowedOwners = new Dictionary<RolePathOwner, ORMModelElement>(); // Something will always go here, possibly null
+				}
+				else if (allowedOwners.ContainsKey(owner))
+				{
+					return;
+				}
+
+				FactTypeDerivationRule factTypeRule;
+				SubtypeDerivationRule subtypeRule;
+				ConstraintRoleSequenceJoinPath joinPath;
+				ORMModelElement trackedInstance = null;
+				if (null != (factTypeRule = owner as FactTypeDerivationRule))
+				{
+					if (0 != (ownerKind & RolePathOwnerKind.FactTypeDerivation))
+					{
+						trackedInstance = factTypeRule.FactType;
+					}
+				}
+				else if (null != (subtypeRule = owner as SubtypeDerivationRule))
+				{
+					if (0 != (ownerKind & RolePathOwnerKind.SubtypeDerivation))
+					{
+						trackedInstance = subtypeRule.Subtype;
+					}
+				}
+				else if (null != (joinPath = owner as ConstraintRoleSequenceJoinPath))
+				{
+					if (0 != (ownerKind & (joinPath.IsAutomatic ? RolePathOwnerKind.AutomaticJoinPath : RolePathOwnerKind.CustomJoinPath)))
+					{
+						// Note that we're returning the SetComparisonConstraintRoleSequence, not the SetComparisonConstraint. This is intentional.
+						trackedInstance = joinPath.RoleSequence;
+					}
+				}
+				allowedOwners[owner] = trackedInstance;
+				if (trackedInstance != null)
+				{
+					++validOwnersCount;
+				}
+			};
+			foreach (RoleBase roleBase in factType.RoleCollection)
+			{
+				Role role = roleBase as Role;
+				if (role != null)
+				{
+					UsedByRolePathOwners(role, ownerCallback);
+				}
+			}
+			if (validOwnersCount != 0)
+			{
+				ORMModelElement[] retVal = new ORMModelElement[validOwnersCount];
+				int nextIndex = 0;
+				foreach (ORMModelElement element in allowedOwners.Values)
+				{
+					if (element != null)
+					{
+						retVal[nextIndex] = element;
+						if (--validOwnersCount == 0)
+						{
+							break;
+						}
+						++nextIndex;
+					}
+				}
+				return retVal;
+			}
+			return Array.Empty<ORMModelElement>();
+		}
+		/// <summary>
+		/// Provide a raw iterator to resolve all role path owners.
+		/// All path owner types are returned except subqueries, which are recursively
+		/// resolved up the ownership (and shared) stacks. Owner uniqueness and filtering
+		/// is the responsibility of the calling code.
+		/// </summary>
+		private static void UsedByRolePathOwners(Role role, Action<RolePathOwner> pathOwnerCallback)
+		{
+			foreach (RolePath rolePath in role.RolePathCollection)
+			{
+				LeadRolePath leadPath = rolePath.RootRolePath;
+				RolePathOwner directOwner = leadPath.PathOwner;
+				if (directOwner != null)
+				{
+					if (!DeferSubqueryOwnership(directOwner, pathOwnerCallback))
+					{
+						pathOwnerCallback(directOwner);
+					}
+				}
+				foreach (RolePathOwner sharedOwner in leadPath.SharedWithPathOwnerCollection)
+				{
+					if (!DeferSubqueryOwnership(sharedOwner, pathOwnerCallback))
+					{
+						pathOwnerCallback(sharedOwner);
+					}
+				}
+			}
+		}
+		/// <summary>
+		/// Helper for UsedByRolePathOwners.
+		/// Returns true if the owner is already resolved and processed as a subquery.
+		/// </summary>
+		private static bool DeferSubqueryOwnership(RolePathOwner owner, Action<RolePathOwner> pathOwnerCallback)
+		{
+			QueryDerivationRule queryRule;
+			Subquery subquery;
+			if (null != (queryRule = owner as QueryDerivationRule) &&
+				null != (subquery = queryRule.FactType as Subquery))
+			{
+				RolePathOwner directOwner = subquery.PathOwner;
+				if (directOwner != null)
+				{
+					if (!DeferSubqueryOwnership(directOwner, pathOwnerCallback))
+					{
+						pathOwnerCallback(directOwner);
+					}
+				}
+				foreach (RolePathOwner sharedOwner in subquery.SharedWithPathOwnerCollection)
+				{
+					if (!DeferSubqueryOwnership(sharedOwner, pathOwnerCallback))
+					{
+						pathOwnerCallback(sharedOwner);
+					}
+				}
+				return true;
+			}
+			return false;
 		}
 		#endregion // Static Helper Methods
 		#region Type-specific Creation Methods

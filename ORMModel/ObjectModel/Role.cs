@@ -1499,15 +1499,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements <see cref="IVerbalizeCustomChildren.GetCustomChildVerbalizations"/>
 		/// Returns standalone error verbalizer.
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
 			ErrorReport verbalizer = ErrorReport.GetVerbalizer();
 			verbalizer.Initialize(this);
 			yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, verbalizationTarget, sign);
 		}
 		#region ErrorReport verbalizer class
 		partial class ErrorReport : IModelErrorOwner

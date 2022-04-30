@@ -814,6 +814,14 @@ If a subtype is constrained use single-click to add and double-click to commit.<
     <value xml:space="preserve">Possible Populations</value>
     <comment xml:space="preserve">The display name of the Show Default Constraint Verbalization option.</comment>
   </data>
+  <data name="OptionsPage.Property.VerbalizeDerivedFromWithFactType.Description">
+    <value xml:space="preserve">Should a list of derived fact types, subtypes and custom constraint join paths that directly depend on the selected FactType be shown in the Verbalization Browser?</value>
+    <comment xml:space="preserve">The description of the Verbalize DerivedFrom with FactType Verbalization option.</comment>
+  </data>
+  <data name="OptionsPage.Property.VerbalizeDerivedFromWithFactType.DisplayName">
+    <value xml:space="preserve">Used by derivations with FactType</value>
+    <comment xml:space="preserve">The display name of the Verbalize DerivedFrom with FactType Verbalization option.</comment>
+  </data>
   <data name="OptionsPage.Property.VerbalizeFactTypesWithObjectType.Description">
     <value xml:space="preserve">Should all FactTypes associated with an ObjectType be verbalized with an ObjectType selection in the Verbalization Browser?</value>
     <comment xml:space="preserve">The description of the Verbalize FactTypes with ObjectType Verbalization option.</comment>

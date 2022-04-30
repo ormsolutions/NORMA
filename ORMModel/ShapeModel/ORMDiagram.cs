@@ -3499,7 +3499,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// Implements <see cref="IVerbalizeCustomChildren.GetCustomChildVerbalizations"/>.
 		/// Explicitly verbalizes extension elements
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
 			foreach (ModelElement extensionElement in ExtensionCollection)
 			{
@@ -3510,9 +3510,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, verbalizationTarget, sign);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 	}

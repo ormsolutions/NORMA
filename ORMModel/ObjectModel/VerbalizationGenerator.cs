@@ -271,6 +271,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>The 'DerivationNoteVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes the informal note specified for an element derivation rule. Format: Derivation  Note: {0}</remark>
 		DerivationNoteVerbalization,
+		/// <summary>The 'DerivedFactTypeReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference a derived fact type in a list of derived elements.
+		/// Format: {0}</remark>
+		DerivedFactTypeReference,
+		/// <summary>The 'DerivedFromListClose' simple snippet value.</summary>
+		/// <remark>Description: Text used to close the derived from list.</remark>
+		DerivedFromListClose,
+		/// <summary>The 'DerivedFromListFinalSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate the last two items in a derived from list. Format: <br/></remark>
+		DerivedFromListFinalSeparator,
+		/// <summary>The 'DerivedFromListOpen' simple snippet value.</summary>
+		/// <remark>Description:  Text and formatting to begin a list of elements derived from the current selection.Format: Used by derivations: <br/></remark>
+		DerivedFromListOpen,
+		/// <summary>The 'DerivedFromListPairSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate items in a derived from list. Format: <br/></remark>
+		DerivedFromListPairSeparator,
+		/// <summary>The 'DerivedFromListSeparator' simple snippet value.</summary>
+		/// <remark>Description: Text used to separate items in a derived from list. Format: <br/></remark>
+		DerivedFromListSeparator,
+		/// <summary>The 'DerivedSubtypeReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference a derived subtype in a list of derived elements.
+		/// Format: subtype {0}</remark>
+		DerivedSubtypeReference,
 		/// <summary>The 'DescriptionVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes the text specified for an element description. Format: Informal Description: {0}</remark>
 		DescriptionVerbalization,
@@ -354,19 +377,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: The text describing the identifier for an objectified FactType instance with an external identifier. Format: Identifier:</remark>
 		FactTypeInstanceIdentifier,
 		/// <summary>The 'FactTypeListClose' simple snippet value.</summary>
-		/// <remark>Description: Text used to close the sample population verbalization list.</remark>
+		/// <remark>Description: Text used to close the fact type verbalization list.</remark>
 		FactTypeListClose,
 		/// <summary>The 'FactTypeListFinalSeparator' simple snippet value.</summary>
-		/// <remark>Description: Text used to separate the last two items in a sample population verbalization list. Format: <br/></remark>
+		/// <remark>Description: Text used to separate the last two items in a fact type verbalization list. Format: <br/></remark>
 		FactTypeListFinalSeparator,
 		/// <summary>The 'FactTypeListOpen' simple snippet value.</summary>
-		/// <remark>Description:  Text and formatting to begin a sample population verbalization basic predicate text.Format: FactTypes: <br/></remark>
+		/// <remark>Description:  Text and formatting to begin a list of fact types represented by basic predicate text.Format: FactTypes: <br/></remark>
 		FactTypeListOpen,
 		/// <summary>The 'FactTypeListPairSeparator' simple snippet value.</summary>
-		/// <remark>Description: Text used to separate items in a sample population verbalization list. Format: <br/></remark>
+		/// <remark>Description: Text used to separate items in a fact type verbalization list. Format: <br/></remark>
 		FactTypeListPairSeparator,
 		/// <summary>The 'FactTypeListSeparator' simple snippet value.</summary>
-		/// <remark>Description: Text used to separate items in a sample population verbalization list. Format: <br/></remark>
+		/// <remark>Description: Text used to separate items in a fact type verbalization list. Format: <br/></remark>
 		FactTypeListSeparator,
 		/// <summary>The 'ForEachCompactQuantifier' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Verbalizes for each instance of an object, some rule applies to those instances.  Format: for each {0}, {1}</remark>
@@ -560,6 +583,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <remark>Description: Used to specify that one instance is identified by the other instance.
 		/// Format: {0} is identified by {1}</remark>
 		IsIdentifiedBy,
+		/// <summary>The 'JoinedEqualityConstraintReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference an equality constraint with a sequence that has a join path in a list of derived elements.
+		/// Format: equality constraint {0}</remark>
+		JoinedEqualityConstraintReference,
+		/// <summary>The 'JoinedExclusionConstraintReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference an exclusion constraint with a sequence that has a join path in a list of derived elements.
+		/// Format: exclusion constraint {0}</remark>
+		JoinedExclusionConstraintReference,
+		/// <summary>The 'JoinedFrequencyConstraintReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference a frequency constraint with a join path in a list of derived elements.
+		/// Format: frequency constraint {0}</remark>
+		JoinedFrequencyConstraintReference,
+		/// <summary>The 'JoinedRingConstraintReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference a ring constraint with a join path in a list of derived elements.
+		/// Format: ring constraint {0}</remark>
+		JoinedRingConstraintReference,
+		/// <summary>The 'JoinedSetComparisonSequenceReference' format string snippet. Contains 2 replacement fields.</summary>
+		/// <remark>Description: used to reference a set comparison sequence that has a join path in a list of derived elements.
+		/// Format: {0}, sequence {1}</remark>
+		JoinedSetComparisonSequenceReference,
+		/// <summary>The 'JoinedSubsetConstraintReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference a subset constraint with a sequence that has a join path in a list of derived elements.
+		/// Format: subset constraint {0}</remark>
+		JoinedSubsetConstraintReference,
+		/// <summary>The 'JoinedUniquenessConstraintReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference a ring constraint with a join path in a list of derived elements.
+		/// Format: uniqueness constraint {0}</remark>
+		JoinedUniquenessConstraintReference,
+		/// <summary>The 'JoinedValueComparisonConstraintReference' format string snippet. Contains 1 replacement field.</summary>
+		/// <remark>Description: used to reference a value comparison constraint with a join path in a list of derived elements.
+		/// Format: value comparison constraint {0}</remark>
+		JoinedValueComparisonConstraintReference,
 		/// <summary>The 'LessThanOrEqualValueComparator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to compare the two values in a value comparison constraint with a 'less than or equal' operator.
 		/// Format: {0} is less than or equal to {1}
@@ -866,7 +921,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		PartialSubtypeStoredDerivation,
 		/// <summary>The 'PeriodSeparator' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to delimit two snippet replacements by a snippet.
-		/// Format:	{0}.{1}</remark>
+		/// Format: {0}.{1}</remark>
 		PeriodSeparator,
 		/// <summary>The 'PersonalIdentityCorrelation' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Relate two variable names of different types that represent the same instance where the first
@@ -916,7 +971,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		ReferenceModeVerbalization,
 		/// <summary>The 'ReferenceScheme' format string snippet. Contains 2 replacement fields.</summary>
 		/// <remark>Description: Used to enclose and format a reference scheme replacement in brackets.
-		/// Format:	{0}({1})</remark>
+		/// Format: {0}({1})</remark>
 		ReferenceScheme,
 		/// <summary>The 'ReferenceSchemeVerbalization' format string snippet. Contains 1 replacement field.</summary>
 		/// <remark>Description: Verbalizes the way in which an object is referenced. Format: Reference Scheme: {0}</remark>
@@ -1255,6 +1310,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">at most</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">Derivation Note:</span> <span class=""definition"">{0}</span>",
+				"{0}",
+				"</span>",
+				"<br/>",
+				@"<br/><span class=""quantifier"">Used by derivations:</span><span class=""smallIndent""><br/>",
+				"<br/>",
+				"<br/>",
+				@"<span class=""quantifier"">subtype</span> {0}",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -1339,6 +1401,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"{0}<span class=""quantifier""> is identified by </span>{1}",
+				@"<span class=""quantifier"">equality constraint</span> {0}",
+				@"<span class=""quantifier"">exclusion constraint</span> {0}",
+				@"<span class=""quantifier"">frequency constraint</span> {0}",
+				@"<span class=""quantifier"">ring constraint</span> {0}",
+				@"{0}, <span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
+				@"<span class=""quantifier"">subset constraint</span> {0}",
+				@"<span class=""quantifier"">uniqueness constraint</span> {0}",
+				@"<span class=""quantifier"">value comparison constraint</span> {0}",
 				@"{0}<span class=""quantifier""> is less than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is less than </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
@@ -1614,6 +1684,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">at most</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">Derivation Note:</span> <span class=""definition"">{0}</span>",
+				"{0}",
+				"</span>",
+				"<br/>",
+				@"<br/><span class=""quantifier"">Used by derivations:</span><span class=""smallIndent""><br/>",
+				"<br/>",
+				"<br/>",
+				@"<span class=""quantifier"">subtype</span> {0}",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -1698,6 +1775,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"{0}<span class=""quantifier""> is identified by </span>{1}",
+				@"<span class=""quantifier"">equality constraint</span> {0}",
+				@"<span class=""quantifier"">exclusion constraint</span> {0}",
+				@"<span class=""quantifier"">frequency constraint</span> {0}",
+				@"<span class=""quantifier"">ring constraint</span> {0}",
+				@"{0}, <span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
+				@"<span class=""quantifier"">subset constraint</span> {0}",
+				@"<span class=""quantifier"">uniqueness constraint</span> {0}",
+				@"<span class=""quantifier"">value comparison constraint</span> {0}",
 				@"{0}<span class=""quantifier""> is less than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is less than </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
@@ -1973,6 +2058,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">at most</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">Derivation Note:</span> <span class=""definition"">{0}</span>",
+				"{0}",
+				"</span>",
+				"<br/>",
+				@"<br/><span class=""quantifier"">Used by derivations:</span><span class=""smallIndent""><br/>",
+				"<br/>",
+				"<br/>",
+				@"<span class=""quantifier"">subtype</span> {0}",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -2057,6 +2149,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"{0}<span class=""quantifier""> is identified by </span>{1}",
+				@"<span class=""quantifier"">equality constraint</span> {0}",
+				@"<span class=""quantifier"">exclusion constraint</span> {0}",
+				@"<span class=""quantifier"">frequency constraint</span> {0}",
+				@"<span class=""quantifier"">ring constraint</span> {0}",
+				@"{0}, <span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
+				@"<span class=""quantifier"">subset constraint</span> {0}",
+				@"<span class=""quantifier"">uniqueness constraint</span> {0}",
+				@"<span class=""quantifier"">value comparison constraint</span> {0}",
 				@"{0}<span class=""quantifier""> is less than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is less than </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
@@ -2332,6 +2432,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""quantifier"">at most</span> <span class=""instance"">{1}</span>",
 				@"<span class=""quantifier"">that</span> {0}",
 				@"<span class=""quantifier"">Derivation Note:</span> <span class=""definition"">{0}</span>",
+				"{0}",
+				"</span>",
+				"<br/>",
+				@"<br/><span class=""quantifier"">Used by derivations:</span><span class=""smallIndent""><br/>",
+				"<br/>",
+				"<br/>",
+				@"<span class=""quantifier"">subtype</span> {0}",
 				@"<span class=""quantifier"">Informal Description:</span> <span class=""definition"">{0}</span>",
 				@"{0} <span class=""quantifier"">is an entity type</span>",
 				@"{0}<span class=""quantifier""> if and only if </span>{1}",
@@ -2416,6 +2523,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<span class=""smallIndent"">{0} <span class=""quantifier"">is independent (it may have instances that play no other roles)</span></span>",
 				@"{0} <span class=""quantifier"">in</span> {1}",
 				@"{0}<span class=""quantifier""> is identified by </span>{1}",
+				@"<span class=""quantifier"">equality constraint</span> {0}",
+				@"<span class=""quantifier"">exclusion constraint</span> {0}",
+				@"<span class=""quantifier"">frequency constraint</span> {0}",
+				@"<span class=""quantifier"">ring constraint</span> {0}",
+				@"{0}, <span class=""quantifier"">sequence</span> <span class=""instance"">{1}</span>",
+				@"<span class=""quantifier"">subset constraint</span> {0}",
+				@"<span class=""quantifier"">uniqueness constraint</span> {0}",
+				@"<span class=""quantifier"">value comparison constraint</span> {0}",
 				@"{0}<span class=""quantifier""> is less than or equal to </span>{1}",
 				@"{0}<span class=""quantifier""> is less than </span>{1}",
 				@"{0}<span class=""logicalOperator""> and </span>{1}",
@@ -3737,7 +3852,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			if ((bool)verbalizationContext.VerbalizationOptions[CoreVerbalizationOption.FactTypesWithObjectType] && verbalizationContext.VerbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName)
 			{
 				writer.WriteLine();
-				string snippetFormat10 = snippets.GetSnippet(CoreVerbalizationSnippetType.SelfReference, isDeontic, isNegative);
 				string snippet10Replace1 = null;
 				if (sbTemp == null)
 				{
@@ -3839,7 +3953,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 				}
 				snippet10Replace1 = sbTemp.ToString();
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat10, snippet10Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				writer.Write(snippet10Replace1);
 			}
 			#endregion // Pattern Matches
 			return true;
@@ -4203,6 +4317,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static ErrorReport myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static ErrorReport GetVerbalizer()
 			{
 				ErrorReport retVal = myCache;
@@ -5079,6 +5194,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static ImpliedUniqueVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static ImpliedUniqueVerbalizer GetVerbalizer()
 			{
 				ImpliedUniqueVerbalizer retVal = myCache;
@@ -5359,6 +5475,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static ImpliedMandatoryVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static ImpliedMandatoryVerbalizer GetVerbalizer()
 			{
 				ImpliedMandatoryVerbalizer retVal = myCache;
@@ -5551,6 +5668,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static DefaultBinaryMissingUniquenessVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static DefaultBinaryMissingUniquenessVerbalizer GetVerbalizer()
 			{
 				DefaultBinaryMissingUniquenessVerbalizer retVal = myCache;
@@ -5775,6 +5893,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static CombinedMandatoryUniqueVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static CombinedMandatoryUniqueVerbalizer GetVerbalizer()
 			{
 				CombinedMandatoryUniqueVerbalizer retVal = myCache;
@@ -6198,6 +6317,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static SimpleMandatoryVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static SimpleMandatoryVerbalizer GetVerbalizer()
 			{
 				SimpleMandatoryVerbalizer retVal = myCache;
@@ -6663,6 +6783,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static DisjunctiveMandatoryVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static DisjunctiveMandatoryVerbalizer GetVerbalizer()
 			{
 				DisjunctiveMandatoryVerbalizer retVal = myCache;
@@ -7693,6 +7814,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static UniquenessConstraintVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static UniquenessConstraintVerbalizer GetVerbalizer()
 			{
 				UniquenessConstraintVerbalizer retVal = myCache;
@@ -9614,6 +9736,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static UniquenessPossibilityVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static UniquenessPossibilityVerbalizer GetVerbalizer()
 			{
 				UniquenessPossibilityVerbalizer retVal = myCache;
@@ -10003,6 +10126,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static UniquenessPreferredVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static UniquenessPreferredVerbalizer GetVerbalizer()
 			{
 				UniquenessPreferredVerbalizer retVal = myCache;
@@ -12597,6 +12721,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static NearestValueConstraintVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static NearestValueConstraintVerbalizer GetVerbalizer()
 			{
 				NearestValueConstraintVerbalizer retVal = myCache;
@@ -13392,6 +13517,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static AcyclicRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static AcyclicRingVerbalizer GetVerbalizer()
 			{
 				AcyclicRingVerbalizer retVal = myCache;
@@ -13603,6 +13729,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static AntisymmetricRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static AntisymmetricRingVerbalizer GetVerbalizer()
 			{
 				AntisymmetricRingVerbalizer retVal = myCache;
@@ -14026,6 +14153,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static AsymmetricRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static AsymmetricRingVerbalizer GetVerbalizer()
 			{
 				AsymmetricRingVerbalizer retVal = myCache;
@@ -14365,6 +14493,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static IrreflexiveRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static IrreflexiveRingVerbalizer GetVerbalizer()
 			{
 				IrreflexiveRingVerbalizer retVal = myCache;
@@ -14687,6 +14816,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static IntransitiveRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static IntransitiveRingVerbalizer GetVerbalizer()
 			{
 				IntransitiveRingVerbalizer retVal = myCache;
@@ -15285,6 +15415,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static StronglyIntransitiveRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static StronglyIntransitiveRingVerbalizer GetVerbalizer()
 			{
 				StronglyIntransitiveRingVerbalizer retVal = myCache;
@@ -15515,6 +15646,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static SymmetricRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static SymmetricRingVerbalizer GetVerbalizer()
 			{
 				SymmetricRingVerbalizer retVal = myCache;
@@ -15854,6 +15986,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static ReflexiveRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static ReflexiveRingVerbalizer GetVerbalizer()
 			{
 				ReflexiveRingVerbalizer retVal = myCache;
@@ -16154,6 +16287,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static PurelyReflexiveRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static PurelyReflexiveRingVerbalizer GetVerbalizer()
 			{
 				PurelyReflexiveRingVerbalizer retVal = myCache;
@@ -16401,6 +16535,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static TransitiveRingVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static TransitiveRingVerbalizer GetVerbalizer()
 			{
 				TransitiveRingVerbalizer retVal = myCache;
@@ -18790,12 +18925,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	#region FactType.FactTypeInstanceBlockStart verbalization
 	public partial class FactType
 	{
-		#region FactType verbalization block start
-		private partial class FactTypeInstanceBlockStart : IVerbalize, IDisposable
+		#region Child Verbalizer FactTypeInstanceBlockStart
+		partial class FactTypeInstanceBlockStart : IVerbalize, IDisposable
 		{
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static FactTypeInstanceBlockStart myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static FactTypeInstanceBlockStart GetVerbalizer()
 			{
 				FactTypeInstanceBlockStart retVal = myCache;
@@ -18831,18 +18967,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 		}
-		#endregion // FactType verbalization block start
+		#endregion // Child Verbalizerion FactTypeInstanceBlockStart
 	}
 	#endregion // FactType.FactTypeInstanceBlockStart verbalization
 	#region FactType.FactTypeInstanceBlockEnd verbalization
 	public partial class FactType
 	{
-		#region FactType verbalization block start
-		private partial class FactTypeInstanceBlockEnd : IVerbalize, IDisposable
+		#region Child Verbalizer FactTypeInstanceBlockEnd
+		partial class FactTypeInstanceBlockEnd : IVerbalize, IDisposable
 		{
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static FactTypeInstanceBlockEnd myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static FactTypeInstanceBlockEnd GetVerbalizer()
 			{
 				FactTypeInstanceBlockEnd retVal = myCache;
@@ -18878,7 +19015,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
 			}
 		}
-		#endregion // FactType verbalization block start
+		#endregion // Child Verbalizerion FactTypeInstanceBlockEnd
 	}
 	#endregion // FactType.FactTypeInstanceBlockEnd verbalization
 	#region FactType.FactTypeInstanceVerbalizer verbalization
@@ -18890,6 +19027,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static FactTypeInstanceVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static FactTypeInstanceVerbalizer GetVerbalizer()
 			{
 				FactTypeInstanceVerbalizer retVal = myCache;
@@ -19094,6 +19232,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#region Cache management
 			// Cache an instance so we only create one helper in single-threaded scenarios
 			private static ObjectTypeInstanceVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
 			public static ObjectTypeInstanceVerbalizer GetVerbalizer()
 			{
 				ObjectTypeInstanceVerbalizer retVal = myCache;
@@ -19266,4 +19405,214 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		#endregion // ObjectType Instance Verbalization
 	}
 	#endregion // ObjectType.ObjectTypeInstanceVerbalizer verbalization
+	#region FactType.DerivedElementsVerbalizer verbalization
+	public partial class FactType
+	{
+		#region Child Verbalizer DerivedElementsVerbalizer
+		partial class DerivedElementsVerbalizer : IVerbalize, IDisposable
+		{
+			#region Cache management
+			// Cache an instance so we only create one helper in single-threaded scenarios
+			private static DerivedElementsVerbalizer myCache;
+			/// <summary>Get the cached verbalizer or a new instance.</summary>
+			public static DerivedElementsVerbalizer GetVerbalizer()
+			{
+				DerivedElementsVerbalizer retVal = myCache;
+				if (retVal != null)
+				{
+					retVal = System.Threading.Interlocked.CompareExchange<DerivedElementsVerbalizer>(ref myCache, null as DerivedElementsVerbalizer, retVal);
+				}
+				if (retVal == null)
+				{
+					retVal = new DerivedElementsVerbalizer();
+				}
+				return retVal;
+			}
+			void IDisposable.Dispose()
+			{
+				this.DisposeHelper();
+				if (myCache == null)
+				{
+					System.Threading.Interlocked.CompareExchange<DerivedElementsVerbalizer>(ref myCache, this, null as DerivedElementsVerbalizer);
+				}
+			}
+			#endregion // Cache management
+			/// <summary><see cref="IVerbalize.GetVerbalization"/> implementation</summary>
+			protected bool GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+			{
+				bool isNegative = 0 != (sign & VerbalizationSign.Negative);
+				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
+				const bool isDeontic = false;
+				StringBuilder sbTemp = null;
+				#region Pattern Matches
+				FactType derivedFactType;
+				ObjectType derivedSubtype;
+				SetConstraint joinedSetConstraint;
+				SetComparisonConstraintRoleSequence joinedSetComparisonSequence;
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+				string snippet1Replace1 = null;
+				if (sbTemp == null)
+				{
+					sbTemp = new StringBuilder();
+				}
+				else
+				{
+					sbTemp.Length = 0;
+				}
+				IList<ORMModelElement> derivedElements = this.DerivedElements;
+				int derivedElementCount = derivedElements.Count;
+				for (int derivedElementIndex = 0; derivedElementIndex < derivedElementCount; ++derivedElementIndex)
+				{
+					ORMModelElement derivedElement = derivedElements[derivedElementIndex];
+					CoreVerbalizationSnippetType listSnippet;
+					if (derivedElementIndex == 0)
+					{
+						listSnippet = CoreVerbalizationSnippetType.DerivedFromListOpen;
+					}
+					else if (derivedElementIndex == derivedElementCount - 1)
+					{
+						if (derivedElementIndex == 1)
+						{
+							listSnippet = CoreVerbalizationSnippetType.DerivedFromListPairSeparator;
+						}
+						else
+						{
+							listSnippet = CoreVerbalizationSnippetType.DerivedFromListFinalSeparator;
+						}
+					}
+					else
+					{
+						listSnippet = CoreVerbalizationSnippetType.DerivedFromListSeparator;
+					}
+					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
+					string snippet1Replace1Replace1 = null;
+					if (null != (derivedFactType = derivedElement as FactType))
+					{
+						FactType parentFact = derivedFactType;
+						string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
+						LinkedElementCollection<ReadingOrder> allReadingOrders = parentFact.ReadingOrderCollection;
+						IList<RoleBase> factRoles = allReadingOrders.Count != 0 ? allReadingOrders[0].RoleCollection : parentFact.RoleCollection;
+						Nullable<int> unaryRoleIndex = FactType.GetUnaryRoleIndex(factRoles);
+						int factArity = unaryRoleIndex.HasValue ? 1 : factRoles.Count;
+						int unaryRoleOffset = unaryRoleIndex.HasValue ? unaryRoleIndex.Value : 0;
+						IReading reading = null;
+						VerbalizationHyphenBinder hyphenBinder;
+						string[] basicRoleReplacements = new string[factArity];
+						int lastMissingRolePlayerIndex = 0;
+						for (int i = 0; i < factArity; ++i)
+						{
+							Role factRole = factRoles[i + unaryRoleOffset].Role;
+							ObjectType rolePlayer = factRole.RolePlayer;
+							string basicReplacement;
+							if (rolePlayer != null)
+							{
+								basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative), VerbalizationHelper.NormalizeObjectTypeName(rolePlayer, verbalizationContext.VerbalizationOptions), rolePlayer.Id.ToString("D"));
+							}
+							else
+							{
+								basicReplacement = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectTypeMissing, isDeontic, isNegative), ++lastMissingRolePlayerIndex);
+							}
+							basicRoleReplacements[i] = basicReplacement;
+						}
+						string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DerivedFactTypeReference, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1 = null;
+						reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
+						hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
+						snippet1Replace1Replace1Replace1 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
+						snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
+					}
+					else if (null != (derivedSubtype = derivedElement as ObjectType))
+					{
+						string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.DerivedSubtypeReference, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1 = null;
+						string snippet1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1Replace1 = null;
+						snippet1Replace1Replace1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(derivedSubtype.Name, verbalizationContext.VerbalizationOptions);
+						string snippet1Replace1Replace1Replace1Replace2 = null;
+						snippet1Replace1Replace1Replace1Replace2 = derivedElement.Id.ToString("D");
+						snippet1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1, snippet1Replace1Replace1Replace1Replace2);
+						snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1);
+					}
+					else if (null != (joinedSetConstraint = derivedElement as SetConstraint))
+					{
+						string snippet1Replace1Replace1Replace1 = null;
+						CoreVerbalizationSnippetType snippet1Replace1Replace1ReplaceSnippetType1 = 0;
+						if (joinedSetConstraint is FrequencyConstraint)
+						{
+							snippet1Replace1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.JoinedFrequencyConstraintReference;
+						}
+						else if (joinedSetConstraint is RingConstraint)
+						{
+							snippet1Replace1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.JoinedRingConstraintReference;
+						}
+						else if (joinedSetConstraint is UniquenessConstraint)
+						{
+							snippet1Replace1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.JoinedUniquenessConstraintReference;
+						}
+						else if (joinedSetConstraint is ValueComparisonConstraint)
+						{
+							snippet1Replace1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.JoinedValueComparisonConstraintReference;
+						}
+						string snippet1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace1ReplaceSnippetType1, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1Replace1 = null;
+						string snippet1Replace1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1Replace1Replace1 = null;
+						snippet1Replace1Replace1Replace1Replace1Replace1 = joinedSetConstraint.Name;
+						string snippet1Replace1Replace1Replace1Replace1Replace2 = null;
+						snippet1Replace1Replace1Replace1Replace1Replace2 = derivedElement.Id.ToString("D");
+						snippet1Replace1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1Replace1, snippet1Replace1Replace1Replace1Replace1Replace2);
+						snippet1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1);
+						snippet1Replace1Replace1 = snippet1Replace1Replace1Replace1;
+					}
+					else if (null != (joinedSetComparisonSequence = derivedElement as SetComparisonConstraintRoleSequence))
+					{
+						SetComparisonConstraint joinedSetComparisonConstraint = joinedSetComparisonSequence.ExternalConstraint;
+						string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.JoinedSetComparisonSequenceReference, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1 = null;
+						CoreVerbalizationSnippetType snippet1Replace1Replace1ReplaceSnippetType1 = 0;
+						if (joinedSetComparisonConstraint is EqualityConstraint)
+						{
+							snippet1Replace1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.JoinedEqualityConstraintReference;
+						}
+						else if (joinedSetComparisonConstraint is ExclusionConstraint)
+						{
+							snippet1Replace1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.JoinedExclusionConstraintReference;
+						}
+						else if (joinedSetComparisonConstraint is SubsetConstraint)
+						{
+							snippet1Replace1Replace1ReplaceSnippetType1 = CoreVerbalizationSnippetType.JoinedSubsetConstraintReference;
+						}
+						string snippet1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace1ReplaceSnippetType1, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1Replace1 = null;
+						string snippet1Replace1Replace1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace1Replace1Replace1 = null;
+						snippet1Replace1Replace1Replace1Replace1Replace1 = joinedSetComparisonConstraint.Name;
+						string snippet1Replace1Replace1Replace1Replace1Replace2 = null;
+						snippet1Replace1Replace1Replace1Replace1Replace2 = derivedElement.Id.ToString("D");
+						snippet1Replace1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1Replace1, snippet1Replace1Replace1Replace1Replace1Replace2);
+						snippet1Replace1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1Replace1);
+						string snippet1Replace1Replace1Replace2 = null;
+						snippet1Replace1Replace1Replace2 = (joinedSetComparisonConstraint.RoleSequenceCollection.IndexOf(joinedSetComparisonSequence) + 1).ToString();
+						snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1, snippet1Replace1Replace1Replace2);
+					}
+					snippet1Replace1 = snippet1Replace1Replace1;
+					sbTemp.Append(FactType.CreateVerbalizerSentence(snippet1Replace1, snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative)));
+					if (derivedElementIndex == derivedElementCount - 1)
+					{
+						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.DerivedFromListClose, isDeontic, isNegative));
+					}
+				}
+				snippet1Replace1 = sbTemp.ToString();
+				writer.Write(snippet1Replace1);
+				#endregion // Pattern Matches
+				return true;
+			}
+			bool IVerbalize.GetVerbalization(TextWriter writer, IDictionary<Type, IVerbalizationSets> snippetsDictionary, IVerbalizationContext verbalizationContext, VerbalizationSign sign)
+			{
+				return this.GetVerbalization(writer, snippetsDictionary, verbalizationContext, sign);
+			}
+		}
+		#endregion // Child Verbalizerion DerivedElementsVerbalizer
+	}
+	#endregion // FactType.DerivedElementsVerbalizer verbalization
 }

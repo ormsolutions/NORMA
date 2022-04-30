@@ -609,6 +609,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						"";
 				});
 		}
+		/// <summary>
+		/// Create a reading signature from a reading text format string and a list
+		/// of roles.
+		/// </summary>
+		/// <param name="readingText">Reading format text.</param>
+		/// <param name="readingRoles">A list of roles, with one role per replacement field.</param>
+		/// <param name="reverseReading">Set if <paramref name="readingText"/> represents a reverse reading</param>
+		/// <returns>An expanded reading signature.</returns>
+		public static string GenerateReadingSignature(string readingText, IList<RoleBase> readingRoles, bool reverseReading)
+		{
+			int rolePlayerCount = readingRoles.Count;
+			return Reading.ReplaceFields(
+				VerbalizationHyphenBinder.DehyphenateReadingText(readingText),
+				delegate (int replaceIndex)
+				{
+					ObjectType rolePlayer;
+					Role role;
+					return (replaceIndex < rolePlayerCount && null != (role = readingRoles[reverseReading ? (rolePlayerCount - replaceIndex - 1) : replaceIndex].Role) && null != (rolePlayer = role.RolePlayer)) ?
+						VerbalizationHelper.NormalizeObjectTypeName(rolePlayer, SignatureRenderingOptions) :
+						"";
+				});
+		}
 		#endregion // ReadingSignatureChangedRule
 		#endregion // rule classes and helpers
 		#region IModelErrorOwner implementation

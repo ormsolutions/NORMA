@@ -405,6 +405,14 @@ namespace ORMSolutions.ORMArchitect.Core
 		/// </summary>
 		public const string OptionsPagePropertyShowDefaultConstraintVerbalizationDisplayNameId = "OptionsPage.Property.ShowDefaultConstraintVerbalization.DisplayName";
 		/// <summary>
+		/// Description of the Verbalize DerivedFrom with FactType Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyVerbalizeDerivedFromWithFactTypeDescriptionId = "OptionsPage.Property.VerbalizeDerivedFromWithFactType.Description";
+		/// <summary>
+		/// Display Name of the Verbalize DerivedFrom with FactType Verbalization option
+		/// </summary>
+		public const string OptionsPagePropertyVerbalizeDerivedFromWithFactTypeDisplayNameId = "OptionsPage.Property.VerbalizeDerivedFromWithFactType.DisplayName";
+		/// <summary>
 		/// Description of the Verbalize FactTypes with ObjectType Verbalization option
 		/// </summary>
 		public const string OptionsPagePropertyVerbalizeFactTypesWithObjectTypeDescriptionId = "OptionsPage.Property.VerbalizeFactTypesWithObjectType.Description";

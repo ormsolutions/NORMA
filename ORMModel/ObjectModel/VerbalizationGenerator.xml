@@ -103,7 +103,7 @@
 				<Snippet ref="ValueTypeVerbalization"/>
 				<SnippetReplacements>
 					<Snippet ref="ObjectType">
-						<ContextName isObjectType="true"/>
+						<ContextName normalize="true"/>
 						<ContextId/>
 					</Snippet>
 				</SnippetReplacements>
@@ -121,7 +121,7 @@
 			<ErrorReportHere/>
 			<Snippet ref="ObjectifiesFactTypeVerbalization" conditionalMatch="IsObjectifiedFactType" conditionalBlockContext="ObjectifiedFactType">
 				<Snippet ref="ObjectType">
-					<ContextName isObjectType="true"/>
+					<ContextName normalize="true"/>
 					<ContextId/>
 				</Snippet>
 				<Fact/>
@@ -150,7 +150,7 @@
 			</Snippet>
 			<Snippet ref="IndependentVerbalization" conditionalMatch="IsIndependent">
 				<Snippet ref="ObjectType">
-					<ContextName isObjectType="true"/>
+					<ContextName normalize="true"/>
 					<ContextId/>
 				</Snippet>
 			</Snippet>
@@ -158,7 +158,7 @@
 				<Snippet conditionalMatch="DerivationRuleIsPartial" ref="PartialStoredSubtypeDescription"/>
 				<Snippet ref="FullStoredSubtypeDescription"/>
 			</ConditionalSnippet>
-			<Snippet ref="SelfReference" conditionalMatch="VerbalizeFactTypesWithBrowserObjectType">
+			<Snippet ref="SelfReference" conditionalMatch="VerbalizeFactTypesWithBrowserObjectType" closeSentence="false">
 				<IterateRoles match="playedRoles" listStyle="FactTypeList" verifyCanVerbalizeFactType="true" uniqueFactType="true">
 					<Fact subtypeMetaReading="true" closeSentence="true"/>
 				</IterateRoles>
@@ -1409,7 +1409,7 @@
 					<Snippet ref="MultiValueValueConstraint"/>
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
-							<ContextName isObjectType="true"/>
+							<ContextName normalize="true"/>
 							<ContextId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">
@@ -1454,7 +1454,7 @@
 					<Snippet ref="MultiValueValueConstraint"/>
 					<SnippetReplacements>
 						<Snippet ref="ObjectType">
-							<ContextName isObjectType="true"/>
+							<ContextName normalize="true"/>
 							<ContextId/>
 						</Snippet>
 						<IterateValueRanges listStyle="CompactSimpleList">
@@ -1496,7 +1496,7 @@
 				<Snippet ref="ImpliedModalNecessityOperator" alternateSign="positive">
 					<Snippet ref="ObjectTypeCardinality">
 						<Snippet ref="ObjectType">
-							<ContextName isObjectType="true"/>
+							<ContextName normalize="true"/>
 							<ContextId/>
 						</Snippet>
 						<ConditionalReplacement>
@@ -1539,7 +1539,7 @@
 					<Snippet ref="UnaryRoleCardinality">
 						<Fact/>
 						<Snippet ref="ObjectType">
-							<ContextName isObjectType="true"/>
+							<ContextName normalize="true"/>
 							<ContextId/>
 						</Snippet>
 						<IterateRanges listStyle="CompactSimpleOrList">
@@ -2432,5 +2432,58 @@
 				</IterateInstances>
 			</SampleInstance>
 		</SampleInstances>
+		<ChildHelpers>
+			<ChildVerbalizer type="DerivedElementsVerbalizer" childHelperFor="FactType">
+				<Snippet ref="SelfReference" conditionalBlockContext="DerivedFromTypes" closeSentence="false">
+					<IterateDerivedFrom listStyle="DerivedFromList">
+						<Snippet ref="SelfReference">
+							<ConditionalReplacement>
+								<!-- IterateRoles does all of the work we need. It seems odd here for a single fact type, but replicating all of the verbalization work in IterateRoles
+								so that this looks more natural is not even close to worth it. -->
+								<IterateRoles match="providedFactType" conditionalMatch="DerivedFactType" listStyle="null">
+									<Snippet ref="DerivedFactTypeReference">
+										<Fact closeSentence="false"/>
+									</Snippet>
+								</IterateRoles>
+								<Snippet ref="DerivedSubtypeReference" conditionalMatch="DerivedSubtype">
+									<Snippet ref="ObjectType">
+										<ContextName normalize="true"/>
+										<ContextId/>
+									</Snippet>
+								</Snippet>
+								<Snippet ref="SelfReference" conditionalMatch="JoinedSetConstraint">
+									<ConditionalSnippet>
+										<Snippet ref="JoinedFrequencyConstraintReference" conditionalMatch="JoinedFrequencyConstraint"/>
+										<Snippet ref="JoinedRingConstraintReference" conditionalMatch="JoinedRingConstraint"/>
+										<Snippet ref="JoinedUniquenessConstraintReference" conditionalMatch="JoinedUniquenessConstraint"/>
+										<Snippet ref="JoinedValueComparisonConstraintReference" conditionalMatch="JoinedValueComparisonConstraint"/>
+										<SnippetReplacements>
+											<Snippet ref="ObjectType">
+												<JoinedSetConstraintName/>
+												<ContextId/>
+											</Snippet>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+								</Snippet>
+								<Snippet ref="JoinedSetComparisonSequenceReference" conditionalMatch="JoinedSetComparisonSequence" conditionalBlockContext="JoinedSetComparisonConstraint">
+									<ConditionalSnippet>
+										<Snippet ref="JoinedEqualityConstraintReference" conditionalMatch="JoinedEqualityConstraint"/>
+										<Snippet ref="JoinedExclusionConstraintReference" conditionalMatch="JoinedExclusionConstraint"/>
+										<Snippet ref="JoinedSubsetConstraintReference" conditionalMatch="JoinedSubsetConstraint"/>
+										<SnippetReplacements>
+											<Snippet ref="ObjectType">
+												<JoinedSetComparisonSequenceConstraintName/>
+												<ContextId/>
+											</Snippet>
+										</SnippetReplacements>
+									</ConditionalSnippet>
+									<ContextSequenceNumber/>
+								</Snippet>
+							</ConditionalReplacement>
+						</Snippet>
+					</IterateDerivedFrom>
+				</Snippet>
+			</ChildVerbalizer>
+		</ChildHelpers>
 	</Constructs>
 </VerbalizationRoot>

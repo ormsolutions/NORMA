@@ -3236,6 +3236,226 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Equality Overrides
 		}
 		#endregion // FactTypeInstanceVerbalizer class
+		#region DerivedElementsVerbalizer class
+		/// <summary>
+		/// Helper class for verbalization elements derived using a fact type.
+		/// </summary>
+		protected partial class DerivedElementsVerbalizer
+		{
+			#region DerivedElementComparer class
+			private sealed class DerivedElementComparer : IComparer<ORMModelElement>
+			{
+				public static IComparer<ORMModelElement> Instance = new DerivedElementComparer();
+				private DerivedElementComparer() { }
+
+				private static Dictionary<Type, int> myOwnerTypeSortIndex = null;
+				private static Dictionary<Type, int> OwnerTypeSortIndex
+				{
+					get
+					{
+						Dictionary<Type, int> retVal = myOwnerTypeSortIndex;
+						if (retVal == null)
+						{
+							retVal = new Dictionary<Type, int>();
+							retVal[typeof(FactType)] = 1;
+							retVal[typeof(SubtypeFact)] = 1;
+							retVal[typeof(ObjectType)] = 2;
+							retVal[typeof(FrequencyConstraint)] = 3;
+							retVal[typeof(RingConstraint)] = 3;
+							retVal[typeof(UniquenessConstraint)] = 3;
+							retVal[typeof(ValueComparisonConstraint)] = 3;
+							retVal[typeof(SetComparisonConstraintRoleSequence)] = 4;
+							if (null != System.Threading.Interlocked.CompareExchange<Dictionary<Type, int>>(ref myOwnerTypeSortIndex, retVal, null))
+							{
+								// Some other thread beat us, abandon our value
+								retVal = myOwnerTypeSortIndex;
+							}
+						}
+						return retVal;
+					}
+				}
+				int IComparer<ORMModelElement>.Compare(ORMModelElement left, ORMModelElement right)
+				{
+					if ((object)left == right)
+					{
+						return 0;
+					}
+					Dictionary<Type, int> sortByType = OwnerTypeSortIndex;
+					int leftType;
+					int rightType;
+					if (!sortByType.TryGetValue(left.GetType(), out leftType))
+					{
+						leftType = 5; // Sanity, should be a dead code path
+					}
+					if (!sortByType.TryGetValue(right.GetType(), out rightType))
+					{
+						rightType = 5; // Sanity, should be a dead code path
+					}
+					if (leftType == rightType)
+					{
+						int retVal = 0;
+						switch (leftType)
+						{
+							case 1: // Fact type, sort by default reading signature
+								{
+									IReading leftVirtualReading = ((FactType)left).GetDefaultReading();
+									IReading rightVirtualReading = ((FactType)right).GetDefaultReading();
+									Reading leftReading = leftVirtualReading as Reading;
+									Reading rightReading = rightVirtualReading as Reading;
+									retVal = string.Compare(
+										leftReading != null ? leftReading.Signature : Reading.GenerateReadingSignature(leftVirtualReading.Text, leftVirtualReading.RoleCollection, false),
+										rightReading != null ? rightReading.Signature : Reading.GenerateReadingSignature(rightVirtualReading.Text, rightVirtualReading.RoleCollection, false),
+										StringComparison.CurrentCultureIgnoreCase);
+								}
+								break;
+							case 2: // Object type and set constraint, sort by name
+							case 3:
+								retVal = string.Compare(((ORMNamedElement)left).Name, ((ORMNamedElement)right).Name, StringComparison.CurrentCultureIgnoreCase);
+								break;
+							case 4: // Comparison constraint sequences.
+								{
+									SetComparisonConstraintRoleSequence leftSequence = (SetComparisonConstraintRoleSequence)left;
+									SetComparisonConstraintRoleSequence rightSequence = (SetComparisonConstraintRoleSequence)right;
+									SetComparisonConstraint leftConstraint = leftSequence.ExternalConstraint;
+									SetComparisonConstraint rightConstraint = rightSequence.ExternalConstraint;
+									if (leftConstraint == rightConstraint)
+									{
+										LinkedElementCollection<SetComparisonConstraintRoleSequence> orderedSequences = leftConstraint.RoleSequenceCollection;
+										retVal = orderedSequences.IndexOf(leftSequence) - orderedSequences.IndexOf(rightSequence);
+									}
+									else
+									{
+										retVal = string.Compare(leftConstraint.Name, rightConstraint.Name, StringComparison.CurrentCultureIgnoreCase);
+									}
+								}
+								break;
+						}
+						// Not much else to do, fallback on id
+						return retVal != 0 ? retVal : left.Id.CompareTo(right.Id);
+					}
+					return leftType - rightType;
+				}
+			}
+			#endregion // DerivedElementComparer class
+
+			private IList<ORMModelElement> myDerivedElements;
+			private FactType myFactType;
+
+			/// <summary>
+			/// Get a verbalizer instance with the normalized (sorted and filtered for ability to verbalized)
+			/// derived elements for a given fact type.
+			/// </summary>
+			/// <param name="factType">The context fact type</param>
+			/// <param name="ownerKind">The kind of elements to retrieve.</param>
+			/// <returns>A verbalizer or null.</returns>
+			public static DerivedElementsVerbalizer GetNormalizedVerbalizer(FactType factType, RolePathOwnerKind ownerKind)
+			{
+				ORMModelElement[] derivedElements;
+				int derivedElementCount;
+				if (0 != (derivedElementCount = (derivedElements = RolePathVerbalizer.GetUsedByRolePathOwners(factType, ownerKind)).Length))
+				{
+					if (derivedElementCount > 1)
+					{
+						Array.Sort<ORMModelElement>(derivedElements, DerivedElementComparer.Instance);
+					}
+
+					// Make sure everything is verbalizable
+					List<ORMModelElement> replacementList = null;
+					for (int i = 0; i < derivedElementCount; ++i)
+					{
+						FactType derivedFactType = derivedElements[i] as FactType;
+						if (derivedFactType == null) // These are sorted now, fact types are first and are the only elements that might not be verbalizable, stop looking otherwise
+						{
+							if (replacementList != null)
+							{
+								for (int j = i; j < derivedElementCount; ++j)
+								{
+									replacementList.Add(derivedElements[j]);
+								}
+							}
+						}
+						else if (derivedFactType.ReadingRequiredError != null)
+						{
+							if (replacementList == null)
+							{
+								replacementList = new List<ORMModelElement>(); // OK if this empty, we'll check at the end
+								for (int j = 0; j < i; ++j)
+								{
+									replacementList.Add(derivedElements[j]);
+								}
+							}
+						}
+						else if (replacementList != null)
+						{
+							replacementList.Add(factType);
+						}
+					}
+
+					IList<ORMModelElement> normalizedList;
+					if (replacementList == null)
+					{
+						normalizedList = derivedElements;
+					}
+					else if (replacementList.Count == 0)
+					{
+						return null; // Nothing left that can be verbalized
+					}
+					else
+					{
+						normalizedList = replacementList;
+					}
+					DerivedElementsVerbalizer retVal = DerivedElementsVerbalizer.GetVerbalizer();
+					retVal.Initialize(factType, normalizedList);
+					return retVal;
+				}
+				return null;
+			}
+			/// <summary>
+			/// Initialize this instance
+			/// </summary>
+			/// <param name="factType">The context fact type</param>
+			/// <param name="derivedElements">A non-empty set of derived elements.</param>
+			public void Initialize(FactType factType, IList<ORMModelElement> derivedElements)
+			{
+				myFactType = factType;
+				myDerivedElements = derivedElements;
+			}
+			private void DisposeHelper()
+			{
+				myFactType = null;
+				myDerivedElements = null;
+			}
+			private IList<ORMModelElement> DerivedElements
+			{
+				get
+				{
+					return myDerivedElements;
+				}
+			}
+			#region Equality Overrides
+			// Override equality operators so that muliple uses of the verbalization helper
+			// for this object with different values does not trigger an 'already verbalized'
+			// response for later verbalizations.
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override int GetHashCode()
+			{
+				// This is initialized with derived elements that are functionally determined
+				// by the fact type itself. Just use the fact type for equality.
+				return myFactType != null ? myFactType.GetHashCode() : 0;
+			}
+			/// <summary>
+			/// Standard equality override
+			/// </summary>
+			public override bool Equals(object obj)
+			{
+				DerivedElementsVerbalizer other;
+				return (null != (other = obj as DerivedElementsVerbalizer)) && other.myFactType == myFactType;
+			}
+			#endregion // Equality Overrides
+		}
+		#endregion // DerivedElementsVerbalizer class
 		#region IVerbalizeFilterChildrenByRole Implementation
 		/// <summary>
 		/// Implements IVerbalizeFilterChildrenByRole.BlockEmbeddedVerbalization.
@@ -3255,7 +3475,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Responsible
 		/// for internal constraints, combinations of internals, and defaults
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
 			if (ReadingRequiredError != null)
 			{
@@ -3569,10 +3789,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(derivationNote, false);
 			}
+
+			DerivedElementsVerbalizer derivedElementsVerbalizer;
+			if ((bool)verbalizationOptions[CoreVerbalizationOption.DerivedFromWithFactType] &&
+				verbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName &&
+				null != (derivedElementsVerbalizer = DerivedElementsVerbalizer.GetNormalizedVerbalizer(this, RolePathOwnerKind.FactTypeDerivation | RolePathOwnerKind.SubtypeDerivation | RolePathOwnerKind.CustomJoinPath)))
+			{
+				yield return CustomChildVerbalizer.VerbalizeInstance(derivedElementsVerbalizer, true);
+			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, verbalizationTarget, sign);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region DefaultBinaryMissingUniquenessVerbalizer

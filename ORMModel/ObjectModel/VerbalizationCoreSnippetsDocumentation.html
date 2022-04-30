@@ -105,8 +105,6 @@
 					{
 					position:absolute;
 					left:650px;
-					width:350px;
-
 					}
 					pre.unformattedSnippetDecorator
 					{
@@ -115,15 +113,13 @@
 					font-size: 12px;
 
 					}
-					.pmb1_b, .pmb1_s { font-size:1px; }
-					.pmb1_1, .pmb1_2, .pmb1_3, .pmb1_4, .pmb1_b, .pmb1_s {display:block; overflow:hidden;}
-					.pmb1_1, .pmb1_2, .pmb1_3, .pmb1_s {height:1px;}
-					.pmb1_2, .pmb1_3, .pmb1_4 {border-style: solid; border-width: 0 1px; }
-					.pmb1_1 {margin:0 5px; }
-					.pmb1_2 {margin:0 3px; border-width:0 2px;}
-					.pmb1_3 {margin:0 2px;}
-					.pmb1_4 {height:2px; margin:0 1px;}
-					.pmb1_c {display:block; border-style: solid ; border-width: 0 1px;}
+					.pmb1_c {display:block; border-style: solid ; border-width: 1px; border-radius: 6px; background:#DDEEFF; color: inherit; border-color: #9DCEFF;}
+					div#snippetLinks
+					{
+					margin-top:6px;
+					margin-bottom:6px;
+					margin-right:6px;
+					}
 					h4#snippetLinkHeader
 					{
 					text-align:center;
@@ -162,11 +158,11 @@
         <h1>NORMA Verbalization Documentation</h1>
       </div>
       <div id="abstract">
-        <p>The Object Role Modeling verbalization implementation in NORMA allows for flexibility and customization. Snippets may be used in many different scenarios and it is possible that some snippets may be used inside of others. This document outlines the usage of each snippet to aide in the development of a full implementation for a new language.</p>
+        <p>The Object Role Modeling verbalization implementation in NORMA allows for flexibility and customization. Snippets may be used in many different scenarios and it is possible that some snippets may be used inside of others. This document outlines the usage of each snippet to aid in the development of a full implementation for a new language.</p>
       </div>
       <div id="examples">
         <h2 id="examplesHeader">Examples</h2>
-        <p>To aide in the development of a new language implementation, the following example has been provided:</p>
+        <p>To aid in the development of a new language implementation, the following example has been provided:</p>
         <div class="example">
           <div class="exampleHeader">
             <strong>Snippet:</strong>
@@ -256,14 +252,7 @@
         </div>
       </div>
       <div id="toc">
-        <b class="pmb1_b">
-          <b class="pmb1_1" style="background:#9DCEFF; color: inherit;">&nbsp;</b>
-          <b class="pmb1_2" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;">&nbsp;</b>
-          <b class="pmb1_3" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;">&nbsp;</b>
-          <b class="pmb1_4" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;">&nbsp;</b>
-        </b>
-        <div class="pmb1_c" style="background:#DDEEFF; color: inherit; border-color: #9DCEFF;">
-          <b class="pmb1_s">&nbsp;</b>
+        <div class="pmb1_c">
           <div id="snippetLinks">
             <h4 id="snippetLinkHeader">Snippets</h4>
             <ol>
@@ -470,6 +459,27 @@
               </li>
               <li>
                 <a href="#DerivationNoteVerbalization">DerivationNoteVerbalization</a>
+              </li>
+              <li>
+                <a href="#DerivedFactTypeReference">DerivedFactTypeReference</a>
+              </li>
+              <li>
+                <a href="#DerivedFromListClose">DerivedFromListClose</a>
+              </li>
+              <li>
+                <a href="#DerivedFromListFinalSeparator">DerivedFromListFinalSeparator</a>
+              </li>
+              <li>
+                <a href="#DerivedFromListOpen">DerivedFromListOpen</a>
+              </li>
+              <li>
+                <a href="#DerivedFromListPairSeparator">DerivedFromListPairSeparator</a>
+              </li>
+              <li>
+                <a href="#DerivedFromListSeparator">DerivedFromListSeparator</a>
+              </li>
+              <li>
+                <a href="#DerivedSubtypeReference">DerivedSubtypeReference</a>
               </li>
               <li>
                 <a href="#DescriptionVerbalization">DescriptionVerbalization</a>
@@ -722,6 +732,30 @@
               </li>
               <li>
                 <a href="#IsIdentifiedBy">IsIdentifiedBy</a>
+              </li>
+              <li>
+                <a href="#JoinedEqualityConstraintReference">JoinedEqualityConstraintReference</a>
+              </li>
+              <li>
+                <a href="#JoinedExclusionConstraintReference">JoinedExclusionConstraintReference</a>
+              </li>
+              <li>
+                <a href="#JoinedFrequencyConstraintReference">JoinedFrequencyConstraintReference</a>
+              </li>
+              <li>
+                <a href="#JoinedRingConstraintReference">JoinedRingConstraintReference</a>
+              </li>
+              <li>
+                <a href="#JoinedSetComparisonSequenceReference">JoinedSetComparisonSequenceReference</a>
+              </li>
+              <li>
+                <a href="#JoinedSubsetConstraintReference">JoinedSubsetConstraintReference</a>
+              </li>
+              <li>
+                <a href="#JoinedUniquenessConstraintReference">JoinedUniquenessConstraintReference</a>
+              </li>
+              <li>
+                <a href="#JoinedValueComparisonConstraintReference">JoinedValueComparisonConstraintReference</a>
               </li>
               <li>
                 <a href="#LessThanOrEqualValueComparator">LessThanOrEqualValueComparator</a>
@@ -1250,14 +1284,7 @@
               </li>
             </ol>
           </div>
-          <b class="pmb1_s">&nbsp;</b>
         </div>
-        <b class="pmb1_b">
-          <b class="pmb1_4" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;">&nbsp;</b>
-          <b class="pmb1_3" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;">&nbsp;</b>
-          <b class="pmb1_2" style="background:#DDEEFF;border-color: #9DCEFF; color: inherit;">&nbsp;</b>
-          <b class="pmb1_1" style="background:#9DCEFF; color: inherit;">&nbsp;</b>
-        </b>
       </div>
       <div id="snippetContainer">
         <div id="Acyclicity" class="snippet">
@@ -3134,6 +3161,144 @@ restriction. If the non-top-level separator includes an indentation, then this s
             </div>
           </div>
         </div>
+        <div id="DerivedFactTypeReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="DerivedFactTypeReference" id="DerivedFactTypeReference">DerivedFactTypeReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference a derived fact type in a list of derived elements.
+<br />
+            <strong>Format: </strong> {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>DerivedFactTypeReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="DerivedFromListClose" class="snippet">
+          <span class="snippetHeader">
+            <a name="DerivedFromListClose" id="DerivedFromListClose">DerivedFromListClose</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Text used to close the derived from list.<br />
+          </div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <strong>Not Available</strong>
+            </div>
+          </div>
+        </div>
+        <div id="DerivedFromListFinalSeparator" class="snippet">
+          <span class="snippetHeader">
+            <a name="DerivedFromListFinalSeparator" id="DerivedFromListFinalSeparator">DerivedFromListFinalSeparator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Text used to separate the last two items in a derived from list. <br />
+            <strong>Format: </strong> &lt;br/&gt;</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <strong>Not Available</strong>
+            </div>
+          </div>
+        </div>
+        <div id="DerivedFromListOpen" class="snippet">
+          <span class="snippetHeader">
+            <a name="DerivedFromListOpen" id="DerivedFromListOpen">DerivedFromListOpen</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong>  Text and formatting to begin a list of elements derived from the current selection.<br />
+            <strong>Format: </strong> Used by derivations: &lt;br/&gt;</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">Used by derivations:</pre>
+            </div>
+          </div>
+        </div>
+        <div id="DerivedFromListPairSeparator" class="snippet">
+          <span class="snippetHeader">
+            <a name="DerivedFromListPairSeparator" id="DerivedFromListPairSeparator">DerivedFromListPairSeparator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Text used to separate items in a derived from list. <br />
+            <strong>Format: </strong> &lt;br/&gt;</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <strong>Not Available</strong>
+            </div>
+          </div>
+        </div>
+        <div id="DerivedFromListSeparator" class="snippet">
+          <span class="snippetHeader">
+            <a name="DerivedFromListSeparator" id="DerivedFromListSeparator">DerivedFromListSeparator</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> Text used to separate items in a derived from list. <br />
+            <strong>Format: </strong> &lt;br/&gt;</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>0</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <strong>Not Available</strong>
+            </div>
+          </div>
+        </div>
+        <div id="DerivedSubtypeReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="DerivedSubtypeReference" id="DerivedSubtypeReference">DerivedSubtypeReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference a derived subtype in a list of derived elements.
+<br />
+            <strong>Format: </strong> subtype {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">subtype {0}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>DerivedSubtypeReference</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#ObjectType">ObjectType</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>DerivedSubtypeReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
         <div id="DescriptionVerbalization" class="snippet">
           <span class="snippetHeader">
             <a name="DescriptionVerbalization" id="DescriptionVerbalization">DescriptionVerbalization</a>
@@ -3727,7 +3892,7 @@ Replacement: {0}=error text,{1}=error id
             <a name="FactTypeListClose" id="FactTypeListClose">FactTypeListClose</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Text used to close the sample population verbalization list.<br />
+            <strong>Description: </strong> Text used to close the fact type verbalization list.<br />
           </div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>0</div>
@@ -3743,7 +3908,7 @@ Replacement: {0}=error text,{1}=error id
             <a name="FactTypeListFinalSeparator" id="FactTypeListFinalSeparator">FactTypeListFinalSeparator</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Text used to separate the last two items in a sample population verbalization list. <br />
+            <strong>Description: </strong> Text used to separate the last two items in a fact type verbalization list. <br />
             <strong>Format: </strong> &lt;br/&gt;</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>0</div>
@@ -3759,7 +3924,7 @@ Replacement: {0}=error text,{1}=error id
             <a name="FactTypeListOpen" id="FactTypeListOpen">FactTypeListOpen</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong>  Text and formatting to begin a sample population verbalization basic predicate text.<br />
+            <strong>Description: </strong>  Text and formatting to begin a list of fact types represented by basic predicate text.<br />
             <strong>Format: </strong> FactTypes: &lt;br/&gt;</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>0</div>
@@ -3775,7 +3940,7 @@ Replacement: {0}=error text,{1}=error id
             <a name="FactTypeListPairSeparator" id="FactTypeListPairSeparator">FactTypeListPairSeparator</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Text used to separate items in a sample population verbalization list. <br />
+            <strong>Description: </strong> Text used to separate items in a fact type verbalization list. <br />
             <strong>Format: </strong> &lt;br/&gt;</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>0</div>
@@ -3791,7 +3956,7 @@ Replacement: {0}=error text,{1}=error id
             <a name="FactTypeListSeparator" id="FactTypeListSeparator">FactTypeListSeparator</a>
           </span>
           <div class="snippetStatement">
-            <strong>Description: </strong> Text used to separate items in a sample population verbalization list. <br />
+            <strong>Description: </strong> Text used to separate items in a fact type verbalization list. <br />
             <strong>Format: </strong> &lt;br/&gt;</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>0</div>
@@ -4161,7 +4326,7 @@ Replacement: {0}=error text,{1}=error id
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">each {0} in the population of “{1}” occurs there {2}</pre>
+              <pre class="unformattedSnippetDecorator">each {0} in the population of &amp;#8220;{1}&amp;#8221; occurs there {2}</pre>
             </div>
           </div>
           <div class="snippetContains">
@@ -5520,6 +5685,232 @@ types that represent the same instance where the first variable is an impersonal
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">{0} is identified by {1}</pre>
             </div>
+          </div>
+        </div>
+        <div id="JoinedEqualityConstraintReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="JoinedEqualityConstraintReference" id="JoinedEqualityConstraintReference">JoinedEqualityConstraintReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference an equality constraint with a sequence that has a join path in a list of derived elements.
+<br />
+            <strong>Format: </strong> equality constraint {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">equality constraint {0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>JoinedEqualityConstraintReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#JoinedSetComparisonSequenceReference">JoinedSetComparisonSequenceReference</a>
+                </li>
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="JoinedExclusionConstraintReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="JoinedExclusionConstraintReference" id="JoinedExclusionConstraintReference">JoinedExclusionConstraintReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference an exclusion constraint with a sequence that has a join path in a list of derived elements.
+<br />
+            <strong>Format: </strong> exclusion constraint {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">exclusion constraint {0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>JoinedExclusionConstraintReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#JoinedSetComparisonSequenceReference">JoinedSetComparisonSequenceReference</a>
+                </li>
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="JoinedFrequencyConstraintReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="JoinedFrequencyConstraintReference" id="JoinedFrequencyConstraintReference">JoinedFrequencyConstraintReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference a frequency constraint with a join path in a list of derived elements.
+<br />
+            <strong>Format: </strong> frequency constraint {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">frequency constraint {0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>JoinedFrequencyConstraintReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="JoinedRingConstraintReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="JoinedRingConstraintReference" id="JoinedRingConstraintReference">JoinedRingConstraintReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference a ring constraint with a join path in a list of derived elements.
+<br />
+            <strong>Format: </strong> ring constraint {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">ring constraint {0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>JoinedRingConstraintReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="JoinedSetComparisonSequenceReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="JoinedSetComparisonSequenceReference" id="JoinedSetComparisonSequenceReference">JoinedSetComparisonSequenceReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference a set comparison sequence that has a join path in a list of derived elements.
+<br />
+            <strong>Format: </strong> {0}, sequence {1}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>2</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">{0}, sequence {1}</pre>
+            </div>
+          </div>
+          <div class="snippetContains">
+            <p>The <strong>JoinedSetComparisonSequenceReference</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#JoinedEqualityConstraintReference">JoinedEqualityConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedExclusionConstraintReference">JoinedExclusionConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedSubsetConstraintReference">JoinedSubsetConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#ObjectType">ObjectType</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>JoinedSetComparisonSequenceReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="JoinedSubsetConstraintReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="JoinedSubsetConstraintReference" id="JoinedSubsetConstraintReference">JoinedSubsetConstraintReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference a subset constraint with a sequence that has a join path in a list of derived elements.
+<br />
+            <strong>Format: </strong> subset constraint {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">subset constraint {0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>JoinedSubsetConstraintReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#JoinedSetComparisonSequenceReference">JoinedSetComparisonSequenceReference</a>
+                </li>
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="JoinedUniquenessConstraintReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="JoinedUniquenessConstraintReference" id="JoinedUniquenessConstraintReference">JoinedUniquenessConstraintReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference a ring constraint with a join path in a list of derived elements.
+<br />
+            <strong>Format: </strong> uniqueness constraint {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">uniqueness constraint {0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>JoinedUniquenessConstraintReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
+        </div>
+        <div id="JoinedValueComparisonConstraintReference" class="snippet">
+          <span class="snippetHeader">
+            <a name="JoinedValueComparisonConstraintReference" id="JoinedValueComparisonConstraintReference">JoinedValueComparisonConstraintReference</a>
+          </span>
+          <div class="snippetStatement">
+            <strong>Description: </strong> used to reference a value comparison constraint with a join path in a list of derived elements.
+<br />
+            <strong>Format: </strong> value comparison constraint {0}</div>
+          <div class="snippetReplacementFieldCount">
+            <span class="reportItem">Number of replacement fields: </span>1</div>
+          <div class="snippetUnformattedText">
+            <span class="reportItem">Unformatted version: </span>
+            <div class="unformattedSnippet">
+              <pre class="unformattedSnippetDecorator">value comparison constraint {0}</pre>
+            </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>JoinedValueComparisonConstraintReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
           </div>
         </div>
         <div id="LessThanOrEqualValueComparator" class="snippet">
@@ -6898,7 +7289,7 @@ Note that VariableExistence can be used with a negated quantifier if the negated
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">{0} objectifies “{1}”</pre>
+              <pre class="unformattedSnippetDecorator">{0} objectifies &amp;#8220;{1}&amp;#8221;</pre>
             </div>
           </div>
           <div class="snippetContains">
@@ -6931,16 +7322,25 @@ Note that VariableExistence can be used with a negated quantifier if the negated
                   <a href="#ConstraintProvidesPreferredIdentifier">ConstraintProvidesPreferredIdentifier</a>
                 </li>
                 <li>
+                  <a href="#DerivedSubtypeReference">DerivedSubtypeReference</a>
+                </li>
+                <li>
                   <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
                 </li>
                 <li>
                   <a href="#IndependentVerbalization">IndependentVerbalization</a>
                 </li>
                 <li>
+                  <a href="#JoinedSetComparisonSequenceReference">JoinedSetComparisonSequenceReference</a>
+                </li>
+                <li>
                   <a href="#ObjectifiesFactTypeVerbalization">ObjectifiesFactTypeVerbalization</a>
                 </li>
                 <li>
                   <a href="#ObjectTypeCardinality">ObjectTypeCardinality</a>
+                </li>
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
                 </li>
                 <li>
                   <a href="#SubtypeMetaReading">SubtypeMetaReading</a>
@@ -7538,7 +7938,7 @@ derived instances of this subtype are also stored immediately after they are der
           <div class="snippetStatement">
             <strong>Description: </strong> Used to delimit two snippet replacements by a snippet.
 <br />
-            <strong>Format: </strong>	{0}.{1}</div>
+            <strong>Format: </strong> {0}.{1}</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
@@ -7883,7 +8283,7 @@ different types that represent the same instance where the first variable is an 
           <div class="snippetStatement">
             <strong>Description: </strong> Used to enclose and format a reference scheme replacement in brackets.
 <br />
-            <strong>Format: </strong>	{0}({1})</div>
+            <strong>Format: </strong> {0}({1})</div>
           <div class="snippetReplacementFieldCount">
             <span class="reportItem">Number of replacement fields: </span>2</div>
           <div class="snippetUnformattedText">
@@ -8188,6 +8588,47 @@ active trailing outdent snippets.
               <pre class="unformattedSnippetDecorator">{0}</pre>
             </div>
           </div>
+          <div class="snippetContains">
+            <p>The <strong>SelfReference</strong> snippet contains the following snippets: <ul class="contains">
+                <li>
+                  <a href="#DerivedFactTypeReference">DerivedFactTypeReference</a>
+                </li>
+                <li>
+                  <a href="#DerivedSubtypeReference">DerivedSubtypeReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedEqualityConstraintReference">JoinedEqualityConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedExclusionConstraintReference">JoinedExclusionConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedFrequencyConstraintReference">JoinedFrequencyConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedRingConstraintReference">JoinedRingConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedSetComparisonSequenceReference">JoinedSetComparisonSequenceReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedSubsetConstraintReference">JoinedSubsetConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedUniquenessConstraintReference">JoinedUniquenessConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#JoinedValueComparisonConstraintReference">JoinedValueComparisonConstraintReference</a>
+                </li>
+                <li>
+                  <a href="#ObjectType">ObjectType</a>
+                </li>
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div classs="snippetContainedIn">
             <p>The <strong>SelfReference</strong> snippet is contained in the following snippets: <ul class="containedIn">
                 <li>
@@ -8207,6 +8648,9 @@ active trailing outdent snippets.
                 </li>
                 <li>
                   <a href="#ModalPossibilityOperator">ModalPossibilityOperator</a>
+                </li>
+                <li>
+                  <a href="#SelfReference">SelfReference</a>
                 </li>
               </ul>
             </p>
@@ -9004,7 +9448,7 @@ active trailing outdent snippets.
           <div class="snippetUnformattedText">
             <span class="reportItem">Unformatted version: </span>
             <div class="unformattedSnippet">
-              <pre class="unformattedSnippetDecorator">for each population of “{0}”,the number of {1} instances is {2}</pre>
+              <pre class="unformattedSnippetDecorator">for each population of &amp;#8220;{0}&amp;#8221;,the number of {1} instances is {2}</pre>
             </div>
           </div>
           <div class="snippetContains">

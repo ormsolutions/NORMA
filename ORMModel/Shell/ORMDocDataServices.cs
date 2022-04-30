@@ -1822,6 +1822,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private bool myVerbOptionCombineMandatoryUnique = true;
 		private bool myVerbOptionDefaultConstraint = true;
 		private bool myVerbOptionFactTypesWithObjectType = true;
+		private bool myVerbOptionDerivedFromWithFactType = true;
 		private ObjectTypeNameVerbalizationStyle myVerbOptionObjectTypeNameDisplay = ObjectTypeNameVerbalizationStyle.AsIs;
 		private string myVerbOptionRemoveObjectTypeNameCharactersOnSeparate = ".:_";
 		/// <summary>
@@ -1860,6 +1861,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				bool combineMandatoryUnique = OptionsPage.CurrentCombineMandatoryAndUniqueVerbalization;
 				bool defaultConstraint = OptionsPage.CurrentShowDefaultConstraintVerbalization;
 				bool factTypesWithObjectType = OptionsPage.CurrentVerbalizeFactTypesWithObjectType;
+				bool derivedFromWithFactType = OptionsPage.CurrentVerbalizeDerivedFromWithFactType;
 				ObjectTypeNameVerbalizationStyle nameStyle = OptionsPage.CurrentVerbalizationObjectTypeNameDisplay;
 				string removedCharacters = OptionsPage.CurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
 				IDictionary<string, object> options = myVerbalizationOptions;
@@ -1867,6 +1869,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					combineMandatoryUnique != myVerbOptionCombineMandatoryUnique ||
 					defaultConstraint != myVerbOptionDefaultConstraint ||
 					factTypesWithObjectType != myVerbOptionFactTypesWithObjectType ||
+					derivedFromWithFactType != myVerbOptionDerivedFromWithFactType ||
 					nameStyle != myVerbOptionObjectTypeNameDisplay ||
 					removedCharacters != myVerbOptionRemoveObjectTypeNameCharactersOnSeparate)
 				{
@@ -1874,11 +1877,13 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					options[CoreVerbalizationOption.CombineSimpleMandatoryAndUniqueness] = combineMandatoryUnique;
 					options[CoreVerbalizationOption.ShowDefaultConstraint] = defaultConstraint;
 					options[CoreVerbalizationOption.FactTypesWithObjectType] = factTypesWithObjectType;
+					options[CoreVerbalizationOption.DerivedFromWithFactType] = derivedFromWithFactType;
 					options[CoreVerbalizationOption.ObjectTypeNameDisplay] = nameStyle;
 					options[CoreVerbalizationOption.RemoveObjectTypeNameCharactersOnSeparate] = removedCharacters;
 					myVerbOptionCombineMandatoryUnique = combineMandatoryUnique;
 					myVerbOptionDefaultConstraint = defaultConstraint;
 					myVerbOptionFactTypesWithObjectType = factTypesWithObjectType;
+					myVerbOptionDerivedFromWithFactType = derivedFromWithFactType;
 					myVerbOptionObjectTypeNameDisplay = nameStyle;
 					myVerbOptionRemoveObjectTypeNameCharactersOnSeparate = removedCharacters;
 				}

@@ -272,7 +272,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements <see cref="IVerbalizeCustomChildren.GetCustomChildVerbalizations"/>.
 		/// Explicitly verbalizes the definitions, notes, and extension elements
 		/// </summary>
-		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
 			Definition definition;
 			if (null != (definition = Definition) &&
@@ -295,9 +295,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, verbalizationTarget, sign);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region IVerbalizeFilterChildrenByRole Implementation

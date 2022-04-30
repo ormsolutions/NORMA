@@ -347,6 +347,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		private static bool myCurrentVerbalizeFactTypesWithObjectType = VerbalizeFactTypesWithObjectType_Default;
 		private bool myVerbalizeFactTypesWithObjectType = VerbalizeFactTypesWithObjectType_Default;
 
+		private const bool VerbalizeDerivedFromWithFactType_Default = true;
+		private static bool myCurrentVerbalizeDerivedFromWithFactType = VerbalizeDerivedFromWithFactType_Default;
+		private bool myVerbalizeDerivedFromWithFactType = VerbalizeDerivedFromWithFactType_Default;
+
 		private const HyperlinkTargetWindow VerbalizationHyperlinkTarget_Default = HyperlinkTargetWindow.DiagramSpyWindow;
 		private static HyperlinkTargetWindow myCurrentVerbalizationHyperlinkTarget = VerbalizationHyperlinkTarget_Default;
 		private HyperlinkTargetWindow myVerbalizationHyperlinkTarget = VerbalizationHyperlinkTarget_Default;
@@ -448,6 +452,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 			myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
+			myCurrentVerbalizeDerivedFromWithFactType = myVerbalizeDerivedFromWithFactType;
 			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 			myCurrentVerbalizationObjectTypeNameDisplay = myVerbalizationObjectTypeNameDisplay;
 			myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate = myVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
@@ -479,6 +484,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCombineMandatoryAndUniqueVerbalization = myCurrentCombineMandatoryAndUniqueVerbalization;
 			myShowDefaultConstraintVerbalization = myCurrentShowDefaultConstraintVerbalization;
 			myVerbalizeFactTypesWithObjectType = myCurrentVerbalizeFactTypesWithObjectType;
+			myVerbalizeDerivedFromWithFactType = myCurrentVerbalizeDerivedFromWithFactType;
 			myVerbalizationHyperlinkTarget = myCurrentVerbalizationHyperlinkTarget;
 			myVerbalizationObjectTypeNameDisplay = myCurrentVerbalizationObjectTypeNameDisplay;
 			myVerbalizationRemoveObjectTypeNameCharactersOnSeparate = myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
@@ -501,6 +507,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myCurrentCombineMandatoryAndUniqueVerbalization != myCombineMandatoryAndUniqueVerbalization ||
 				myCurrentShowDefaultConstraintVerbalization != myShowDefaultConstraintVerbalization ||
 				myCurrentVerbalizeFactTypesWithObjectType != myVerbalizeFactTypesWithObjectType ||
+				myCurrentVerbalizeDerivedFromWithFactType != myVerbalizeDerivedFromWithFactType ||
 				myCurrentCustomVerbalizationSnippets != myCustomVerbalizationSnippets ||
 				myCurrentVerbalizationObjectTypeNameDisplay != myVerbalizationObjectTypeNameDisplay ||
 				myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate != myVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
@@ -520,6 +527,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 				myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 				myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
+				myCurrentVerbalizeDerivedFromWithFactType = myVerbalizeDerivedFromWithFactType;
 				myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 				myCurrentVerbalizationObjectTypeNameDisplay = myVerbalizationObjectTypeNameDisplay;
 				myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate = myVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
@@ -554,6 +562,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			myCurrentCombineMandatoryAndUniqueVerbalization = myCombineMandatoryAndUniqueVerbalization;
 			myCurrentShowDefaultConstraintVerbalization = myShowDefaultConstraintVerbalization;
 			myCurrentVerbalizeFactTypesWithObjectType = myVerbalizeFactTypesWithObjectType;
+			myCurrentVerbalizeDerivedFromWithFactType = myVerbalizeDerivedFromWithFactType;
 			myCurrentVerbalizationHyperlinkTarget = myVerbalizationHyperlinkTarget;
 			myCurrentVerbalizationObjectTypeNameDisplay = myVerbalizationObjectTypeNameDisplay;
 			myCurrentVerbalizationRemoveObjectTypeNameCharactersOnSeparate = myVerbalizationRemoveObjectTypeNameCharactersOnSeparate;
@@ -904,6 +913,27 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public static bool CurrentVerbalizeFactTypesWithObjectType
 		{
 			get { return myCurrentVerbalizeFactTypesWithObjectType; }
+		}
+
+		/// <summary>
+		/// Current setting for VerbalizeDerivedFromWithFactType
+		/// </summary>
+		[DefaultValue(VerbalizeDerivedFromWithFactType_Default)]
+		[LocalizedCategory(ResourceStrings.OptionsPageCategoryVerbalizationBehaviorId)]
+		[LocalizedDescription(ResourceStrings.OptionsPagePropertyVerbalizeDerivedFromWithFactTypeDescriptionId)]
+		[LocalizedDisplayName(ResourceStrings.OptionsPagePropertyVerbalizeDerivedFromWithFactTypeDisplayNameId)]
+		public bool VerbalizeDerivedFromWithFactType
+		{
+			get { return myVerbalizeDerivedFromWithFactType; }
+			set { myVerbalizeDerivedFromWithFactType = value; }
+		}
+
+		/// <summary>
+		/// Current VS session-wide setting for VerbalizeDerivedFromWithFactType
+		/// </summary>
+		public static bool CurrentVerbalizeDerivedFromWithFactType
+		{
+			get { return myCurrentVerbalizeDerivedFromWithFactType; }
 		}
 
 		/// <summary>

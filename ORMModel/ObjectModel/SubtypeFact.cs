@@ -979,7 +979,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// Implements IVerbalizeCustomChildren.GetCustomChildVerbalizations. Hides all but roles of
 		/// implementation in <see cref="FactType"/>
 		/// </summary>
-		protected new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		protected new IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
 			IList<RoleBase> orderedRoles = GetDefaultReading().RoleCollection;
 			int readingRoleCount = orderedRoles.Count;
@@ -987,10 +987,18 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstanceWithChildren(orderedRoles[iRole].Role, DeferVerbalizationOptions.None, null);
 			}
+
+			DerivedElementsVerbalizer derivedElementsVerbalizer;
+			if ((bool)verbalizationOptions[CoreVerbalizationOption.DerivedFromWithFactType] &&
+				verbalizationTarget == ORMCoreDomainModel.VerbalizationTargetName &&
+				null != (derivedElementsVerbalizer = DerivedElementsVerbalizer.GetNormalizedVerbalizer(this, RolePathOwnerKind.FactTypeDerivation | RolePathOwnerKind.SubtypeDerivation | RolePathOwnerKind.CustomJoinPath)))
+			{
+				yield return CustomChildVerbalizer.VerbalizeInstance(derivedElementsVerbalizer, true);
+			}
 		}
-		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, VerbalizationSign sign)
+		IEnumerable<CustomChildVerbalizer> IVerbalizeCustomChildren.GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
-			return GetCustomChildVerbalizations(filter, verbalizationOptions, sign);
+			return GetCustomChildVerbalizations(filter, verbalizationOptions, verbalizationTarget, sign);
 		}
 		#endregion // IVerbalizeCustomChildren Implementation
 		#region IAnswerSurveyQuestion<SurveyQuestionGlyph> Implementation

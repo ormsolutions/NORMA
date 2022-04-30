@@ -183,12 +183,23 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="TopLevelIndentedLogicalAndListFinalSeparator"><![CDATA[</span><span class="smallIndent"><br/><span class="logicalOperator">and that </span>]]></Snippet>
 			<Snippet type="TopLevelIndentedLogicalAndListClose"><![CDATA[</span>]]></Snippet>
 
+			<!-- Verbalization of elements derived from the current selection. -->
+			<Snippet type="DerivedFactTypeReference"><![CDATA[{0}]]></Snippet>
+			<Snippet type="DerivedSubtypeReference"><![CDATA[<span class="quantifier">subtype</span> {0}]]></Snippet>
+			<Snippet type="JoinedFrequencyConstraintReference"><![CDATA[<span class="quantifier">frequency constraint</span> {0}]]></Snippet>
+			<Snippet type="JoinedRingConstraintReference"><![CDATA[<span class="quantifier">ring constraint</span> {0}]]></Snippet>
+			<Snippet type="JoinedUniquenessConstraintReference"><![CDATA[<span class="quantifier">uniqueness constraint</span> {0}]]></Snippet>
+			<Snippet type="JoinedValueComparisonConstraintReference"><![CDATA[<span class="quantifier">value comparison constraint</span> {0}]]></Snippet>
+			<Snippet type="JoinedEqualityConstraintReference"><![CDATA[<span class="quantifier">equality constraint</span> {0}]]></Snippet>
+			<Snippet type="JoinedExclusionConstraintReference"><![CDATA[<span class="quantifier">exclusion constraint</span> {0}]]></Snippet>
+			<Snippet type="JoinedSubsetConstraintReference"><![CDATA[<span class="quantifier">subset constraint</span> {0}]]></Snippet>
+			<Snippet type="JoinedSetComparisonSequenceReference"><![CDATA[{0}, <span class="quantifier">sequence</span> <span class="instance">{1}</span>]]></Snippet>
+
 			<Snippet type="CompoundListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="CompoundListPairSeparator"><![CDATA[; ]]></Snippet>
 			<Snippet type="CompoundListSeparator"><![CDATA[; ]]></Snippet>
 			<Snippet type="CompoundListFinalSeparator"><![CDATA[; ]]></Snippet>
 			<Snippet type="CompoundListClose"><![CDATA[]]></Snippet>
-			
 			<Snippet type="SimpleListOpen"><![CDATA[]]></Snippet>
 			<Snippet type="SimpleListPairSeparator"><![CDATA[<span class="logicalOperator"> and </span>]]></Snippet>
 			<Snippet type="SimpleListSeparator"><![CDATA[<span class="listSeparator">, </span>]]></Snippet>
@@ -268,6 +279,11 @@ You must not remove this notice, or any other, from this software.
 			<Snippet type="FactTypeListSeparator"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="FactTypeListFinalSeparator"><![CDATA[<br/>]]></Snippet>
 			<Snippet type="FactTypeListClose"><![CDATA[</span></span>]]></Snippet>
+			<Snippet type="DerivedFromListOpen"><![CDATA[<br/><span class="quantifier">Used by derivations:</span><span class="smallIndent"><br/>]]></Snippet>
+			<Snippet type="DerivedFromListPairSeparator"><![CDATA[<br/>]]></Snippet>
+			<Snippet type="DerivedFromListSeparator"><![CDATA[<br/>]]></Snippet>
+			<Snippet type="DerivedFromListFinalSeparator"><![CDATA[<br/>]]></Snippet>
+			<Snippet type="DerivedFromListClose"><![CDATA[</span>]]></Snippet>
 			<Snippet type="GroupEquality"><![CDATA[<span class="quantifier">all or none of the following hold:</span> {0}]]></Snippet>
 			<Snippet type="MultilineIndentedCompoundListOpen"><![CDATA[<br/><span class="smallIndent">]]></Snippet>
 			<Snippet type="MultilineIndentedCompoundListPairSeparator"><![CDATA[<span class="listSeparator">; </span><br/>]]></Snippet>
