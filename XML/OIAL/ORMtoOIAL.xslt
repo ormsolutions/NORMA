@@ -505,7 +505,7 @@
 		<xsl:variable name="dataTypeName" select="@Name"/>
 		<xsl:variable name="modelConceptualDataType" select="orm:ConceptualDataType"/>
 		<xsl:variable name="modelDataType" select="$Model/orm:DataTypes/child::*[@id=$modelConceptualDataType/@ref]"/>
-		<xsl:variable name="modelValueRanges" select="orm:ValueRestriction/orm:ValueConstraint/orm:ValueRanges/orm:ValueRange"/>
+		<xsl:variable name="modelValueRanges" select="orm:ValueRestriction/orm:ValueConstraint[not(@Modality='Deontic')]/orm:ValueRanges/orm:ValueRange"/>
 		<xsl:variable name="length" select="$modelConceptualDataType/@Length"/>
 		<xsl:variable name="scale" select="$modelConceptualDataType/@Scale"/>
 

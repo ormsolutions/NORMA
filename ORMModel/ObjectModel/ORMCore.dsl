@@ -2206,6 +2206,11 @@
 						<ExternalTypeMoniker Name="/System/Int64"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="Modality" DefaultValue="Alethic" DisplayName="Modality" Id="C2542DBF-A10B-4842-A78E-6F99DB6702B0" Description="The constraint Modality.&#xd;&#xa;    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;&#xd;&#xa;    Deontic modality means that data violating the constraint can be recorded.">
+					<Type>
+						<DomainEnumerationMoniker Name="ConstraintModality"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 

@@ -1340,155 +1340,161 @@
 			<!-- End Value Comparison Constraint  -->
 			<!-- Begin Role Value Constraint -->
 			<Constraint patternGroup="RoleValueConstraint" type="RoleValueConstraint">
-				<ConditionalSnippet>
-					<!-- Determine whether the range is degenerate. -->
-					<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>
-					<Snippet ref="MultiValueValueConstraint"/>
-					<SnippetReplacements>
-						<ConditionalReplacement>
-							<!-- BinaryWithRoleName matches this pattern: The values of [OpposingRolePlayerName.]roleName[(RolePlayerRefMode)] are value-spec. -->
-							<IterateRoles match="included" listStyle="null" conditionalMatch="BinaryWithRoleName">
-								<Snippet ref="PeriodSeparator">
-									<IterateContextRoles match="excluded" listStyle="null"/>
-									<ConditionalReplacement>
-										<Snippet ref="ReferenceScheme" conditionalMatch="RolePlayerHasReferenceScheme">
+				<Snippet ref="ImpliedModalNecessityOperator" alternateSign="positive">
+					<ConditionalSnippet>
+						<!-- Determine whether the range is degenerate. -->
+						<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>
+						<Snippet ref="MultiValueValueConstraint"/>
+						<SnippetReplacements>
+							<ConditionalReplacement>
+								<!-- BinaryWithRoleName matches this pattern: The values of [OpposingRolePlayerName.]roleName[(RolePlayerRefMode)] are value-spec. -->
+								<IterateRoles match="included" listStyle="null" conditionalMatch="BinaryWithRoleName">
+									<Snippet ref="PeriodSeparator">
+										<IterateContextRoles match="excluded" listStyle="null"/>
+										<ConditionalReplacement>
+											<Snippet ref="ReferenceScheme" conditionalMatch="RolePlayerHasReferenceScheme">
+												<RoleName/>
+												<RolePlayerReferenceMode/>
+											</Snippet>
 											<RoleName/>
-											<RolePlayerReferenceMode/>
-										</Snippet>
-										<RoleName/>
-									</ConditionalReplacement>
-								</Snippet>
-							</IterateRoles>
-							<!-- The fallback pattern is: The values of RolePlayer[sub] in Full Fact Verbalization are value-spec. -->
-							<ReadingContext>
-								<Snippet ref="InQuantifier">
-									<IterateRoles match="included" listStyle="null" hyphenBind="true"/>
-									<Fact readingChoice="Context"/>
-								</Snippet>
-							</ReadingContext>
-						</ConditionalReplacement>
-						<IterateValueRanges listStyle="CompactSimpleList">
-							<ConditionalSnippet>
-								<!-- Match one of the nine possible value range patterns.  MinUnboundedMaxUnbounded is not a valid value range pattern. -->
-								<Snippet ref="SelfReference" conditionalMatch="MinEqualsMax"/>
-								<Snippet ref="MinClosedMaxUnbounded" conditionalMatch="MinClosedMaxUnbounded"/>
-								<Snippet ref="MinOpenMaxUnbounded" conditionalMatch="MinOpenMaxUnbounded"/>
-								<Snippet ref="MinUnboundedMaxClosed" conditionalMatch="MinUnboundedMaxClosed"/>
-								<Snippet ref="MinUnboundedMaxOpen" conditionalMatch="MinUnboundedMaxOpen"/>
-								<Snippet ref="MinClosedMaxClosed" conditionalMatch="MinClosedMaxClosed"/>
-								<Snippet ref="MinClosedMaxOpen" conditionalMatch="MinClosedMaxOpen"/>
-								<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
-								<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
-								<SnippetReplacements>
-									<ConditionalSnippet>
-										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
-										<Snippet ref="NonTextInstanceValue"/>
-										<SnippetReplacements>
-											<MinValue/>
-										</SnippetReplacements>
-									</ConditionalSnippet>
-									<ConditionalSnippet>
-										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
-										<Snippet ref="NonTextInstanceValue"/>
-										<SnippetReplacements>
-											<MaxValue/>
-										</SnippetReplacements>
-									</ConditionalSnippet>
-								</SnippetReplacements>
-							</ConditionalSnippet>
-						</IterateValueRanges>
-					</SnippetReplacements>
-				</ConditionalSnippet>
+										</ConditionalReplacement>
+									</Snippet>
+								</IterateRoles>
+								<!-- The fallback pattern is: The values of RolePlayer[sub] in Full Fact Verbalization are value-spec. -->
+								<ReadingContext>
+									<Snippet ref="InQuantifier">
+										<IterateRoles match="included" listStyle="null" hyphenBind="true"/>
+										<Fact readingChoice="Context"/>
+									</Snippet>
+								</ReadingContext>
+							</ConditionalReplacement>
+							<IterateValueRanges listStyle="CompactSimpleList">
+								<ConditionalSnippet>
+									<!-- Match one of the nine possible value range patterns.  MinUnboundedMaxUnbounded is not a valid value range pattern. -->
+									<Snippet ref="SelfReference" conditionalMatch="MinEqualsMax"/>
+									<Snippet ref="MinClosedMaxUnbounded" conditionalMatch="MinClosedMaxUnbounded"/>
+									<Snippet ref="MinOpenMaxUnbounded" conditionalMatch="MinOpenMaxUnbounded"/>
+									<Snippet ref="MinUnboundedMaxClosed" conditionalMatch="MinUnboundedMaxClosed"/>
+									<Snippet ref="MinUnboundedMaxOpen" conditionalMatch="MinUnboundedMaxOpen"/>
+									<Snippet ref="MinClosedMaxClosed" conditionalMatch="MinClosedMaxClosed"/>
+									<Snippet ref="MinClosedMaxOpen" conditionalMatch="MinClosedMaxOpen"/>
+									<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
+									<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
+									<SnippetReplacements>
+										<ConditionalSnippet>
+											<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+											<Snippet ref="NonTextInstanceValue"/>
+											<SnippetReplacements>
+												<MinValue/>
+											</SnippetReplacements>
+										</ConditionalSnippet>
+										<ConditionalSnippet>
+											<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+											<Snippet ref="NonTextInstanceValue"/>
+											<SnippetReplacements>
+												<MaxValue/>
+											</SnippetReplacements>
+										</ConditionalSnippet>
+									</SnippetReplacements>
+								</ConditionalSnippet>
+							</IterateValueRanges>
+						</SnippetReplacements>
+					</ConditionalSnippet>
+				</Snippet>
 			</Constraint>
 			<!-- End Role Value Constraint-->
 			<!-- Begin Value Type Value Constraint -->
 			<Constraint patternGroup="ValueTypeValueConstraint" type="ValueTypeValueConstraint">
-				<ConditionalSnippet>
-					<!-- Determine whether the range is degenerate. -->
-					<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>
-					<Snippet ref="MultiValueValueConstraint"/>
-					<SnippetReplacements>
-						<Snippet ref="ObjectType">
-							<ContextName normalize="true"/>
-							<ContextId/>
-						</Snippet>
-						<IterateValueRanges listStyle="CompactSimpleList">
-							<ConditionalSnippet>
-								<!-- Match one of the nine possible value range patterns.  MinUnboundedMaxUnbounded is not a valid value range pattern. -->
-								<Snippet ref="SelfReference" conditionalMatch="MinEqualsMax"/>
-								<Snippet ref="MinClosedMaxUnbounded" conditionalMatch="MinClosedMaxUnbounded"/>
-								<Snippet ref="MinOpenMaxUnbounded" conditionalMatch="MinOpenMaxUnbounded"/>
-								<Snippet ref="MinUnboundedMaxClosed" conditionalMatch="MinUnboundedMaxClosed"/>
-								<Snippet ref="MinUnboundedMaxOpen" conditionalMatch="MinUnboundedMaxOpen"/>
-								<Snippet ref="MinClosedMaxClosed" conditionalMatch="MinClosedMaxClosed"/>
-								<Snippet ref="MinClosedMaxOpen" conditionalMatch="MinClosedMaxOpen"/>
-								<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
-								<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
-								<SnippetReplacements>
-									<ConditionalSnippet>
-										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
-										<Snippet ref="NonTextInstanceValue"/>
-										<SnippetReplacements>
-											<MinValue/>
-										</SnippetReplacements>
-									</ConditionalSnippet>
-									<ConditionalSnippet>
-										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
-										<Snippet ref="NonTextInstanceValue"/>
-										<SnippetReplacements>
-											<MaxValue/>
-										</SnippetReplacements>
-									</ConditionalSnippet>
-								</SnippetReplacements>
-							</ConditionalSnippet>
-						</IterateValueRanges>
-					</SnippetReplacements>
-				</ConditionalSnippet>
+				<Snippet ref="ImpliedModalNecessityOperator" alternateSign="positive">
+					<ConditionalSnippet>
+						<!-- Determine whether the range is degenerate. -->
+						<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>
+						<Snippet ref="MultiValueValueConstraint"/>
+						<SnippetReplacements>
+							<Snippet ref="ObjectType">
+								<ContextName normalize="true"/>
+								<ContextId/>
+							</Snippet>
+							<IterateValueRanges listStyle="CompactSimpleList">
+								<ConditionalSnippet>
+									<!-- Match one of the nine possible value range patterns.  MinUnboundedMaxUnbounded is not a valid value range pattern. -->
+									<Snippet ref="SelfReference" conditionalMatch="MinEqualsMax"/>
+									<Snippet ref="MinClosedMaxUnbounded" conditionalMatch="MinClosedMaxUnbounded"/>
+									<Snippet ref="MinOpenMaxUnbounded" conditionalMatch="MinOpenMaxUnbounded"/>
+									<Snippet ref="MinUnboundedMaxClosed" conditionalMatch="MinUnboundedMaxClosed"/>
+									<Snippet ref="MinUnboundedMaxOpen" conditionalMatch="MinUnboundedMaxOpen"/>
+									<Snippet ref="MinClosedMaxClosed" conditionalMatch="MinClosedMaxClosed"/>
+									<Snippet ref="MinClosedMaxOpen" conditionalMatch="MinClosedMaxOpen"/>
+									<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
+									<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
+									<SnippetReplacements>
+										<ConditionalSnippet>
+											<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+											<Snippet ref="NonTextInstanceValue"/>
+											<SnippetReplacements>
+												<MinValue/>
+											</SnippetReplacements>
+										</ConditionalSnippet>
+										<ConditionalSnippet>
+											<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+											<Snippet ref="NonTextInstanceValue"/>
+											<SnippetReplacements>
+												<MaxValue/>
+											</SnippetReplacements>
+										</ConditionalSnippet>
+									</SnippetReplacements>
+								</ConditionalSnippet>
+							</IterateValueRanges>
+						</SnippetReplacements>
+					</ConditionalSnippet>
+				</Snippet>
 			</Constraint>
 			<!-- End Value Type Value Constraint -->
 			<!-- Begin nearest EntityType ValueConstraint -->
 			<Constraint patternGroup="NearestValueConstraint" type="NearestValueConstraintVerbalizer" childHelperFor="ObjectType">
-				<ConditionalSnippet>
-					<!-- Determine whether the range is degenerate. -->
-					<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>
-					<Snippet ref="MultiValueValueConstraint"/>
-					<SnippetReplacements>
-						<Snippet ref="ObjectType">
-							<ContextName normalize="true"/>
-							<ContextId/>
-						</Snippet>
-						<IterateValueRanges listStyle="CompactSimpleList">
-							<ConditionalSnippet>
-								<!-- Match one of the nine possible value range patterns.  MinUnboundedMaxUnbounded is not a valid value range pattern. -->
-								<Snippet ref="SelfReference" conditionalMatch="MinEqualsMax"/>
-								<Snippet ref="MinClosedMaxUnbounded" conditionalMatch="MinClosedMaxUnbounded"/>
-								<Snippet ref="MinOpenMaxUnbounded" conditionalMatch="MinOpenMaxUnbounded"/>
-								<Snippet ref="MinUnboundedMaxClosed" conditionalMatch="MinUnboundedMaxClosed"/>
-								<Snippet ref="MinUnboundedMaxOpen" conditionalMatch="MinUnboundedMaxOpen"/>
-								<Snippet ref="MinClosedMaxClosed" conditionalMatch="MinClosedMaxClosed"/>
-								<Snippet ref="MinClosedMaxOpen" conditionalMatch="MinClosedMaxOpen"/>
-								<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
-								<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
-								<SnippetReplacements>
-									<ConditionalSnippet>
-										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
-										<Snippet ref="NonTextInstanceValue"/>
-										<SnippetReplacements>
-											<MinValue/>
-										</SnippetReplacements>
-									</ConditionalSnippet>
-									<ConditionalSnippet>
-										<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
-										<Snippet ref="NonTextInstanceValue"/>
-										<SnippetReplacements>
-											<MaxValue/>
-										</SnippetReplacements>
-									</ConditionalSnippet>
-								</SnippetReplacements>
-							</ConditionalSnippet>
-						</IterateValueRanges>
-					</SnippetReplacements>
-				</ConditionalSnippet>
+				<Snippet ref="ImpliedModalNecessityOperator" alternateSign="positive">
+					<ConditionalSnippet>
+						<!-- Determine whether the range is degenerate. -->
+						<Snippet ref="SingleValueValueConstraint" conditionalMatch="IsSingleValue"/>
+						<Snippet ref="MultiValueValueConstraint"/>
+						<SnippetReplacements>
+							<Snippet ref="ObjectType">
+								<ContextName normalize="true"/>
+								<ContextId/>
+							</Snippet>
+							<IterateValueRanges listStyle="CompactSimpleList">
+								<ConditionalSnippet>
+									<!-- Match one of the nine possible value range patterns.  MinUnboundedMaxUnbounded is not a valid value range pattern. -->
+									<Snippet ref="SelfReference" conditionalMatch="MinEqualsMax"/>
+									<Snippet ref="MinClosedMaxUnbounded" conditionalMatch="MinClosedMaxUnbounded"/>
+									<Snippet ref="MinOpenMaxUnbounded" conditionalMatch="MinOpenMaxUnbounded"/>
+									<Snippet ref="MinUnboundedMaxClosed" conditionalMatch="MinUnboundedMaxClosed"/>
+									<Snippet ref="MinUnboundedMaxOpen" conditionalMatch="MinUnboundedMaxOpen"/>
+									<Snippet ref="MinClosedMaxClosed" conditionalMatch="MinClosedMaxClosed"/>
+									<Snippet ref="MinClosedMaxOpen" conditionalMatch="MinClosedMaxOpen"/>
+									<Snippet ref="MinOpenMaxClosed" conditionalMatch="MinOpenMaxClosed"/>
+									<Snippet ref="MinOpenMaxOpen" conditionalMatch="MinOpenMaxOpen"/>
+									<SnippetReplacements>
+										<ConditionalSnippet>
+											<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+											<Snippet ref="NonTextInstanceValue"/>
+											<SnippetReplacements>
+												<MinValue/>
+											</SnippetReplacements>
+										</ConditionalSnippet>
+										<ConditionalSnippet>
+											<Snippet ref="TextInstanceValue" conditionalMatch="IsText"/>
+											<Snippet ref="NonTextInstanceValue"/>
+											<SnippetReplacements>
+												<MaxValue/>
+											</SnippetReplacements>
+										</ConditionalSnippet>
+									</SnippetReplacements>
+								</ConditionalSnippet>
+							</IterateValueRanges>
+						</SnippetReplacements>
+					</ConditionalSnippet>
+				</Snippet>
 			</Constraint>
 			<!-- End nearest EntityType ValueConstraint -->
 			<!-- Begin ObjectType Cardinality Constraint-->

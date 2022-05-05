@@ -1913,7 +1913,7 @@
 								</plx:initialize>
 							</plx:local>
 						</xsl:when>
-						<xsl:when test="$isObjectTypeCardinality or $isUnaryRoleCardinality">
+						<xsl:when test="$isObjectTypeCardinality or $isUnaryRoleCardinality or $isValueTypeValueConstraint or $isRoleValue or $isNearestValueConstraint">
 							<plx:local name="isDeontic" dataTypeName=".boolean">
 								<plx:initialize>
 									<plx:binaryOperator type="equality">
@@ -1924,13 +1924,6 @@
 											<plx:callStatic dataTypeName="ConstraintModality" name="Deontic" type="field"/>
 										</plx:right>
 									</plx:binaryOperator>
-								</plx:initialize>
-							</plx:local>
-						</xsl:when>
-						<xsl:when test="$isValueTypeValueConstraint">
-							<plx:local name="isDeontic" dataTypeName=".boolean" const="true">
-								<plx:initialize>
-									<plx:falseKeyword/>
 								</plx:initialize>
 							</plx:local>
 						</xsl:when>

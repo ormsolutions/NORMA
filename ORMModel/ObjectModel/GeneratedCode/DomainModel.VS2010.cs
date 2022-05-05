@@ -657,6 +657,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				new DomainMemberInfo(typeof(ValueConstraint), "NoteText", ValueConstraint.NoteTextDomainPropertyId, typeof(ValueConstraint.NoteTextPropertyHandler)),
 				new DomainMemberInfo(typeof(ValueConstraint), "Text", ValueConstraint.TextDomainPropertyId, typeof(ValueConstraint.TextPropertyHandler)),
 				new DomainMemberInfo(typeof(ValueConstraint), "TextChanged", ValueConstraint.TextChangedDomainPropertyId, typeof(ValueConstraint.TextChangedPropertyHandler)),
+				new DomainMemberInfo(typeof(ValueConstraint), "Modality", ValueConstraint.ModalityDomainPropertyId, typeof(ValueConstraint.ModalityPropertyHandler)),
 				new DomainMemberInfo(typeof(Definition), "Text", Definition.TextDomainPropertyId, typeof(Definition.TextPropertyHandler)),
 				new DomainMemberInfo(typeof(Note), "Text", Note.TextDomainPropertyId, typeof(Note.TextPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeDerivationExpression), "DerivationStorage", FactTypeDerivationExpression.DerivationStorageDomainPropertyId, typeof(FactTypeDerivationExpression.DerivationStoragePropertyHandler)),

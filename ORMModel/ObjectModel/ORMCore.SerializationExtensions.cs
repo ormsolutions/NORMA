@@ -3136,7 +3136,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			get
 			{
-				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
+				return base.SupportedCustomSerializedOperations | CustomSerializedElementSupportedOperations.ChildElementInfo | CustomSerializedElementSupportedOperations.ElementInfo | CustomSerializedElementSupportedOperations.PropertyInfo | CustomSerializedElementSupportedOperations.LinkInfo | CustomSerializedElementSupportedOperations.CustomSortChildRoles;
 			}
 		}
 		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
@@ -3193,6 +3193,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return this.CustomSerializedElementInfo;
 			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		protected new CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			if (domainPropertyInfo.Id == ValueConstraint.ModalityDomainPropertyId)
+			{
+				if (ConstraintModality.Alethic == this.Modality)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
+			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
+			{
+				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
+			}
+			return CustomSerializedPropertyInfo.Default;
+		}
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			return this.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
 		}
 		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
 		protected new CustomSerializedElementInfo GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
@@ -3314,6 +3335,33 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
+		private static Dictionary<string, Guid> myCustomSerializedAttributes;
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		protected new Guid MapAttribute(string xmlNamespace, string attributeName)
+		{
+			Dictionary<string, Guid> customSerializedAttributes = ValueConstraint.myCustomSerializedAttributes;
+			if (customSerializedAttributes == null)
+			{
+				customSerializedAttributes = new Dictionary<string, Guid>();
+				customSerializedAttributes.Add("Modality", ValueConstraint.ModalityDomainPropertyId);
+				ValueConstraint.myCustomSerializedAttributes = customSerializedAttributes;
+			}
+			Guid rVal;
+			string key = attributeName;
+			if (xmlNamespace.Length != 0)
+			{
+				key = string.Concat(xmlNamespace, "|", attributeName);
+			}
+			if (!customSerializedAttributes.TryGetValue(key, out rVal))
+			{
+				rVal = base.MapAttribute(xmlNamespace, attributeName);
+			}
+			return rVal;
+		}
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return this.MapAttribute(xmlNamespace, attributeName);
+		}
 	}
 	#endregion // ValueConstraint serialization
 	#region ValueTypeValueConstraint serialization
@@ -3426,6 +3474,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 			}
+			if (domainPropertyInfo.Id == PathConditionRoleValueConstraint.ModalityDomainPropertyId)
+			{
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
 				return base.GetCustomSerializedPropertyInfo(domainPropertyInfo, rolePlayedInfo);
@@ -3475,6 +3527,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected new CustomSerializedPropertyInfo GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
 		{
 			if (domainPropertyInfo.Id == PathConditionRootValueConstraint.NameDomainPropertyId)
+			{
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+			}
+			if (domainPropertyInfo.Id == PathConditionRootValueConstraint.ModalityDomainPropertyId)
 			{
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 			}

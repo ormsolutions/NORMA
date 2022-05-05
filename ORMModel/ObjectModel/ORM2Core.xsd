@@ -3852,7 +3852,7 @@
 			<xs:documentation>Restrict the values allowed for any instance of the containing value type.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="ValueConstraint" type="ValueConstraintWithNameType"/>
+			<xs:element name="ValueConstraint" type="ValueConstraintWithNameAndModalityType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="ValueConstraintType">
@@ -3867,7 +3867,7 @@
 		</xs:sequence>
 		<xs:attributeGroup ref="idAttribute"/>
 	</xs:complexType>
-	<xs:complexType name="ValueConstraintWithNameType">
+	<xs:complexType name="ValueConstraintWithNameAndModalityType">
 		<xs:annotation>
 			<xs:documentation>A named constraint limiting the set of allowed values.</xs:documentation>
 		</xs:annotation>
@@ -3878,6 +3878,7 @@
 						<xs:documentation>The constraint name. Validation errors will be present for any constraint name that is not unique within the model.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
+				<xs:attribute name="Modality" type="ConstraintModalityValues" default="Alethic"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -3886,7 +3887,7 @@
 			<xs:documentation>Restrict the values allowed for role players associated with this role.</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="RoleValueConstraint" type="ValueConstraintWithNameType"/>
+			<xs:element name="RoleValueConstraint" type="ValueConstraintWithNameAndModalityType"/>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="PathConditionRoleValueRestrictionType">

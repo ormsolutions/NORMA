@@ -477,6 +477,7 @@
 	<ResourceString name="SubqueryNamedArgumentFormat" model="Model" resourceName="Subquery.NamedArgumentFormat"/>
 	<ResourceString name="ValueConstraintDefinitionContainerCloseDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.DefinitionContainer.CloseDelimiter"/>
 	<ResourceString name="ValueConstraintDefinitionContainerOpenDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.DefinitionContainer.OpenDelimiter"/>
+	<ResourceString name="ValueConstraintDefinitionContainerOpenDelimiterDeontic" model="Model" resourceName="ObjectModel.ValueConstraint.DefinitionContainer.OpenDelimiter.Deontic"/>
 	<ResourceString name="ValueConstraintClosedInclusionLowerDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.ClosedInclusion.LowerDelimiter"/>
 	<ResourceString name="ValueConstraintClosedInclusionUpperDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.ClosedInclusion.UpperDelimiter"/>
 	<ResourceString name="ValueConstraintOpenInclusionLowerDelimiter" model="Model" resourceName="ObjectModel.ValueConstraint.OpenInclusion.LowerDelimiter"/>

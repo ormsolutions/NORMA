@@ -1803,7 +1803,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""listSeparator"">; </span><br/>",
-				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
+				@"<span class=""quantifier"">the values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				"</span>",
 				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
@@ -1917,7 +1917,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""logicalOperator""> or </span>",
-				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">the value of</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">there is </span>{0} <span class=""quantifier"">such that</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</span>",
 				@"<span class=""quantifier"">each </span>{0} <a class=""predicateText"" href=""elementid:{2}"">is an instance of</a> {1}",
@@ -2551,7 +2551,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				@"<br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">; </span><br/>",
 				@"<span class=""listSeparator"">; </span><br/>",
-				@"<span class=""quantifier"">the possible values of</span> {0} <span class=""quantifier"">are</span> {1}",
+				@"<span class=""quantifier"">the values of</span> {0} <span class=""quantifier"">are</span> {1}",
 				"</span>",
 				@"<span class=""quantifier"">at least one of the following is <em>false:</em></span><br/><span class=""smallIndent"">",
 				@"<span class=""listSeparator"">;</span><br/>",
@@ -2665,7 +2665,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				"",
 				@"<span class=""logicalOperator""> or </span>",
 				@"<span class=""logicalOperator""> or </span>",
-				@"<span class=""quantifier"">the possible value of</span> {0} <span class=""quantifier"">is</span> {1}",
+				@"<span class=""quantifier"">the value of</span> {0} <span class=""quantifier"">is</span> {1}",
 				@"<span class=""quantifier"">there is </span>{0} <span class=""quantifier"">such that</span><br/><span class=""smallIndent"">{1}</span>",
 				@"<span class=""quantifier"">it is not true that {0} is indirectly related to {1} by repeatedly applying this fact type</span>",
 				@"<span class=""quantifier"">some </span>{0} <a class=""predicateText"" href=""elementid:{2}"">is not an instance of</a> {1}",
@@ -12166,7 +12166,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			#endregion // Prerequisite error check
 			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
 			Role constrainedRole = this.Role;
-			bool isDeontic = false;
+			bool isDeontic = this.Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			FactType parentFact = constrainedRole.FactType;
 			string predicatePartFormatString = string.Format(writer.FormatProvider, snippets.GetSnippet(CoreVerbalizationSnippetType.PredicatePart, isDeontic, isNegative), parentFact.Name, parentFact.Id.ToString("D"));
@@ -12236,18 +12236,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			bool isText = this.IsText;
 			#endregion // Preliminary
 			#region Pattern Matches
-			CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, false);
+			string snippet1Replace1 = null;
+			CoreVerbalizationSnippetType snippet1ReplaceSnippetType1 = 0;
 			if (isSingleValue)
 			{
-				variableSnippetSnippetType1 = CoreVerbalizationSnippetType.SingleValueValueConstraint;
+				snippet1ReplaceSnippetType1 = CoreVerbalizationSnippetType.SingleValueValueConstraint;
 			}
 			else
 			{
-				variableSnippetSnippetType1 = CoreVerbalizationSnippetType.MultiValueValueConstraint;
+				snippet1ReplaceSnippetType1 = CoreVerbalizationSnippetType.MultiValueValueConstraint;
 			}
-			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
-			string variableSnippet1Replace1 = null;
+			string snippet1ReplaceFormat1 = snippets.GetSnippet(snippet1ReplaceSnippetType1, isDeontic, isNegative);
+			string snippet1Replace1Replace1 = null;
 			if (factArity == 2 && constrainedRole.Name.Length != 0)
 			{
 				if (sbTemp == null)
@@ -12261,8 +12263,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				for (int RoleIter1 = 0; RoleIter1 < includedArity; ++RoleIter1)
 				{
 					RoleBase primaryRole = includedRoles[RoleIter1];
-					string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.PeriodSeparator, isDeontic, isNegative);
-					string variableSnippet1Replace1Replace1 = null;
+					string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.PeriodSeparator, isDeontic, isNegative);
+					string snippet1Replace1Replace1Replace1 = null;
 					RoleBase contextPrimaryRole = primaryRole;
 					int contextTempStringBuildLength = sbTemp.Length;
 					for (int ContextRoleIter1 = 0; ContextRoleIter1 < factArity; ++ContextRoleIter1)
@@ -12273,34 +12275,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							sbTemp.Append(basicRoleReplacements[FactType.IndexOfRole(factRoles, includedRoles[ContextRoleIter1])]);
 						}
 					}
-					variableSnippet1Replace1Replace1 = sbTemp.ToString(contextTempStringBuildLength, sbTemp.Length - contextTempStringBuildLength);
+					snippet1Replace1Replace1Replace1 = sbTemp.ToString(contextTempStringBuildLength, sbTemp.Length - contextTempStringBuildLength);
 					primaryRole = contextPrimaryRole;
 					sbTemp.Length = contextTempStringBuildLength;
-					string variableSnippet1Replace1Replace2 = null;
+					string snippet1Replace1Replace1Replace2 = null;
 					if (primaryRole.Role.RolePlayer != null && 0 != primaryRole.Role.RolePlayer.ReferenceModeString.Length)
 					{
-						string variableSnippet1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ReferenceScheme, isDeontic, isNegative);
-						string variableSnippet1Replace1Replace2Replace1 = null;
-						variableSnippet1Replace1Replace2Replace1 = primaryRole.Role.Name;
-						string variableSnippet1Replace1Replace2Replace2 = null;
-						variableSnippet1Replace1Replace2Replace2 = primaryRole.Role.RolePlayer.ReferenceModeDecoratedString;
-						variableSnippet1Replace1Replace2 = string.Format(writer.FormatProvider, variableSnippet1Replace1ReplaceFormat2, variableSnippet1Replace1Replace2Replace1, variableSnippet1Replace1Replace2Replace2);
+						string snippet1Replace1Replace1ReplaceFormat2 = snippets.GetSnippet(CoreVerbalizationSnippetType.ReferenceScheme, isDeontic, isNegative);
+						string snippet1Replace1Replace1Replace2Replace1 = null;
+						snippet1Replace1Replace1Replace2Replace1 = primaryRole.Role.Name;
+						string snippet1Replace1Replace1Replace2Replace2 = null;
+						snippet1Replace1Replace1Replace2Replace2 = primaryRole.Role.RolePlayer.ReferenceModeDecoratedString;
+						snippet1Replace1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1Replace1ReplaceFormat2, snippet1Replace1Replace1Replace2Replace1, snippet1Replace1Replace1Replace2Replace2);
 					}
 					else
 					{
-						variableSnippet1Replace1Replace2 = primaryRole.Role.Name;
+						snippet1Replace1Replace1Replace2 = primaryRole.Role.Name;
 					}
-					variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
-					sbTemp.Append(variableSnippet1Replace1);
+					snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1, snippet1Replace1Replace1Replace2);
+					sbTemp.Append(snippet1Replace1Replace1);
 				}
-				variableSnippet1Replace1 = sbTemp.ToString();
+				snippet1Replace1Replace1 = sbTemp.ToString();
 			}
 			else
 			{
 				reading = parentFact.GetMatchingReading(allReadingOrders, null, factRoles[0], null, factRoles, MatchingReadingOptions.AllowAnyOrder);
 				hyphenBinder = new VerbalizationHyphenBinder(reading, writer.FormatProvider, factRoles, unaryRoleIndex, snippets.GetSnippet(CoreVerbalizationSnippetType.HyphenBoundPredicatePart, isDeontic, isNegative), predicatePartFormatString);
-				string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.InQuantifier, isDeontic, isNegative);
-				string variableSnippet1Replace1Replace1 = null;
+				string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.InQuantifier, isDeontic, isNegative);
+				string snippet1Replace1Replace1Replace1 = null;
 				if (sbTemp == null)
 				{
 					sbTemp = new StringBuilder();
@@ -12314,12 +12316,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					int ResolvedRoleIndex1 = FactType.IndexOfRole(factRoles, includedRoles[RoleIter1]);
 					sbTemp.Append(hyphenBinder.HyphenBindRoleReplacement(basicRoleReplacements[ResolvedRoleIndex1], ResolvedRoleIndex1));
 				}
-				variableSnippet1Replace1Replace1 = sbTemp.ToString();
-				string variableSnippet1Replace1Replace2 = null;
-				variableSnippet1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
-				variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
+				snippet1Replace1Replace1Replace1 = sbTemp.ToString();
+				string snippet1Replace1Replace1Replace2 = null;
+				snippet1Replace1Replace1Replace2 = hyphenBinder.PopulatePredicateText(reading, writer.FormatProvider, predicatePartFormatString, factRoles, basicRoleReplacements, true);
+				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1, snippet1Replace1Replace1Replace2);
 			}
-			string variableSnippet1Replace2 = null;
+			string snippet1Replace1Replace2 = null;
 			if (sbTemp == null)
 			{
 				sbTemp = new StringBuilder();
@@ -12356,81 +12358,82 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
 				}
 				sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-				CoreVerbalizationSnippetType variableSnippet1ReplaceSnippetType2 = 0;
+				CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType2 = 0;
 				if (minValue == maxValue)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.SelfReference;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.SelfReference;
 				}
 				else if (minInclusion != RangeInclusion.Open && maxValue.Length == 0)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxUnbounded;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxUnbounded;
 				}
 				else if (minInclusion == RangeInclusion.Open && maxValue.Length == 0)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxUnbounded;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxUnbounded;
 				}
 				else if (minValue.Length == 0 && maxInclusion != RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxClosed;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxClosed;
 				}
 				else if (minValue.Length == 0 && maxInclusion == RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxOpen;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxOpen;
 				}
 				else if (minInclusion != RangeInclusion.Open && maxInclusion != RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxClosed;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxClosed;
 				}
 				else if (minInclusion != RangeInclusion.Open && maxInclusion == RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxOpen;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxOpen;
 				}
 				else if (minInclusion == RangeInclusion.Open && maxInclusion != RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxClosed;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxClosed;
 				}
 				else if (minInclusion == RangeInclusion.Open && maxInclusion == RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxOpen;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxOpen;
 				}
-				string variableSnippet1ReplaceFormat2 = snippets.GetSnippet(variableSnippet1ReplaceSnippetType2, isDeontic, isNegative);
-				string variableSnippet1Replace2Replace1 = null;
-				CoreVerbalizationSnippetType variableSnippet1Replace2ReplaceSnippetType1 = 0;
+				string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(snippet1Replace1ReplaceSnippetType2, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace1 = null;
+				CoreVerbalizationSnippetType snippet1Replace1Replace2ReplaceSnippetType1 = 0;
 				if (isText)
 				{
-					variableSnippet1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.TextInstanceValue;
+					snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.TextInstanceValue;
 				}
 				else
 				{
-					variableSnippet1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.NonTextInstanceValue;
+					snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.NonTextInstanceValue;
 				}
-				string variableSnippet1Replace2ReplaceFormat1 = snippets.GetSnippet(variableSnippet1Replace2ReplaceSnippetType1, isDeontic, isNegative);
-				string variableSnippet1Replace2Replace1Replace1 = null;
-				variableSnippet1Replace2Replace1Replace1 = minValue;
-				variableSnippet1Replace2Replace1 = string.Format(writer.FormatProvider, variableSnippet1Replace2ReplaceFormat1, variableSnippet1Replace2Replace1Replace1);
-				string variableSnippet1Replace2Replace2 = null;
-				CoreVerbalizationSnippetType variableSnippet1Replace2ReplaceSnippetType2 = 0;
+				string snippet1Replace1Replace2ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace2ReplaceSnippetType1, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace1Replace1 = null;
+				snippet1Replace1Replace2Replace1Replace1 = minValue;
+				snippet1Replace1Replace2Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace2ReplaceFormat1, snippet1Replace1Replace2Replace1Replace1);
+				string snippet1Replace1Replace2Replace2 = null;
+				CoreVerbalizationSnippetType snippet1Replace1Replace2ReplaceSnippetType2 = 0;
 				if (isText)
 				{
-					variableSnippet1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.TextInstanceValue;
+					snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.TextInstanceValue;
 				}
 				else
 				{
-					variableSnippet1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.NonTextInstanceValue;
+					snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.NonTextInstanceValue;
 				}
-				string variableSnippet1Replace2ReplaceFormat2 = snippets.GetSnippet(variableSnippet1Replace2ReplaceSnippetType2, isDeontic, isNegative);
-				string variableSnippet1Replace2Replace2Replace1 = null;
-				variableSnippet1Replace2Replace2Replace1 = maxValue;
-				variableSnippet1Replace2Replace2 = string.Format(writer.FormatProvider, variableSnippet1Replace2ReplaceFormat2, variableSnippet1Replace2Replace2Replace1);
-				variableSnippet1Replace2 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat2, variableSnippet1Replace2Replace1, variableSnippet1Replace2Replace2);
-				sbTemp.Append(variableSnippet1Replace2);
+				string snippet1Replace1Replace2ReplaceFormat2 = snippets.GetSnippet(snippet1Replace1Replace2ReplaceSnippetType2, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace2Replace1 = null;
+				snippet1Replace1Replace2Replace2Replace1 = maxValue;
+				snippet1Replace1Replace2Replace2 = string.Format(writer.FormatProvider, snippet1Replace1Replace2ReplaceFormat2, snippet1Replace1Replace2Replace2Replace1);
+				snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1, snippet1Replace1Replace2Replace2);
+				sbTemp.Append(snippet1Replace1Replace2);
 				if (i == rangeCount - 1)
 				{
 					sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 				}
 			}
-			variableSnippet1Replace2 = sbTemp.ToString();
-			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			snippet1Replace1Replace2 = sbTemp.ToString();
+			snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, false));
 			#endregion // Pattern Matches
 			#region Error report
 			if (errorOwner != null)
@@ -12538,32 +12541,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			#endregion // Prerequisite error check
 			bool isNegative = 0 != (sign & VerbalizationSign.Negative);
-			const bool isDeontic = false;
+			bool isDeontic = this.Modality == ConstraintModality.Deontic;
 			StringBuilder sbTemp = null;
 			LinkedElementCollection<ValueRange> ranges = this.ValueRangeCollection;
 			bool isSingleValue = ranges.Count == 1 && ranges[0].MinValue == ranges[0].MaxValue;
 			bool isText = this.IsText;
 			#endregion // Preliminary
 			#region Pattern Matches
-			CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
+			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+			string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, false);
+			string snippet1Replace1 = null;
+			CoreVerbalizationSnippetType snippet1ReplaceSnippetType1 = 0;
 			if (isSingleValue)
 			{
-				variableSnippetSnippetType1 = CoreVerbalizationSnippetType.SingleValueValueConstraint;
+				snippet1ReplaceSnippetType1 = CoreVerbalizationSnippetType.SingleValueValueConstraint;
 			}
 			else
 			{
-				variableSnippetSnippetType1 = CoreVerbalizationSnippetType.MultiValueValueConstraint;
+				snippet1ReplaceSnippetType1 = CoreVerbalizationSnippetType.MultiValueValueConstraint;
 			}
-			verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-			string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
-			string variableSnippet1Replace1 = null;
-			string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
-			string variableSnippet1Replace1Replace1 = null;
-			variableSnippet1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.ValueType, verbalizationContext.VerbalizationOptions);
-			string variableSnippet1Replace1Replace2 = null;
-			variableSnippet1Replace1Replace2 = this.ValueType.Id.ToString("D");
-			variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
-			string variableSnippet1Replace2 = null;
+			string snippet1ReplaceFormat1 = snippets.GetSnippet(snippet1ReplaceSnippetType1, isDeontic, isNegative);
+			string snippet1Replace1Replace1 = null;
+			string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+			string snippet1Replace1Replace1Replace1 = null;
+			snippet1Replace1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.ValueType, verbalizationContext.VerbalizationOptions);
+			string snippet1Replace1Replace1Replace2 = null;
+			snippet1Replace1Replace1Replace2 = this.ValueType.Id.ToString("D");
+			snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1, snippet1Replace1Replace1Replace2);
+			string snippet1Replace1Replace2 = null;
 			if (sbTemp == null)
 			{
 				sbTemp = new StringBuilder();
@@ -12600,81 +12605,82 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
 				}
 				sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-				CoreVerbalizationSnippetType variableSnippet1ReplaceSnippetType2 = 0;
+				CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType2 = 0;
 				if (minValue == maxValue)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.SelfReference;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.SelfReference;
 				}
 				else if (minInclusion != RangeInclusion.Open && maxValue.Length == 0)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxUnbounded;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxUnbounded;
 				}
 				else if (minInclusion == RangeInclusion.Open && maxValue.Length == 0)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxUnbounded;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxUnbounded;
 				}
 				else if (minValue.Length == 0 && maxInclusion != RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxClosed;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxClosed;
 				}
 				else if (minValue.Length == 0 && maxInclusion == RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxOpen;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxOpen;
 				}
 				else if (minInclusion != RangeInclusion.Open && maxInclusion != RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxClosed;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxClosed;
 				}
 				else if (minInclusion != RangeInclusion.Open && maxInclusion == RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxOpen;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxOpen;
 				}
 				else if (minInclusion == RangeInclusion.Open && maxInclusion != RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxClosed;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxClosed;
 				}
 				else if (minInclusion == RangeInclusion.Open && maxInclusion == RangeInclusion.Open)
 				{
-					variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxOpen;
+					snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxOpen;
 				}
-				string variableSnippet1ReplaceFormat2 = snippets.GetSnippet(variableSnippet1ReplaceSnippetType2, isDeontic, isNegative);
-				string variableSnippet1Replace2Replace1 = null;
-				CoreVerbalizationSnippetType variableSnippet1Replace2ReplaceSnippetType1 = 0;
+				string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(snippet1Replace1ReplaceSnippetType2, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace1 = null;
+				CoreVerbalizationSnippetType snippet1Replace1Replace2ReplaceSnippetType1 = 0;
 				if (isText)
 				{
-					variableSnippet1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.TextInstanceValue;
+					snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.TextInstanceValue;
 				}
 				else
 				{
-					variableSnippet1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.NonTextInstanceValue;
+					snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.NonTextInstanceValue;
 				}
-				string variableSnippet1Replace2ReplaceFormat1 = snippets.GetSnippet(variableSnippet1Replace2ReplaceSnippetType1, isDeontic, isNegative);
-				string variableSnippet1Replace2Replace1Replace1 = null;
-				variableSnippet1Replace2Replace1Replace1 = minValue;
-				variableSnippet1Replace2Replace1 = string.Format(writer.FormatProvider, variableSnippet1Replace2ReplaceFormat1, variableSnippet1Replace2Replace1Replace1);
-				string variableSnippet1Replace2Replace2 = null;
-				CoreVerbalizationSnippetType variableSnippet1Replace2ReplaceSnippetType2 = 0;
+				string snippet1Replace1Replace2ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace2ReplaceSnippetType1, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace1Replace1 = null;
+				snippet1Replace1Replace2Replace1Replace1 = minValue;
+				snippet1Replace1Replace2Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace2ReplaceFormat1, snippet1Replace1Replace2Replace1Replace1);
+				string snippet1Replace1Replace2Replace2 = null;
+				CoreVerbalizationSnippetType snippet1Replace1Replace2ReplaceSnippetType2 = 0;
 				if (isText)
 				{
-					variableSnippet1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.TextInstanceValue;
+					snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.TextInstanceValue;
 				}
 				else
 				{
-					variableSnippet1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.NonTextInstanceValue;
+					snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.NonTextInstanceValue;
 				}
-				string variableSnippet1Replace2ReplaceFormat2 = snippets.GetSnippet(variableSnippet1Replace2ReplaceSnippetType2, isDeontic, isNegative);
-				string variableSnippet1Replace2Replace2Replace1 = null;
-				variableSnippet1Replace2Replace2Replace1 = maxValue;
-				variableSnippet1Replace2Replace2 = string.Format(writer.FormatProvider, variableSnippet1Replace2ReplaceFormat2, variableSnippet1Replace2Replace2Replace1);
-				variableSnippet1Replace2 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat2, variableSnippet1Replace2Replace1, variableSnippet1Replace2Replace2);
-				sbTemp.Append(variableSnippet1Replace2);
+				string snippet1Replace1Replace2ReplaceFormat2 = snippets.GetSnippet(snippet1Replace1Replace2ReplaceSnippetType2, isDeontic, isNegative);
+				string snippet1Replace1Replace2Replace2Replace1 = null;
+				snippet1Replace1Replace2Replace2Replace1 = maxValue;
+				snippet1Replace1Replace2Replace2 = string.Format(writer.FormatProvider, snippet1Replace1Replace2ReplaceFormat2, snippet1Replace1Replace2Replace2Replace1);
+				snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1, snippet1Replace1Replace2Replace2);
+				sbTemp.Append(snippet1Replace1Replace2);
 				if (i == rangeCount - 1)
 				{
 					sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 				}
 			}
-			variableSnippet1Replace2 = sbTemp.ToString();
-			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+			snippet1Replace1Replace2 = sbTemp.ToString();
+			snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
+			FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, false));
 			#endregion // Pattern Matches
 			#region Error report
 			if (errorOwner != null)
@@ -12750,32 +12756,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				#region Preliminary
 				IVerbalizationSets<CoreVerbalizationSnippetType> snippets = (IVerbalizationSets<CoreVerbalizationSnippetType>)snippetsDictionary[typeof(CoreVerbalizationSnippetType)];
 				bool isNegative = 0 != (sign & VerbalizationSign.Negative);
-				bool isDeontic = false;
+				bool isDeontic = this.Modality == ConstraintModality.Deontic;
 				StringBuilder sbTemp = null;
 				LinkedElementCollection<ValueRange> ranges = this.ValueRangeCollection;
 				bool isSingleValue = ranges.Count == 1 && ranges[0].MinValue == ranges[0].MaxValue;
 				bool isText = this.IsText;
 				#endregion // Preliminary
 				#region Pattern Matches
-				CoreVerbalizationSnippetType variableSnippetSnippetType1 = 0;
+				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
+				string snippetFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ImpliedModalNecessityOperator, isDeontic, false);
+				string snippet1Replace1 = null;
+				CoreVerbalizationSnippetType snippet1ReplaceSnippetType1 = 0;
 				if (isSingleValue)
 				{
-					variableSnippetSnippetType1 = CoreVerbalizationSnippetType.SingleValueValueConstraint;
+					snippet1ReplaceSnippetType1 = CoreVerbalizationSnippetType.SingleValueValueConstraint;
 				}
 				else
 				{
-					variableSnippetSnippetType1 = CoreVerbalizationSnippetType.MultiValueValueConstraint;
+					snippet1ReplaceSnippetType1 = CoreVerbalizationSnippetType.MultiValueValueConstraint;
 				}
-				verbalizationContext.BeginVerbalization(VerbalizationContent.Normal);
-				string variableSnippetFormat1 = snippets.GetSnippet(variableSnippetSnippetType1, isDeontic, isNegative);
-				string variableSnippet1Replace1 = null;
-				string variableSnippet1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
-				string variableSnippet1Replace1Replace1 = null;
-				variableSnippet1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.ParentObjectType, verbalizationContext.VerbalizationOptions);
-				string variableSnippet1Replace1Replace2 = null;
-				variableSnippet1Replace1Replace2 = this.Id.ToString("D");
-				variableSnippet1Replace1 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat1, variableSnippet1Replace1Replace1, variableSnippet1Replace1Replace2);
-				string variableSnippet1Replace2 = null;
+				string snippet1ReplaceFormat1 = snippets.GetSnippet(snippet1ReplaceSnippetType1, isDeontic, isNegative);
+				string snippet1Replace1Replace1 = null;
+				string snippet1Replace1ReplaceFormat1 = snippets.GetSnippet(CoreVerbalizationSnippetType.ObjectType, isDeontic, isNegative);
+				string snippet1Replace1Replace1Replace1 = null;
+				snippet1Replace1Replace1Replace1 = VerbalizationHelper.NormalizeObjectTypeName(this.ParentObjectType, verbalizationContext.VerbalizationOptions);
+				string snippet1Replace1Replace1Replace2 = null;
+				snippet1Replace1Replace1Replace2 = this.Id.ToString("D");
+				snippet1Replace1Replace1 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat1, snippet1Replace1Replace1Replace1, snippet1Replace1Replace1Replace2);
+				string snippet1Replace1Replace2 = null;
 				if (sbTemp == null)
 				{
 					sbTemp = new StringBuilder();
@@ -12812,81 +12820,82 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						listSnippet = CoreVerbalizationSnippetType.CompactSimpleListSeparator;
 					}
 					sbTemp.Append(snippets.GetSnippet(listSnippet, isDeontic, isNegative));
-					CoreVerbalizationSnippetType variableSnippet1ReplaceSnippetType2 = 0;
+					CoreVerbalizationSnippetType snippet1Replace1ReplaceSnippetType2 = 0;
 					if (minValue == maxValue)
 					{
-						variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.SelfReference;
+						snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.SelfReference;
 					}
 					else if (minInclusion != RangeInclusion.Open && maxValue.Length == 0)
 					{
-						variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxUnbounded;
+						snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxUnbounded;
 					}
 					else if (minInclusion == RangeInclusion.Open && maxValue.Length == 0)
 					{
-						variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxUnbounded;
+						snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxUnbounded;
 					}
 					else if (minValue.Length == 0 && maxInclusion != RangeInclusion.Open)
 					{
-						variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxClosed;
+						snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxClosed;
 					}
 					else if (minValue.Length == 0 && maxInclusion == RangeInclusion.Open)
 					{
-						variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxOpen;
+						snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinUnboundedMaxOpen;
 					}
 					else if (minInclusion != RangeInclusion.Open && maxInclusion != RangeInclusion.Open)
 					{
-						variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxClosed;
+						snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxClosed;
 					}
 					else if (minInclusion != RangeInclusion.Open && maxInclusion == RangeInclusion.Open)
 					{
-						variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxOpen;
+						snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinClosedMaxOpen;
 					}
 					else if (minInclusion == RangeInclusion.Open && maxInclusion != RangeInclusion.Open)
 					{
-						variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxClosed;
+						snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxClosed;
 					}
 					else if (minInclusion == RangeInclusion.Open && maxInclusion == RangeInclusion.Open)
 					{
-						variableSnippet1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxOpen;
+						snippet1Replace1ReplaceSnippetType2 = CoreVerbalizationSnippetType.MinOpenMaxOpen;
 					}
-					string variableSnippet1ReplaceFormat2 = snippets.GetSnippet(variableSnippet1ReplaceSnippetType2, isDeontic, isNegative);
-					string variableSnippet1Replace2Replace1 = null;
-					CoreVerbalizationSnippetType variableSnippet1Replace2ReplaceSnippetType1 = 0;
+					string snippet1Replace1ReplaceFormat2 = snippets.GetSnippet(snippet1Replace1ReplaceSnippetType2, isDeontic, isNegative);
+					string snippet1Replace1Replace2Replace1 = null;
+					CoreVerbalizationSnippetType snippet1Replace1Replace2ReplaceSnippetType1 = 0;
 					if (isText)
 					{
-						variableSnippet1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.TextInstanceValue;
+						snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.TextInstanceValue;
 					}
 					else
 					{
-						variableSnippet1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.NonTextInstanceValue;
+						snippet1Replace1Replace2ReplaceSnippetType1 = CoreVerbalizationSnippetType.NonTextInstanceValue;
 					}
-					string variableSnippet1Replace2ReplaceFormat1 = snippets.GetSnippet(variableSnippet1Replace2ReplaceSnippetType1, isDeontic, isNegative);
-					string variableSnippet1Replace2Replace1Replace1 = null;
-					variableSnippet1Replace2Replace1Replace1 = minValue;
-					variableSnippet1Replace2Replace1 = string.Format(writer.FormatProvider, variableSnippet1Replace2ReplaceFormat1, variableSnippet1Replace2Replace1Replace1);
-					string variableSnippet1Replace2Replace2 = null;
-					CoreVerbalizationSnippetType variableSnippet1Replace2ReplaceSnippetType2 = 0;
+					string snippet1Replace1Replace2ReplaceFormat1 = snippets.GetSnippet(snippet1Replace1Replace2ReplaceSnippetType1, isDeontic, isNegative);
+					string snippet1Replace1Replace2Replace1Replace1 = null;
+					snippet1Replace1Replace2Replace1Replace1 = minValue;
+					snippet1Replace1Replace2Replace1 = string.Format(writer.FormatProvider, snippet1Replace1Replace2ReplaceFormat1, snippet1Replace1Replace2Replace1Replace1);
+					string snippet1Replace1Replace2Replace2 = null;
+					CoreVerbalizationSnippetType snippet1Replace1Replace2ReplaceSnippetType2 = 0;
 					if (isText)
 					{
-						variableSnippet1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.TextInstanceValue;
+						snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.TextInstanceValue;
 					}
 					else
 					{
-						variableSnippet1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.NonTextInstanceValue;
+						snippet1Replace1Replace2ReplaceSnippetType2 = CoreVerbalizationSnippetType.NonTextInstanceValue;
 					}
-					string variableSnippet1Replace2ReplaceFormat2 = snippets.GetSnippet(variableSnippet1Replace2ReplaceSnippetType2, isDeontic, isNegative);
-					string variableSnippet1Replace2Replace2Replace1 = null;
-					variableSnippet1Replace2Replace2Replace1 = maxValue;
-					variableSnippet1Replace2Replace2 = string.Format(writer.FormatProvider, variableSnippet1Replace2ReplaceFormat2, variableSnippet1Replace2Replace2Replace1);
-					variableSnippet1Replace2 = string.Format(writer.FormatProvider, variableSnippet1ReplaceFormat2, variableSnippet1Replace2Replace1, variableSnippet1Replace2Replace2);
-					sbTemp.Append(variableSnippet1Replace2);
+					string snippet1Replace1Replace2ReplaceFormat2 = snippets.GetSnippet(snippet1Replace1Replace2ReplaceSnippetType2, isDeontic, isNegative);
+					string snippet1Replace1Replace2Replace2Replace1 = null;
+					snippet1Replace1Replace2Replace2Replace1 = maxValue;
+					snippet1Replace1Replace2Replace2 = string.Format(writer.FormatProvider, snippet1Replace1Replace2ReplaceFormat2, snippet1Replace1Replace2Replace2Replace1);
+					snippet1Replace1Replace2 = string.Format(writer.FormatProvider, snippet1Replace1ReplaceFormat2, snippet1Replace1Replace2Replace1, snippet1Replace1Replace2Replace2);
+					sbTemp.Append(snippet1Replace1Replace2);
 					if (i == rangeCount - 1)
 					{
 						sbTemp.Append(snippets.GetSnippet(CoreVerbalizationSnippetType.CompactSimpleListClose, isDeontic, isNegative));
 					}
 				}
-				variableSnippet1Replace2 = sbTemp.ToString();
-				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, variableSnippetFormat1, variableSnippet1Replace1, variableSnippet1Replace2), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, isNegative));
+				snippet1Replace1Replace2 = sbTemp.ToString();
+				snippet1Replace1 = string.Format(writer.FormatProvider, snippet1ReplaceFormat1, snippet1Replace1Replace1, snippet1Replace1Replace2);
+				FactType.WriteVerbalizerSentence(writer, string.Format(writer.FormatProvider, snippetFormat1, snippet1Replace1), snippets.GetSnippet(CoreVerbalizationSnippetType.CloseVerbalizationSentence, isDeontic, false));
 				#endregion // Pattern Matches
 				return true;
 			}

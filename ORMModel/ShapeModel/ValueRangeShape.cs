@@ -54,6 +54,75 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			classStyleSet.AddBrush(ValueRangeTextBrush, DiagramBrushes.ShapeBackground, brushSettings);
 		}
 		/// <summary>
+		/// Switch between alethic and deontic style sets
+		/// </summary>
+		public override StyleSet StyleSet
+		{
+			get
+			{
+				ValueConstraint constraint = AssociatedValueConstraint;
+				return (constraint != null && constraint.Modality == ConstraintModality.Deontic && myDeonticStyleSet != InitializingDeonticSignal) ?
+					DeonticStyleSet :
+					base.StyleSet;
+			}
+		}
+		/// <summary>
+		/// A style set used for drawing deontic constraints. This is an instance
+		/// style set (not a static class style set) because rendering this constraint
+		/// uses fonts that are defined at the diagram instance level which need to be
+		/// reflected in the deontic style set used for this instance.
+		/// </summary>
+		private StyleSet myDeonticStyleSet;
+
+		/// <summary>
+		/// MSBUG: During initialization, base.StyleSet ensures the class style set is initialized
+		/// then calls CreateInstanceStyleSet, which calls InitializeInstanceStyleSetFonts, which
+		/// calls the virtual StyleSet property to retrieve the style set it just created (instead
+		/// of simply passing it down the call chain). This signal instance lets us ignore the
+		/// nested request and enable initialization without using additional instance data.
+		/// </summary>
+		private static StyleSet InitializingDeonticSignal = new StyleSet(null);
+
+		/// <summary>
+		/// Create an alternate style set for deontic constraints
+		/// </summary>
+		protected virtual StyleSet DeonticStyleSet
+		{
+			get
+			{
+				StyleSet retVal = myDeonticStyleSet;
+				if (retVal == null)
+				{
+					// Set up an alternate style set for drawing deontic constraints
+					myDeonticStyleSet = InitializingDeonticSignal;
+					retVal = new StyleSet(base.StyleSet);
+					InitializeDeonticStyleSet(retVal);
+					myDeonticStyleSet = retVal;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Initialize a <see cref="StyleSet"/> for rendering deontic constraints.
+		/// The style set is created in <see cref="DeonticStyleSet"/> and
+		/// initialized here.
+		/// </summary>
+		/// <remarks>(Currently there are no derived classes, so this is informational
+		/// if a derived class is added for some reason).
+		/// If a derived class does not modify additional resources in the
+		/// default style set, then this method is not required and any derived deontic
+		/// style set can be based on the deontic style set for this base class. However,
+		/// if new resources are introduced, then the derived class should base a
+		/// deontic style set on the derived class style set and reinitialize the
+		/// deontic settings in that style set.</remarks>
+		protected virtual void InitializeDeonticStyleSet(StyleSet styleSet)
+		{
+			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
+			BrushSettings brushSettings = new BrushSettings();
+			brushSettings.Color = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
+			styleSet.OverrideBrush(ValueRangeTextBrush, brushSettings);
+		}
+		/// <summary>
 		/// Set ZOrder layer
 		/// </summary>
 		public override double ZOrder
@@ -94,9 +163,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				null != (providers = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDynamicShapeColorProvider<ORMDiagramDynamicColor, ValueConstraintShape, ValueConstraint>>(true)) &&
 				null != (element = (ValueConstraint)ModelElement))
 			{
+				ORMDiagramDynamicColor requestColor = element.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint;
 				for (int i = 0; i < providers.Length; ++i)
 				{
-					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, element);
+					Color alternateColor = providers[i].GetDynamicColor(requestColor, this, element);
 					if (alternateColor != Color.Empty)
 					{
 						retVal = solidBrush.Color;
@@ -232,7 +302,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			if (!IsDeleted &&
 				null != (constraint = AssociatedValueConstraint))
 			{
-				retVal = constraint.GetDisplayText(MaximumDisplayedColumns, 0);
+				retVal = constraint.GetDisplayText(MaximumDisplayedColumns, 0, false);
 				if (string.IsNullOrEmpty(retVal))
 				{
 					retVal = null;
@@ -276,7 +346,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					ValueConstraint defn = this.ModelElement as ValueConstraint;
 					Debug.Assert(defn != null);
-					retVal = defn.GetDisplayText(MaximumDisplayedColumns, MaximumDisplayedValues);
+					retVal = defn.GetDisplayText(MaximumDisplayedColumns, MaximumDisplayedValues, true);
 					myDisplayText = retVal;
 				}
 				return retVal;
@@ -293,7 +363,9 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		private static void ValueConstraintTextChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			if (e.DomainProperty.Id == ValueConstraint.TextChangedDomainPropertyId)
+			Guid domainPropertyId = e.DomainProperty.Id;
+			if (domainPropertyId == ValueConstraint.TextChangedDomainPropertyId ||
+				domainPropertyId == ValueConstraint.ModalityDomainPropertyId)
 			{
 				ValueConstraint constraint = (ValueConstraint)e.ModelElement;
 				if (!constraint.IsDeleted)

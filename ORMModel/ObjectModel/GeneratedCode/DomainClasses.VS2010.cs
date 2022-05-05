@@ -25069,6 +25069,97 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		
 		#endregion
+		#region Modality domain property code
+		
+		/// <summary>
+		/// Modality domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ModalityDomainPropertyId = new global::System.Guid(0xc2542dbf, 0xa10b, 0x4842, 0xa7, 0x8e, 0x6f, 0x99, 0xdb, 0x67, 0x02, 0xb0);
+		
+		/// <summary>
+		/// Storage for Modality
+		/// </summary>
+		private ConstraintModality modalityPropertyStorage = ConstraintModality.Alethic;
+		
+		/// <summary>
+		/// Gets or sets the value of Modality domain property.
+		/// The constraint Modality.
+		///     Alethic modality means the constraint is structurally enforced and data
+		/// violating the constraint cannot be entered in the system;
+		///     Deontic modality means that data violating the constraint can be recorded.
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint/Modality.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint/Modality.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ObjectModel.ORMCoreDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.CoreDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ConstraintModality.Alethic)]
+		[DslModeling::DomainObjectId("c2542dbf-a10b-4842-a78e-6f99db6702b0")]
+		public ConstraintModality Modality
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return modalityPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ModalityPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ValueConstraint.Modality domain property.
+		/// </summary>
+		internal sealed partial class ModalityPropertyHandler : DslModeling::DomainPropertyValueHandler<ValueConstraint, ConstraintModality>
+		{
+			private ModalityPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ValueConstraint.Modality domain property value handler.
+			/// </summary>
+			public static readonly ModalityPropertyHandler Instance = new ModalityPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ValueConstraint.Modality domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ModalityDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed ConstraintModality GetValue(ValueConstraint element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.modalityPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ValueConstraint element, ConstraintModality newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				ConstraintModality oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.modalityPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region ValueRangeCollection opposite domain role accessor
 		
 		/// <summary>

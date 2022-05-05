@@ -51,6 +51,70 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			classStyleSet.AddPen(ORMDiagram.StickyBackgroundResource, DiagramPens.ConnectionLine, settings);
 		}
 		/// <summary>
+		/// A style set used for drawing deontic constraints
+		/// </summary>
+		private static StyleSet myDeonticClassStyleSet;
+		/// <summary>
+		/// Create an alternate style set for deontic constraints
+		/// </summary>
+		protected virtual StyleSet DeonticClassStyleSet
+		{
+			get
+			{
+				StyleSet retVal = myDeonticClassStyleSet;
+				if (retVal == null)
+				{
+					// Set up an alternate style set for drawing deontic constraints
+					retVal = new StyleSet(ClassStyleSet);
+					InitializeDeonticClassStyleSet(retVal);
+					myDeonticClassStyleSet = retVal;
+				}
+				return retVal;
+			}
+		}
+		/// <summary>
+		/// Initialize a <see cref="StyleSet"/> for rendering deontic constraints.
+		/// The style set is created in <see cref="DeonticClassStyleSet"/> and
+		/// initialized here.
+		/// </summary>
+		/// <remarks>(Currently there are no derived classes, so this is informational
+		/// if a derived class is added for some reason).
+		/// If a derived class does not modify additional resources in the
+		/// default style set, then this method is not required and any derived deontic
+		/// style set can be based on the deontic style set for this base class. However,
+		/// if new resources are introduced, then the derived class should base a
+		/// deontic style set on the derived class style set and reinitialize the
+		/// deontic settings in that style set.</remarks>
+		protected virtual void InitializeDeonticClassStyleSet(StyleSet styleSet)
+		{
+			IORMFontAndColorService colorService = (Store as IORMToolServices).FontAndColorService;
+			PenSettings penSettings = new PenSettings();
+			penSettings.Color = colorService.GetForeColor(ORMDesignerColor.DeonticConstraint);
+			styleSet.OverridePen(DiagramPens.ConnectionLine, penSettings);
+		}
+		/// <summary>
+		/// Switch between alethic and deontic style sets to draw
+		/// the mandatory dot correctly
+		/// </summary>
+		public override StyleSet StyleSet
+		{
+			get
+			{
+				RoleHasValueConstraint link;
+				RoleValueConstraint constraint;
+				if ((null != (link = AssociatedValueConstraintLink)) &&
+					(null != (constraint = link.ValueConstraint)) &&
+					constraint.Modality == ConstraintModality.Deontic)
+				{
+					// Note that we don't do anything with fonts with this style set, so the
+					// static one is sufficient. Instance style sets also go through a font initiation
+					// step inside the framework
+					return DeonticClassStyleSet;
+				}
+				return base.StyleSet;
+			}
+		}
+		/// <summary>
 		/// Draw the connection lines as sticky along with the constraint
 		/// and associated roles
 		/// </summary>
@@ -91,7 +155,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			{
 				for (int i = 0; i < providers.Length; ++i)
 				{
-					Color alternateColor = providers[i].GetDynamicColor(ORMDiagramDynamicColor.Constraint, this, constraint);
+					Color alternateColor = providers[i].GetDynamicColor(constraint.Modality == ConstraintModality.Deontic ? ORMDiagramDynamicColor.DeonticConstraint : ORMDiagramDynamicColor.Constraint, this, constraint);
 					if (alternateColor != Color.Empty)
 					{
 						retVal = pen.Color;

@@ -234,7 +234,7 @@
 			<xsl:copy-of select="$dataTypeMapping/dcl:*"/>
 		</dcl:column>
 
-		<xsl:variable name="roleValueConstraints" select="$fromRolePath/orm:ValueRestriction/orm:RoleValueConstraint"/>
+		<xsl:variable name="roleValueConstraints" select="$fromRolePath/orm:ValueRestriction/orm:RoleValueConstraint[not(@Modality='Deontic')]"/>
 		<xsl:if test="$roleValueConstraints">
 
 			<xsl:variable name="literalName">
@@ -640,7 +640,7 @@
 		<xsl:variable name="dataTypeName" select="@Name"/>
 		<xsl:variable name="modelConceptualDataType" select="orm:ConceptualDataType"/>
 		<xsl:variable name="modelDataType" select="$ormModel/orm:DataTypes/child::*[@id=$modelConceptualDataType/@ref]"/>
-		<xsl:variable name="modelValueConstraint" select="orm:ValueRestriction/orm:ValueConstraint"/>
+		<xsl:variable name="modelValueConstraint" select="orm:ValueRestriction/orm:ValueConstraint[not(@Modality='Deontic')]"/>
 		<xsl:variable name="modelValueRanges" select="$modelValueConstraint/orm:ValueRanges/orm:ValueRange"/>
 		<xsl:variable name="length" select="number($modelConceptualDataType/@Length)"/>
 		<xsl:variable name="scale" select="number($modelConceptualDataType/@Scale)"/>

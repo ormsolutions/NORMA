@@ -3410,6 +3410,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.DefinitionContainer.OpenDelimiter");
 			}
 		}
+		/// <summary>Opening delimiter to contain one or more value ranges with a deontic constraint.</summary>
+		public static string ValueConstraintDefinitionContainerOpenDelimiterDeontic
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.ValueConstraint.DefinitionContainer.OpenDelimiter.Deontic");
+			}
+		}
 		/// <summary>One character with possible spaces for the closed lower bound of a value range.</summary>
 		public static string ValueConstraintClosedInclusionLowerDelimiter
 		{

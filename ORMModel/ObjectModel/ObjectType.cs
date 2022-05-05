@@ -1192,39 +1192,70 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		/// <summary>
 		/// Find the nearest <see cref="ValueConstraint"/> in the single-valued identification path
-		/// of this <see cref="ObjectType"/>.
+		/// of this <see cref="ObjectType"/>. If the nearest constraint is deontic then this will
+		/// continue to search for an alethic constraint and return that if found, with the closest
+		/// deontic constraint returned in the nearerDeonticConstraint out parameter.
 		/// </summary>
-		public ValueConstraint NearestValueConstraint
+		public ValueConstraint GetNearestValueConstraint(out ValueConstraint nearerDeonticConstraint)
 		{
-			get
+			ObjectType currentObjectType = this;
+			ValueConstraint alethicRetVal = null;
+			ValueConstraint firstDeonticConstraint = null;
+			while (currentObjectType != null)
 			{
-				ObjectType currentObjectType = this;
-				while (currentObjectType != null)
+				if (currentObjectType.IsValueType)
 				{
-					if (currentObjectType.IsValueType)
+					ValueConstraint valueTypeConstraint = currentObjectType.ValueConstraint;
+					if (valueTypeConstraint != null)
 					{
-						return currentObjectType.ValueConstraint;
-					}
-					UniquenessConstraint pid;
-					LinkedElementCollection<Role> pidRoles;
-					if (null != (pid = currentObjectType.ResolvedPreferredIdentifier) &&
-						1 == (pidRoles = pid.RoleCollection).Count)
-					{
-						Role identifierRole = pidRoles[0];
-						ValueConstraint roleConstraint = identifierRole.ValueConstraint;
-						if (roleConstraint != null)
+						if (valueTypeConstraint.Modality != ConstraintModality.Deontic)
 						{
-							return roleConstraint;
+							alethicRetVal = valueTypeConstraint;
 						}
-						currentObjectType = identifierRole.RolePlayer;
+						else if (firstDeonticConstraint == null)
+						{
+							firstDeonticConstraint = valueTypeConstraint;
+						}
 					}
-					else
-					{
-						currentObjectType = null;
-					}
+					break;
 				}
-				return null;
+				UniquenessConstraint pid;
+				LinkedElementCollection<Role> pidRoles;
+				if (null != (pid = currentObjectType.ResolvedPreferredIdentifier) &&
+					1 == (pidRoles = pid.RoleCollection).Count)
+				{
+					Role identifierRole = pidRoles[0];
+					ValueConstraint roleConstraint = identifierRole.ValueConstraint;
+					if (roleConstraint != null)
+					{
+						if (roleConstraint.Modality != ConstraintModality.Deontic)
+						{
+							alethicRetVal = roleConstraint;
+							break;
+						}
+						else if (firstDeonticConstraint == null)
+						{
+							firstDeonticConstraint = roleConstraint;
+						}
+					}
+					currentObjectType = identifierRole.RolePlayer;
+				}
+				else
+				{
+					currentObjectType = null;
+				}
 			}
+
+			// Use earliest deontic match if no alethic constraints are found
+			if (alethicRetVal == null)
+			{
+				nearerDeonticConstraint = null;
+				return firstDeonticConstraint;
+			}
+
+			// Provide both constraints
+			nearerDeonticConstraint = firstDeonticConstraint;
+			return alethicRetVal;
 		}
 		/// <summary>
 		/// Retrieve an array of roles starting with a role
@@ -5231,11 +5262,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		protected IEnumerable<CustomChildVerbalizer> GetCustomChildVerbalizations(IVerbalizeFilterChildren filter, IDictionary<string, object> verbalizationOptions, string verbalizationTarget, VerbalizationSign sign)
 		{
 			ValueConstraint valueConstraint;
-			if (!IsValueType && null != (valueConstraint = NearestValueConstraint))
+			ValueConstraint nearerDeonticValueConstraint;
+			if (!IsValueType && null != (valueConstraint = GetNearestValueConstraint(out nearerDeonticValueConstraint)))
 			{
 				NearestValueConstraintVerbalizer verbalizer = NearestValueConstraintVerbalizer.GetVerbalizer();
 				verbalizer.Initialize(this, valueConstraint);
 				yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
+
+				if (nearerDeonticValueConstraint != null)
+				{
+					verbalizer = NearestValueConstraintVerbalizer.GetVerbalizer();
+					verbalizer.Initialize(this, nearerDeonticValueConstraint);
+					yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
+				}
 			}
 			IList<ObjectTypeInstance> instances = ObjectTypeInstanceCollection;
 			if (instances.Count != 0 &&
@@ -5352,6 +5391,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				get
 				{
 					return myValueConstraint.ValueRangeCollection;
+				}
+			}
+			private ConstraintModality Modality
+			{
+				get
+				{
+					return myValueConstraint.Modality;
 				}
 			}
 			#region Equality Overrides

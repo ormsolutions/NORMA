@@ -181,7 +181,7 @@
 		<xsl:variable name="dataTypeName" select="@name"/>
 		<xsl:variable name="ormDataTypeRef" select="$valueType/orm:ConceptualDataType"/>
 		<xsl:variable name="conceptualDataType" select="$DataTypes[@id=$ormDataTypeRef/@ref]"/>
-		<xsl:variable name="valueRanges" select="$valueType/orm:ValueRestriction/orm:ValueConstraint/orm:ValueRanges/orm:ValueRange"/>
+		<xsl:variable name="valueRanges" select="$valueType/orm:ValueRestriction/orm:ValueConstraint[not(@Modality='Deontic')]/orm:ValueRanges/orm:ValueRange"/>
 		<xsl:variable name="length" select="$ormDataTypeRef/@Length"/>
 		<xsl:variable name="scale" select="$ormDataTypeRef/@Scale"/>
 

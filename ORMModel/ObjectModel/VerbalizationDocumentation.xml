@@ -1588,21 +1588,36 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <snippet name="GroupExclusion" />
       <snippet name="GroupExclusiveOr" />
       <snippet name="IdentityReferenceQuantifier" />
+      <snippet name="InQuantifier" />
       <snippet name="LessThanOrEqualValueComparator" />
       <snippet name="LessThanValueComparator" />
       <snippet name="LogicalAndOperator" />
+      <snippet name="MinClosedMaxClosed" />
+      <snippet name="MinClosedMaxOpen" />
+      <snippet name="MinClosedMaxUnbounded" />
+      <snippet name="MinOpenMaxClosed" />
+      <snippet name="MinOpenMaxOpen" />
+      <snippet name="MinOpenMaxUnbounded" />
+      <snippet name="MinUnboundedMaxClosed" />
+      <snippet name="MinUnboundedMaxOpen" />
+      <snippet name="MultiValueValueConstraint" />
+      <snippet name="NonTextInstanceValue" />
       <snippet name="NotEqualValueComparator" />
       <snippet name="ObjectType" />
       <snippet name="ObjectTypeCardinality" />
       <snippet name="OccursInPopulation" />
       <snippet name="OneQuantifier" />
+      <snippet name="PeriodSeparator" />
       <snippet name="PluralExistenceImplicationOperator" />
+      <snippet name="ReferenceScheme" />
       <snippet name="ReflexivePronoun" />
       <snippet name="ReflexiveQuantifier" />
       <snippet name="SelfReference" />
+      <snippet name="SingleValueValueConstraint" />
       <snippet name="SingularExistenceImplicationOperator" />
       <snippet name="StronglyIntransitiveConsequent" />
       <snippet name="SubtypeMetaReading" />
+      <snippet name="TextInstanceValue" />
       <snippet name="UnaryRoleCardinality" />
       <snippet name="UniversalQuantifier" />
     </contains>
@@ -1620,9 +1635,11 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <constraint name="ImpliedMandatoryVerbalizer" />
       <constraint name="ImpliedUniqueVerbalizer" />
       <constraint name="IrreflexiveRingVerbalizer" />
+      <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="ObjectTypeCardinalityConstraint" />
       <constraint name="PurelyReflexiveRingVerbalizer" />
       <constraint name="ReflexiveRingVerbalizer" />
+      <constraint name="RoleValueConstraint" />
       <constraint name="SimpleMandatoryVerbalizer" />
       <constraint name="StronglyIntransitiveRingVerbalizer" />
       <constraint name="SubsetConstraint" />
@@ -1631,6 +1648,7 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
       <constraint name="UnaryRoleCardinalityConstraint" />
       <constraint name="UniquenessConstraintVerbalizer" />
       <constraint name="ValueComparisonConstraint" />
+      <constraint name="ValueTypeValueConstraint" />
     </usedBy>
   </snippet>
   <snippet name="IndentedCompoundListClose" replacementCount="0">
@@ -1817,7 +1835,9 @@ Format for alethic and positive: {0}  Format for deontic and positive: it is obl
 Format: {0} in {1}</statement>
     <unformattedSnippet>{0} in {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="RoleValueConstraint" />
     </usedBy>
@@ -1974,7 +1994,9 @@ Format: {0} and {1}</statement>
 Format: at least {0} to at most {1}</statement>
     <unformattedSnippet>at least {0} to at most {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -1986,7 +2008,9 @@ Format: at least {0} to at most {1}</statement>
 Format: at least {0} to below {1}</statement>
     <unformattedSnippet>at least {0} to below {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -1998,7 +2022,9 @@ Format: at least {0} to below {1}</statement>
 Format: at least {0}</statement>
     <unformattedSnippet>at least {0}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -2010,7 +2036,9 @@ Format: at least {0}</statement>
 Format: above {0} to at most {1}</statement>
     <unformattedSnippet>above {0} to at most {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -2022,7 +2050,9 @@ Format: above {0} to at most {1}</statement>
 Format: above {0} to below {1}</statement>
     <unformattedSnippet>above {0} to below {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -2034,7 +2064,9 @@ Format: above {0} to below {1}</statement>
 Format: above {0}</statement>
     <unformattedSnippet>above {0}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -2046,7 +2078,9 @@ Format: above {0}</statement>
 Format: at most {1}</statement>
     <unformattedSnippet>at most {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -2058,7 +2092,9 @@ Format: at most {1}</statement>
 Format: below {1}</statement>
     <unformattedSnippet>below {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -2186,7 +2222,9 @@ Format for alethic and positive: it is possible that {0}  Format for deontic and
 Format: the possible values of {0} are {1}</statement>
     <unformattedSnippet>the possible values of {0} are {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -2462,7 +2500,9 @@ Format: {0} does not exist</statement>
     <statement>Description: Used to output a non-text instance value. Format: {0}</statement>
     <unformattedSnippet>{0}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -2769,7 +2809,9 @@ Format: {0}.{1}</statement>
     <contains>
       <snippet name="ReferenceScheme" />
     </contains>
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="RoleValueConstraint" />
     </usedBy>
@@ -2905,6 +2947,7 @@ Format: {0}({1})</statement>
     <unformattedSnippet>{0}({1})</unformattedSnippet>
     <contains />
     <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
       <snippet name="PeriodSeparator" />
     </containedIn>
     <usedBy>
@@ -3253,7 +3296,9 @@ Format: {0} is not {1}</statement>
 Format: the possible value of {0} is {1}</statement>
     <unformattedSnippet>the possible value of {0} is {1}</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />
@@ -3309,7 +3354,9 @@ Format: {0}=subtype, {1}=supertype, {2}=SubtypeFact identifier</statement>
     <statement>Description: Used to output a text instance value. Format: '{0}'</statement>
     <unformattedSnippet>'{0}'</unformattedSnippet>
     <contains />
-    <containedIn />
+    <containedIn>
+      <snippet name="ImpliedModalNecessityOperator" />
+    </containedIn>
     <usedBy>
       <constraint name="NearestValueConstraintVerbalizer" />
       <constraint name="RoleValueConstraint" />

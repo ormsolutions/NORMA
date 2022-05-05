@@ -2500,6 +2500,16 @@ Cardinality supports multiple non-overlapping ranges and single values. A range 
     <value>TextChanged</value>
     <comment>DisplayName for DomainProperty &apos;TextChanged&apos; on DomainClass &apos;ValueConstraint&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint/Modality.Description" xml:space="preserve">
+    <value>The constraint Modality.
+    Alethic modality means the constraint is structurally enforced and data violating the constraint cannot be entered in the system;
+    Deontic modality means that data violating the constraint can be recorded.</value>
+    <comment>Description for DomainProperty &apos;Modality&apos; on DomainClass &apos;ValueConstraint&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraint/Modality.DisplayName" xml:space="preserve">
+    <value>Modality</value>
+    <comment>DisplayName for DomainProperty &apos;Modality&apos; on DomainClass &apos;ValueConstraint&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ValueConstraintError.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ValueConstraintError&apos;</comment>

@@ -1456,8 +1456,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		/// <param name="maxColumns">The maximum number of value to display on a single row, or 0 for unlimited.</param>
 		/// <param name="maxDisplayed">The maximum total number of items to display, or 0 for unlimited.</param>
+		/// <param name="showModality">The returned string should return a deontic mark if applicable.</param>
 		/// <returns>A multiline string, if requested.</returns>
-		public string GetDisplayText(int maxColumns, int maxDisplayed)
+		public string GetDisplayText(int maxColumns, int maxDisplayed, bool showModality)
 		{
 			LinkedElementCollection<ValueRange> ranges = ValueRangeCollection;
 			int rangeCount = ranges.Count;
@@ -1467,7 +1468,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			}
 			else if (rangeCount == 1)
 			{
-				return string.Concat(ResourceStrings.ValueConstraintDefinitionContainerOpenDelimiter, ranges[0].GetDisplayText(DataType), ResourceStrings.ValueConstraintDefinitionContainerCloseDelimiter);
+				return string.Concat((showModality && Modality == ConstraintModality.Deontic) ? ResourceStrings.ValueConstraintDefinitionContainerOpenDelimiterDeontic : ResourceStrings.ValueConstraintDefinitionContainerOpenDelimiter, ranges[0].GetDisplayText(DataType), ResourceStrings.ValueConstraintDefinitionContainerCloseDelimiter);
 			}
 			int totalValues = rangeCount;
 			int totalSlots = rangeCount; // Possibly treat a trailing ellipsis in the total
@@ -1494,7 +1495,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				maxColumns = -1; // Standardize for loop
 			}
 			StringBuilder valueRangeText = new StringBuilder();
-			valueRangeText.Append(ResourceStrings.ValueConstraintDefinitionContainerOpenDelimiter);
+			valueRangeText.Append((showModality && Modality == ConstraintModality.Deontic) ? ResourceStrings.ValueConstraintDefinitionContainerOpenDelimiterDeontic : ResourceStrings.ValueConstraintDefinitionContainerOpenDelimiter);
 			int currentColumn = 0;
 			string rangeSeparator = null;
 			DataType dataType = this.DataType;
@@ -1526,7 +1527,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 		private string GetTextValue()
 		{
-			return GetDisplayText(0, 0);
+			return GetDisplayText(0, 0, false);
 		}
 		private void SetTextValue(string newValue)
 		{

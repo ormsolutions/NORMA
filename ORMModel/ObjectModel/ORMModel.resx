@@ -1883,6 +1883,10 @@
 		<value>{</value>
 		<comment>Opening delimiter to contain one or more value ranges.</comment>
 	</data>
+	<data name="ObjectModel.ValueConstraint.DefinitionContainer.OpenDelimiter.Deontic" xml:space="preserve">
+		<value>&#x00b0;{</value>
+		<comment>Opening delimiter to contain one or more value ranges with a deontic constraint.</comment>
+	</data>
 	<data name="ObjectModel.ValueConstraint.DefinitionContainer.CloseDelimiter" xml:space="preserve">
 		<value>}</value>
 		<comment>Closing delimiter to contain one or more value ranges.</comment>

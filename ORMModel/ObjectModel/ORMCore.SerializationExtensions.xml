@@ -899,6 +899,18 @@
 		<se:Link RelationshipName="ReferenceModeHasReferenceModeKind" RoleName="ReferenceMode" WriteStyle="NotWritten" />
 	</se:Element>
 	<se:Element Name="BaseValueConstraint" Class="ValueConstraint" SortChildElements="true" Override="true">
+		<se:Attribute ID="Modality">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:binaryOperator type="equality">
+					<plx:left>
+						<plx:callStatic name="Alethic" type="field" dataTypeName="ConstraintModality"/>
+					</plx:left>
+					<plx:right>
+						<plx:callThis name="Modality" type="property"/>
+					</plx:right>
+				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
 		<se:Container Name="Definitions">
 			<se:Embed RelationshipName="ValueConstraintHasDefinition" RoleName="Definition"/>
 		</se:Container>
@@ -916,9 +928,11 @@
 	<se:Element Class="RoleValueConstraint" Name="RoleValueConstraint" Override="true"/>
 	<se:Element Class="PathConditionRoleValueConstraint" Name="PathedRoleConditionValueConstraint" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
+		<se:Attribute ID="Modality" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="PathConditionRootValueConstraint" Name="PathRootConditionValueConstraint" Override="true">
 		<se:Attribute ID="Name" WriteStyle="NotWritten"/>
+		<se:Attribute ID="Modality" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="ValueRange" Override="true">
 		<se:Attribute ID="InvariantMaxValue">

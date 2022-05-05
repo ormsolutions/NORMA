@@ -5123,6 +5123,9 @@ types that represent the same instance where the first variable is an impersonal
                   <a href="#IdentityReferenceQuantifier">IdentityReferenceQuantifier</a>
                 </li>
                 <li>
+                  <a href="#InQuantifier">InQuantifier</a>
+                </li>
+                <li>
                   <a href="#LessThanOrEqualValueComparator">LessThanOrEqualValueComparator</a>
                 </li>
                 <li>
@@ -5130,6 +5133,36 @@ types that represent the same instance where the first variable is an impersonal
                 </li>
                 <li>
                   <a href="#LogicalAndOperator">LogicalAndOperator</a>
+                </li>
+                <li>
+                  <a href="#MinClosedMaxClosed">MinClosedMaxClosed</a>
+                </li>
+                <li>
+                  <a href="#MinClosedMaxOpen">MinClosedMaxOpen</a>
+                </li>
+                <li>
+                  <a href="#MinClosedMaxUnbounded">MinClosedMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#MinOpenMaxClosed">MinOpenMaxClosed</a>
+                </li>
+                <li>
+                  <a href="#MinOpenMaxOpen">MinOpenMaxOpen</a>
+                </li>
+                <li>
+                  <a href="#MinOpenMaxUnbounded">MinOpenMaxUnbounded</a>
+                </li>
+                <li>
+                  <a href="#MinUnboundedMaxClosed">MinUnboundedMaxClosed</a>
+                </li>
+                <li>
+                  <a href="#MinUnboundedMaxOpen">MinUnboundedMaxOpen</a>
+                </li>
+                <li>
+                  <a href="#MultiValueValueConstraint">MultiValueValueConstraint</a>
+                </li>
+                <li>
+                  <a href="#NonTextInstanceValue">NonTextInstanceValue</a>
                 </li>
                 <li>
                   <a href="#NotEqualValueComparator">NotEqualValueComparator</a>
@@ -5147,7 +5180,13 @@ types that represent the same instance where the first variable is an impersonal
                   <a href="#OneQuantifier">OneQuantifier</a>
                 </li>
                 <li>
+                  <a href="#PeriodSeparator">PeriodSeparator</a>
+                </li>
+                <li>
                   <a href="#PluralExistenceImplicationOperator">PluralExistenceImplicationOperator</a>
+                </li>
+                <li>
+                  <a href="#ReferenceScheme">ReferenceScheme</a>
                 </li>
                 <li>
                   <a href="#ReflexivePronoun">ReflexivePronoun</a>
@@ -5159,6 +5198,9 @@ types that represent the same instance where the first variable is an impersonal
                   <a href="#SelfReference">SelfReference</a>
                 </li>
                 <li>
+                  <a href="#SingleValueValueConstraint">SingleValueValueConstraint</a>
+                </li>
+                <li>
                   <a href="#SingularExistenceImplicationOperator">SingularExistenceImplicationOperator</a>
                 </li>
                 <li>
@@ -5166,6 +5208,9 @@ types that represent the same instance where the first variable is an impersonal
                 </li>
                 <li>
                   <a href="#SubtypeMetaReading">SubtypeMetaReading</a>
+                </li>
+                <li>
+                  <a href="#TextInstanceValue">TextInstanceValue</a>
                 </li>
                 <li>
                   <a href="#UnaryRoleCardinality">UnaryRoleCardinality</a>
@@ -5198,9 +5243,11 @@ types that represent the same instance where the first variable is an impersonal
                 <li>ImpliedMandatoryVerbalizer</li>
                 <li>ImpliedUniqueVerbalizer</li>
                 <li>IrreflexiveRingVerbalizer</li>
+                <li>NearestValueConstraintVerbalizer</li>
                 <li>ObjectTypeCardinalityConstraint</li>
                 <li>PurelyReflexiveRingVerbalizer</li>
                 <li>ReflexiveRingVerbalizer</li>
+                <li>RoleValueConstraint</li>
                 <li>SimpleMandatoryVerbalizer</li>
                 <li>StronglyIntransitiveRingVerbalizer</li>
                 <li>SubsetConstraint</li>
@@ -5209,6 +5256,7 @@ types that represent the same instance where the first variable is an impersonal
                 <li>UnaryRoleCardinalityConstraint</li>
                 <li>UniquenessConstraintVerbalizer</li>
                 <li>ValueComparisonConstraint</li>
+                <li>ValueTypeValueConstraint</li>
               </ul>
             </p>
           </div>
@@ -5663,6 +5711,14 @@ types that represent the same instance where the first variable is an impersonal
               <pre class="unformattedSnippetDecorator">{0} in {1}</pre>
             </div>
           </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>InQuantifier</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div class="snippetUsedBy">
             <p>The <strong>InQuantifier</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>RoleValueConstraint</li>
@@ -6061,6 +6117,14 @@ types that represent the same instance where the first variable is an impersonal
               <pre class="unformattedSnippetDecorator">at least {0} to at most {1}</pre>
             </div>
           </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>MinClosedMaxClosed</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div class="snippetUsedBy">
             <p>The <strong>MinClosedMaxClosed</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>NearestValueConstraintVerbalizer</li>
@@ -6085,6 +6149,14 @@ types that represent the same instance where the first variable is an impersonal
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">at least {0} to below {1}</pre>
             </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>MinClosedMaxOpen</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>MinClosedMaxOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
@@ -6111,6 +6183,14 @@ types that represent the same instance where the first variable is an impersonal
               <pre class="unformattedSnippetDecorator">at least {0}</pre>
             </div>
           </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>MinClosedMaxUnbounded</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div class="snippetUsedBy">
             <p>The <strong>MinClosedMaxUnbounded</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>NearestValueConstraintVerbalizer</li>
@@ -6135,6 +6215,14 @@ types that represent the same instance where the first variable is an impersonal
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">above {0} to at most {1}</pre>
             </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>MinOpenMaxClosed</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>MinOpenMaxClosed</strong> snippet is used by the following Constraints: <ul class="usedBy">
@@ -6161,6 +6249,14 @@ types that represent the same instance where the first variable is an impersonal
               <pre class="unformattedSnippetDecorator">above {0} to below {1}</pre>
             </div>
           </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>MinOpenMaxOpen</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div class="snippetUsedBy">
             <p>The <strong>MinOpenMaxOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>NearestValueConstraintVerbalizer</li>
@@ -6185,6 +6281,14 @@ types that represent the same instance where the first variable is an impersonal
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">above {0}</pre>
             </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>MinOpenMaxUnbounded</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>MinOpenMaxUnbounded</strong> snippet is used by the following Constraints: <ul class="usedBy">
@@ -6211,6 +6315,14 @@ types that represent the same instance where the first variable is an impersonal
               <pre class="unformattedSnippetDecorator">at most {1}</pre>
             </div>
           </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>MinUnboundedMaxClosed</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div class="snippetUsedBy">
             <p>The <strong>MinUnboundedMaxClosed</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>NearestValueConstraintVerbalizer</li>
@@ -6235,6 +6347,14 @@ types that represent the same instance where the first variable is an impersonal
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">below {1}</pre>
             </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>MinUnboundedMaxOpen</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>MinUnboundedMaxOpen</strong> snippet is used by the following Constraints: <ul class="usedBy">
@@ -6546,6 +6666,14 @@ types that represent the same instance where the first variable is an impersonal
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">the possible values of {0} are {1}</pre>
             </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>MultiValueValueConstraint</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>MultiValueValueConstraint</strong> snippet is used by the following Constraints: <ul class="usedBy">
@@ -7213,6 +7341,14 @@ Note that VariableExistence can be used with a negated quantifier if the negated
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">{0}</pre>
             </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>NonTextInstanceValue</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>NonTextInstanceValue</strong> snippet is used by the following Constraints: <ul class="usedBy">
@@ -7955,6 +8091,14 @@ derived instances of this subtype are also stored immediately after they are der
               </ul>
             </p>
           </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>PeriodSeparator</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div class="snippetUsedBy">
             <p>The <strong>PeriodSeparator</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>RoleValueConstraint</li>
@@ -8294,6 +8438,9 @@ different types that represent the same instance where the first variable is an 
           </div>
           <div classs="snippetContainedIn">
             <p>The <strong>ReferenceScheme</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
                 <li>
                   <a href="#PeriodSeparator">PeriodSeparator</a>
                 </li>
@@ -9058,6 +9205,14 @@ active trailing outdent snippets.
               <pre class="unformattedSnippetDecorator">the possible value of {0} is {1}</pre>
             </div>
           </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>SingleValueValueConstraint</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
+          </div>
           <div class="snippetUsedBy">
             <p>The <strong>SingleValueValueConstraint</strong> snippet is used by the following Constraints: <ul class="usedBy">
                 <li>NearestValueConstraintVerbalizer</li>
@@ -9205,6 +9360,14 @@ active trailing outdent snippets.
             <div class="unformattedSnippet">
               <pre class="unformattedSnippetDecorator">'{0}'</pre>
             </div>
+          </div>
+          <div classs="snippetContainedIn">
+            <p>The <strong>TextInstanceValue</strong> snippet is contained in the following snippets: <ul class="containedIn">
+                <li>
+                  <a href="#ImpliedModalNecessityOperator">ImpliedModalNecessityOperator</a>
+                </li>
+              </ul>
+            </p>
           </div>
           <div class="snippetUsedBy">
             <p>The <strong>TextInstanceValue</strong> snippet is used by the following Constraints: <ul class="usedBy">
