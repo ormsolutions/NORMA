@@ -20,6 +20,7 @@ using System.Text;
 using Microsoft.VisualStudio.Modeling;
 using ORMSolutions.ORMArchitect.Core.Load;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
+using ORMSolutions.ORMArchitect.Utility;
 
 /*
 This is an example of using the NORMAResolver class to enable use of the NORMA
@@ -65,7 +66,7 @@ just like other extensions. If you have this file then you likely have the full 
    Use the "Command Line Arguments" field to identify your inputs.
 */
 
-namespace ORMSolutions.ORMArchitect.Utility.NORMAResolver
+namespace NORMALoaderSample
 {
 	/// <summary>
 	/// Sample program using the NORMAResolver class and NORMA-build-integrated project settings.

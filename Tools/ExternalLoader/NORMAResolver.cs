@@ -22,7 +22,7 @@ using Microsoft.Win32.SafeHandles;
 using ORMSolutions.ORMArchitect.Core.Load;
 using System.Runtime.InteropServices;
 
-namespace ORMSolutions.ORMArchitect.Utility.NORMAResolver
+namespace ORMSolutions.ORMArchitect.Utility
 {
 	/// <summary>
 	/// Locate a NORMA installation and resolve necessary assembly locations to
@@ -181,7 +181,7 @@ namespace ORMSolutions.ORMArchitect.Utility.NORMAResolver
 								if (NORMAPackageKey != null)
 								{
 									string package = NORMAPackageKey.GetValue("CodeBase") as string;
-									if (!string.IsNullOrEmpty(package) && File.Exists(package))
+									if (!string.IsNullOrEmpty(package) && File.Exists(package) && AssemblyName.GetAssemblyName(package).FullName == NORMACoreAssemblyName)
 									{
 										using (var NORMAConfig = configRoot.OpenSubKey(@"ORM Solutions\Natural ORM Architect"))
 										{
