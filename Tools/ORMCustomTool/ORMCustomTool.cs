@@ -480,11 +480,15 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 			Marshal.Copy(preamble, 0, pBuffer, preamble.Length);
 			if (IntPtr.Size == 8)
 			{
-				pBuffer = (IntPtr)((ulong)pBuffer + (ulong)preamble.Length);
+				pBuffer = (IntPtr)(long)((ulong)pBuffer + (ulong)preamble.Length);
 			}
 			else
 			{
-				pBuffer = (IntPtr)((uint)pBuffer + preamble.Length);
+				// This overflows without the (int) case if the uint is in the range that has the
+				// sign bit set. The same change was applied to 64 bit case above as well. Note that
+				// the IntPtr in question was returned directly from a system API and is definitely in
+				// the range of valid system pointers.
+				pBuffer = (IntPtr)(int)((uint)pBuffer + preamble.Length);
 			}
 			Marshal.Copy(bytes, 0, pBuffer, bytes.Length);
 			return VSConstants.S_OK;
