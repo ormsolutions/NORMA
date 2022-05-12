@@ -54,21 +54,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 				{
 					ORMDiagram diagram;
 					FactTypeShape shape;
-					bool globalDefault = false;
+					bool useDefault = false;
+					object resolvedDefault = null;
 					if (null != (diagram = instance as ORMDiagram))
 					{
 						// We've already checked the value as default
-						globalDefault = true;
+						useDefault = true;
 					}
 					else if (null != (shape = instance as FactTypeShape) && null != (diagram = shape.Diagram as ORMDiagram))
 					{
+						useDefault = true;
 						CustomBinaryFactTypeReadingDisplay customDisplay = diagram.DisplayReverseReadings;
-						value = customDisplay;
-						globalDefault = customDisplay == CustomBinaryFactTypeReadingDisplay.Default;
+						if (customDisplay != CustomBinaryFactTypeReadingDisplay.Default)
+						{
+							resolvedDefault = customDisplay;
+						}
 					}
-					if (globalDefault)
+					if (useDefault)
 					{
-						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomBinaryFactTypeReadingDisplay)).ConvertToString(diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReverseReadings == BinaryFactTypeReadingDisplay.ShowReverseReading ? CustomBinaryFactTypeReadingDisplay.ShowReverseReading : CustomBinaryFactTypeReadingDisplay.OnlyOneReading));
+						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomBinaryFactTypeReadingDisplay)).ConvertToString(resolvedDefault != null ? resolvedDefault : diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReverseReadings == BinaryFactTypeReadingDisplay.ShowReverseReading ? CustomBinaryFactTypeReadingDisplay.ShowReverseReading : CustomBinaryFactTypeReadingDisplay.OnlyOneReading));
 					}
 				}
 			}
@@ -120,21 +124,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 				{
 					ORMDiagram diagram;
 					FactTypeShape shape;
-					bool globalDefault = false;
+					bool useDefault = false;
+					object resolvedDefault = null;
 					if (null != (diagram = instance as ORMDiagram))
 					{
 						// We've already checked the value as default
-						globalDefault = true;
+						useDefault = true;
 					}
 					else if (null != (shape = instance as FactTypeShape) && null != (diagram = shape.Diagram as ORMDiagram))
 					{
+						useDefault = true;
 						CustomRoleNameDisplay customDisplay = diagram.DisplayRoleNames;
-						value = customDisplay;
-						globalDefault = customDisplay == CustomRoleNameDisplay.Default;
+						if (customDisplay != CustomRoleNameDisplay.Default)
+						{
+							resolvedDefault = customDisplay;
+						}
 					}
-					if (globalDefault)
+					if (useDefault)
 					{
-						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomRoleNameDisplay)).ConvertToString(diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayRoleNames == RoleNameDisplay.On ? CustomRoleNameDisplay.On : CustomRoleNameDisplay.Off));
+						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomRoleNameDisplay)).ConvertToString(resolvedDefault != null ? resolvedDefault : diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayRoleNames == RoleNameDisplay.On ? CustomRoleNameDisplay.On : CustomRoleNameDisplay.Off));
 					}
 				}
 			}
@@ -159,7 +167,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		}
 	}
 	#endregion // CustomRoleNameDisplayTypeConverter class
-	#region CustomRoleNameDisplayTypeConverter class
+	#region CustomReadingDirectionIndicatorDisplayTypeConverter class
 	/// <summary>
 	/// Type converter to reflect the current default value in the display
 	/// of the <see cref="P:ORMDiagram.DisplayReadingDirection"/> or <see cref="P:FactTypeShape.DisplayReadingDirection"/> property.
@@ -186,21 +194,25 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 				{
 					ORMDiagram diagram;
 					FactTypeShape shape;
-					bool globalDefault = false;
+					bool useDefault = false;
+					object resolvedDefault = null;
 					if (null != (diagram = instance as ORMDiagram))
 					{
 						// We've already checked the value as default
-						globalDefault = true;
+						useDefault = true;
 					}
 					else if (null != (shape = instance as FactTypeShape) && null != (diagram = shape.Diagram as ORMDiagram))
 					{
+						useDefault = true;
 						CustomReadingDirectionIndicatorDisplay customDisplay = diagram.DisplayReadingDirection;
-						value = customDisplay;
-						globalDefault = customDisplay == CustomReadingDirectionIndicatorDisplay.Default;
+						if (customDisplay != CustomReadingDirectionIndicatorDisplay.Default)
+						{
+							resolvedDefault = customDisplay;
+						}
 					}
-					if (globalDefault)
+					if (useDefault)
 					{
-						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomReadingDirectionIndicatorDisplay)).ConvertToString((CustomRoleNameDisplay)diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReadingDirection));
+						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomReadingDirectionIndicatorDisplay)).ConvertToString(resolvedDefault != null ? resolvedDefault : (CustomRoleNameDisplay)diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReadingDirection));
 					}
 				}
 			}

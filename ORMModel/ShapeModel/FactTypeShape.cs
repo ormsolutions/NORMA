@@ -7256,7 +7256,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			ORMDiagram diagram;
 			if (domainPropertyId == ORMDiagram.DisplayReverseReadingsDomainPropertyId)
 			{
-				diagram = (ORMDiagram)e.ModelElement; ;
+				diagram = (ORMDiagram)e.ModelElement;
 				CustomBinaryFactTypeReadingDisplay oldValue = (CustomBinaryFactTypeReadingDisplay)e.OldValue;
 				CustomBinaryFactTypeReadingDisplay newValue = diagram.DisplayReverseReadings;
 				if (oldValue != newValue)
@@ -7277,7 +7277,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			}
 			else if (domainPropertyId == ORMDiagram.DisplayReadingDirectionDomainPropertyId)
 			{
-				diagram = (ORMDiagram)e.ModelElement; ;
+				diagram = (ORMDiagram)e.ModelElement;
 				CustomReadingDirectionIndicatorDisplay oldValue = (CustomReadingDirectionIndicatorDisplay)e.OldValue;
 				CustomReadingDirectionIndicatorDisplay newValue = diagram.DisplayReadingDirection;
 				if (oldValue != newValue)
@@ -7292,7 +7292,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						(ReadingDirectionIndicatorDisplay)newValue;
 					if (resolvedOldValue != resolvedNewValue)
 					{
-						UpdateDefaultReverseReadings(diagram);
+						UpdateDefaultReadingDirection(diagram);
 					}
 				}
 			}
