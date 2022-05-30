@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TextTemplating;
 
 namespace Neumont.Tools.Modeling
 {
+	[CLSCompliant(false)]
 	public class DisableRuleDirectiveProcessor : RequiresProvidesDirectiveProcessor
 	{
 		public const string DisableRuleDirectiveProcessorName = "DisableRuleDirectiveProcessor";
