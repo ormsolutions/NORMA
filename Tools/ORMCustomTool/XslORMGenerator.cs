@@ -489,7 +489,10 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					{
 						outputWriter.Close();
 					}
-					inputStream.Seek(0, SeekOrigin.Begin);
+					if (inputStream != null)
+					{
+						inputStream.Seek(0, SeekOrigin.Begin);
+					}
 				}
 			}
 		}
