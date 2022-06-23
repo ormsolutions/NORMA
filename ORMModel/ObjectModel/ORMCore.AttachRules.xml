@@ -201,6 +201,11 @@
 				<arg:RuleOn targetType="ConstraintRoleSequenceHasRole" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
 		</arg:RuleContainer>
+		<arg:RuleContainer class="Definition">
+			<arg:ChangeRule methodName="DefinitionChangedRule">
+				<arg:RuleOn targetType="Definition"/>
+			</arg:ChangeRule>
+		</arg:RuleContainer>
 		<arg:RuleContainer class="DerivationNote">
 			<arg:ChangeRule methodName="DerivationNoteChangedRule">
 				<arg:RuleOn targetType="DerivationNote"/>
@@ -656,7 +661,7 @@
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="Note">
-			<arg:ChangeRule methodName="NoteChangeRule">
+			<arg:ChangeRule methodName="NoteChangedRule">
 				<arg:RuleOn targetType="Note"/>
 			</arg:ChangeRule>
 		</arg:RuleContainer>

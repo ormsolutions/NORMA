@@ -3,7 +3,7 @@
 * Natural Object-Role Modeling Architect for Visual Studio                 *
 *                                                                          *
 * Copyright © Neumont University. All rights reserved.                     *
-* Copyright © ORM Solutions, LLC. All rights reserved.                        *
+* Copyright © ORM Solutions, LLC. All rights reserved.                     *
 *                                                                          *
 * The use and distribution terms for this software are covered by the      *
 * Common Public License 1.0 (http://opensource.org/licenses/cpl) which     *
@@ -63,30 +63,30 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	#endregion // IRedirectedNoteOwner interface
 	partial class Note
 	{
-		#region NoteChangeRule
+		#region NoteChangedRule
 		/// <summary>
 		/// ChangeRule: typeof(Note)
-		/// Handle custom storage properties on Note
+		/// Any text changes after creation than result in empty text should delete the note
 		/// </summary>
-		private static void NoteChangeRule(ElementPropertyChangedEventArgs e)
+		private static void NoteChangedRule(ElementPropertyChangedEventArgs e)
 		{
-			Guid attributeGuid = e.DomainProperty.Id;
-			// If what was changed was the note's Text property,
-			if (attributeGuid == Note.TextDomainPropertyId)
+			if (e.DomainProperty.Id == Note.TextDomainPropertyId && string.IsNullOrEmpty(e.NewValue as string))
 			{
-				// cache the value.
-				string newText = (string)e.NewValue;
-				// Get the note
-				Note note = e.ModelElement as Note;
-				// and if the text is blank, 
-				if (string.IsNullOrEmpty(newText))
+				FrameworkDomainModel.DelayValidateElement(e.ModelElement, DelayValidateRequireNoteText);
+			}
+		}
+		private static void DelayValidateRequireNoteText(ModelElement element)
+		{
+			if (!element.IsDeleted)
+			{
+				Note note = (Note)element;
+				if (string.IsNullOrEmpty(note.Text))
 				{
-					// get rid of the note.
 					note.Delete();
 				}
 			}
 		}
-		#endregion // NoteChangeRule
+		#endregion // NoteChangedRule
 	}
 	partial class FactType : INoteOwner<Note>, INoteOwner<Definition>
 	{

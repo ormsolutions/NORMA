@@ -93,6 +93,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ConstraintRoleSequenceJoinPath).GetNestedType("RoleProjectionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintRoleSequenceJoinPath).GetNestedType("RoleProjectionRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ConstraintUtility).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Definition).GetNestedType("DefinitionChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(DerivationNote).GetNestedType("DerivationNoteChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(DerivedRoleProjection).GetNestedType("DerivedRoleProjectionDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(DerivedRoleProjection).GetNestedType("ProjectedFromCalculatedValueAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -226,7 +227,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ORMSolutions.ORMArchitect.Framework.NamedElementDictionary).GetNestedType("ElementLinkDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ORMSolutions.ORMArchitect.Framework.NamedElementDictionary).GetNestedType("NamedElementChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(NameGenerator).GetNestedType("SynchronizedRefinementsPropertyChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(Note).GetNestedType("NoteChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(Note).GetNestedType("NoteChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("FactTypeDerivationRuleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("FactTypeDerivationRuleChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(Objectification).GetNestedType("FactTypeDerivationRuleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -556,7 +557,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 488; ++i)
+			for (int i = 0; i < 489; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -2102,6 +2103,37 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // Rule classes for ConstraintUtility
+	#region Rule classes for Definition
+	partial class Definition
+	{
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Definition), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class DefinitionChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public DefinitionChangedRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.Definition
+			/// /// <summary>
+			/// /// ChangeRule: typeof(Definition)
+			/// /// </summary>
+			/// private static void DefinitionChangedRule(ElementPropertyChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Definition.DefinitionChangedRule");
+				Definition.DefinitionChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Definition.DefinitionChangedRule");
+			}
+		}
+	}
+	#endregion // Rule classes for Definition
 	#region Rule classes for DerivationNote
 	partial class DerivationNote
 	{
@@ -5592,10 +5624,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	partial class Note
 	{
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(Note), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class NoteChangeRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
+		private sealed class NoteChangedRuleClass : Microsoft.VisualStudio.Modeling.ChangeRule
 		{
 			[System.Diagnostics.DebuggerStepThrough()]
-			public NoteChangeRuleClass()
+			public NoteChangedRuleClass()
 			{
 				base.IsEnabled = false;
 			}
@@ -5605,16 +5637,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// /// <summary>
 			/// /// ChangeRule: typeof(Note)
 			/// /// </summary>
-			/// private static void NoteChangeRule(ElementPropertyChangedEventArgs e)
+			/// private static void NoteChangedRule(ElementPropertyChangedEventArgs e)
 			/// {
 			/// }
 			/// </summary>
 			[System.Diagnostics.DebuggerStepThrough()]
 			public override void ElementPropertyChanged(Microsoft.VisualStudio.Modeling.ElementPropertyChangedEventArgs e)
 			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Note.NoteChangeRule");
-				Note.NoteChangeRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Note.NoteChangeRule");
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Note.NoteChangedRule");
+				Note.NoteChangedRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.Note.NoteChangedRule");
 			}
 		}
 	}
