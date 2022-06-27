@@ -890,6 +890,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			return this.MapChildElement(elementNamespace, elementName, containerNamespace, containerName, outerContainerNamespace, outerContainerName);
 		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		protected new bool ShouldSerialize()
+		{
+			return !string.IsNullOrEmpty(this.Text);
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return this.ShouldSerialize();
+		}
 	}
 	#endregion // Definition serialization
 	#region Note serialization

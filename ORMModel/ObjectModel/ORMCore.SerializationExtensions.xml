@@ -217,6 +217,17 @@
 		<se:Link RelationshipName="DisplayStateRelatesToORMModel" RoleName="DisplayState" WriteStyle="NotWritten"/>
 	</se:Element>
 	<se:Element Class="Definition" Override="true">
+		<se:ConditionalSerialization>
+			<plx:return>
+				<plx:unaryOperator type="booleanNot">
+					<plx:callStatic name="IsNullOrEmpty" dataTypeName=".string">
+						<plx:passParam>
+							<plx:callThis name="Text" type="property"/>
+						</plx:passParam>
+					</plx:callStatic>
+				</plx:unaryOperator>
+			</plx:return>
+		</se:ConditionalSerialization>
 		<se:Attribute ID="Text" WriteStyle="Element"/>
 	</se:Element>
 	<se:Element Class="Note" Override="true">
