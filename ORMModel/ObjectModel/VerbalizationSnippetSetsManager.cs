@@ -1302,7 +1302,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								null,
 								BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static,
 								null,
-								new object[] { FindVerbalizationDirectory(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, true },
+								new object[] {
+#if VISUALSTUDIO_15_0
+									FindVerbalizationDirectories(customSnippetsDirectory, data.AlternateSnippetsDirectory),
+#else
+									FindVerbalizationDirectory(customSnippetsDirectory, data.AlternateSnippetsDirectory),
+#endif
+									allSets,
+									defaultSnippetsIdentifier,
+									true },
 								null);
 						}
 					}
@@ -1409,7 +1417,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 									null,
 									BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Static,
 									null,
-									new object[] { FindVerbalizationDirectory(customSnippetsDirectory, data.AlternateSnippetsDirectory), allSets, defaultSnippetsIdentifier, false },
+									new object[] {
+#if VISUALSTUDIO_15_0
+										FindVerbalizationDirectories(customSnippetsDirectory, data.AlternateSnippetsDirectory),
+#else
+										FindVerbalizationDirectory(customSnippetsDirectory, data.AlternateSnippetsDirectory),
+#endif
+										allSets,
+										defaultSnippetsIdentifier,
+										false },
 									null);
 								IVerbalizationSets useVerbalization;
 								if (!allSets.TryGetValue(
@@ -1431,25 +1447,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return retVal;
 		}
 #if VISUALSTUDIO_15_0
-		private static string FindVerbalizationDirectory(string[] baseDirectories, string subDirectory)
+		private static IEnumerable<string> FindVerbalizationDirectories(string[] baseDirectories, string subDirectory)
 		{
 			int directoryCount = baseDirectories.Length;
-			if (directoryCount == 0)
+			if (directoryCount != 0)
 			{
-				return "";
-			}
-			else if (directoryCount > 1)
-			{
-				for (int i = 0; directoryCount - i > 1; ++i)
+				for (int i = 0; i < directoryCount; ++i)
 				{
-					string testPath = Path.Combine(baseDirectories[0], subDirectory);
+					string testPath = Path.Combine(baseDirectories[i], subDirectory);
 					if (Directory.Exists(testPath))
 					{
-						return testPath;
+						yield return testPath;
 					}
 				}
 			}
-			return Path.Combine(baseDirectories[directoryCount - 1], subDirectory); // Let LoadVerbalizationFiles test last existence
 		}
 #else
 		private static string FindVerbalizationDirectory(string baseDirectory, string subDirectory)
@@ -1467,31 +1478,48 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// by the snippets provider.</param>
 		/// <param name="defaultSnippetsIdentifier">The default snippets identifier for items of this type</param>
 		/// <param name="identifiersOnly">The populated dictionary will have keys only, skip verbalizationset population.</param>
-		private static void LoadVerbalizationFiles<TEnum>(string directoryPath, IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> verbalizationSets, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier, bool identifiersOnly) where TEnum : struct
+		private static void LoadVerbalizationFiles<TEnum>(
+#if VISUALSTUDIO_15_0
+			IEnumerable<string> directoryPath,
+#else
+			string directoryPath,
+#endif
+			IDictionary<VerbalizationSnippetsIdentifier, IVerbalizationSets> verbalizationSets, VerbalizationSnippetsIdentifier defaultSnippetsIdentifier, bool identifiersOnly) where TEnum : struct
 		{
-			if (Directory.Exists(directoryPath))
+			List<RawSnippets<TEnum>> rawSnippetsList = null;
+#if VISUALSTUDIO_15_0
+			foreach (string onePath in directoryPath)
 			{
-				string[] files = Directory.GetFiles(directoryPath, "*.xml");
-				int fileCount = files.Length;
-				List<RawSnippets<TEnum>> rawSnippetsList = null;
-				for (int i = 0; i < fileCount; ++i)
+				if (Directory.Exists(onePath))
 				{
-					string currentFile = files[i];
-					if (!currentFile.EndsWith(@"\_default.xml", StringComparison.OrdinalIgnoreCase))
+					string[] files = Directory.GetFiles(onePath, "*.xml");
+#else
+				if (Directory.Exists(directoryPath))
+				{
+					string[] files = Directory.GetFiles(directoryPath, "*.xml");
+#endif
+					int fileCount = files.Length;
+					for (int i = 0; i < fileCount; ++i)
 					{
-						using (FileStream stream = new FileStream(currentFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+						string currentFile = files[i];
+						if (!currentFile.EndsWith(@"\_default.xml", StringComparison.OrdinalIgnoreCase))
 						{
-							LoadSnippets<TEnum>(stream, identifiersOnly, ref rawSnippetsList);
+							using (FileStream stream = new FileStream(currentFile, FileMode.Open, FileAccess.Read, FileShare.Read))
+							{
+								LoadSnippets<TEnum>(stream, identifiersOnly, ref rawSnippetsList);
+							}
 						}
 					}
 				}
-				if (rawSnippetsList != null)
+#if VISUALSTUDIO_15_0
+			}
+#endif
+			if (rawSnippetsList != null)
+			{
+				int snippetsCount = rawSnippetsList.Count;
+				for (int i = 0; i < snippetsCount; ++i)
 				{
-					int snippetsCount = rawSnippetsList.Count;
-					for (int i = 0; i < snippetsCount; ++i)
-					{
-						rawSnippetsList[i].Process(verbalizationSets, rawSnippetsList, defaultSnippetsIdentifier, identifiersOnly);
-					}
+					rawSnippetsList[i].Process(verbalizationSets, rawSnippetsList, defaultSnippetsIdentifier, identifiersOnly);
 				}
 			}
 		}
