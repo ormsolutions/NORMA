@@ -171,10 +171,11 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				}
 				extensionLoader.VerifyRequiredExtensions(ref documentExtensions);
 
+				IList<string> newNamespaces = null;
 				if (unrecognizedNamespaces != null)
 				{
 					inputStream.Position = 0;
-					namespaceStrippedStream = ExtensionLoader.CleanupStream(inputStream, extensionLoader.StandardDomainModels, documentExtensions != null ? documentExtensions.Values : null, unrecognizedNamespaces);
+					namespaceStrippedStream = ExtensionLoader.CleanExtensions(null, inputStream, extensionLoader.StandardDomainModels, documentExtensions != null ? documentExtensions : null, unrecognizedNamespaces, out newNamespaces);
 					if (namespaceStrippedStream != null)
 					{
 						inputStream = namespaceStrippedStream;
@@ -212,7 +213,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 						}
 						if (inputStream.Length > 1)
 						{
-							(new ORMSerializationEngine(store)).Load(inputStream, mySkipNonGenerativeExtensions ? SerializationEngineLoadOptions.ResolveSkippedExtensions : SerializationEngineLoadOptions.None);
+							(new ORMSerializationEngine(store)).Load(inputStream, newNamespaces, mySkipNonGenerativeExtensions ? SerializationEngineLoadOptions.ResolveSkippedExtensions : SerializationEngineLoadOptions.None);
 						}
 						t.Commit();
 					}

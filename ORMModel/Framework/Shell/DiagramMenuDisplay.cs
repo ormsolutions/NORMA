@@ -64,7 +64,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 	public interface IDiagramInitialization
 	{
 		/// <summary>
-		/// Create and initialize or more diagrams. Used if <see cref="DiagramMenuDisplayOptions.Required"/>
+		/// Create and initialize one or more diagrams. Used if <see cref="DiagramMenuDisplayOptions.Required"/>
 		/// diagram option is displayed.
 		/// </summary>
 		/// <param name="store"></param>

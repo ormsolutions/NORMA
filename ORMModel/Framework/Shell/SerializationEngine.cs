@@ -211,7 +211,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 	#endregion // CustomSerializedElementMatchStyle enum
 	#region SerializationEngineLoadOptions enum
 	/// <summary>
-	/// Options modifying the behavior of <see cref="SerializationEngine.Load(System.IO.Stream,SerializationEngineLoadOptions)"/>.
+	/// Options modifying the behavior of <see cref="SerializationEngine.Load(System.IO.Stream,System.Collections.Generic.IList{System.String},SerializationEngineLoadOptions)"/>.
 	/// </summary>
 	[Flags]
 	public enum SerializationEngineLoadOptions
@@ -1617,7 +1617,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 	/// non-generative extensions such as models used for display or editing of
 	/// models and diagrams but not for code generation. This will be checked if
 	/// the <see cref="SerializationEngineLoadOptions.ResolveSkippedExtensions"/>
-	/// flag is set on the call to <see cref="SerializationEngine.Load(System.IO.Stream,SerializationEngineLoadOptions)"/>
+	/// flag is set on the call to <see cref="SerializationEngine.Load(System.IO.Stream,System.Collections.Generic.IList{System.String},SerializationEngineLoadOptions)"/>
 	/// </summary>
 	public interface ISkipExtensions
 	{
@@ -3030,6 +3030,8 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			#region Member Variables
 			private Store myStore;
 			private List<IDeserializationFixupListener> myListeners;
+			private IList<string> myNewExtensionNamespaces;
+			private bool myAllExtensionsNew;
 			private int[] myPhases;
 			#endregion // Member Variables
 			#region Constructors
@@ -3046,8 +3048,13 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			/// so that all subsequent edits run against a model in a known state.
 			/// </summary>
 			/// <param name="store">The store being deserialized to.</param>
-			/// <param name="loadingNewFile">A new file is being loaded.</param>
-			public DeserializationFixupManager(Store store, bool loadingNewFile)
+			/// <param name="newExtensionNamespaces">An optional list of identifying namespace uris
+			/// were newly added to the stream.</param>
+			/// <param name="loadingNewFile">A new file is being loaded. In this call all
+			/// extension namespaces are automatically treated as new and notified through
+			/// <see cref="IDomainModelLoading.DomainModelLoading"/> with the newFile parameter
+			/// set to true.</param>
+			public DeserializationFixupManager(Store store, IList<string> newExtensionNamespaces, bool loadingNewFile)
 			{
 				myStore = store;
 				List<IDeserializationFixupListener> listeners = new List<IDeserializationFixupListener>();
@@ -3080,6 +3087,11 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 				allPhases.Values.CopyTo(phases, 0);
 				Array.Sort<int>(phases);
 				myPhases = phases;
+				if (!loadingNewFile)
+				{
+					myNewExtensionNamespaces = newExtensionNamespaces;
+				}
+				myAllExtensionsNew = loadingNewFile;
 			}
 			#endregion // Constructors
 			#region INotifyElementAdded Implementation
@@ -3140,6 +3152,7 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 			/// </summary>
 			public virtual void DeserializationComplete()
 			{
+				NotifyNewDomainModels();
 				int[] phases = myPhases;
 				int phaseCount = phases.Length;
 				List<IDeserializationFixupListener> listeners = myListeners;
@@ -3186,6 +3199,58 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 					}
 				}
 #endif // DEBUG
+			}
+			private void NotifyNewDomainModels()
+			{
+				Store store = myStore;
+				IDomainModelLoading[] loadingModels = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDomainModelLoading>();
+				if (loadingModels != null)
+				{
+					string[] newNamespaces = null;
+					bool notifyAll = myAllExtensionsNew;
+					if (!notifyAll)
+					{
+						IList<string> namespaceList = myNewExtensionNamespaces;
+						if (namespaceList != null)
+						{
+							int extensionCount = namespaceList.Count;
+							if (extensionCount != 0)
+							{
+								// Normalize our data
+								newNamespaces = new string[extensionCount];
+								namespaceList.CopyTo(newNamespaces, 0);
+								if (extensionCount > 1)
+								{
+									Array.Sort<string>(newNamespaces);
+								}
+							}
+						}
+					}
+					for (int i = 0; i < loadingModels.Length; ++i)
+					{
+						IDomainModelLoading loadingModel = loadingModels[i];
+						ICustomSerializedDomainModel serializedModel;
+						if (notifyAll ||
+							null == (serializedModel = loadingModel as ICustomSerializedDomainModel))
+						{
+							loadingModel.DomainModelLoading(store, notifyAll, this);
+						}
+						else if (newNamespaces != null)
+						{
+							string[,] namespaceInfo = serializedModel.GetCustomElementNamespaces();
+							int namespaceCount = namespaceInfo.GetLength(0);
+							int j = 0;
+							for (; j < namespaceCount; ++j)
+							{
+								if (0 <= Array.BinarySearch<string>(newNamespaces, namespaceInfo[j, 1]))
+								{
+									loadingModel.DomainModelLoading(store, false, this);
+									break;
+								}
+							}
+						}
+					}
+				}
 			}
 			#endregion // DeserializationFixupManager specific
 		}
@@ -3555,16 +3620,17 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// <param name="stream">An initialized stream</param>
 		public void Load(Stream stream)
 		{
-			Load(stream, SerializationEngineLoadOptions.None);
+			Load(stream, null, SerializationEngineLoadOptions.None);
 		}
 		/// <summary>
 		/// Load the stream contents into the current store
 		/// </summary>
 		/// <param name="stream">An initialized stream</param>
+		/// <param name="newExtensionNamespaces">An optional list of namespaces that are newly added to the stream.</param>
 		/// <param name="options">Options to modify load behavior. Defaults to <see cref="SerializationEngineLoadOptions.None"/></param>
-		public void Load(Stream stream, SerializationEngineLoadOptions options)
+		public void Load(Stream stream, IList<string> newExtensionNamespaces, SerializationEngineLoadOptions options)
 		{
-			DeserializationFixupManager fixupManager = new DeserializationFixupManager(myStore, 0 != (options & SerializationEngineLoadOptions.LoadingNewFile));
+			DeserializationFixupManager fixupManager = new DeserializationFixupManager(myStore, newExtensionNamespaces, 0 != (options & SerializationEngineLoadOptions.LoadingNewFile));
 			myNotifyAdded = fixupManager as INotifyElementAdded;
 			XmlReaderSettings settings = new XmlReaderSettings();
 			XmlSchemaSet schemas = settings.Schemas;

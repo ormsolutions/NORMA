@@ -80,6 +80,35 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		IFreeFormCommandProvider<ContextType> GetFreeFormCommandProvider(ContextType context, object targetElement);
 	}
 	#endregion // IFreeFormCommandProviderService interface
+	#region IDomainModelLoading interface
+	/// <summary>
+	/// Receive a notification when a domain model is added to a serialized model.
+	/// When this interface is implemented on a domain model that supports <see cref="ICustomSerializedDomainModel"/>
+	/// then it will be called when that domain model is initially added to the serialize state or when a new file
+	/// is being loaded from a template. If the domain model is not serializable then this will be called for every load.
+	/// The callback is intended to add implicit elements in this and other domain models.
+	/// </summary>
+	/// <remarks>When there is other evidence (in the form of serialized elements) that the domain model is
+	/// newly loaded then this can often be done with an <see cref="IDeserializationFixupListener"/> on a
+	/// standard element (like ORMModel). If the extension model has diagrams then <see cref="IDiagramInitialization"/>
+	/// can be used. However, if it is valid for the model to be saved with no elements in the extension namespace
+	/// then there is no way to create initial elements without this interface because if the user deletes the
+	/// initial elements then they would simply reappear when the file is reloaded when other initialization
+	/// methods are used.</remarks>
+	public interface IDomainModelLoading
+	{
+		/// <summary>
+		/// Initialize a newly added domain model with initial implicit elements.
+		/// </summary>
+		/// <param name="store">The freshly loaded store.</param>
+		/// <param name="newFile">This is being called for new file loaded directly from a template. In this
+		/// case all models that implemented this interface are notified as new.</param>
+		/// <param name="notifyAdded">This is called before any <see cref="IDeserializationFixupListener"/> calls are made.
+		/// This callback allows elements to be registered with the fixup listener engine as if they had originally
+		/// been included in the file.</param>
+		void DomainModelLoading(Store store, bool newFile, INotifyElementAdded notifyAdded);
+	}
+	#endregion // IDomainModelLoading interface
 	#region IDomainModelUnloading interface
 	/// <summary>
 	/// Implement this interface on any domain model that supports <see cref="ICustomSerializedDomainModel"/>

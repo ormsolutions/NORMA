@@ -56,7 +56,7 @@
 							<xsl:for-each select="$currentNamespaces">
 								<xsl:if test="esu:IsNamespaceActive(.)">
 									<xsl:copy-of select="."/>
-									<xsl:if test="esu:AddNamespace(.)"/>
+									<xsl:if test="esu:AddNamespace(.,false())"/>
 								</xsl:if>
 							</xsl:for-each>
 							<xsl:for-each select="$selectedNamespaces">
@@ -65,7 +65,7 @@
 										<xsl:with-param name="Prefix" select="esu:GetRandomPrefix()"/>
 										<xsl:with-param name="Namespace" select="."/>
 									</xsl:call-template>
-									<xsl:if test="esu:AddNamespace(.)"/>
+									<xsl:if test="esu:AddNamespace(.,true())"/>
 								</xsl:if>
 							</xsl:for-each>
 							<xsl:apply-templates select="@*|*|text()|comment()" mode="StripRemovedNamespaceElements"/>
@@ -83,7 +83,7 @@
 						<xsl:for-each select="$currentNamespaces">
 							<xsl:if test="esu:IsNamespaceActive(.)">
 								<xsl:copy-of select="."/>
-								<xsl:if test="esu:AddNamespace(.)"/>
+								<xsl:if test="esu:AddNamespace(.,false())"/>
 							</xsl:if>
 						</xsl:for-each>
 						<xsl:for-each select="$selectedNamespaces">
@@ -92,7 +92,7 @@
 									<xsl:with-param name="Prefix" select="esu:GetRandomPrefix()"/>
 									<xsl:with-param name="Namespace" select="."/>
 								</xsl:call-template>
-								<xsl:if test="esu:AddNamespace(.)"/>
+								<xsl:if test="esu:AddNamespace(.,true())"/>
 							</xsl:if>
 						</xsl:for-each>
 						<xsl:copy-of select="@*|*|text()|comment()"/>

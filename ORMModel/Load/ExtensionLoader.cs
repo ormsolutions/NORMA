@@ -1107,6 +1107,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			private int myLastIdRemovalPhase;
 			private int myCurrentIdRemovalPhase;
 			private Dictionary<string, string> myRemovedIds;
+			private List<string> myNewNamespaces = null;
 			private static readonly Random myRandom = new Random();
 			/// <summary>
 			/// Default Constructor for the <see cref="ExtensionStripperUtility"/>.
@@ -1132,7 +1133,8 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			/// This method adds the namespace to the selected list. for future reference.
 			/// </summary>
 			/// <param name="namespaceUri">the namespace you want to add.</param>
-			public void AddNamespace(string namespaceUri)
+			/// <param name="isNew">This namespace was not originally in the file.</param>
+			public void AddNamespace(string namespaceUri, bool isNew)
 			{
 				Dictionary<string, string> addedNamespaces = myAddedNamespaces;
 				if (addedNamespaces == null)
@@ -1143,6 +1145,10 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 				else
 				{
 					addedNamespaces[namespaceUri] = namespaceUri;
+				}
+				if (isNew)
+				{
+					(myNewNamespaces ?? (myNewNamespaces = new List<string>())).Add(namespaceUri);
 				}
 			}
 			/// <summary>
@@ -1171,6 +1177,13 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			public bool IsNamespaceActive(string namespaceUri)
 			{
 				return Array.BinarySearch<string>(myNamespaces, namespaceUri) >= 0;
+			}
+			public IList<string> NewNamespaces
+			{
+				get
+				{
+					return myNewNamespaces;
+				}
 			}
 			/// <summary>
 			/// This is a Randomizer to get around the fact that we do not have unique identifiers
@@ -1291,41 +1304,113 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <summary>
 		/// This method is responsible for cleaning the streamed ORM file.
 		/// </summary>
-		/// <param name="stream">The file stream that contains the ORM file.</param>
+		/// <param name="store">The store for the current file. If this is set then this will call <see cref="IDomainModelUnloading"/> as needed.</param>
+		/// <param name="stream">The file stream that contains the ORM file. If this is null then <paramref name="store"/> must be set.</param>
 		/// <param name="standardTypes">The standard models that are not loaded as extensions</param>
-		/// <param name="extensionTypes">A collection of extension types.</param>
+		/// <param name="extensionTypes">A dictionary of extension types keyed by the NamespaceUri.</param>
 		/// <param name="unrecognizedNamespaces">An editable list of unrecognized namespaces. If this is set,
 		/// the namespaces will be verified after secondary namespaces from the extension types are validated.
 		/// If no remaining unrecognized namespaces are left after validation, then the method will return null.
 		/// Recognized namespaces will be removed from the list.</param>
+		/// <param name="newNamespaces">Contains a list of extension namespaces that were added to the output stream</param>
 		/// <returns>The cleaned stream.</returns>
-		public static Stream CleanupStream(Stream stream, ICollection<Type> standardTypes, ICollection<ExtensionModelBinding> extensionTypes, IList<string> unrecognizedNamespaces)
+		public static Stream CleanExtensions(Store store, Stream stream, ICollection<Type> standardTypes, IDictionary<string, ExtensionModelBinding> extensionTypes, IList<string> unrecognizedNamespaces, out IList<string> newNamespaces)
 		{
-			MemoryStream outputStream = new MemoryStream((int)stream.Length);
-			XsltArgumentList argList = new XsltArgumentList();
-
-			// Get all of the custom serialization attributes for the standard and
-			// extension types. The serialization engine does not serialize elements
-			// for types without a serialization attribute, so there is no need to
-			// look at standard or extension types without this attribute.
-			List<string> namespaceList = new List<string>();
-			foreach (Type standardType in standardTypes)
+			bool disposeStream = false;
+			if (store != null)
 			{
-				object[] attributes = standardType.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
-				if (attributes != null)
+				// Allow each domain model that is being removed to run custom code immediately before the
+				// unload process.
+				Transaction customUnloadTransaction = null;
+				UndoManager resetUndoManager = null;
+				try
 				{
-					for (int i = 0; i < attributes.Length; ++i)
+					IDomainModelUnloading[] unloadingModels = ((IFrameworkServices)store).GetTypedDomainModelProviders<IDomainModelUnloading>();
+					if (unloadingModels != null)
 					{
-						namespaceList.Add(((CustomSerializedXmlSchemaAttribute)attributes[i]).XmlNamespace);
+						for (int i = 0; i < unloadingModels.Length; ++i)
+						{
+							IDomainModelUnloading unloadingModel = unloadingModels[i];
+							ICustomSerializedDomainModel serializedModel;
+							if (null != (serializedModel = unloadingModel as ICustomSerializedDomainModel))
+							{
+								string[,] namespaceInfo = serializedModel.GetCustomElementNamespaces();
+								int namespaceCount = namespaceInfo.GetLength(0);
+								int j = 0;
+								for (; j < namespaceCount; ++j)
+								{
+									if (extensionTypes.ContainsKey(namespaceInfo[j, 1]))
+									{
+										break;
+									}
+								}
+								if (j == namespaceCount)
+								{
+									// Extension domain model is not in the pending set, go ahead and run
+									// the custom code to unload it cleanly.
+									if (customUnloadTransaction == null)
+									{
+										resetUndoManager = store.UndoManager;
+										if (resetUndoManager.UndoState == UndoState.Enabled)
+										{
+											resetUndoManager.UndoState = UndoState.Disabled;
+										}
+										else
+										{
+											resetUndoManager = null;
+										}
+										customUnloadTransaction = store.TransactionManager.BeginTransaction("Domain Models Unloading"); // String not localized, won't be displayed on either success or failure
+									}
+									unloadingModel.DomainModelUnloading(store);
+								}
+							}
+						}
 					}
+				}
+				finally
+				{
+					if (customUnloadTransaction != null)
+					{
+						if (customUnloadTransaction.HasPendingChanges)
+						{
+							customUnloadTransaction.Commit();
+							stream = new MemoryStream();
+							(new ORMSerializationEngine(store)).Save(stream);
+							stream.Position = 0;
+							disposeStream = true;
+						}
+						customUnloadTransaction.Dispose();
+						if (resetUndoManager != null)
+						{
+							resetUndoManager.UndoState = UndoState.Enabled;
+						}
+					}
+				}
+
+				if (stream == null)
+				{
+					stream = new MemoryStream();
+					(new ORMSerializationEngine(store)).Save(stream);
+					stream.Position = 0;
+					disposeStream = true;
 				}
 			}
 
-			if (extensionTypes != null)
+			MemoryStream outputStream = null;
+			newNamespaces = null;
+			try
 			{
-				foreach (ExtensionModelBinding extensionType in extensionTypes)
+				outputStream = new MemoryStream((int)stream.Length);
+				XsltArgumentList argList = new XsltArgumentList();
+
+				// Get all of the custom serialization attributes for the standard and
+				// extension types. The serialization engine does not serialize elements
+				// for types without a serialization attribute, so there is no need to
+				// look at standard or extension types without this attribute.
+				List<string> namespaceList = new List<string>();
+				foreach (Type standardType in standardTypes)
 				{
-					object[] attributes = extensionType.Type.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
+					object[] attributes = standardType.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
 					if (attributes != null)
 					{
 						for (int i = 0; i < attributes.Length; ++i)
@@ -1334,34 +1419,58 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 						}
 					}
 				}
-			}
 
-			string[] namespaces = new string[namespaceList.Count];
-			namespaceList.CopyTo(namespaces);
-			Array.Sort<string>(namespaces);
-			if (unrecognizedNamespaces != null)
-			{
-				for (int i = unrecognizedNamespaces.Count - 1; i >= 0; --i)
+				if (extensionTypes != null)
 				{
-					if (Array.BinarySearch<string>(namespaces, unrecognizedNamespaces[i]) >= 0)
+					foreach (ExtensionModelBinding extensionType in extensionTypes.Values)
 					{
-						unrecognizedNamespaces.RemoveAt(i);
+						object[] attributes = extensionType.Type.GetCustomAttributes(typeof(CustomSerializedXmlSchemaAttribute), false);
+						if (attributes != null)
+						{
+							for (int i = 0; i < attributes.Length; ++i)
+							{
+								namespaceList.Add(((CustomSerializedXmlSchemaAttribute)attributes[i]).XmlNamespace);
+							}
+						}
 					}
 				}
-				if (unrecognizedNamespaces.Count == 0)
+
+				string[] namespaces = new string[namespaceList.Count];
+				namespaceList.CopyTo(namespaces);
+				Array.Sort<string>(namespaces);
+				if (unrecognizedNamespaces != null)
 				{
-					return null;
+					for (int i = unrecognizedNamespaces.Count - 1; i >= 0; --i)
+					{
+						if (Array.BinarySearch<string>(namespaces, unrecognizedNamespaces[i]) >= 0)
+						{
+							unrecognizedNamespaces.RemoveAt(i);
+						}
+					}
+					if (unrecognizedNamespaces.Count == 0)
+					{
+						return null;
+					}
+				}
+				var stripperUtil = new ExtensionStripperUtility(namespaces);
+				argList.AddExtensionObject("urn:schemas-neumont-edu:ORM:ExtensionStripperUtility", stripperUtil);
+				XslCompiledTransform transform = GetExtensionStripperTransform();
+
+				stream.Position = 0;
+				using (XmlReader reader = XmlReader.Create(stream))
+				{
+					transform.Transform(reader, argList, outputStream);
+				}
+				outputStream.Position = 0;
+				newNamespaces = stripperUtil.NewNamespaces;
+			}
+			finally
+			{
+				if (disposeStream)
+				{
+					stream.Dispose();
 				}
 			}
-			argList.AddExtensionObject("urn:schemas-neumont-edu:ORM:ExtensionStripperUtility", new ExtensionStripperUtility(namespaces));
-			XslCompiledTransform transform = GetExtensionStripperTransform();
-
-			stream.Position = 0;
-			using (XmlReader reader = XmlReader.Create(stream))
-			{
-				transform.Transform(reader, argList, outputStream);
-			}
-			outputStream.Position = 0;
 			return outputStream;
 		}
 		#endregion // CleanupStream method

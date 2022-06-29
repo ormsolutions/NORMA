@@ -133,7 +133,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				myFlags &= ~flags;
 			}
 		}
-
+		private IList<string> myNewNamespacesForLoad;
 		#endregion // Private flags
 		#region Member variables
 		private Stream myFileStream;
@@ -218,7 +218,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		/// <param name="newStream">The <see cref="Stream"/> to load</param>
 		/// <param name="fallbackStream">If <paramref name="newStream"/> fails to load, then
 		/// reload this stream instead.</param>
-		public void ReloadFromStream(Stream newStream, Stream fallbackStream)
+		/// <param name="newExtensionNamespaces">Newly added extension namespaces. Initialize
+		/// with <see cref="IDomainModelLoading"/> if this is supported.</param>
+		public void ReloadFromStream(Stream newStream, Stream fallbackStream, IList<string> newExtensionNamespaces)
 		{
 			myFileStream = newStream;
 			Dictionary<object, object> sessionKeys = null;
@@ -240,9 +242,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			}
 			// This calls into LoadDocData(string, bool) after doing necessary cleanup
 			IServiceProvider serviceProvider;
+			myNewNamespacesForLoad = newExtensionNamespaces;
 			if (fallbackStream == null)
 			{
-				ReloadDocData((uint)_VSRELOADDOCDATA.RDD_RemoveUndoStack);
+				try
+				{
+					ReloadDocData((uint)_VSRELOADDOCDATA.RDD_RemoveUndoStack);
+				}
+				finally
+				{
+					myNewNamespacesForLoad = null;
+				}
 			}
 			else
 			{
@@ -257,6 +267,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					SetFlag(PrivateFlags.IgnoreDocumentReloading, true);
 					fallbackStream.Position = 0;
 					myFileStream = fallbackStream;
+					myNewNamespacesForLoad = null;
 					ReloadDocData((uint)_VSRELOADDOCDATA.RDD_RemoveUndoStack);
 					if (null != (serviceProvider = ServiceProvider))
 					{
@@ -287,6 +298,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				{
 					SetFlag(PrivateFlags.RethrowLoadDocDataException, false);
 					SetFlag(PrivateFlags.IgnoreDocumentReloading, false);
+					myNewNamespacesForLoad = null;
 				}
 			}
 
@@ -513,8 +525,10 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					Stream unstrippedNamespaceStream = stream;
 					if (unrecognizedNamespaces != null)
 					{
+						// This can strip but not add extensions. Do not overwrite the new namespace extensions we already have.
+						IList<string> newNamespacesDummy = null;
 						stream.Position = 0;
-						namespaceStrippedStream = ExtensionLoader.CleanupStream(stream, extensionLoader.StandardDomainModels, documentExtensions != null ? documentExtensions.Values : null, unrecognizedNamespaces);
+						namespaceStrippedStream = ExtensionLoader.CleanExtensions(null, stream, extensionLoader.StandardDomainModels, documentExtensions, unrecognizedNamespaces, out newNamespacesDummy);
 						if (namespaceStrippedStream != null)
 						{
 							dontSave = true;
@@ -539,7 +553,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					catch (TypeInitializationException ex)
 					{
-						// If the type that failed to load is an extensions, then remove it from
+						// If the type that failed to load is an extension, then remove it from
 						// the list of available extensions and try again.
 						if (documentExtensions != null)
 						{
@@ -780,7 +794,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			{
 				try
 				{
-					(new ORMSerializationEngine(store)).Load(stream, loadOptions);
+					(new ORMSerializationEngine(store)).Load(stream, myNewNamespacesForLoad, loadOptions);
 				}
 				catch (XmlSchemaValidationException ex)
 				{
@@ -1269,7 +1283,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					ICollection<ExtensionModelBinding> availableExtensionsCollection = availableExtensions.Values;
 					Dictionary<string, ExtensionModelBinding> requestedExtensions = null;
 					List<ExtensionModelBinding> nonRequestedLoadedExtensions = null;
-					foreach (DomainModel domainModel in myDocData.Store.DomainModels)
+					Store store = myDocData.Store;
+					foreach (DomainModel domainModel in store.DomainModels)
 					{
 						Type domainModelType = domainModel.GetType();
 						foreach (ExtensionModelBinding extensionInfo in availableExtensionsCollection)
@@ -1313,9 +1328,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 							}
 						}
 					}
-					Object streamObj;
-					(myDocData as EnvDTE.IExtensibleObject).GetAutomationObject("ORMXmlStream", null, out streamObj);
-					Stream currentStream = streamObj as Stream;
+					Stream currentStream = new MemoryStream();
+					(new ORMSerializationEngine(store)).Save(currentStream);
+					currentStream.Position = 0;
 					Stream newStream = null;
 
 					Debug.Assert(currentStream != null);
@@ -1323,17 +1338,24 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					try
 					{
 						extensionLoader.VerifyRequiredExtensions(ref requestedExtensions);
-						ICollection<ExtensionModelBinding> allExtensions = requestedExtensions != null ? requestedExtensions.Values : null;
-						if (nonRequestedLoadedExtensions != null)
+						if (nonRequestedLoadedExtensions != null && nonRequestedLoadedExtensions.Count != 0)
 						{
-							if (allExtensions != null)
+							if (requestedExtensions == null)
 							{
-								nonRequestedLoadedExtensions.AddRange(allExtensions);
+								requestedExtensions = new Dictionary<string, ExtensionModelBinding>();
 							}
-							allExtensions = nonRequestedLoadedExtensions;
+
+							foreach (ExtensionModelBinding binding in nonRequestedLoadedExtensions)
+							{
+								if (!requestedExtensions.ContainsKey(binding.NamespaceUri))
+								{
+									requestedExtensions[binding.NamespaceUri] = binding;
+								}
+							}
 						}
-						newStream = ExtensionLoader.CleanupStream(currentStream, extensionLoader.StandardDomainModels, allExtensions, null);
-						myDocData.ReloadFromStream(newStream, currentStream);
+						IList<string> newNamespaces;
+						newStream = ExtensionLoader.CleanExtensions(store, currentStream, extensionLoader.StandardDomainModels, requestedExtensions, null, out newNamespaces);
+						myDocData.ReloadFromStream(newStream, currentStream, newNamespaces);
 					}
 					finally
 					{
