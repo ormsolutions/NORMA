@@ -21,6 +21,7 @@ using System.Globalization;
 using System.Security.Permissions;
 using Microsoft.VisualStudio.Modeling;
 using Microsoft.VisualStudio.Modeling.Design;
+using ORMSolutions.ORMArchitect.Framework;
 using ORMSolutions.ORMArchitect.Framework.Design;
 using ORMSolutions.ORMArchitect.Core.ObjectModel;
 using ORMSolutions.ORMArchitect.Core.ShapeModel;
@@ -72,7 +73,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 					}
 					if (useDefault)
 					{
-						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomBinaryFactTypeReadingDisplay)).ConvertToString(resolvedDefault != null ? resolvedDefault : diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReverseReadings == BinaryFactTypeReadingDisplay.ShowReverseReading ? CustomBinaryFactTypeReadingDisplay.ShowReverseReading : CustomBinaryFactTypeReadingDisplay.OnlyOneReading));
+						Store store;
+						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomBinaryFactTypeReadingDisplay)).ConvertToString(resolvedDefault != null ? resolvedDefault : ((store = Utility.ValidateStore(diagram.Store)) == null || store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReverseReadings == BinaryFactTypeReadingDisplay.ShowReverseReading) ? CustomBinaryFactTypeReadingDisplay.ShowReverseReading : CustomBinaryFactTypeReadingDisplay.OnlyOneReading));
 					}
 				}
 			}
@@ -142,7 +144,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 					}
 					if (useDefault)
 					{
-						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomRoleNameDisplay)).ConvertToString(resolvedDefault != null ? resolvedDefault : diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayRoleNames == RoleNameDisplay.On ? CustomRoleNameDisplay.On : CustomRoleNameDisplay.Off));
+						Store store;
+						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomRoleNameDisplay)).ConvertToString(resolvedDefault != null ? resolvedDefault : ((store = Utility.ValidateStore(diagram.Store)) == null || store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayRoleNames == RoleNameDisplay.On) ? CustomRoleNameDisplay.On : CustomRoleNameDisplay.Off));
 					}
 				}
 			}
@@ -212,7 +215,8 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 					}
 					if (useDefault)
 					{
-						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomReadingDirectionIndicatorDisplay)).ConvertToString(resolvedDefault != null ? resolvedDefault : (CustomRoleNameDisplay)diagram.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReadingDirection));
+						Store store;
+						retVal = string.Format(culture, (string)base.ConvertTo(context, culture, value, destinationType), TypeDescriptor.GetConverter(typeof(CustomReadingDirectionIndicatorDisplay)).ConvertToString(resolvedDefault != null ? resolvedDefault : ((store = Utility.ValidateStore(diagram.Store)) != null ? (CustomReadingDirectionIndicatorDisplay)store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReadingDirection : CustomReadingDirectionIndicatorDisplay.Reversed)));
 					}
 				}
 			}

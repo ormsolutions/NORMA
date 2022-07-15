@@ -375,9 +375,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private static bool IsRoleNameDisplayed(FactTypeShape shape, ORMDiagram diagram)
 		{
 			CustomRoleNameDisplay customRoleNameDisplay;
+			Store store;
 			return RoleNameDisplay.On == ((customRoleNameDisplay = shape.DisplayRoleNames) == CustomRoleNameDisplay.Default ?
 				((customRoleNameDisplay = (null != (diagram ?? (diagram = shape.Diagram as ORMDiagram)) ? diagram.DisplayRoleNames : CustomRoleNameDisplay.Default)) == CustomRoleNameDisplay.Default ?
-					shape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayRoleNames :
+					((store = Utility.ValidateStore(shape.Store)) != null ? store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayRoleNames : RoleNameDisplay.On) :
 					(RoleNameDisplay)customRoleNameDisplay) :
 				(RoleNameDisplay)customRoleNameDisplay);
 		}

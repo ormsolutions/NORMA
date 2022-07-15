@@ -627,9 +627,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 
 						firstFormatString = firstOrder.ReadingText;
 						string forwardReadingText = ReadingFormatStringHasEmbeddedEllipses(firstFormatString) ? NamedReplacementReadingText(factShape, firstOrder, null, firstFormatString) : EllipsizeReadingFormatString(firstFormatString, roleCount);
+						Store store;
 						if (BinaryFactTypeReadingDisplay.OnlyOneReading == ((customReadingDisplay = factShape.DisplayReverseReading) == CustomBinaryFactTypeReadingDisplay.Default ?
 							((customReadingDisplay = ((ORMDiagram)factShape.Diagram).DisplayReverseReadings) == CustomBinaryFactTypeReadingDisplay.Default ?
-								Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReverseReadings :
+								((store = Utility.ValidateStore(Store)) != null ? store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0].DisplayReverseReadings : BinaryFactTypeReadingDisplay.ShowReverseReading) :
 								(BinaryFactTypeReadingDisplay)customReadingDisplay) :
 							(BinaryFactTypeReadingDisplay)customReadingDisplay))
 						{
@@ -956,6 +957,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						bool isReverseReading = false;
 						ORMDiagram diagram = null;
 						ORMDiagramDisplayOptions displayOptions = null;
+						Store store = null;
 						if (roleCount == 2)
 						{
 							LinkedElementCollection<ReadingOrder> orders = factType.ReadingOrderCollection;
@@ -971,7 +973,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							}
 							else if (BinaryFactTypeReadingDisplay.OnlyOneReading == ((customReadingDisplay = factTypeShape.DisplayReverseReading) == CustomBinaryFactTypeReadingDisplay.Default ?
 								((customReadingDisplay = (diagram = (ORMDiagram)factTypeShape.Diagram).DisplayReverseReadings) == CustomBinaryFactTypeReadingDisplay.Default ?
-									(displayOptions = factTypeShape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0]).DisplayReverseReadings :
+									((store = Utility.ValidateStore(factTypeShape.Store)) != null ? (displayOptions = store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0]).DisplayReverseReadings : BinaryFactTypeReadingDisplay.ShowReverseReading) :
 									(BinaryFactTypeReadingDisplay)customReadingDisplay) :
 								(BinaryFactTypeReadingDisplay)customReadingDisplay))
 							{
@@ -995,7 +997,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								CustomReadingDirectionIndicatorDisplay customDirection;
 								ReadingDirectionIndicatorDisplay displayOption = (customDirection = factTypeShape.DisplayReadingDirection) == CustomReadingDirectionIndicatorDisplay.Default ?
 									((null == (diagram ?? (diagram = (ORMDiagram)factTypeShape.Diagram)) || (customDirection = diagram.DisplayReadingDirection) == CustomReadingDirectionIndicatorDisplay.Default) ?
-										(displayOptions ?? (displayOptions = factTypeShape.Store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0])).DisplayReadingDirection :
+										(displayOptions != null ? displayOptions.DisplayReadingDirection : ((store = Utility.ValidateStore(factTypeShape.Store)) != null ? (displayOptions = store.ElementDirectory.FindElements<ORMDiagramDisplayOptions>()[0]).DisplayReadingDirection : ReadingDirectionIndicatorDisplay.Reversed)) :
 										(ReadingDirectionIndicatorDisplay)customDirection) :
 									(ReadingDirectionIndicatorDisplay)customDirection;
 								switch (displayOption)
