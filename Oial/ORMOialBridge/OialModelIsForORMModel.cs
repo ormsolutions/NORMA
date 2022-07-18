@@ -36,7 +36,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 		/// <summary>
 		/// The algorithm version written to the file
 		/// </summary>
-		public const string CurrentAlgorithmVersion = "1.009";
+		public const string CurrentAlgorithmVersion = "1.010";
 		#endregion // CurrentAlgorithmVersion constant
 		#region ValidationPriority enum
 		/// <summary>
@@ -1619,6 +1619,13 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				}
 
 				FactTypeMapping factTypeMapping = factTypeMappings[factType];
+
+				if (factTypeMapping.MappingDepth == MappingDepth.Deep)
+				{
+					// Catch deep mapping that are not subtypes. The pattern is very similar, and we
+					// need a concept type on both ends just like with subtype facts.
+					return true;
+				}
 
 				// If fact type mapping is toward objectType...
 				if (factTypeMapping.TowardsObjectType == objectType)
