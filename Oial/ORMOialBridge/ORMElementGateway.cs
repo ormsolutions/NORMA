@@ -125,7 +125,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 									// This pattern is used only during delay validation. A cleaner model would
 									// be a delegate callback, but it isn't worth the additional overhead given
 									// that this would be the only code that would ever run there.
-									FilterModifiedFactType(factType, true);
+									FilterModifiedFactType(factType, true, false);
 								}
 								else
 								{
@@ -268,14 +268,15 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			/// </summary>
 			/// <param name="factType">The modified <see cref="FactType"/></param>
 			/// <param name="filterImpliedFactTypes">Set to <see langword="true"/> to check for and filter implied fact types</param>
-			private static void FilterModifiedFactType(FactType factType, bool filterImpliedFactTypes)
+			/// <param name="forceAddFactType">The fact type was not previously filtered and needs to be added whether it was filtered or not.</param>
+			private static void FilterModifiedFactType(FactType factType, bool filterImpliedFactTypes, bool forceAddFactType)
 			{
 				if (factType != null &&
 					!factType.IsDeleted &&
 					!(factType is QueryBase) &&
 					!(factType is IHasAlternateOwner<FactType>))
 				{
-					FrameworkDomainModel.DelayValidateElement(factType, FilterModifiedFactTypeDelayed);
+					FrameworkDomainModel.DelayValidateElement(factType, forceAddFactType ? (ElementValidation)FilterModifiedFactTypeDelayed_ForceAdd : FilterModifiedFactTypeDelayed);
 					Objectification objectification;
 					if (filterImpliedFactTypes && null != (objectification = factType.Objectification))
 					{
@@ -290,6 +291,16 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			[DelayValidatePriority(ValidationPriority.GatewayReconsiderFactType, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
 			private static void FilterModifiedFactTypeDelayed(ModelElement element)
 			{
+				FilterModifiedFactTypeDelayed(element, false);
+			}
+			[DelayValidatePriority(ValidationPriority.GatewayReconsiderFactType, DomainModelType = typeof(ORMCoreDomainModel), Order = DelayValidatePriorityOrder.AfterDomainModel)]
+			[DelayValidateReplaces("FilterModifiedFactTypeDelayed")]
+			private static void FilterModifiedFactTypeDelayed_ForceAdd(ModelElement element)
+			{
+				FilterModifiedFactTypeDelayed(element, true);
+			}
+			private static void FilterModifiedFactTypeDelayed(ModelElement element, bool forceAdd)
+			{
 				if (!element.IsDeleted &&
 					!(element is IHasAlternateOwner<FactType>))
 				{
@@ -297,9 +308,12 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					ExcludedORMModelElement exclusionLink = ExcludedORMModelElement.GetLinkToAbstractionModel(factType);
 					if (ShouldConsiderFactType(factType, null, true))
 					{
-						if (exclusionLink != null)
+						if (forceAdd || exclusionLink != null)
 						{
-							exclusionLink.Delete();
+							if (exclusionLink != null)
+							{
+								exclusionLink.Delete();
+							}
 							AddFactType(factType);
 							foreach (IFactConstraint factConstraint in factType.FactConstraintCollection)
 							{
@@ -361,7 +375,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 								FactType factType = playedRole.FactType;
 								if (IsElementExcluded(factType))
 								{
-									FilterModifiedFactType(factType, false);
+									FilterModifiedFactType(factType, false, false);
 								}
 								RoleProxy proxy = playedRole.Proxy;
 								if (proxy != null)
@@ -369,7 +383,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 									factType = proxy.FactType;
 									if (IsElementExcluded(factType))
 									{
-										FilterModifiedFactType(factType, false);
+										FilterModifiedFactType(factType, false, false);
 									}
 								}
 							}
@@ -664,7 +678,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					!(factType is QueryBase) &&
 					!(factType is IHasAlternateOwner<FactType>))
 				{
-					FilterModifiedFactType(factType, true);
+					FilterModifiedFactType(factType, true, false);
 				}
 			}
 			/// <summary>
@@ -680,7 +694,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					!(factType is QueryBase) &&
 					!(factType is IHasAlternateOwner<FactType>))
 				{
-					FilterModifiedFactType(factType, true);
+					FilterModifiedFactType(factType, true, false);
 				}
 			}
 			/// <summary>
@@ -778,7 +792,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					}
 					else
 					{
-						FilterModifiedFactType(factType, false); // false because new implied FactTypes will get notifications on their own
+						FilterModifiedFactType(factType, false, false); // filterImpliedFactTypes = false because new implied FactTypes will get notifications on their own
 					}
 				}
 			}
@@ -787,7 +801,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				if (!factType.IsDeleted &&
 					factType.UnaryRole == null)
 				{
-					FilterModifiedFactType(factType, false); // false because there are no implied facttypes without an objectification
+					FilterModifiedFactType(factType, false, true); // filterImpliedFactTypes = false because there are no implied facttypes without an objectification
 				}
 			}
 			/// <summary>
@@ -821,11 +835,11 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 			private static void ProcessRolePlayerAdded(ObjectTypePlaysRole link)
 			{
 				Role role = link.PlayedRole;
-				FilterModifiedFactType(role.FactType, false);
+				FilterModifiedFactType(role.FactType, false, false);
 				RoleProxy proxy = role.Proxy;
 				if (proxy != null)
 				{
-					FilterModifiedFactType(proxy.FactType, false);
+					FilterModifiedFactType(proxy.FactType, false, false);
 				}
 				FilterModifiedObjectType(link.RolePlayer);
 			}
@@ -846,11 +860,11 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				{
 					rolePlayer = link.RolePlayer;
 				}
-				FilterModifiedFactType(role.FactType, false);
+				FilterModifiedFactType(role.FactType, false, false);
 				RoleProxy proxy = role.Proxy;
 				if (proxy != null)
 				{
-					FilterModifiedFactType(proxy.FactType, false);
+					FilterModifiedFactType(proxy.FactType, false, false);
 				}
 				FilterModifiedObjectType(rolePlayer);
 			}
@@ -886,7 +900,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					FactType factType = ((FactTypeDerivationExpression)e.ModelElement).FactType;
 					if (!(factType is SubtypeFact))
 					{
-						FilterModifiedFactType(factType, true);
+						FilterModifiedFactType(factType, true, false);
 					}
 				}
 			}
@@ -901,7 +915,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 				if (!(factType is SubtypeFact) &&
 					link.DerivationRule.DerivationStorage == DerivationExpressionStorageType.Derived)
 				{
-					FilterModifiedFactType(factType, true);
+					FilterModifiedFactType(factType, true, false);
 				}
 			}
 			/// <summary>
@@ -916,7 +930,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					!(factType is SubtypeFact) &&
 					link.DerivationRule.DerivationStorage == DerivationExpressionStorageType.Derived)
 				{
-					FilterModifiedFactType(factType, true);
+					FilterModifiedFactType(factType, true, false);
 				}
 			}
 			/// <summary>
@@ -945,7 +959,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					FactType factType = derivationRule.FactType;
 					if (!(factType is SubtypeFact))
 					{
-						FilterModifiedFactType(factType, true);
+						FilterModifiedFactType(factType, true, false);
 					}
 				}
 			}
@@ -963,7 +977,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					(rule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 					(!rule.ExternalDerivation || rule.DerivationStorage == DerivationStorage.NotStored)))
 				{
-					FilterModifiedFactType(factType, true);
+					FilterModifiedFactType(factType, true, false);
 				}
 			}
 			/// <summary>
@@ -981,7 +995,7 @@ namespace ORMSolutions.ORMArchitect.ORMToORMAbstractionBridge
 					(rule.DerivationCompleteness == DerivationCompleteness.FullyDerived &&
 					(!rule.ExternalDerivation || rule.DerivationStorage == DerivationStorage.NotStored)))
 				{
-					FilterModifiedFactType(factType, true);
+					FilterModifiedFactType(factType, true, false);
 				}
 			}
 			#endregion // FactType derivation tracking rules
