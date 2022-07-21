@@ -29,7 +29,7 @@ namespace ORMSolutions.ORMArchitect.Utility
 	/// load NORMA files using the current Visual Studio installation, but from
 	/// outside Visual Studio.
 	/// </summary>
-	public class NORMAResolver
+	internal class NORMAResolver
 	{
 		#region P/Invoke Declarations
 		private static class WinDecl
