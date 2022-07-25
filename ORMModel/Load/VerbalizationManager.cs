@@ -140,7 +140,7 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 											int j = 0;
 											for (; j < directoryCount; ++j)
 											{
-												if (0 == string.Compare(directory, directories[i], StringComparison.OrdinalIgnoreCase))
+												if (0 == string.Compare(directory, directories[j], StringComparison.OrdinalIgnoreCase))
 												{
 													break;
 												}

@@ -22,20 +22,20 @@
 			</arg:ChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ExternalConstraintLink">
-			<arg:AddRule methodName="DeleteDanglingConstraintShapeAddRule">
+			<arg:AddRule methodName="DeleteDanglingConstraintShapeAddedRule">
 				<arg:RuleOn targetType="ExternalConstraintShape" fireTime="TopLevelCommit" priority="DiagramFixupConstants.AddConnectionRulePriority">
 					<arg:PriorityAdjustment>
 						<plx:value data="1" type="i4"/>
 					</arg:PriorityAdjustment>
 				</arg:RuleOn>
 			</arg:AddRule>
-			<arg:AddRule methodName="VerifyedConnectedShapeAddedRule">
+			<arg:AddRule methodName="VerifyConnectedShapeAddedRule">
 				<arg:RuleOn targetType="LinkConnectsToNode" targetTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams"/>
 			</arg:AddRule>
-			<arg:DeletingRule methodName="VerifyConnectedShapeShapeDeletingRule">
+			<arg:DeletingRule methodName="VerifyConnectedShapeDeletingRule">
 				<arg:RuleOn targetType="LinkConnectsToNode" targetTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams"/>
 			</arg:DeletingRule>
-			<arg:RolePlayerChangeRule methodName="VerifyConnectedShapeShapeRolePlayerChangedRule">
+			<arg:RolePlayerChangeRule methodName="VerifyConnectedShapeRolePlayerChangedRule">
 				<arg:RuleOn targetType="LinkConnectsToNode" targetTypeQualifier="Microsoft.VisualStudio.Modeling.Diagrams"/>
 			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>

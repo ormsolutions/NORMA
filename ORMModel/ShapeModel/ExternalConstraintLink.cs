@@ -514,7 +514,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// AddRule: typeof(Microsoft.VisualStudio.Modeling.Diagrams.LinkConnectsToNode)
 		/// Make sure connected fact type shapes properly display their role bars
 		/// </summary>
-		private static void VerifyedConnectedShapeAddedRule(ElementAddedEventArgs e)
+		private static void VerifyConnectedShapeAddedRule(ElementAddedEventArgs e)
 		{
 			LinkConnectsToNode connectLink = (LinkConnectsToNode)e.ModelElement;
 			FactTypeShape factTypeShape;
@@ -529,7 +529,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// External constraint shapes can only be drawn if they show all of their
 		/// links, so automatically remove them if a connecting shape is removed.
 		/// </summary>
-		private static void VerifyConnectedShapeShapeDeletingRule(ElementDeletingEventArgs e)
+		private static void VerifyConnectedShapeDeletingRule(ElementDeletingEventArgs e)
 		{
 			LinkConnectsToNode connectLink = (LinkConnectsToNode)e.ModelElement;
 			ExternalConstraintLink link;
@@ -578,7 +578,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// links, so automatically remove them if a link is moved off the constraint
 		/// shape.
 		/// </summary>
-		private static void VerifyConnectedShapeShapeRolePlayerChangedRule(RolePlayerChangedEventArgs e)
+		private static void VerifyConnectedShapeRolePlayerChangedRule(RolePlayerChangedEventArgs e)
 		{
 			ShapeElement shape;
 			if (e.DomainRole.Id == LinkConnectsToNode.NodesDomainRoleId &&
@@ -621,7 +621,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// links, so automatically remove them if multishape link handling never
 		/// attaches the link after it is added.
 		/// </summary>
-		private static void DeleteDanglingConstraintShapeAddRule(ElementAddedEventArgs e)
+		private static void DeleteDanglingConstraintShapeAddedRule(ElementAddedEventArgs e)
 		{
 			DelayValidateExternalConstraintShapeFullyConnected(e.ModelElement);
 		}
