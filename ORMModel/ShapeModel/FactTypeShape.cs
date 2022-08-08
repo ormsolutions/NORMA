@@ -5748,7 +5748,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						ObjectTypePlaysRole link;
 						if (null != (role = roleBase as Role) &&
 							null != (link = ObjectTypePlaysRole.GetLinkToRolePlayer(role)) &&
-							null == ormDiagram.FindShapeForElement<RolePlayerLink>(link))
+							null == ormDiagram.FindShapeForElement<RolePlayerLink>(link, delegate(RolePlayerLink matchedLink)
+							{
+								// In an objectification case the link can be attached to a displayed link fact type as well as the
+								// primary fact type (this one based on the ImpliedByObjectification check above). Make sure we're
+								// looking at a link shape we care about by verifying that it matches the fact type we're fixing up.
+								FactTypeShape attachedShape;
+								return null != (attachedShape = matchedLink.FromShape as FactTypeShape) &&
+									attachedShape.AssociatedFactType == factType;
+							}))
 						{
 							ormDiagram.FixUpLocalDiagram(link);
 						}

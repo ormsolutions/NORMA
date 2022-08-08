@@ -1634,17 +1634,17 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <returns>An existing shape, or null if not found</returns>
 		public ShapeElement FindShapeForElement(ModelElement element)
 		{
-			return FindShapeForElement<ShapeElement>(element, false);
+			return FindShapeForElement<ShapeElement>(element, null);
 		}
 		/// <summary>
 		/// Locate an existing shape on this diagram corresponding to this element
 		/// </summary>
 		/// <param name="element">The element to search</param>
-		/// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true</param>
+		/// <param name="filter">Allow the caller to further refine matched shapes. A false return ignores the shape.</param>
 		/// <returns>An existing shape, or null if not found</returns>
-		public ShapeElement FindShapeForElement(ModelElement element, bool filterDeleting)
+		public ShapeElement FindShapeForElement(ModelElement element, Predicate<ShapeElement> filter)
 		{
-			return FindShapeForElement<ShapeElement>(element, filterDeleting);
+			return FindShapeForElement<ShapeElement>(element, filter);
 		}
 		/// <summary>
 		/// Locate an existing typed shape on this diagram corresponding to this element
@@ -1654,23 +1654,23 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <returns>An existing shape, or null if not found</returns>
 		public TShape FindShapeForElement<TShape>(ModelElement element) where TShape : ShapeElement
 		{
-			return FindShapeForElement<TShape>(element, false);
+			return FindShapeForElement<TShape>(element, null);
 		}
 		/// <summary>
 		/// Locate an existing typed shape on this diagram corresponding to this element
 		/// </summary>
 		/// <typeparam name="TShape">The type of the shape to return</typeparam>
 		/// <param name="element">The element to search</param>
-		/// <param name="filterDeleting">Do not return an element where the <see cref="ModelElement.IsDeleting"/> property is true</param>
+		/// <param name="filter">Allow the caller to further refine matched shapes. A false return ignores the shape.</param>
 		/// <returns>An existing shape, or null if not found</returns>
-		public TShape FindShapeForElement<TShape>(ModelElement element, bool filterDeleting) where TShape : ShapeElement
+		public TShape FindShapeForElement<TShape>(ModelElement element, Predicate<TShape> filter) where TShape : ShapeElement
 		{
 			if (element != null)
 			{
 				foreach (PresentationElement pel in PresentationViewsSubject.GetPresentation(element))
 				{
 					TShape shape = pel as TShape;
-					if (shape != null && shape.Diagram == this && (!filterDeleting || !shape.IsDeleting))
+					if (shape != null && shape.Diagram == this && (filter == null || filter(shape)))
 					{
 						return shape;
 					}
