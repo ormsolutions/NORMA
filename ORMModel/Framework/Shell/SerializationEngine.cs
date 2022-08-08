@@ -2829,13 +2829,25 @@ namespace ORMSolutions.ORMArchitect.Framework.Shell
 		/// </summary>
 		public void Save(Stream stream)
 		{
-			XmlWriterSettings xmlSettings = new XmlWriterSettings();
+			Save(stream, null);
+		}
+		/// <summary>
+		/// Save the store contents to the provided <see cref="Stream"/>
+		/// </summary>
+		/// <param name="stream">The stream to write to.</param>
+		/// <param name="xmlSettings">Settings controlling the output XML. If not specified this uses a tab indent.</param>
+		public void Save(Stream stream, XmlWriterSettings xmlSettings)
+		{
+			if (xmlSettings == null)
+			{
+				xmlSettings = new XmlWriterSettings();
+				xmlSettings.IndentChars = "\t";
+				xmlSettings.Indent = true;
+			}
+
 			XmlWriter file;
 			Store store = myStore;
 			ICollection<DomainModel> values = store.DomainModels;
-
-			xmlSettings.IndentChars = "\t";
-			xmlSettings.Indent = true;
 
 			file = XmlWriter.Create(stream, xmlSettings);
 			file.WriteStartElement(GetRootXmlPrefix(), GetRootXmlElementName(), GetRootXmlNamespace());

@@ -276,10 +276,20 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		/// <param name="stream">A writable <see cref="Stream"/></param>
 		public void Save(Store store, Stream stream)
 		{
-			(new ORMSerializationEngine(store)).Save(stream);
+			Save(store, stream, null);
 		}
 		/// <summary>
-		/// Save an in-memory model to a file.
+		/// Save an in-memory model to a <see cref="Stream"/> with custom output settings
+		/// </summary>
+		/// <param name="store">A <see cref="Store"/> returned by the <see cref="Load(String)"/> or <see cref="Load(Stream)"/> methods.</param>
+		/// <param name="stream">A writable <see cref="Stream"/></param>
+		/// <param name="xmlSettings">Custom Xml output settings. Tab indentation is used by default.</param>
+		public void Save(Store store, Stream stream, XmlWriterSettings xmlSettings)
+		{
+			(new ORMSerializationEngine(store)).Save(stream, xmlSettings);
+		}
+		/// <summary>
+		/// Save an in-memory model to a file with custom output settings.
 		/// </summary>
 		/// <param name="store">A <see cref="Store"/> returned by the <see cref="Load(String)"/> or <see cref="Load(Stream)"/> methods.</param>
 		/// <param name="fileName">The file to save to.</param>
@@ -287,7 +297,20 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 		{
 			using (FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
 			{
-				Save(store, fileStream);
+				Save(store, fileStream, null);
+			}
+		}
+		/// <summary>
+		/// Save an in-memory model to a file with custom output settings.
+		/// </summary>
+		/// <param name="store">A <see cref="Store"/> returned by the <see cref="Load(String)"/> or <see cref="Load(Stream)"/> methods.</param>
+		/// <param name="fileName">The file to save to.</param>
+		/// <param name="xmlSettings">Custom output settings. Tab indentation is used by default.</param>
+		public void Save(Store store, string fileName, XmlWriterSettings xmlSettings)
+		{
+			using (FileStream fileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+			{
+				Save(store, fileStream, xmlSettings);
 			}
 		}
 		#endregion // Save methods

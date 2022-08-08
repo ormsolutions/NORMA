@@ -1380,7 +1380,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 			if ("ORMXmlStream" == name)
 			{
 				MemoryStream stream = new MemoryStream();
-				(new ORMSerializationEngine(Store)).Save(stream);
+				(new ORMSerializationEngine(Store)).Save(stream, new XmlWriterSettings()); // Code generators don't need the extra whitespace
 				stream.Position = 0;
 				result = stream;
 				return;
