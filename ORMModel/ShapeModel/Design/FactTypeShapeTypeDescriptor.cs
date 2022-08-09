@@ -237,12 +237,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 						}
 					}
 					retVal = new PropertyDescriptorCollection(descriptors);
+
+					// This mockup of important properties means that extension providers cannot add properties
+					// here by adding to the objecttype or facttype. Use an extension on the Objectification type
+					// itself to add extension properties.
+					((IFrameworkServices)factType.Store).PropertyProviderService.GetProvidedProperties(objectification, retVal);
 				}
 
-				// This mockup of important properties means that extension providers cannot add properties
-				// here by adding to the objecttype or facttype. Use an extension on the Objectification type
-				// itself to add extension properties.
-				((IFrameworkServices)factType.Store).PropertyProviderService.GetProvidedProperties(objectification, retVal); 
 				return retVal;
 			}
 			return base.GetProperties(attributes);
