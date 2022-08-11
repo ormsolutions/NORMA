@@ -6732,25 +6732,6 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					topLevelContextInfo.Remove(allowMultipleShapesKey);
 				}
-
-				if (nestedFactType.Objectification != null)
-				{
-					// Objectification is now implied, make sure there are no presentation elements
-					// left connecting shapes for implied fact types to this fact type.
-					foreach (RoleBase objectifiedRoleBase in nestedFactType.RoleCollection)
-					{
-						Role objectifiedRole = objectifiedRoleBase.Role;
-						RoleProxy proxy;
-						RoleBase oppositeRoleBase;
-						ObjectTypePlaysRole rolePlayerLink;
-						if (null != (proxy = objectifiedRole.Proxy) &&
-							null != (oppositeRoleBase = proxy.OppositeRole) &&
-							null != (rolePlayerLink = ObjectTypePlaysRole.GetLinkToRolePlayer(oppositeRoleBase.Role)))
-						{
-							PresentationViewsSubject.GetPresentation(rolePlayerLink).Clear();
-						}
-					}
-				}
 			}
 		}
 		/// <summary>
