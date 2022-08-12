@@ -157,6 +157,14 @@
     <value>ReadingDirectionIndicator</value>
     <comment>DisplayName for DomainProperty &apos;DisplayReadingDirection&apos; on DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/HideNewShapeRefMode.Description" xml:space="preserve">
+    <value>Should the RefModeDisplay be set to Hide for a new object type shape?</value>
+    <comment>Description for DomainProperty &apos;HideNewShapeRefMode&apos; on DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/HideNewShapeRefMode.DisplayName" xml:space="preserve">
+    <value>HideNewShapeRefMode</value>
+    <comment>DisplayName for DomainProperty &apos;HideNewShapeRefMode&apos; on DomainClass &apos;ORMDiagramDisplayOptions&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShapeHasRoleDisplayOrder</value>
     <comment>Description for DomainClass &apos;FactTypeShapeHasRoleDisplayOrder&apos;</comment>
@@ -437,6 +445,30 @@
     <value>The shape attaches to neither its subtypes nor its supertypes.</value>
     <comment>Description for EnumerationLiteral &apos;AttachNoTypes&apos; on DomainEnumeration &apos;RelatedTypesDisplay&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay/Show.DisplayName" xml:space="preserve">
+    <value>Show</value>
+    <comment>Display name for EnumerationLiteral &apos;Show&apos; on DomainEnumeration &apos;RefModeDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay/Show.Description" xml:space="preserve">
+    <value>The reference mode is shown with the object type.</value>
+    <comment>Description for EnumerationLiteral &apos;Show&apos; on DomainEnumeration &apos;RefModeDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay/Hide.DisplayName" xml:space="preserve">
+    <value>Hide</value>
+    <comment>Display name for EnumerationLiteral &apos;Hide&apos; on DomainEnumeration &apos;RefModeDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay/Hide.Description" xml:space="preserve">
+    <value>The reference mode is not shown with the object type.</value>
+    <comment>Description for EnumerationLiteral &apos;Hide&apos; on DomainEnumeration &apos;RefModeDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay/HideCreateShapes.DisplayName" xml:space="preserve">
+    <value>HideCreateShapes</value>
+    <comment>Display name for EnumerationLiteral &apos;HideCreateShapes&apos; on DomainEnumeration &apos;RefModeDisplay&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay/HideCreateShapes.Description" xml:space="preserve">
+    <value>The reference mode is not shown with the object type and the corresponding fact type and value type shapes are added to the diagram.</value>
+    <comment>Description for EnumerationLiteral &apos;HideCreateShapes&apos; on DomainEnumeration &apos;RefModeDisplay&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ORMBaseShape</value>
     <comment>Description for DomainClass &apos;ORMBaseShape&apos;</comment>
@@ -468,6 +500,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName" xml:space="preserve">
     <value>ExpandRefMode</value>
     <comment>DisplayName for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRefMode.Description" xml:space="preserve">
+    <value>Should the reference mode field be shown on the object type shape?</value>
+    <comment>Description for DomainProperty &apos;DisplayRefMode&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRefMode.DisplayName" xml:space="preserve">
+    <value>RefModeDisplay</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRefMode&apos; on DomainClass &apos;ObjectTypeShape&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRelatedTypes.Description" xml:space="preserve">
     <value>Should links to subtypes and supertypes be attached to this shape?</value>
@@ -557,6 +597,14 @@
     <value>ExpandRefMode</value>
     <comment>DisplayName for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRefMode.Description" xml:space="preserve">
+    <value>Should the reference mode field be shown on the object type shape?</value>
+    <comment>Description for DomainProperty &apos;DisplayRefMode&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRefMode.DisplayName" xml:space="preserve">
+    <value>RefModeDisplay</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRefMode&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/RolesPosition.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape.Roles Position</value>
     <comment>Description for DomainProperty &apos;RolesPosition&apos; on DomainClass &apos;FactTypeShape&apos;</comment>
@@ -628,6 +676,14 @@
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.DisplayName" xml:space="preserve">
     <value>ExpandRefMode</value>
     <comment>DisplayName for DomainProperty &apos;ExpandRefMode&apos; on DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/DisplayRefMode.Description" xml:space="preserve">
+    <value>Should the reference mode field be shown on the object type shape?</value>
+    <comment>Description for DomainProperty &apos;DisplayRefMode&apos; on DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/DisplayRefMode.DisplayName" xml:space="preserve">
+    <value>RefModeDisplay</value>
+    <comment>DisplayName for DomainProperty &apos;DisplayRefMode&apos; on DomainClass &apos;ObjectifiedFactTypeNameShape&apos;</comment>
   </data>
   <data name="ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape.Description" xml:space="preserve">
     <value>Description for ORMSolutions.ORMArchitect.Core.ShapeModel.ReadingShape</value>

@@ -156,7 +156,7 @@
 		</se:Attribute>
 	</se:Element>
 	<se:Element Class="ObjectifiedFactTypeNameShape" Override="true">
-		<se:Attribute ID="ExpandRefMode">
+		<se:Attribute ID="ExpandRefMode" WriteCustomStorage="true">
 			<se:Condition WriteStyle="NotWritten">
 				<plx:unaryOperator type="booleanNot">
 					<plx:callThis name="ExpandRefMode" type="property"/>
@@ -690,36 +690,43 @@
 					<plx:left>
 						<plx:binaryOperator type="booleanOr">
 							<plx:left>
-								<plx:binaryOperator type="inequality">
+								<plx:binaryOperator type="booleanOr">
 									<plx:left>
-										<plx:callThis name="DisplayReverseReadings" type="property"/>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callThis name="DisplayReverseReadings" type="property"/>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic name="ShowReverseReading" dataTypeName="BinaryFactTypeReadingDisplay" type="field"/>
+											</plx:right>
+										</plx:binaryOperator>
 									</plx:left>
 									<plx:right>
-										<plx:callStatic name="ShowReverseReading" dataTypeName="BinaryFactTypeReadingDisplay" type="field"/>
+										<plx:binaryOperator type="inequality">
+											<plx:left>
+												<plx:callThis name="DisplayRoleNames" type="property"/>
+											</plx:left>
+											<plx:right>
+												<plx:callStatic name="On" dataTypeName="RoleNameDisplay" type="field"/>
+											</plx:right>
+										</plx:binaryOperator>
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:left>
 							<plx:right>
 								<plx:binaryOperator type="inequality">
 									<plx:left>
-										<plx:callThis name="DisplayRoleNames" type="property"/>
+										<plx:callThis name="DisplayReadingDirection" type="property"/>
 									</plx:left>
 									<plx:right>
-										<plx:callStatic name="On" dataTypeName="RoleNameDisplay" type="field"/>
+										<plx:callStatic name="Reversed" dataTypeName="ReadingDirectionIndicatorDisplay" type="field"/>
 									</plx:right>
 								</plx:binaryOperator>
 							</plx:right>
 						</plx:binaryOperator>
 					</plx:left>
 					<plx:right>
-						<plx:binaryOperator type="inequality">
-							<plx:left>
-								<plx:callThis name="DisplayReadingDirection" type="property"/>
-							</plx:left>
-							<plx:right>
-								<plx:callStatic name="Reversed" dataTypeName="ReadingDirectionIndicatorDisplay" type="field"/>
-							</plx:right>
-						</plx:binaryOperator>
+						<plx:callThis name="HideNewShapeRefMode" type="property"/>
 					</plx:right>
 				</plx:binaryOperator>
 			</plx:return>
@@ -758,6 +765,13 @@
 						<plx:callStatic name="Reversed" dataTypeName="ReadingDirectionIndicatorDisplay" type="field"/>
 					</plx:right>
 				</plx:binaryOperator>
+			</se:Condition>
+		</se:Attribute>
+		<se:Attribute ID="HideNewShapeRefMode">
+			<se:Condition WriteStyle="NotWritten">
+				<plx:unaryOperator type="booleanNot">
+					<plx:callThis name="HideNewShapeRefMode" type="property"/>
+				</plx:unaryOperator>
 			</se:Condition>
 		</se:Attribute>
 	</se:Element>

@@ -46,7 +46,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		/// </summary>
 		protected override bool IsPropertyDescriptorReadOnly(ElementPropertyDescriptor propertyDescriptor)
 		{
-			if (propertyDescriptor.DomainPropertyInfo.Id == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId)
+			if (propertyDescriptor.DomainPropertyInfo.Id == ObjectifiedFactTypeNameShape.DisplayRefModeDomainPropertyId)
 			{
 				ObjectType objectType = ModelElement;
 				return objectType.HasReferenceMode && objectType.PreferredIdentifier.IsObjectifiedSingleRolePreferredIdentifier;

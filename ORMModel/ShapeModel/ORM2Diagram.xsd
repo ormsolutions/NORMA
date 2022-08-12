@@ -428,6 +428,11 @@
 						</xs:restriction>
 					</xs:simpleType>
 				</xs:attribute>
+				<xs:attribute name="HideNewShapeRefMode" type="xs:boolean" default="false">
+					<xs:annotation>
+						<xs:documentation>Should ExpandRefMode be true for a new object type shape? (This corresponds to RefModeDisplay=Hide in the NORMA UI)</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

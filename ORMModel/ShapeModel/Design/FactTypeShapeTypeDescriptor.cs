@@ -66,7 +66,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		}
 
 		/// <summary>
-		/// Block display of the DisplayRelatedTypes, DisplayAsObjectType, and ExpandRefMode
+		/// Block display of the DisplayRelatedTypes, DisplayAsObjectType, and DisplayRefMode
 		/// properties for an unobjectified FactType
 		/// </summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
@@ -74,7 +74,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 			Guid domainPropertyId = domainProperty.Id;
 			if (domainPropertyId == FactTypeShape.DisplayRelatedTypesDomainPropertyId ||
 				domainPropertyId == FactTypeShape.DisplayAsObjectTypeDomainPropertyId ||
-				domainPropertyId == FactTypeShape.ExpandRefModeDomainPropertyId)
+				domainPropertyId == FactTypeShape.DisplayRefModeDomainPropertyId)
 			{
 				return false;
 			}
@@ -116,7 +116,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		private static Attribute[] NameDomainPropertyAttributes;
 		private static Attribute[] IsIndependentDomainPropertyAttributes;
 		private static Attribute[] DisplayAsObjectTypeDomainPropertyAttributes;
-		private static Attribute[] ExpandRefModeDomainPropertyAttributes;
+		private static Attribute[] DisplayRefModeDomainPropertyAttributes;
 		private static Attribute[] NestedFactTypeDomainRoleAttributes;
 		private static Attribute[] NestingTypeDomainRoleAttributes;
 
@@ -135,7 +135,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 						DisplayReverseReadingDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayReverseReadingDomainPropertyId));
 						DisplayReadingDirectionDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayReadingDirectionDomainPropertyId));
 						DisplayAsObjectTypeDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayAsObjectTypeDomainPropertyId));
-						ExpandRefModeDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.ExpandRefModeDomainPropertyId));
+						DisplayRefModeDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRefModeDomainPropertyId));
 						NameDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ORMNamedElement.NameDomainPropertyId));
 						IsIndependentDomainPropertyAttributes = GetDomainPropertyAttributes(domainDataDirectory.FindDomainProperty(ObjectType.IsIndependentDomainPropertyId));
 						NestedFactTypeDomainRoleAttributes = AddExpandableElementTypeConverterAttribute(GetRolePlayerPropertyAttributes(domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId)));
@@ -191,7 +191,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 						retVal.Add(EditorUtility.RedirectPropertyDescriptor(nestingType, nestingTypeDescriptor, componentType));
 					}
 					retVal.Add(CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayAsObjectTypeDomainPropertyId), DisplayAsObjectTypeDomainPropertyAttributes));
-					retVal.Add(CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.ExpandRefModeDomainPropertyId), ExpandRefModeDomainPropertyAttributes));
+					retVal.Add(CreatePropertyDescriptor(factTypeShape, domainDataDirectory.FindDomainProperty(FactTypeShape.DisplayRefModeDomainPropertyId), DisplayRefModeDomainPropertyAttributes));
 					retVal.Add(new ObjectifyingEntityTypePropertyDescriptor(factType, domainDataDirectory.FindDomainRole(Objectification.NestingTypeDomainRoleId), NestedFactTypeDomainRoleAttributes));
 					retVal.Add(new ObjectifiedFactTypePropertyDescriptor(nestingType, domainDataDirectory.FindDomainRole(Objectification.NestedFactTypeDomainRoleId), NestingTypeDomainRoleAttributes));
 					if (nestingTypeHasRelatedTypes)

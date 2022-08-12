@@ -330,5 +330,93 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		}
 		
 		#endregion
+		#region HideNewShapeRefMode domain property code
+		
+		/// <summary>
+		/// HideNewShapeRefMode domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid HideNewShapeRefModeDomainPropertyId = new global::System.Guid(0xf2ca350a, 0x61f5, 0x4e31, 0x92, 0xb9, 0x48, 0x14, 0xe8, 0x89, 0xf1, 0xc3);
+		
+		/// <summary>
+		/// Storage for HideNewShapeRefMode
+		/// </summary>
+		private global::System.Boolean hideNewShapeRefModePropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of HideNewShapeRefMode domain property.
+		/// Should the RefModeDisplay be set to Hide for a new object type shape?
+		/// </summary>
+		[ORMDiagramDisplayOption(true)]
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/HideNewShapeRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagramDisplayOptions/HideNewShapeRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslModeling::DomainObjectId("f2ca350a-61f5-4e31-92b9-4814e889f1c3")]
+		public global::System.Boolean HideNewShapeRefMode
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return hideNewShapeRefModePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				HideNewShapeRefModePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ORMDiagramDisplayOptions.HideNewShapeRefMode domain property.
+		/// </summary>
+		internal sealed partial class HideNewShapeRefModePropertyHandler : DslModeling::DomainPropertyValueHandler<ORMDiagramDisplayOptions, global::System.Boolean>
+		{
+			private HideNewShapeRefModePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ORMDiagramDisplayOptions.HideNewShapeRefMode domain property value handler.
+			/// </summary>
+			public static readonly HideNewShapeRefModePropertyHandler Instance = new HideNewShapeRefModePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ORMDiagramDisplayOptions.HideNewShapeRefMode domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return HideNewShapeRefModeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.Boolean GetValue(ORMDiagramDisplayOptions element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.hideNewShapeRefModePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ORMDiagramDisplayOptions element, global::System.Boolean newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.Boolean oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.hideNewShapeRefModePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 	}
 }

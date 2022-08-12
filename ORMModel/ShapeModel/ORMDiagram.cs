@@ -3770,7 +3770,13 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public static readonly object CreatingRolePlayerLinkKey = new object();
 		private NodeShape CreateShapeForObjectType(ObjectType newElement)
 		{
-			return FactTypeShape.ShouldDrawObjectification(newElement.NestedFactType) ? (NodeShape)new ObjectifiedFactTypeNameShape(this.Partition) : new ObjectTypeShape(this.Partition);
+			Partition partition = this.Partition;
+			IList<ORMDiagramDisplayOptions> options;
+			bool hideNewRefMode = (options = partition.ElementDirectory.FindElements<ORMDiagramDisplayOptions>(false)).Count != 0 && options[0].HideNewShapeRefMode;
+
+			return FactTypeShape.ShouldDrawObjectification(newElement.NestedFactType) ?
+				(NodeShape)(hideNewRefMode ? new ObjectifiedFactTypeNameShape(partition, new PropertyAssignment(ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId, true)) : new ObjectifiedFactTypeNameShape(partition)) :
+				(hideNewRefMode ? new ObjectTypeShape(partition, new PropertyAssignment(ObjectTypeShape.ExpandRefModeDomainPropertyId, true)) : new ObjectTypeShape(partition));
 		}
 		private LinkShape CreateConnectorForObjectTypePlaysRole(ObjectTypePlaysRole newElement)
 		{

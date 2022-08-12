@@ -65,6 +65,11 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Corresponds to the supertypes part of the DisplayRelatedTypes property
 			/// </summary>
 			HideSupertypes = 4,
+			/// <summary>
+			/// Temporary flag to trigger the RefModeDisplay property to create shapes while
+			/// hiding the reference mode property.
+			/// </summary>
+			CreateRefModeShapes = 8,
 		}
 		private DisplayFlags myDisplayFlags;
 		/// <summary>
@@ -1412,6 +1417,38 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private void SetExpandRefModeValue(bool value)
 		{
 			SetDisplayFlag(DisplayFlags.ExpandRefMode, value);
+		}
+		private RefModeDisplay GetDisplayRefModeValue()
+		{
+			if (GetDisplayFlag(DisplayFlags.ExpandRefMode))
+			{
+				return GetDisplayFlag(DisplayFlags.CreateRefModeShapes) ? RefModeDisplay.HideCreateShapes : RefModeDisplay.Hide;
+			}
+			return RefModeDisplay.Show;
+		}
+		private void SetDisplayRefModeValue(RefModeDisplay value)
+		{
+			bool createShapes = false;
+			bool expandRefMode = false;
+			switch (value)
+			{
+				//case RefModeDisplay.Show: // Defaults
+				case RefModeDisplay.Hide:
+					expandRefMode = true;
+					break;
+				case RefModeDisplay.HideCreateShapes:
+					createShapes = true;
+					expandRefMode = true;
+					break;
+			}
+			if (expandRefMode != GetDisplayFlag(DisplayFlags.ExpandRefMode))
+			{
+				if (!Store.InUndoRedoOrRollback)
+				{
+					ExpandRefMode = expandRefMode;
+				}
+			}
+			SetDisplayFlag(DisplayFlags.CreateRefModeShapes, createShapes);
 		}
 		private RelatedTypesDisplay GetDisplayRelatedTypesValue()
 		{

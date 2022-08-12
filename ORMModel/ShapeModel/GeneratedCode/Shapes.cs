@@ -341,6 +341,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/ExpandRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("b2415bb1-1c83-4f0b-b2c3-58b67bc620dd")]
 		public global::System.Boolean ExpandRefMode
@@ -411,6 +412,97 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// set to CustomStorage. Please provide the SetExpandRefModeValue()
 					// method on the domain class.
 					element.SetExpandRefModeValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayRefMode domain property code
+		
+		/// <summary>
+		/// DisplayRefMode domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayRefModeDomainPropertyId = new global::System.Guid(0xb9dab919, 0x0f1d, 0x4ad2, 0xa1, 0xff, 0xf9, 0x94, 0x50, 0xa5, 0xde, 0xe5);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayRefMode domain property.
+		/// Should the reference mode field be shown on the object type shape?
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectTypeShape/DisplayRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay.Show)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("b9dab919-0f1d-4ad2-a1ff-f99450a5dee5")]
+		public RefModeDisplay DisplayRefMode
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayRefModePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayRefModePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectTypeShape.DisplayRefMode domain property.
+		/// </summary>
+		internal sealed partial class DisplayRefModePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectTypeShape, RefModeDisplay>
+		{
+			private DisplayRefModePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectTypeShape.DisplayRefMode domain property value handler.
+			/// </summary>
+			public static readonly DisplayRefModePropertyHandler Instance = new DisplayRefModePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectTypeShape.DisplayRefMode domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayRefModeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed RefModeDisplay GetValue(ObjectTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayRefMode because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayRefModeValue()
+				// method on the domain class.
+				return element.GetDisplayRefModeValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectTypeShape element, RefModeDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				RefModeDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayRefMode because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayRefModeValue()
+					// method on the domain class.
+					element.SetDisplayRefModeValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
@@ -1392,6 +1484,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ExpandRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/ExpandRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
 		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("2dcd129c-adaf-4b66-8887-beb04043a746")]
 		public global::System.Boolean ExpandRefMode
@@ -1462,6 +1555,97 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					// set to CustomStorage. Please provide the SetExpandRefModeValue()
 					// method on the domain class.
 					element.SetExpandRefModeValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayRefMode domain property code
+		
+		/// <summary>
+		/// DisplayRefMode domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayRefModeDomainPropertyId = new global::System.Guid(0x4d38e1fd, 0xf1fd, 0x43c4, 0xba, 0x62, 0xf4, 0xd3, 0x45, 0x0d, 0x00, 0xd6);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayRefMode domain property.
+		/// Should the reference mode field be shown on the object type shape?
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.FactTypeShape/DisplayRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay.Show)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("4d38e1fd-f1fd-43c4-ba62-f4d3450d00d6")]
+		public RefModeDisplay DisplayRefMode
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayRefModePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayRefModePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the FactTypeShape.DisplayRefMode domain property.
+		/// </summary>
+		internal sealed partial class DisplayRefModePropertyHandler : DslModeling::DomainPropertyValueHandler<FactTypeShape, RefModeDisplay>
+		{
+			private DisplayRefModePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the FactTypeShape.DisplayRefMode domain property value handler.
+			/// </summary>
+			public static readonly DisplayRefModePropertyHandler Instance = new DisplayRefModePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the FactTypeShape.DisplayRefMode domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayRefModeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed RefModeDisplay GetValue(FactTypeShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayRefMode because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayRefModeValue()
+				// method on the domain class.
+				return element.GetDisplayRefModeValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(FactTypeShape element, RefModeDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				RefModeDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayRefMode because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayRefModeValue()
+					// method on the domain class.
+					element.SetDisplayRefModeValue(newValue);
 					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
@@ -2439,24 +2623,21 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		public static readonly global::System.Guid ExpandRefModeDomainPropertyId = new global::System.Guid(0x5bdafe8c, 0xafa7, 0x4b78, 0xad, 0xc6, 0xca, 0xe8, 0x76, 0xab, 0x21, 0x40);
 		
 		/// <summary>
-		/// Storage for ExpandRefMode
-		/// </summary>
-		private global::System.Boolean expandRefModePropertyStorage;
-		
-		/// <summary>
 		/// Gets or sets the value of ExpandRefMode domain property.
 		/// Should shapes for the FactType and ValueType corresponding to this ReferenceMode
 		/// pattern be displayed on the diagram?
 		/// </summary>
 		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/ExpandRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.Browsable(false)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
 		[DslModeling::DomainObjectId("5bdafe8c-afa7-4b78-adc6-cae876ab2140")]
 		public global::System.Boolean ExpandRefMode
 		{
 			[global::System.Diagnostics.DebuggerStepThrough]
 			get
 			{
-				return expandRefModePropertyStorage;
+				return ExpandRefModePropertyHandler.Instance.GetValue(this);
 			}
 			[global::System.Diagnostics.DebuggerStepThrough]
 			set
@@ -2496,7 +2677,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			public override sealed global::System.Boolean GetValue(ObjectifiedFactTypeNameShape element)
 			{
 				if (element == null) throw new global::System.ArgumentNullException("element");
-				return element.expandRefModePropertyStorage;
+				// There is no storage for ExpandRefMode because its Kind is
+				// set to CustomStorage. Please provide the GetExpandRefModeValue()
+				// method on the domain class.
+				return element.GetExpandRefModeValue();
 			}
 		
 			/// <summary>
@@ -2512,7 +2696,102 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				if (newValue != oldValue)
 				{
 					ValueChanging(element, oldValue, newValue);
-					element.expandRefModePropertyStorage = newValue;
+					// There is no storage for ExpandRefMode because its Kind is
+					// set to CustomStorage. Please provide the SetExpandRefModeValue()
+					// method on the domain class.
+					element.SetExpandRefModeValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region DisplayRefMode domain property code
+		
+		/// <summary>
+		/// DisplayRefMode domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid DisplayRefModeDomainPropertyId = new global::System.Guid(0xcab198a7, 0x6111, 0x4681, 0xa9, 0xd1, 0x1c, 0x86, 0x19, 0x23, 0x5f, 0x4a);
+		
+		/// <summary>
+		/// Gets or sets the value of DisplayRefMode domain property.
+		/// Should the reference mode field be shown on the object type shape?
+		/// </summary>
+		[DslDesign::DisplayNameResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/DisplayRefMode.DisplayName", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.ObjectifiedFactTypeNameShape/DisplayRefMode.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		[global::System.ComponentModel.DefaultValue(ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay.Show)]
+		[DslModeling::DomainProperty(Kind = DslModeling::DomainPropertyKind.CustomStorage)]
+		[DslModeling::DomainObjectId("cab198a7-6111-4681-a9d1-1c8619235f4a")]
+		public RefModeDisplay DisplayRefMode
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return DisplayRefModePropertyHandler.Instance.GetValue(this);
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				DisplayRefModePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ObjectifiedFactTypeNameShape.DisplayRefMode domain property.
+		/// </summary>
+		internal sealed partial class DisplayRefModePropertyHandler : DslModeling::DomainPropertyValueHandler<ObjectifiedFactTypeNameShape, RefModeDisplay>
+		{
+			private DisplayRefModePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ObjectifiedFactTypeNameShape.DisplayRefMode domain property value handler.
+			/// </summary>
+			public static readonly DisplayRefModePropertyHandler Instance = new DisplayRefModePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ObjectifiedFactTypeNameShape.DisplayRefMode domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return DisplayRefModeDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed RefModeDisplay GetValue(ObjectifiedFactTypeNameShape element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				// There is no storage for DisplayRefMode because its Kind is
+				// set to CustomStorage. Please provide the GetDisplayRefModeValue()
+				// method on the domain class.
+				return element.GetDisplayRefModeValue();
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ObjectifiedFactTypeNameShape element, RefModeDisplay newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				RefModeDisplay oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					// There is no storage for DisplayRefMode because its Kind is
+					// set to CustomStorage. Please provide the SetDisplayRefModeValue()
+					// method on the domain class.
+					element.SetDisplayRefModeValue(newValue);
+					//ValueChanged(element, oldValue, GetValue(element));
 					ValueChanged(element, oldValue, newValue);
 				}
 			}

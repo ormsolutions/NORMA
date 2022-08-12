@@ -86,6 +86,18 @@
 						<ExternalTypeMoniker Name="/ORMSolutions.ORMArchitect.Core.ShapeModel/ReadingDirectionIndicatorDisplay"/>
 					</Type>
 				</DomainProperty>
+				<DomainProperty Name="HideNewShapeRefMode" DisplayName="HideNewShapeRefMode" Id="F2CA350A-61F5-4E31-92B9-4814E889F1C3" DefaultValue="false" Description="Should the RefModeDisplay be set to Hide for a new object type shape?">
+					<Attributes>
+						<ClrAttribute Name="ORMDiagramDisplayOption">
+							<Parameters>
+								<AttributeParameter Value="true"/>
+							</Parameters>
+						</ClrAttribute>
+					</Attributes>
+					<Type>
+						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
 			</Properties>
 		</DomainClass>
 	</Classes>
@@ -254,6 +266,20 @@
 				</ClrAttribute>
 			</Attributes>
 		</DomainEnumeration>
+		<DomainEnumeration Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="RefModeDisplay" Description="Determines whether the reference mode property is displayed or hidden.">
+			<Literals>
+				<EnumerationLiteral Name="Show" Value="0" Description="The reference mode is shown with the object type."/>
+				<EnumerationLiteral Name="Hide" Value="1" Description="The reference mode is not shown with the object type."/>
+				<EnumerationLiteral Name="HideCreateShapes" Value="2" Description="The reference mode is not shown with the object type and the corresponding fact type and value type shapes are added to the diagram."/>
+			</Literals>
+			<Attributes>
+				<ClrAttribute Name="global::System.ComponentModel.TypeConverter">
+					<Parameters>
+						<AttributeParameter Value="typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter&lt;RefModeDisplay, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram&gt;)"/>
+					</Parameters>
+				</ClrAttribute>
+			</Attributes>
+		</DomainEnumeration>
 		<!-- This is external so we can list additional attributes not supported by EnumerationLiteral -->
 		<ExternalType Namespace="ORMSolutions.ORMArchitect.Core.ShapeModel" Name="ReadingDirectionIndicatorDisplay"/>
 	</Types>
@@ -287,9 +313,15 @@
 				<GeometryShapeMoniker Name="ORMBaseShape"/>
 			</BaseGeometryShape>
 			<Properties>
-				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="B2415BB1-1C83-4F0B-B2C3-58B67BC620DD" DefaultValue="false" Kind="CustomStorage" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
+				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="B2415BB1-1C83-4F0B-B2C3-58B67BC620DD" DefaultValue="false" Kind="CustomStorage" IsBrowsable="false" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayRefMode" DisplayName="RefModeDisplay" Id="B9DAB919-0F1D-4AD2-A1FF-F99450A5DEE5" DefaultValue="Show" Kind="CustomStorage" Description="Should the reference mode field be shown on the object type shape?">
+					<!-- We use this as a display value to trigger shape expansion. The original ExpandRefMode concept is still serialized. RefModeDisplay.Show matches ExpandRefMode=false. -->
+					<Type>
+						<DomainEnumerationMoniker Name="RefModeDisplay"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="DisplayRelatedTypes" DisplayName="DisplayRelatedTypes" Id="28F09348-418E-4F01-908A-B58558AF18FC" DefaultValue="AttachAllTypes" Kind="CustomStorage" Description="Should links to subtypes and supertypes be attached to this shape?">
@@ -351,9 +383,15 @@
 						<ExternalTypeMoniker Name="/System/Boolean"/>
 					</Type>
 				</DomainProperty>
-				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="2DCD129C-ADAF-4B66-8887-BEB04043A746" DefaultValue="false" Kind="CustomStorage" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
+				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="2DCD129C-ADAF-4B66-8887-BEB04043A746" DefaultValue="false" Kind="CustomStorage" IsBrowsable="false" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayRefMode" DisplayName="RefModeDisplay" Id="4D38E1FD-F1FD-43C4-BA62-F4D3450D00D6" DefaultValue="Show" Kind="CustomStorage" Description="Should the reference mode field be shown on the object type shape?">
+					<!-- We use this as a display value to trigger shape expansion. The original ExpandRefMode concept is still serialized. RefModeDisplay.Show matches ExpandRefMode=false. -->
+					<Type>
+						<DomainEnumerationMoniker Name="RefModeDisplay"/>
 					</Type>
 				</DomainProperty>
 				<DomainProperty Name="RolesPosition" Id="89244439-FBB1-4DEB-BFF3-69D47CB90A6B" DefaultValue="0" IsBrowsable="false" GetterAccessModifier="Private" SetterAccessModifier="Private">
@@ -405,9 +443,15 @@
 				<GeometryShapeMoniker Name="FloatingTextShape"/>
 			</BaseGeometryShape>
 			<Properties>
-				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="5BDAFE8C-AFA7-4B78-ADC6-CAE876AB2140" DefaultValue="false" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
+				<DomainProperty Name="ExpandRefMode" DisplayName="ExpandRefMode" Id="5BDAFE8C-AFA7-4B78-ADC6-CAE876AB2140" DefaultValue="false" Kind="CustomStorage" IsBrowsable="false" Description="Should shapes for the FactType and ValueType corresponding to this ReferenceMode pattern be displayed on the diagram?">
 					<Type>
 						<ExternalTypeMoniker Name="/System/Boolean"/>
+					</Type>
+				</DomainProperty>
+				<DomainProperty Name="DisplayRefMode" DisplayName="RefModeDisplay" Id="CAB198A7-6111-4681-A9D1-1C8619235F4A" DefaultValue="Show" Kind="CustomStorage" Description="Should the reference mode field be shown on the object type shape?">
+					<!-- We use this as a display value to trigger shape expansion. The original ExpandRefMode concept is still serialized. RefModeDisplay.Show matches ExpandRefMode=false. -->
+					<Type>
+						<DomainEnumerationMoniker Name="RefModeDisplay"/>
 					</Type>
 				</DomainProperty>
 			</Properties>

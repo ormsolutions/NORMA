@@ -47,10 +47,15 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel.Design
 		/// </summary>
 		protected override bool ShouldCreatePropertyDescriptor(ModelElement requestor, DomainPropertyInfo domainProperty)
 		{
-			if (domainProperty.Id == ObjectTypeShape.DisplayRelatedTypesDomainPropertyId)
+			Guid domainPropertyId = domainProperty.Id;
+			ObjectType objectType;
+			if (domainPropertyId == ObjectTypeShape.DisplayRelatedTypesDomainPropertyId)
 			{
-				ObjectType objectType;
 				return null != (objectType = ModelElement) && objectType.IsSubtypeOrSupertype;
+			}
+			else if (domainPropertyId == ObjectTypeShape.DisplayRefModeDomainPropertyId)
+			{
+				return null != (objectType = ModelElement) && !objectType.IsValueType;
 			}
 			return base.ShouldCreatePropertyDescriptor(requestor, domainProperty);
 		}

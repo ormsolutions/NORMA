@@ -4469,6 +4469,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			/// Corresponds to the Always value of the DisplayReadingDirection property
 			/// </summary>
 			ReadingDirectionAlways = 0x2000,
+			/// <summary>
+			/// Corresponds to RefModeDisplay.HideCreateShapes when combined with ExpandRefMode flags
+			/// </summary>
+			CreateRefModeShapes = 0x4000,
 		}
 		private DisplayFlags myDisplayFlags;
 		/// <summary>
@@ -4649,6 +4653,38 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		private void SetExpandRefModeValue(bool value)
 		{
 			SetDisplayFlag(DisplayFlags.ExpandRefMode, value);
+		}
+		private RefModeDisplay GetDisplayRefModeValue()
+		{
+			if (GetDisplayFlag(DisplayFlags.ExpandRefMode))
+			{
+				return GetDisplayFlag(DisplayFlags.CreateRefModeShapes) ? RefModeDisplay.HideCreateShapes : RefModeDisplay.Hide;
+			}
+			return RefModeDisplay.Show;
+		}
+		private void SetDisplayRefModeValue(RefModeDisplay value)
+		{
+			bool createShapes = false;
+			bool expandRefMode = false;
+			switch (value)
+			{
+				//case RefModeDisplay.Show: // Defaults
+				case RefModeDisplay.Hide:
+					expandRefMode = true;
+					break;
+				case RefModeDisplay.HideCreateShapes:
+					createShapes = true;
+					expandRefMode = true;
+					break;
+			}
+			if (expandRefMode != GetDisplayFlag(DisplayFlags.ExpandRefMode))
+			{
+				if (!Store.InUndoRedoOrRollback)
+				{
+					ExpandRefMode = expandRefMode;
+				}
+			}
+			SetDisplayFlag(DisplayFlags.CreateRefModeShapes, createShapes);
 		}
 		#endregion // Custom Stored Display Settings
 		#region Accessibility Settings
@@ -7749,6 +7785,93 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			return retVal;
 		}
 		#endregion // Customize appearance
+		#region DisplayFlags
+		/// <summary>
+		/// Bitfield for display settings. All flags are assumed to default to false. 
+		/// </summary>
+		[Flags]
+		private enum DisplayFlags
+		{
+			/// <summary>
+			/// Corresponds to the ExpandRefMode property
+			/// </summary>
+			ExpandRefMode = 1,
+			/// <summary>
+			/// Corresponds to RefModeDisplay.HideCreateShapes when combined with ExpandRefMode flags
+			/// </summary>
+			CreateRefModeShapes = 2,
+		}
+		private DisplayFlags myDisplayFlags;
+		/// <summary>
+		/// Test if a display flag is set
+		/// </summary>
+		private bool GetDisplayFlag(DisplayFlags flag)
+		{
+			return 0 != (myDisplayFlags & flag);
+		}
+		/// <summary>
+		/// Set a value for a display flag. Returns true if the flag value changed.
+		/// </summary>
+		private bool SetDisplayFlag(DisplayFlags flag, bool value)
+		{
+			if (value)
+			{
+				if ((myDisplayFlags & flag) != flag)
+				{
+					myDisplayFlags |= flag;
+					return true;
+				}
+			}
+			else if (0 != (myDisplayFlags & flag))
+			{
+				myDisplayFlags &= ~flag;
+				return true;
+			}
+			return false;
+		}
+		#endregion // DisplayFlags
+		#region Custom Stored Display Settings
+		private bool GetExpandRefModeValue()
+		{
+			return GetDisplayFlag(DisplayFlags.ExpandRefMode);
+		}
+		private void SetExpandRefModeValue(bool value)
+		{
+			SetDisplayFlag(DisplayFlags.ExpandRefMode, value);
+		}
+		private RefModeDisplay GetDisplayRefModeValue()
+		{
+			if (GetDisplayFlag(DisplayFlags.ExpandRefMode))
+			{
+				return GetDisplayFlag(DisplayFlags.CreateRefModeShapes) ? RefModeDisplay.HideCreateShapes : RefModeDisplay.Hide;
+			}
+			return RefModeDisplay.Show;
+		}
+		private void SetDisplayRefModeValue(RefModeDisplay value)
+		{
+			bool createShapes = false;
+			bool expandRefMode = false;
+			switch (value)
+			{
+				//case RefModeDisplay.Show: // Defaults
+				case RefModeDisplay.Hide:
+					expandRefMode = true;
+					break;
+				case RefModeDisplay.HideCreateShapes:
+					createShapes = true;
+					expandRefMode = true;
+					break;
+			}
+			if (expandRefMode != GetDisplayFlag(DisplayFlags.ExpandRefMode))
+			{
+				if (!Store.InUndoRedoOrRollback)
+				{
+					ExpandRefMode = expandRefMode;
+				}
+			}
+			SetDisplayFlag(DisplayFlags.CreateRefModeShapes, createShapes);
+		}
+		#endregion //Custom Stored Display Settings
 		#region IDynamicColorGeometryHost Implementation
 		/// <summary>
 		/// Implements <see cref="IDynamicColorGeometryHost.UpdateDynamicColor(StyleSetResourceId,Pen)"/>

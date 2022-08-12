@@ -712,7 +712,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				{
 					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
 				}
-				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+				return new CustomSerializedPropertyInfo(null, null, null, true, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
 			if (0 != (CustomSerializedElementSupportedOperations.PropertyInfo & base.SupportedCustomSerializedOperations))
 			{
@@ -1350,6 +1350,14 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				}
 				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
 			}
+			if (domainPropertyInfo.Id == ORMDiagramDisplayOptions.HideNewShapeRefModeDomainPropertyId)
+			{
+				if (!this.HideNewShapeRefMode)
+				{
+					return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.NotWritten, null);
+				}
+				return new CustomSerializedPropertyInfo(null, null, null, false, CustomSerializedAttributeWriteStyle.Attribute, null);
+			}
 			return CustomSerializedPropertyInfo.Default;
 		}
 		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
@@ -1400,6 +1408,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				customSerializedAttributes.Add("DisplayRoleNames", ORMDiagramDisplayOptions.DisplayRoleNamesDomainPropertyId);
 				customSerializedAttributes.Add("DisplayReverseReadings", ORMDiagramDisplayOptions.DisplayReverseReadingsDomainPropertyId);
 				customSerializedAttributes.Add("DisplayReadingDirection", ORMDiagramDisplayOptions.DisplayReadingDirectionDomainPropertyId);
+				customSerializedAttributes.Add("HideNewShapeRefMode", ORMDiagramDisplayOptions.HideNewShapeRefModeDomainPropertyId);
 				ORMDiagramDisplayOptions.myCustomSerializedAttributes = customSerializedAttributes;
 			}
 			Guid rVal;
@@ -1418,7 +1427,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
 		protected bool ShouldSerialize()
 		{
-			return this.DisplayReverseReadings != BinaryFactTypeReadingDisplay.ShowReverseReading || this.DisplayRoleNames != RoleNameDisplay.On || this.DisplayReadingDirection != ReadingDirectionIndicatorDisplay.Reversed;
+			return this.DisplayReverseReadings != BinaryFactTypeReadingDisplay.ShowReverseReading || this.DisplayRoleNames != RoleNameDisplay.On || this.DisplayReadingDirection != ReadingDirectionIndicatorDisplay.Reversed || this.HideNewShapeRefMode;
 		}
 		bool ICustomSerializedElement.ShouldSerialize()
 		{

@@ -111,6 +111,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				new DomainMemberInfo(typeof(ORMDiagramDisplayOptions), "DisplayRoleNames", ORMDiagramDisplayOptions.DisplayRoleNamesDomainPropertyId, typeof(ORMDiagramDisplayOptions.DisplayRoleNamesPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMDiagramDisplayOptions), "DisplayReverseReadings", ORMDiagramDisplayOptions.DisplayReverseReadingsDomainPropertyId, typeof(ORMDiagramDisplayOptions.DisplayReverseReadingsPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMDiagramDisplayOptions), "DisplayReadingDirection", ORMDiagramDisplayOptions.DisplayReadingDirectionDomainPropertyId, typeof(ORMDiagramDisplayOptions.DisplayReadingDirectionPropertyHandler)),
+				new DomainMemberInfo(typeof(ORMDiagramDisplayOptions), "HideNewShapeRefMode", ORMDiagramDisplayOptions.HideNewShapeRefModeDomainPropertyId, typeof(ORMDiagramDisplayOptions.HideNewShapeRefModePropertyHandler)),
 				new DomainMemberInfo(typeof(ORMDiagram), "AutoPopulateShapes", ORMDiagram.AutoPopulateShapesDomainPropertyId, typeof(ORMDiagram.AutoPopulateShapesPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMDiagram), "UpdateCounter", ORMDiagram.UpdateCounterDomainPropertyId, typeof(ORMDiagram.UpdateCounterPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMDiagram), "DisplayRoleNames", ORMDiagram.DisplayRoleNamesDomainPropertyId, typeof(ORMDiagram.DisplayRoleNamesPropertyHandler)),
@@ -119,6 +120,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				new DomainMemberInfo(typeof(ORMBaseBinaryLinkShape), "UpdateCounter", ORMBaseBinaryLinkShape.UpdateCounterDomainPropertyId, typeof(ORMBaseBinaryLinkShape.UpdateCounterPropertyHandler)),
 				new DomainMemberInfo(typeof(ORMBaseShape), "UpdateCounter", ORMBaseShape.UpdateCounterDomainPropertyId, typeof(ORMBaseShape.UpdateCounterPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectTypeShape), "ExpandRefMode", ObjectTypeShape.ExpandRefModeDomainPropertyId, typeof(ObjectTypeShape.ExpandRefModePropertyHandler)),
+				new DomainMemberInfo(typeof(ObjectTypeShape), "DisplayRefMode", ObjectTypeShape.DisplayRefModeDomainPropertyId, typeof(ObjectTypeShape.DisplayRefModePropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectTypeShape), "DisplayRelatedTypes", ObjectTypeShape.DisplayRelatedTypesDomainPropertyId, typeof(ObjectTypeShape.DisplayRelatedTypesPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "ConstraintDisplayPosition", FactTypeShape.ConstraintDisplayPositionDomainPropertyId, typeof(FactTypeShape.ConstraintDisplayPositionPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRoleNames", FactTypeShape.DisplayRoleNamesDomainPropertyId, typeof(FactTypeShape.DisplayRoleNamesPropertyHandler)),
@@ -129,8 +131,10 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRelatedTypes", FactTypeShape.DisplayRelatedTypesDomainPropertyId, typeof(FactTypeShape.DisplayRelatedTypesPropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "DisplayAsObjectType", FactTypeShape.DisplayAsObjectTypeDomainPropertyId, typeof(FactTypeShape.DisplayAsObjectTypePropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "ExpandRefMode", FactTypeShape.ExpandRefModeDomainPropertyId, typeof(FactTypeShape.ExpandRefModePropertyHandler)),
+				new DomainMemberInfo(typeof(FactTypeShape), "DisplayRefMode", FactTypeShape.DisplayRefModeDomainPropertyId, typeof(FactTypeShape.DisplayRefModePropertyHandler)),
 				new DomainMemberInfo(typeof(FactTypeShape), "RolesPosition", FactTypeShape.RolesPositionDomainPropertyId, typeof(FactTypeShape.RolesPositionPropertyHandler)),
 				new DomainMemberInfo(typeof(ObjectifiedFactTypeNameShape), "ExpandRefMode", ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId, typeof(ObjectifiedFactTypeNameShape.ExpandRefModePropertyHandler)),
+				new DomainMemberInfo(typeof(ObjectifiedFactTypeNameShape), "DisplayRefMode", ObjectifiedFactTypeNameShape.DisplayRefModeDomainPropertyId, typeof(ObjectifiedFactTypeNameShape.DisplayRefModePropertyHandler)),
 				new DomainMemberInfo(typeof(ValueConstraintShape), "MaximumDisplayedValues", ValueConstraintShape.MaximumDisplayedValuesDomainPropertyId, typeof(ValueConstraintShape.MaximumDisplayedValuesPropertyHandler)),
 				new DomainMemberInfo(typeof(ValueConstraintShape), "MaximumDisplayedColumns", ValueConstraintShape.MaximumDisplayedColumnsDomainPropertyId, typeof(ValueConstraintShape.MaximumDisplayedColumnsPropertyHandler)),
 			};
@@ -791,6 +795,37 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 		/// </summary>
 		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RelatedTypesDisplay/AttachNoTypes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
 		AttachNoTypes = 3,
+	}
+}
+namespace ORMSolutions.ORMArchitect.Core.ShapeModel
+{
+	/// <summary>
+	/// DomainEnumeration: RefModeDisplay
+	/// Determines whether the reference mode property is displayed or hidden.
+	/// </summary>
+	[global::System.ComponentModel.TypeConverter(typeof(global::ORMSolutions.ORMArchitect.Framework.Design.EnumConverter<RefModeDisplay, global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMDiagram>))]
+	[global::System.CLSCompliant(true)]
+	public enum RefModeDisplay
+	{
+		/// <summary>
+		/// Show
+		/// The reference mode is shown with the object type.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay/Show.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Show = 0,
+		/// <summary>
+		/// Hide
+		/// The reference mode is not shown with the object type.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay/Hide.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		Hide = 1,
+		/// <summary>
+		/// HideCreateShapes
+		/// The reference mode is not shown with the object type and the corresponding fact
+		/// type and value type shapes are added to the diagram.
+		/// </summary>
+		[DslDesign::DescriptionResource("ORMSolutions.ORMArchitect.Core.ShapeModel.RefModeDisplay/HideCreateShapes.Description", typeof(global::ORMSolutions.ORMArchitect.Core.ShapeModel.ORMShapeDomainModel), "ORMSolutions.ORMArchitect.Core.GeneratedCode.ShapeDomainModelResx")]
+		HideCreateShapes = 2,
 	}
 }
 

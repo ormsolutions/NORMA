@@ -1146,6 +1146,18 @@ If a subtype is constrained use single-click to add and double-click to commit.<
     <value xml:space="preserve">[Missing{0:d}]</value>
     <comment xml:space="preserve">The string used to display a reading with a non-primary order when the role is not attached. Replement fields: {0}=displayed role index</comment>
   </data>
+  <data name="RefModeDisplay.Show">
+    <value xml:space="preserve">Show</value>
+    <comment xml:space="preserve">The string used to indicate the reference mode is shown on the object type shape.</comment>
+  </data>
+  <data name="RefModeDisplay.Hide">
+    <value xml:space="preserve">Hide</value>
+    <comment xml:space="preserve">The string used to indicate the reference mode is not shown on the object type shape.</comment>
+  </data>
+  <data name="RefModeDisplay.HideCreateShapes">
+    <value xml:space="preserve">Hide (Create Shapes)</value>
+    <comment xml:space="preserve">The string used to indicate the reference mode is not shown on the object type shape and corresponding shapes should be created.</comment>
+  </data>
   <data name="RelatedTypesDisplay.AttachAllTypes">
     <value xml:space="preserve">Subtypes and Supertypes</value>
   </data>

@@ -66,32 +66,78 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 			FactTypeShape factTypeShape = null;
 			Guid attributeId = e.DomainProperty.Id;
 			ModelElement element = e.ModelElement;
-			if ((attributeId == ObjectTypeShape.ExpandRefModeDomainPropertyId &&
+			if ((attributeId == ObjectTypeShape.DisplayRefModeDomainPropertyId &&
 				null != (objectTypeShape = element as ObjectTypeShape)) ||
-				(attributeId == ObjectifiedFactTypeNameShape.ExpandRefModeDomainPropertyId &&
+				(attributeId == ObjectifiedFactTypeNameShape.DisplayRefModeDomainPropertyId &&
 				null != (objectifiedShape = element as ObjectifiedFactTypeNameShape)) ||
-				(attributeId == FactTypeShape.ExpandRefModeDomainPropertyId &&
+				(attributeId == FactTypeShape.DisplayRefModeDomainPropertyId &&
 				null != (factTypeShape = element as FactTypeShape) &&
 				factTypeShape.DisplayAsObjectType))
 			{
+				RefModeDisplay oldValue = (RefModeDisplay)e.OldValue;
+				if (oldValue == RefModeDisplay.HideCreateShapes)
+				{
+					// This is always a temporary value that will be reverted to RefModeDisplay.Hide
+					// from inside this routine so no further processing is needed.
+					return;
+				}
+				bool expandShapes = false;
+				bool collapseShapes = false;
+				bool resizeShape = false;
+				bool clearCreate = false;
+				switch ((RefModeDisplay)e.NewValue)
+				{
+					case RefModeDisplay.Show:
+						collapseShapes = true;
+						resizeShape = true;
+						break;
+					case RefModeDisplay.Hide:
+						resizeShape = true;
+						break;
+					case RefModeDisplay.HideCreateShapes:
+						expandShapes = clearCreate = true;
+						resizeShape = oldValue == RefModeDisplay.Show;
+						break;
+				}
 				ObjectType objectType = null;
 				ORMModel model;
 				NodeShape targetShape;
 				if (objectTypeShape != null)
 				{
-					objectTypeShape.AutoResize();
+					if (resizeShape)
+					{
+						objectTypeShape.AutoResize();
+					}
+					if (clearCreate)
+					{
+						objectTypeShape.DisplayRefMode = RefModeDisplay.Hide;
+					}
 					objectType = objectTypeShape.ModelElement as ObjectType;
 					targetShape = objectTypeShape;
 				}
 				else if (objectifiedShape != null)
 				{
-					objectifiedShape.AutoResize();
+					if (resizeShape)
+					{
+						objectifiedShape.AutoResize();
+					}
+					if (clearCreate)
+					{
+						objectifiedShape.DisplayRefMode = RefModeDisplay.Hide;
+					}
 					objectType = objectifiedShape.ModelElement as ObjectType;
 					targetShape = objectifiedShape;
 				}
 				else
 				{
-					factTypeShape.AutoResize();
+					if (resizeShape)
+					{
+						factTypeShape.AutoResize();
+					}
+					if (clearCreate)
+					{
+						factTypeShape.DisplayRefMode = RefModeDisplay.Hide;
+					}
 					FactType objectifiedFactType;
 					if (null != (objectifiedFactType = factTypeShape.AssociatedFactType))
 					{
@@ -114,13 +160,12 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					null != (rolePlayer = constraintRoles[0].RolePlayer) &&
 					rolePlayer.IsValueType)
 				{
-					bool expandingRefMode = (bool)e.NewValue;
 					bool resetAttachmentsForPreexistingFactTypeShape = false;
 					if (preferredConstraint.IsObjectifiedSingleRolePreferredIdentifier)
 					{
 						// Back up the property descriptor, which sets the ExpandRefMode property
 						// to readonly in this case
-						if (!expandingRefMode)
+						if (!expandShapes)
 						{
 							if (objectTypeShape != null)
 							{
@@ -137,13 +182,19 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 						}
 						return;
 					}
+
+					if (!(collapseShapes || expandShapes))
+					{
+						return;
+					}
+
 					ORMDiagram parentDiagram = targetShape.Diagram as ORMDiagram;
 					Dictionary<ShapeElement, bool> shapeElements = new Dictionary<ShapeElement, bool>();
 
 					// View or Hide FactType
 					FactType factType = preferredConstraint.FactTypeCollection[0];
 					bool removedFactType = false;
-					if (!expandingRefMode)
+					if (collapseShapes)
 					{
 						if (!parentDiagram.ShouldDisplayFactType(factType))
 						{
@@ -158,7 +209,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 							MultiShapeUtility.AttachLinkConfigurationChanged(objectifiedShape.ParentShape);
 						}
 					}
-					else
+					else if (expandShapes)
 					{
 						// Stop the reading shape from ending up in the wrong place during refmode expansion
 						e.ModelElement.Store.TransactionManager.CurrentTransaction.TopLevelTransaction.Context.ContextInfo[ORMBaseShape.PlaceAllChildShapes] = null;
@@ -203,7 +254,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					ObjectType valueType = preferredConstraint.RoleCollection[0].RolePlayer;
 					if (valueType != null)
 					{
-						if (expandingRefMode)
+						if (expandShapes)
 						{
 							if (!parentDiagram.ElementHasShape(valueType))
 							{
@@ -252,7 +303,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 					{
 						foreach (RoleHasValueConstraint link in DomainRoleInfo.GetElementLinks<RoleHasValueConstraint>(roleBase.Role, RoleHasValueConstraint.RoleDomainRoleId))
 						{
-							if (expandingRefMode)
+							if (expandShapes)
 							{
 								// Remove child shapes associated with this value constraint
 								RoleValueConstraint valueConstraint = link.ValueConstraint;
@@ -266,7 +317,7 @@ namespace ORMSolutions.ORMArchitect.Core.ShapeModel
 								}
 								FixupRoleValueConstraintLink(link, null);
 							}
-							else
+							else if (collapseShapes)
 							{
 								FixupRoleValueConstraintLinkForIdentifiedEntityType(link, null);
 							}
