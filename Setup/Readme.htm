@@ -3,7 +3,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252"/>
-<title>NORMA May 2020 Readme</title>
+<title>NORMA August 2022 Readme</title>
 <style type="text/css">
 	.new {font-size:x-small; background-color:Gold; color:Blue; }
 	.toggle{font-size:larger;cursor:pointer;font-family: monospace; color:rgb(97, 133, 160); display:inline; padding-right:.15em;}
@@ -35,9 +35,9 @@ function toggleDisp(sign,bodyId) {
 
 <body>
 
-<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA May 2020 Readme</a>&nbsp;</b></p>
+<p><b><a id="The Top" style="font-family:Verdana;font-size:medium">NORMA August 2022 Readme</a>&nbsp;</b></p>
 <p>This file supersedes the previous readme.txt and older readme.htm files. This readme has parallel indexing mechanisms: by topic, and by release date (starting with the October 2008 (2008-10) release). The file will be extended for future product releases.<br/><br/>
-The May 2020 release is primarily a maintenance release with additional extension support for grouping. See detailed change notes below for specifics.<br/><br/>
+The August 2022 release includes a lot of maintenance and some more diagram display options. See detailed change notes below for specifics.<br/><br/>
 </p>
 <h2><span class="toggle" onclick="toggleDisp(this,'contents')">-</span>Contents</h2>
 <div id="contents">
@@ -70,8 +70,43 @@ The May 2020 release is primarily a maintenance release with additional extensio
 </div>-->
 
 <hr/>
-<h2><span class="toggle" onclick="toggleDisp(this,'mar2019')">-</span>May 2020 CTP Changes</h2>
-<div id="may2020">
+<h2><span class="toggle" onclick="toggleDisp(this,'aug2022')">-</span>August 2022 Changes</h2>
+<div id="aug2022">
+<div>The August 2022 release includes all modifications through git tag v1.0.47. Most of these changes have been available for several releases in Visual Studio Marketplace but were not documented in the readme. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>.</div>
+<ul>
+<li>Feature Changes:
+<ol>
+<li>Custom properties can now be defined for the ORM Diagram type, allowing user-defined data to be collected for each diagram.</li>
+<li><a href="#Per User Install 2022-08">Per User Installation</a>&nbsp;</li>
+<li>The <em>ORM Tool Windows</em> submenu lists additional standard Visual Studio tool windows at the bottom of the menu. In addition to the <em>Properties</em> window, you can also jump to the <em>Error List</em> tool window, the <em>Toolbox</em> and use <em>ORM Designer Options</em> to jump directly to the <em>ORM Designer</em> page in the <em>Tools/Options</em> dialog.</li>
+<li><a href="#Block No Evidence Absorption 2022-08">Block Absorption of Empty Relational Table</a>&nbsp;</li>
+<li><a href="#Role Verbalization 2022-08">Role Verbalization</a>&nbsp;</li>
+<li>The <em>Modality</em> property has been added to value constraints. After a value range has been creating you can select the value range shape to change the modality. As with other modal constraints, the color will change and the deontic 'o' (for obligation, rendered as a raised degree symbol) is added to the front of the value constraint text.</li>
+<li><a href="#Diagram Display Options 2022-08">Global and Local Diagram Display Options</a>&nbsp;</li>
+<li><a href="#RefModeDisplay 2022-08">RefModeDisplay replaces ExpandRefMode</a>&nbsp;</li>
+</ol>
+</li>
+<li>Bug Fixes:
+<ol>
+<li>Exclusive-or constraints could cause a validation failure on load if the mandatory constraint is implied. The serialization spec and schema were out of sync. Updated the schema.</li>
+<li>Incomplete ORM elements (missing role players, missing identifiers, etc.) are ignored during relational mapping. However, if a role player of an objectification (which is part of the identification scheme for an objectification) was indirectly identified (such as with a subtype relationship) and that object type was not complete, then the objectification was considered for relational mapping. This crashed as soon as the identifier was needed.</li>
+<li>Stripping all unused extensions failed. If an extension is not loaded on a machine NORMA will still load the file (with a strong warning about saving it). If 1..n-1 of the extensions had to be removed then this succeeded, but unloading all n failed.</li>
+<li>ReferenceModeNaming options control how relational names are generated. If any custom values were used for a reference mode category but the primary naming choice used the default settings, then saving and reloading the file would give a primary naming choice of ValueTypeName. This was incorrect in the schema file, which said ValueTypeName instead of ModelDefault for the default value.</li>
+<li>An empty value constraint caused a file load failure. Deleting all of the text in a value constraint deleted the constraint, but leaving <em>{}</em> in the editor would create a value constraint with no ranges that could not be loaded. Stop this from happening in the future and enabling loading of existing cases.</li>
+<li>When DisplayAsObjectType is changed to true all role name shapes are removed from the fact type shape. However, if the role names are changed these shapes will come back even though DisplayAsObjectType was set. Make the role name shape suppression consistent for this fact type shape state.</li>
+<li>Icons for .orm files were not shown consistently in the Visual Studio UI (Solution Explorer and other Windows). In earlier .msi-installed versions of NORMA the icon came from registering the file type with the shell. However, .vsix-installed extensions can only write to the VS registry, not the system (including shell) registry. The glyphs are restored in VS but I can no longer control the file system glyphs with NORMA setup (above VS2015).</li>
+<li>The custom properties dialogs had serious issues on DPI-scaled machines. This left the majority of the dialogs as unusable whitespace. This was tied to the use of user controls in these dialogs. The user controls were not technically needed, and switching to normal panels fixed the scaling.</li>
+<li>Occasionaly arithmetic overflow during ORM Custom Tool code generation. This was caused by a cast from uint to IntPtr, which fails if the high bit is set on the uint. This generally only occurs if the VS process is under considerable memory stress. Casing uint to int to IntPtr (ulong to long to IntPtr on 64-bit) fixes the problem.</li>
+<li>Once a description is added it could not be deleted. We now clean up incoming descriptions and do not serialize empty ones.</li>
+</ol>
+</li>
+</ul>
+<hr/>
+</div>
+<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
+<div style="display:none;" id="oldChanges">
+<h3><span class="toggle" onclick="toggleDisp(this,'may2020')">+</span>May 2020 CTP Changes</h3>
+<div style="display:none;" id="may2020">
 <div>The May 2020 release includes all modifications through git tag v1.0.41. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>.</div>
 <ul>
 <li>Feature Changes:
@@ -89,10 +124,8 @@ However, because NORMA (as with any other Visual Studio extension) is not loaded
 </ul>
 <hr/>
 </div>
-<h2><span class="toggle" onclick="toggleDisp(this,'oldChanges')">+</span>Previous Releases</h2>
-<div style="display:none;" id="oldChanges">
-<h3><span class="toggle" onclick="toggleDisp(this,'mar2019')">-</span>March 2019 Changes</h3>
-<div id="mar2019">
+<h3><span class="toggle" onclick="toggleDisp(this,'mar2019')">+</span>March 2019 Changes</h3>
+<div style="display:none;" id="mar2019">
 <div>The March 2019 release includes all modifications through git tag v1.0.40. Full changeset descriptions can be found on <a href="https://github.com/ormsolutions/NORMA">github</a>.</div>
 <ul>
 <li>Feature Changes:
@@ -634,7 +667,15 @@ The October 2008 release includes two major functionality additions plus a numbe
 <h3><a id="Setup">Installing NORMA</a></h3>
 <ol>
 <li><a id="VSIXInstallation 2019-03" class="new" title="March 2019: Visual Studio Marketplace support for Visual Studio 2017 and Visual Studio 2019">2019-03</a>&nbsp;
-The Visual Studio 2017 and Visual Studio 2019 versions of NORMA no longer have an .msi-based installation process. They are now part of the Visual Studio Marketplace and install as a normal extension. <em>All installation directions below this item apply to Visual Studio 2015 and earlier versions only.</em> To install using the Marketplace, start Visual Studio, open the <em>Tools and Extensions</em> dialog from the <em>Tools</em> menu then choose <em>Online/Visual Studio Marketplace</em>. You will now be able to search for NORMA. Make sure your package is digitally signed by <strong>ORM Solutions, LLC</strong> before installing to make sure you have an official release of NORMA and schedule the installation to run when Visual Studio closes. Updates will be shown in this dialog as they are made available, but will not automatically install.</li>
+The Visual Studio 2017, Visual Studio 2019 and Visual Studio 2022 versions of NORMA no longer have an .msi-based installation process. They are now part of the Visual Studio Marketplace and install as a normal extension. <em>All installation directions below this item apply to Visual Studio 2015 and earlier versions only.</em>
+<ul>
+<li>To install using the Marketplace, start Visual Studio, open the <em>Tools and Extensions</em> dialog from the <em>Tools</em> menu in Visual Studio 2017. For later release, this dialog has moved to <em>Extensions/Manage Extensions</em>.</li>
+<li>Choose <em>Online/Visual Studio Marketplace</em>. You will now be able to search for NORMA.</li>
+<li>Make sure your package is digitally signed by <strong>ORM Solutions, LLC</strong> before installing to make sure you have an official release of NORMA and schedule the installation to run when Visual Studio closes. Updates will be shown in this dialog as they are made available, but will not automatically install.</li>
+<li><a id="Per User Install 2022-08" class="new" title="August 2022: Per User Installation">2022-08</a>&nbsp;
+Users now have the option of installing the normal package (requiring admin rights) or a <em>PerUser</em> version of NORMA. Only one of these should be chosen, and if the other has been previously chosen it should be uninstalled before switching. The PerUser package can be installed without admin rights and can automatically update if an update is provided. After installation, the only difference is that IntelliSense help for NORMA-installed schemas is no automatically available in any NORMA file opened in the Visual Studio XML editor.
+To get schema support NORMA makes it easy to open the small number of schema catalog files in NORMA. Any schema that is opened in a current editor window (or is listed in a open catalog file) is recognized and gets the same level of help as an installed schema file. To open these files, choose <em>XML\Load NORMA Schemas</em> with an XML file open. If you do not see the menu item then create a new .ORM file and close without saving to form the NORMA package to load.</li>
+</ul></li>
 <li>Updating NORMA to the latest version requires Setup.bat to be run from the downloaded .zip file, which should be chosen based on your Visual Studio version (2015, 2013, 2012, 2010, 2008, 2005). NORMA does not share installation files between versions, so you must choose your target when you download the installation package.</li>
 <li>Any previous NORMA versions for the selected Visual Studio target will be automatically uninstalled and reinstalled by the Setup.bat file. Make sure Visual Studio is not running during the installation pocess. Please be patient with the uninstall, which takes roughly the same amount of time as the install. Killing installation processes (the setup command prompt, msiexec, devenv) can leave you with a system that requires manual intervention to restore.</li>
 <li>Full Visual Studio studio configuration on version 2010 and higher will not be completed until after Visual Studio has restarted. Some slowdown should be expected on Visual Studio launch, the first time the 'File/New' dialog is opened, and the first time an .orm file is opened.</li>
@@ -835,6 +876,8 @@ As an enhancement to automatic name separation and casing of object type names (
 <li>Most special characters remain in the final name and do not get extra spaces around them.</li>
 <li>The new <em>Object Type Name Removed Characters</em> options lists special characters that should be replaced with a space when names are separated, and eliminated when names are explicitly combined. The default setting replaces the <strong>.:_</strong> (period, colon, and underscore) characters with a space in a sepated name and removes these characters in a combined name.</li></ul>
 </li>
+<li><a id="Role Verbalization 2022-08" class="new" title="August 2022: Role Verbalization">2022-08</a>&nbsp;
+Roles are not generally verbalized outside the fact type simply because there is no new information to add. However, it is possible to add additional information to a role. The most common additional data is a role name. Custom properties also have data associated with roles. Roles are now verbalized if there is a role name (like <em>Role for ROLEPLAYER, named NAME</em>) or if there are child verbalizations, either for custom properties or for role constraints. Role custom properties in particular are very confusing without the role context because there is no way to see the role affinity from a property name/value pair. If the role name is not unique the subscript role numbers are based on the positions in the verbalization of the context fact type.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -954,6 +997,31 @@ Cardinality constraints support multiple ranges, including the value of zero. Th
 Cardinality ranges are displayed in the cardinality constraint shape starting with a '#' and using '..' for a range and '&#x2264;&#x2265;' for open ended ranges. Multiple ranges are shown in curly braces separated with the list separator specific to your machine locale (a comma in English). A leading '=' is provided if a single value is given. So, <em>#=2</em> means exactly two instances, <em>#{2,4}</em> means two or four instances, <em>#{0,&#x2265;3}</em> means 0 or 3 or more instances, and <em>5..10</em> means between five and ten instances. The editor for these ranges, including the <em>CardinalityConstraint</em> property, is not exactly the same as the display because not all of the display characters are easily typed. Full directions for recognized patterns are shown in the description pane of the Property Browser when the CardinalityConstraint property (or the Ranges property of an existing constraint) are selected. As an example, <em>#{0,&#x2265;3}</em> is entered as <em>0,3..</em> or <em>0,>2</em> or <em>0,>=3</em>.<br /><br />
 <em>The December 2013 release introduces cardinality constraint notation, validation, and verbalization, but does not yet map these constraints to the generated relational model or other physical implementations.</em>
 </li>
+<li><a id="Diagram Display Options 2022-08" class="new" title="August 2022: Global and Local Diagram Display Options">2022-08</a>&nbsp;
+Allowing machine-specific display options (in the ORM Designer options page) to cause changes in the saved state of a file is not a good idea. When this happens, loading and saving a file with no additional changes will cause a significant change to the file and potentially lose data. Unfortunately the <em>Display Reading Indicator</em> and <em>Display Role Names</em> options fell into this category of destructive  machine options because they could change the shape sizes (which are saved) as well as remove user-positioned role name shapes and even add auto-position role name shapes. Several changes have been made in this area to introduce a better design pattern for these and future display settings.
+<ul>
+<li>These two options on the ORM Designer page have been moved from the <em>Appearance</em> category in the options page to the new <em>Appearance (New File Defaults)</em> category. As such, changing them will only affect the display options for a new file, not existing files.</li>
+<li>An new-file-default option has been added for <em>Binary Reverse Readings</em>, which can be set to (default) <em>Show Reverse Reading</em> or the newly available <em>One Reading Only</em> value. This option and the corresponding properties discussed below determines if an available reverse reading is shown on a binary fact type. These are informative, but meaningful readings can be long and introduce significant clutter to the diagram, so this is now configurable.</li>
+<li>Each ORM Diagram now displays two additional expandable properties in the <em>Display Options</em> category. These are <em>GlobalDisplayOptions</em> and <em>LocalDisplayOptions</em>. The first will be same for all diagrams, and the second customizes options on the selected diagram. These will show values of (Default) or (Custom), with the latter bolded, to indicate if any of the expanded properties are non-default.</li>
+<li>Both of the expandable properties contain values for <em>ReadingDirectionIndicator</em>, <em>ReverseReadings</em> and <em>RoleNames</em>. As with other properties values, these are bolded if they are not default. The default state for the global options is the same on all system (irrespective of the options page settings) while the local options are default if they match the corresponding global option. For example, if the global <em>ReverseReadings</em> option is set to the non-default <em>Only One Reading</em> then this value is shown in bold, the container value changes to <em>(Custom)</em>, and the correspond local display property changes to <em>Default (Only One Reading)</em>. The local option can be locked into a value at any time by moving off the default value.</li>
+<li>In addition to the global and diagram-local values, each fact type shape can control these values individually using properties beginning with <em>Display</em> (DisplayReadingDirection, DisplayReverseReading, DisplayRoleNames). These use the diagram-local options as the default, which can in turn defer to the global defaults.</li>
+</ul>With these multiple levels of control (global, local diagram, individual shape) you get fine-grained control over your preferred display settings, and these are now all a part of the file instead of at the whim of the appearance settings for a specific machine.</li>
+<li><a id="RefModeDisplay 2022-08" class="new" title="August 2022: RefModeDisplay replaces ExpandRefMode">2022-08</a>&nbsp;
+The <em>ExpandRefMode</em> property has been available since the initial NORMA release, and it has been a workflow problem just as long. <em>ExpandRefMode=false</em> indicates that the reference mode field should be shown on the object type shape. Setting this to true is meant to indicate that the reference mode field is not needed in the shape because additional shapes are shown for the fact type and value type elements forming the reference mode scheme identification pattern. There are several issues with this:
+<ul>
+<li>ExpandRefMode=true may represent the expanded form when it is first set, but there is no guarantee that the expansions remain because they are frequently deleted. In this case, ExpandRefMode=true simply means to hide the RefMode shape on the object type.</li>
+<li>For economy of space, hiding both the reference mode field and expanded shapes is normal modeling behavior. The user should not constantly be forced to deal with the identification scheme each time a new shape is created for a popular object type.</li>
+<li>Deleting the shapes is a hassle for an experienced modeler, especially on a crowded diagram. For a new modeler it is very easy to delete the underlying elements instead of the shape. In fact, the tool issues a prompt for this.</li>
+<li>Switching display forms on an objectification can actually recreate the delete shapes because the ExpandRefMode property is propagate between shapes, and setting it will recreate the identifying components.</li>
+</ul>There is a better way, so we're retiring ExpandRefMode from the NORMA UI and replacing it with a new property called <strong>RefModeDisplay</strong>. (If you're feeling nostalgic and want to see ExpandRefMode we have not changed the file format for this change, so you can see it in the .orm file viewed as XML.)
+<ul>
+<li>RefModeDisplay refers to the visibility of the RefMode field on the shape instead of the visibility of the pattern shapes, so <em>RefModeDisplay=Show</em> is the default state and matches the old <em>ExpandRefMode=true</em>.</li>
+<li><em>RefModeDisplay=Hide</em> simply hides the RefMode field. It does not remove pattern shapes.</li>
+<li><em>RefModeDisplay=Hide (Create Shapes)</em> removes the field (if shown previously) and creates the shapes, just like the old <em>ExpandRefMode=true</em>. If you can select this you will immediately revert to the hide value.</li>
+<li>The pattern shapes are still removed when transitioning to <em>RefModeDisplay=Show</em>, just like they were removed with <em>ExpandRefMode=false</em>.</li>
+<li>A new global display option <em>HideNewShapeRefMode</em> has been added. When this is true then an object type shape created from the fact editor, model browser or toolbox will have the RefModeDisplay property set to Hide instead of the default Show. Shapes copied from other existing shapes (both in the same model and across models) retain of the properties of the source shape, so this option does not apply in this case.</li>
+</ul>
+Although the retirement of ExpandRefMode may be an adjustment for some we feel like this new pattern will remove unnecessary steps from the common task of creating a new shape for a popular object type.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr />
@@ -1027,6 +1095,8 @@ Prior to this release, the DDL generated for SQL Server used ANSI standard data 
 Prior to this release, the native data types (see previous item) mapped all of the ORM temporal data types to the 'datetime' data type. SQL Server has supported time- and date- only temporal types for several releases, so this has been expanded. The {Date, Time, Date & Time, Auto Timestamp} temporal data types now map to the {date, time, datetime, rowversion} data types.
 <br /><br />You will need to open and save a model file to see the new data types, or right-click the .ORM file in the Solution Explorer and choose the 'Run Custom Tool' menu item.
 </li>
+<li><a id="Block No Evidence Absorption 2022-08" class="new" title="August 2022: Block Absorption of Empty Relational Table">2022-08</a>&nbsp;
+In the past if a user chose to absorb a subtype (or other structurally similar 1-1 where absorption is offered) then NORMA would proceed with the absorption even if no columns remained for the subtype in the absorbing table. Now, the choice to absorb is treated as a suggestion that is only respected if evidence (at least one produced column) of the absorbed subtype exists in the supertype's table. Otherwise this is ignored. This change will be applied on load.</li>
 </ol>
 <a href="#The Top">Return to top</a>
 <hr/>
@@ -1090,7 +1160,7 @@ If you get a reproducible failure that does not crash the system, then you can a
 <li>With focus in the Call Stack tool window, Select All and Copy to get the callstack (Ctrl-A/Ctrl-C, or use the items on the context menu).</li>
 <li>Provide the callstack with the error report (a .txt attachment is fine).</li>
 </ol>
-Please note that not all thrown exceptions that are thrown during are actual problems. In general, NORMA minimizes the number of thrown exceptions during normal processing cases, but that is not true for all of the VS components used by NORMA. Generally, if you attach a debugger after the .orm file is loaded then you will see very few 'false negative' exceptions, but you may see a ton during system startup and file load.<br /><br />
+Please note that not all thrown exceptions that are thrown during normal operation are actual problems. In general, NORMA minimizes the number of thrown exceptions during normal processing cases, but that is not true for all of the VS components used by NORMA. Generally, if you attach a debugger after the .orm file is loaded then you will see very few 'false negative' exceptions, but you may see a ton during system startup and file load.<br /><br />
 
 NORMA is a good-sized code base, with well over half a million lines of active code. Unfortunately, there is very little the NORMA team can do with an error report that is extremely general ("I occasionally have problems", "I saw this error once", etc.). If you're using the tool, please take the required 5 minutes if you see a problem to get a callstack and/or reproduce the scenario from scratch. Please don't assume that we know about the problem. The bottom line is that there is no way to fix an issue that we don't know about and/or can't reproduce.</div></li>
 </ol>
@@ -1128,6 +1198,6 @@ NORMA is a good-sized code base, with well over half a million lines of active c
 <p>So, build 6281 represents the fifteenth day of the third month in the second quarter of 2011 (June 15, 2011).</p>
 <p>Although the version information does not directly contain any source code version control information, the build date can generally be cross-referenced against the revision history to find the corresponding changeset.</p>
 <p>For Visual Studio 2017 and later versions, the downloaded NORMA extension version will be based on the GIT tagging system. NORMA is now under source control on <a href="https://github.com/ormsolutions/NORMA">https://github.com/ormsolutions/NORMA</a> instead of in Sourceforge. The final SVN change number is 1564. The extension version numbers will generally look like 1.0.3xxx.0, with the 3 artificially injected so that the GIT version numbers are always greater than the date-based system. This will allow us to seamlessly change file versions to match the extension version in the future. The final number is a revision count of changes after the last tag and will generally be 0 on official releases.</p>
-<p>As of September 2020 the quarter-based versioning system described above moved to 100, which pushed the quarter-based versioning to five numbers. Setup (for VS2015 and earlier) identifiers assume a 4-digit revision and setup cannot be built with five revision digits, so all future builds will now be based on the git build numbers. Git build numbers are determined by explicit tags added to the source repository and revision numbers are now the number of revisions past the last tag. This also means the file version numbers will match the installer version number in VS2017 and VS2019.</p>
+<p>As of September 2020 the quarter-based versioning system described above moved to 100, which pushed the quarter-based versioning to five numbers. Setup (for VS2015 and earlier) identifiers assume a 4-digit revision and setup cannot be built with five revision digits, so all future builds will now be based on the git build numbers. Git build numbers are determined by explicit tags added to the source repository and revision numbers are now the number of revisions past the last tag. This also means the file version numbers will match the installer version number in VS2017, VS2019 and VS2022.</p>
 <a href="#The Top">Return to top</a></body>
 </html>
