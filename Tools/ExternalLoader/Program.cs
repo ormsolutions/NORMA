@@ -93,8 +93,7 @@ namespace NORMALoaderSample
 			}
 			else
 			{
-				// VerbalizationManager copy gives us clean options (shown for demonstration purposes, customizing the original is fine too.)
-				VerbalizationManager customVerbalizer = new VerbalizationManager(resolver.VerbalizationManager);
+				VerbalizationManager customVerbalizer = resolver.VerbalizationManager;
 				customVerbalizer.CustomSnippetsIdentifiers.Add(new VerbalizationSnippetsIdentifier(typeof(CoreVerbalizationSnippetType), "VerbalizationBrowser", "en-US", "NoHyperlinks"));
 				customVerbalizer.CustomOptions.Add(CoreVerbalizationOption.ObjectTypeNameDisplay, ObjectTypeNameVerbalizationStyle.SeparateCombinedNames);
 				customVerbalizer.CustomOptions.Add(CoreVerbalizationOption.FactTypesWithObjectType, false);

@@ -75,19 +75,6 @@ namespace ORMSolutions.ORMArchitect.Core.Load
 			myOptions = new Dictionary<string, object>();
 			mySnippetsIdentifiers = new List<VerbalizationSnippetsIdentifier>();
 		}
-		/// <summary>
-		/// Create a clean verbalization manager with the same system settings but
-		/// no customizations (custom options or custom snippet identifiers).
-		/// </summary>
-		/// <param name="basedOn">A previously created instance. Must not be null.</param>
-		public VerbalizationManager(VerbalizationManager basedOn) :
-#if VISUALSTUDIO_15_0
-			this(basedOn.myDirectories)
-#else
-			this(basedOn.myDirectory)
-#endif
-		{
-		}
 #endregion // Constructor
 		#region Static creation methods
 #if VISUALSTUDIO_15_0
