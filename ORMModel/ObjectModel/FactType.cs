@@ -3485,7 +3485,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			int readingRoleCount = orderedRoles.Count;
 			for (int iRole = 0; iRole < readingRoleCount; ++iRole)
 			{
-				yield return CustomChildVerbalizer.VerbalizeInstanceWithChildren(orderedRoles[iRole].Role, DeferVerbalizationOptions.None, null);
+				yield return CustomChildVerbalizer.VerbalizeInstanceWithChildren(orderedRoles[iRole].Role, DeferVerbalizationOptions.None, filter);
 			}
 
 			LinkedElementCollection<SetConstraint> setConstraints = SetConstraintCollection;
@@ -3635,7 +3635,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 							for (int roleIndex = 0; roleIndex < 2; ++roleIndex)
 							{
 								UniquenessConstraint uniquenessConstraint = singleRoleConstraints[roleIndex, modalityIndex, 0] as UniquenessConstraint;
+								if (uniquenessConstraint != null && filter != null && filter.FilterChildVerbalizer(uniquenessConstraint, sign).IsBlocked)
+								{
+									uniquenessConstraint = null;
+								}
 								MandatoryConstraint mandatoryConstraint = singleRoleConstraints[roleIndex, modalityIndex, 1] as MandatoryConstraint;
+								if (mandatoryConstraint != null && filter != null && filter.FilterChildVerbalizer(mandatoryConstraint, sign).IsBlocked)
+								{
+									mandatoryConstraint = null;
+								}
 								if (lookForCombined)
 								{
 									if (uniquenessConstraint != null && mandatoryConstraint != null)
@@ -3709,7 +3717,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						}
 					}
 
-					if (constraintWithImpliedOppositeDefault != null)
+					if (constraintWithImpliedOppositeDefault != null &&
+						(filter == null || !filter.FilterChildVerbalizer(constraintWithImpliedOppositeDefault, sign).IsBlocked))
 					{
 						DefaultBinaryMissingUniquenessVerbalizer verbalizer = DefaultBinaryMissingUniquenessVerbalizer.GetVerbalizer();
 						verbalizer.Initialize(this, (UniquenessConstraint)constraintWithImpliedOppositeDefault);
@@ -3769,14 +3778,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					null != (objectifyingType = NestingType) &&
 					(null == (pid = objectifyingType.PreferredIdentifier) ||
 					!pid.IsObjectifiedPreferredIdentifier);
-				yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockStart.GetVerbalizer(), true);
+				bool first = true;
 				for (int i = 0; i < instanceCount; ++i)
 				{
-					FactTypeInstanceVerbalizer verbalizer = FactTypeInstanceVerbalizer.GetVerbalizer();
-					verbalizer.Initialize(this, instances[i], displayIdentifier);
-					yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
+					FactTypeInstance instance = instances[i];
+					if (filter == null || !filter.FilterChildVerbalizer(instance, sign).IsBlocked)
+					{
+						if (first)
+						{
+							first = false;
+							yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockStart.GetVerbalizer(), true);
+						}
+
+						FactTypeInstanceVerbalizer verbalizer = FactTypeInstanceVerbalizer.GetVerbalizer();
+						verbalizer.Initialize(this, instance, displayIdentifier);
+						yield return CustomChildVerbalizer.VerbalizeInstance(verbalizer, true);
+					}
 				}
-				yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
+				if (!first)
+				{
+					yield return CustomChildVerbalizer.VerbalizeInstance(FactTypeInstanceBlockEnd.GetVerbalizer(), true);
+				}
 			}
 
 			// Verbalize a derivation note.
@@ -3785,7 +3807,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			FactTypeDerivationRule derivationRule;
 			DerivationNote derivationNote;
 			if (null != (derivationRule = DerivationRule as FactTypeDerivationRule) &&
-				null != (derivationNote = derivationRule.DerivationNote))
+				null != (derivationNote = derivationRule.DerivationNote) &&
+				(filter == null || !filter.FilterChildVerbalizer(derivationNote, sign).IsBlocked))
 			{
 				yield return CustomChildVerbalizer.VerbalizeInstance(derivationNote, false);
 			}
