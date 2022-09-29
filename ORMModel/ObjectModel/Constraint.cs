@@ -9272,16 +9272,34 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
 			MandatoryConstraint mandatory = link.MandatoryConstraint;
 			ExclusionConstraint exclusion = link.ExclusionConstraint;
-			if (mandatory.IsDeleted && !exclusion.IsDeleted)
+			if (mandatory.IsDeleted)
 			{
-				exclusion.Delete();
+				if (!exclusion.IsDeleted)
+				{
+					exclusion.Delete();
+				}
 			}
-			else if (exclusion.IsDeleted && !mandatory.IsDeleted)
+			else if (exclusion.IsDeleted)
 			{
 				mandatory.Delete();
 			}
 		}
 		#endregion // CouplerDeleteRule
+		#region CouplerDeletedForExclusionNameRule
+		/// <summary>
+		/// DeleteRule: typeof(ExclusiveOrConstraintCoupler)
+		/// </summary>
+		private static void CouplerDeletedForExclusionNameRule(ElementDeletedEventArgs e)
+		{
+			ExclusiveOrConstraintCoupler link = e.ModelElement as ExclusiveOrConstraintCoupler;
+			ExclusionConstraint exclusion = link.ExclusionConstraint;
+			if (!exclusion.IsDeleted && !link.MandatoryConstraint.IsDeleted && Utility.IsNumberDecoratedName(exclusion.Name, ResourceStrings.ExclusiveOrConstraint))
+			{
+				// Trigger auto-generated name refresh
+				exclusion.Name = "";
+			}
+		}
+		#endregion // CouplerDeletedForExclusionNameRule
 		#region CouplerAddRule
 		/// <summary>
 		/// AddRule: typeof(ExclusiveOrConstraintCoupler)
@@ -9290,7 +9308,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// </summary>
 		private static void CouplerAddRule(ElementAddedEventArgs e)
 		{
-			((ExclusiveOrConstraintCoupler)e.ModelElement).SynchronizeCoupledRoles(true, true);
+			ExclusiveOrConstraintCoupler coupler = (ExclusiveOrConstraintCoupler)e.ModelElement;
+			coupler.SynchronizeCoupledRoles(true, true);
+			ExclusionConstraint exclusion = coupler.ExclusionConstraint;
+			if (exclusion.Model != null && Utility.IsNumberDecoratedName(exclusion.Name, exclusion.GetDomainClass().DisplayName))
+			{
+				// Trigger auto-generated name refresh
+				exclusion.Name = "";
+			}
 		}
 		#endregion // CouplerAddRule
 		#region RoleAddRule

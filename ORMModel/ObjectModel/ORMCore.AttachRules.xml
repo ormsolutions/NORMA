@@ -342,6 +342,9 @@
 			<arg:DeleteRule methodName="CouplerDeleteRule">
 				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler" fireTime="LocalCommit" priority="BeforeDelayValidateRulePriority"/>
 			</arg:DeleteRule>
+			<arg:DeleteRule methodName="CouplerDeletedForExclusionNameRule">
+				<arg:RuleOn targetType="ExclusiveOrConstraintCoupler"/>
+			</arg:DeleteRule>
 			<arg:ChangeRule methodName="ExclusionConstraintChangeRule">
 				<arg:RuleOn targetType="ExclusionConstraint"/>
 			</arg:ChangeRule>

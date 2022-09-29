@@ -2093,6 +2093,16 @@ namespace ORMSolutions.ORMArchitect.Framework
 						{
 							break;
 						}
+						if (targetRoleInfo.IsOne)
+						{
+							foreach (ElementLink reverseLink in newStoreTargetRoleInfo.GetElementLinks(newTargetElement))
+							{
+								// A one-to-one link can throw from both directions. If this is already pointing to the newSourceElement then
+								// we would have caught in the containing GetLinks call, so this will be contradictory, not just a duplicate.
+								reverseLink.Delete();
+								break; // There will be at most one
+							}
+						}
 						newStoreTargetRoleInfo.SetRolePlayer(testLink, newTargetElement);
 						break;
 					}

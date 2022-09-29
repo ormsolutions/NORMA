@@ -135,6 +135,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(EntityTypeInstance).GetNestedType("RoleInstanceHasPopulationUniquenessErrorDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExclusiveOrConstraintCoupler).GetNestedType("CouplerAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExclusiveOrConstraintCoupler).GetNestedType("CouplerDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ExclusiveOrConstraintCoupler).GetNestedType("CouplerDeletedForExclusionNameRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExclusiveOrConstraintCoupler).GetNestedType("ExclusionConstraintChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExclusiveOrConstraintCoupler).GetNestedType("MandatoryConstraintChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ExclusiveOrConstraintCoupler).GetNestedType("RoleAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -557,7 +558,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 489; ++i)
+			for (int i = 0; i < 490; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -3228,6 +3229,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.CouplerDeleteRule");
 				ExclusiveOrConstraintCoupler.CouplerDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.CouplerDeleteRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExclusiveOrConstraintCoupler), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class CouplerDeletedForExclusionNameRuleClass : Microsoft.VisualStudio.Modeling.DeleteRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public CouplerDeletedForExclusionNameRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler
+			/// /// <summary>
+			/// /// DeleteRule: typeof(ExclusiveOrConstraintCoupler)
+			/// /// </summary>
+			/// private static void CouplerDeletedForExclusionNameRule(ElementDeletedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void ElementDeleted(Microsoft.VisualStudio.Modeling.ElementDeletedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.CouplerDeletedForExclusionNameRule");
+				ExclusiveOrConstraintCoupler.CouplerDeletedForExclusionNameRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ExclusiveOrConstraintCoupler.CouplerDeletedForExclusionNameRule");
 			}
 		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ExclusionConstraint), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]

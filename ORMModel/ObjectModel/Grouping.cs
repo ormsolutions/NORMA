@@ -578,7 +578,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				foreach (GroupingType modifiedGroupingType in element.Store.ElementDirectory.FindElements<GroupingType>(false))
 				{
-					modifiedGroupingType.Grouping.ValidateSupportLevelChange(element, notifyAdded);
+					ElementGrouping grouping = modifiedGroupingType.Grouping;
+					if (grouping != null)
+					{
+						grouping.ValidateSupportLevelChange(element, notifyAdded);
+					}
 				}
 			}
 		}
