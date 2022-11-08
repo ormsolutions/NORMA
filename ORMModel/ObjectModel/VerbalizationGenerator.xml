@@ -852,21 +852,23 @@
 				<ConstrainedRoles trivialOppositeRolePath="true" sign="positive" minFactArity="2" maxFactArity="2" blockHelpers="pathVerbalizer">
 					<ConditionalReading>
 						<ReadingChoice match="RequireAllNonLeadReadingNoFrontText">
-							<Snippet ref="ForEachCompactQuantifier">
-								<IterateRoles match="providedConstraintRoles" listStyle="SimpleList" hyphenBind="true">
-									<ReadingContext match="PreferNonPrimaryLeadReadingNoFrontText"/>
-								</IterateRoles>
-								<IterateRoles match="providedConstraintRoles" listStyle="IndentedList">
-									<Fact readingChoice="Context">
-										<ProvidedPredicateReplacement match="excluded" pass="first">
-											<Snippet ref="AtMostOneQuantifier" />
-										</ProvidedPredicateReplacement>
-										<ProvidedPredicateReplacement match="excluded">
-											<Snippet ref="null" />
-										</ProvidedPredicateReplacement>
-										<ProvidedPredicateReplacement match="included" quantify="true"/>
-									</Fact>
-								</IterateRoles>
+							<Snippet ref="ImpliedModalNecessityOperator">
+								<Snippet ref="ForEachCompactQuantifier">
+									<IterateRoles match="providedConstraintRoles" listStyle="SimpleList" hyphenBind="true">
+										<ReadingContext match="PreferNonPrimaryLeadReadingNoFrontText"/>
+									</IterateRoles>
+									<IterateRoles match="providedConstraintRoles" listStyle="IndentedList">
+										<Fact readingChoice="Context">
+											<ProvidedPredicateReplacement match="excluded" pass="first">
+												<Snippet ref="AtMostOneQuantifier" />
+											</ProvidedPredicateReplacement>
+											<ProvidedPredicateReplacement match="excluded">
+												<Snippet ref="null" />
+											</ProvidedPredicateReplacement>
+											<ProvidedPredicateReplacement match="included" quantify="true"/>
+										</Fact>
+									</IterateRoles>
+								</Snippet>
 							</Snippet>
 						</ReadingChoice>
 						<ReadingChoice>
