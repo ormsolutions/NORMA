@@ -180,8 +180,25 @@
 	</xsl:template>
 
 	<xsl:template match="ddl:identityColumnSpecification">
-		<!-- This should always be absorbed until Oracle provides some kind of auto-incremented number field. -->
-		<!-- The only way to make this happen is to create a sequence, trigger, and regular column Integer datatype. -->
+		<xsl:text> GENERATED </xsl:text>
+		<xsl:choose>
+			<xsl:when test="@type='BY DEFAULT'">
+				<xsl:text>BY DEFAULT ON NULL</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="@type"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text> AS IDENTITY</xsl:text>
+		<xsl:variable name="options" select="ddl:sequenceGeneratorStartWithOption|ddl:sequenceGeneratorIncrementByOption"/>
+		<xsl:if test="$options">
+			<xsl:text> </xsl:text>
+			<xsl:apply-templates select="$options"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="ddl:columnConstraintDefinition[ddl:notNullKeyword][parent::ddl:columnDefinition[ddl:identityColumnSpecification]]">
+		<!-- NOT NULL is not used on an IDENTITY column-->
 	</xsl:template>
 
 	<xsl:template match="dep:charLengthExpression">
