@@ -132,6 +132,11 @@
 				</ClrAttribute>
 			</Attributes>
 		</DomainClass>
+		<DomainClass Name="DisplaySettingPlaceholder" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="18F5F9D5-3A78-4823-9B12-0A98B41F4DBA" DisplayName="DisplaySettingPlaceholder" InheritanceModifier="Sealed" Description="DisplaySetting placeholder type used during generative-only deserialization to load display setting references in unloaded models.">
+			<BaseClass>
+				<DomainClassMoniker Name="/ORMSolutions.ORMArchitect.Core.ObjectModel/DisplaySetting"/>
+			</BaseClass>
+		</DomainClass>
 
 		<DomainClass Name="ModelErrorCategory" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="C9730E21-67A1-47E1-A065-B08C2B3815CE" DisplayName="ModelErrorCategory" InheritanceModifier="Abstract" Description=""/>
 		<DomainClass Name="ModelErrorDisplayFilter" Namespace="ORMSolutions.ORMArchitect.Core.ObjectModel" Id="67CDCE7B-3D28-4A92-B9EB-00418152A13F" DisplayName="ModelErrorDisplayFilter" InheritanceModifier="Sealed" Description="">

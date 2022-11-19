@@ -261,6 +261,14 @@
     <value>DisplaySetting</value>
     <comment>DisplayName for DomainClass &apos;DisplaySetting&apos;</comment>
   </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplaySettingPlaceholder.Description" xml:space="preserve">
+    <value>DisplaySetting placeholder type used during generative-only deserialization to load display setting references in unloaded models.</value>
+    <comment>Description for DomainClass &apos;DisplaySettingPlaceholder&apos;</comment>
+  </data>
+  <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.DisplaySettingPlaceholder.DisplayName" xml:space="preserve">
+    <value>DisplaySettingPlaceholder</value>
+    <comment>DisplayName for DomainClass &apos;DisplaySettingPlaceholder&apos;</comment>
+  </data>
   <data name="ORMSolutions.ORMArchitect.Core.ObjectModel.ModelErrorCategory.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ModelErrorCategory&apos;</comment>

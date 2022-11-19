@@ -889,7 +889,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 					{
 						// If ORMXmlStream worked then so will ORMGeneratorTargets. If it returns null then there are no targets
 						// available, not because the request failed. Do not try again.
-						retrievedGeneratorTargets = false;
+						retrievedGeneratorTargets = true;
 						using (Stream targetsStream = ORMCustomToolUtility.GetDocumentExtension<Stream>(projectItemDocument, "ORMGeneratorTargets", itemPath, _serviceProvider))
 						{
 							if (targetsStream != null)
@@ -911,6 +911,7 @@ namespace ORMSolutions.ORMArchitect.ORMCustomTool
 
 				if (usingGeneratorTargets && !retrievedGeneratorTargets)
 				{
+					retrievedGeneratorTargets = true;
 					IVsShell shell;
 					if (null != (shell = _serviceProvider.GetService(typeof(SVsShell)) as IVsShell))
 					{

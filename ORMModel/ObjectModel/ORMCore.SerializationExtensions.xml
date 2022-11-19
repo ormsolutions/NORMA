@@ -252,6 +252,7 @@
 			<se:Embed RelationshipName="DisplayStateHasDisplaySetting" RoleName="DisplaySetting"/>
 		</se:Container>
 	</se:Element>
+	<se:Element Class="DisplaySettingPlaceholder" WriteStyle="NotWritten" Sealed="true"/>
 	<!--Generation Settings-->
 	<se:Element Class="GenerationState">
 		<se:Container Name="GenerationSettings">

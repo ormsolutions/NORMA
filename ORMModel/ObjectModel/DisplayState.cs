@@ -210,4 +210,15 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			// No default implementation
 		}
 	}
+
+	partial class DisplaySettingPlaceholder
+	{
+		/// <summary>
+		/// Dummy implementation for compiler
+		/// </summary>
+		public override bool AppliesToDiagramClass(DomainClassInfo diagramClassInfo)
+		{
+			return false;
+		}
+	}
 }

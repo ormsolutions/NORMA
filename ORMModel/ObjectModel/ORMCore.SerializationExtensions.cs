@@ -212,6 +212,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				classNameMap.Add("Note", Note.DomainClassId);
 				classNameMap.Add("ModelNote", ModelNote.DomainClassId);
 				classNameMap.Add("DisplayState", DisplayState.DomainClassId);
+				classNameMap.Add("DisplaySettingPlaceholder", DisplaySettingPlaceholder.DomainClassId);
 				classNameMap.Add("GenerationState", GenerationState.DomainClassId);
 				classNameMap.Add("Alias", NameAlias.DomainClassId);
 				classNameMap.Add("NameGenerator", NameGenerator.DomainClassId);
@@ -1204,6 +1205,69 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		}
 	}
 	#endregion // DisplayState serialization
+	#region DisplaySettingPlaceholder serialization
+	sealed partial class DisplaySettingPlaceholder : ICustomSerializedElement
+	{
+		/// <summary>Implements ICustomSerializedElement.SupportedCustomSerializedOperations</summary>
+		CustomSerializedElementSupportedOperations ICustomSerializedElement.SupportedCustomSerializedOperations
+		{
+			get
+			{
+				return CustomSerializedElementSupportedOperations.ElementInfo;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedChildElementInfo</summary>
+		CustomSerializedContainerElementInfo[] ICustomSerializedElement.GetCustomSerializedChildElementInfo()
+		{
+			throw new NotSupportedException();
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedElementInfo</summary>
+		CustomSerializedElementInfo ICustomSerializedElement.CustomSerializedElementInfo
+		{
+			get
+			{
+				return new CustomSerializedElementInfo(null, null, null, CustomSerializedElementWriteStyle.NotWritten, null);
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedPropertyInfo</summary>
+		CustomSerializedPropertyInfo ICustomSerializedElement.GetCustomSerializedPropertyInfo(DomainPropertyInfo domainPropertyInfo, DomainRoleInfo rolePlayedInfo)
+		{
+			throw new NotSupportedException();
+		}
+		/// <summary>Implements ICustomSerializedElement.GetCustomSerializedLinkInfo</summary>
+		CustomSerializedElementInfo ICustomSerializedElement.GetCustomSerializedLinkInfo(DomainRoleInfo rolePlayedInfo, ElementLink elementLink)
+		{
+			throw new NotSupportedException();
+		}
+		/// <summary>Implements ICustomSerializedElement.CustomSerializedChildRoleComparer</summary>
+		IComparer<DomainRoleInfo> ICustomSerializedElement.CustomSerializedChildRoleComparer
+		{
+			get
+			{
+				return null;
+			}
+		}
+		/// <summary>Implements ICustomSerializedElement.MapChildElement</summary>
+		CustomSerializedElementMatch ICustomSerializedElement.MapChildElement(string elementNamespace, string elementName, string containerNamespace, string containerName, string outerContainerNamespace, string outerContainerName)
+		{
+			return default(CustomSerializedElementMatch);
+		}
+		/// <summary>Implements ICustomSerializedElement.MapAttribute</summary>
+		Guid ICustomSerializedElement.MapAttribute(string xmlNamespace, string attributeName)
+		{
+			return default(Guid);
+		}
+		/// <summary>Implements ICustomSerializedElement.ShouldSerialize</summary>
+		private static bool ShouldSerialize()
+		{
+			return true;
+		}
+		bool ICustomSerializedElement.ShouldSerialize()
+		{
+			return ShouldSerialize();
+		}
+	}
+	#endregion // DisplaySettingPlaceholder serialization
 	#region GenerationState serialization
 	partial class GenerationState : ICustomSerializedElement
 	{
