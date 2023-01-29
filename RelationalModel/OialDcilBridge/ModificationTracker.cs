@@ -634,6 +634,30 @@ namespace ORMSolutions.ORMArchitect.ORMAbstractionToConceptualDatabaseBridge
 				}
 			}
 			/// <summary>
+			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.RecognizedPhrase)
+			/// Regenerate names whan an associated expression to match is modified
+			/// </summary>
+			private static void RecognizedPhraseChangedRule(ElementPropertyChangedEventArgs e)
+			{
+				if (e.DomainProperty.Id == ORMCore.RecognizedPhrase.NameDomainPropertyId)
+				{
+					ORMCore.RecognizedPhrase phrase = (ORMCore.RecognizedPhrase)e.ModelElement;
+					Store store = phrase.Store;
+					DomainClassInfo baseClassInfo = store.DomainDataDirectory.GetDomainClass(RelationalNameGenerator.DomainClassId);
+					foreach (ORMCore.NameAlias abbreviation in phrase.AbbreviationCollection)
+					{
+						if (baseClassInfo.IsDerivedFrom(abbreviation.NameConsumerDomainClass))
+						{
+							foreach (Schema schema in store.ElementDirectory.FindElements<Schema>(true))
+							{
+								ValidateSchemaNamesChanged(schema);
+							}
+							break;
+						}
+					}
+				}
+			}
+			/// <summary>
 			/// ChangeRule: typeof(ORMSolutions.ORMArchitect.Core.ObjectModel.Role)
 			/// </summary>
 			private static void RoleNameChangedRule(ElementPropertyChangedEventArgs e)

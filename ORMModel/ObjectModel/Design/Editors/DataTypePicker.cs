@@ -58,8 +58,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 		protected sealed override IList GetContentList(ITypeDescriptorContext context, object value)
 		{
 			Debug.Assert(!(value is object[]));
-			ObjectType instance = (ObjectType)EditorUtility.ResolveContextInstance(context.Instance, true); // true to pick any element. We can use any element to get at the datatypes on the model
-			IList dataTypes = instance.ResolvedModel.DataTypeCollection;
+			object resolvedInstance = EditorUtility.ResolveContextInstance(context.Instance, true); // true to pick any element. We can use any element to get at the datatypes on the model
+			ORMModel model = null;
+			ObjectType objectType;
+			CustomReferenceMode refMode;
+			if (null != (objectType = resolvedInstance as ObjectType))
+			{
+				model = objectType.ResolvedModel;
+			}
+			else if (null != (refMode = resolvedInstance as CustomReferenceMode))
+			{
+				model = refMode.Model;
+			}
+
+			if (model == null)
+			{
+				return new object[0];
+			}
+
+			IList dataTypes = model.DataTypeCollection;
 			int count = dataTypes.Count;
 			if (count > 1)
 			{

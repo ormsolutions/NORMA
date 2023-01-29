@@ -164,8 +164,7 @@
 		<xsl:variable name="predefinedDataTypeName" select="$predefinedDataType/@name"/>
 		<xsl:choose>
 			<xsl:when test="$predefinedDataTypeName = 'CHARACTER'">
-				<xsl:value-of select="'NChar'"/>
-				<xsl:text>(</xsl:text>
+				<xsl:text>NChar(</xsl:text>
 				<xsl:choose>
 					<xsl:when test="string($predefinedDataType/@length)">
 						<xsl:value-of select="$predefinedDataType/@length"/>
@@ -177,41 +176,38 @@
 				<xsl:text>)</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'CHARACTER VARYING'">
-				<xsl:value-of select="'NVarChar'"/>
-				<xsl:text>(</xsl:text>
+				<xsl:text>NVarChar(</xsl:text>
 				<xsl:choose>
 					<xsl:when test="string($predefinedDataType/@length)">
 						<xsl:value-of select="$predefinedDataType/@length"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="'Max'"/>
+						<xsl:text>Max</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:value-of select="$predefinedDataType/@length"/>
 				<xsl:text>)</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'CHARACTER LARGE OBJECT'">
-				<xsl:value-of select="'NVarChar'"/>
-				<xsl:text>(</xsl:text>
+				<xsl:text>NVarChar(</xsl:text>
 				<xsl:choose>
 					<xsl:when test="string($predefinedDataType/@length)">
 						<xsl:value-of select="$predefinedDataType/@length"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="'Max'"/>
+						<xsl:text>Max</xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 				<xsl:value-of select="$predefinedDataType/@length"/>
 				<xsl:text>)</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'BINARY LARGE OBJECT'">
-				<xsl:value-of select="'VarBinary'"/>
-				<xsl:text>(</xsl:text>
+				<xsl:text>VarBinary(</xsl:text>
 				<xsl:value-of select="$predefinedDataType/@length"/>
 				<xsl:text>)</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'BINARY VARYING'">
-				<xsl:value-of select="'VarBinary'"/>
+				<xsl:text>VarBinary</xsl:text>
 				<xsl:if test="string($predefinedDataTypeName/@length)">
 					<xsl:text>(</xsl:text>
 					<xsl:value-of select="$predefinedDataType/@length"/>
@@ -219,10 +215,10 @@
 				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'BINARY'">
-				<xsl:value-of select="'Binary'"/>
+				<xsl:text>Binary</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'NUMERIC'">
-				<xsl:value-of select="'Numeric'"/>
+				<xsl:text>Numeric</xsl:text>
 				<xsl:if test="$predefinedDataType/@precision">
 					<xsl:text>(</xsl:text>
 					<xsl:value-of select="$predefinedDataType/@precision"/>
@@ -234,7 +230,7 @@
 				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'DECIMAL'">
-				<xsl:value-of select="'Decimal'"/>
+				<xsl:text>Decimal</xsl:text>
 				<xsl:if test="$predefinedDataType/@precision">
 					<xsl:text>(</xsl:text>
 					<xsl:value-of select="$predefinedDataType/@precision"/>
@@ -246,19 +242,19 @@
 				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'SMALLINT'">
-				<xsl:value-of select="'SmallInt'"/>
+				<xsl:text>SmallInt</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'TINYINT'">
-				<xsl:value-of select="'TinyInt'"/>
+				<xsl:text>TinyInt</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'INTEGER'">
-				<xsl:value-of select="'Int'"/>
+				<xsl:text>Int</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'BIGINT'">
-				<xsl:value-of select="'BigInt'"/>
+				<xsl:text>BigInt</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'FLOAT'">
-				<xsl:value-of select="'Float'"/>
+				<xsl:text>Float</xsl:text>
 				<xsl:if test="string($predefinedDataType/@precision)">
 					<xsl:text>(</xsl:text>
 					<xsl:value-of select="$predefinedDataType/@precision"/>
@@ -266,25 +262,25 @@
 				</xsl:if>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'REAL'">
-				<xsl:value-of select="'Real'"/>
+				<xsl:text>Real</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'DOUBLE PRECISION'">
-				<xsl:value-of select="'Float(53)'"/>
+				<xsl:text>Float(53)</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'BOOLEAN'">
-				<xsl:value-of select="'Bit'"/>
+				<xsl:text>Bit</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'DATE'">
-				<xsl:value-of select="'DateTime'"/>
+				<xsl:text>DateTime</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'DATETIME'">
-				<xsl:value-of select="'DateTime'"/>
+				<xsl:text>DateTime</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'TIME'">
-				<xsl:value-of select="'DateTime'"/>
+				<xsl:text>DateTime</xsl:text>
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'TIMESTAMP'">
-				<xsl:value-of select="'DateTime'"/>
+				<xsl:text>DateTime</xsl:text>
 				<!--
 				This one is wierd in the default mapping in SQL Server where they use a different meaning for Timestamp.
 				[Column(Storage="_Region_code", AutoSync=AutoSync.Always, DbType="rowversion", IsDbGenerated=true, IsVersion=true, UpdateCheck=UpdateCheck.Never)]
@@ -292,7 +288,10 @@
 				-->
 			</xsl:when>
 			<xsl:when test="$predefinedDataTypeName = 'INTERVAL'">
-				<xsl:value-of select="''"/>
+				<xsl:text></xsl:text>
+			</xsl:when>
+			<xsl:when test="$predefinedDataTypeName = 'UNIQUEIDENTIFIER'">
+				<xsl:text>UniqueIdentifier</xsl:text>
 			</xsl:when>
 			<!--
 			<xsl:when test="$predefinedDataTypeName = 'DAY'">
@@ -323,12 +322,14 @@
 			</xsl:when>
 			-->
 		</xsl:choose>
-		<xsl:if test="$column/@isNullable = 'false' or $column/@isNullable = 0">
+		<xsl:if test="$column/@isNullable[.='false' or .='0']">
+			<xsl:variable name="identity" select="boolean($column/@isIdentity[.='true' or .='1'])"/>
+			<xsl:if test="$identity and $predefinedDataTypeName='UNIQUEIDENTIFIER'">
+				<xsl:text> DEFAULT NEWSEQUENTIALID()</xsl:text>
+			</xsl:if>
 			<xsl:text> NOT NULL</xsl:text>
-			<xsl:if test="$predefinedDataTypeName = 'BIGINT' or $predefinedDataTypeName = 'INTEGER'">
-				<xsl:if test="$column/@isIdentity = 'true' or $column/@isIdentity = 1">
-					<xsl:text> IDENTITY</xsl:text>
-				</xsl:if>
+			<xsl:if test="$identity and ($predefinedDataTypeName='BIGINT' or $predefinedDataTypeName='INTEGER' or $predefinedDataTypeName='SMALLINT')">
+				<xsl:text> IDENTITY</xsl:text>
 			</xsl:if>
 		</xsl:if>
 	</xsl:template>

@@ -423,7 +423,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				phraseData = new RecognizedPhraseData();
 				string matchPhrase = ((RecognizedPhrase)alias.Element).Name;
 				string replacePhrase = alias.Name;
-				if (0 == string.Compare(matchPhrase, replacePhrase, StringComparison.CurrentCultureIgnoreCase))
+				if (0 == string.Compare(matchPhrase, replacePhrase, StringComparison.CurrentCulture))
 				{
 					// Sanity check, don't process these
 					return false;
@@ -662,7 +662,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					if (explicitPartCount > 1)
 					{
-						Array.Sort<string>(explicitlyCasedNames, StringComparer.CurrentCulture);
+						Array.Sort<string>(explicitlyCasedNames, StringComparer.CurrentCultureIgnoreCase);
 					}
 				}
 				nameCollection.RemoveRange(collectionIndex, matchLength);
@@ -676,9 +676,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					// then case the replacement as well.
 					NamePartOptions options = NamePartOptions.None;
 					string replacement = replacements[i];
-					if (explicitlyCasedNames != null && 0 <= Array.BinarySearch<string>(explicitlyCasedNames, replacement, StringComparer.CurrentCulture))
+					int matchIndex;
+					if (explicitlyCasedNames != null && 0 <= (matchIndex = Array.BinarySearch<string>(explicitlyCasedNames, replacement, StringComparer.CurrentCultureIgnoreCase)))
 					{
-						options |= NamePartOptions.ExplicitCasing;
+						if (0 == string.Compare(explicitlyCasedNames[matchIndex], replacement, StringComparison.CurrentCulture))
+						{
+							options |= NamePartOptions.ExplicitCasing;
+						}
 						if (matchLength == 1)
 						{
 							options |= NamePartOptions.ReplacementOfSelf;
@@ -686,7 +690,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					}
 					else if (singleMatchName != null && 0 == string.Compare(singleMatchName, replacement, StringComparison.CurrentCultureIgnoreCase))
 					{
-						options |= NamePartOptions.ExplicitCasing;
+						options |= NamePartOptions.ReplacementOfSelf;
 					}
 					AddToNameCollection(ref singleName, ref nameCollection, new NamePart(replacement, options), collectionIndex + nameCollection.Count - startingCollectionSize, true);
 				}

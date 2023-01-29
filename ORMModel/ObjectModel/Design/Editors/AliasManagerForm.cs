@@ -401,6 +401,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 					private NameAlias myBaseAlias;
 					private string myAliasName;
 					private string myOwnerName;
+					private string myOriginalOwnerName;
 					/// <summary>
 					/// Create a new ItemInfo for an existing alias
 					/// </summary>
@@ -444,9 +445,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						}
 						myFlags = flags;
 						myOwner = owner;
-						myOwnerName = (owner != null) ?
-							((ownerNameProperty != null) ? (string)ownerNameProperty.GetValue(owner) : owner.ToString()) :
-							pendingCreateElementName;
+						if (owner != null)
+						{
+							myOriginalOwnerName = myOwnerName = ownerNameProperty != null ? (string)ownerNameProperty.GetValue(owner) : owner.ToString();
+						}
+						else
+						{
+							myOwnerName = pendingCreateElementName;
+						}
 					}
 					private ItemInfo()
 					{
@@ -503,13 +509,23 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						}
 					}
 					/// <summary>
-					/// The current state is modified
+					/// The current alias state is modified
 					/// </summary>
-					public bool IsModified
+					public bool IsAliasModified
 					{
 						get
 						{
 							return 0 != (myFlags & ItemFlags.ModifiedEntry);
+						}
+					}
+					/// <summary>
+					/// Is the owner name changed?
+					/// </summary>
+					public bool IsOwnerNameModified
+					{
+						get
+						{
+							return 0 != (myFlags & ItemFlags.ModifiedOwnerName);
 						}
 					}
 					/// <summary>
@@ -654,9 +670,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						{
 							if (!string.IsNullOrEmpty(value) && 0 != string.CompareOrdinal(value, myOwnerName))
 							{
-								if (myOwner != null)
+								if (myOriginalOwnerName != null)
 								{
-									myFlags |= ItemFlags.ModifiedOwnerName;
+									if (0 == string.CompareOrdinal(value, myOriginalOwnerName))
+									{
+										myFlags &= ~ItemFlags.ModifiedOwnerName;
+									}
+									else
+									{
+										myFlags |= ItemFlags.ModifiedOwnerName;
+									}
 								}
 								myOwnerName = value;
 							}
@@ -1045,7 +1068,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						for (int i = 0; i < itemCount; ++i)
 						{
 							ItemInfo currentItem = items[i];
-							if (currentItem.IsModified)
+							bool aliasModified = currentItem.IsAliasModified;
+							bool ownerNameChanged = currentItem.IsOwnerNameModified;
+							if (aliasModified || ownerNameChanged)
 							{
 								if (currentItem.IsDeleted)
 								{
@@ -1055,33 +1080,77 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 								{
 									NameAlias alias = currentItem.Alias;
 									string aliasName = currentItem.AliasName;
-									if (alias == null)
+									DomainRoleInfo roleInfo = myOwnerRoleInfo;
+									ModelElement owner = currentItem.Owner;
+									bool updateOwnerName = false;
+
+									if (ownerNameChanged)
 									{
-										if (consumerProperty == null)
+										// Determine if we need a different owner (new or existing) or if this one
+										// can simply be modified.
+										ReadOnlyCollection<ElementLink> existingLinks = roleInfo.GetElementLinks(owner);
+										int existingLinkCount = existingLinks.Count;
+										DomainRoleInfo oppositeRole = roleInfo.OppositeDomainRole;
+										if (alias == null ||
+											existingLinkCount != 1 ||
+											oppositeRole.GetRolePlayer(existingLinks[0]) != alias)
 										{
-											consumerProperty = new PropertyAssignment(NameAlias.NameConsumerDomainPropertyId, NameConsumer.TranslateToConsumerIdentifier(generator.GetDomainClass()));
-											string nameUsage = NameUsage.TranslateToNameUsageIdentifier(generator.NameUsageDomainClass);
-											if (!string.IsNullOrEmpty(nameUsage))
+											owner = null;
+											if (alias != null)
 											{
-												usageProperty = new PropertyAssignment(NameAlias.NameUsageDomainPropertyId, nameUsage);
+												// Delete the existing link without propagating deletion to the alias
+												for (int j = 0; j < existingLinkCount; ++j)
+												{
+													ElementLink link = existingLinks[j];
+													if (oppositeRole.GetRolePlayer(link) == alias)
+													{
+														link.Delete(oppositeRole.Id, ElementHasAlias.AliasDomainRoleId);
+														break;
+													}
+												}
 											}
 										}
-										PropertyAssignment nameAssignment = new PropertyAssignment(NameAlias.NameDomainPropertyId, aliasName);
-										alias = (usageProperty != null) ?
-											new NameAlias(store, nameAssignment, consumerProperty, usageProperty) :
-											new NameAlias(store, nameAssignment, consumerProperty);
-										if (refinedInstance != null)
+										else if (owner != null) // Sanity check, owner will exist if owner name changed.
 										{
-											// If the order here is changed then other rules may have to be updated.
-											// The current tracking assumption is that the alias is refined before it is attached to its owner.
-											// This means that the act of refining the alias while it is attached to its owner does not have to
-											// be tracked separately. The recommendation is to maintain this order of attaching links.
-											alias.RefinedInstance = refinedInstance;
+											updateOwnerName = true;
+										}
+									}
+
+									if (alias == null || owner == null || updateOwnerName)
+									{
+										if (aliasModified)
+										{
+											if (alias == null)
+											{
+												if (consumerProperty == null)
+												{
+													consumerProperty = new PropertyAssignment(NameAlias.NameConsumerDomainPropertyId, NameConsumer.TranslateToConsumerIdentifier(generator.GetDomainClass()));
+													string nameUsage = NameUsage.TranslateToNameUsageIdentifier(generator.NameUsageDomainClass);
+													if (!string.IsNullOrEmpty(nameUsage))
+													{
+														usageProperty = new PropertyAssignment(NameAlias.NameUsageDomainPropertyId, nameUsage);
+													}
+												}
+												PropertyAssignment nameAssignment = new PropertyAssignment(NameAlias.NameDomainPropertyId, aliasName);
+												alias = (usageProperty != null) ?
+													new NameAlias(store, nameAssignment, consumerProperty, usageProperty) :
+													new NameAlias(store, nameAssignment, consumerProperty);
+												if (refinedInstance != null)
+												{
+													// If the order here is changed then other rules may have to be updated.
+													// The current tracking assumption is that the alias is refined before it is attached to its owner.
+													// This means that the act of refining the alias while it is attached to its owner does not have to
+													// be tracked separately. The recommendation is to maintain this order of attaching links.
+													alias.RefinedInstance = refinedInstance;
+												}
+											}
+											else
+											{
+												alias.Name = aliasName;
+											}
 										}
 
-										DomainRoleInfo roleInfo = myOwnerRoleInfo;
-										ModelElement owner = currentItem.Owner;
-										if (owner == null)
+										if (owner == null || updateOwnerName)
 										{
 											NameAliasOwnerCreationInfoAttribute options;
 											DomainRoleInfo autoCreateRoleInfo;
@@ -1105,8 +1174,29 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 														singletonContainer = factory.CreateElement(containerClassInfo);
 													}
 												}
+
 												string ownerName = currentItem.OwnerName;
-												owner = options.GetExistingAliasOwner(singletonContainer, ownerName);
+												ModelElement existingOwner = options.GetExistingAliasOwner(singletonContainer, ownerName);
+												if (updateOwnerName)
+												{
+													if (existingOwner != null)
+													{
+														// We need to move the existing link to the new owner
+														updateOwnerName = false;
+														ReadOnlyCollection<ElementLink> existingLinks = roleInfo.GetElementLinksToElement(owner, alias);
+														int existingLinkCount = existingLinks.Count;
+														for (int j = 0; j < existingLinkCount; ++j)
+														{
+															existingLinks[j].Delete(roleInfo.OppositeDomainRole.Id, ElementHasAlias.AliasDomainRoleId);
+														}
+														owner = existingOwner;
+													}
+												}
+												else
+												{
+													owner = existingOwner;
+												}
+
 												if (owner == null)
 												{
 													owner = factory.CreateElement(
@@ -1117,13 +1207,19 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 														new RoleAssignment(autoCreateRoleInfo.OppositeDomainRole.Id, singletonContainer),
 														new RoleAssignment(autoCreateRoleInfo.Id, owner));
 												}
+
+												if (updateOwnerName)
+												{
+													autoCreateRoleInfo.RolePlayer.NameDomainProperty.SetValue(owner, currentItem.OwnerName);
+													continue; // Do not create link, existing owner and existing alias
+												}
 											}
 											else
 											{
 												continue; // Safety valve, should not be hit
 											}
-
 										}
+
 										store.GetDomainModel(roleInfo.DomainModel.Id).CreateElementLink(
 											store.DefaultPartition,
 											myOwnerRoleInfo.DomainRelationship.ImplementationClass,

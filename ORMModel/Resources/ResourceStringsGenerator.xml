@@ -106,6 +106,7 @@
 	<ResourceString name="PortableDataTypeNumericDoublePrecisionFloatingPoint" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.DoublePrecisionFloatingPoint.Text"/>
 	<ResourceString name="PortableDataTypeNumericDecimal" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.Decimal.Text"/>
 	<ResourceString name="PortableDataTypeNumericMoney" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.Money.Text"/>
+	<ResourceString name="PortableDataTypeNumericUUID" model="Model" resourceName="ObjectModel.DataType.PortableDataType.Numeric.UUID.Text"/>
 	<ResourceString name="PortableDataTypeRawDataFixedLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text"/>
 	<ResourceString name="PortableDataTypeRawDataVariableLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.RawData.VariableLength.Text"/>
 	<ResourceString name="PortableDataTypeRawDataLargeLength" model="Model" resourceName="ObjectModel.DataType.PortableDataType.RawData.LargeLength.Text"/>
@@ -386,6 +387,7 @@
 	<ResourceString name="ModelSamplePopulationEditorEmptyDisplayText" model="Model" resourceName="ModelSamplePopulationEditor.EmptyDisplayText"/>
 	<ResourceString name="ModelSamplePopulationEditorWindowTitle" model="Model" resourceName="ModelSamplePopulationEditor.WindowTitle"/>
 	<ResourceString name="ModelSamplePopulationEditorNullSelection" model="Model" resourceName="ModelSamplePopulationEditor.NullSelection"/>
+	<ResourceString name="ModelSamplePopulationEditorGenerateInstance" model="Model" resourceName="ModelSamplePopulationEditor.GenerateInstance"/>
 	<ResourceString name="NameGeneratorAbbreviationsEditorAbbreviationColumnHeader" model="Model" resourceName="NameGeneratorAbbreviations.Editor.AbbreviationColumnHeader"/>
 	<ResourceString name="NameGeneratorAbbreviationsEditorElementColumnHeader" model="Model" resourceName="NameGeneratorAbbreviations.Editor.ElementColumnHeader"/>
 	<ResourceString name="NameGeneratorAbbreviationsEditorNewItemText" model="Model" resourceName="NameGeneratorAbbreviations.Editor.NewItemText"/>
@@ -421,6 +423,7 @@
 	<ResourceString name="ModelReferenceModeEditorChangeReferenceModeKindTransaction" model="Model" resourceName="ModelReferenceModeEditor.ChangeReferenceModeKindTransaction"/>
 	<ResourceString name="ReferenceModePredicateReading" model="Model" resourceName="ReferenceMode.PredicateReading"/>
 	<ResourceString name="ReferenceModePredicateInverseReading" model="Model" resourceName="ReferenceMode.PredicateInverseReading"/>
+	<ResourceString name="ModelReferenceModeEditorDataTypeColumn" model="Model" resourceName="ModelReferenceModeEditor.DataTypeColumn"/>
 	<ResourceString name="ModelReferenceModeEditorFormatStringColumn" model="Model" resourceName="ModelReferenceModeEditor.FormatStringColumn"/>
 	<ResourceString name="ModelReferenceModeEditorKindColumn" model="Model" resourceName="ModelReferenceModeEditor.KindColumn"/>
 	<ResourceString name="ModelReferenceModeEditorNameColumn" model="Model" resourceName="ModelReferenceModeEditor.NameColumn"/>

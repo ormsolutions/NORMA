@@ -143,6 +143,14 @@
 		<!-- UNDONE: Add constraints to restrict BOOLEAN to the appropriate values. -->
 	</xsl:template>
 
+	<xsl:template match="@type[.='UNIQUEIDENTIFIER']" mode="ForDataType">
+		<xsl:text>RAW(16)</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dep:newUniqueIdentifierKeyword">
+		<xsl:text>SYS_GUID()</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="ddt:booleanLiteral">
 		<xsl:choose>
 			<xsl:when test="@value='TRUE'">

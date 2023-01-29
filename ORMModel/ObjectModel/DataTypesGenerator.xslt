@@ -44,6 +44,45 @@
 						<plx:comment blankLine="true"/>
 					</plx:leadingInfo>
 				</xsl:if>
+				<plx:enum name="AutoGenerationSupport" visibility="public">
+					<plx:leadingInfo>
+						<plx:pragma type="region" data="AutoGenerationSupport Enum"/>
+						<plx:docComment>
+							<summary>Define different levels of support for auto-generatable data types.</summary>
+						</plx:docComment>
+					</plx:leadingInfo>
+					<plx:trailingInfo>
+						<plx:pragma type="closeRegion" data="AutoGenerationSupport Enum"/>
+					</plx:trailingInfo>
+					<plx:enumItem name="Never">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>Auto generation is not available for this data type.</summary>
+							</plx:docComment>
+						</plx:leadingInfo>
+					</plx:enumItem>
+					<plx:enumItem name="Available">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>Auto generation is available for this data type.</summary>
+							</plx:docComment>
+						</plx:leadingInfo>
+					</plx:enumItem>
+					<plx:enumItem name="Default">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>Auto generation is available for this data type and is defaulted on for a new use of the data type.</summary>
+							</plx:docComment>
+						</plx:leadingInfo>
+					</plx:enumItem>
+					<plx:enumItem name="Required">
+						<plx:leadingInfo>
+							<plx:docComment>
+								<summary>Auto generation is always turned on for this data type.</summary>
+							</plx:docComment>
+						</plx:leadingInfo>
+					</plx:enumItem>
+				</plx:enum>
 				<plx:enum name="PortableDataType" visibility="public">
 					<plx:leadingInfo>
 						<plx:pragma type="region" data="PortableDataType Enum"/>
@@ -529,6 +568,8 @@
 												<xsl:for-each select="exsl:node-set($OneAndTwo)/child::*">
 													<!-- Assert precondition -->
 													<xsl:variable name="currentNumber" select="string(.)"/>
+													<!-- There can be a very active code path. The assert is repeating the parsing action, so is not worth the performance hit in mature code -->
+													<!--
 													<plx:callStatic name="Assert" dataTypeName="Debug">
 														<plx:passParam>
 															<plx:callThis name="CanParseInvariant">
@@ -541,6 +582,7 @@
 															<plx:string>Don't call Compare if CanParseInvariant(invariantValue<xsl:value-of select="$currentNumber"/>) returns false</plx:string>
 														</plx:passParam>
 													</plx:callStatic>
+													-->
 													<!-- Get the typed value -->
 													<plx:local name="typedValue{$currentNumber}" dataTypeName="{$typeBackingType}"/>
 													<plx:callStatic name="TryParse" dataTypeName="{$typeBackingType}">
@@ -810,6 +852,151 @@
 											</plx:get>
 										</plx:property>
 									</xsl:if>
+								</xsl:if>
+								<xsl:if test="@generatable and not(@generatable='Never')">
+									<plx:property name="AutoGeneratable" modifier="override" visibility="public">
+										<plx:leadingInfo>
+											<plx:docComment>
+												<summary>This data type supports auto generation.</summary>
+											</plx:docComment>
+										</plx:leadingInfo>
+										<plx:returns dataTypeName="AutoGenerationSupport"/>
+										<plx:get>
+											<plx:return>
+												<plx:callStatic name="{@generatable}" dataTypeName="AutoGenerationSupport" type="property"/>
+											</plx:return>
+										</plx:get>
+									</plx:property>
+									<plx:function name="AutoGenerate" modifier="override" visibility="public">
+										<plx:leadingInfo>
+											<plx:docComment>
+												<summary>Generate a new automatic value for this data type given a set of existing values.</summary>
+											</plx:docComment>
+										</plx:leadingInfo>
+										<plx:param name="existingValues" dataTypeName="IEnumerable" dataTypeQualifier="System.Collections.Generic">
+											<plx:passTypeParam dataTypeName=".string"/>
+										</plx:param>
+										<plx:returns dataTypeName=".string"/>
+										<xsl:choose>
+											<xsl:when test="@autoGenerateStyle='Custom'">
+												<xsl:copy-of select="dtg:AutoGenerate/plx:*"/>
+											</xsl:when>
+											<xsl:when test="@autoGenerateStyle='Incremental'">
+												<plx:local name="first" dataTypeName=".boolean">
+													<plx:initialize>
+														<plx:trueKeyword/>
+													</plx:initialize>
+												</plx:local>
+												<xsl:variable name="backingTypeFragment">
+													<plx:dummy dataTypeName="{@backingType}">
+														<xsl:if test="@backingTypeQualifier">
+															<xsl:attribute name="dataTypeQualifier">
+																<xsl:value-of select="@backingTypeQualifier"/>
+															</xsl:attribute>
+														</xsl:if>
+													</plx:dummy>
+												</xsl:variable>
+												<xsl:variable name="backingTypeAttrs" select="exsl:node-set($backingTypeFragment)/child::*/@*"/>
+												<plx:local name="maxValue">
+													<xsl:copy-of select="$backingTypeAttrs"/>
+													<plx:initialize>
+														<plx:defaultValueOf>
+															<xsl:copy-of select="$backingTypeAttrs"/>
+														</plx:defaultValueOf>
+													</plx:initialize>
+												</plx:local>
+												<plx:iterator localName="invariantValue" dataTypeName=".string">
+													<plx:initialize>
+														<plx:nameRef name="existingValues" type="parameter"/>
+													</plx:initialize>
+													<plx:local name="typedValue">
+														<xsl:copy-of select="$backingTypeAttrs"/>
+													</plx:local>
+													<plx:branch>
+														<plx:condition>
+															<plx:callStatic name="TryParse">
+																<xsl:copy-of select="$backingTypeAttrs"/>
+																<plx:passParam>
+																	<plx:nameRef name="invariantValue" type="parameter"/>
+																</plx:passParam>
+																<xsl:copy-of select="$cultureInvariantFormatParamsFragment"/>
+																<plx:passParam type="out">
+																	<plx:nameRef name="typedValue"/>
+																</plx:passParam>
+															</plx:callStatic>
+														</plx:condition>
+														<plx:branch>
+															<plx:condition>
+																<plx:nameRef name="first"/>
+															</plx:condition>
+															<plx:assign>
+																<plx:left>
+																	<plx:nameRef name="first"/>
+																</plx:left>
+																<plx:right>
+																	<plx:falseKeyword/>
+																</plx:right>
+															</plx:assign>
+															<plx:assign>
+																<plx:left>
+																	<plx:nameRef name="maxValue"/>
+																</plx:left>
+																<plx:right>
+																	<plx:nameRef name="typedValue"/>
+																</plx:right>
+															</plx:assign>
+														</plx:branch>
+														<plx:alternateBranch>
+															<plx:condition>
+																<plx:binaryOperator type="lessThan">
+																	<plx:left>
+																		<plx:callInstance name="CompareTo">
+																			<plx:callObject>
+																				<plx:nameRef name="maxValue"/>
+																			</plx:callObject>
+																			<plx:passParam>
+																				<plx:nameRef name="typedValue"/>
+																			</plx:passParam>
+																		</plx:callInstance>
+																	</plx:left>
+																	<plx:right>
+																		<plx:value type="i4" data="0"/>
+																	</plx:right>
+																</plx:binaryOperator>
+															</plx:condition>
+															<plx:assign>
+																<plx:left>
+																	<plx:nameRef name="maxValue"/>
+																</plx:left>
+																<plx:right>
+																	<plx:nameRef name="typedValue"/>
+																</plx:right>
+															</plx:assign>
+														</plx:alternateBranch>
+													</plx:branch>
+												</plx:iterator>
+												<plx:increment type="pre">
+													<plx:nameRef name="maxValue"/>
+												</plx:increment>
+												<plx:return>
+													<plx:callInstance name="ToString">
+														<plx:callObject>
+															<plx:nameRef name="maxValue"/>
+														</plx:callObject>
+														<plx:passParam>
+															<plx:callStatic dataTypeName="CultureInfo" name="InvariantCulture" type="property">
+																<xsl:if test="$typeCultureSensitive">
+																	<xsl:attribute name="name">
+																		<xsl:text>CurrentCulture</xsl:text>
+																	</xsl:attribute>
+																</xsl:if>
+															</plx:callStatic>
+														</plx:passParam>
+													</plx:callInstance>
+												</plx:return>
+											</xsl:when>
+										</xsl:choose>
+									</plx:function>
 								</xsl:if>
 							</plx:class>
 						</xsl:for-each>

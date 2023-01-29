@@ -830,12 +830,6 @@
 			<arg:DeletingRule methodName="SupertypeDeletingRule">
 				<arg:RuleOn targetType="ObjectTypePlaysRole"/>
 			</arg:DeletingRule>
-			<arg:AddRule methodName="UnspecifiedDataTypeAddRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType"/>
-			</arg:AddRule>
-			<arg:RolePlayerChangeRule methodName="UnspecifiedDataTypeRolePlayerChangeRule">
-				<arg:RuleOn targetType="ValueTypeHasDataType"/>
-			</arg:RolePlayerChangeRule>
 			<arg:AddRule methodName="VerifyReferenceSchemeAddRule">
 				<arg:RuleOn targetType="EntityTypeHasPreferredIdentifier"/>
 			</arg:AddRule>
@@ -851,6 +845,9 @@
 			<arg:DeleteRule methodName="VerifyValueTypeHasDataTypeDeleteRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType"/>
 			</arg:DeleteRule>
+			<arg:RolePlayerChangeRule methodName="VerifyValueTypeHasDataTypeRolePlayerChangeRule">
+				<arg:RuleOn targetType="ValueTypeHasDataType"/>
+			</arg:RolePlayerChangeRule>
 		</arg:RuleContainer>
 		<arg:RuleContainer class="ObjectTypeInstance">
 			<arg:AddRule methodName="ConstraintRoleSequenceHasRoleAddedRule">

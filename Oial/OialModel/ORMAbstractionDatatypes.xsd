@@ -80,7 +80,6 @@
 	<!--<xs:element name="dataType" type="odt:dataType" abstract="true"/>-->
 	<xs:element name="dataType" type="odt:dataType"/>
 
-
 	<xs:complexType name="boolean">
 		<xs:complexContent>
 			<xs:extension base="odt:dataType">
@@ -93,7 +92,36 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="boolean" type="odt:boolean" substitutionGroup="odt:dataType"/>
-	
+
+	<xs:complexType name="integerNumber">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType">
+				<xs:attribute name="bytes" use="required">
+					<xs:simpleType>
+						<xs:restriction base="xs:int">
+							<xs:enumeration value="1"/>
+							<xs:enumeration value="2"/>
+							<xs:enumeration value="4"/>
+							<xs:enumeration value="8"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+				<xs:attribute name="unsigned" type="xs:boolean" default="false"/>
+				<xs:attribute name="generated" type="xs:boolean" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="integerNumber" type="odt:integerNumber" substitutionGroup="odt:dataType"/>
+
+	<xs:complexType name="uniqueIdentifier">
+		<xs:complexContent>
+			<xs:extension base="odt:dataType">
+				<xs:attribute name="generated" type="xs:boolean" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="uniqueIdentifier" type="odt:uniqueIdentifier" substitutionGroup="odt:dataType"/>
+
 	<xs:complexType name="decimalNumberBound">
 		<xs:complexContent>
 			<xs:restriction base="odt:bound">

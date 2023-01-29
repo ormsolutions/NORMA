@@ -1450,7 +1450,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			/// </summary>
 			public RecognizedPhraseNamedElementDictionary()
 				:
-				base(new DuplicateNameManager(), StringComparer.CurrentCultureIgnoreCase)
+				// This is strenghtened to Ordinal instead of CurrentCultureIgnoreCase.
+				// Recognized phrases are case sensitive in some cases in the name generators.
+				// If a name part is marked as explicitly cased (like a reference mode unit,
+				// or a name with embedded capitals, e.g. ORM) then phrase replacement comparisons
+				// are case sensitive. This means that the phrases themselves need to be case
+				// sensisitive, otherwise Mm expanded to macrometer could not be distinguished
+				// form mm expanding to millimeter. This change should have no backward consequences
+				// as different-cased items were previously not created, but will make this possible
+				// moving forward.
+				base(new DuplicateNameManager(), StringComparer.Ordinal)
 			{
 			}
 			#region Base overrides

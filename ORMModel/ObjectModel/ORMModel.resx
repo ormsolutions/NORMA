@@ -1089,7 +1089,7 @@
 		<comment>Exception message when an attempt is made to change an explicit Objectification to implied when it does not match the implied objectification pattern or is not independent (if possible) or plays a Role in a non-implied FactType.</comment>
 	</data>
 	<data name="ModelException.Objectification.ImpliedObjectificationNotAllowed" xml:space="preserve">
-		<value>Implied objectifications can not be operated on via this method.</value>
+		<value>Implied objectifications cannot be operated on via this method.</value>
 		<comment>Exception message when an attempt is made to operate on an implied objectification by a method that only accepts explicit objectifications.</comment>
 	</data>
 	<data name="ModelException.ObjectType.EnforceIsIndependentPattern" xml:space="preserve">
@@ -1316,6 +1316,10 @@
 		<value>Custom Reference Modes</value>
 		<comment>Text used to name the Custom Reference Modes column</comment>
 	</data>
+	<data name="ModelReferenceModeEditor.DataTypeColumn" xml:space="preserve">
+		<value>Data Type</value>
+		<comment>Column header text for the Data Type column.</comment>
+	</data>
 	<data name="ModelReferenceModeEditor.EditorWindowTitle" xml:space="preserve">
 		<value>ORM Reference Mode Editor</value>
 		<comment>The text that displays the title of the editor window.</comment>
@@ -1363,6 +1367,10 @@
 	<data name="ModelSamplePopulationEditor.NullSelection" xml:space="preserve">
 		<value>&lt;Unspecified&gt;</value>
 		<comment>Text to place when selection is null in the sample population window.</comment>
+	</data>
+	<data name="ModelSamplePopulationEditor.GenerateInstance" xml:space="preserve">
+		<value>&lt;Auto Generate&gt;</value>
+		<comment>Text to add to the sample population editor dropdown when the target data type supports auto generation.</comment>
 	</data>
 	<data name="ModelSamplePopulationEditor.ObjectifyingIdentifierAlreadyUsedExceptionText" xml:space="preserve">
 		<value>'{0}' is already associated with another fact instance.</value>
@@ -1710,13 +1718,17 @@
 		<value>Numeric: Unsigned Tiny Integer</value>
 		<comment>An unsigned tiny integer numeric data type</comment>
 	</data>
+	<data name="ObjectModel.DataType.PortableDataType.Numeric.UUID.Text" xml:space="preserve">
+		<value>Numeric: UUID</value>
+		<comment>A Universally Unique Identifier</comment>
+	</data>
 	<data name="ObjectModel.DataType.PortableDataType.Other.ObjectId.Text" xml:space="preserve">
 		<value>Other: Object ID</value>
-		<comment>An object id data type (can not be classified in any of the groups above)</comment>
+		<comment>An object id data type (cannot be classified in any of the groups above)</comment>
 	</data>
 	<data name="ObjectModel.DataType.PortableDataType.Other.RowId.Text" xml:space="preserve">
 		<value>Other: Row ID</value>
-		<comment>A row id data type (can not be classified in any of the groups above)</comment>
+		<comment>A row id data type (cannot be classified in any of the groups above)</comment>
 	</data>
 	<data name="ObjectModel.DataType.PortableDataType.RawData.FixedLength.Text" xml:space="preserve">
 		<value>Raw Data: Fixed Length</value>

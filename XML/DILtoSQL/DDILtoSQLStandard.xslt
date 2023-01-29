@@ -647,15 +647,22 @@
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
+	<xsl:template match="ddl:defaultClause[dep:newUniqueIdentifierKeyword]">
+		<xsl:variable name="canGenerateFragment">
+			<xsl:apply-templates select="dep:newUniqueIdentifierKeyword"/>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="string($canGenerateFragment)">
+				<xsl:text> DEFAULT </xsl:text>
+				<xsl:apply-templates/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>/* UNDEFINED_NEW_UUID() */</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	<xsl:template match="ddl:defaultClause">
 		<xsl:text> DEFAULT </xsl:text>
-		<xsl:apply-templates select="ddt:dateLiteral"/>
-		<xsl:apply-templates select="ddt:datetimeLiteral"/>
-		<xsl:apply-templates select="ddt:characterStringLiteral"/>
-		<xsl:apply-templates select="ddt:binaryStringLiteral"/>
-		<xsl:apply-templates select="ddt:timeLiteral"/>
-		<xsl:apply-templates select="ddt:dayTimeIntervalLiteral"/>
-		<xsl:apply-templates select="ddt:timestampLiteral"/>
 		<xsl:apply-templates/>
 	</xsl:template>
 
@@ -1131,6 +1138,11 @@
 			<xsl:value-of select="@precision"/>
 			<xsl:value-of select="$RightParen"/>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="dep:newUniqueIdentifierKeyword">
+		<!-- An empty return will strip the default clause and leave an unsupported message. -->
+		<xsl:text></xsl:text>
 	</xsl:template>
 
 	<xsl:template match="dep:userKeyword">

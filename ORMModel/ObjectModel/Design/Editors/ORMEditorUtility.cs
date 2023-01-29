@@ -342,7 +342,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 						{
 							ActivateNameProperty(selectedElement);
 						}
-						else if (error is ObjectifiedInstanceRequiredError || error is TooFewEntityTypeRoleInstancesError)
+						else if (error is ObjectifiedInstanceRequiredError || error is TooFewEntityTypeRoleInstancesError || error is CompatibleValueTypeInstanceValueError)
 						{
 							ORMDesignerPackage.SamplePopulationEditorWindow.ActivateModelError(error);
 						}

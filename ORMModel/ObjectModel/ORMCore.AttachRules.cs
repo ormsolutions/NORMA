@@ -277,13 +277,12 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 						typeof(ObjectType).GetNestedType("SupertypeAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("SupertypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("SupertypeDeletingRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectType).GetNestedType("UnspecifiedDataTypeAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
-						typeof(ObjectType).GetNestedType("UnspecifiedDataTypeRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyReferenceSchemeAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyReferenceSchemeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyReferenceSchemeRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyValueTypeHasDataTypeAddRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectType).GetNestedType("VerifyValueTypeHasDataTypeDeleteRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
+						typeof(ObjectType).GetNestedType("VerifyValueTypeHasDataTypeRolePlayerChangeRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleAddedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("ConstraintRoleSequenceHasRoleDeletedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
 						typeof(ObjectTypeInstance).GetNestedType("EntityTypeInstanceHasRoleInstanceRolePlayerChangedRuleClass", BindingFlags.Public | BindingFlags.NonPublic),
@@ -558,7 +557,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			Microsoft.VisualStudio.Modeling.RuleManager ruleManager = store.RuleManager;
 			Type[] disabledRuleTypes = ORMCoreDomainModel.CustomDomainModelTypes;
-			for (int i = 0; i < 490; ++i)
+			for (int i = 0; i < 489; ++i)
 			{
 				ruleManager.EnableRule(disabledRuleTypes[i]);
 			}
@@ -6982,58 +6981,6 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.SupertypeDeletingRule");
 			}
 		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class UnspecifiedDataTypeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public UnspecifiedDataTypeAddRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType
-			/// /// <summary>
-			/// /// AddRule: typeof(ValueTypeHasDataType)
-			/// /// </summary>
-			/// private static void UnspecifiedDataTypeAddRule(ElementAddedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void ElementAdded(Microsoft.VisualStudio.Modeling.ElementAddedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.UnspecifiedDataTypeAddRule");
-				ObjectType.UnspecifiedDataTypeAddRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.UnspecifiedDataTypeAddRule");
-			}
-		}
-		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
-		private sealed class UnspecifiedDataTypeRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
-		{
-			[System.Diagnostics.DebuggerStepThrough()]
-			public UnspecifiedDataTypeRolePlayerChangeRuleClass()
-			{
-				base.IsEnabled = false;
-			}
-			/// <summary>
-			/// Provide the following method in class: 
-			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType
-			/// /// <summary>
-			/// /// RolePlayerChangeRule: typeof(ValueTypeHasDataType)
-			/// /// </summary>
-			/// private static void UnspecifiedDataTypeRolePlayerChangeRule(RolePlayerChangedEventArgs e)
-			/// {
-			/// }
-			/// </summary>
-			[System.Diagnostics.DebuggerStepThrough()]
-			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
-			{
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.UnspecifiedDataTypeRolePlayerChangeRule");
-				ObjectType.UnspecifiedDataTypeRolePlayerChangeRule(e);
-				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.UnspecifiedDataTypeRolePlayerChangeRule");
-			}
-		}
 		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(EntityTypeHasPreferredIdentifier), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
 		private sealed class VerifyReferenceSchemeAddRuleClass : Microsoft.VisualStudio.Modeling.AddRule
 		{
@@ -7162,6 +7109,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeDeleteRule");
 				ObjectType.VerifyValueTypeHasDataTypeDeleteRule(e);
 				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ModelElement.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeDeleteRule");
+			}
+		}
+		[Microsoft.VisualStudio.Modeling.RuleOn(typeof(ValueTypeHasDataType), Priority=ORMSolutions.ORMArchitect.Framework.FrameworkDomainModel.InlineRulePriority)]
+		private sealed class VerifyValueTypeHasDataTypeRolePlayerChangeRuleClass : Microsoft.VisualStudio.Modeling.RolePlayerChangeRule
+		{
+			[System.Diagnostics.DebuggerStepThrough()]
+			public VerifyValueTypeHasDataTypeRolePlayerChangeRuleClass()
+			{
+				base.IsEnabled = false;
+			}
+			/// <summary>
+			/// Provide the following method in class: 
+			/// ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType
+			/// /// <summary>
+			/// /// RolePlayerChangeRule: typeof(ValueTypeHasDataType)
+			/// /// </summary>
+			/// private static void VerifyValueTypeHasDataTypeRolePlayerChangeRule(RolePlayerChangedEventArgs e)
+			/// {
+			/// }
+			/// </summary>
+			[System.Diagnostics.DebuggerStepThrough()]
+			public override void RolePlayerChanged(Microsoft.VisualStudio.Modeling.RolePlayerChangedEventArgs e)
+			{
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleStart(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeRolePlayerChangeRule");
+				ObjectType.VerifyValueTypeHasDataTypeRolePlayerChangeRule(e);
+				ORMSolutions.ORMArchitect.Framework.Diagnostics.TraceUtility.TraceRuleEnd(e.ElementLink.Store, "ORMSolutions.ORMArchitect.Core.ObjectModel.ObjectType.VerifyValueTypeHasDataTypeRolePlayerChangeRule");
 			}
 		}
 	}

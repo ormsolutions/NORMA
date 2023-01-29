@@ -74,6 +74,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel.Design
 				return retVal;
 			}
 		}
+		private static PropertyDescriptor myDefaultDataTypeDisplayPropertyDescriptor;
+		/// <summary>
+		/// Get a <see cref="PropertyDescriptor"/> for the <see cref="P:CustomReferenceMode.DefaultDataType"/> property
+		/// </summary>
+		public static PropertyDescriptor DefaultDataTypeDisplayPropertyDescriptor
+		{
+			get
+			{
+				PropertyDescriptor retVal = myDefaultDataTypeDisplayPropertyDescriptor;
+				if (retVal == null)
+				{
+					myDefaultDataTypeDisplayPropertyDescriptor = retVal = new AutomatedElementFilterCustomPropertyDescriptor(TypeDescriptor.CreateProperty(typeof(CustomReferenceMode), "DefaultDataTypeDisplay", typeof(DataType)), null, null, null, null);
+				}
+				return retVal;
+			}
+		}
 		#endregion // Non-DSL Custom Property Descriptors
 	}
 }

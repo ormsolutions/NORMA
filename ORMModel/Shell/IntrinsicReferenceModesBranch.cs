@@ -35,7 +35,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// <summary>
 				/// The Intrinsic Reference Modes Branch on the tree
 				/// </summary>
-				private sealed class IntrinsicReferenceModesBranch : MultiColumnBaseBranch, IBranch
+				private sealed class IntrinsicReferenceModesBranch : ReferenceModesBaseBranch, IBranch
 				{
 					#region Locals
 					private List<IntrinsicReferenceMode> myIntrinsicReferenceModesList = new List<IntrinsicReferenceMode>();
@@ -165,14 +165,17 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					{
 						if (row < myIntrinsicReferenceModesList.Count)
 						{
+							IntrinsicReferenceMode refMode = myIntrinsicReferenceModesList[row];
 							switch ((Columns)column)
 							{
 								case Columns.Name:
-									return myIntrinsicReferenceModesList[row].Name;
+									return refMode.Name;
 								case Columns.FormatString:
-									return PrettyFormatString(myIntrinsicReferenceModesList[row], false);
+									return PrettyFormatString(refMode, false);
 								case Columns.ReferenceModeKind:
-									return myIntrinsicReferenceModesList[row].Kind.ToString();
+									return refMode.Kind.ToString();
+								case Columns.DataType:
+									return refMode.Model.GetPortableDataType(refMode.Type).ToString();
 							}
 						}
 						return null;

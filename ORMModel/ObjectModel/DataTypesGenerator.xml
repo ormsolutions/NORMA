@@ -33,13 +33,13 @@
 		</DataType>
 	</DataTypeGroup>
 	<DataTypeGroup name="Numeric" cultureSensitive="true">
-		<DataType name="SignedInteger" backingType=".i4" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+		<DataType name="SignedInteger" backingType=".i4" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer" generatable="Available" autoGenerateStyle="Incremental">
 			<Comment type="summary">A signed integer numeric data type</Comment>
 		</DataType>
-		<DataType name="SignedSmallInteger" backingType=".i2" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+		<DataType name="SignedSmallInteger" backingType=".i2" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer" generatable="Available" autoGenerateStyle="Incremental">
 			<Comment type="summary">A small signed integer numeric data type</Comment>
 		</DataType>
-		<DataType name="SignedLargeInteger" backingType=".i8" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+		<DataType name="SignedLargeInteger" backingType=".i8" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer" generatable="Available" autoGenerateStyle="Incremental">
 			<Comment type="summary">A small signed integer numeric data type</Comment>
 		</DataType>
 		<DataType name="UnsignedInteger" backingType=".u4" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
@@ -54,7 +54,7 @@
 		<DataType name="UnsignedLargeInteger" backingType=".u8" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
 			<Comment type="summary">A large unsigned integer numeric data type</Comment>
 		</DataType>
-		<DataType name="AutoCounter" backingType=".u8" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer">
+		<DataType name="AutoCounter" backingType=".i8" rangeSupport="DiscontinuousEndPoints" discontinuousRangePattern="Integer" numberStyles="Integer" generatable="Required" autoGenerateStyle="Incremental">
 			<Comment type="summary">An auto counter numeric data type</Comment>
 		</DataType>
 		<DataType name="FloatingPoint" backingType=".r8" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription" numberStyles="Float AllowThousands">
@@ -71,6 +71,25 @@
 		</DataType>
 		<DataType name="Money" backingType=".decimal" lengthName="DataTypePrecision" lengthDescription="DataTypePrecisionDescription" scaleName="" numberStyles="Number">
 			<Comment type="summary">A money numeric data type</Comment>
+		</DataType>
+		<DataType name="UUID" backingType="Guid" rangeSupport="None" backingTypeQualifier="System" generatable="Default" autoGenerateStyle="Custom" cultureSensitive="false">
+			<Comment type="summary">A universally unique 128-bit identifier. Also known as  GUID (globally unique identifier).</Comment>
+			<AutoGenerate xmlns:plx="http://schemas.neumont.edu/CodeGeneration/PLiX">
+				<plx:return>
+					<plx:callInstance name="ToUpper">
+						<plx:callObject>
+							<plx:callInstance name="ToString">
+								<plx:callObject>
+									<plx:callStatic dataTypeQualifier="System" dataTypeName="Guid" name="NewGuid"/>
+								</plx:callObject>
+								<plx:passParam>
+									<plx:string>D</plx:string>
+								</plx:passParam>
+							</plx:callInstance>
+						</plx:callObject>
+					</plx:callInstance>
+				</plx:return>
+			</AutoGenerate>
 		</DataType>
 	</DataTypeGroup>
 	<DataTypeGroup name="RawData" canCompare="false" rangeSupport="None">

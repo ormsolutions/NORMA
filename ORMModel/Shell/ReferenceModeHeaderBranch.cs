@@ -138,7 +138,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					Name = 0,
 					ReferenceModeKind = 1,
 					FormatString = 2,
-					Last = FormatString,
+					DataType = 3,
+					Last = DataType
 				}
 				/// <summary>
 				/// Replaces the {0} and {1} with entityTypeName and referenceModeName
@@ -184,8 +185,8 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					return value;
 				}
-				#region MultiColumnBaseBranch class
-				private abstract class MultiColumnBaseBranch : BaseBranch, IMultiColumnBranch
+				#region ReferenceModesBaseBranch class
+				private abstract class ReferenceModesBaseBranch : BaseBranch, IMultiColumnBranch
 				{
 					#region IMultiColumnBranch Implementation
 					int IMultiColumnBranch.ColumnCount
@@ -203,7 +204,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					}
 					#endregion // IMultiColumnBaseBranch Implementation
 				}
-				#endregion // MultiColumnBaseBranch class
+				#endregion // ReferenceModesBaseBranch class
 				#endregion // Shared by all branches
 				private ReferenceModeKindsBranch myReferenceModeKindsBranch;
 				private CustomReferenceModesBranch myCustomBranch;

@@ -2577,7 +2577,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 	}
 	#endregion // EntityTypeInstance class
 	#region ValueTypeInstance class
-	public partial class ValueTypeInstance : IModelErrorOwner
+	public partial class ValueTypeInstance : IModelErrorOwner, IHasIndirectModelErrorOwner
 	{
 		#region Base overrides
 		private string NormalizedValue
@@ -2643,7 +2643,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				filter = (ModelErrorUses)(-1);
 			}
-			if (0 != (filter & ModelErrorUses.Verbalize))
+			if (0 != (filter & (ModelErrorUses.Verbalize | ModelErrorUses.DisplayPrimary)))
 			{
 				CompatibleValueTypeInstanceValueError badValue = CompatibleValueTypeInstanceValueError;
 				if (badValue != null)
@@ -2693,6 +2693,27 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			DelayValidateErrors();
 		}
 		#endregion // IModelErrorOwner Implementation
+		#region IHasIndirectModelErrorOwner Implementation
+		private static Guid[] myIndirectModelErrorOwnerLinkRoles;
+		/// <summary>
+		/// Implements IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		/// </summary>
+		protected static Guid[] GetIndirectModelErrorOwnerLinkRoles()
+		{
+			// Creating a static readonly guid array is causing static field initialization
+			// ordering issues with the partial classes. Defer initialization.
+			Guid[] linkRoles = myIndirectModelErrorOwnerLinkRoles;
+			if (linkRoles == null)
+			{
+				myIndirectModelErrorOwnerLinkRoles = linkRoles = new Guid[] { ValueTypeHasValueTypeInstance.ValueTypeInstanceDomainRoleId };
+			}
+			return linkRoles;
+		}
+		Guid[] IHasIndirectModelErrorOwner.GetIndirectModelErrorOwnerLinkRoles()
+		{
+			return GetIndirectModelErrorOwnerLinkRoles();
+		}
+		#endregion // IHasIndirectModelErrorOwner Implementation
 		#region CompatibleValueTypeInstanceValueError Validation
 		/// <summary>
 		/// Validator callback for CompatibleValueTypeInstanceValueError
@@ -2725,21 +2746,25 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				if (null != (parent = ValueType) &&
 					null != (dataType = parent.DataType))
 				{
-					if (!dataType.CanParseAnyValue && dataType.IsCultureSensitive)
+					if (!dataType.CanParseAnyValue)
 					{
 						string value = Value;
-						if (dataType.ParseNormalizeValue(value, InvariantValue, out value))
+						if (dataType.IsCultureSensitive)
 						{
-							InvariantValue = value;
+							if (dataType.ParseNormalizeValue(value, InvariantValue, out value))
+							{
+								InvariantValue = value;
+							}
+							else
+							{
+								hasError = true;
+							}
 						}
 						else
 						{
-							hasError = true;
+							hasError = !dataType.CanParse(value);
+							InvariantValue = "";
 						}
-					}
-					else
-					{
-						InvariantValue = "";
 					}
 				}
 				CompatibleValueTypeInstanceValueError badValue = this.CompatibleValueTypeInstanceValueError;

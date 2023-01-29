@@ -660,6 +660,11 @@
 					<xs:documentation>Range: −2⁶³ to 2⁶³−1 (−9,223,372,036,854,775,808 to 9,223,372,036,854,775,807)</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<xs:enumeration value="UNIQUEIDENTIFIER">
+				<xs:annotation>
+					<xs:documentation>128 bit integer following Universally Unique Identifier standard.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="approximateNumericTypes">

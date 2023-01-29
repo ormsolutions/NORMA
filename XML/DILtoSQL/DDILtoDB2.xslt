@@ -79,6 +79,10 @@
 		<!-- UNDONE: Add constraints to restrict BOOLEAN to the appropriate values. -->
 	</xsl:template>
 
+	<xsl:template match="@type[.='UNIQUEIDENTIFIER']" mode="ForDataType">
+		<xsl:text>CHAR(16) FOR BIT DATA</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="ddt:booleanLiteral">
 		<xsl:choose>
 			<xsl:when test="@value='TRUE'">

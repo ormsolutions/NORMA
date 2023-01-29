@@ -39,9 +39,43 @@
 		</xsl:variable>
 		<xsl:apply-templates select="exsl:node-set($tinyIntRemovedDilFragment)/child::*"/>
 	</xsl:template>
-	
+
+	<xsl:template match="ddl:schemaDefinition">
+		<xsl:param name="indent"/>
+		<xsl:value-of select="$NewLine"/>
+		<xsl:value-of select="$indent"/>
+
+		<!-- This deviates from standard in two ways. First, to handle the normal
+		existence of the 'public' schema in a new database we always do a conditional
+		schema creation so that the script can be run without modification. Second,
+		if a UNIQUEIDENTIFIER type is used we need to enable the uuid-ossp extension, so
+		we check for a column use of this data type and enable the extension if it is used. -->
+
+		<xsl:if test="../ddl:tableDefinition[ddl:columnDefinition[ddt:exactNumeric[@type='UNIQUEIDENTIFIER']]]">
+			<xsl:text>CREATE EXTENSION IF NOT EXISTS "uuid-ossp"</xsl:text>
+			<xsl:value-of select="$StatementDelimiter"/>
+			<xsl:value-of select="$NewLine"/>
+			<xsl:value-of select="$indent"/>
+		</xsl:if>
+
+		<xsl:text>CREATE SCHEMA IF NOT EXISTS </xsl:text>
+		<xsl:apply-templates select="@catalogName" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="@schemaName" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="@authorizationIdentifier" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="@defaultCharacterSet" mode="ForSchemaDefinition"/>
+		<xsl:apply-templates select="ddl:path" mode="ForSchemaDefinition"/>
+		<xsl:if test="*[not(self::ddl:path)]">
+			<xsl:value-of select="$NewLine"/>
+			<xsl:apply-templates select="*[not(self::ddl:path)]">
+				<xsl:with-param name="indent" select="concat($indent, $IndentChar)"/>
+			</xsl:apply-templates>
+		</xsl:if>
+		<xsl:value-of select="$StatementDelimiter"/>
+		<xsl:value-of select="$NewLine"/>
+	</xsl:template>
+
 	<xsl:template match="@defaultCharacterSet" mode="ForSchemaDefinition"/>
-	
+
 	<xsl:template match="dms:setSchemaStatement">
 		<xsl:param name="indent"/>
 		<xsl:choose>
@@ -106,7 +140,15 @@
 		<xsl:text>BYTEA</xsl:text>
 		<!-- UNDONE: Add constraints to support the original length requested. -->
 	</xsl:template>
-	
+
+	<xsl:template match="@type[.='UNIQUEIDENTIFIER']" mode="ForDataType">
+		<xsl:text>UUID</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="dep:newUniqueIdentifierKeyword">
+		<xsl:text>uuid_generate_v4()</xsl:text>
+	</xsl:template>
+
 	<!-- UNDONE: Handle rendering ddt:binaryStringLiteral. -->
 
 	<xsl:template match="ddl:sqlInvokedProcedure">

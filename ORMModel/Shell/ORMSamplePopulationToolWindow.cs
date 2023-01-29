@@ -422,7 +422,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 		public bool ActivateModelError(ModelError error)
 		{
 			bool retVal = false;
-			if (error is ObjectifiedInstanceRequiredError || error is TooFewFactTypeRoleInstancesError || error is TooFewEntityTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError)
+			if (error is ObjectifiedInstanceRequiredError || error is TooFewFactTypeRoleInstancesError || error is TooFewEntityTypeRoleInstancesError || error is ObjectifyingInstanceRequiredError || error is CompatibleValueTypeInstanceValueError)
 			{
 				Show();
 				retVal = myEditor.ActivateModelError(error);

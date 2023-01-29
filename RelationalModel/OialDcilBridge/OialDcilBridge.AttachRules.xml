@@ -93,6 +93,9 @@
 			<arg:RolePlayerChangeRule methodName="ReferenceModeKindRolePlayerChangedRule">
 				<arg:RuleOn targetType="ReferenceModeHasReferenceModeKind" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:RolePlayerChangeRule>
+			<arg:ChangeRule methodName="RecognizedPhraseChangedRule">
+				<arg:RuleOn targetType="RecognizedPhrase" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
+			</arg:ChangeRule>
 			<arg:DeletingRule methodName="RecognizedPhraseDeletingRule">
 				<arg:RuleOn targetType="ModelContainsRecognizedPhrase" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeletingRule>

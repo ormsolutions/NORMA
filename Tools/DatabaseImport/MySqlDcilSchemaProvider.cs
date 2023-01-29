@@ -193,9 +193,11 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 				case "double":
 					return DcilDataType.DCILType.DoublePrecision;
 				case "image":
-				case "binary":
-				case "varbinary":
 					return DcilDataType.DCILType.BinaryLargeObject;
+				case "binary":
+					return DcilDataType.DCILType.Binary;
+				case "varbinary":
+					return DcilDataType.DCILType.BinaryVarying;
 				case "real":
 					return DcilDataType.DCILType.Real;
 				default:

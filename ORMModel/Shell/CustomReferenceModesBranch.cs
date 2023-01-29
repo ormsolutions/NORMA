@@ -44,7 +44,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// <summary>
 				/// The Custom Reference Modes branch;
 				/// </summary>
-				private sealed class CustomReferenceModesBranch : MultiColumnBaseBranch, IBranch, IMultiColumnBranch
+				private sealed class CustomReferenceModesBranch : ReferenceModesBaseBranch, IBranch, IMultiColumnBranch
 				{
 					#region Locals
 					private List<CustomReferenceMode> myCustomReferenceModesList = new List<CustomReferenceMode>();
@@ -256,6 +256,52 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						}
 					}
 
+					private void ReferenceModeDataTypeAddEvent(object sender, ElementAddedEventArgs e)
+					{
+						if (myModify != null)
+						{
+							CustomReferenceModeHasDefaultDataType link;
+							CustomReferenceMode custRefMode;
+							if (null != (link = e.ModelElement as CustomReferenceModeHasDefaultDataType) &&
+								(custRefMode = link.CustomReferenceMode).Model == myModel)
+							{
+								int row = this.FindReferenceMode(custRefMode);
+								myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.DataType, 1)));
+							}
+						}
+					}
+
+					private void ReferenceModeDataTypeRemoveEvent(object sender, ElementDeletedEventArgs e)
+					{
+						if (myModify != null)
+						{
+							CustomReferenceModeHasDefaultDataType link;
+							CustomReferenceMode custRefMode;
+							if (null != (link = e.ModelElement as CustomReferenceModeHasDefaultDataType) &&
+								!(custRefMode = link.CustomReferenceMode).IsDeleted &&
+								custRefMode.Model == myModel)
+							{
+								int row = this.FindReferenceMode(custRefMode);
+								myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.DataType, 1)));
+							}
+						}
+					}
+
+					private void ReferenceModeDataTypeChangeEvent(object sender, RolePlayerChangedEventArgs e)
+					{
+						if (myModify != null && e.DomainRole.Id == CustomReferenceModeHasDefaultDataType.DefaultDataTypeDomainRoleId) // This is the only change there is any reason to expect
+						{
+							CustomReferenceModeHasDefaultDataType link;
+							CustomReferenceMode custRefMode;
+							if (null != (link = e.ElementLink as CustomReferenceModeHasDefaultDataType) &&
+								(custRefMode = link.CustomReferenceMode).Model == myModel)
+							{
+								int row = this.FindReferenceMode(custRefMode);
+								myModify(this, BranchModificationEventArgs.DisplayDataChanged(new DisplayDataChangedData(VirtualTreeDisplayDataChanges.Text, this, row, (int)Columns.DataType, 1)));
+							}
+						}
+					}
+
 					private int FindReferenceMode(CustomReferenceMode custRefMode)
 					{
 						return myCustomReferenceModesList.IndexOf(custRefMode);
@@ -288,6 +334,11 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 
 						classInfo = dataDirectory.FindDomainRelationship(ReferenceModeHasReferenceModeKind.DomainClassId);
 						eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ReferenceModeHasKindChangeEvent), action);
+
+						classInfo = dataDirectory.FindDomainRelationship(CustomReferenceModeHasDefaultDataType.DomainClassId);
+						eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementAddedEventArgs>(ReferenceModeDataTypeAddEvent), action);
+						eventManager.AddOrRemoveHandler(classInfo, new EventHandler<ElementDeletedEventArgs>(ReferenceModeDataTypeRemoveEvent), action);
+						eventManager.AddOrRemoveHandler(classInfo, new EventHandler<RolePlayerChangedEventArgs>(ReferenceModeDataTypeChangeEvent), action);
 					}
 					#endregion // EventHandling
 
@@ -310,6 +361,19 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 								return VirtualTreeLabelEditData.Invalid;
 							}
 							PropertyDescriptor descriptor = ReferenceModeTypeDescriptor.KindDisplayPropertyDescriptor;
+							TypeEditorHost hostControl = OnScreenTypeEditorHost.Create(descriptor, element, TypeEditorHostEditControlStyle.TransparentEditRegion);
+							hostControl.Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText | VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
+							return new VirtualTreeLabelEditData(hostControl);
+						}
+						else if (column == (int)Columns.DataType)
+						{
+							ModelElement element = myCustomReferenceModesList[row];
+							if (element.Store == null)
+							{
+								// Teardown scenario
+								return VirtualTreeLabelEditData.Invalid;
+							}
+							PropertyDescriptor descriptor = ReferenceModeTypeDescriptor.DefaultDataTypeDisplayPropertyDescriptor;
 							TypeEditorHost hostControl = OnScreenTypeEditorHost.Create(descriptor, element, TypeEditorHostEditControlStyle.TransparentEditRegion);
 							hostControl.Flags = VirtualTreeInPlaceControlFlags.DisposeControl | VirtualTreeInPlaceControlFlags.SizeToText | VirtualTreeInPlaceControlFlags.DrawItemText | VirtualTreeInPlaceControlFlags.ForwardKeyEvents;
 							return new VirtualTreeLabelEditData(hostControl);
@@ -381,6 +445,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 										}
 										break;
 									case Columns.ReferenceModeKind:
+									case Columns.DataType:
 										break;
 								}
 							}
@@ -484,21 +549,25 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						{
 							if (row < myCustomReferenceModesList.Count)
 							{
+								CustomReferenceMode refMode = myCustomReferenceModesList[row];
+								ReferenceModeKind kind;
 								switch ((Columns)column)
 								{
 									case Columns.Name:
-										return myCustomReferenceModesList[row].Name;
+										return refMode.Name;
 									case Columns.FormatString:
-										return PrettyFormatString(myCustomReferenceModesList[row], false);
+										return PrettyFormatString(refMode, false);
 									case Columns.ReferenceModeKind:
-										if (myCustomReferenceModesList[row].Kind != null)
+										if (null != (kind = refMode.Kind))
 										{
-											return myCustomReferenceModesList[row].Kind.ToString();
+											return kind.ToString();
 										}
 										else
 										{
 											return null;
 										}
+									case Columns.DataType:
+										return refMode.Model.GetPortableDataType(refMode.Type).ToString();
 									default:
 										return null;
 								}

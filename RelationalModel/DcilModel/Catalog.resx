@@ -228,6 +228,9 @@
   <data name="PredefinedType.SmallInt" xml:space="preserve">
     <value>SMALLINT</value>
   </data>
+  <data name="PredefinedType.UUID" xml:space="preserve">
+    <value>UUID</value>
+  </data>
   <data name="SqlDataAccessIndication.ContainsSql" xml:space="preserve">
     <value>CONSTAINS SQL</value>
   </data>

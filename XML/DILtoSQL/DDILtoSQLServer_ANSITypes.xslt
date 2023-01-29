@@ -262,6 +262,13 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template match="ddl:columnDefinition[ddt:exactNumeric[@type='UNIQUEIDENTIFIER']]/ddl:defaultClause/dep:newUniqueIdentifierKeyword">
+		<xsl:text>NEWSEQUENTIALID()</xsl:text>
+	</xsl:template>
+	<xsl:template match="dep:newUniqueIdentifierKeyword">
+		<xsl:text>NEWID()</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="@onUpdate" mode="ForReferenceSpecification">
 		<xsl:text> ON UPDATE </xsl:text>
 		<xsl:choose>

@@ -14,11 +14,13 @@
 \**************************************************************************/
 #endregion
 
+using Microsoft.VisualStudio.Shell.Interop;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics.Eventing.Reader;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -150,7 +152,7 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 				bool haveSchema = !string.IsNullOrEmpty(schemaName);
 				string commandText = "SELECT COLUMN_NAME, IS_NULLABLE, COLUMNPROPERTY(OBJECT_ID(" +
 					(haveSchema ? "TABLE_SCHEMA + '.' + " : "") +
-					"TABLE_NAME), COLUMN_NAME, 'IsIdentity') IS_IDENTITY, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, COALESCE(NUMERIC_PRECISION, DATETIME_PRECISION), NUMERIC_SCALE FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME IS NOT NULL" +
+					"TABLE_NAME), COLUMN_NAME, 'IsIdentity') IS_IDENTITY, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH, COALESCE(NUMERIC_PRECISION, DATETIME_PRECISION), NUMERIC_SCALE, COLUMN_DEFAULT FROM INFORMATION_SCHEMA.COLUMNS WHERE COLUMN_NAME IS NOT NULL" +
 					(haveSchema ? " AND TABLE_SCHEMA = '" + schemaName + "'" : "") +
 					" AND TABLE_NAME = '" + tableName + "'";
 				cmd.CommandText = commandText;
@@ -165,6 +167,20 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 						int size = (reader.IsDBNull(4) ? -1 : reader.GetInt32(4));
 						short precision = (reader.IsDBNull(5) ? (short)-1 : reader.GetInt16(5));
 						int scale = (reader.IsDBNull(6) ? -1 : reader.GetInt32(6));
+						if (!isIdentity && type == DcilDataType.DCILType.UniqueIdentifier)
+						{
+							// Guids auto-generate with a default, but the Dcil model treats them the same as a generated identity.
+							string defaultExpression = reader.IsDBNull(7) ? null : reader.GetString(7);
+							if (!string.IsNullOrEmpty(defaultExpression))
+							{
+								defaultExpression = defaultExpression.Trim('(', ')', ' ');
+								if (0 == string.Compare("NEWID", defaultExpression, StringComparison.OrdinalIgnoreCase) ||
+									0 == string.Compare("NEWSEQUENTIALID", defaultExpression, StringComparison.OrdinalIgnoreCase))
+								{
+									isIdentity = true;
+								}
+							}
+						}
 						columns.Add(new DcilColumn(columnName, new DcilDataType(type, size, scale, precision), isNullable, isIdentity));
 					}
 				}
@@ -197,8 +213,9 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 				case "int":
 					return DcilDataType.DCILType.Integer;
 				case "smallint":
-				case "tinyint":
 					return DcilDataType.DCILType.SmallInt;
+				case "tinyint":
+					return DcilDataType.DCILType.TinyInt;
 				case "bigint":
 					return DcilDataType.DCILType.BigInt;
 				case "smalldatetime":
@@ -219,13 +236,17 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 				case "double":
 					return DcilDataType.DCILType.DoublePrecision;
 				case "image":
-				case "binary":
-				case "varbinary":
 					return DcilDataType.DCILType.BinaryLargeObject;
+				case "binary":
+					return DcilDataType.DCILType.Binary;
+				case "varbinary":
+					return DcilDataType.DCILType.BinaryVarying;
 				case "real":
 					return DcilDataType.DCILType.Real;
 				default:
 					return DcilDataType.DCILType.CharacterVarying;
+				case "uniqueidentifier":
+					return DcilDataType.DCILType.UniqueIdentifier;
 			}
 		}
 		/// <summary>

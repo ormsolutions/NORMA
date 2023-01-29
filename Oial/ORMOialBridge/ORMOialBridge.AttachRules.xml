@@ -109,9 +109,9 @@
 			<arg:DeleteRule methodName="DataTypeDeletedRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:DeleteRule>
-			<arg:RolePlayerChangeRule methodName="DataTypeChangedRule">
+			<arg:ChangeRule methodName="DataTypeChangedRule">
 				<arg:RuleOn targetType="ValueTypeHasDataType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
-			</arg:RolePlayerChangeRule>
+			</arg:ChangeRule>
 			<arg:ChangeRule methodName="ObjectTypeChangedRule">
 				<arg:RuleOn targetType="ObjectType" targetTypeQualifier="ORMSolutions.ORMArchitect.Core.ObjectModel"/>
 			</arg:ChangeRule>

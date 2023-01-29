@@ -215,6 +215,14 @@
 		<xsl:value-of select="$RightParen"/>
 	</xsl:template>
 
+	<xsl:template match="@type[.='UNIQUEIDENTIFIER']" mode="ForDataType">
+		<!-- Use the binary form for efficiency -->
+		<xsl:text>BINARY(16)</xsl:text>
+	</xsl:template>
+	<xsl:template match="dep:newUniqueIdentifierKeyword">
+		<xsl:text>UUID_TO_BIN(UUID())</xsl:text>
+	</xsl:template>
+
 	<xsl:template match="ddt:characterString | ddt:binaryString" mode="ForDataTypeLengthWithMultiplier">
 		<xsl:call-template name="GetTotalDataTypeLength"/>
 	</xsl:template>

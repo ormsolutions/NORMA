@@ -453,6 +453,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.Money.Text");
 			}
 		}
+		/// <summary>A Universally Unique Identifier</summary>
+		public static string PortableDataTypeNumericUUID
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Numeric.UUID.Text");
+			}
+		}
 		/// <summary>A fixed length raw data data type</summary>
 		public static string PortableDataTypeRawDataFixedLength
 		{
@@ -541,7 +549,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Logical.YesOrNo.Text");
 			}
 		}
-		/// <summary>A row id data type (can not be classified in any of the groups above)</summary>
+		/// <summary>A row id data type (cannot be classified in any of the groups above)</summary>
 		public static string PortableDataTypeOtherRowId
 		{
 			get
@@ -549,7 +557,7 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ObjectModel.DataType.PortableDataType.Other.RowId.Text");
 			}
 		}
-		/// <summary>An object id data type (can not be classified in any of the groups above)</summary>
+		/// <summary>An object id data type (cannot be classified in any of the groups above)</summary>
 		public static string PortableDataTypeOtherObjectId
 		{
 			get
@@ -2682,6 +2690,14 @@ namespace ORMSolutions.ORMArchitect.Core
 				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.NullSelection");
 			}
 		}
+		/// <summary>Text to add to the sample population editor dropdown when the target data type supports auto generation.</summary>
+		public static string ModelSamplePopulationEditorGenerateInstance
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelSamplePopulationEditor.GenerateInstance");
+			}
+		}
 		/// <summary>Column header for the first 'Abbreviation' column in the name generator abbreviations dialog</summary>
 		public static string NameGeneratorAbbreviationsEditorAbbreviationColumnHeader
 		{
@@ -2960,6 +2976,14 @@ namespace ORMSolutions.ORMArchitect.Core
 			get
 			{
 				return ResourceStrings.GetString(ResourceManagers.Model, "ReferenceMode.PredicateInverseReading");
+			}
+		}
+		/// <summary>Column header text for the Data Type column.</summary>
+		public static string ModelReferenceModeEditorDataTypeColumn
+		{
+			get
+			{
+				return ResourceStrings.GetString(ResourceManagers.Model, "ModelReferenceModeEditor.DataTypeColumn");
 			}
 		}
 		/// <summary>Column header text for the Format String column.</summary>

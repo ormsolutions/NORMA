@@ -20,6 +20,20 @@ using System.Globalization;
 
 namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 {
+	#region AutoGenerationSupport Enum
+	/// <summary>Define different levels of support for auto-generatable data types.</summary>
+	public enum AutoGenerationSupport
+	{
+		/// <summary>Auto generation is not available for this data type.</summary>
+		Never,
+		/// <summary>Auto generation is available for this data type.</summary>
+		Available,
+		/// <summary>Auto generation is available for this data type and is defaulted on for a new use of the data type.</summary>
+		Default,
+		/// <summary>Auto generation is always turned on for this data type.</summary>
+		Required,
+	}
+	#endregion // AutoGenerationSupport Enum
 	#region PortableDataType Enum
 	/// <summary>A list of predefined data types. One DataType-derived class is defined for each value.</summary>
 	public enum PortableDataType
@@ -58,6 +72,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		NumericDecimal,
 		/// <summary>A money numeric data type</summary>
 		NumericMoney,
+		/// <summary>A universally unique 128-bit identifier. Also known as  GUID (globally unique identifier).</summary>
+		NumericUUID,
 		/// <summary>A fixed length raw data data type</summary>
 		RawDataFixedLength,
 		/// <summary>A variable length raw data data type</summary>
@@ -111,6 +127,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				typeof(DoublePrecisionFloatingPointNumericDataType),
 				typeof(DecimalNumericDataType),
 				typeof(MoneyNumericDataType),
+				typeof(UUIDNumericDataType),
 				typeof(FixedLengthRawDataDataType),
 				typeof(VariableLengthRawDataDataType),
 				typeof(LargeLengthRawDataDataType),
@@ -363,10 +380,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			int typedValue1;
 			int.TryParse(invariantValue1, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			int typedValue2;
 			int.TryParse(invariantValue2, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<int>)typedValue1).CompareTo(typedValue2);
@@ -402,6 +417,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				isOpen = false;
 			}
 			return true;
+		}
+		/// <summary>This data type supports auto generation.</summary>
+		public override AutoGenerationSupport AutoGeneratable
+		{
+			get
+			{
+				return AutoGenerationSupport.Available;
+			}
+		}
+		/// <summary>Generate a new automatic value for this data type given a set of existing values.</summary>
+		public override string AutoGenerate(System.Collections.Generic.IEnumerable<string> existingValues)
+		{
+			bool first = true;
+			int maxValue = default(int);
+			foreach (string invariantValue in existingValues)
+			{
+				int typedValue;
+				if (int.TryParse(invariantValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue))
+				{
+					if (first)
+					{
+						first = false;
+						maxValue = typedValue;
+					}
+					else if (maxValue.CompareTo(typedValue) < 0)
+					{
+						maxValue = typedValue;
+					}
+				}
+			}
+			++maxValue;
+			return maxValue.ToString(CultureInfo.CurrentCulture);
 		}
 	}
 	/// <summary>A small signed integer numeric data type</summary>
@@ -483,10 +530,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			short typedValue1;
 			short.TryParse(invariantValue1, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			short typedValue2;
 			short.TryParse(invariantValue2, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<short>)typedValue1).CompareTo(typedValue2);
@@ -522,6 +567,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				isOpen = false;
 			}
 			return true;
+		}
+		/// <summary>This data type supports auto generation.</summary>
+		public override AutoGenerationSupport AutoGeneratable
+		{
+			get
+			{
+				return AutoGenerationSupport.Available;
+			}
+		}
+		/// <summary>Generate a new automatic value for this data type given a set of existing values.</summary>
+		public override string AutoGenerate(System.Collections.Generic.IEnumerable<string> existingValues)
+		{
+			bool first = true;
+			short maxValue = default(short);
+			foreach (string invariantValue in existingValues)
+			{
+				short typedValue;
+				if (short.TryParse(invariantValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue))
+				{
+					if (first)
+					{
+						first = false;
+						maxValue = typedValue;
+					}
+					else if (maxValue.CompareTo(typedValue) < 0)
+					{
+						maxValue = typedValue;
+					}
+				}
+			}
+			++maxValue;
+			return maxValue.ToString(CultureInfo.CurrentCulture);
 		}
 	}
 	/// <summary>A small signed integer numeric data type</summary>
@@ -603,10 +680,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			long typedValue1;
 			long.TryParse(invariantValue1, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			long typedValue2;
 			long.TryParse(invariantValue2, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<long>)typedValue1).CompareTo(typedValue2);
@@ -642,6 +717,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				isOpen = false;
 			}
 			return true;
+		}
+		/// <summary>This data type supports auto generation.</summary>
+		public override AutoGenerationSupport AutoGeneratable
+		{
+			get
+			{
+				return AutoGenerationSupport.Available;
+			}
+		}
+		/// <summary>Generate a new automatic value for this data type given a set of existing values.</summary>
+		public override string AutoGenerate(System.Collections.Generic.IEnumerable<string> existingValues)
+		{
+			bool first = true;
+			long maxValue = default(long);
+			foreach (string invariantValue in existingValues)
+			{
+				long typedValue;
+				if (long.TryParse(invariantValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue))
+				{
+					if (first)
+					{
+						first = false;
+						maxValue = typedValue;
+					}
+					else if (maxValue.CompareTo(typedValue) < 0)
+					{
+						maxValue = typedValue;
+					}
+				}
+			}
+			++maxValue;
+			return maxValue.ToString(CultureInfo.CurrentCulture);
 		}
 	}
 	/// <summary>An unsigned integer numeric data type</summary>
@@ -723,10 +830,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			uint typedValue1;
 			uint.TryParse(invariantValue1, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			uint typedValue2;
 			uint.TryParse(invariantValue2, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<uint>)typedValue1).CompareTo(typedValue2);
@@ -843,10 +948,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			byte typedValue1;
 			byte.TryParse(invariantValue1, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			byte typedValue2;
 			byte.TryParse(invariantValue2, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<byte>)typedValue1).CompareTo(typedValue2);
@@ -963,10 +1066,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			ushort typedValue1;
 			ushort.TryParse(invariantValue1, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			ushort typedValue2;
 			ushort.TryParse(invariantValue2, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<ushort>)typedValue1).CompareTo(typedValue2);
@@ -1083,10 +1184,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			ulong typedValue1;
 			ulong.TryParse(invariantValue1, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			ulong typedValue2;
 			ulong.TryParse(invariantValue2, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<ulong>)typedValue1).CompareTo(typedValue2);
@@ -1159,8 +1258,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
 		public override bool CanParse(string value)
 		{
-			ulong result;
-			return ulong.TryParse(value, NumberStyles.Integer, this.CurrentCulture, out result);
+			long result;
+			return long.TryParse(value, NumberStyles.Integer, this.CurrentCulture, out result);
 		}
 		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
@@ -1173,14 +1272,14 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Returns true if the invariant string value can be interpreted as this data type</summary>
 		public override bool CanParseInvariant(string invariantValue)
 		{
-			ulong result;
-			return ulong.TryParse(invariantValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out result);
+			long result;
+			return long.TryParse(invariantValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out result);
 		}
 		/// <summary>Convert a culture-dependent string to an invariant string.</summary>
 		public override bool TryConvertToInvariant(string value, out string invariantValue)
 		{
-			ulong typedValue;
-			if (ulong.TryParse(value, NumberStyles.Integer, this.CurrentCulture, out typedValue))
+			long typedValue;
+			if (long.TryParse(value, NumberStyles.Integer, this.CurrentCulture, out typedValue))
 			{
 				invariantValue = typedValue.ToString(CultureInfo.InvariantCulture);
 				return true;
@@ -1191,8 +1290,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Convert an invariant string to a culture-dependent string.</summary>
 		public override bool TryConvertFromInvariant(string invariantValue, out string value)
 		{
-			ulong typedValue;
-			if (ulong.TryParse(invariantValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue))
+			long typedValue;
+			if (long.TryParse(invariantValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue))
 			{
 				value = typedValue.ToString(this.CurrentCulture);
 				return true;
@@ -1203,22 +1302,20 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
-			ulong typedValue1;
-			ulong.TryParse(invariantValue1, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
-			ulong typedValue2;
-			ulong.TryParse(invariantValue2, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue2);
-			return ((IComparable<ulong>)typedValue1).CompareTo(typedValue2);
+			long typedValue1;
+			long.TryParse(invariantValue1, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue1);
+			long typedValue2;
+			long.TryParse(invariantValue2, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue2);
+			return ((IComparable<long>)typedValue1).CompareTo(typedValue2);
 		}
 		/// <summary>Adjust the lower bound for open ranges.</summary>
 		public override bool AdjustDiscontinuousLowerBound(ref string invariantBound, ref bool isOpen)
 		{
 			if (isOpen)
 			{
-				ulong bound;
+				long bound;
 				IFormatProvider formatProvider = CultureInfo.InvariantCulture;
-				if (!ulong.TryParse(invariantBound, NumberStyles.Integer, formatProvider, out bound) || bound == ulong.MaxValue)
+				if (!long.TryParse(invariantBound, NumberStyles.Integer, formatProvider, out bound) || bound == long.MaxValue)
 				{
 					return false;
 				}
@@ -1232,9 +1329,9 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		{
 			if (isOpen)
 			{
-				ulong bound;
+				long bound;
 				IFormatProvider formatProvider = CultureInfo.InvariantCulture;
-				if (!ulong.TryParse(invariantBound, NumberStyles.Integer, formatProvider, out bound) || bound == ulong.MinValue)
+				if (!long.TryParse(invariantBound, NumberStyles.Integer, formatProvider, out bound) || bound == long.MinValue)
 				{
 					return false;
 				}
@@ -1242,6 +1339,38 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				isOpen = false;
 			}
 			return true;
+		}
+		/// <summary>This data type supports auto generation.</summary>
+		public override AutoGenerationSupport AutoGeneratable
+		{
+			get
+			{
+				return AutoGenerationSupport.Required;
+			}
+		}
+		/// <summary>Generate a new automatic value for this data type given a set of existing values.</summary>
+		public override string AutoGenerate(System.Collections.Generic.IEnumerable<string> existingValues)
+		{
+			bool first = true;
+			long maxValue = default(long);
+			foreach (string invariantValue in existingValues)
+			{
+				long typedValue;
+				if (long.TryParse(invariantValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out typedValue))
+				{
+					if (first)
+					{
+						first = false;
+						maxValue = typedValue;
+					}
+					else if (maxValue.CompareTo(typedValue) < 0)
+					{
+						maxValue = typedValue;
+					}
+				}
+			}
+			++maxValue;
+			return maxValue.ToString(CultureInfo.CurrentCulture);
 		}
 	}
 	/// <summary>A custom precision floating point numeric data type</summary>
@@ -1280,7 +1409,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override bool CanParse(string value)
 		{
 			double result;
-			return double.TryParse(value, NumberStyles.Float, this.CurrentCulture, out result);
+			return double.TryParse(value, NumberStyles.Float | NumberStyles.AllowThousands, this.CurrentCulture, out result);
 		}
 		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
@@ -1294,13 +1423,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override bool CanParseInvariant(string invariantValue)
 		{
 			double result;
-			return double.TryParse(invariantValue, NumberStyles.Float, CultureInfo.InvariantCulture, out result);
+			return double.TryParse(invariantValue, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out result);
 		}
 		/// <summary>Convert a culture-dependent string to an invariant string.</summary>
 		public override bool TryConvertToInvariant(string value, out string invariantValue)
 		{
 			double typedValue;
-			if (double.TryParse(value, NumberStyles.Float, this.CurrentCulture, out typedValue))
+			if (double.TryParse(value, NumberStyles.Float | NumberStyles.AllowThousands, this.CurrentCulture, out typedValue))
 			{
 				invariantValue = typedValue.ToString(CultureInfo.InvariantCulture);
 				return true;
@@ -1312,7 +1441,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override bool TryConvertFromInvariant(string invariantValue, out string value)
 		{
 			double typedValue;
-			if (double.TryParse(invariantValue, NumberStyles.Float, CultureInfo.InvariantCulture, out typedValue))
+			if (double.TryParse(invariantValue, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out typedValue))
 			{
 				value = typedValue.ToString(this.CurrentCulture);
 				return true;
@@ -1323,12 +1452,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			double typedValue1;
-			double.TryParse(invariantValue1, NumberStyles.Float, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
+			double.TryParse(invariantValue1, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out typedValue1);
 			double typedValue2;
-			double.TryParse(invariantValue2, NumberStyles.Float, CultureInfo.InvariantCulture, out typedValue2);
+			double.TryParse(invariantValue2, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<double>)typedValue1).CompareTo(typedValue2);
 		}
 		/// <summary>Show the Length property for this DataType based on the 'DataTypePrecision' resource string.</summary>
@@ -1384,7 +1511,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override bool CanParse(string value)
 		{
 			float result;
-			return float.TryParse(value, NumberStyles.Float, this.CurrentCulture, out result);
+			return float.TryParse(value, NumberStyles.Float | NumberStyles.AllowThousands, this.CurrentCulture, out result);
 		}
 		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
@@ -1398,13 +1525,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override bool CanParseInvariant(string invariantValue)
 		{
 			float result;
-			return float.TryParse(invariantValue, NumberStyles.Float, CultureInfo.InvariantCulture, out result);
+			return float.TryParse(invariantValue, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out result);
 		}
 		/// <summary>Convert a culture-dependent string to an invariant string.</summary>
 		public override bool TryConvertToInvariant(string value, out string invariantValue)
 		{
 			float typedValue;
-			if (float.TryParse(value, NumberStyles.Float, this.CurrentCulture, out typedValue))
+			if (float.TryParse(value, NumberStyles.Float | NumberStyles.AllowThousands, this.CurrentCulture, out typedValue))
 			{
 				invariantValue = typedValue.ToString(CultureInfo.InvariantCulture);
 				return true;
@@ -1416,7 +1543,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override bool TryConvertFromInvariant(string invariantValue, out string value)
 		{
 			float typedValue;
-			if (float.TryParse(invariantValue, NumberStyles.Float, CultureInfo.InvariantCulture, out typedValue))
+			if (float.TryParse(invariantValue, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out typedValue))
 			{
 				value = typedValue.ToString(this.CurrentCulture);
 				return true;
@@ -1427,12 +1554,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			float typedValue1;
-			float.TryParse(invariantValue1, NumberStyles.Float, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
+			float.TryParse(invariantValue1, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out typedValue1);
 			float typedValue2;
-			float.TryParse(invariantValue2, NumberStyles.Float, CultureInfo.InvariantCulture, out typedValue2);
+			float.TryParse(invariantValue2, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<float>)typedValue1).CompareTo(typedValue2);
 		}
 	}
@@ -1472,7 +1597,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override bool CanParse(string value)
 		{
 			double result;
-			return double.TryParse(value, NumberStyles.Float, this.CurrentCulture, out result);
+			return double.TryParse(value, NumberStyles.Float | NumberStyles.AllowThousands, this.CurrentCulture, out result);
 		}
 		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
 		public override bool CanParseAnyValue
@@ -1486,13 +1611,13 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override bool CanParseInvariant(string invariantValue)
 		{
 			double result;
-			return double.TryParse(invariantValue, NumberStyles.Float, CultureInfo.InvariantCulture, out result);
+			return double.TryParse(invariantValue, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out result);
 		}
 		/// <summary>Convert a culture-dependent string to an invariant string.</summary>
 		public override bool TryConvertToInvariant(string value, out string invariantValue)
 		{
 			double typedValue;
-			if (double.TryParse(value, NumberStyles.Float, this.CurrentCulture, out typedValue))
+			if (double.TryParse(value, NumberStyles.Float | NumberStyles.AllowThousands, this.CurrentCulture, out typedValue))
 			{
 				invariantValue = typedValue.ToString(CultureInfo.InvariantCulture);
 				return true;
@@ -1504,7 +1629,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		public override bool TryConvertFromInvariant(string invariantValue, out string value)
 		{
 			double typedValue;
-			if (double.TryParse(invariantValue, NumberStyles.Float, CultureInfo.InvariantCulture, out typedValue))
+			if (double.TryParse(invariantValue, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out typedValue))
 			{
 				value = typedValue.ToString(this.CurrentCulture);
 				return true;
@@ -1515,12 +1640,10 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			double typedValue1;
-			double.TryParse(invariantValue1, NumberStyles.Float, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
+			double.TryParse(invariantValue1, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out typedValue1);
 			double typedValue2;
-			double.TryParse(invariantValue2, NumberStyles.Float, CultureInfo.InvariantCulture, out typedValue2);
+			double.TryParse(invariantValue2, NumberStyles.Float | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<double>)typedValue1).CompareTo(typedValue2);
 		}
 	}
@@ -1603,10 +1726,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			decimal typedValue1;
 			decimal.TryParse(invariantValue1, NumberStyles.Number, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			decimal typedValue2;
 			decimal.TryParse(invariantValue2, NumberStyles.Number, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
@@ -1715,10 +1836,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			decimal typedValue1;
 			decimal.TryParse(invariantValue1, NumberStyles.Number, CultureInfo.InvariantCulture, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			decimal typedValue2;
 			decimal.TryParse(invariantValue2, NumberStyles.Number, CultureInfo.InvariantCulture, out typedValue2);
 			return ((IComparable<decimal>)typedValue1).CompareTo(typedValue2);
@@ -1746,6 +1865,71 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			{
 				return "";
 			}
+		}
+	}
+	/// <summary>A universally unique 128-bit identifier. Also known as  GUID (globally unique identifier).</summary>
+	public partial class UUIDNumericDataType
+	{
+		/// <summary>PortableDataType enum value for this type</summary>
+		public override PortableDataType PortableDataType
+		{
+			get
+			{
+				return PortableDataType.NumericUUID;
+			}
+		}
+		/// <summary>Localized data type name</summary>
+		public override string ToString()
+		{
+			return ResourceStrings.PortableDataTypeNumericUUID;
+		}
+		/// <summary>The data type supports 'None' ranges</summary>
+		public override DataTypeRangeSupport RangeSupport
+		{
+			get
+			{
+				return DataTypeRangeSupport.None;
+			}
+		}
+		/// <summary>Returns true if the string value can be interpreted as this data type</summary>
+		public override bool CanParse(string value)
+		{
+			Guid result;
+			return Guid.TryParse(value, out result);
+		}
+		/// <summary>Returns false, meaning that CanParse can fail for some values</summary>
+		public override bool CanParseAnyValue
+		{
+			get
+			{
+				return false;
+			}
+		}
+		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
+		public override int Compare(string invariantValue1, string invariantValue2)
+		{
+			Guid typedValue1;
+			Guid.TryParse(invariantValue1, out typedValue1);
+			Guid typedValue2;
+			Guid.TryParse(invariantValue2, out typedValue2);
+			if (((IEquatable<Guid>)typedValue1).Equals(typedValue2))
+			{
+				return 0;
+			}
+			return 1;
+		}
+		/// <summary>This data type supports auto generation.</summary>
+		public override AutoGenerationSupport AutoGeneratable
+		{
+			get
+			{
+				return AutoGenerationSupport.Default;
+			}
+		}
+		/// <summary>Generate a new automatic value for this data type given a set of existing values.</summary>
+		public override string AutoGenerate(System.Collections.Generic.IEnumerable<string> existingValues)
+		{
+			return System.Guid.NewGuid().ToString("D").ToUpper();
 		}
 	}
 	/// <summary>A fixed length raw data data type</summary>
@@ -2008,10 +2192,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			System.DateTime typedValue1;
 			System.DateTime.TryParse(invariantValue1, CultureInfo.InvariantCulture, DateTimeStyles.None, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			System.DateTime typedValue2;
 			System.DateTime.TryParse(invariantValue2, CultureInfo.InvariantCulture, DateTimeStyles.None, out typedValue2);
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
@@ -2058,10 +2240,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			System.DateTime typedValue1;
 			System.DateTime.TryParse(invariantValue1, CultureInfo.InvariantCulture, DateTimeStyles.None, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			System.DateTime typedValue2;
 			System.DateTime.TryParse(invariantValue2, CultureInfo.InvariantCulture, DateTimeStyles.None, out typedValue2);
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
@@ -2108,10 +2288,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			System.DateTime typedValue1;
 			System.DateTime.TryParse(invariantValue1, CultureInfo.InvariantCulture, DateTimeStyles.None, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			System.DateTime typedValue2;
 			System.DateTime.TryParse(invariantValue2, CultureInfo.InvariantCulture, DateTimeStyles.None, out typedValue2);
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
@@ -2158,10 +2336,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			System.DateTime typedValue1;
 			System.DateTime.TryParse(invariantValue1, CultureInfo.InvariantCulture, DateTimeStyles.None, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			System.DateTime typedValue2;
 			System.DateTime.TryParse(invariantValue2, CultureInfo.InvariantCulture, DateTimeStyles.None, out typedValue2);
 			return ((IComparable<System.DateTime>)typedValue1).CompareTo(typedValue2);
@@ -2208,10 +2384,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			bool typedValue1;
 			bool.TryParse(invariantValue1, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			bool typedValue2;
 			bool.TryParse(invariantValue2, out typedValue2);
 			if (((IEquatable<bool>)typedValue1).Equals(typedValue2))
@@ -2287,10 +2461,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			ulong typedValue1;
 			ulong.TryParse(invariantValue1, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			ulong typedValue2;
 			ulong.TryParse(invariantValue2, out typedValue2);
 			if (((IEquatable<ulong>)typedValue1).Equals(typedValue2))
@@ -2341,10 +2513,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// <summary>Compare two values. Each value should be checked previously with CanParse</summary>
 		public override int Compare(string invariantValue1, string invariantValue2)
 		{
-			Debug.Assert(this.CanParseInvariant(invariantValue1), "Don't call Compare if CanParseInvariant(invariantValue1) returns false");
 			ulong typedValue1;
 			ulong.TryParse(invariantValue1, out typedValue1);
-			Debug.Assert(this.CanParseInvariant(invariantValue2), "Don't call Compare if CanParseInvariant(invariantValue2) returns false");
 			ulong typedValue2;
 			ulong.TryParse(invariantValue2, out typedValue2);
 			if (((IEquatable<ulong>)typedValue1).Equals(typedValue2))

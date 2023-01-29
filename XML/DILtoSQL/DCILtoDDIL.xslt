@@ -207,14 +207,23 @@
 			<xsl:apply-templates select="dcl:domainRef"/>
 			<xsl:choose>
 				<xsl:when test="@isIdentity='true'">
-					<ddl:identityColumnSpecification type="ALWAYS">
-						<ddl:sequenceGeneratorStartWithOption>
-							<ddt:exactNumericLiteral value="1"/>
-						</ddl:sequenceGeneratorStartWithOption>
-						<ddl:sequenceGeneratorIncrementByOption>
-							<ddt:exactNumericLiteral value="1"/>
-						</ddl:sequenceGeneratorIncrementByOption>
-					</ddl:identityColumnSpecification>
+					<xsl:choose>
+						<xsl:when test="dcl:predefinedDataType[@name='UNIQUEIDENTIFIER']">
+							<ddl:defaultClause>
+								<dep:newUniqueIdentifierKeyword/>
+							</ddl:defaultClause>
+						</xsl:when>
+						<xsl:otherwise>
+							<ddl:identityColumnSpecification type="ALWAYS">
+								<ddl:sequenceGeneratorStartWithOption>
+									<ddt:exactNumericLiteral value="1"/>
+								</ddl:sequenceGeneratorStartWithOption>
+								<ddl:sequenceGeneratorIncrementByOption>
+									<ddt:exactNumericLiteral value="1"/>
+								</ddl:sequenceGeneratorIncrementByOption>
+							</ddl:identityColumnSpecification>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:when>
 				<xsl:when test="dcl:generationCode">
 					<ddl:generationClause>
@@ -348,7 +357,7 @@
 			<xsl:copy-of select="@length"/>
 		</ddt:characterString>
 	</xsl:template>
-	<xsl:template match="dcl:predefinedDataType[@name='NUMERIC' or @name='DECIMAL' or @name='TINYINT' or @name='SMALLINT' or @name='INTEGER' or @name='BIGINT']">
+	<xsl:template match="dcl:predefinedDataType[@name='NUMERIC' or @name='DECIMAL' or @name='TINYINT' or @name='SMALLINT' or @name='INTEGER' or @name='BIGINT' or @name='UNIQUEIDENTIFIER']">
 		<ddt:exactNumeric type="{@name}">
 			<xsl:if test="@name='NUMERIC' or @name='DECIMAL'">
 				<xsl:copy-of select="@precision"/>

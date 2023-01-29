@@ -95,11 +95,12 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 					this.ResumeLayout(false);
 
 					tree.SetColumnHeaders(new VirtualTreeColumnHeader[]{
-						new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorNameColumn),
-						new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorKindColumn),
-						new	VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorFormatStringColumn)}
+						new VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorNameColumn),
+						new VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorKindColumn),
+						new VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorFormatStringColumn),
+						new VirtualTreeColumnHeader(ResourceStrings.ModelReferenceModeEditorDataTypeColumn)}
 						, true);
-					MultiColumnTree treeData = new StandardMultiColumnTree(3);
+					MultiColumnTree treeData = new StandardMultiColumnTree(4);
 					((ITree)treeData).Root = myHeaders = new ReferenceModeHeaderBranch();
 					tree.MultiColumnTree = (IMultiColumnTree)treeData;
 				}

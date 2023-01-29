@@ -474,6 +474,7 @@
 				<xs:element ref="dep:sessionUserKeyword"/>
 				<xs:element ref="dep:systemUserKeyword"/>
 				<xs:element ref="dep:currentPathKeyword"/>
+				<xs:element ref="dep:newUniqueIdentifierKeyword"/>
 				<xs:group ref="dep:implicitlyTypedValueSpecification"/>
 			</xs:choice>
 		</xs:complexType>

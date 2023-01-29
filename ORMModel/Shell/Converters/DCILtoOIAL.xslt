@@ -39,7 +39,7 @@
 			<xsl:apply-templates select="@*|*|text()|comment()" mode="AddAssociations"/>
 		</xsl:copy>
 	</xsl:template>
-	<xsl:template match="oil:model/oil:conceptTypes/oil:conceptType[count(oil:uniquenessConstraints/oil:uniquenessConstraint[@isPreferred]/oil:uniquenessChild) = count(oil:children/oil:*)]" mode="AddAssociations">
+	<xsl:template match="oil:model/oil:conceptTypes/oil:conceptType[count(oil:uniquenessConstraints/oil:uniquenessConstraint[@isPreferred][count(oil:uniquenessChild)&gt;1]/oil:uniquenessChild) = count(oil:children/oil:*)]" mode="AddAssociations">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|*|text()|comment()" mode="AddAssociations"/>
 			<oil:association>
@@ -59,46 +59,19 @@
 					<xsl:variable name="resolvedReferenceConstraintColumnNames" select="dcl:referenceConstraint[@targetTable=$allTables/@name]/dcl:columnRef/@sourceName"/>
 					<xsl:for-each select="dcl:column">
 						<xsl:if test="not(@name=$resolvedReferenceConstraintColumnNames)">
-							<xsl:choose>
-								<xsl:when test="dcl:predefinedDataType/@precision">
-									<xsl:call-template name="CreateInformationFormat">
-										<xsl:with-param name="tableName" select="../@name"/>
-										<xsl:with-param name="columnName" select="@name"/>
-										<xsl:with-param name="dataType" select="dcl:predefinedDataType/@name"/>
-										<xsl:with-param name="maxLength" select="dcl:predefinedDataType/@precision"/>
-									</xsl:call-template>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:call-template name="CreateInformationFormat">
-										<xsl:with-param name="tableName" select="../@name"/>
-										<xsl:with-param name="columnName" select="@name"/>
-										<xsl:with-param name="dataType" select="dcl:predefinedDataType/@name"/>
-										<xsl:with-param name="maxLength" select="dcl:predefinedDataType/@length"/>
-									</xsl:call-template>
-								</xsl:otherwise>
-							</xsl:choose>
+							<xsl:call-template name="CreateInformationFormat">
+								<xsl:with-param name="tableName" select="../@name"/>
+								<xsl:with-param name="columnName" select="@name"/>
+								<xsl:with-param name="generated" select="@isIdentity[.='true' or .='1']"/>
+							</xsl:call-template>
 						</xsl:if>
 					</xsl:for-each>
 				</xsl:for-each>
 				<xsl:for-each select="dcl:domain">
-					<xsl:choose>
-						<xsl:when test="dcl:predefinedDataType/@precision">
-							<xsl:call-template name="CreateInformationFormat">
-								<xsl:with-param name="tableName" select="../@name"/>
-								<xsl:with-param name="columnName" select="@name"/>
-								<xsl:with-param name="dataType" select="dcl:predefinedDataType/@name"/>
-								<xsl:with-param name="maxLength" select="dcl:predefinedDataType/@precision"/>
-							</xsl:call-template>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:call-template name="CreateInformationFormat">
-								<xsl:with-param name="tableName" select="../@name"/>
-								<xsl:with-param name="columnName" select="@name"/>
-								<xsl:with-param name="dataType" select="dcl:predefinedDataType/@name"/>
-								<xsl:with-param name="maxLength" select="dcl:predefinedDataType/@length"/>
-							</xsl:call-template>
-						</xsl:otherwise>
-					</xsl:choose>
+					<xsl:call-template name="CreateInformationFormat">
+						<xsl:with-param name="tableName" select="../@name"/>
+						<xsl:with-param name="columnName" select="@name"/>
+					</xsl:call-template>
 				</xsl:for-each>
 			</oil:informationTypeFormats>
 			<oil:conceptTypes>
@@ -130,37 +103,101 @@
 	<!-- Templates to generate information formats -->
 	<xsl:template name="CreateInformationFormat">
 		<xsl:param name="tableName" />
-		<xsl:param name="dataType"/>
 		<xsl:param name="columnName"/>
-		<xsl:param name="maxLength" select="'0'"/>
+		<xsl:param name="predefinedDataType" select="dcl:predefinedDataType"/>
+		<xsl:param name="generated" select="false()"/>
+		<xsl:variable name="dataType" select="string($predefinedDataType/@name)"/>
 		<xsl:variable name="formatName" select="concat('InformationTypeFormat.', $tableName, '.', $columnName)"/>
 		<xsl:choose>
 			<xsl:when test="$dataType='CHARACTER' or $dataType='CHARACTER VARYING' or $dataType='CHARACTER LARGE OBJECT'">
 				<odt:string id="{$formatName}" name="{$formatName}">
-					<xsl:if test="$maxLength">
+					<xsl:variable name="length" select="number($predefinedDataType/@length)"/>
+					<xsl:if test="$length">
 						<xsl:attribute name="maxLength">
-							<xsl:value-of select="$maxLength"/>
+							<xsl:value-of select="$length"/>
 						</xsl:attribute>
+						<xsl:if test="$dataType='CHARACTER'">
+							<xsl:attribute name="minLength">
+								<xsl:value-of select="$length"/>
+							</xsl:attribute>
+						</xsl:if>
 					</xsl:if>
 				</odt:string>
 			</xsl:when>
-			<xsl:when test="$dataType='BIGINT' or $dataType='INTEGER' or $dataType='SMALLINT' or $dataType='DECIMAL' or $dataType='NUMERIC'">
-				<odt:decimalNumber id="{$formatName}" name="{$formatName}" fractionDigits="0" />
-			</xsl:when>
-			<xsl:when test="$dataType='BINARY LARGE OBJECT'">
-				<odt:binary id="{$formatName}" name="{$formatName}">
-					<xsl:if test="$maxLength">
-						<xsl:attribute name="maxLength">
-							<xsl:value-of select="$maxLength"/>
+			<xsl:when test="$dataType='BIGINT'">
+				<odt:integerNumber id="{$formatName}" name="{$formatName}" bytes="8">
+					<xsl:if test="$generated">
+						<xsl:attribute name="generated">
+							<xsl:text>true</xsl:text>
 						</xsl:attribute>
+					</xsl:if>
+				</odt:integerNumber>
+			</xsl:when>
+			<xsl:when test="$dataType='INTEGER'">
+				<odt:integerNumber id="{$formatName}" name="{$formatName}" bytes="4">
+					<xsl:if test="$generated">
+						<xsl:attribute name="generated">
+							<xsl:text>true</xsl:text>
+						</xsl:attribute>
+					</xsl:if>
+				</odt:integerNumber>
+			</xsl:when>
+			<xsl:when test="$dataType='SMALLINT'">
+				<odt:integerNumber id="{$formatName}" name="{$formatName}" bytes="2">
+					<xsl:if test="$generated">
+						<xsl:attribute name="generated">
+							<xsl:text>true</xsl:text>
+						</xsl:attribute>
+					</xsl:if>
+				</odt:integerNumber>
+			</xsl:when>
+			<xsl:when test="$dataType='TINYINT'">
+				<odt:integerNumber id="{$formatName}" name="{$formatName}" bytes="1" unsigned="true"/>
+			</xsl:when>
+			<xsl:when test="$dataType='UNIQUEIDENTIFIER'">
+				<odt:uniqueIdentifier id="{$formatName}" name="{$formatName}">
+					<xsl:if test="$generated">
+						<xsl:attribute name="generated">
+							<xsl:text>true</xsl:text>
+						</xsl:attribute>
+					</xsl:if>
+				</odt:uniqueIdentifier>
+			</xsl:when>
+			<xsl:when test="$dataType='DECIMAL' or $dataType='NUMERIC'">
+				<odt:decimalNumber id="{$formatName}" name="{$formatName}" fractionDigits="0" totalDigits="18">
+					<xsl:if test="number($predefinedDataType/@scale)">
+						<xsl:attribute name="fractionDigits">
+							<xsl:value-of select="$predefinedDataType/@scale"/>
+						</xsl:attribute>
+					</xsl:if>
+					<xsl:if test="number($predefinedDataType/@precision)">
+						<xsl:attribute name="totalDigits">
+							<xsl:value-of select="$predefinedDataType/@precision"/>
+						</xsl:attribute>
+					</xsl:if>
+				</odt:decimalNumber>
+			</xsl:when>
+			<xsl:when test="$dataType='BINARY LARGE OBJECT' or $dataType='BINARY' or $dataType='BINARY VARYING'">
+				<odt:binary id="{$formatName}" name="{$formatName}">
+					<xsl:variable name="length" select="number($predefinedDataType/@length)"/>
+					<xsl:if test="$length">
+						<xsl:attribute name="maxLength">
+							<xsl:value-of select="$length"/>
+						</xsl:attribute>
+						<xsl:if test="$dataType='BINARY'">
+							<xsl:attribute name="minLength">
+								<xsl:value-of select="$length"/>
+							</xsl:attribute>
+						</xsl:if>
 					</xsl:if>
 				</odt:binary>
 			</xsl:when>
 			<xsl:when test="$dataType='FLOAT' or $dataType='DOUBLE PRECISION' or $dataType='REAL'">
 				<odt:floatingPointNumber id="{$formatName}" name="{$formatName}">
-					<xsl:if test="$maxLength">
+					<xsl:variable name="precision" select="number($predefinedDataType/@precision)"/>
+					<xsl:if test="$precision">
 						<xsl:attribute name="precision">
-							<xsl:value-of select="$maxLength"/>
+							<xsl:value-of select="$precision"/>
 						</xsl:attribute>
 					</xsl:if>
 				</odt:floatingPointNumber>

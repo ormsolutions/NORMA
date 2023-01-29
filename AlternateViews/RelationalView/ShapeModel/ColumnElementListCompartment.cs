@@ -220,89 +220,122 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 			DataType dataType = valueType.DataType;
 			int precision = Math.Max(valueType.DataTypeLength, 0);
 			int scale = Math.Max(valueType.DataTypeScale, 0);
-			if (dataType is NumericDataType || dataType is OtherDataType)
+			string typeName;
+			bool addPrecision = false;
+			bool requireLengthName = false;
+			switch (dataType.PortableDataType)
 			{
-				if (dataType is AutoCounterNumericDataType || dataType is SignedIntegerNumericDataType || dataType is UnsignedIntegerNumericDataType)
-				{
-					return "INT";
-				}
-				else if (dataType is SignedSmallIntegerNumericDataType || dataType is UnsignedSmallIntegerNumericDataType)
-				{
-					return "SMALLINT";
-				}
-				else if (dataType is OtherDataType || dataType is SignedLargeIntegerNumericDataType || dataType is UnsignedLargeIntegerNumericDataType)
-				{
-					return "BIGINT";
-				}
-				else if (dataType is DoublePrecisionFloatingPointNumericDataType)
-				{
-					return "DOUBLE PRECISION";
-				}
-				else if (dataType is SinglePrecisionFloatingPointNumericDataType)
-				{
-					return "REAL";
-				}
-				else if (dataType is FloatingPointNumericDataType)
-				{
-					return "FLOAT" + (precision > 0 ? "(" + precision + ")" : string.Empty);
-				}
-				else if (dataType is UnsignedTinyIntegerNumericDataType)
-				{
-					return "TINYINT";
-				}
-				else if (dataType is MoneyNumericDataType)
-				{
-					if ((precision + scale) > 0)
-					{
-						return "DECIMAL(" + ((precision == 0) ? 19 : precision) + ", " + Math.Min((scale == 0) ? 4 : scale, 4) + ")";
-					}
-					return "DECIMAL(19, 4)";
-				}
-				else
-				{
+				case PortableDataType.TextFixedLength:
+					typeName = "CHAR";
+					addPrecision = true;
+					break;
+
+				case PortableDataType.TextVariableLength:
+					typeName = "VARCHAR";
+					addPrecision = true;
+					break;
+
+				case PortableDataType.TextLargeLength:
+					typeName = "CLOB";
+					addPrecision = true;
+					break;
+
+				case PortableDataType.NumericSignedInteger:
+				case PortableDataType.NumericUnsignedInteger:
+				case PortableDataType.NumericAutoCounter:
+					typeName = "INT";
+					break;
+
+				case PortableDataType.NumericSignedSmallInteger:
+				case PortableDataType.NumericUnsignedSmallInteger:
+					typeName = "SMALLINT";
+					break;
+
+				case PortableDataType.NumericSignedLargeInteger:
+				case PortableDataType.NumericUnsignedLargeInteger:
+				case PortableDataType.OtherRowId:
+				case PortableDataType.OtherObjectId:
+					typeName = "BIGINT";
+					break;
+
+				case PortableDataType.NumericUnsignedTinyInteger:
+					typeName = "TINYINT";
+					break;
+
+				case PortableDataType.NumericFloatingPoint:
+					typeName = "FLOAT";
+					addPrecision = true;
+					break;
+
+				case PortableDataType.NumericSinglePrecisionFloatingPoint:
+					typeName = "REAL";
+					break;
+
+				case PortableDataType.NumericDoublePrecisionFloatingPoint:
+					typeName = "DOUBLE PRECISION";
+					break;
+
+				case PortableDataType.NumericDecimal:
 					if ((precision + scale) > 0)
 					{
 						return "DECIMAL(" + ((precision == 0) ? null : precision.ToString()) + ", " + scale + ")";
 					}
-					return "DECIMAL";
-				}
+					typeName = "DECIMAL";
+					break;
+
+				case PortableDataType.NumericMoney:
+					if ((precision + scale) > 0)
+					{
+						return "DECIMAL(" + ((precision == 0) ? 19 : precision) + ", " + Math.Min((scale == 0) ? 4 : scale, 4) + ")";
+					}
+					typeName = "DECIMAL(19, 4)";
+					break;
+
+				case PortableDataType.NumericUUID:
+					typeName = "UUID";
+					break;
+
+				case PortableDataType.RawDataFixedLength:
+					typeName = "BINARY";
+					addPrecision = requireLengthName = true;
+					break;
+
+				case PortableDataType.RawDataVariableLength:
+				case PortableDataType.RawDataLargeLength:
+					typeName = "BLOB";
+					addPrecision = requireLengthName = true;
+					break;
+
+				case PortableDataType.RawDataPicture:
+				case PortableDataType.RawDataOleObject:
+					typeName = "VARBINARY";
+					addPrecision = requireLengthName = true;
+					break;
+
+				case PortableDataType.TemporalTime:
+					typeName = "TIME";
+					break;
+
+				case PortableDataType.TemporalDate:
+					typeName = "DATE";
+					break;
+
+				case PortableDataType.TemporalAutoTimestamp:
+				case PortableDataType.TemporalDateAndTime:
+					typeName = "TIMESTAMP";
+					break;
+
+				case PortableDataType.LogicalTrueOrFalse:
+				case PortableDataType.LogicalYesOrNo:
+				//case PortableDataType.Unspecified:
+				default:
+					typeName = "UNSPECIFIED";
+					break;
 			}
-			else if (dataType is LogicalDataType)
-			{
-				return "BOOLEAN";
-			}
-			else if (dataType is VariableLengthTextDataType)
-			{
-				return "VARCHAR" + (precision > 0 ? "(" + precision.ToString() + ")" : null);
-			}
-			else if (dataType is LargeLengthTextDataType)
-			{
-				return "CLOB" + (precision > 0 ? "(" + precision.ToString() + ")" : null);
-			}
-			else if (dataType is FixedLengthTextDataType)
-			{
-				return "CHAR" + (precision > 0 ? "(" + precision.ToString() + ")" : null);
-			}
-			else if (dataType is RawDataDataType)
-			{
-				return ((dataType is FixedLengthRawDataDataType) ? "BINARY" : ((dataType is LargeLengthRawDataDataType) ? "BLOB" : "VARBINARY")) + ((precision > 0 && dataType.LengthName != null) ? "(" + precision.ToString() + ")" : null);
-			}
-			else if (dataType is TemporalDataType)
-			{
-				if (dataType is DateTemporalDataType)
-				{
-					return "DATE";
-				}
-				else if (dataType is TimeTemporalDataType)
-				{
-					return "TIME";
-				}
-				return "TIMESTAMP";
-			}
-			else
-			{
-				return "UNSPECIFIED";
-			}
+
+			return (addPrecision && precision > 0 && (!requireLengthName || dataType.LengthName != null)) ?
+				typeName + "(" + precision.ToString() + ")" :
+				typeName;
 		}
 		#endregion // DataType Helper Methods
 		/// <summary>

@@ -114,7 +114,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 		/// The intial <see cref="PortableDataType"/> to used when a new ValueType
 		/// is created for this reference mode
 		/// </summary>
-		public PortableDataType Type
+		virtual public PortableDataType Type
 		{
 			get
 			{
@@ -305,6 +305,8 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, popularKind, "Id", PortableDataType.NumericAutoCounter));
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, popularKind, "id", PortableDataType.NumericAutoCounter));
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, popularKind, "ID", PortableDataType.NumericAutoCounter));
+				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, popularKind, "UUID", PortableDataType.NumericUUID));
+				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, popularKind, "Uuid", PortableDataType.NumericUUID));
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, popularKind, "Name", PortableDataType.TextVariableLength));
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, popularKind, "name", PortableDataType.TextVariableLength));
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, popularKind, "Code", PortableDataType.TextFixedLength));
@@ -1056,6 +1058,39 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				}
 			}
 		}
+		/// <summary>
+		/// Base the type on the reference data type
+		/// </summary>
+		public override PortableDataType Type
+		{
+			get
+			{
+				DataType type = DefaultDataType;
+				return type != null ? type.PortableDataType : PortableDataType.Unspecified;
+			}
+			set
+			{
+				// Not a real code path, doesn't matter
+				base.Type = value;
+			}
+		}
+		#region Non-DSL Custom Properties
+		/// <summary>
+		/// The display property used for data type editing
+		/// </summary>
+		[Editor(typeof(Design.DataTypePicker), typeof(UITypeEditor))]
+		public DataType DefaultDataTypeDisplay
+		{
+			get
+			{
+				return DefaultDataType ?? Model.GetPortableDataType(PortableDataType.Unspecified);
+			}
+			set
+			{
+				DefaultDataType = (value == null || value.PortableDataType == PortableDataType.Unspecified) ? null : value;
+			}
+		}
+		#endregion // Non-DSL Custom Properties
 		#region IComparable<CustomReferenceMode> Members
 		int IComparable<CustomReferenceMode>.CompareTo(CustomReferenceMode other)
 		{

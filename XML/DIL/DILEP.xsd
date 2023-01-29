@@ -825,7 +825,12 @@
 			<xs:attribute name="precision" use="optional" type="ddt:secondsPrecision"/>
 		</xs:complexType>
 	</xs:element>
-
+	<xs:element name="newUniqueIdentifierKeyword">
+		<xs:annotation>
+			<xs:documentation>NEWID()</xs:documentation>
+		</xs:annotation>
+		<xs:complexType/>
+	</xs:element>
 
 	<xs:group name="intervalPrimary">
 		<xs:choice>

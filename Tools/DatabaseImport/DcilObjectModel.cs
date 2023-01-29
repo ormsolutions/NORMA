@@ -883,9 +883,17 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 			/// </summary>
 			CharacterVarying,
 			/// <summary>
-			/// Binary data
+			/// Large binary data
 			/// </summary>
 			BinaryLargeObject,
+			/// <summary>
+			/// Fixed-length binary data
+			/// </summary>
+			Binary,
+			/// <summary>
+			/// Variable length binary data
+			/// </summary>
+			BinaryVarying,
 			/// <summary>
 			/// Fixed precision and scale numeric data
 			/// </summary>
@@ -895,9 +903,17 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 			/// </summary>
 			Decimal,
 			/// <summary>
+			/// Decimal form representing money
+			/// </summary>
+			Money,
+			/// <summary>
 			/// Integer data from -2^15 through 2^15 - 1
 			/// </summary>
 			SmallInt,
+			/// <summary>
+			/// Integer data from 0 to 255
+			/// </summary>
+			TinyInt,
 			/// <summary>
 			/// Integer data from -2^31 through 2^31 - 1
 			/// </summary>
@@ -937,7 +953,11 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 			/// <summary>
 			/// Interval data
 			/// </summary>
-			Interval
+			Interval,
+			/// <summary>
+			/// Unique identifier (aka UUID aka GUID) data
+			/// </summary>
+			UniqueIdentifier
 		}
 
 		private DCILType _type;
@@ -1033,6 +1053,8 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 			{
 				case DCILType.CharacterLargeObject:
 				case DCILType.BinaryLargeObject:
+				case DCILType.Binary:
+				case DCILType.BinaryVarying:
 					return DbType.Binary;
 				case DCILType.Character:
 					return DbType.StringFixedLength;
@@ -1043,6 +1065,8 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 					return DbType.Decimal;
 				case DCILType.SmallInt:
 					return DbType.Int16;
+				case DCILType.TinyInt:
+					return DbType.Byte;
 				case DCILType.Integer:
 					return DbType.Int32;
 				case DCILType.BigInt:
@@ -1061,6 +1085,8 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 				case DCILType.Timestamp:
 				case DCILType.Interval:
 					return DbType.DateTime;
+				case DCILType.UniqueIdentifier:
+					return DbType.Guid;
 				default:
 					return DbType.Object;
 			}
@@ -1098,9 +1124,18 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 		public void WriteXml(XmlWriter writer)
 		{
 			string typeString = _type.ToString();
-			if (typeString.IndexOf("Int") == -1)
+			switch (_type)
 			{
-				typeString = Regex.Replace(typeString, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
+				case DCILType.SmallInt:
+				case DCILType.TinyInt:
+				case DCILType.Integer:
+				case DCILType.BigInt:
+				case DCILType.UniqueIdentifier:
+					// Do not split these
+					break;
+				default:
+					typeString = Regex.Replace(typeString, "([A-Z])", " $1").Trim();
+					break;
 			}
 			typeString = typeString.ToUpperInvariant();
 

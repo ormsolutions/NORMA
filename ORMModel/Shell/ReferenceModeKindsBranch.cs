@@ -35,7 +35,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 				/// <summary>
 				/// Branch for all the differnt Reference mode kinds
 				/// </summary>
-				private sealed class ReferenceModeKindsBranch : MultiColumnBaseBranch, IBranch
+				private sealed class ReferenceModeKindsBranch : BaseBranch, IBranch, IMultiColumnBranch
 				{
 					#region Locals
 					private List<ReferenceModeKind> myReferenceModeKindsList = new List<ReferenceModeKind>();
@@ -157,8 +157,6 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						newText = newText.Trim();
 						switch ((Columns)column)
 						{
-							case Columns.Name:
-								return LabelEditResult.CancelEdit;
 							case Columns.FormatString:
 								if (newText.Length == 0)
 								{
@@ -182,7 +180,9 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									toolServices.AutomatedElementFilter -= FilterAllElements;
 								}
 								break;
+							case Columns.Name:
 							case Columns.ReferenceModeKind:
+							case Columns.DataType:
 								return LabelEditResult.CancelEdit;
 						}
 						return LabelEditResult.AcceptEdit;
@@ -215,6 +215,7 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 									return PrettyFormatString(myReferenceModeKindsList[row]);
 								case Columns.ReferenceModeKind:
 									return myReferenceModeKindsList[row].ToString();
+								//case Columns.DataType:
 								default:
 									return null;
 							}
@@ -235,6 +236,22 @@ namespace ORMSolutions.ORMArchitect.Core.Shell
 						get { return myReferenceModeKindsList.Count; }
 					}
 					#endregion //IBranch Implementation
+					#region IMultiColumnBranch Implementation
+					int IMultiColumnBranch.ColumnCount
+					{
+						// Leave off the final column (DataType)
+						get { return (int)Columns.Last; }
+					}
+					SubItemCellStyles IMultiColumnBranch.ColumnStyles(int column)
+					{
+						return SubItemCellStyles.Simple;
+					}
+
+					int IMultiColumnBranch.GetJaggedColumnCount(int row)
+					{
+						return (int)Columns.Last;
+					}
+					#endregion // IMultiColumnBaseBranch Implementation
 				}
 			}
 		}

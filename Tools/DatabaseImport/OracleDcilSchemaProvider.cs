@@ -148,7 +148,7 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 				cmd.CommandType = CommandType.Text;
 				bool haveSchema = !string.IsNullOrEmpty(schemaName);
 				string commandText = "select column_name, nullable, data_type, " +
-					"nvl2(char_used, char_length, data_length) length, data_precision, data_scale " +
+					"nvl2(char_used, char_length, data_length) length, data_precision, data_scale, identity_column " +
 					"from all_tab_columns " +
 					"where 1 = 1 ";
 
@@ -168,11 +168,11 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 					{
 						string columnName = reader.GetString(0);
 						bool isNullable = (reader.GetString(1).ToUpperInvariant() == "Y");
-						bool isIdentity = false;
-						DcilDataType.DCILType type = ConvertOracleDataType(reader.GetString(2));						
+						DcilDataType.DCILType type = ConvertOracleDataType(reader.GetString(2));
 						int size = Convert.ToInt32(reader[3]);
 						short precision = (reader.IsDBNull(4) ? (short)-1 : Convert.ToInt16(reader[4]));
 						int scale = (reader.IsDBNull(5) ? -1 : Convert.ToInt32(reader[5]));
+						bool isIdentity = reader.GetString(6) == "YES";
 						columns.Add(new DcilColumn(columnName, new DcilDataType(type, size, scale, precision), isNullable, isIdentity));
 					}
 				}
@@ -213,6 +213,7 @@ namespace ORMSolutions.ORMArchitect.DatabaseImport
 				case "NUMBER":
 					return DcilDataType.DCILType.Decimal;
 				case "RAW":
+					return DcilDataType.DCILType.BinaryVarying;
 				case "LONG RAW":
 				case "BLOB":
 					return DcilDataType.DCILType.BinaryLargeObject;

@@ -50,13 +50,8 @@
 				<xs:documentation>The name of the data type.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="backingType">
-			<xs:simpleType>
-				<xs:restriction base="plx:dataTypeNameType">
-					<xs:pattern value="\..*"/>
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
+		<xs:attribute name="backingType" type="plx:dataTypeNameType"/>
+		<xs:attribute name="backingTypeQualifier" type="plx:qualifierNameType"/>
 		<xs:attribute name="canCompare" type="xs:boolean" default="true">
 			<xs:annotation>
 				<xs:documentation>True if values in the data type are comparable.</xs:documentation>
@@ -105,6 +100,54 @@
 				<xs:documentation>Is the stringized representation of data in this datatype different for different cultures?</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="generatable" default="Never">
+			<xs:annotation>
+				<xs:documentation>Specify automatic generation support levels.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Never">
+						<xs:annotation>
+							<xs:documentation>The data type never supports auto generation.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Available">
+						<xs:annotation>
+							<xs:documentation>The data type supports auto-generation.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Default">
+						<xs:annotation>
+							<xs:documentation>A new instance of the data type defaults to be automatically generated.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Required">
+						<xs:annotation>
+							<xs:documentation>An instance of this data type is always automatically generated.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="autoGenerateStyle" use="optional">
+			<xs:annotation>
+				<xs:documentation>Determine the pattern for auto-generating identifiers. Ignored if not generatable.</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Incremental">
+						<xs:annotation>
+							<xs:documentation>The value one higher than the current maximum is used as the generated instance.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+					<xs:enumeration value="Custom">
+						<xs:annotation>
+							<xs:documentation>Custom plix code is provided to generate an instance.</xs:documentation>
+						</xs:annotation>
+					</xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="DataTypeGroupType">
 		<xs:annotation>
@@ -144,6 +187,16 @@
 									</xs:attribute>
 								</xs:extension>
 							</xs:simpleContent>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="AutoGenerate" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>Code body to return a standard string form of an auto-generated value. Used if autoGenerateStyle is Custom. The 'existingValues' parameter is a defined enumerator if needed.</xs:documentation>
+						</xs:annotation>
+						<xs:complexType>
+							<xs:sequence>
+								<xs:any namespace="http://schemas.neumont.edu/CodeGeneration/PLiX" processContents="lax" minOccurs="1"  maxOccurs="unbounded"/>
+							</xs:sequence>
 						</xs:complexType>
 					</xs:element>
 				</xs:sequence>
