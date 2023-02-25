@@ -660,16 +660,24 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 
 		#region UtilityMethods
 		/// <summary>
-		/// Utility function to create the reference mode objects.  Creates the fact, value type, and
+		/// Utility function to create the reference mode objects. Creates the fact, value type, and
 		/// preferred internal uniqueness constraint.
 		/// </summary>
-		private void CreateReferenceMode(string valueTypeName)
+		private void CreateReferenceMode(string valueTypeName, Func<string, ObjectType> valueTypeResolver, Action<ObjectType> notifyValueTypeAdded, INotifyElementAdded notifyAdded)
 		{
 			Partition partition = this.Partition;
 			IHasAlternateOwner<ObjectType> toAlternateOwner;
 			IAlternateElementOwner<ObjectType> alternateObjectTypeOwner = (null == (toAlternateOwner = this as IHasAlternateOwner<ObjectType>)) ? null : toAlternateOwner.AlternateOwner;
 			ORMModel model = (alternateObjectTypeOwner == null) ? this.Model : null;
-			ObjectType valueType = FindValueType(valueTypeName, model, alternateObjectTypeOwner);
+			ObjectType valueType;
+			if (valueTypeResolver == null || alternateObjectTypeOwner != null)
+			{
+				valueType = FindValueType(valueTypeName, model, alternateObjectTypeOwner);
+			}
+			else
+			{
+				valueType = valueTypeResolver(valueTypeName);
+			}
 			DomainClassInfo alternateCtor;
 
 			if (valueType == null)
@@ -693,6 +701,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					valueType.Model = model;
 				}
 				valueType.IsValueType = true;
+
+				if (notifyValueTypeAdded != null)
+				{
+					notifyValueTypeAdded(valueType);
+				}
+
+				if (notifyAdded != null)
+				{
+					notifyAdded.ElementAdded(valueType, true);
+				}
 			}
 			else
 			{
@@ -764,6 +782,11 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				refModeFactType.Model = model;
 			}
 
+			if (notifyAdded != null)
+			{
+				notifyAdded.ElementAdded(refModeFactType, true);
+			}
+
 			Role objectTypeRole = new Role(partition);
 			objectTypeRole.RolePlayer = this;
 			LinkedElementCollection<RoleBase> roleCollection = refModeFactType.RoleCollection;
@@ -773,24 +796,43 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			valueTypeRole.RolePlayer = valueType;
 			roleCollection.Add(valueTypeRole);
 
+			if (notifyAdded != null)
+			{
+				notifyAdded.ElementAdded(objectTypeRole, true);
+				notifyAdded.ElementAdded(valueTypeRole, true);
+			}
+
 			UniquenessConstraint ic = UniquenessConstraint.CreateInternalUniquenessConstraint(refModeFactType);
 			ic.RoleCollection.Add(valueTypeRole);
 			this.PreferredIdentifier = ic;
+
+			if (notifyAdded != null)
+			{
+				notifyAdded.ElementAdded(ic, true);
+			}
 
 			ReadingOrder readingOrder1 = new ReadingOrder(partition);
 			LinkedElementCollection<RoleBase> roles = refModeFactType.RoleCollection;
 			LinkedElementCollection<RoleBase> readingRoles = readingOrder1.RoleCollection;
 			readingRoles.Add(roles[0]);
 			readingRoles.Add(roles[1]);
-			readingOrder1.AddReading(ResourceStrings.ReferenceModePredicateReading);
+			Reading reading1 = readingOrder1.AddReading(ResourceStrings.ReferenceModePredicateReading);
 			readingOrder1.FactType = refModeFactType;
 
 			ReadingOrder readingOrder2 = new ReadingOrder(partition);
 			readingRoles = readingOrder2.RoleCollection;
 			readingRoles.Add(roles[1]);
 			readingRoles.Add(roles[0]);
-			readingOrder2.AddReading(ResourceStrings.ReferenceModePredicateInverseReading);
+			Reading reading2 = readingOrder2.AddReading(ResourceStrings.ReferenceModePredicateInverseReading);
 			readingOrder2.FactType = refModeFactType;
+
+			if (notifyAdded != null)
+			{
+				notifyAdded.ElementAdded(readingOrder1, true);
+				notifyAdded.ElementAdded(reading1, false);
+				notifyAdded.ElementAdded(readingOrder2, true);
+				notifyAdded.ElementAdded(reading2, false);
+			}
 		}
 
 		private static ObjectType FindValueType(string name, ORMModel model, IAlternateElementOwner<ObjectType> alternateOwner)
@@ -808,12 +850,28 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			return (alternateDictionary ?? model.ObjectTypesDictionary).GetElement(name).FirstElement as ObjectType;
 		}
 		/// <summary>
-		///  Utility function to change the name of an existing reference mode.
+		/// Utility function to change the name of an existing reference mode.
 		/// </summary>
 		/// <param name="valueTypeName">The new name for the reference mode value type.</param>
 		/// <param name="shareReferenceModeValueType">True if the reference mode value type can be shared with
 		/// other entity types with a reference mode pattern that also uses this value type.</param>
 		public void RenameReferenceMode(string valueTypeName, bool shareReferenceModeValueType)
+		{
+			RenameReferenceMode(valueTypeName, shareReferenceModeValueType, null, null, null);
+		}
+		/// <summary>
+		/// Utility function to change the name of an existing reference mode. This variant with
+		/// extra arguments can be used during deserialization fixup as well as after rules are enabled.
+		/// </summary>
+		/// <param name="valueTypeName">The new name for the reference mode value type.</param>
+		/// <param name="shareReferenceModeValueType">True if the reference mode value type can be shared with
+		/// <param name="valueTypeResolver">Callback to find an existing value type. The ObjectTypesDictionary (FindValueType method)
+		/// lookup is not available during deserialization fixup, so an alternative is required.</param>
+		/// <param name="notifyValueTypeAdded">Callback specific to adding a value type. This works with <paramref name="valueTypeResolver"/> to
+		/// track new value types.</param>
+		/// <param name="notifyAdded">Callback to notify that elements have been added.</param>
+		/// other entity types with a reference mode pattern that also uses this value type.</param>
+		public void RenameReferenceMode(string valueTypeName, bool shareReferenceModeValueType, Func<string, ObjectType> valueTypeResolver, Action<ObjectType> notifyValueTypeAdded, INotifyElementAdded notifyAdded)
 		{
 			UniquenessConstraint preferredConstraint = this.PreferredIdentifier;
 			LinkedElementCollection<Role> constraintRoles;
@@ -821,13 +879,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// Sanity check because this is a public method, will not happen from our codebase
 				(constraintRoles = preferredConstraint.RoleCollection).Count != 1)
 			{
-				CreateReferenceMode(valueTypeName);
+				CreateReferenceMode(valueTypeName, valueTypeResolver, notifyValueTypeAdded, notifyAdded);
 				return;
 			}
 			IHasAlternateOwner<ObjectType> toAlternateOwner;
 			IAlternateElementOwner<ObjectType> alternateOwner = (null == (toAlternateOwner = this as IHasAlternateOwner<ObjectType>)) ? null : toAlternateOwner.AlternateOwner;
 			ORMModel model = (alternateOwner == null) ? this.Model : null;
-			ObjectType valueType = FindValueType(valueTypeName, model, alternateOwner);
+			ObjectType valueType;
+			if (valueTypeResolver == null || alternateOwner != null)
+			{
+				valueType = FindValueType(valueTypeName, model, alternateOwner);
+			}
+			else
+			{
+				valueType = valueTypeResolver(valueTypeName);
+			}
 			Role constrainedRole = constraintRoles[0];
 			ObjectType identifyingValueType;
 			bool valueTypeNotShared = !IsValueTypeShared(preferredConstraint, shareReferenceModeValueType, out identifyingValueType);
@@ -905,6 +971,16 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 					else
 					{
 						valueType.IsValueType = true;
+					}
+
+					if (notifyValueTypeAdded != null)
+					{
+						notifyValueTypeAdded(valueType);
+					}
+
+					if (notifyAdded != null)
+					{
+						notifyAdded.ElementAdded(valueType, true);
 					}
 				}
 				else if (nestedFactType != null)
@@ -2241,7 +2317,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			else
 			{
 				Debug.Assert(haveNew);
-				objectType.CreateReferenceMode(name);
+				objectType.CreateReferenceMode(name, null, null, null);
 			}
 			PortableDataType newModeType;
 			if (newMode != null && PortableDataType.Unspecified != (newModeType = newMode.Type))

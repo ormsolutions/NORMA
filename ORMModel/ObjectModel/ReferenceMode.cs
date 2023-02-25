@@ -180,6 +180,32 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				ReferenceModeKind popularKind = null;
 				ReferenceModeKind unitBasedKind = null;
 				LinkedElementCollection<ReferenceModeKind> kinds = ModelHasReferenceModeKind.GetReferenceModeKindCollection(model);
+				Dictionary<string, ObjectType> valueTypesByName = null;
+				Func<string, ObjectType> valueTypeResolver = valueTypeName =>
+				{
+					// Although other cases can be manufacture by manually editing the file, realistically this will only be used in
+					// cases where a new intrinsic reference mode is added that conflicts with an existing custom reference model, such
+					// as with UUID and Uuid. This is very rare and/or a one-time upgrade of the file, so we delay loading this value
+					// type collection. Specifically, it is not populated by registering a fixup listener for ValueTypeHasDataType.
+					if (valueTypesByName == null)
+					{
+						valueTypesByName = new Dictionary<string, ObjectType>();
+						foreach (ValueTypeHasDataType dataTypeLink in store.DefaultPartition.ElementDirectory.FindElements<ValueTypeHasDataType>(false))
+						{
+							ObjectType valueType = dataTypeLink.ValueType;
+							valueTypesByName[valueType.Name] = valueType;
+						}
+					}
+					ObjectType result;
+					return valueTypesByName.TryGetValue(valueTypeName, out result) ? result : null;
+				};
+				Action<ObjectType> notifyValueTypeAdded = newValueType =>
+				{
+					if (valueTypesByName != null)
+					{
+						valueTypesByName[newValueType.Name] = newValueType;
+					}
+				};
 				int nextKind = 0;
 				int kindCount = kinds.Count;
 				for (; nextKind < kindCount;) // Weird loop to allow deletion of overlapping kinds
@@ -241,7 +267,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 								{
 									foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(null, null))
 									{
-										entity.RenameReferenceMode(mode.GenerateValueTypeName(entity.Name, upgradeToFormatString, mode.Name), upgradeToKind.ReferenceModeType != ReferenceModeType.Popular);
+										entity.RenameReferenceMode(mode.GenerateValueTypeName(entity.Name, upgradeToFormatString, mode.Name), upgradeToKind.ReferenceModeType != ReferenceModeType.Popular, valueTypeResolver, notifyValueTypeAdded, notifyAdded);
 									}
 								}
 							}
@@ -289,17 +315,22 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				// < 0 = bitwise complement of custom reference mode that has not yet been renumbered
 				// > 0 = last positive unique number for a reference mode with this name
 				Dictionary<string, int> duplicateReferenceModeTracker;
+				Dictionary<string, ReferenceMode> referenceModeByName;
 				if (customCount == 0)
 				{
 					newIntrinsicAction = delegate(ReferenceMode newMode){};
 					duplicateReferenceModeTracker = null;
+					referenceModeByName = null;
 				}
 				else
 				{
 					duplicateReferenceModeTracker = new Dictionary<string, int>();
+					referenceModeByName = new Dictionary<string, ReferenceMode>();
 					newIntrinsicAction = delegate(ReferenceMode newMode)
 					{
-						duplicateReferenceModeTracker.Add(newMode.Name, 0);
+						string name = newMode.Name;
+						duplicateReferenceModeTracker[name] = 0;
+						referenceModeByName[name] = newMode;
 					};
 				}
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, popularKind, "Id", PortableDataType.NumericAutoCounter));
@@ -329,35 +360,55 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				newIntrinsicAction(CreateIntrinsicReferenceMode(store, model, unitBasedKind, "CE", PortableDataType.TemporalDate));
 
 				// UNDONE: The following loop assumes the format strings are all unique. Handle this case (requires hand edit or merge in the .orm file)
-				for (int i = 0; i < customCount; ++i)
+				if (customCount != 0)
 				{
-					ReferenceMode mode = modes[i];
-					string modeName = mode.Name;
-					int existingIndex;
-					if (duplicateReferenceModeTracker.TryGetValue(modeName, out existingIndex))
+					List<ReferenceMode> redundant = null; // Redundancy requires the same name, format string and data type
+					for (int i = 0; i < customCount; ++i)
 					{
-						// We need to rename
-						if (existingIndex < 0)
+						ReferenceMode mode = modes[i];
+						string modeName = mode.Name;
+						int existingIndex;
+						if (duplicateReferenceModeTracker.TryGetValue(modeName, out existingIndex))
 						{
-							// Rename the old one
-							ReferenceMode previousMode = modes[~existingIndex];
-							existingIndex = 1;
-							DecorateModeName(duplicateReferenceModeTracker, modeName, modes[~existingIndex], ref existingIndex);
+							ReferenceMode matchedRefMode = referenceModeByName[modeName];
+							if (matchedRefMode.FormatString == mode.FormatString && matchedRefMode.Kind == mode.Kind && matchedRefMode.Type == mode.Type)
+							{
+								// We matched on all relevant fields (name, kind, type, format string). This is a redundant, just delete it.
+								(redundant ?? (redundant = new List<ReferenceMode>())).Add(mode);
+							}
+							else
+							{
+								// We need to rename
+								if (existingIndex < 0)
+								{
+									// Rename the old one
+									ReferenceMode previousMode = modes[~existingIndex];
+									existingIndex = 1;
+									DecorateModeName(duplicateReferenceModeTracker, modeName, modes[~existingIndex], ref existingIndex, valueTypeResolver, notifyValueTypeAdded, notifyAdded);
+								}
+								++existingIndex;
+								DecorateModeName(duplicateReferenceModeTracker, modeName, modes[i], ref existingIndex, valueTypeResolver, notifyValueTypeAdded, notifyAdded);
+								duplicateReferenceModeTracker[modeName] = existingIndex;
+							}
 						}
-						++existingIndex;
-						DecorateModeName(duplicateReferenceModeTracker, modeName, modes[i], ref existingIndex);
-						duplicateReferenceModeTracker[modeName] = existingIndex;
+						else
+						{
+							duplicateReferenceModeTracker.Add(modeName, ~i);
+						}
 					}
-					else
+					if (redundant != null)
 					{
-						duplicateReferenceModeTracker.Add(modeName, ~i);
+						for (int i = 0, count = redundant.Count; i < count; ++i)
+						{
+							redundant[i].Delete();
+						}
 					}
 				}
 				
 				// UNDONE: Get rid of the notion of intrinsic reference mode by creating a settings files that is
-				// used as the source of reference modes that are not current used in the model
+				// used as the source of reference modes that are not currently used in the model
 			}
-			private static void DecorateModeName(Dictionary<string, int> duplicateReferenceModeTracker, string modeName, ReferenceMode mode, ref int decoratorIndex)
+			private static void DecorateModeName(Dictionary<string, int> duplicateReferenceModeTracker, string modeName, ReferenceMode mode, ref int decoratorIndex, Func<string, ObjectType> valueTypeResolver, Action<ObjectType> notifyValueTypeAdded, INotifyElementAdded notifyAdded)
 			{
 				string newModeName = modeName + decoratorIndex.ToString();
 				while (duplicateReferenceModeTracker.ContainsKey(newModeName))
@@ -368,7 +419,7 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 				bool canShareValueType = mode.Kind.ReferenceModeType != ReferenceModeType.Popular;
 				foreach (ObjectType entity in mode.AssociatedEntityTypeCollection(null, null))
 				{
-					entity.RenameReferenceMode(mode.GenerateValueTypeName(entity.Name, mode.FormatString, newModeName), canShareValueType);
+					entity.RenameReferenceMode(mode.GenerateValueTypeName(entity.Name, mode.FormatString, newModeName), canShareValueType, valueTypeResolver, notifyValueTypeAdded, notifyAdded);
 				}
 				// Treat the new name as an intrinsic, add in case it conflicts with a later
 				// mode with the same name.
@@ -1088,6 +1139,21 @@ namespace ORMSolutions.ORMArchitect.Core.ObjectModel
 			set
 			{
 				DefaultDataType = (value == null || value.PortableDataType == PortableDataType.Unspecified) ? null : value;
+
+				// If this is a general reference mode then the value type should have the same data type if it is currently
+				// used by the reference mode pattern. We don't want this in a rule, just associated with the intentional user action.
+				ORMModel model;
+				LocatedElement element;
+				if (this.Kind.ReferenceModeType == ReferenceModeType.General &&
+					null != (model = this.Model) &&
+					!((element = model.ObjectTypesDictionary.GetElement(this.Name)).IsEmpty || element.SingleElement == null))
+				{
+					foreach(ObjectType entityType in this.AssociatedEntityTypeCollection(null, null))
+					{
+						((ObjectType)element.SingleElement).DataType = value;
+						break;
+					}
+				}
 			}
 		}
 		#endregion // Non-DSL Custom Properties
