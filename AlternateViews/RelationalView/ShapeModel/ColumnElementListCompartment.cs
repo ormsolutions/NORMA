@@ -327,6 +327,9 @@ namespace ORMSolutions.ORMArchitect.Views.RelationalView
 
 				case PortableDataType.LogicalTrueOrFalse:
 				case PortableDataType.LogicalYesOrNo:
+					typeName = "BOOLEAN";
+					break;
+
 				//case PortableDataType.Unspecified:
 				default:
 					typeName = "UNSPECIFIED";
