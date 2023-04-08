@@ -17,7 +17,7 @@
 	</Installation>
 	<Dependencies>
 		<Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" Version="[4.7.2,)" />
-		<Dependency d:Source="File" DisplayName="PLiX Code Generator" Id="251928d1-61d1-4970-be0e-758788d0fd10" Version="[1.0.3017.9,2.0.0.0)" d:InstallSource="Embed" Location="PLiX.PerUser.vsix" />
+		<Dependency d:Source="File" DisplayName="PLiX Code Generator" Id="251928d1-61d1-4970-be0e-758788d0fd10" Version="[1.0.3017.10,2.0.0.0)" d:InstallSource="Embed" Location="PLiX.PerUser.vsix" />
 	</Dependencies>
 	<Prerequisites>
 		<Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,18.0)" DisplayName="Visual Studio core editor" />
